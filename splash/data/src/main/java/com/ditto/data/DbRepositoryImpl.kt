@@ -2,8 +2,8 @@ package com.ditto.data
 
 import android.content.Context
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.domain.DbRepository
 import com.ditto.login.domain.LoginUser
+import com.ditto.splash.domain.DbRepository
 import com.joann.fabrictracetransform.transform.performTransform
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

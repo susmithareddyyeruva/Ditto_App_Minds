@@ -1,7 +1,8 @@
 package com.ditto.data
 
-import com.ditto.domain.DbRepository
-import com.ditto.domain.UpdateDbUseCase
+
+import com.ditto.splash.domain.DbRepository
+import com.ditto.splash.domain.UpdateDbUseCase
 import io.reactivex.Single
 import javax.inject.Inject
 
