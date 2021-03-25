@@ -1,4 +1,4 @@
-package com.ditto.home_ui
+package com.ditto.home.ui
 
 import core.event.UiEvents
 import core.ui.BaseViewModel

@@ -1,4 +1,4 @@
-package com.ditto.home_ui
+package com.ditto.home.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

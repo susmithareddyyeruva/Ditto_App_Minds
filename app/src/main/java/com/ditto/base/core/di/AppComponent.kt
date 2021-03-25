@@ -4,7 +4,7 @@ import android.content.Context
 import com.ditto.calibration.di.CalibrationFragmentModule
 import com.ditto.login.data.di.LoginDbModule
 import com.ditto.splash.data.di.SplashDbModule
-import com.ditto.di.HomeFragmentModule
+import com.ditto.home.di.HomeFragmentModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.example.tutorial_ui.di.TutorialFragmentModule
 import com.ditto.howto_ui.di.HowtoFragmentModule

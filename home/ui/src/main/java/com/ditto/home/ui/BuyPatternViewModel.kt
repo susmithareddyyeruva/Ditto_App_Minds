@@ -1,4 +1,4 @@
-package com.ditto.home_ui
+package com.ditto.home.ui
 
 import core.ui.BaseViewModel
 import javax.inject.Inject

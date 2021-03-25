@@ -1,8 +1,7 @@
-package com.ditto.di
+package com.ditto.home.di
 
 import androidx.lifecycle.ViewModel
-import com.ditto.home_ui.*
-import com.example.home_ui.*
+import com.ditto.home.ui.*
 import core.ui.ViewModelKey
 import dagger.Binds
 import dagger.Module
