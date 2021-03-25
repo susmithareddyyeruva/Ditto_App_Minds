@@ -1,4 +1,4 @@
-package com.ditto.howto_data.model.mapper
+package com.ditto.howto.mapper
 
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.model.HowToModel

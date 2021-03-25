@@ -1,8 +1,7 @@
-package com.ditto.howto_data.model
+package com.ditto.howto
 
-import com.ditto.howto.GetHowToDataRepository
+import com.ditto.howto.mapper.toDomain
 import com.ditto.howto.model.HowToData
-import com.ditto.howto_data.model.mapper.toDomain
 import com.ditto.storage.data.database.OnBoardingDao
 import io.reactivex.Single
 import non_core.lib.Result

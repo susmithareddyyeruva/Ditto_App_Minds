@@ -1,9 +1,9 @@
-package com.ditto.howto_data.model.di
+package com.ditto.howto.di
 
+import com.ditto.howto.GetHowToDataImpl
 import com.ditto.howto.GetHowToDataRepository
+import com.ditto.howto.GetHowToDataRepositoryImpl
 import com.ditto.howto.GetHowToDataUsecase
-import com.ditto.howto_data.model.GetHowToDataImpl
-import com.ditto.howto_data.model.GetHowToDataRepositoryImpl
 import dagger.Binds
 import dagger.Module
 

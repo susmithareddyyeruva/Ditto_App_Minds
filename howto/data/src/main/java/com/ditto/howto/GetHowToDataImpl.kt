@@ -1,10 +1,7 @@
-package com.ditto.howto_data.model
+package com.ditto.howto
 
 
-import com.ditto.howto.GetHowToDataRepository
-import com.ditto.howto.GetHowToDataUsecase
 import com.ditto.howto.model.HowToData
-
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
