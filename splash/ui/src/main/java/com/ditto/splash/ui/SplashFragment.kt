@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.splash.ui.R
 import com.ditto.splash.ui.databinding.SplashActivityBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate

@@ -1,20 +1,16 @@
 package com.ditto.login.data
 
-import android.content.Context
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.LoginRepository
 import com.ditto.login.domain.LoginUser
-import com.ditto.logger.Logger
-import com.ditto.logger.LoggerFactory
-
-import io.reactivex.Scheduler
-import non_core.lib.Result
+import com.ditto.storage.data.database.UserDao
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import com.ditto.storage.data.database.UserDao
-
+import non_core.lib.Result
 import javax.inject.Inject
 
 /**

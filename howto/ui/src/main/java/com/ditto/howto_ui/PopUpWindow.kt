@@ -3,10 +3,6 @@ package com.ditto.howto_ui
  * Created by Vishnu A V on  03/08/2020.
  * Popup Class wich plays the video
  */
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ArgbEvaluator
-import android.animation.ValueAnimator
 import android.app.ActionBar
 import android.app.Activity
 import android.graphics.Color
@@ -18,16 +14,13 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.MediaController
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.ColorUtils
 import com.ditto.howto_ui.utils.Common
 import com.ditto.howto_ui.utils.MyMediaController
-import com.ditto.howto_ui.R
 import kotlinx.android.synthetic.main.popup_window.*
 
 class PopUpWindow : AppCompatActivity() {

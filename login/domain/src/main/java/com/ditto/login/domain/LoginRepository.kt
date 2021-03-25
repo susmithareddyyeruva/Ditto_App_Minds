@@ -1,7 +1,6 @@
 package com.ditto.login.domain
 
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import non_core.lib.Result
 
