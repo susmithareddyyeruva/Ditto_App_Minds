@@ -1,12 +1,12 @@
 package com.ditto.howto_data.model
 
+import com.ditto.howto.GetHowToDataRepository
+import com.ditto.howto.model.HowToData
 import com.ditto.howto_data.model.mapper.toDomain
-import com.ditto.howto_domain.GetHowToDataRepository
-import com.ditto.howto_domain.model.HowToData
+import com.ditto.storage.data.database.OnBoardingDao
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.FeatureError
-import com.ditto.storage.data.database.OnBoardingDao
 import javax.inject.Inject
 
 /**

@@ -3,9 +3,9 @@ package com.ditto.howto.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.fragment.TabContentFragment
-import com.ditto.howto_domain.model.HowToModel
+import com.ditto.howto.model.HowToModel
+import com.ditto.howto.ui.HowtoViewModel
 
 /**
  * Created by Sesha on  15/08/2020.

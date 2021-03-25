@@ -4,18 +4,18 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.howto.GetHowToDataUsecase
+import com.ditto.howto.model.HowToData
 import core.event.UiEvents
 import core.ui.BaseViewModel
-import com.ditto.howto_domain.GetHowToDataUsecase
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import non_core.lib.Result
-import javax.inject.Inject
-import com.ditto.howto_domain.model.HowToData
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.whileSubscribed
+import javax.inject.Inject
 
 /**
  * Created by Sesha on  15/08/2020.

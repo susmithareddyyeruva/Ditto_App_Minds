@@ -1,8 +1,8 @@
-package com.ditto.howto_domain
+package com.ditto.howto
 
-import com.ditto.howto_domain.model.HowToData
-import non_core.lib.Result
+import com.ditto.howto.model.HowToData
 import io.reactivex.Single
+import non_core.lib.Result
 
 /**
  * Created by Sesha on  15/08/2020.

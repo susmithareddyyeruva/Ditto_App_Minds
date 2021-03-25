@@ -1,9 +1,9 @@
 package com.ditto.howto_data.model
 
 
-import com.ditto.howto_domain.GetHowToDataRepository
-import com.ditto.howto_domain.GetHowToDataUsecase
-import com.ditto.howto_domain.model.HowToData
+import com.ditto.howto.GetHowToDataRepository
+import com.ditto.howto.GetHowToDataUsecase
+import com.ditto.howto.model.HowToData
 
 import io.reactivex.Single
 import non_core.lib.Result

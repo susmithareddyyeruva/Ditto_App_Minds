@@ -1,4 +1,4 @@
-package com.ditto.howto_domain.model
+package com.ditto.howto.model
 
 /**
  * Created by Sesha  on  15/08/2020.
