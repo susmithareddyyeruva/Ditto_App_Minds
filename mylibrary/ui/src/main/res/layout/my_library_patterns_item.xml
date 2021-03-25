@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.mylibrary.ui.AllPatternsViewModel" />
+
+        <variable
+            name="patternValue"
+            type="trace.mylibrary.domain.model.MyLibraryData" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_card_start"
+        android:layout_marginTop="@dimen/margin_card_top"
+        android:layout_marginEnd="@dimen/margin_card_end"
+        android:elevation="@dimen/elevation_card"
+        android:onClick="@{() -> viewModel.onItemClick(patternValue.id)}"
+        app:cardBackgroundColor="@color/cardColor">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image_pattern"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                app:layout_constraintDimensionRatio="294:220"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/light_grey"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent=".16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_pattern">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1.7"
+                    android:gravity="center|left"
+                    android:singleLine="true"
+                    android:text="@{patternValue.patternName}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/size_14sp"
+                    tools:text="sdvsdsfggaf" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".3"
+                    android:src="@drawable/ic_right_arrow" />
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/optionItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:contentDescription="Popup menu"
+            android:focusable="true"
+            android:onClick="@{(view) -> viewModel.onOptionsClicked(view, patternValue.id)}"
+            android:src="@drawable/ic_overflow_holo_dark" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

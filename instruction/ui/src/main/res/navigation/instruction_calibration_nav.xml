@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/destination_instruction_calibration"
+    app:startDestination="@+id/destination_instruction_calibration_fragment">
+    <include app:graph="@navigation/calibration_nav_graph"/>
+    <fragment
+        android:id="@+id/destination_instruction_calibration_fragment"
+        android:name="com.ditto.instructions.ui.InstructionFragment"
+        android:label="Instruction"
+        tools:layout="@layout/instruction_fragment">
+
+        <action
+            android:id="@+id/action_destination_instruction_to_calibration_nav_graph"
+            app:destination="@id/calibration_nav_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_instructionFragment_to_homefragment"
+            app:destination="@id/nav_graph_id_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_instruction_calibration_fragment"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_destination_instruction_to_howto_nav_graph"
+            app:destination="@id/howto_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+</navigation>

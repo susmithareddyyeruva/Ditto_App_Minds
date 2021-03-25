@@ -1,0 +1,44 @@
+/*
+ * common dependencies file reusable across modules
+ */
+dependencies {
+//    testImplementation project(':test_shared')
+    testImplementation "androidx.arch.core:core-testing:${androidx_arch}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockito_kotlin}"
+    testImplementation "com.squareup.retrofit2:retrofit-mock:${retrofitVersion}"
+    testImplementation "junit:junit:${junit_version}"
+    testImplementation "org.mockito:mockito-core:${mockito_version}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutines_version}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutines_version}"
+
+    // Work around issue with runtime classpath version conflict
+//    implementation "androidx.arch.core:core-runtime:${androidxCoreRuntime}"
+    implementation "androidx.collection:collection:${androidxCollection_version}"
+    implementation "androidx.legacy:legacy-support-core-utils:${legacyCoreUtils}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${androidx_lifecycle_version}"
+
+    // Workaround for dependency conflict during assembleAndroidTest
+    androidTestImplementation("androidx.arch.core:core-runtime:2.0.1-alpha01")
+
+    // Work around issue with runtime classpath version conflict
+    androidTestImplementation "androidx.arch.core:core-testing:${androidx_arch}"
+    androidTestImplementation "androidx.legacy:legacy-support-core-utils:${legacyCoreUtils}"
+    androidTestImplementation "androidx.lifecycle:lifecycle-runtime:${androidx_lifecycle_version}"
+
+//    androidTestImplementation project(':test_shared')
+    androidTestImplementation "androidx.arch.core:core-testing:${androidx_arch}"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:${espresso_version}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${espresso_version}"
+    androidTestImplementation "androidx.test.ext:junit:${androidx_test_ext_junit_version}"
+    androidTestImplementation "androidx.test:rules:${androidx_test_rules_version}"
+    androidTestImplementation "androidx.test:runner:${androidx_test_runner_version}"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:${ui_automator}"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockito_kotlin}"
+    androidTestImplementation "com.squareup.retrofit2:retrofit-mock:${retrofitVersion}"
+    androidTestImplementation "org.mockito:mockito-android:${mockito_version}"
+    androidTestImplementation "org.mockito:mockito-core:${mockito_version}"
+    // Adding this to bring "google_play_services_version" into the test project
+    // without this, it fails on AGP 3.6.x.
+    androidTestImplementation "com.google.android.gms:play-services-gcm:17.0.0"
+}

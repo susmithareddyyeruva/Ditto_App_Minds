@@ -1,0 +1,78 @@
+include ':dittoProjectorApp', ':FabricTraceTransform-debug'
+include ':app'
+include ':nav-graph'
+include ':core-lib'
+include ':non-core-lib'
+
+include ':storage-data'
+project(':storage-data').projectDir = new File('storage/storage-data')
+include ':storage-domain'
+project(':storage-domain').projectDir = new File('storage/storage-domain')
+
+include ':login-ui'
+project(':login-ui').projectDir = new File('login/ui')
+include ':login-domain'
+project(':login-domain').projectDir = new File('login/domain')
+include ':login-data'
+project(':login-data').projectDir = new File('login/data')
+
+include ':splash-ui'
+project(':splash-ui').projectDir = new File('splash/ui')
+include ':splash-data'
+project(':splash-data').projectDir = new File('splash/data')
+include ':splash-domain'
+project(':splash-domain').projectDir = new File('splash/domain')
+
+include ':onboarding-ui'
+project(':onboarding-ui').projectDir = new File('onboarding/ui')
+include ':onboarding-data'
+project(':onboarding-data').projectDir = new File('onboarding/data')
+include ':onboarding-domain'
+project(':onboarding-domain').projectDir = new File('onboarding/domain')
+
+
+include ':instruction-ui'
+project(':instruction-ui').projectDir = new File('instruction/ui')
+include ':instructions-domain'
+project(':instructions-domain').projectDir = new File('instruction/domain')
+include ':instructions-data'
+project(':instructions-data').projectDir = new File('instruction/data')
+
+include ':home-ui'
+project(':home-ui').projectDir = new File('home/ui')
+
+include ':mylibrary-ui'
+project(':mylibrary-ui').projectDir = new File('mylibrary/ui')
+include ':mylibrary-domain'
+project(':mylibrary-domain').projectDir = new File('mylibrary/domain')
+include ':mylibrary-data'
+project(':mylibrary-data').projectDir = new File('mylibrary/data')
+
+include ':workspace-ui'
+project(':workspace-ui').projectDir = new File('workspace/ui')
+include ':workspace-domain'
+project(':workspace-domain').projectDir = new File('workspace/domain')
+include ':workspace-data'
+project(':workspace-data').projectDir = new File('workspace/data')
+
+include ':tutorial-ui'
+project(':tutorial-ui').projectDir = new File('tutorial/ui')
+include ':howto-ui'
+project(':howto-ui').projectDir = new File('howto/ui')
+include ':howto-data'
+project(':howto-data').projectDir = new File('howto/data')
+include ':howto-domain'
+project(':howto-domain').projectDir = new File('howto/domain')
+include ':logger'
+
+include ':calibration-ui'
+project(':calibration-ui').projectDir = new File('calibration/ui')
+include ':calibration-domain'
+project(':calibration-domain').projectDir = new File('calibration/domain')
+include ':calibration-data'
+project(':calibration-data').projectDir = new File('calibration/data')
+
+
+include ':connectivity-ui'
+project(':connectivity-ui').projectDir = new File('connectivity/ui')
+

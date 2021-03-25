@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_id_home"
+    app:startDestination="@id/homeFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ditto.home_ui.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_fragment" >
+
+        <action
+            android:id="@+id/action_home_to_buy_pattern"
+            app:destination="@id/buyPatternFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_ShopFragment"
+            app:destination="@id/ShopFragment" />
+        <action
+            android:id="@+id/action_home_to_workspace"
+            app:destination="@id/workspaceFragment"/>
+        <action
+            android:id="@+id/action_home_to_pattern_details"
+            app:destination="@id/patternDescriptionFragmentFromHome" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/buyPatternFragment"
+        android:name="com.ditto.home_ui.BuyPatternFragment"
+        android:label="Buy Pattern"
+        tools:layout="@layout/buy_pattern_fragment" />
+
+
+    <fragment
+        android:id="@+id/ShopFragment"
+        android:name="com.ditto.home_ui.ShopFragment"
+        android:label="Shop Joann"
+        tools:layout="@layout/shop_fragment" />
+
+    <fragment
+        android:id="@+id/patternDescriptionFragmentFromHome"
+        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
+        android:label="PatternDescriptionFragment" >
+
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_WorkspaceFragment"
+            app:destination="@id/nav_graph_workspace"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
+            app:destination="@id/patternInstructionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_pattern_description_to_calibration"
+            app:destination="@id/calibration_nav_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/patternInstructionsFragment"
+        android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
+        android:label="Pattern Instructions">
+    </fragment>
+</navigation>

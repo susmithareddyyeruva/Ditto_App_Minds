@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="trace.workspace.ui">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+<application>
+    <activity
+        android:name="com.ditto.workspace.ui.PinchAndZoom"
+        android:screenOrientation="sensorLandscape"
+        android:windowIsTranslucent="true"
+        android:theme="@style/AppTheme_Popup" />
+</application>
+</manifest>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="popuptheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">#33000000</item> <!-- Or any transparency or color you need -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#FFFFFF</item>
+    </style>
+
+
+
+ <!--   <style name="ToolBarStyle"  parent="AppTheme">
+        <item name="android:textColorSecondary">#FFFFFF</item>
+        <item name="titleEnabled">false</item>
+        <item name="android:translationZ">0.1dp</item>
+        <item name="elevation">0.1dp</item>
+        <item name="background">#00FFFFFF</item>
+
+    </style>-->
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <item name="android:homeAsUpIndicator">@drawable/backarrow_white</item>
+     </style>
+
+
+
+</resources>

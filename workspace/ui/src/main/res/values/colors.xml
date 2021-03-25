@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="cardColor">#EEEEEE</color>
+    <color name="line_divider_color">#C0C0C0</color>
+    <color name="tab_divider_color">#63666B</color>
+    <color name="tab_text_color">#63666B</color>
+    <color name="text_underline">#63666B</color>
+    <color name="default_text_color">#4A4A4A</color>
+    <color name="text_move">#494949</color>
+    <color name="progress_green">#73BD00</color>
+    <color name="seek_bar_background">#F4F4F4</color>
+    <color name="seek_bar_secondary_progress">#F4F4F4</color>
+
+</resources>

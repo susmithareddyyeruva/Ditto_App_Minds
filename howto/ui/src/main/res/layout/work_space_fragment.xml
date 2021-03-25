@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.howto_ui.HowtoViewModel" />
+
+        <variable
+            name="instructionvalues"
+            type="com.ditto.howto_domain.model.HowToData" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_image_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_image_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".90" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_image_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_image_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_content_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".38" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_content_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".98" />
+
+
+        <ImageView
+            android:id="@+id/image_step"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_workspace_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guide_content_end"
+            app:layout_constraintStart_toStartOf="@+id/guide_content_start"
+            app:layout_constraintTop_toBottomOf="@+id/guide_image_top" />
+
+        <ImageView
+            android:id="@+id/image_play"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:src="@drawable/playicon"
+            android:visibility="@{position==3 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/image_step"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@+id/image_step"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".3"
+            app:layout_constraintStart_toStartOf="@+id/image_step"
+            app:layout_constraintTop_toTopOf="@+id/image_step" />
+        <TextView
+            android:id="@+id/text_header"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:text="@{instructionvalues.title1}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_16px"
+            android:paddingBottom="@dimen/instruction_margin"
+            android:textStyle="bold"
+            android:visibility="@{position==3 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@id/guide_image_end"
+            app:layout_constraintStart_toStartOf="@+id/guide_image_start"
+            app:layout_constraintTop_toBottomOf="@+id/guide_image_top" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_content_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".20" />
+
+        <TextView
+            android:id="@+id/text_content"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="@dimen/size_0dp"
+            android:fadeScrollbars="false"
+            android:paddingEnd="@dimen/margin_text"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:textColor="@color/instruction_content_text"
+            android:textSize="@dimen/size_14px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guide_image_end"
+            app:layout_constraintStart_toStartOf="@+id/guide_image_start"
+            app:layout_constraintTop_toBottomOf="@+id/text_header" />
+
+        <View
+            android:id="@+id/scroll_view_border"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@color/instruction_content_text"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/text_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

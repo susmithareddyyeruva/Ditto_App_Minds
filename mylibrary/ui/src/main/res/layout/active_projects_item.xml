@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.mylibrary.ui.AllPatternsViewModel" />
+
+        <variable
+            name="patternValue"
+            type="trace.mylibrary.domain.model.MyLibraryData" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_card_start"
+        android:layout_marginTop="@dimen/margin_card_top"
+        android:layout_marginEnd="@dimen/margin_card_end"
+        android:elevation="@dimen/elevation_card"
+        android:onClick="@{() -> viewModel.onItemClick(patternValue.id)}"
+        app:cardBackgroundColor="@color/cardColor">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/image_pattern"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:scaleType="fitXY"
+                app:layout_constraintDimensionRatio="294:220"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_progresstop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".74" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_progressstart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".035" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_progressend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".97" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_textend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".95" />
+
+
+            <SeekBar
+                android:id="@+id/seekbar_status"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_12px"
+                android:maxHeight="@dimen/seek_height"
+                 android:progressDrawable="@drawable/seek_progress"
+                android:progressTint="@color/progress_green"
+                android:foregroundGravity="center"
+                android:splitTrack="false"
+                android:padding="@dimen/size_0dp"
+                android:progress="@{patternValue.completedPieces}"
+                android:max="@{patternValue.totalPieces}"
+                android:src="@drawable/ic_cut_bin_icon"
+                android:thumb="@drawable/ic_scissor_thumbnail"
+                app:layout_constraintEnd_toEndOf="@+id/guide_progressend"
+                app:layout_constraintStart_toStartOf="@+id/guide_progressstart"
+                app:layout_constraintTop_toBottomOf="@+id/guide_progresstop"
+                app:layout_constraintBottom_toTopOf="@+id/linear_layout_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/seekbar_status"
+                app:layout_constraintEnd_toEndOf="@+id/guide_textend"
+                android:text="@{String.format(@string/seek_text,patternValue.completedPieces, patternValue.totalPieces)}"
+                android:background="@drawable/text_border"
+                android:textColor="@color/White"
+                android:textSize="@dimen/size_14px"/>
+
+
+            <LinearLayout
+                android:id="@+id/linear_layout_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/light_grey"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent=".16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_pattern">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1.7"
+                    android:gravity="center|left"
+                    android:singleLine="true"
+                    android:text="@{patternValue.patternName}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/size_14sp"
+                    tools:text="sdvsdsfggaf" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".3"
+                    android:src="@drawable/ic_right_arrow" />
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/optionItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:contentDescription="Popup menu"
+            android:focusable="true"
+            android:onClick="@{(view) -> viewModel.onOptionsClicked(view, patternValue.id)}"
+            android:src="@drawable/ic_overflow_holo_dark"
+            android:visibility="gone" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

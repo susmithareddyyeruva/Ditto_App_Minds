@@ -1,0 +1,49 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
+    <string name="app_name">on-boarding-ui</string>
+    <string name="add_projects">Add Project</string>
+    <string name="no_active_projects">No Active Projects now, if you want to add project click here.</string>
+
+    <string name="active_projects">Active Projects</string>
+    <string name="completed_projects">Completed Projects</string>
+    <string name="all_patterns">All Patterns</string>
+
+    <string name="connectivity">Connectivity</string>
+    <string name="ble_wifi_connectivity">This app needs Bluetooth and WiFi connectivity.</string>
+    <string name="later">Later</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="skips">Skip</string>
+    <string name="ditto_connect">Ditto projector is not connected</string>
+    <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>
+    <string name="error_text">Please try again connecting your device \nagain to com.ditto projector.</string>
+    <string name="ble_connectivity">Turn on your bluetooth</string>
+    <string name="wifi_connectivity" tools:ignore="ExtraTranslation">Turn on your WiFi</string>
+    <string name="turnon">TURN ON</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stay_tuned_">Stay tuned to browse more patterns that inspire you to start your next journey!</string>
+    <string name="welcomemessage">What would you like to do today?</string>
+    <string name="page_coming">My Library Will be available Soon!</string>
+    <string name="no_completed">No Completed Project</string>
+
+    <string name="unknown_device">Unknown device</string>
+    <string name="desc">Learn to sew a quilted pillow with the Simplicity Pattern 8823 Learn-to-Sew Quilted Pillow.how to apply batting.</string>
+
+    <string name="setup_calibration_title">Have you calibrated your setup?</string>
+    <string name="setup_calibration_message">Quick check or calibrate again</string>
+    <string name="setup_calibration_calibrate">CALIBRATE</string>
+    <string name="setup_calibration_quickcheck">QUICK CHECK</string>
+    <string name="setup_quickcheck_title">Do you see the edges lined upto projection?</string>
+    <string name="setup_quickcheck_message">Place a sheet of letter sized paper on the projection and check if the lines are coinciding</string>
+    <string name="calibrate">NO, CALIBRATE</string>
+    <string name="yes_string">YES</string>
+
+
+    <string name="menu_remove">Remove</string>
+    <string name="menu_complete">Mark Complete</string>
+    <string name="menu_rename">Rename</string>
+    <string name="menu_details">Details</string>
+    <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
+
+</resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_id_onboarding"
+    app:startDestination="@id/destination_onboarding"
+    tools:ignore="UnusedNavigation">
+
+    <include app:graph="@navigation/instruction_navigation" />
+    <include app:graph="@navigation/instruction_calibration_nav" />
+    <include app:graph="@navigation/nav_graph_home" />
+    <include app:graph="@navigation/nav_graph_howto" />
+
+    <fragment
+        android:id="@+id/destination_onboarding"
+        android:name="com.ditto.onboarding.ui.OnboardingFragment"
+        android:label="OnBoarding"
+        tools:layout="@layout/onboarding_fragment">
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_instructionsfragment"
+            app:destination="@id/instruction_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_instructionsfragment_From_Tutorial"
+            app:destination="@id/instruction_navigation"
+            app:popUpTo="@+id/destination_onboarding_tutorial"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_instructionsfragment_checkedbox_clicked"
+            app:destination="@id/instruction_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_onboarding"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_onboardingFragment_to_calibrationfragment"
+            app:destination="@id/destination_instruction_calibration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_calibrationfragment_From_Tutorial"
+            app:destination="@id/destination_instruction_calibration"
+            app:popUpTo="@+id/destination_onboarding_tutorial"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_calibrationfragment_checkedbox_clicked"
+            app:destination="@id/destination_instruction_calibration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_onboarding"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_onboardingFragment_to_homefragment"
+            app:destination="@id/nav_graph_id_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_homefragment_checkedbox_clicked"
+            app:destination="@id/nav_graph_id_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_onboarding"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_onboardingFragment_to_howtofragment_checked"
+            app:destination="@id/howto_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_onboarding"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_onboardingFragment_to_howtofragment_unchecked"
+            app:destination="@id/howto_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+           />
+    </fragment>
+</navigation>

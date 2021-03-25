@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.onboarding.ui.OnboardingViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.10" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.07" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.93" />
+
+        <TextView
+            android:id="@+id/txt_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{viewModel.onBoardingTitle}"
+            android:textAppearance="@style/text_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="@dimen/size_20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_heading" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_gravity="center_vertical"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:data="@{viewModel.data}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_heading"
+            app:spanCount="3"
+            tools:listitem="@layout/onboarding_item" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_card"
+            android:layout_marginEnd="@dimen/margin_card"
+            app:contentPaddingBottom="@dimen/margin_text"
+            android:visibility="@{!viewModel.isFromHome_Observable()}"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_bottom">
+            <TextView
+                android:id="@+id/txt_skip_continue"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.onClickSkipAndContinue()}"
+                android:text="@string/skip_contin"
+                android:textColor="@color/black"
+                android:textAppearance="@style/skip_contin"/>
+            <CheckBox
+                android:id="@+id/checkBox_dont_show"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="-2dp"
+                android:buttonTint="@color/black"
+                android:layout_height="wrap_content"
+                android:button="@drawable/checkbox_selector"
+                android:paddingLeft="@dimen/checkbox"
+                android:onCheckedChanged="@{(view,checked) -> viewModel.onClickDoNotShowItAgain(checked)}"
+                android:text="@string/dont_show_t"
+                android:theme="@style/dont_show_t" />
+        </RelativeLayout>
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calibration_nav_graph"
+    app:startDestination="@id/destination_calibrationFragment"
+    tools:ignore="UnusedNavigation">
+
+
+    <fragment
+        android:id="@+id/destination_calibrationFragment"
+        android:name="com.ditto.calibration.ui.CalibrationFragment"
+        android:label="Calibration"
+        tools:layout="@layout/calibration_fragment" >
+
+        <action
+            android:id="@+id/action_destination_calibrationFragment_to_instruction_navigation"
+            app:destination="@id/instruction_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_destination_calibrationFragment_to_workspace_navigation"
+            app:destination="@id/nav_graph_workspace"
+            app:popUpTo="@+id/destination_calibrationFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_destination_calibrationFragment_to_howto_navigation"
+            app:destination="@id/howto_navigation"
+            app:popUpTo="@+id/destination_calibrationFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/instruction_fragment"
+        android:name="com.ditto.instructions.ui.InstructionFragment"
+        android:label="Pattern Instructions"/>
+
+</navigation>

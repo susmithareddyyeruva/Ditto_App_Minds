@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_graph_id_home"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="always"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/nav_graph_mylibrary"
+        android:icon="@drawable/ic_library"
+        app:showAsAction="always"
+        android:title="My Library"/>
+
+    <item
+        android:id="@+id/nav_graph_tutorial"
+        android:icon="@drawable/ic_tutorial"
+        app:showAsAction="always"
+        android:title="Tutorial"/>
+
+</menu>

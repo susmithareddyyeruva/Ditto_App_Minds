@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">dashboard</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="resume_recent">Resume Recent</string>
+    <string name="buy_patterns">Buy Patterns</string>
+    <string name="shop_joann">Shop Joann.com</string>
+    <string name="page_coming">Page Coming Soon!</string>
+    <string name="shop_for_">Shop for materials selected by JOANN to sew a garment to perfection!</string>
+    <string name="stay_tuned_">Stay tuned to browse more patterns that inspire you to start your next journey!</string>
+    <string name="welcomemessage">What would you like to do today?
+</string>
+</resources>

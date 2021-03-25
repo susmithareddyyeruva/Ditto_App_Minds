@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_workspace"
+    app:startDestination="@id/workspaceFragment"
+    tools:ignore="UnusedNavigation">
+
+    <include app:graph="@navigation/calibration_nav_graph"/>
+
+    <fragment
+        android:id="@+id/workspaceFragment"
+        android:name="com.ditto.workspace.ui.WorkspaceFragment"
+        android:label=""
+        tools:layout="@layout/fragment_workspace">
+
+        <action
+            android:id="@+id/action_workspaceFragment_to_pattern_instructions_Fragment"
+            app:destination="@id/patternInstructionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/patternInstructionsFragment" />
+        <action
+            android:id="@+id/action_workspaceFragment_to_pattern_description_Fragment"
+            app:destination="@id/patternDescriptionFragment"
+            app:enterAnim="@anim/slide_out_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/workspaceFragment" />
+
+        <action
+            android:id="@+id/action_workspace_to_calibration"
+            app:destination="@id/calibration_nav_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/patternInstructionsFragment"
+        android:name="com.ditto.workspace.ui.PatternInstructionsFragment"
+        android:label="Pattern Instructions"/>
+</navigation>

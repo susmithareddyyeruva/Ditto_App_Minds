@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.workspace.ui.WorkspaceViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:gravity="center"
+            android:maxWidth="@dimen/image_max_width"
+            android:paddingLeft="@dimen/margin_workspace"
+            android:paddingTop="@dimen/margin_v_small"
+            android:paddingRight="@dimen/margin_workspace"
+            android:paddingBottom="@dimen/margin_v_small"
+            android:tag="image_tag"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_arrow"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:src="@drawable/ic_arrow_horizontal"
+            android:visibility="gone"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent"  />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ditto.instructions.ui" >
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <application>
+
+        <activity android:name="com.ditto.instructions.ui.PopUpWindow"
+            android:theme="@style/AppTheme1"
+            android:screenOrientation="sensorLandscape"/>
+    </application>
+
+</manifest>

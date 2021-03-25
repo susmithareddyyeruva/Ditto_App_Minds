@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="connectivity">Connectivity</string>
+    <string name="ble_wifi_connectivity">This app needs Bluetooth and WiFi connectivity.</string>
+    <string name="later">Later</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="skips">Skip</string>
+    <string name="ditto_connect">Ditto projector is not connected</string>
+    <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>
+    <string name="select_bluetooth_device">Select Bluetooth device</string>
+    <string name="connecting">Connecting to Ditto projector...</string>
+    <string name="wifi_connect">Wi-Fi Connectivity</string>
+    <string name="enter_credentials">Enter your Wi-Fi Credentials</string>
+    <string name="network_name">Network Name</string>
+    <string name="password">Password</string>
+    <string name="connect">CONNECT</string>
+    <string name="retry">RETRY</string>
+    <string name="connectivity_unsuccess">Connectivity Unsuccessful</string>
+    <string name="error_text">Please try again connecting your device \nagain to com.ditto projector.</string>
+    <string name="ble_connectivity">Turn on your bluetooth</string>
+    <string name="wifi_connectivity" tools:ignore="ExtraTranslation">Turn on your WiFi</string>
+    <string name="turnon">TURN ON</string>
+    <string name="unknown_device">Unknown device</string>
+
+    <string name="setup_calibration_title">Have you calibrated your setup?</string>
+    <string name="setup_calibration_message">Quick check or calibrate again</string>
+    <string name="setup_calibration_calibrate">CALIBRATE</string>
+    <string name="setup_calibration_quickcheck">QUICK CHECK</string>
+    <string name="setup_quickcheck_title">Do you see the edges lined upto projection?</string>
+    <string name="setup_quickcheck_message">Place a sheet of letter sized paper on the projection and check if the lines are coinciding</string>
+    <string name="calibrate">NO, CALIBRATE</string>
+    <string name="yes_string">YES</string>
+</resources>

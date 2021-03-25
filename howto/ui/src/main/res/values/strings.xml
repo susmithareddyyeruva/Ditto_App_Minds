@@ -1,0 +1,9 @@
+<resources>
+    <string name="toolbar_title">How to</string>
+    <string name="skip"><u>Skip Tutorial</u></string>
+    <string name="howtoskip"><u>Exit Tutorial</u></string>
+    <string name="watch_video">Watch Video</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="placeholdertext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a habitasse etiam feugiat nunc, aliquam egesta!</string>
+</resources>

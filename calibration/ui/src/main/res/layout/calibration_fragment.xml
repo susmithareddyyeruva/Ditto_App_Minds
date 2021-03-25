@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.calibration.ui.CalibrationViewModel" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:translationZ="0.1dp"
+            app:elevation="0.1dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ToolbarTheme"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp">
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:visibility="@{viewModel.isShowFinalImage()}">
+
+                <ImageView
+                    android:id="@+id/captured_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.isShowCameraView()}">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.camera.view.PreviewView
+                        android:id="@+id/cameraviewFinder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:scaleType="fitCenter" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_cam_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".78" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_rect_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".21" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_rect_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".15" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_rect_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".85" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_cambutton_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".80" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/guide_cambutton_top">
+
+
+                        <ImageView
+                            android:id="@+id/take_pic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.onTakePhoto()}"
+                            android:src="@drawable/ic_cambutton"
+                            android:visibility="@{viewModel.isShowCameraButton()}" />
+
+
+                    </RelativeLayout>
+
+
+                    <ImageView
+                        android:id="@+id/rect"
+                        android:layout_width="@dimen/size_0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_rect"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/guide_cam_top"
+                        app:layout_constraintEnd_toStartOf="@+id/guide_rect_end"
+                        app:layout_constraintStart_toStartOf="@+id/guide_rect_left"
+                        app:layout_constraintTop_toBottomOf="@+id/guide_rect_top" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_text_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".86" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_text_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".88" />
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/size_0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        android:gravity="start|center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guide_text_start"
+                        app:layout_constraintTop_toBottomOf="@+id/guide_text_top">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.onInstructionTextClicked()}"
+                            android:text="@string/instruction"
+                            android:textColor="@color/White"
+                            android:textSize="@dimen/size_12px" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_textshape"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toTopOf="@+id/guide_rect_top"
+                        app:layout_constraintEnd_toEndOf="@+id/guide_rect_end"
+                        app:layout_constraintStart_toStartOf="@+id/guide_rect_left"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/overlaytext"
+                            android:textColor="@color/White"
+                            android:textSize="@dimen/size_12px" />
+
+                    </RelativeLayout>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_back_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".040" />
+
+
+                    <!--<RelativeLayout
+                        android:layout_width="@dimen/size_0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        android:gravity="start|center"
+                        app:layout_constraintBottom_toTopOf="@+id/guide_rect_top"
+                        app:layout_constraintEnd_toStartOf="@+id/guide_rect_left"
+                        app:layout_constraintStart_toStartOf="@+id/guide_back_start"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.onBackButtonClicked()}"
+                            android:src="@drawable/backarrow_white" />
+
+                    </RelativeLayout>-->
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tab_heading">20sp</dimen>
+    <dimen name="tab_workspace">18sp</dimen>
+    <dimen name="text_reference_layout">22sp</dimen>
+    <dimen name="text_save_and_exit">18sp</dimen>
+    <dimen name="text_instruction">18sp</dimen>
+    <dimen name="text_recalibrate">18sp</dimen>
+    <dimen name="text_size_cloth">18sp</dimen>
+    <dimen name="text_size_desc">14sp</dimen>
+    <dimen name="text_select_all">16sp</dimen>
+    <dimen name="text_seek_complete">15sp</dimen>
+    <dimen name="text_move_to_drag">15sp</dimen>
+    <dimen name="send_to_projector">14sp</dimen>
+
+    <dimen name="margin_v_small">5dp</dimen>
+    <dimen name="splice_button">50dp</dimen>
+    <dimen name="seek_bar_thickness">10dp</dimen>
+    <dimen name="margin_workspace">15dp</dimen>
+    <dimen name="line_size">1dp</dimen>
+    <dimen name="dimen_0">0dp</dimen>
+    <dimen name="elevation_card">15dp</dimen>
+    <dimen name="margin_card">50dp</dimen>
+    <dimen name="margin_text">15dp</dimen>
+    <dimen name="margin_workspace_layout">25dp</dimen>
+
+    <dimen name="seek_height">8dp</dimen>
+    <dimen name="tab_height">42dp</dimen>
+    <dimen name="image_max_width">300dp</dimen>
+
+</resources>

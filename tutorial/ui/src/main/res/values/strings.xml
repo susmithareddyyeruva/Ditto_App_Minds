@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stay_tuned_">Stay tuned to browse more patterns that inspire you to start your next journey!</string>
+    <string name="welcomemessage">What would you like to do today?</string>
+    <string name="page_coming">Page Coming Soon!</string>
+    <string name="tutorial_header">Tutorial</string>
+    <string name="beamsetup">Beam Setup &amp; Takedown</string>
+    <string name="beamsetup_dec">Arrange projector and workspace</string>
+
+    <string name="calibration">Calibration</string>
+    <string name="calibration_dec">Project patterns with the correct size</string>
+
+    <string name="howto">How To</string>
+    <string name="howto_dec">Use com.ditto to trace and sew without hassle</string>
+
+</resources>

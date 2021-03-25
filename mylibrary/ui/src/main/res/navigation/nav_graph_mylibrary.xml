@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_mylibrary"
+    app:startDestination="@id/myLibraryFragment"
+    tools:ignore="UnusedNavigation">
+
+    <!--    <include app:graph="@navigation/instruction_navigation" />-->
+    <include app:graph="@navigation/calibration_nav_graph"/>
+    <include app:graph="@navigation/nav_graph_workspace"/>
+    <fragment
+        android:id="@+id/myLibraryFragment"
+        android:name="com.ditto.mylibrary.ui.MyLibraryFragment"
+        android:label="my_library_fragment"
+        tools:layout="@layout/my_library_fragment">
+
+        <action
+            android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
+            app:destination="@id/patternDescriptionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/allPatternsFragment"
+        android:name="com.ditto.mylibrary.ui.AllPatternsFragment"
+        android:label="All Patterns">
+        <!--<action
+            android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
+            app:destination="@id/patternDescriptionFragment" />-->
+    </fragment>
+    <fragment
+        android:id="@+id/patternDescriptionFragment"
+        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
+        android:label="Pattern Description"
+        tools:layout="@layout/pattern_description_fragment">
+
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_WorkspaceFragment"
+            app:destination="@id/nav_graph_workspace"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/patternDescriptionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
+            app:destination="@id/patternInstructionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_pattern_description_to_calibration"
+            app:destination="@id/calibration_nav_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/patternInstructionsFragment"
+        android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
+        android:label="Pattern Instructions">
+    </fragment>
+
+</navigation>

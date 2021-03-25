@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.workspace.ui.WorkspaceViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/virtual_workspace_dimension"
+            android:layout_width="2520dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/layout_workspace_background"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:background="@drawable/ic_workspace"
+            android:layout_marginEnd="@dimen/margin_workspace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="14:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_select_all"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <RelativeLayout
+            android:id="@+id/splice_right"
+            android:layout_width="@dimen/splice_button"
+            android:layout_height="@dimen/splice_button"
+            android:onClick="@{() -> viewModel.onClickSpliceRight()}"
+            android:visibility="@{viewModel.isSpliceRightVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+
+        <RelativeLayout
+            android:id="@+id/splice_left"
+            android:layout_width="@dimen/splice_button"
+            android:layout_height="@dimen/splice_button"
+            android:onClick="@{() -> viewModel.onClickSpliceLeft()}"
+            android:visibility="@{viewModel.isSpliceLeftVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+
+        <RelativeLayout
+            android:id="@+id/splice_top"
+            android:layout_width="@dimen/splice_button"
+            android:layout_height="@dimen/splice_button"
+            android:onClick="@{() -> viewModel.onClickSpliceTop()}"
+            android:visibility="@{viewModel.isSpliceTopVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+
+        <RelativeLayout
+            android:id="@+id/splice_bottom"
+            android:layout_width="@dimen/splice_button"
+            android:layout_height="@dimen/splice_button"
+            android:onClick="@{() -> viewModel.onClickSpliceBottom()}"
+            android:visibility="@{viewModel.isSpliceBottomVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace" />
+
+        <com.ditto.workspace.ui.util.WorkspaceEditorView
+            android:id="@+id/layout_workspace"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_marginEnd="@dimen/margin_workspace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="14:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_select_all"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_splice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.spliced_pices_visibility ? View.VISIBLE : View.GONE}"
+            android:text="@{String.format(@string/splice_text,viewModel.spliced_pices, viewModel.splice_pices_count)}"
+            android:textColor="@color/default_text_color"
+            android:textSize="@dimen/text_select_all"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintBottom_toTopOf="@+id/layout_workspace" />
+
+        <TextView
+            android:id="@+id/txt_select_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_select_all_icon"
+            android:gravity="center"
+            android:lines="2"
+            android:onClick="@{() -> viewModel.clickSelectAll()}"
+            android:paddingStart="@dimen/margin_text"
+            android:paddingTop="@dimen/margin_text"
+            android:paddingEnd="@dimen/margin_text"
+            android:text="@{viewModel.selectAllText}"
+            android:textColor="@color/default_text_color"
+            android:textSize="@dimen/text_select_all"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+
+        <TextView
+            android:id="@+id/txt_mirror_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_mirror_v_icon"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.clickMirrorV()}"
+            android:paddingStart="@dimen/margin_text"
+            android:paddingTop="@dimen/margin_text"
+            android:paddingEnd="@dimen/margin_text"
+            android:text="@string/mirror_v"
+            android:textColor="@color/default_text_color"
+            android:textSize="@dimen/text_select_all"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_select_all" />
+
+        <TextView
+            android:id="@+id/txt_mirror_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_mirror_h_icon"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.clickMirrorH()}"
+            android:paddingStart="@dimen/margin_text"
+            android:paddingTop="@dimen/margin_text"
+            android:paddingEnd="@dimen/margin_text"
+            android:text="@string/mirror_h"
+            android:textColor="@color/default_text_color"
+            android:textSize="@dimen/text_select_all"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_mirror_v" />
+
+
+        <ImageView
+            android:id="@+id/image_projector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_workspace_projector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
+
+<!--        android:onClick="@{() -> viewModel.projectWorkspace()}"-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

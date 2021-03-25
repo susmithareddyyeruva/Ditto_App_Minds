@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ditto.calibration">
+
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application>
+         <activity android:name="com.ditto.calibration.ui.SuccessPopup"
+            android:theme="@style/popuptheme"
+            android:screenOrientation="sensorLandscape"/>
+
+    </application>
+
+</manifest>

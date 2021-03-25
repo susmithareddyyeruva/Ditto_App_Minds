@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="colorSplashBackground">#E5E5E5</color>
+    <color name="nav_item_grey">#EEEEEE</color>
+    <color name="headerbar">#F4F4F4</color>
+    <color name="disable">#C0C0C0</color>
+    <color name="disable1">#7C7272</color>
+</resources>

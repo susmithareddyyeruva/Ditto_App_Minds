@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.howto_ui.HowtoViewModel" />
+
+
+        <import type="android.view.View" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/instruction_view_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".80"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
+
+        </androidx.viewpager.widget.ViewPager>
+
+
+        <LinearLayout
+            android:id="@+id/linear_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instruction_view_pager">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/size_0dp"
+                    android:layout_height="@dimen/size_0dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/text_previous"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/previous"
+                        android:textSize="@dimen/text_instruction"
+                        android:clickable="true"
+                        android:onClick="@{() ->viewModel.onClickPreviousButton()}"
+                        android:textColor="@{viewModel.isStartingPage()?@color/disable:@color/colorPrimary}"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/linear_previous"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:onClick="@{() ->viewModel.onClickPreviousButton()}"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_16px">
+
+                        <ImageView
+                            android:id="@+id/image_prev"
+                            imageResource="@{viewModel.isStartingPage()  ? @drawable/ic_prev_disabled : @drawable/ic_prev_enabled  }"
+                            android:layout_width="wrap_content"
+                            android:layout_height="10dp" />
+
+                    </LinearLayout>
+
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tablay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:tabRippleColor="@android:color/transparent"
+                        android:clickable="false"
+                        android:focusable="false"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/linear_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:onClick="@{() ->viewModel.onClickNextButton()}"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_16px">
+
+                        <ImageView
+                            android:id="@+id/image_next"
+                            imageResource="@{viewModel.isFinalPage() ? @drawable/ic_next_disabled: @drawable/ic_next_enabled  }"
+                            android:layout_width="wrap_content"
+                            android:layout_height="10dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/next"
+                        android:onClick="@{() ->viewModel.onClickNextButton()}"
+                        android:clickable="true"
+                        android:textSize="@dimen/text_instruction"
+                        android:textColor="@{viewModel.isFinalPage()?@color/disable:@color/colorPrimary}"/>
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

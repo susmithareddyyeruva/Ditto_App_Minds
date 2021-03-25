@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/howto_navigation"
+    app:startDestination="@id/destination_howto"
+    tools:ignore="UnusedNavigation">
+
+
+    <fragment
+        android:id="@+id/destination_howto"
+        android:name="com.ditto.howto_ui.HowtoFragment"
+        android:label="How to"
+        tools:layout="@layout/howto_fragment">
+
+
+        <action
+            android:id="@+id/action_destination_howto_to_nav_graph_id_home"
+            app:destination="@id/nav_graph_id_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_howto"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+
+
+</navigation>

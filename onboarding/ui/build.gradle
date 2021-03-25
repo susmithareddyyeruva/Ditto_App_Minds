@@ -1,0 +1,83 @@
+plugins {
+    id('com.android.library')
+    id('kotlin-android')
+    id('kotlin-android-extensions')
+    id('kotlin-kapt')
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.google.android.material:material:$material_version"
+    testImplementation "junit:junit:$junit_test_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.core:core-ktx:$androidx_core_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support"
+    implementation "androidx.lifecycle:lifecycle-extensions:$live_data_extensions_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$live_data_extensions_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_extensions_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "de.hdodenhof:circleimageview:$circle_image_view"
+    /**
+     * RX JAVA
+     */
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava2_android_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
+
+    /**
+     * DAGGER
+     */
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    implementation "androidx.navigation:navigation-fragment:${navigation_fragment}"
+    implementation "androidx.navigation:navigation-ui:${navigation_ui}"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
+
+    implementation project(path: ':core-lib')
+    implementation project(path: ':non-core-lib')
+    implementation project(':onboarding-data')
+    implementation project(':onboarding-domain')
+
+
+    implementation project(':login-domain')
+
+    implementation project(':instruction-ui')
+    implementation project(':home-ui')
+    implementation project(':tutorial-ui')
+    implementation project(':logger')
+    implementation project(path: ':howto-ui')
+}

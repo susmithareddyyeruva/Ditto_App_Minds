@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_0dp">0dp</dimen>
+    <dimen name="size_16px">16sp</dimen>
+    <dimen name="size_14px">14sp</dimen>
+    <dimen name="size_12px">12sp</dimen>
+    <dimen name="size_24px">24dp</dimen>
+</resources>

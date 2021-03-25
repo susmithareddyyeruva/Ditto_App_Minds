@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <dimen name="text_heading">24sp</dimen>
+    <dimen name="text_add_project">16sp</dimen>
+    <dimen name="text_desc">18sp</dimen>
+    <dimen name="text_count">20sp</dimen>
+
+    <dimen name="dimen_0">0dp</dimen>
+    <dimen name="tab_height">42dp</dimen>
+    <dimen name="elevation_card">15dp</dimen>
+    <dimen name="margin_card">50dp</dimen>
+    <dimen name="margin_text">20dp</dimen>
+    <dimen name="size_24px">24dp</dimen>
+    <dimen name="size_14sp">18sp</dimen>
+</resources>

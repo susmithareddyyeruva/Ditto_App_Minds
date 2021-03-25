@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="cardColor">#EEEEEE</color>
+    <color name="tab_text_color">#4A4A4A</color>
+    <color name="light_grey">#EEEEEE</color>
+
+    <color name="black">#000000</color>
+    <color name="error_text_code">#63666B</color>
+    <color name="instruction_content_text">#4A4A4A</color>
+</resources>

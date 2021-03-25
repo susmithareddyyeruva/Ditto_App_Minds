@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.ditto.connectivity.ConnectivityViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/root"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/popup_window_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/AppTheme_PopupVideo">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".13" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".75" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".87" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/device_list_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="@{viewmodel.isDeviceListLayout()}"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintBottom_toTopOf="@+id/guide_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/guide_right"
+                app:layout_constraintStart_toStartOf="@+id/guide_left"
+                app:layout_constraintTop_toBottomOf="@+id/guide_top">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/toplistbar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent=".15" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/bottomlistbar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent=".85" />
+
+                        <RelativeLayout
+                            android:id="@+id/topView"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_0dp"
+                            android:background="@android:color/white"
+                            android:orientation="horizontal"
+                            app:layout_constraintHeight_default="percent"
+                            app:layout_constraintHeight_percent=".15"
+                            tools:ignore="MissingConstraints">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentLeft="true"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:paddingLeft="20dp"
+                                android:text="@string/select_bluetooth_device"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/size_14sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/refresh"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@android:color/transparent"
+                                android:onClick="@{() ->viewmodel.onClickRefresh()}"
+                                android:src="@drawable/ic_refresh" />
+
+                        </RelativeLayout>
+
+                        <ListView
+                            android:id="@+id/deviceList"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:background="@android:color/white"
+                            android:divider="@android:color/transparent"
+                            android:nestedScrollingEnabled="true"
+                            app:layout_constraintHeight_default="percent"
+                            app:layout_constraintHeight_percent=".70"
+                            app:layout_constraintTop_toBottomOf="@+id/toplistbar"
+                            tools:ignore="MissingConstraints">
+
+
+                        </ListView>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_0dp"
+                            android:background="@android:color/white"
+                            android:orientation="horizontal"
+                            app:layout_constraintHeight_default="percent"
+                            app:layout_constraintHeight_percent=".15"
+                            app:layout_constraintTop_toBottomOf="@+id/bottomlistbar">
+
+                            <TextView
+                                android:id="@+id/skip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:onClick="@{() ->viewmodel.onClickSkip()}"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:text="@string/skips"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/size_12px"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ProgressBar
+                        android:id="@+id/determinateBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:indeterminateTint="@color/colorPrimaryDark"
+                        android:visibility="@{viewmodel.isProgressBar()}" />
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/projector_connect_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:visibility="@{viewmodel.isProjectorLayout()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ic_ble_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_bluetooth">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ic_ble_image"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/connecting"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/size_12px" />
+
+            </RelativeLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/top_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottom_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".75" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".22" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".75" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/wifi_cred_view"
+                android:layout_width="@dimen/size_0dp"
+                android:layout_height="@dimen/size_0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="@{viewmodel.isWifiCredLayout()}"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_guide"
+                app:layout_constraintEnd_toStartOf="@+id/right_guide"
+                app:layout_constraintStart_toStartOf="@+id/left_guide"
+                app:layout_constraintTop_toBottomOf="@+id/top_guide">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/topwifibar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".20" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/bottomwifibar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".80" />
+
+                    <RelativeLayout
+                        android:id="@+id/wifi"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_0dp"
+                        android:background="@android:color/white"
+                        android:orientation="horizontal"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".20"
+                        tools:ignore="MissingConstraints">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/wifi_connect"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_14sp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@android:color/white"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".60"
+                        app:layout_constraintTop_toBottomOf="@+id/topwifibar"
+                        tools:ignore="MissingConstraints">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:background="@android:color/white"
+                            android:paddingLeft="@dimen/text_heading"
+                            android:text="@string/enter_credentials" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_below="@+id/title"
+                            android:layout_marginTop="10dp"
+                            android:paddingLeft="@dimen/text_heading"
+                            android:paddingRight="20sp"
+                            android:background="@android:color/white"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:orientation="horizontal"
+                                android:background="@android:color/white">
+                                <TextView
+                                    android:layout_width="110dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textSize="@dimen/size_15sp"
+                                    android:background="@android:color/white"
+                                    android:text="@string/network_name" />
+                                <EditText
+                                    android:id="@+id/wifiname"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingLeft="5dp"
+                                    android:cursorVisible="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:singleLine="true"
+                                    android:textCursorDrawable="@drawable/cursor"
+                                    android:layout_gravity="center"
+                                    android:textSize="@dimen/size_14px"
+                                    android:imeOptions="flagNoExtractUi"
+                                    android:textColor="@color/error_text_code"
+                                    android:background="@drawable/edit_text_border" />
+
+
+
+                            </LinearLayout>
+                            <View
+                                android:layout_width="wrap_content"
+                                android:background="@android:color/white"
+                                android:layout_height="5dp"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_height="30dp"
+                                android:background="@android:color/white">
+
+                                <TextView
+                                    android:layout_width="110dp"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/size_15sp"
+                                    android:layout_gravity="center"
+                                    android:background="@android:color/white"
+                                    android:text="@string/password" />
+
+                                <EditText
+                                    android:id="@+id/wifipwd"
+                                    android:singleLine="true"
+                                    android:layout_width="match_parent"
+                                    android:textColor="@color/error_text_code"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp"
+                                    android:cursorVisible="true"
+                                    android:textCursorDrawable="@drawable/cursor"
+                                    android:imeOptions="flagNoExtractUi"
+                                    android:inputType="textVisiblePassword|textNoSuggestions"
+                                    android:textSize="@dimen/size_14px"
+                                    android:paddingLeft="5dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/edit_text_border" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_0dp"
+                        android:background="@android:color/white"
+                        android:orientation="horizontal"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".20"
+                        app:layout_constraintTop_toBottomOf="@+id/bottomwifibar">
+
+                        <TextView
+                            android:id="@+id/connectCredentials"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:onClick="@{() ->viewmodel.onClickConnect()}"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:text="@string/connect"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_12px"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/skipCredentials"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/connectCredentials"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:onClick="@{() ->viewmodel.onClickSkipCredentials()}"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:text="@string/skips"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_12px"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/top_guidelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".30" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottom_guidelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".70" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_guidelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".22" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_guidelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".75" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/unsucessful_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="@{viewmodel.isErrorLayout()}"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_guidelines"
+                app:layout_constraintEnd_toStartOf="@+id/right_guidelines"
+                app:layout_constraintStart_toStartOf="@+id/left_guidelines"
+                app:layout_constraintTop_toBottomOf="@+id/top_guidelines">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/topbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".30" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/bottombar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".80" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/centertext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".80" />
+
+                    <RelativeLayout
+                        android:id="@+id/unsucess"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_0dp"
+                        android:background="@android:color/white"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".30"
+                        tools:ignore="MissingConstraints">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/connectivity_unsuccess"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_14sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@android:color/white"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".50"
+                        app:layout_constraintTop_toBottomOf="@+id/topbar"
+                        tools:ignore="MissingConstraints">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingLeft="20dp"
+                            android:text="@string/error_text"
+                            android:textColor="@color/error_text_code"
+                            android:textSize="@dimen/size_14sp"
+                            tools:ignore="MissingConstraints,NotSibling" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/bottom_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_0dp"
+                        android:background="@android:color/white"
+                        android:orientation="horizontal"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".20"
+                        app:layout_constraintTop_toBottomOf="@+id/bottombar">
+
+                        <TextView
+                            android:id="@+id/retry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:onClick="@{() ->viewmodel.onClickRetry()}"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:text="@string/retry"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_12px"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/cancelUnsucess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/retry"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:onClick="@{() ->viewmodel.onClickCancelError()}"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:text="@string/cancel"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_12px"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

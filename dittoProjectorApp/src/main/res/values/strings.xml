@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Ditto Projector</string>
+    <string name="connected">Connected</string>
+     <string name="BLEconnected">TRACEbleConnected</string>
+    <string name="servicealreadyregistered">ServiceAlreadyRegistered</string>
+    <string name="BLEconnectionrequest">TRACERequest</string>
+    <string name="BLEdisconnected">TRACEbleDisConnected</string>
+    <string name="checking">Checking Wifi Connection..</string>
+    <string name="NotConnected">Not Connected</string>
+    <string name="disconnect">DisConnected</string>
+    <string name="SERVICENAME">PROJECTOR_SERVICE</string>
+    <string name="discovery_started">Discovery Started!!</string>
+    <string name="discovery_failed">Discovery Failed!!</string>
+    <string name="cred_received">Credentials Received!!</string>
+    <string name="successmessage">SERVICESUCCESS</string>
+    <string name="successregister">Registered Succesfully!!</string>
+    <string name="waiting">Waiting for the client!!</string>
+    <string name="failedrequest">TRACEFailed</string>
+
+</resources>

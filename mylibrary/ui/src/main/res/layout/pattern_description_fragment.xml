@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.mylibrary.ui.PatternDescriptionViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".16" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imagestart_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".022" />
+
+
+
+            <LinearLayout
+                android:id="@+id/linear_Content_header"
+                android:layout_width="@dimen/size_0dp"
+                android:layout_height="@dimen/size_0dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent=".10"
+                app:layout_constraintTop_toBottomOf="@+id/topbar"
+                app:layout_constraintWidth_percent=".48"
+                android:layout_marginRight="10dp"
+                app:layout_constraintStart_toEndOf="@+id/imagestart_guide">
+
+                <TextView
+                    android:id="@+id/text_content_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@{viewModel.patternName}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_16px"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/viewpager_guidelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".26" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_imagebottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".86" />
+
+            <ImageView
+                android:id="@+id/image_pattern_desc"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:paddingRight="@dimen/margin_card"
+                android:layout_marginLeft="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintWidth_percent=".48"
+                app:layout_constraintTop_toBottomOf="@+id/viewpager_guidelines"
+                app:layout_constraintBottom_toTopOf="@+id/guide_imagebottom"
+                tools:ignore="MissingConstraints"/>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:paddingRight="@dimen/margin_card"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintWidth_percent=".50"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@+id/viewpager_guidelines"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent=".50"
+                tools:ignore="MissingConstraints" />
+
+            <LinearLayout
+                android:id="@+id/linear_bottom"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                app:layout_constraintWidth_percent=".50"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:layout_width="@dimen/size_0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:id="@+id/linear_previous"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/size_16px">
+
+                            <ImageView
+                                android:id="@+id/image_prev"
+                                imageResource="@{viewModel.isStartingPage()  ? @drawable/ic_prev_disabled : @drawable/ic_prev_enabled  }"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp" />
+
+                        </LinearLayout>
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/bottomtablay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tabRippleColor="@android:color/transparent"
+                            android:clickable="false"
+                            android:focusable="false"
+                            app:tabBackground="@drawable/tab_selector"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp" />
+
+
+                        <LinearLayout
+                            android:id="@+id/linear_next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/size_16px">
+
+                            <ImageView
+                                android:id="@+id/image_next"
+                                android:layout_width="wrap_content"
+                                imageResource="@{viewModel.isFinalPage() ? @drawable/ic_next_disabled: @drawable/ic_next_enabled  }"
+                                android:layout_height="24dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_container_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".95" />
+
+            <LinearLayout
+                android:layout_width="@dimen/size_0dp"
+                android:layout_height="@dimen/size_0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
+                app:layout_constraintStart_toEndOf="@+id/vp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_desc_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".22" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_0dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".15"
+                        app:layout_constraintTop_toBottomOf="@+id/guideline_desc_top">
+
+                        <TextView
+                            android:id="@+id/desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Description"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/size_16px"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_content_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".43" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_content"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".30"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linear_desc"
+                        app:layout_constraintWidth_default="percent"
+                        app:layout_constraintWidth_percent=".85">
+
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/scroll_view_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbarFadeDuration="0"
+                            android:scrollbars="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/text_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{viewModel.patternDescription}"
+                                    android:textColor="@color/instruction_content_text"
+                                    android:textSize="@dimen/size_14px" />
+
+                            </LinearLayout>
+
+                        </androidx.core.widget.NestedScrollView>
+
+                    </LinearLayout>
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_watvideo_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".73" />
+
+
+                    <LinearLayout
+                        android:id="@+id/linear_watchvideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_0dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/guideline_watvideo_top">
+
+                        <TextView
+                            android:id="@+id/text_watchvideo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@{viewModel.patternStatus}"
+                            android:textColor="@color/instruction_content_text"
+                            android:textSize="@dimen/size_14px" />
+
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_button_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent=".86" />
+                    <LinearLayout
+                        android:id="@+id/linear_button_sets"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintWidth_percent=".80"
+                        app:layout_constraintHeight_default="percent"
+                        app:layout_constraintHeight_percent=".1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/guideline_button_top">
+
+                        <TextView
+                            android:id="@+id/text_instructions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="INSTRUCTIONS"
+                            android:textStyle="bold"
+                            android:background="@drawable/instruction_border"
+                            android:textColor="@color/black"
+                            android:onClick="@{() -> viewModel.onClickInstructions()}"
+                            android:textSize="@dimen/size_14px" />
+
+                        <TextView
+                            android:id="@+id/text_watchvideo2"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/workspace_border"
+                            android:text="WORKSPACE"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:onClick="@{() -> viewModel.onClickWorkSpace()}"
+                            android:textSize="@dimen/size_14px" />
+
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

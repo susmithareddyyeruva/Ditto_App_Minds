@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.instructions.ui.InstructionViewModel" />
+
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/instruction_appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:visibility="@{viewModel.instructionID == 2 ? View.VISIBLE : View.GONE }">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/headerbar"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:menu="@null"
+                app:theme="@style/ToolBarStyle"
+                app:titleTextColor="@color/black">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/header_view_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1.6"
+                        android:gravity="center"
+                        android:text="@{viewModel.toolbarTitle}"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <!-- Subtitle -->
+                    <TextView
+                        android:id="@+id/header_view_sub_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".4"
+                        android:gravity="center"
+                        android:onClick="@{() -> viewModel.onSkip()}"
+                        android:text="@string/skip"
+                        android:textColor="@color/skip_text"
+                        android:textSize="@dimen/size_14sp"
+                        android:visibility="@{viewModel.isFromOnboardinScreen()}" />
+
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".05" />
+
+            <ProgressBar
+                android:id="@+id/determinateBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isShowindicator()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/instruction_view_pager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent=".77"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topbar">
+
+            </androidx.viewpager.widget.ViewPager>
+
+
+            <LinearLayout
+                android:id="@+id/linear_bottom"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/instruction_view_pager">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".81" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/size_0dp"
+                        android:layout_height="@dimen/size_0dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/text_previous"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:onClick="@{() ->viewModel.onClickPreviousButton()}"
+                            android:text="@string/previous"
+                            android:textColor="@{viewModel.isStartingPage()?@color/disable:@color/colorPrimary}"
+                            android:textSize="@dimen/text_instruction" />
+
+                        <LinearLayout
+                            android:id="@+id/linear_previous"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:onClick="@{() ->viewModel.onClickPreviousButton()}"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/size_16px">
+
+                            <ImageView
+                                android:id="@+id/image_prev"
+                                imageResource="@{viewModel.isStartingPage()  ? @drawable/ic_prev_disabled : @drawable/ic_prev_enabled  }"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tablay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:clickable="false"
+                            android:focusable="false"
+                            app:tabBackground="@drawable/ic_tab_selector"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp" />
+
+
+                        <LinearLayout
+                            android:id="@+id/linear_next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:onClick="@{() ->viewModel.onClickNextButton()}"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/size_16px">
+
+                            <ImageView
+                                android:id="@+id/image_next"
+                                imageResource="@{viewModel.isFinalPage() ? @drawable/ic_next_disabled: @drawable/ic_next_enabled  }"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/text_next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:onClick="@{() ->viewModel.onClickNextButton()}"
+                            android:text="@string/next"
+                            android:textColor="@{viewModel.isFinalPage()?@color/disable:@color/colorPrimary}"
+                            android:textSize="@dimen/text_instruction" />
+
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center"
+                        android:onClick="@{() ->viewModel.onClickCalibrationStepsButton()}"
+                        android:visibility="@{(viewModel.isFinalPage() &amp;&amp; viewModel.tabPosition == 1)? View.GONE : View.VISIBLE}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guide_start"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/text_goto_calib"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gotocalib"
+                            android:textColor="@color/texthint"
+                            android:textSize="@dimen/size_12px"
+                            android:visibility="@{(viewModel.instructionID == 1 &amp;&amp; viewModel.isFromOnboardinScreen()) ? View.VISIBLE : View.GONE}" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center"
+                        android:onClick="@{() ->viewModel.onClickHowToButton()}"
+                        android:visibility="@{viewModel.instructionID == 1 ? false : true &amp;&amp; viewModel.isFromOnboardinScreen()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guide_start"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/text_gotohowto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gotohowto"
+                            android:textColor="@color/texthint"
+                            android:textSize="@dimen/size_12px" />
+
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

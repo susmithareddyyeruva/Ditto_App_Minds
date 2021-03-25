@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/destination_splash"
+    tools:ignore="UnusedNavigation">
+
+    <include app:graph="@navigation/nav_graph_login" />
+    <include app:graph="@navigation/nav_graph_home" />
+    <include app:graph="@navigation/nav_graph_workspace"/>
+    <include app:graph="@navigation/nav_graph_tutorial"/>
+    <include app:graph="@navigation/instruction_navigation"/>
+
+    <fragment
+        android:id="@+id/destination_splash"
+        android:name="com.ditto.ui.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/splash_activity">
+
+        <action
+            android:id="@+id/action_splashActivity_to_LoginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:popUpTo="@+id/destination_login"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
