@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.ditto.howto_ui.HowtoViewModel" />
+            type="com.ditto.howto.ui.HowtoViewModel" />
 
     </data>
 
@@ -94,7 +94,7 @@
                 app:layout_constraintGuide_percent=".11" />
 
 
-            <com.ditto.howto_ui.utils.CustomTabLayout
+            <com.ditto.howto.utils.CustomTabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="12dp"
@@ -111,7 +111,7 @@
                 app:tabTextColor="@color/tab_text_color">
 
 
-            </com.ditto.howto_ui.utils.CustomTabLayout>
+            </com.ditto.howto.utils.CustomTabLayout>
 
             <core.ui.common.NonSwipeableViewPager
                 android:id="@+id/view_pager"

@@ -1,4 +1,4 @@
-package com.ditto.howto_ui.fragment
+package com.ditto.howto.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
-import com.ditto.howto_ui.HowtoViewModel
-import com.ditto.howto_ui.PopUpWindow
-import com.ditto.howto_ui.adapter.TabContentAdapter
-import com.ditto.howto_ui.utils.Common
+import com.ditto.howto.ui.HowtoViewModel
+import com.ditto.howto.ui.PopUpWindow
+import com.ditto.howto.adapter.TabContentAdapter
+import com.ditto.howto.utils.Common
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.howto_ui.databinding.TabcontentFragmentBinding
@@ -124,12 +124,12 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
     private fun handleEvent(event: HowtoViewModel.Event) =
         when (event) {
             is HowtoViewModel.Event.OnNextButtonClicked -> {
-                if(pos==Common.currentSelectedTab.get()) {
+                if(pos== Common.currentSelectedTab.get()) {
                     binding.instructionViewPager.setCurrentItem(getItem(+1), true)
                 } else {}
             }
             is HowtoViewModel.Event.OnPreviousButtonClicked -> {
-                if(pos==Common.currentSelectedTab.get()) {
+                if(pos== Common.currentSelectedTab.get()) {
                 binding.instructionViewPager.setCurrentItem(getprevItem(+1), true)
                 } else {}
             }

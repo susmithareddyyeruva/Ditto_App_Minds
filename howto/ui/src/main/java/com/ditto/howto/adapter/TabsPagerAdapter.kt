@@ -1,11 +1,10 @@
-package com.ditto.howto_ui.adapter
+package com.ditto.howto.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto_ui.HowtoViewModel
-import com.ditto.howto_ui.fragment.TabContentFragment
+import com.ditto.howto.ui.HowtoViewModel
+import com.ditto.howto.fragment.TabContentFragment
 import com.ditto.howto_domain.model.HowToModel
 
 /**
@@ -34,7 +33,7 @@ class TabsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm,
     }
 
     override fun getItem(position: Int): Fragment {
-        return TabContentFragment(vm1,position)
+        return TabContentFragment(vm1, position)
     }
 
     override fun getCount(): Int {

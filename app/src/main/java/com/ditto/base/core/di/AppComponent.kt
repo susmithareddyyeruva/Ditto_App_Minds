@@ -7,7 +7,7 @@ import com.ditto.splash.data.di.SplashDbModule
 import com.ditto.home.di.HomeFragmentModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.example.tutorial_ui.di.TutorialFragmentModule
-import com.ditto.howto_ui.di.HowtoFragmentModule
+import com.ditto.howto.di.HowtoFragmentModule
 import com.ditto.instructions.ui.di.InstructionFragmentModule
 import com.ditto.instructions.data.di.InstructionModule
 import com.ditto.logger.di.LoggerModule

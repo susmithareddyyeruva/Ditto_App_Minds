@@ -1,9 +1,9 @@
-package com.ditto.howto_ui.di
+package com.ditto.howto.di
 
 import androidx.lifecycle.ViewModel
-import com.ditto.howto_ui.HowtoFragment
-import com.ditto.howto_ui.HowtoViewModel
-import com.ditto.howto_ui.fragment.TabContentFragment
+import com.ditto.howto.ui.HowtoFragment
+import com.ditto.howto.ui.HowtoViewModel
+import com.ditto.howto.fragment.TabContentFragment
 import core.ui.ViewModelKey
 import dagger.Binds
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.ditto.howto_ui
+package com.ditto.howto.ui
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField

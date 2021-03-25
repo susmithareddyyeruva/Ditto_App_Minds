@@ -1,4 +1,4 @@
-package com.ditto.howto_ui.utils
+package com.ditto.howto.utils
 
 
 import android.view.View

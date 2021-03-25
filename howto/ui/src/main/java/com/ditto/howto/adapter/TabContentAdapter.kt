@@ -1,4 +1,4 @@
-package com.ditto.howto_ui.adapter
+package com.ditto.howto.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto_ui.HowtoViewModel
-import com.ditto.howto_ui.PopUpWindow
-import com.ditto.howto_ui.utils.Common
+import com.ditto.howto.ui.HowtoViewModel
+import com.ditto.howto.ui.PopUpWindow
+import com.ditto.howto.utils.Common
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.howto_domain.model.HowToData
 import com.ditto.workspace.ui.PinchAndZoom

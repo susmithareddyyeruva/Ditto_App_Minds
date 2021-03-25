@@ -1,4 +1,4 @@
-package com.ditto.howto_ui
+package com.ditto.howto.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.ditto.howto_ui.adapter.TabsPagerAdapter
-import com.ditto.howto_ui.utils.Common
+import com.ditto.howto.adapter.TabsPagerAdapter
+import com.ditto.howto.utils.Common
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.google.android.material.tabs.TabLayout
@@ -152,7 +152,11 @@ class HowtoFragment : BaseFragment() {
      * [Function] Setting the tabs
      */
     private fun setTabsAdapter() {
-        val fragmentAdapter = activity?.supportFragmentManager?.let { TabsPagerAdapter(it) }
+        val fragmentAdapter = activity?.supportFragmentManager?.let {
+            TabsPagerAdapter(
+                it
+            )
+        }
         binding.viewPager.adapter = fragmentAdapter
         viewModel.data.value?.instructions1?.let { fragmentAdapter?.setListData(it) }
         viewModel?.let { fragmentAdapter?.setViewModel(it) }

@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/destination_howto"
-        android:name="com.ditto.howto_ui.HowtoFragment"
+        android:name="com.ditto.howto.ui.HowtoFragment"
         android:label="How to"
         tools:layout="@layout/howto_fragment">
 

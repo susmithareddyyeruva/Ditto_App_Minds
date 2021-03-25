@@ -1,4 +1,4 @@
-package com.ditto.howto_ui.utils
+package com.ditto.howto.utils
 
 import android.content.Context
 import android.util.AttributeSet
