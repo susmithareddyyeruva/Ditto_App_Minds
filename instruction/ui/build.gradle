@@ -9,7 +9,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
@@ -35,7 +35,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_support"
     implementation "androidx.lifecycle:lifecycle-extensions:$live_data_extensions_version"
@@ -92,4 +92,8 @@ dependencies {
     implementation project(path: ':workspace-ui')
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':FabricTraceTransform-debug')
+}
+
+repositories {
+    google()
 }

@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
 
     compileOptions {
@@ -97,4 +97,8 @@ dependencies {
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':FabricTraceTransform-debug')
 
+}
+
+repositories {
+    google()
 }
