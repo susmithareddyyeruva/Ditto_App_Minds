@@ -58,7 +58,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "de.hdodenhof:circleimageview:$circle_image_view"
     implementation "com.github.barteksc:android-pdf-viewer:$pdf_reader"
-    implementation "androidx.activity:activity-ktx:1.2.1"
+    implementation "androidx.activity:activity-ktx:1.2.2"
     /**
      * RX JAVA
      */
