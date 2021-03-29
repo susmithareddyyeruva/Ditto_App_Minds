@@ -11,6 +11,7 @@ import com.ditto.howto.di.HowtoFragmentModule
 import com.ditto.instructions.data.di.InstructionModule
 import com.ditto.instructions.ui.di.InstructionFragmentModule
 import com.ditto.logger.di.LoggerModule
+import com.ditto.login.data.di.LoginApiModule
 import com.ditto.login.data.di.LoginDbModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.mylibrary.data.di.MyLibraryDataModule
@@ -38,7 +39,7 @@ import javax.inject.Singleton
         SplashDbModule::class, StorageModule::class, RetrofitModule::class, TraceDbModule::class, SplashFragmentModule::class,
         LoginFragmentModule::class, InstructionFragmentModule::class, InstructionModule::class, HomeFragmentModule::class,
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
-        WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,
+        WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,LoginApiModule::class,
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class]
 )
 @Singleton

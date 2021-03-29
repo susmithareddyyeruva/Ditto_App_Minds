@@ -4,13 +4,12 @@ import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.ditto.login.domain.GetLoginDbUseCase
-import com.ditto.login.domain.LoginUser
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.domain.GetLoginDbUseCase
+import com.ditto.login.domain.LoginUser
 import core.event.UiEvents
 import core.ui.BaseViewModel
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -58,6 +57,19 @@ class LoginViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy { handleFetchResult(it) }
+
+
+            //Making api call for Login
+
+ /*           disposable += useCase.userLogin(
+                LoginUser(
+                    userName = userName.get(),
+                    isLoggedIn = true
+                )
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { handleFetchResult(it) }*/
         }
     }
 

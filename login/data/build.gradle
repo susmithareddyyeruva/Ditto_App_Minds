@@ -10,7 +10,7 @@ apply from: '../../test_dependencies.gradle'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
@@ -58,8 +58,17 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxjava2_android_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
 
+
+    //Retrofit Dependencies
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation("com.squareup.okhttp3:okhttp:4.4.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+
     implementation project(':non-core-lib')
     implementation project(':login-domain')
     implementation project(':storage-data')
+    implementation project(':core-lib')
     implementation project(':logger')
 }

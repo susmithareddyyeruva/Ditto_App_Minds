@@ -7,5 +7,6 @@ import non_core.lib.Result
 interface GetLoginDbUseCase {
     fun invoke(): Single<Result<LoginUser>>
     fun createUser(user: LoginUser): Single<Long>
+    fun userLogin(user: LoginUser):Single<Result<LoginUser>>
 }
 
