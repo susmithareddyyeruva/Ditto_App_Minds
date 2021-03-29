@@ -7,6 +7,6 @@ import retrofit2.http.Headers
 
 interface LoginService {
     @Headers("Content-Type: application/json")
-    @GET("/photos")
+    @GET("/api/unknown")
     fun userLogin(): Single<User>
 }
