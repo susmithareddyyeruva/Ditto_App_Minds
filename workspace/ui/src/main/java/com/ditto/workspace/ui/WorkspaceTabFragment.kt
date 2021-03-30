@@ -1429,7 +1429,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 myIcon = getDrawableFromString(context, workspaceItem.imagePath)
             }
 
-            var bitmap = getBitmap(
+            val bitmap = getBitmap(
                 myIcon as VectorDrawable,
                 workspaceItem.isMirrorV,
                 workspaceItem.isMirrorH
@@ -1483,7 +1483,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showBluetoothDialogue() {
-       Utility.getAlertDialogue(
+       getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.ble_connectivity),
@@ -1496,7 +1496,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showWifiDialogue() {
 
-      Utility.getAlertDialogue(
+      getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.wifi_connectivity),
@@ -1542,7 +1542,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCalibrationDialog() {
-      Utility.getAlertDialogue(
+      getAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_calibration_title),
             resources.getString(R.string.setup_calibration_message),
@@ -1555,7 +1555,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showQuickCheckDialog() {
-       Utility.getAlertDialogue(
+       getAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_quickcheck_title),
             resources.getString(R.string.setup_quickcheck_message),
