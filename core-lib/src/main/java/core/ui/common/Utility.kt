@@ -17,7 +17,6 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import core.lib.R
 import core.network.Utility
