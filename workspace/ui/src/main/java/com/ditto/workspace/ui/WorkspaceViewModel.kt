@@ -8,13 +8,6 @@ import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
-import non_core.lib.Result
-import non_core.lib.error.Error
-import non_core.lib.error.NoNetworkError
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
@@ -22,6 +15,13 @@ import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.util.Utility
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
+import non_core.lib.error.Error
+import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
@@ -201,7 +201,7 @@ class WorkspaceViewModel @Inject constructor(
         cutType = core.ui.common.Utility.AlertType.CUT_BIN_ALL
         for (workspaceItem in workspaceItems.distinctBy { it.parentPatternId }) {
             if(!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted?:false)){
-                cutCount = cutCount + workspaceItem?.cutQuantity?.get(4)
+                cutCount += workspaceItem?.cutQuantity?.get(4)
                     ?.let { Character.getNumericValue(it) }
             }
         }
