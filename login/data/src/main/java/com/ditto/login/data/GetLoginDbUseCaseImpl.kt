@@ -17,4 +17,8 @@ class GetLoginDbUseCaseImpl @Inject constructor(
     override fun createUser(user: LoginUser): Single<Long> {
         return loginRepository.createUser(user)
     }
+
+    override fun userLogin(user: LoginUser): Single<Result<LoginUser>> {
+        return loginRepository.loginUser(user)
+    }
 }

@@ -10,7 +10,7 @@ apply from: '../../test_dependencies.gradle'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
@@ -31,6 +31,10 @@ android {
         enabled = true
     }
 
+}
+
+repositories {
+    google()
 }
 
 dependencies {
@@ -68,6 +72,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:${navigation_ui}"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
+
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     implementation project(':non-core-lib')
 

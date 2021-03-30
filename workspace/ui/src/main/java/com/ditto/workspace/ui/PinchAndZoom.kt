@@ -9,9 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ditto.workspace.ui.util.Utility
 import kotlinx.android.synthetic.main.pinchzoom_activity.*
-import trace.workspace.ui.databinding.PinchzoomActivityBinding
 import trace.workspace.ui.R
-import java.lang.Exception
+import trace.workspace.ui.databinding.PinchzoomActivityBinding
 
 class PinchAndZoom : AppCompatActivity() {
 
@@ -21,7 +20,7 @@ class PinchAndZoom : AppCompatActivity() {
             DataBindingUtil.setContentView(this,
                 R.layout.pinchzoom_activity
             )
-        var imagepath = intent.extras?.getString("ImageURL").toString()
+        val imagepath = intent.extras?.getString("ImageURL").toString()
         val scaleFactor = intent.extras?.getInt("scaleFactor")
         /*window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

@@ -30,7 +30,7 @@ import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
-import com.ditto.howto_ui.utils.Common
+import com.ditto.howto.utils.Common
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

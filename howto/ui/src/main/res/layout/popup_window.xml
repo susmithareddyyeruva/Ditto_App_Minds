@@ -6,7 +6,7 @@
     android:id="@+id/popup_window_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PopUpWindow">
+    tools:context="com.ditto.howto.ui.PopUpWindow">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_top"

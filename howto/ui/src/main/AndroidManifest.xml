@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ditto.howto_ui">
     <application>
-        <activity android:name=".PopUpWindow"
+        <activity android:name="com.ditto.howto.ui.PopUpWindow"
             android:theme="@style/AppTheme_PopupVideo"
             android:screenOrientation="sensorLandscape"/>
     </application>

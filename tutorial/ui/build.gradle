@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
@@ -39,7 +39,7 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
     testImplementation "junit:junit:$junit_test_version"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
@@ -77,4 +77,8 @@ dependencies {
     implementation project(path: ':instruction-ui')
     implementation project(path: ':calibration-ui')
     implementation project(path: ':howto-ui')
+}
+
+repositories {
+    google()
 }

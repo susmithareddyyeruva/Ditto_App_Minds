@@ -76,7 +76,7 @@
 
     <fragment
         android:id="@+id/howtoFragment"
-        android:name="com.ditto.howto_ui.HowtoFragment"
+        android:name="com.ditto.howto.ui.HowtoFragment"
         android:label="How To">
 
 

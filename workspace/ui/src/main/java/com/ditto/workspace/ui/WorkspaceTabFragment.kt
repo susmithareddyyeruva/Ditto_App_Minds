@@ -11,10 +11,8 @@ import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
@@ -34,11 +32,25 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.workspace.domain.model.DragData
+import com.ditto.workspace.domain.model.PatternsData
+import com.ditto.workspace.domain.model.WorkspaceItems
+import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
+import com.ditto.workspace.ui.util.Draggable
+import com.ditto.workspace.ui.util.DraggableListener
+import com.ditto.workspace.ui.util.Utility.Companion.getAlertDialogSaveAndExit
+import com.ditto.workspace.ui.util.WorkspaceEditor
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
-import com.ditto.connectivity.ConnectivityActivity
+import core.ui.BaseFragment
+import core.ui.ViewModelDelegate
+import core.ui.common.Utility
+import core.ui.common.Utility.Companion.getAlertDialogue
+import core.ui.common.Utility.Companion.getBitmap
+import core.ui.common.Utility.Companion.getDrawableFromString
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -46,29 +58,13 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
 import kotlinx.coroutines.*
-import non_core.lib.whileSubscribed
-import com.ditto.workspace.domain.model.DragData
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.WorkspaceItems
-import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
-import trace.workspace.ui.databinding.WorkspaceTabItemBinding
-import com.ditto.workspace.ui.util.Draggable
-import com.ditto.workspace.ui.util.DraggableListener
-import com.ditto.workspace.ui.util.Utility.Companion.getAlertDialogSaveAndExit
-import com.ditto.workspace.ui.util.WorkspaceEditor
-import core.ui.BaseFragment
-import core.ui.ViewModelDelegate
-import core.ui.common.Utility
-import core.ui.common.Utility.Companion.getAlertDialogue
-import core.ui.common.Utility.Companion.getBitmap
-import core.ui.common.Utility.Companion.getDrawableFromString
 import trace.workspace.ui.R
+import trace.workspace.ui.databinding.WorkspaceTabItemBinding
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListener,
@@ -1433,7 +1429,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 myIcon = getDrawableFromString(context, workspaceItem.imagePath)
             }
 
-            var bitmap = getBitmap(
+            val bitmap = getBitmap(
                 myIcon as VectorDrawable,
                 workspaceItem.isMirrorV,
                 workspaceItem.isMirrorH
@@ -1444,26 +1440,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 workspaceItem.xcoordinate.times(viewModel.scaleFactor.get().toFloat()),
                 workspaceItem.ycoordinate.times(viewModel.scaleFactor.get().toFloat())
             )
-//            matrix.preRotate(
-//                workspaceItem.rotationAngle,
-//                workspaceItem.pivotX.times(viewModel.scaleFactor.get()),
-//                workspaceItem.pivotY.times(viewModel.scaleFactor.get())
-//            )
-            // to fix border cutting issue
-//            val x: Float= if(workspaceItem.xcoordinate.times(viewModel.scaleFactor.get()).plus(bitmap?.width!!) <= bitmapWidth){
-//                workspaceItem.xcoordinate.times(viewModel.scaleFactor.get())
-//            }else{
-//                (bitmapWidth - bitmap?.width).toFloat()
-//            }
-//            val y : Float = if(workspaceItem.ycoordinate.times(viewModel.scaleFactor.get()).plus(bitmap?.height!!) <= bitmapHeight){
-//                workspaceItem.ycoordinate.times(viewModel.scaleFactor.get())
-//            }else{
-//                (bitmapHeight - bitmap?.height).toFloat()
-//            }
-//            matrix.preTranslate(
-//                x,
-//                y
-//            )
             val pivotx =
                 (bitmap?.width)?.toFloat()?.div(2)
             val pivoty =
@@ -1507,7 +1483,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showBluetoothDialogue() {
-       Utility.getAlertDialogue(
+       getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.ble_connectivity),
@@ -1520,7 +1496,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showWifiDialogue() {
 
-      Utility.getAlertDialogue(
+      getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.wifi_connectivity),
@@ -1566,7 +1542,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCalibrationDialog() {
-      Utility.getAlertDialogue(
+      getAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_calibration_title),
             resources.getString(R.string.setup_calibration_message),
@@ -1579,7 +1555,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showQuickCheckDialog() {
-       Utility.getAlertDialogue(
+       getAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_quickcheck_title),
             resources.getString(R.string.setup_quickcheck_message),

@@ -19,7 +19,7 @@ import android.widget.MediaController
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.ditto.howto_ui.utils.Common
+import com.ditto.howto.utils.Common
 import kotlinx.android.synthetic.main.popup_window.*
 import com.ditto.instructions.ui.R
 
