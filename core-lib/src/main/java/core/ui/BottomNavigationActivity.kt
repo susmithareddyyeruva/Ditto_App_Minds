@@ -12,7 +12,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -25,6 +25,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
+
 /**
  * Main Bottom Navigation Activity launcher class holding navHost and initial position at Splash.
  */
@@ -42,8 +43,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
         AndroidInjection.inject(this)
         //exceptionhandling()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_navigation)
-        binding.bottomNavViewModel = ViewModelProviders.of(this).get(BottomNavViewModel::class.java)
-        binding.toolbarViewModel = ViewModelProviders.of(this).get(ToolbarViewModel::class.java)
+        binding.bottomNavViewModel = ViewModelProvider(this).get(BottomNavViewModel::class.java)
+        binding.toolbarViewModel = ViewModelProvider(this).get(ToolbarViewModel::class.java)
         setSupportActionBar(binding.toolbar)
         setUpNavigation()
         /*getWindow().setFlags(
