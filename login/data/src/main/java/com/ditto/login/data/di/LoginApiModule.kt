@@ -1,6 +1,6 @@
 package com.ditto.login.data.di
 
-import com.ditto.login.data.LoginService
+import com.ditto.login.data.api.LoginService
 import core.di.scope.WbApiRetrofit
 import dagger.Module
 import dagger.Provides

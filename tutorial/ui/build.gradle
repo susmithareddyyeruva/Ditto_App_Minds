@@ -41,7 +41,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
     testImplementation "junit:junit:$junit_test_version"
-    androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_android_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"
@@ -74,7 +74,7 @@ dependencies {
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(path: ':logger')
-    implementation project(path: ':instruction-ui')
+    implementation project(path: ':instructions-ui')
     implementation project(path: ':calibration-ui')
     implementation project(path: ':howto-ui')
 }

@@ -1,4 +1,4 @@
-package com.ditto.login.data
+package com.ditto.login.data.api
 
 import android.content.Context
 import com.ditto.logger.Logger

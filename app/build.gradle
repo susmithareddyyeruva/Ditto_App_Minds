@@ -175,7 +175,7 @@ dependencies {
     implementation project(path: ':splash-data')
     implementation project(path: ':splash-domain')
 
-    implementation project(path: ':instruction-ui')
+    implementation project(path: ':instructions-ui')
     implementation project(path: ':instructions-domain')
     implementation project(path: ':instructions-data')
 

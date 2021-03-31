@@ -75,7 +75,7 @@ dependencies {
 
     implementation project(':login-domain')
 
-    implementation project(':instruction-ui')
+    implementation project(':instructions-ui')
     implementation project(':home-ui')
     implementation project(':tutorial-ui')
     implementation project(':logger')

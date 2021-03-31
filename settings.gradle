@@ -31,8 +31,8 @@ include ':onboarding-domain'
 project(':onboarding-domain').projectDir = new File('onboarding/domain')
 
 
-include ':instruction-ui'
-project(':instruction-ui').projectDir = new File('instruction/ui')
+include ':instructions-ui'
+project(':instructions-ui').projectDir = new File('instruction/ui')
 include ':instructions-domain'
 project(':instructions-domain').projectDir = new File('instruction/domain')
 include ':instructions-data'
