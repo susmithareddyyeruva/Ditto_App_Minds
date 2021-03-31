@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.onboarding.ui.OnboardingViewModel
 import core.binding.BindableAdapter
-import trace.onboarding.ui.R
-import trace.onboarding.ui.databinding.OnboardingItemBinding
+import com.ditto.onboarding.ui.R
+import com.ditto.onboarding.ui.databinding.OnboardingItemBinding
 
 
 /**

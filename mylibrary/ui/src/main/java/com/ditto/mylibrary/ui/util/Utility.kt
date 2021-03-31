@@ -1,17 +1,11 @@
 package com.ditto.mylibrary.ui.util
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
-import trace.mylibrary.ui.R
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Calendar
+import com.ditto.mylibrary.ui.R
 
 /**
  * Helper Utility class (Calendar, Date/Time related methods)

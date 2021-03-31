@@ -1,4 +1,4 @@
-package ditto.onboarding.ui
+package com.ditto.onboarding.ui
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

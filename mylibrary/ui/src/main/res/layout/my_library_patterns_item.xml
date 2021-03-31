@@ -11,7 +11,7 @@
 
         <variable
             name="patternValue"
-            type="trace.mylibrary.domain.model.MyLibraryData" />
+            type="com.ditto.mylibrary.domain.model.MyLibraryData" />
 
     </data>
 

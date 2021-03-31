@@ -7,8 +7,8 @@ import non_core.lib.Result
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.mylibrary.data.mapper.toDomain
-import trace.mylibrary.domain.MyLibraryRepository
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import javax.inject.Inject
 
 /**

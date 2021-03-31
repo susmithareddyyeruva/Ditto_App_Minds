@@ -39,14 +39,14 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
-import trace.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
+import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import java.io.*
 import java.net.Socket
 import javax.inject.Inject
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.pattern_description_fragment.*
 import kotlinx.coroutines.*
-import trace.mylibrary.ui.R
+import com.ditto.mylibrary.ui.R
 import java.text.SimpleDateFormat
 import java.util.*
 

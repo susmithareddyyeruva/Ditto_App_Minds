@@ -17,12 +17,11 @@ import com.ditto.logger.LoggerFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.adapter.ActiveProjectAdapter
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
-import trace.mylibrary.ui.R
-import trace.mylibrary.ui.databinding.ActiveProjectsFragmentBinding
+import com.ditto.mylibrary.ui.databinding.ActiveProjectsFragmentBinding
 import javax.inject.Inject
 
 class ActiveProjectsFragment : BaseFragment() {

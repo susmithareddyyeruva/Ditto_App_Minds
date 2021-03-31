@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ditto.workspace.ui.util.Utility
 import kotlinx.android.synthetic.main.pinchzoom_activity.*
-import trace.workspace.ui.R
-import trace.workspace.ui.databinding.PinchzoomActivityBinding
+import com.ditto.workspace.ui.R
+import com.ditto.workspace.ui.databinding.PinchzoomActivityBinding
 
 class PinchAndZoom : AppCompatActivity() {
 

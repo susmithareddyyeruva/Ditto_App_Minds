@@ -19,11 +19,11 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.ditto.workspace.ui.adapter.WorkspaceAdapter
-import trace.workspace.ui.databinding.FragmentWorkspaceBinding
+import com.ditto.workspace.ui.databinding.FragmentWorkspaceBinding
 import com.ditto.workspace.ui.util.Utility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
-import trace.workspace.ui.R
+import com.ditto.workspace.ui.R
 import javax.inject.Inject
 
 
