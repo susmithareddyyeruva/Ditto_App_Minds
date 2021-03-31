@@ -1,4 +1,4 @@
-package com.ditto.login.data
+package com.ditto.login.data.api
 
 import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginRepository
