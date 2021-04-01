@@ -4,32 +4,19 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Rect
-import android.net.Uri
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.runBlocking
 import com.ditto.workspace.domain.model.DragData
 import core.ui.common.Utility
-import trace.workspace.ui.R
-import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.net.Socket
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Calendar
+import com.ditto.workspace.ui.R
 
 /**
  * Helper Utility class (Calendar, Date/Time related methods)

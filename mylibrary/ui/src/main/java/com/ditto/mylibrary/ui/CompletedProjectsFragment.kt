@@ -16,9 +16,9 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
-import trace.mylibrary.domain.model.MyLibraryData
-import trace.mylibrary.ui.R
-import trace.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
+import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.ui.R
+import com.ditto.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
 import java.util.*
 import javax.inject.Inject
 import kotlin.Comparator

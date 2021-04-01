@@ -12,7 +12,7 @@
 
         <variable
             name="instructionvalues"
-            type="trace.mylibrary.domain.model.MyLibraryData" />
+            type="com.ditto.mylibrary.domain.model.MyLibraryData" />
     </data>
 
     <androidx.cardview.widget.CardView

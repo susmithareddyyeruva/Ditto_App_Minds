@@ -12,7 +12,7 @@ import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 
-import trace.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
+import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
 
 class PatternInstructionsFragment : BaseFragment() {
 

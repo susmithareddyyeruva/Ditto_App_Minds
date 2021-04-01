@@ -11,7 +11,7 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import trace.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
+import com.ditto.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 
 class PatternInstructionsFragment : BaseFragment() {
 

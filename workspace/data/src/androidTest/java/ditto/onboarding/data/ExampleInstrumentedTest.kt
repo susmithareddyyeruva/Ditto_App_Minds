@@ -1,4 +1,4 @@
-package ditto.onboarding.data
+package com.ditto.onboarding.data
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("trace.onboarding.data.test", appContext.packageName)
+        assertEquals("com.ditto.onboarding.data.test", appContext.packageName)
     }
 }
