@@ -48,8 +48,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.android.material:material:$material_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rxjava2_version"
     testImplementation "junit:junit:$junit_test_version"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"

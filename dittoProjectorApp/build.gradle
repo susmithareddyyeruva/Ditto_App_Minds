@@ -24,12 +24,12 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "APP_CENTER_KEY", "\"6c14361c-dde8-4a4a-be5f-be1082bd016c\""   // ----- NS
         }
         debug{
             debuggable true
             minifyEnabled false
             buildConfigField "String", "APP_CENTER_KEY", "\"8e8cc19b-bfe4-455c-b4e7-740ea3063a9a\"" // ---- DEV
-            //buildConfigField "String", "APP_CENTER_KEY", "\"6c14361c-dde8-4a4a-be5f-be1082bd016c\""   // ----- NS
         }
     }
     compileOptions {
@@ -60,7 +60,7 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_android_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_extensions_version"
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
@@ -74,6 +74,6 @@ dependencies {
     /**
      * Microsoft app center
      */
-    implementation 'com.microsoft.appcenter:appcenter-analytics:3.3.0'
-    implementation 'com.microsoft.appcenter:appcenter-crashes:3.3.0'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 }
