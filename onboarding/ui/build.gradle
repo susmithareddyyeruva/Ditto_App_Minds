@@ -31,8 +31,9 @@ android {
             minifyEnabled false
         }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true // for data binding
+        viewBinding = true // for view binding
     }
 }
 
