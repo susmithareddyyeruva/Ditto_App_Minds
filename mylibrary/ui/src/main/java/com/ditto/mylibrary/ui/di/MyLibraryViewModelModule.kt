@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import trace.mylibrary.ui.*
+import com.ditto.mylibrary.ui.*
 
 /**
  * Dagger module to provide LoginViewModel functionality.

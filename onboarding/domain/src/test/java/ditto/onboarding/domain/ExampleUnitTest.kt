@@ -1,4 +1,4 @@
-package ditto.onboarding.domain
+package com.ditto.onboarding.domain
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -11,7 +11,7 @@ import androidx.viewpager.widget.PagerAdapter
 
 import com.ditto.storage.data.model.DescriptionImages
 import core.binding.BindableAdapter
-import trace.mylibrary.ui.databinding.PatternDescImageItemBinding
+import com.ditto.mylibrary.ui.databinding.PatternDescImageItemBinding
 
 /**
  * Created by Sesha on  15/08/2020.

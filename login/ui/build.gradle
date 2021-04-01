@@ -80,7 +80,7 @@ dependencies {
     implementation project(path: ':onboarding-ui')
 
     implementation project(path: ':logger')
-    implementation project(path: ':instruction-ui')
+    implementation project(path: ':instructions-ui')
     implementation project(path: ':home-ui')
     implementation project(path: ':mylibrary-ui')
     implementation project(path: ':tutorial-ui')

@@ -25,8 +25,8 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.onboarding_fragment.*
-import trace.onboarding.ui.R
-import trace.onboarding.ui.databinding.OnboardingFragmentBinding
+import com.ditto.onboarding.ui.R
+import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import javax.inject.Inject
 
 class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {

@@ -58,8 +58,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
 import kotlinx.coroutines.*
-import trace.workspace.ui.R
-import trace.workspace.ui.databinding.WorkspaceTabItemBinding
+import com.ditto.workspace.ui.R
+import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat

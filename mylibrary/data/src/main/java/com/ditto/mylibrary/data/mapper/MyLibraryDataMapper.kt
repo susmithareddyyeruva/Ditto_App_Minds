@@ -1,8 +1,7 @@
 package com.ditto.mylibrary.data.mapper
 
-import com.ditto.storage.data.model.OnBoarding
 import com.ditto.storage.data.model.Patterns
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 
 internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
     return this.map {

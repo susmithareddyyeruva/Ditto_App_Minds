@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableBoolean
 import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.PinchAndZoom
-import trace.workspace.ui.R
+import com.ditto.workspace.ui.R
 import com.ditto.workspace.ui.util.Draggable.DRAG_MOVE_TOLERANCE
 import com.ditto.workspace.ui.util.Draggable.DRAG_TOLERANCE
 import com.ditto.workspace.ui.util.Draggable.DURATION_MILLIS
