@@ -1,8 +1,8 @@
-package com.ditto.example.tutorial_ui.di
+package com.ditto.tutorial.ui.di
 
 import androidx.lifecycle.ViewModel
-import com.ditto.example.tutorial_ui.TutorialFragment
-import com.ditto.example.tutorial_ui.TutorialViewModel
+import com.ditto.tutorial.ui.TutorialFragment
+import com.ditto.tutorial.ui.TutorialViewModel
 import core.ui.ViewModelKey
 import dagger.Binds
 import dagger.Module

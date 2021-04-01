@@ -1,4 +1,4 @@
-package com.ditto.example.tutorial_ui
+package com.ditto.tutorial.ui
 
 
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.example.tutorial_ui.R
-import com.example.tutorial_ui.databinding.FragmentTutorialBinding
+import com.ditto.tutorial.R
+import com.ditto.tutorial.databinding.FragmentTutorialBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
