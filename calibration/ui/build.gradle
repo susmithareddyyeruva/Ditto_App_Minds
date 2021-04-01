@@ -23,12 +23,18 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true // for data binding
+        viewBinding = true // for view binding
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
