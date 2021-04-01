@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.ditto.example.tutorial_ui.TutorialViewModel" />
+            type="com.ditto.tutorial.ui.TutorialViewModel" />
 
         <import type="android.view.View" />
 

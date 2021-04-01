@@ -1,4 +1,4 @@
-package com.ditto.example.tutorial_ui
+package com.ditto.tutorial.ui
 
 import androidx.databinding.ObservableInt
 import core.event.UiEvents

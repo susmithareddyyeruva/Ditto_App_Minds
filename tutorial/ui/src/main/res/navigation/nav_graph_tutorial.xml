@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/destination_tutorial"
-        android:name="com.ditto.example.tutorial_ui.TutorialFragment"
+        android:name="com.ditto.tutorial.ui.TutorialFragment"
         android:label=""
         tools:layout="@layout/fragment_tutorial">
 
