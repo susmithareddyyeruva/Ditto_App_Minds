@@ -1,9 +1,7 @@
 package com.ditto.workspace.ui.adapter
 
-import android.content.Context
 import android.content.res.Resources
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +10,12 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternPieces
-import com.ditto.workspace.domain.model.PatternsData
-import trace.workspace.ui.R
+import com.ditto.workspace.ui.R
 import com.ditto.workspace.ui.WorkspaceViewModel
-import trace.workspace.ui.databinding.PatternsPiecesItemBinding
+import com.ditto.workspace.ui.databinding.PatternsPiecesItemBinding
 import com.ditto.workspace.ui.util.Draggable
 import core.binding.BindableAdapter
 import core.ui.common.Utility
-import java.util.*
-import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 

@@ -6,10 +6,10 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.AllPatternsViewModel
 import core.binding.BindableAdapter
-import trace.mylibrary.ui.databinding.MyLibraryPatternsItemBinding
+import com.ditto.mylibrary.ui.databinding.MyLibraryPatternsItemBinding
 
 
 /**

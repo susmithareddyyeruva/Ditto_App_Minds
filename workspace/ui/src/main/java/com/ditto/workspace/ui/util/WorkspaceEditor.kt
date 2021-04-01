@@ -1,10 +1,8 @@
 package com.ditto.workspace.ui.util
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
@@ -14,16 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.ObservableBoolean
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.WorkspaceItems
-import com.ditto.workspace.ui.PinchAndZoom
-import trace.workspace.ui.R
+import com.ditto.workspace.ui.R
 import com.ditto.workspace.ui.util.ViewType.IMAGE
 import java.lang.ref.WeakReference
 import java.util.*

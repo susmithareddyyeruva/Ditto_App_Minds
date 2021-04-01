@@ -17,8 +17,8 @@ import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import trace.mylibrary.ui.R
-import trace.mylibrary.ui.databinding.MyLibraryFragmentBinding
+import com.ditto.mylibrary.ui.R
+import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import javax.inject.Inject
 
 class MyLibraryFragment : BaseFragment() {

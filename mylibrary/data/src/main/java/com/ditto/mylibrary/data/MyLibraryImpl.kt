@@ -3,9 +3,9 @@ package com.ditto.mylibrary.data
 import com.ditto.login.domain.LoginUser
 import io.reactivex.Single
 import non_core.lib.Result
-import trace.mylibrary.domain.MyLibraryRepository
-import trace.mylibrary.domain.GetMylibraryData
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import javax.inject.Inject
 
 

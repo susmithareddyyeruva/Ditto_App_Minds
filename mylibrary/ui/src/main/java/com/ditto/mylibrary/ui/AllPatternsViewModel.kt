@@ -2,10 +2,8 @@ package com.ditto.mylibrary.ui
 
 import android.view.View
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,8 +14,8 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
-import trace.mylibrary.domain.GetMylibraryData
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

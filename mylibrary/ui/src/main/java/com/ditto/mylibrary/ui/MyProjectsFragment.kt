@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import trace.mylibrary.ui.R
+import com.ditto.mylibrary.ui.R
 
 /**
  * A simple [Fragment] subclass.
