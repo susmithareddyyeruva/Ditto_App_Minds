@@ -1895,7 +1895,7 @@
     },
     {
       "id": 9,
-      "patternName": "Knit Surplice Empire Women's Dress",
+      "patternName": "Knit Surplice Empire Dress",
       "description": "Knit Surplice Empire Dress is a fitted knit dress with full length A-line skirt, empire waist seam, wrap style neckline and short flutter sleeve.",
       "totalPieces": 13,
       "completedPieces": 0,
@@ -1929,7 +1929,7 @@
       "patternPieces": [
         {
           "id": 1,
-          "parentPattern": "Knit Surplice Empire Women's Dress",
+          "parentPattern": "Knit Surplice Empire Dress",
           "imagePath": "knitwomen_1",
           "size": "C",
           "view": "View B",
@@ -1949,7 +1949,7 @@
         },
         {
           "id": 2,
-          "parentPattern": "Knit Surplice Empire Women's Dress",
+          "parentPattern": "Knit Surplice Empire Dress",
           "imagePath": "knitwomen_2",
           "size": "C",
           "view": "View B",
@@ -1969,7 +1969,7 @@
         },
         {
           "id": 3,
-          "parentPattern": "Knit Surplice Empire Women's Dress",
+          "parentPattern": "Knit Surplice Empire Dress",
           "imagePath": "knitwomen_3_with_dots",
           "size": "C",
           "view": "View B",
@@ -1996,7 +1996,7 @@
         },
         {
           "id": 4,
-          "parentPattern": "Knit Surplice Empire Women's Dress",
+          "parentPattern": "Knit Surplice Empire Dress",
           "imagePath": "knitwomen_4_with_dots",
           "size": "C",
           "view": "View B",
@@ -2023,7 +2023,7 @@
         },
         {
           "id": 5,
-          "parentPattern": "Knit Surplice Empire Women's Dress",
+          "parentPattern": "Knit Surplice Empire Dress",
           "imagePath": "knitwomen_5_with_dots",
           "size": "C",
           "view": "View B",
