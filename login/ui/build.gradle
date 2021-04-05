@@ -73,8 +73,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-    implementation "androidx.navigation:navigation-fragment:${navigation_fragment}"
-    implementation "androidx.navigation:navigation-ui:${navigation_ui}"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 

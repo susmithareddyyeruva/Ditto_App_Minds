@@ -42,7 +42,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.android.material:material:$material_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_extensions_version"
@@ -69,8 +68,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-    implementation "androidx.navigation:navigation-fragment:${navigation_fragment}"
-    implementation "androidx.navigation:navigation-ui:${navigation_ui}"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
     implementation project(path: ':nav-graph')

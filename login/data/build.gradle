@@ -70,8 +70,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-    implementation("com.squareup.okhttp3:okhttp:4.4.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     implementation project(':non-core-lib')
     implementation project(':login-domain')
