@@ -21,10 +21,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
+            debuggable true
+            minifyEnabled false
             buildConfigField "String", "APP_CENTER_KEY", "\"8e8cc19b-bfe4-455c-b4e7-740ea3063a9a\"" // ---- DEV
             //buildConfigField "String", "APP_CENTER_KEY", "\"6c14361c-dde8-4a4a-be5f-be1082bd016c\""   // ----- NS
         }
@@ -36,8 +39,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true // for data binding
+        viewBinding = true // for view binding
     }
 }
 repositories {
@@ -52,7 +56,8 @@ dependencies {
     implementation "androidx.core:core-ktx:$androidx_core_version"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-
+    implementation "androidx.activity:activity:1.2.0"
+    implementation "androidx.fragment:fragment:1.1.0"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_android_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
