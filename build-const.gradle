@@ -11,6 +11,8 @@ ext {
     // Sub projects should consider using these but can use their own.
     kotlin_version = '1.4.20'
 
+    androidx_activity = '1.2.0'
+    androidx_fragment = '1.1.0'
     androidx_appcompat_version = '1.2.0'
     androidx_recyclerview = '1.0.0'
     androidx_viewpager2_version = '1.0.0'
@@ -76,5 +78,7 @@ ext {
     pdf_reader = '2.8.2'
     circleimageview = '3.0.1'
     drawerlayout='1.1.1'
+    stetho='1.5.1'
+    timber='4.7.1'
     play_services_location='18.0.0'
 }

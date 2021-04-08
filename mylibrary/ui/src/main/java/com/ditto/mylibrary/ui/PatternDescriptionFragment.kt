@@ -250,7 +250,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         showProgress(true)
         val bitmap = Utility.getBitmapFromDrawable("quick_check_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
-            performTransform(bitmap, context?.applicationContext, null, false)
+            performTransform(bitmap, context?.applicationContext, null, true)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
