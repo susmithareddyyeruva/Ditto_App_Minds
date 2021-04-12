@@ -57,7 +57,7 @@ class LoginFragment : BaseFragment() {
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    handleEvent(it)
+                    handleEvent(it)   //Observing UI event
                 }
         }
         setUIEvents()
@@ -111,7 +111,7 @@ class LoginFragment : BaseFragment() {
 
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
-            is LoginViewModel.Event.OnLoginClicked -> {
+            is LoginViewModel.Event.OnLoginClicked -> {   //Re directing to On_boarding screen
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
