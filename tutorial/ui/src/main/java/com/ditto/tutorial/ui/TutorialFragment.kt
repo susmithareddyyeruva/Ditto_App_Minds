@@ -49,14 +49,12 @@ class TutorialFragment : BaseFragment() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                handleEvent(it)
+                handleResponse(it)
             }
     }
 
-    private fun handleEvent(event: TutorialViewModel.Event) =
-
+    private fun handleResponse(event: TutorialViewModel.Event) =
         when (event) {
-
             is TutorialViewModel.Event.onItemClick -> {
                 val bundle = bundleOf(
                     "InstructionId" to viewModel.clickID.get(),
@@ -64,16 +62,7 @@ class TutorialFragment : BaseFragment() {
                     "isFromHome" to true
                 )
                 if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
-
-                    /*findNavController().navigate(
-                        R.id.action_destination_tutorial_to_instructionFragment,
-                        bundleOf(
-                            "InstructionId" to viewModel.clickID.get(),
-                            "isFromOnBoarding" to false,
-                            "isFromHome" to true
-                        )
-                    )*/
-                    if(viewModel.clickID.get() == 1) {
+                    if (viewModel.clickID.get() == 1) {
                         if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
                             findNavController().navigate(
                                 R.id.action_destination_tutorial_to_beamsetupFragment,
@@ -101,7 +90,8 @@ class TutorialFragment : BaseFragment() {
                             "InstructionId" to viewModel.clickID.get(),
                             "isFromOnBoarding" to false,
                             "isFromHome" to true
-                        ))
+                        )
+                    )
                 }
                 Unit
             }
