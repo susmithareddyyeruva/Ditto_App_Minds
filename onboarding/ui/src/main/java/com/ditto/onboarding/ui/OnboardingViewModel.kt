@@ -6,17 +6,17 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.LoginUser
+import com.ditto.onboarding.domain.GetOnboardingData
+import com.ditto.onboarding.domain.model.OnboardingData
+import core.event.UiEvents
+import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import com.ditto.onboarding.domain.GetOnboardingData
-import com.ditto.onboarding.domain.model.OnboardingData
-import core.event.UiEvents
-import core.ui.BaseViewModel
-import io.reactivex.rxkotlin.plusAssign
 import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
@@ -93,6 +93,7 @@ class OnboardingViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
+                Log.d("error","onboarding")
             }
         }
     }

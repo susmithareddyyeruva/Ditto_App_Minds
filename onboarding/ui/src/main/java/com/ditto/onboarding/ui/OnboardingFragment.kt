@@ -18,15 +18,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
+import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.onboarding_fragment.*
-import com.ditto.onboarding.ui.R
-import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import javax.inject.Inject
 
 class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
@@ -143,7 +142,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 Unit
             }
             is OnboardingViewModel.Event.OnShowBleDialogue -> {
-                //  showBluetoothDialogue()
+             Log.d("dialog","Show bluetooth dialog")
             }
             is OnboardingViewModel.Event.OnItemClick -> {
                 isFromOnBoardingScreen = !isFromHomeScreen
@@ -253,7 +252,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             mBluetoothAdapter.enable()
-//             checkBluetoothWifiPermission()
              if(!Utility.getWifistatus(requireContext())) {
                  viewModel.isWifiLaterClicked.set(false)
                      showWifiDialogue()
