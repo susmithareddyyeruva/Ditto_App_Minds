@@ -106,14 +106,8 @@ class HowtoFragment : BaseFragment() {
                 Unit
             }
 
-            HowtoViewModel.Event.OnNextButtonClicked -> {
-                Log.d("nextButtonClick","Next Button clicked")
-            }
-            HowtoViewModel.Event.OnPreviousButtonClicked -> {
-                Log.d("nextButtonClick","Next Button clicked")
-            }
-            HowtoViewModel.Event.OnPlayVideoClicked -> {
-                Log.d("OnPlayVideoClicked","Play Button clicked")
+            else -> {
+                Log.d("button event","Button clicked except onSkip")
             }
         }
 
