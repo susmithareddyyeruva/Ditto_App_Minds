@@ -9,7 +9,6 @@ class Util {
             //logger.d("calibration - $calibrationResponse")
             when (calibrationResponse) {
                 CalibrationErrorCode.Success -> {
-                    //transform()
                     Log.d("Calibration", "Success")
                     callback.OnCalibrationReponse(CalibrationType.Success)
                 }
