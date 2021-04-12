@@ -131,7 +131,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     private fun handleEvent(event: OnboardingViewModel.Event) =
         when (event) {
 
-            is OnboardingViewModel.Event.OnClickSkipAndContinue -> {
+            is OnboardingViewModel.Event.OnClickSkipAndContinue -> { //Click on Skip & Continue
                 if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                     if (viewModel.dontShowThisScreen.get()) {
                         findNavController().navigate(R.id.action_onboardingFragment_to_homefragment_checkedbox_clicked)
@@ -144,7 +144,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             is OnboardingViewModel.Event.OnShowBleDialogue -> {
              Log.d("dialog","Show bluetooth dialog")
             }
-            is OnboardingViewModel.Event.OnItemClick -> {
+            is OnboardingViewModel.Event.OnItemClick -> {  //Clicked on On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
                     "InstructionId" to viewModel.clickedId.get(),
@@ -153,7 +153,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 )
                 if (viewModel.clickedId.get() != 3) {
 
-                    if (viewModel.dontShowThisScreen.get()) {
+                    if (viewModel.dontShowThisScreen.get()) {   //Clicked on Don't show this screen
                         if(viewModel.clickedId.get() == 1) {
                             if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                                 findNavController().navigate(
@@ -214,7 +214,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
         }
 
-    private fun showBluetoothDialogue() {
+    private fun showBluetoothDialogue() {  //Displaying Dialog for Bluetooth
         if (!viewModel.isBleLaterClicked.get() && !isFromHomeScreen) {
             Utility.getAlertDialogue(
                 requireContext(),
@@ -228,7 +228,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         }
     }
 
-    private fun showWifiDialogue() {
+    private fun showWifiDialogue() {  //Displaying Dialog for Wifi
         //for retrict to open again
         if(!viewModel.isWifiLaterClicked.get()){
         isWifiAlert=true
@@ -245,7 +245,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     }
 
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Turn on button clicked
          if(isWifiAlert){
             startActivity(Intent(Settings.ACTION_SETTINGS))
         } else {
@@ -260,7 +260,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     }
 
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Later button clicked
         if (!isWifiAlert){
             logger.d("Later clicked")
             viewModel.isBleLaterClicked.set(true)
