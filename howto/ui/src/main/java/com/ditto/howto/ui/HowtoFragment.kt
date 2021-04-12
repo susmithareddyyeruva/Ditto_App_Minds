@@ -1,6 +1,7 @@
 package com.ditto.howto.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.ditto.howto.adapter.TabsPagerAdapter
 import com.ditto.howto.utils.Common
+import com.ditto.howto_ui.R
+import com.ditto.howto_ui.databinding.HowtoFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.ditto.howto_ui.R
-import com.ditto.howto_ui.databinding.HowtoFragmentBinding
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -86,6 +87,7 @@ class HowtoFragment : BaseFragment() {
     /**
      * [Function] Handling events from view model
      */
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: HowtoViewModel.Event) =
         when (event) {
             is HowtoViewModel.Event.OnDataUpdated -> {
@@ -104,12 +106,14 @@ class HowtoFragment : BaseFragment() {
                 Unit
             }
 
-            HowtoViewModel.Event.OnNextButtonClicked -> {/*viewpagernextbuttonclick()*/
+            HowtoViewModel.Event.OnNextButtonClicked -> {
+                Log.d("nextButtonClick","Next Button clicked")
             }
-            HowtoViewModel.Event.OnPreviousButtonClicked -> {/*viewpagerpreviousbuttonclick()*/
+            HowtoViewModel.Event.OnPreviousButtonClicked -> {
+                Log.d("nextButtonClick","Next Button clicked")
             }
             HowtoViewModel.Event.OnPlayVideoClicked -> {
-                //showVideoPopup()
+                Log.d("OnPlayVideoClicked","Play Button clicked")
             }
         }
 
@@ -169,6 +173,7 @@ class HowtoFragment : BaseFragment() {
         }
         binding.viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
+                Log.d("onPageScroll","state changed")
             }
 
             override fun onPageScrolled(
@@ -176,6 +181,7 @@ class HowtoFragment : BaseFragment() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
+                Log.d("onPageScroll","onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -200,8 +206,12 @@ class HowtoFragment : BaseFragment() {
                 Common.isNextTabSelected.set(true)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                Log.d("onTabUnselected","tab selected")
+            }
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                Log.d("onTabReselected","re-selected")
+            }
         })
     }
 
