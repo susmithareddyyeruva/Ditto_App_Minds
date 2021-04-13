@@ -17,6 +17,7 @@
       <module name="ditto-android.instruction-ui" target="1.8" />
       <module name="ditto-android.instructions-data" target="1.8" />
       <module name="ditto-android.instructions-domain" target="1.8" />
+      <module name="ditto-android.instructions-ui" target="1.8" />
       <module name="ditto-android.logger" target="1.8" />
       <module name="ditto-android.login-data" target="1.8" />
       <module name="ditto-android.login-domain" target="1.8" />

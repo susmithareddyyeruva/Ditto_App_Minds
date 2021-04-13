@@ -48,7 +48,7 @@ dependencies {
     testImplementation "junit:junit:$junit_test_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_android_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.jakewharton.timber:timber:$timber"
     /**
      * DAGGER
      */
