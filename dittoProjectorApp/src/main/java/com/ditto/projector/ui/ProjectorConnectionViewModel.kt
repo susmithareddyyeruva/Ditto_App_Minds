@@ -1,6 +1,9 @@
 package com.ditto.projector.ui
 
-import android.bluetooth.*
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattServer
+import android.bluetooth.BluetoothManager
 import android.bluetooth.le.BluetoothLeAdvertiser
 import android.content.Context
 import android.net.nsd.NsdManager
@@ -81,19 +84,6 @@ class ProjectorConnectionViewModel : ViewModel() {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     fun checkCurrentWifiConnection(context: Context) {
-        /*if (isWifiConnected(context)) {
-            if (isNsdRegistered.get()) {
-                context?.getString(R.string.servicealreadyregistered)?.let {
-                    sendResponseToClient(
-                        context,it
-                    )
-                }
-            } else {
-                wificonnectionstatus.set(context?.getString(R.string.connected))
-                isCallfromBle.set(true)
-                startNSD()
-            }
-        }*/
             wificonnectionstatus.set(context?.getString(R.string.checking))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
