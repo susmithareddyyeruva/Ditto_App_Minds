@@ -25,12 +25,13 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.joann.fabrictracetransform.transform.TransformErrorCode
-import com.joann.fabrictracetransform.transform.performTransform
-import com.ditto.logger.Logger
-import com.ditto.logger.LoggerFactory
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
+import com.joann.fabrictracetransform.transform.TransformErrorCode
+import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -38,17 +39,18 @@ import core.ui.common.Utility
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
+import kotlinx.android.synthetic.main.pattern_description_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
-import javax.inject.Inject
-import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.pattern_description_fragment.*
-import kotlinx.coroutines.*
-import com.ditto.mylibrary.ui.R
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener {
 
@@ -63,6 +65,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+    private val CONNNECTION_FAILED = "Socket Connection failed. Try again!!" // Compliant
+
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -88,9 +92,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         baseViewModel.activeSocketConnection.set(false)
         if (viewModel.data.value == null) {
             arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
-            /* if(arguments?.getString("isFrom").equals("RESUME_RECENT")){
-                 arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
-             }*/
             viewModel.fetchPattern()
             setUIEvents()
         } else {
@@ -120,7 +121,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (!Utility.getWifistatus(requireContext())) {
                 showWifiDialogue()
             } else {
-                //showConnectivityPopup()
                 checkSocketConnection()
             }
         } else {
@@ -296,7 +296,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private suspend fun sendSampleImage(result: Bitmap, isQuickCheck: Boolean) {
-        //saveBitmap(result)
         withContext(Dispatchers.IO) {
                 var soc: Socket? = null
                 try {
@@ -324,7 +323,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 requireContext(),
-                                "Socket Connection failed. Try again!!",
+                                CONNNECTION_FAILED,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -334,7 +333,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            CONNNECTION_FAILED,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -484,7 +483,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
                 enterWorkspace()
             }
-            Utility.AlertType.DEFAULT -> TODO()
+            Utility.AlertType.DEFAULT ->{
+                Log.d("alertType","DEFAULT")
+            }
         }
     }
 
@@ -515,7 +516,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            CONNNECTION_FAILED,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -525,7 +526,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Socket Connection failed. Try again!!",
+                        CONNNECTION_FAILED,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -573,22 +574,24 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        when (alertType) {
-            Utility.AlertType.BLE -> {
+        when {
+            alertType == Utility.AlertType.BLE -> {
                 logger.d("Later clicked")
                 enterWorkspace()
             }
-            Utility.AlertType.WIFI -> {
+            alertType == Utility.AlertType.WIFI -> {
                 enterWorkspace()
             }
-            Utility.AlertType.CALIBRATION -> {
+            alertType == Utility.AlertType.CALIBRATION -> {
                 sendQuickCheckImage()
             }
-            Utility.AlertType.QUICK_CHECK -> {
+            alertType == Utility.AlertType.QUICK_CHECK -> {
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
             }
-            Utility.AlertType.DEFAULT -> TODO()
+            alertType == Utility.AlertType.DEFAULT -> {
+                Log.d("alertType","DEFAULT")
+            }
         }
     }
 
