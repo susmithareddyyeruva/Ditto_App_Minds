@@ -10,7 +10,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.ditto.projector"
+        applicationId "com.ditto.projector.encryption"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

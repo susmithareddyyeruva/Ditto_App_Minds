@@ -176,7 +176,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 } else {
                     try {
                         viewModel.liveconnectionstatus.set(getString(R.string.cred_received))
-                        viewModel.splitwificredentials = viewModel.wificredentials.split(",")
+                        viewModel.splitwificredentials = viewModel.wificredentials?.split(",")
                         viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials)
                         /*// Store wifi name in preference
                         Utility.setSharedPref(
@@ -345,11 +345,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun showToast() {
-        Toast.makeText(
-            this,
-            viewModel.samplestring.get(),
-            Toast.LENGTH_LONG
-        ).show()
+        this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
+            Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_LONG).show()
+        })
     }
 
     /**
@@ -573,7 +571,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private fun tearDown() {
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
-            Toast.makeText(this, "tearDown - socket close", Toast.LENGTH_SHORT).show()
+            this@ProjectorConnectionActivity.runOnUiThread {
+                Toast.makeText(this, "tearDown - socket close", Toast.LENGTH_SHORT).show()
+            }
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
         }
