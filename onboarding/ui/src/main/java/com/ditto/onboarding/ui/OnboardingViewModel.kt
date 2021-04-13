@@ -93,7 +93,7 @@ class OnboardingViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("error","onboarding")
+                Log.d("OnboardingViewModel","handleError")
             }
         }
     }

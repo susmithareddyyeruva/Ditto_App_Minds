@@ -40,7 +40,7 @@ class AllPatternsViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("error","error except no network")
+                Log.d("AllPatternsViewModel","handleError")
             }
         }
     }
