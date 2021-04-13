@@ -231,6 +231,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun sendCalibrationPattern() {
+        logger.d("TRACE_ Projection : performTransform  Start " + Calendar. getInstance().timeInMillis)
         showProgress(true)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
@@ -274,6 +275,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isQuickCheck: Boolean) {
+        logger.d("TRACE_ Projection : performTransform  finish " + Calendar. getInstance().timeInMillis)
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
         alert?.dismiss()
         when (result.first) {
@@ -297,6 +299,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private suspend fun sendSampleImage(result: Bitmap, isQuickCheck: Boolean) {
         //saveBitmap(result)
+        logger.d("TRACE_ Projection : sendSampleImage  Start " + Calendar. getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
                 var soc: Socket? = null
                 try {
@@ -340,6 +343,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 } finally {
                     soc?.close()
+                    logger.d("TRACE_ Projection : sendSampleImage  Finish " + Calendar. getInstance().timeInMillis)
                 }
         }
     }

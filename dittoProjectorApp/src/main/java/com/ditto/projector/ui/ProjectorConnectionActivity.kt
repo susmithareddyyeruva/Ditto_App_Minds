@@ -35,6 +35,7 @@ import java.io.DataInputStream
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
+import java.util.*
 import kotlin.system.exitProcess
 
 class ProjectorConnectionActivity : AppCompatActivity(),
@@ -344,9 +345,11 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun showToast() {
-        this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
-            Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_LONG).show()
-        })
+        Toast.makeText(
+            this,
+            viewModel.samplestring.get(),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     /**
@@ -435,10 +438,13 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                         if (datainput != null) {
                             val imageBytes: ByteArray = datainput.readBytes()
                             viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
-                            showToast()
-                            if (imageBytes.isNotEmpty()) {
-                                showImage(imageBytes)
+                            withContext(Dispatchers.Main) {
+                                showToast()
+                                if (imageBytes.isNotEmpty()) {
+                                    showImage(imageBytes)
+                                }
                             }
+
                         }
                     } catch (e: Throwable) {
                         e.printStackTrace()
@@ -453,18 +459,20 @@ class ProjectorConnectionActivity : AppCompatActivity(),
      *  [Function] Converting bytearray received from client to imageview
      */
     private fun showImage(imagebytes: ByteArray) {
-        this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
-            try {
-                val options: BitmapFactory.Options = BitmapFactory.Options()
-                imageBitMap = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.size, options)
-                img_receivedimage.setImageBitmap(imageBitMap)
-                status_lay.visibility = View.GONE
-                image_lay.visibility = View.VISIBLE
-            } catch (e: java.lang.Exception) {
-                viewModel.samplestring.set("Cannot convert to image - Exception - $e")
-                showToast()
-            }
-        })
+        try {
+            val options: BitmapFactory.Options = BitmapFactory.Options()
+            imageBitMap = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.size, options)
+            img_receivedimage.setImageBitmap(imageBitMap)
+            status_lay.visibility = View.GONE
+            image_lay.visibility = View.VISIBLE
+            Log.d(
+                "TRACE_ Projection :",
+                " TRACE_ Projection showImage " + Calendar.getInstance().timeInMillis
+            )
+        } catch (e: java.lang.Exception) {
+            viewModel.samplestring.set("Cannot convert to image - Exception - $e")
+            showToast()
+        }
     }
 
     //----------------------------------Different approach for two platforms------------------------//
@@ -565,9 +573,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private fun tearDown() {
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
-            this@ProjectorConnectionActivity.runOnUiThread {
-                Toast.makeText(this, "tearDown - socket close", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this, "tearDown - socket close", Toast.LENGTH_SHORT).show()
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
         }

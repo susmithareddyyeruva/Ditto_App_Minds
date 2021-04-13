@@ -189,7 +189,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 } else {
                     showWaitingMessage("Projecting Please wait!!")
                     GlobalScope.launch {
-                        delay(PROJECTING_TIME.toLong())
                         if (viewModel.isProjectionRequest.get() && !baseViewModel.isProjecting.get()) {
                             viewModel.isFromQuickCheck.set(false)
                             transform(
@@ -275,6 +274,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun transform(bitmap: Bitmap, isProjectingSample: Boolean) {
+        logger.d("TRACE_ Projection :Transform start " + Calendar. getInstance().timeInMillis)
         viewModel.isStartedProjection.set(true)
         viewModel.isProjectionRequest.set(false)
         baseViewModel.isProjecting.set(true)
@@ -314,6 +314,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         //alert.dismiss()
         when (result.first) {
             TransformErrorCode.Success -> {
+                logger.d("TRACE_ Projection :TransformErrorCode.Success " + Calendar. getInstance().timeInMillis)
                 saveBitmap(result.second)
                 logger.d("TRACE_ Transformed bitmap width " + result.second.width)
                 logger.d("TRACE_ Transformed bitmap height " + result.second.height)
@@ -343,6 +344,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         isProjectingSample: Boolean
     ) {
         withContext(Dispatchers.IO) {
+            logger.d("TRACE_ Projection :projectWorkspaceImage Start " + Calendar. getInstance().timeInMillis)
             var clientSocket: Socket? = null
             try {
                 viewModel.isStartedProjection.set(true)
@@ -366,6 +368,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     dataOutputStream.close()
                     baseViewModel.isProjecting.set(false)
                     withContext(Dispatchers.Main) {
+                        logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar. getInstance().timeInMillis)
                         showProgress(false)
                         if (isProjectingSample) {
                             navigateToCalibration()
@@ -380,6 +383,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.isProjectionRequest.set(false)
                     logger.d("Socket Connection lost!!")
                     withContext(Dispatchers.Main) {
+                        logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar. getInstance().timeInMillis)
                         showProgress(false)
                         Toast.makeText(
                             requireContext(),
@@ -394,6 +398,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
                 withContext(Dispatchers.Main) {
+                    logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar. getInstance().timeInMillis)
                     showProgress(false)
                     Toast.makeText(
                         requireContext(),
@@ -1112,6 +1117,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
            Utility.AlertType.QUICK_CHECK -> {
                 //initiateprojection()
+               viewModel.isFromQuickCheck.set(false)
                 GlobalScope.launch {
                     Utility.sendDittoImage(
                         requireContext(),
@@ -1604,6 +1610,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun sendCalibrationPattern() {
+        logger.d("TRACE_ Projection : sendCalibrationPattern start " + Calendar. getInstance().timeInMillis)
         showProgress(true)
         val bitmap =
             Utility.getBitmapFromDrawable(

@@ -53,6 +53,7 @@ import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.net.Socket
+import java.util.*
 import javax.inject.Inject
 
 
@@ -588,6 +589,7 @@ class InstructionFragment constructor(
 
     private fun sendCalibrationPattern() {
         showProgress(true)
+        logger.d("TRACE_ Projection : sendCalibrationPattern " + Calendar. getInstance().timeInMillis)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
             performTransform(
@@ -604,7 +606,8 @@ class InstructionFragment constructor(
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>) {
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
-        // alert?.dismiss()
+        logger.d("TRACE_ Projection : sendCalibrationPattern Success" + Calendar. getInstance().timeInMillis)
+         // alert?.dismiss()
         when (result.first) {
             TransformErrorCode.Success -> GlobalScope.launch {
                 sendSampleImage(
@@ -627,6 +630,7 @@ class InstructionFragment constructor(
         transformedBitmap: Bitmap,
         isNavigateToCalibration: Boolean
     ) {
+        logger.d("TRACE_ Projection : send Image Start" + Calendar. getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
             var soc: Socket? = null
             try {
@@ -672,6 +676,7 @@ class InstructionFragment constructor(
                 }
             } finally {
                 soc?.close()
+                logger.d("TRACE_ Projection : send Image Finish" + Calendar. getInstance().timeInMillis)
             }
         }
     }
