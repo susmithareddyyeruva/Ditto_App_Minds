@@ -127,7 +127,7 @@ class ConnectivityActivity : AppCompatActivity() {
         }
 
         turnGPSOn(object :
-            onGpsListener {
+            OnGPSListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
                 if(isGPSEnable) {
                    initWIFIService()
@@ -290,7 +290,7 @@ class ConnectivityActivity : AppCompatActivity() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    fun onServiceFound(ServiceName: String) {
+    fun onServiceFound(serviceName: String) {
         Log.d(ConnectivityUtils.TAG, "OnServiceFound()")
         nsdservice = getChosenServiceInfo()
         isServiceFound = true
@@ -813,10 +813,11 @@ class ConnectivityActivity : AppCompatActivity() {
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 turnGPSOn(object :
-                    onGpsListener {
+                    OnGPSListener {
                     override fun gpsStatus(isGPSEnable: Boolean) {
                         viewModel.isLocationEnabled.set(isGPSEnable)
                         if(isGPSEnable){
@@ -841,7 +842,7 @@ class ConnectivityActivity : AppCompatActivity() {
     }
 
     ////////////////////////////
-    fun turnGPSOn(onGpsListener: onGpsListener?) {
+    fun turnGPSOn(onGpsListener: OnGPSListener?) {
 
         var locationManager: LocationManager? = null
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -911,7 +912,7 @@ class ConnectivityActivity : AppCompatActivity() {
         }
     }
 
-    interface onGpsListener {
+    interface OnGPSListener {
         fun gpsStatus(isGPSEnable: Boolean)
     }
 
@@ -937,12 +938,12 @@ class ConnectivityActivity : AppCompatActivity() {
         view.viewTreeObserver.addOnGlobalLayoutListener {
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
-            val t_guideline: View? = findViewById<View>(R.id.top_guide)
-            val b_guideline: View? = findViewById<View>(R.id.bottom_guide)
-            var t_params: ConstraintLayout.LayoutParams? = null
-            t_params = t_guideline?.getLayoutParams() as ConstraintLayout.LayoutParams
-            var b_params: ConstraintLayout.LayoutParams? = null
-            b_params = b_guideline?.getLayoutParams() as ConstraintLayout.LayoutParams
+            val topGuideline: View? = findViewById<View>(R.id.top_guide)
+            val bottomGuideline: View? = findViewById<View>(R.id.bottom_guide)
+            var topParams: ConstraintLayout.LayoutParams? = null
+            topParams = topGuideline?.getLayoutParams() as ConstraintLayout.LayoutParams
+            var bottomParams: ConstraintLayout.LayoutParams? = null
+            bottomParams = bottomGuideline?.getLayoutParams() as ConstraintLayout.LayoutParams
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             val decorView = window.decorView
@@ -955,19 +956,19 @@ class ConnectivityActivity : AppCompatActivity() {
 
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height/2)) { // if more than 100 pixels, its probably a keyboard...
                 if(isTablet(this)){
-                    t_params.guidePercent=0.0f
-                    b_params.guidePercent=0.45f
+                    topParams.guidePercent=0.0f
+                    bottomParams.guidePercent=0.45f
                 }else{
-                    t_params.guidePercent=-0.05f
-                    b_params.guidePercent=0.45f
+                    topParams.guidePercent=-0.05f
+                    bottomParams.guidePercent=0.45f
                 }
             } else {
-                t_params.guidePercent=0.25f
-                b_params.guidePercent=0.75f
+                topParams.guidePercent=0.25f
+                bottomParams.guidePercent=0.75f
             }
 
-            t_guideline.setLayoutParams(t_params)
-            b_guideline.setLayoutParams(b_params)
+            topGuideline.setLayoutParams(topParams)
+            bottomGuideline.setLayoutParams(bottomParams)
         }
     }
 
