@@ -566,7 +566,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
             this@ProjectorConnectionActivity.runOnUiThread {
-                Toast.makeText(this, "tearDown - socket close", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.teardown), Toast.LENGTH_SHORT).show()
             }
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
