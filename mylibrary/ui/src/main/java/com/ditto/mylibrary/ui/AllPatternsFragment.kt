@@ -8,18 +8,18 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.adapter.PatternAdapter
-import java.util.*
-import javax.inject.Inject
-import kotlin.Comparator
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import java.util.*
+import javax.inject.Inject
+import kotlin.Comparator
 
 class AllPatternsFragment : BaseFragment() {
 
@@ -48,8 +48,6 @@ class AllPatternsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-//        setPatternAdapter()
         setUIEvents()
         viewModel.fetchOnPatternData()
     }
@@ -92,8 +90,8 @@ class AllPatternsFragment : BaseFragment() {
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             setPatternAdapter()
         }
-
         else -> {
+            logger.d("OnClickPattern")
         }
     }
 }
