@@ -50,5 +50,13 @@
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
     <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
+    <string name="socketfailed">Socket Connection failed. Try again!!</string>
+    <string name="renameproject">Rename Project</string>
+    <string name="rename">RENAME</string>
+    <string name="existing_project">There is an existing project with the same name. Do you want to rename your project or override existing?</string>
+    <string name="override">OVERRIDE</string>
+    <string name="projection_area_progress">Projection area is in process..Please wait!!</string>
+    <string name="projecting_messsage">Projecting Please wait!!</string>
+    <string name="projection_progress">Projection is under process.. Please wait</string>
 
 </resources>

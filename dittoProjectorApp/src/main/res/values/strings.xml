@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Ditto Projector</string>
     <string name="connected">Connected</string>
      <string name="BLEconnected">TRACEbleConnected</string>
@@ -16,5 +16,6 @@
     <string name="successregister">Registered Succesfully!!</string>
     <string name="waiting">Waiting for the client!!</string>
     <string name="failedrequest">TRACEFailed</string>
+    <string name="teardown">tearDown - socket close</string>
 
 </resources>
