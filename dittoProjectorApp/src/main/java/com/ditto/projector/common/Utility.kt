@@ -64,6 +64,7 @@ class Utility  {
 
             }catch (msg : Exception){
 
+                Log.d("exception","Connected to wifi")
             }
         }
 
@@ -94,11 +95,14 @@ class Utility  {
                 }
                 return port
             } catch (e: IOException) {
+                Log.d("Exception","create Socket")
             } finally {
                 if (socket != null) {
                     try {
                         socket.close()
                     } catch (e: IOException) {
+
+                        Log.d("Exception","findFreePort")
                     }
                 }
             }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -13,10 +14,10 @@ import android.widget.EditText
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import com.google.android.material.snackbar.Snackbar
 import com.ditto.workspace.domain.model.DragData
-import core.ui.common.Utility
 import com.ditto.workspace.ui.R
+import com.google.android.material.snackbar.Snackbar
+import core.ui.common.Utility
 
 /**
  * Helper Utility class (Calendar, Date/Time related methods)
@@ -58,12 +59,8 @@ class Utility {
             dialogBuilder
                 .setCancelable(false)
                 .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
-                    /*if(edittext.equals("") || edittext.equals(null)) {
-                        edittext.setError("Project Name can't be empty");
-                        return@OnClickListener;
-                    }*/
-                        //dialog.dismiss()
-                        //callback.onSaveButtonClicked(edittext.text.toString(), checkbox.isChecked)
+
+                    Log.d("Alert event","save and Exit")
                 })
                 .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
                     hidekyboard(
