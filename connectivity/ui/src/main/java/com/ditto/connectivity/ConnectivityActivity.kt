@@ -36,13 +36,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.ditto.connectivity.databinding.ConnectivityActivityBinding
+import com.ditto.connectivity.service.BluetoothLeService
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnSuccessListener
-import com.ditto.connectivity.databinding.ConnectivityActivityBinding
-import com.ditto.connectivity.service.BluetoothLeService
-import com.ditto.connectivity.R
 import core.network.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -169,7 +168,6 @@ class ConnectivityActivity : AppCompatActivity() {
     fun initNSD() {
         nsdManager = getSystemService(Context.NSD_SERVICE) as NsdManager?
         Log.d(ConnectivityUtils.TAG, "NSD Initialized")
-//        initializeResolveListener()
     }
 
     inner class MyResolveListener:NsdManager.ResolveListener {
@@ -225,7 +223,6 @@ class ConnectivityActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
             override fun onDiscoveryStopped(serviceType: String) {
                 Log.d(ConnectivityUtils.TAG, "Discovery stopped: $serviceType")
-                //discoveryStopped()
             }
 
             override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
@@ -244,6 +241,7 @@ class ConnectivityActivity : AppCompatActivity() {
             try {
                 nsdManager?.stopServiceDiscovery(discoveryListener)
             } finally {
+                Log.d("discoveryListener","in final block")
             }
             discoveryListener = null
         }
@@ -259,7 +257,6 @@ class ConnectivityActivity : AppCompatActivity() {
         Utility.isServiceConnected = false
         discoverServices()
         startServiceTimer()
-        //checkService()
     }
 
     private fun startServiceTimer(){
@@ -301,7 +298,6 @@ class ConnectivityActivity : AppCompatActivity() {
         Utility.nsdSericeHostName = nsdservice?.host?.hostAddress.toString()
         Utility.nsdSericePortName = nsdservice?.port!!.toInt()
         serviceConnectionWaitingJob?.cancel()
-        //startSocketConnection()
         checkSocketConnection()
 
     }
@@ -311,7 +307,6 @@ class ConnectivityActivity : AppCompatActivity() {
         Log.d(ConnectivityUtils.TAG, "startSocketConnection()")
         //runBlocking {
         withContext(Dispatchers.IO) {
-            //val ipAddress: String = nsdservice?.host?.hostAddress.toString()
         val host: InetAddress = nsdservice?.host!!
             Log.d(ConnectivityUtils.TAG, "address" + host + " port " + nsdservice?.port)
             var soc: Socket? = null
@@ -460,8 +455,6 @@ class ConnectivityActivity : AppCompatActivity() {
         }
     }    // Device scan callback.
     private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, rssi, scanRecord ->
-        //viewModel.isProgressBar.set(false)
-        //refresh.isClickable = true
         runOnUiThread {
             mLeDeviceListAdapter!!.addDevice(device)
             mLeDeviceListAdapter!!.notifyDataSetChanged()
@@ -581,11 +574,6 @@ class ConnectivityActivity : AppCompatActivity() {
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-        /* if (mBluetoothLeService != null && !isBLEConnected) {
-             val result = mBluetoothLeService!!.connect(mDeviceAddress)
-             //Log.d(TAG, "Connect request result=" + result)
-         }*/
     }
 
     override fun onPause() {
@@ -602,7 +590,6 @@ class ConnectivityActivity : AppCompatActivity() {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun getGattServices(gattServices: List<BluetoothGattService>?) {
         Log.d(ConnectivityUtils.TAG, "Activity-getGattServices()")
-        //if (gattServices == null) return
         if (gattServices != null) {
             for (gattService in gattServices) {
                 if (gattService.uuid == ConnectivityUtils.SERVICE_UUID) {
@@ -677,7 +664,7 @@ class ConnectivityActivity : AppCompatActivity() {
                 viewModel.isErrorLayout.set(true)
                 stopWaiting()
             } else {
-
+                Log.d("BroadcastReceiver","Action Gatt server undefined")
             }
         }
     }
@@ -758,8 +745,9 @@ class ConnectivityActivity : AppCompatActivity() {
                         TODO("VERSION.SDK_INT < LOLLIPOP")
                     }
                 } else {
-
+                    Log.d("error","instruction error")
                 }
+                Unit
             }
             is ConnectivityViewModel.Event.OnRetryClicked -> {
                 Log.d(ConnectivityUtils.TAG, "clicked retry button in unsucess/error view")
@@ -809,7 +797,7 @@ class ConnectivityActivity : AppCompatActivity() {
             }
 
         } catch (e: Exception) {
-
+            Log.d("exception","wifi")
         }
     }
 
