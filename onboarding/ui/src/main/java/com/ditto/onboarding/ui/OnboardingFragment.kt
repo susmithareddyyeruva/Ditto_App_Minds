@@ -127,10 +127,9 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         recycler_view.adapter = adapter
         adapter.viewModel = viewModel
     }
-
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: OnboardingViewModel.Event) =
         when (event) {
-
             is OnboardingViewModel.Event.OnClickSkipAndContinue -> { //Click on Skip & Continue
                 if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                     if (viewModel.dontShowThisScreen.get()) {
@@ -141,6 +140,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 }
                 Unit
             }
+
             is OnboardingViewModel.Event.OnShowBleDialogue -> {
              Log.d("dialog","Show bluetooth dialog")
             }
