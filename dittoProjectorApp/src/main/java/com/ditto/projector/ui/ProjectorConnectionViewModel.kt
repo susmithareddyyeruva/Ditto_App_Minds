@@ -13,6 +13,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import com.ditto.projector.R
 import com.ditto.projector.ble.WifiProfile
+import com.ditto.projector.common.Utility
 import com.ditto.projector.common.Utility.Companion.connectToWifi
 import com.ditto.projector.core.UiEvents
 import io.reactivex.disposables.CompositeDisposable
@@ -32,7 +33,9 @@ class ProjectorConnectionViewModel : ViewModel() {
     var isWifiReceiverfound: ObservableBoolean = ObservableBoolean(false)
     var mServiceRegisterPort: ObservableInt = ObservableInt(0)
     var mWifiProfile: WifiProfile? = null
-    lateinit var wificredentials: String
+      var wificredentials: String? = ""
+      var decryptedssid: String? = ""
+     var decryptedpwd: String? = ""
     var splitwificredentials: List<String>? = null
     var mBluetoothGattServer: BluetoothGattServer? = null
     var mBluetoothLeAdvertiser: BluetoothLeAdvertiser? = null
@@ -104,12 +107,31 @@ class ProjectorConnectionViewModel : ViewModel() {
                 }
 
             } else {
-                splitwificredentials?.get(0)?.let {
+                decryptedssid = splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
+                decryptedpwd = splitwificredentials?.get(1)?.let { Utility.decrypt(it) }
+                if (decryptedssid.equals("") || decryptedpwd.equals("")){
+                    decryptedssid = splitwificredentials?.get(0)
+                    decryptedpwd = splitwificredentials?.get(1)
+                }
+                // Store wifi name in preference
+                decryptedssid?.let {
+                    Utility.setSharedPref(
+                        context,
+                        it
+                    )
+                }
+                decryptedssid?.let {
+                    connectToWifi(
+                        it,
+                        decryptedpwd!!, context!!
+                    )
+                }
+                /*splitwificredentials?.get(0)?.let {
                     connectToWifi(
                         it,
                         splitwificredentials?.get(1)!!, context!!
                     )
-                }
+                }*/
                 uiEvents.post(Event.onWaitForConnection)
             }
 
