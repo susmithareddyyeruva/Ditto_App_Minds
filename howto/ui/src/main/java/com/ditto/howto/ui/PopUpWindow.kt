@@ -1,4 +1,5 @@
 package com.ditto.howto.ui
+
 /**
  * Created by Vishnu A V on  03/08/2020.
  * Popup Class wich plays the video
@@ -33,7 +34,7 @@ class PopUpWindow : AppCompatActivity() {
         overridePendingTransition(0, 0)
         setContentView(R.layout.popup_window)
         setUI()
-        val videopath:String? = intent.getStringExtra("filename")
+        val videopath: String? = intent.getStringExtra("filename")
         if (videopath != null) {
             playVideo(videopath)
         }
@@ -57,8 +58,9 @@ class PopUpWindow : AppCompatActivity() {
                 actionBar.hide()
             }
         }
-     }
-    private fun playVideo(filename : String) {
+    }
+
+    private fun playVideo(filename: String) {
         val videoUri: Uri = getMedia(filename)
         video.setVideoURI(videoUri)
         mediaController = MyMediaController(this)
@@ -97,7 +99,8 @@ class PopUpWindow : AppCompatActivity() {
 
         })
     }
-    private fun setUI(){
+
+    private fun setUI() {
         if (Build.VERSION.SDK_INT in 19..20) {
             setWindowFlag(this, true)
         }
@@ -105,17 +108,17 @@ class PopUpWindow : AppCompatActivity() {
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
-        if (Build.VERSION.SDK_INT >= 21) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= 21 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                this.window.statusBarColor = Color.TRANSPARENT
-                setWindowFlag(this, false)
-            }
+            this.window.statusBarColor = Color.TRANSPARENT
+            setWindowFlag(this, false)
         }
+
         popup_window_background.setBackgroundColor(Color.TRANSPARENT)
         popup_window_view_with_border.alpha = 1f
     }
-    fun setfullscreen(){
+
+    fun setfullscreen() {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
         val params =
@@ -124,14 +127,16 @@ class PopUpWindow : AppCompatActivity() {
         params.height = metrics.heightPixels
         video.setLayoutParams(params)
     }
+
     /**
      * onPause
      */
     override fun onPause() {
         super.onPause()
-        sPlayPosition=video.currentPosition
+        sPlayPosition = video.currentPosition
         video.pause()
     }
+
     /**
      * onResume
      */
@@ -140,14 +145,16 @@ class PopUpWindow : AppCompatActivity() {
         video.seekTo(sPlayPosition)
         video.resume()
     }
+
     /**
      * onDestroy
      */
     override fun onDestroy() {
         super.onDestroy()
-        sPlayPosition=0
+        sPlayPosition = 0
         Common.isShowingVideoPopup.set(false)
     }
+
     /**
      * function for getting video URI from RAW file
      */
@@ -157,6 +164,7 @@ class PopUpWindow : AppCompatActivity() {
                     "/raw/" + mediaName
         )
     }
+
     /**
      * function for getting attributes of current window
      */
@@ -166,7 +174,8 @@ class PopUpWindow : AppCompatActivity() {
         if (on) {
             winParams.flags = winParams.flags or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
         } else {
-            winParams.flags = winParams.flags and WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS.inv()
+            winParams.flags =
+                winParams.flags and WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS.inv()
         }
         win.attributes = winParams
     }
@@ -175,8 +184,8 @@ class PopUpWindow : AppCompatActivity() {
      * onBackPressed. Closing popup with animation
      */
     override fun onBackPressed() {
-         video.stopPlayback()
-         finish()
+        video.stopPlayback()
+        finish()
 
     }
 
