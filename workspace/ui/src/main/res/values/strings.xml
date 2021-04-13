@@ -57,6 +57,5 @@
     <string name="override">OVERRIDE</string>
     <string name="projection_area_progress">Projection area is in process..Please wait!!</string>
     <string name="projecting_messsage">Projecting Please wait!!</string>
-    <string name="projection_progress">Projection is under process.. Please wait</string>
-
+    <string name="projection_progress">Projection area is in process..Please wait!!</string>
 </resources>
