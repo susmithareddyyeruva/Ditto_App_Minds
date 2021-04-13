@@ -39,6 +39,7 @@ import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
+import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.Draggable
 import com.ditto.workspace.ui.util.DraggableListener
 import com.ditto.workspace.ui.util.Utility.Companion.getAlertDialogSaveAndExit
@@ -58,8 +59,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
 import kotlinx.coroutines.*
-import com.ditto.workspace.ui.R
-import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -175,7 +174,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         logger.d("Trace Entered Projection")
         //com.ditto.base.core.ui.common.Utility.showSnackBar("Projecting",binding.workspaceRoot)  // Checking projection scenario without connecting.
         if (mWorkspaceEditor?.views?.size ?: 0 < 1) {
-//            showWaitingMessage("Empty Workspace")
             GlobalScope.launch {
                 Utility.sendDittoImage(
                     requireContext(),
@@ -185,9 +183,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else {
             if (baseViewModel.activeSocketConnection.get()) {
                 if (baseViewModel.isProjecting.get()) {
-                    showWaitingMessage("Projection area is in process..Please wait!!")
+                    showWaitingMessage(resources.getString(R.string.projection_area_progress))
                 } else {
-                    showWaitingMessage("Projecting Please wait!!")
+                    showWaitingMessage(resources.getString(R.string.projecting_messsage))
                     GlobalScope.launch {
                         delay(PROJECTING_TIME.toLong())
                         if (viewModel.isProjectionRequest.get() && !baseViewModel.isProjecting.get()) {
@@ -383,7 +381,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         showProgress(false)
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -397,7 +395,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     showProgress(false)
                     Toast.makeText(
                         requireContext(),
-                        "Socket Connection failed. Try again!!",
+                        resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -816,7 +814,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }
             is WorkspaceViewModel.Event.RemoveAllPatternPieces -> {
-//                mWorkspaceEditor?.removePattern(viewModel.workspacedata, false)
                 clearWorkspace()
                 if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
                     viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
@@ -851,7 +848,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         if (com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.get()) {
             com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.set(false)
-            //initiateprojection()
         }
     }
 
@@ -901,12 +897,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     if (dragData?.type == Draggable.SELECT_ALL) {
                         mWorkspaceEditor?.clearAllSelection()
                         enableMirror(false)
-//                        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
                         viewModel.selectAllText.set(getString(R.string.select_all))
-//                        mWorkspaceEditor?.clearAllViews()
                         mWorkspaceEditor?.views?.let { viewModel.cutSelectAll(it) }
                     } else if (dragData?.type == Draggable.DRAG_OUT_WORKSPACE) {
-//                        dragData.workspaceItems?.let { viewModel.cutIndividualPieces(it) }
                         val count = dragData?.workspaceItems?.cutQuantity?.get(4)
                             ?.let { Character.getNumericValue(it) }
                         if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
@@ -1018,6 +1011,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
 
             else -> {
+                Log.d("dragger event","undefined")
             }
         }
         return true
@@ -1127,8 +1121,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }
             Utility.AlertType.CUT_BIN -> {
-//                viewModel.isSingleDelete =false
-//                viewModel.workspacedata?.let { viewModel.cutIndividualPiecesConfirmed(it,viewModel.cutCount) }
                 if (!viewModel.workspacedata?.isCompleted!!) {
                     viewModel.setCompletedCount(cutCount)
                     viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
@@ -1162,6 +1154,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
             }
             else -> {
+                Log.d("WorkspaceTabfragment","onPositiveButtonClicked")
 
             }
         }
@@ -1184,16 +1177,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 sendQuickCheckImage()
             }
            Utility.AlertType.QUICK_CHECK -> {
-                /*if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
-                    navigateToCalibration()
-                }*/
                 viewModel.isFromQuickCheck.set(false)
-                //showcalibrationbuttonclicked("calibration_pattern", true)
                 GlobalScope.launch { projectBorderImage() }
             }
             Utility.AlertType.CUT_BIN -> {
-//                viewModel.isSingleDelete =false
-//                viewModel.workspacedata?.let { viewModel.cutIndividualPiecesConfirmed(it,1) }
                 mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
                 if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
                     viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
@@ -1211,6 +1198,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 showSaveAndExitPopup()
             }
             else -> {
+                Log.d("WorkspaceTabfragment","onNegativeButtonClicked")
             }
         }
     }
@@ -1244,17 +1232,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun checkProjectName(projectName: String, id: Int): PatternsData? {
         return viewModel.allPatterns.value?.filter {
-            (it.status == "Active").or(it.status == "Completed")
+            (it.status == ACTIVE).or(it.status == COMPLETED)
         }?.firstOrNull { it.patternName == projectName && it.id != id }
     }
 
     private fun showSameNameAlert() {
         getAlertDialogue(
             requireContext(),
-            "Rename Project",
-            "There is an existing project with the same name. Do you want to rename your project or override existing?",
-            "RENAME",
-            "OVERRIDE",
+            resources.getString(R.string.renameproject),
+            resources.getString(R.string.existing_project),
+             resources.getString(R.string.rename),
+            resources.getString(R.string.override),
             this,
             Utility.AlertType.PATTERN_RENAME
         )
@@ -1285,7 +1273,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         baseViewModel.isSaveExitButtonClicked.set(false)
         val layout =
             activity?.layoutInflater?.inflate(R.layout.workspace_save_and_exit_dialog, null)
-        if (viewModel.data.value?.status.equals("Completed") ||
+        if (viewModel.data.value?.status.equals(COMPLETED) ||
             (com.ditto.workspace.ui.util.Utility.progressCount.get() == viewModel.data.value?.totalPieces)
         ) {
             val checkbox = layout?.findViewById(R.id.complete_checkbox) as CheckBox
@@ -1471,7 +1459,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PROJECTING_TIME = 10
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
-        private const val MAX_IMAGE_SIZE = 2520F
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
@@ -1479,6 +1466,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private const val COMPLETED="Completed"
+        private const val ACTIVE="Active"
 
     }
 
@@ -1667,7 +1656,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         showProgress(toShow = false)
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -1681,7 +1670,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     showProgress(toShow = false)
                     Toast.makeText(
                         requireContext(),
-                        "Socket Connection failed. Try again!!",
+                        resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
