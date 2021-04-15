@@ -67,6 +67,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         setToolbar()
         checkBluetoothWifiPermission()
     }
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
@@ -79,10 +80,10 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             if (!Utility.getBluetoothstatus()) {
                 isWifiAlert = false
                 showBluetoothDialogue()
-            } else if(!Utility.getWifistatus(requireContext())) {
+            } else if (!Utility.getWifistatus(requireContext())) {
                 isWifiAlert = true
                 showWifiDialogue()
-                Log.d("wifiefi222",viewModel.isWifiLaterClicked.get().toString())
+                Log.d("wifiefi222", viewModel.isWifiLaterClicked.get().toString())
             }
         } else {
             requestPermissions(
@@ -101,8 +102,11 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 checkBluetoothWifiPermission()
             } else {
                 logger.d("Permission Denied by the user")
-                Toast.makeText(requireContext(),"App will not work properly without this permission. Please turn on the permission from settings",
-                    Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "App will not work properly without this permission. Please turn on the permission from settings",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -115,6 +119,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             )
         } == PackageManager.PERMISSION_GRANTED
     }
+
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -128,22 +133,19 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         recycler_view.adapter = adapter
         adapter.viewModel = viewModel
     }
+
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: OnboardingViewModel.Event) =
         when (event) {
             is OnboardingViewModel.Event.OnClickSkipAndContinue -> { //Click on Skip & Continue
                 if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                    if (viewModel.dontShowThisScreen.get()) {
-                        findNavController().navigate(R.id.action_onboardingFragment_to_homefragment_checkedbox_clicked)//Navigate tp Home Screen with extra condition Don't shows this screen
-                    } else {
-                        findNavController().navigate(R.id.action_onboardingFragment_to_homefragment)//Navigate to Home screen skip & Continue  without any Condtion satisfied
-                    }
+                    navigateHomeScreen()
                 }
                 Unit
             }
 
             is OnboardingViewModel.Event.OnShowBleDialogue -> {
-                Log.d("dialog","Show bluetooth dialog")
+                Log.d("dialog", "Show bluetooth dialog")
             }
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
@@ -154,58 +156,21 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
-                    if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
-                        if(viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
-                            if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                                findNavController().navigate(
-                                    R.id.action_onboardingFragment_to_instructionsfragment_checkedbox_clicked,
-                                    bundle
-                                )
-                            }
-                        } else {  //Navigate to Caliberation screen
-                            if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                                findNavController().navigate(
-                                    R.id.action_onboardingFragment_to_calibrationfragment_checkedbox_clicked,
-                                    bundle
-                                )
-                            }
-                        }
+                    navigateInstructionOrCaliberation(bundle)
 
-
-                    } else {
-                        //Clicked on Items which doesn't satisfy  Don't show this screen condition
-
-                        try {
-                            if(viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
-                                if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                                    findNavController().navigate(
-                                        R.id.action_onboardingFragment_to_instructionsfragment,
-                                        bundle
-                                    )
-                                }
-                            } else { //Navigate to Caliberation screen
-                                if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                                    findNavController().navigate(
-                                        R.id.action_onboardingFragment_to_calibrationfragment,
-                                        bundle
-                                    )
-                                }
-                            }
-
-                        } catch (e: IllegalArgumentException) {
-                            logger.d(e.message.toString())
-                        }
-
-                    }
-
-                }
-                else{  //Clicked on How to
+                } else {  //Clicked on How to
 
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                         if (viewModel.dontShowThisScreen.get()) {
-                            findNavController().navigate(R.id.action_onboardingFragment_to_howtofragment_checked,bundle)
-                        }else{   //Navigate to Caliberation screen
-                            findNavController().navigate(R.id.action_onboardingFragment_to_howtofragment_unchecked,bundle)
+                            findNavController().navigate(
+                                R.id.action_onboardingFragment_to_howtofragment_checked,
+                                bundle
+                            )
+                        } else {   //Navigate to Caliberation screen
+                            findNavController().navigate(
+                                R.id.action_onboardingFragment_to_howtofragment_unchecked,
+                                bundle
+                            )
                         }
                     }
 
@@ -215,6 +180,68 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             }
 
         }
+
+    private fun navigateInstructionOrCaliberation(bundle: Bundle) {
+        if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
+            navigateWithDontShows(bundle)
+
+
+        } else { //Clicked on Items which doesn't satisfy  Don't show this screen condition
+            navigateWithoutDontShows(bundle)
+
+        }
+    }
+
+    private fun navigateHomeScreen() {
+        if (viewModel.dontShowThisScreen.get()) {//Navigate tp Home Screen with extra condition Don't shows this screen
+            findNavController().navigate(R.id.action_onboardingFragment_to_homefragment_checkedbox_clicked)
+        } else {//Navigate to Home screen skip & Continue  without any Condtion satisfied
+            findNavController().navigate(R.id.action_onboardingFragment_to_homefragment)
+        }
+    }
+
+    private fun navigateWithoutDontShows(bundle: Bundle) {
+
+        try {
+            if (viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
+                if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                    findNavController().navigate(
+                        R.id.action_onboardingFragment_to_instructionsfragment,
+                        bundle
+                    )
+                }
+            } else { //Navigate to Caliberation screen
+                if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                    findNavController().navigate(
+                        R.id.action_onboardingFragment_to_calibrationfragment,
+                        bundle
+                    )
+                }
+            }
+
+        } catch (e: IllegalArgumentException) {
+            logger.d(e.message.toString())
+        }
+
+    }
+
+    private fun navigateWithDontShows(bundle: Bundle) {
+        if (viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
+            if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                findNavController().navigate(
+                    R.id.action_onboardingFragment_to_instructionsfragment_checkedbox_clicked,
+                    bundle
+                )
+            }
+        } else {  //Navigate to Caliberation screen
+            if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                findNavController().navigate(
+                    R.id.action_onboardingFragment_to_calibrationfragment_checkedbox_clicked,
+                    bundle
+                )
+            }
+        }
+    }
 
     private fun showBluetoothDialogue() {  //Displaying Dialog for Bluetooth
         if (!viewModel.isBleLaterClicked.get() && !isFromHomeScreen) {
@@ -232,8 +259,8 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     private fun showWifiDialogue() {  //Displaying Dialog for Wifi
         //for retrict to open again
-        if(!viewModel.isWifiLaterClicked.get()){
-            isWifiAlert=true
+        if (!viewModel.isWifiLaterClicked.get()) {
+            isWifiAlert = true
             Utility.getAlertDialogue(
                 requireContext(),
                 resources.getString(R.string.connectivity),
@@ -248,13 +275,13 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Turn on button clicked
-        if(isWifiAlert){
+        if (isWifiAlert) {
             startActivity(Intent(Settings.ACTION_SETTINGS))
         } else {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             mBluetoothAdapter.enable()
-            if(!Utility.getWifistatus(requireContext())) {
+            if (!Utility.getWifistatus(requireContext())) {
                 viewModel.isWifiLaterClicked.set(false)
                 showWifiDialogue()
             }
@@ -263,7 +290,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Later button clicked
-        if (!isWifiAlert){
+        if (!isWifiAlert) {
             logger.d("Later clicked")
             viewModel.isBleLaterClicked.set(true)
             viewModel.onClickLater()
