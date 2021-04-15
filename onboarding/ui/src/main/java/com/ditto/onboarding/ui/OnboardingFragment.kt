@@ -20,6 +20,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
+import com.ditto.onboarding.util.ONBOARDING
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -133,35 +134,35 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             is OnboardingViewModel.Event.OnClickSkipAndContinue -> { //Click on Skip & Continue
                 if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                     if (viewModel.dontShowThisScreen.get()) {
-                        findNavController().navigate(R.id.action_onboardingFragment_to_homefragment_checkedbox_clicked)
+                        findNavController().navigate(R.id.action_onboardingFragment_to_homefragment_checkedbox_clicked)//Navigate tp Home Screen with extra condition Don't shows this screen
                     } else {
-                        findNavController().navigate(R.id.action_onboardingFragment_to_homefragment)
+                        findNavController().navigate(R.id.action_onboardingFragment_to_homefragment)//Navigate to Home screen skip & Continue  without any Condtion satisfied
                     }
                 }
                 Unit
             }
 
             is OnboardingViewModel.Event.OnShowBleDialogue -> {
-             Log.d("dialog","Show bluetooth dialog")
+                Log.d("dialog","Show bluetooth dialog")
             }
-            is OnboardingViewModel.Event.OnItemClick -> {  //Clicked on On_boarding items
+            is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
                     "InstructionId" to viewModel.clickedId.get(),
                     "isFromOnBoarding" to isFromOnBoardingScreen,
                     "isFromHome" to isFromHomeScreen
                 )
-                if (viewModel.clickedId.get() != 3) {
+                if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
-                    if (viewModel.dontShowThisScreen.get()) {   //Clicked on Don't show this screen
-                        if(viewModel.clickedId.get() == 1) {
+                    if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
+                        if(viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
                             if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                                 findNavController().navigate(
                                     R.id.action_onboardingFragment_to_instructionsfragment_checkedbox_clicked,
                                     bundle
                                 )
                             }
-                        } else {
+                        } else {  //Navigate to Caliberation screen
                             if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                                 findNavController().navigate(
                                     R.id.action_onboardingFragment_to_calibrationfragment_checkedbox_clicked,
@@ -172,16 +173,17 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
 
                     } else {
+                        //Clicked on Items which doesn't satisfy  Don't show this screen condition
 
                         try {
-                            if(viewModel.clickedId.get() == 1) {
+                            if(viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
                                 if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                                     findNavController().navigate(
                                         R.id.action_onboardingFragment_to_instructionsfragment,
                                         bundle
                                     )
                                 }
-                            } else {
+                            } else { //Navigate to Caliberation screen
                                 if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                                     findNavController().navigate(
                                         R.id.action_onboardingFragment_to_calibrationfragment,
@@ -197,19 +199,19 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                     }
 
                 }
-                else{
+                else{  //Clicked on How to
 
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                         if (viewModel.dontShowThisScreen.get()) {
                             findNavController().navigate(R.id.action_onboardingFragment_to_howtofragment_checked,bundle)
-                        }else{
+                        }else{   //Navigate to Caliberation screen
                             findNavController().navigate(R.id.action_onboardingFragment_to_howtofragment_unchecked,bundle)
                         }
                     }
 
                 }
                 Unit
-              
+
             }
 
         }
@@ -231,7 +233,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     private fun showWifiDialogue() {  //Displaying Dialog for Wifi
         //for retrict to open again
         if(!viewModel.isWifiLaterClicked.get()){
-        isWifiAlert=true
+            isWifiAlert=true
             Utility.getAlertDialogue(
                 requireContext(),
                 resources.getString(R.string.connectivity),
@@ -246,16 +248,16 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Turn on button clicked
-         if(isWifiAlert){
+        if(isWifiAlert){
             startActivity(Intent(Settings.ACTION_SETTINGS))
         } else {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             mBluetoothAdapter.enable()
-             if(!Utility.getWifistatus(requireContext())) {
-                 viewModel.isWifiLaterClicked.set(false)
-                     showWifiDialogue()
-                 }
+            if(!Utility.getWifistatus(requireContext())) {
+                viewModel.isWifiLaterClicked.set(false)
+                showWifiDialogue()
+            }
         }
 
     }
