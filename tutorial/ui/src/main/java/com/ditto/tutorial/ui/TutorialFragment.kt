@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.tutorial.R
+import com.ditto.tutorial.TUTORIAL
 import com.ditto.tutorial.databinding.FragmentTutorialBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -62,26 +63,11 @@ class TutorialFragment : BaseFragment() {
                     "isFromHome" to true
                 )
                 if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
-                    if (viewModel.clickID.get() == 1) {
-                        if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
-                            findNavController().navigate(
-                                R.id.action_destination_tutorial_to_beamsetupFragment,
-                                bundle
-                            )
-                        }
-                    } else {
-                        if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
-                            findNavController().navigate(
-                                R.id.action_destination_tutorial_to_calibrationFragment,
-                                bundle
-                            )
-                        }
-                    }
-
+                    navigateToBeamSetpOrCaliberation(bundle)
                 }
                 Unit
             }
-            is TutorialViewModel.Event.onHowToClick -> {
+            is TutorialViewModel.Event.onHowToClick -> {//Navigate to How to screen
 
                 if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
                     findNavController().navigate(
@@ -98,6 +84,25 @@ class TutorialFragment : BaseFragment() {
 
 
         }
+
+    private fun navigateToBeamSetpOrCaliberation(bundle: Bundle) {
+        if (viewModel.clickID.get() == TUTORIAL.BEAMSETUP.id) {//Beam setup and Takedown
+            if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
+                findNavController().navigate(
+                    R.id.action_destination_tutorial_to_beamsetupFragment,
+                    bundle
+                )
+            }
+        } else {
+            if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
+                findNavController().navigate(
+                    R.id.action_destination_tutorial_to_calibrationFragment,
+                    bundle
+                )
+            }
+        }
+
+    }
 
     private fun setuptoolbar() {
         toolbarViewModel.isShowActionBar.set(false)
