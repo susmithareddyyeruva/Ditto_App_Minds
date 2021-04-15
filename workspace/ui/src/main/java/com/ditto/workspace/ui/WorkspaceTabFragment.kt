@@ -1086,7 +1086,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     override fun onProjectWorkspace() {
-        //TODO("Not yet implemented")
+        Log.d("DraggableListener", "onProjectWorkspace")
     }
 
     override fun onDragOut(view: View, workspaceItem: WorkspaceItems?) {

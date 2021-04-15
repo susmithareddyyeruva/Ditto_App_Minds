@@ -549,11 +549,6 @@ class WorkspaceEditor private constructor(builder: Builder) {
                 return
             }
         (addedViews.find { it.tag == imageView?.tag }) to (imageView?.parent as View)
-
-//        var workspaceItem=addedViewsModel.find { it.id == imageView?.tag }
-//        workspaceItem?.isMirrorV = (imageView?.rotationX == 180F)
-//        setDataToWorkspaceModel((imageView?.parent as View),workspaceItem)
-
         addedViewsModel.find { it.id == imageView?.tag }?.isMirrorV =
             (imageView?.rotationX == 180F)
         addedViewsModel.find { it.id == imageView?.tag }?.xcoordinate =
