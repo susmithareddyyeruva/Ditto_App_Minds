@@ -446,7 +446,7 @@ fun handleSplicedImageDragBack(
                 }.start()
         }
         Draggable.STICKY.NONE -> {
-
+            Log.d("SplicedImageDragBack", "Draggable.STICKY.NONE")
         }
     }
 }
