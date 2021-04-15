@@ -143,7 +143,11 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                     registerListener()
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     viewModel.isBleConnected.set(false)
-                    viewModel.bleconnectionstatus.set(getString(R.string.disconnect))
+                    if (viewModel.isConnectionFromiOS.get()){
+                        viewModel.bleconnectionstatus.set(getString(R.string.connected))
+                    } else {
+                        viewModel.bleconnectionstatus.set(getString(R.string.disconnect))
+                    }
                 }
             }
 
@@ -160,7 +164,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 viewModel.samplestring.set("onCharacteristicWriteRequest")
                 showToast()
                 viewModel.wificredentials = String(value)
-                if (viewModel.wificredentials.equals(getString(R.string.BLEconnectionrequest))) {
+                if (viewModel.wificredentials!!.startsWith(getString(R.string.BLEconnectionrequest))) {
                     viewModel.bleconnectionstatus.set(getString(R.string.connected))
                     Log.d(
                         "CONNECTIVITY_PROJECTOR",
@@ -172,11 +176,24 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             it
                         )
                     }
+                    if (viewModel.wificredentials!!.equals(getString(R.string.BLEconnectionrequestIOS))){
+                        viewModel.isConnectionFromiOS.set(true)
+                    } else {
+                        viewModel.isConnectionFromiOS.set(false)
+                    }
                 } else {
                     try {
                         viewModel.liveconnectionstatus.set(getString(R.string.cred_received))
-                        viewModel.splitwificredentials = viewModel.wificredentials.split(",")
+                        viewModel.splitwificredentials = viewModel.wificredentials!!.split(",")
                         viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials)
+                        //------ For testing Pupose (showing the decrypted value)----------//
+                        /*viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
+                        + ", "+viewModel.splitwificredentials?.get(1)?.let { Utility.decrypt(it) }+ ", "
+                        + viewModel.splitwificredentials?.get(2)?.let { Utility.decrypt(it) }
+                        )*/
+                        if (viewModel.splitwificredentials!![2] == "IOS"){
+                            viewModel.bleconnectionstatus.set(getString(R.string.connected))
+                        }
                         /*// Store wifi name in preference
                         Utility.setSharedPref(
                             this@ProjectorConnectionActivity,
