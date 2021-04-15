@@ -40,14 +40,16 @@ class NsdHelper(applicationContext: Context) {
             }
 
             override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                Log.d("RegistrationListener","onRegistrationFailed")
 
             }
 
             override fun onServiceUnregistered(arg0: NsdServiceInfo) {
-
+                Log.d("RegistrationListener","onServiceUnregistered")
             }
 
             override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                Log.d("RegistrationListener","onUnregistrationFailed")
 
             }
         }
