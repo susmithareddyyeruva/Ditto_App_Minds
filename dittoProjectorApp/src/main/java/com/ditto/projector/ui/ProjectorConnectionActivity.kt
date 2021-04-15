@@ -579,6 +579,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 )
                 viewModel.mNsdManager?.unregisterService(viewModel.mRegistrationListener)
             } finally {
+                Log.d("teardown","final block")
             }
             viewModel.mRegistrationListener = null
         }
