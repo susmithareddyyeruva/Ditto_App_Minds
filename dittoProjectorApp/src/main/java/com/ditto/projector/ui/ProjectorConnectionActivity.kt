@@ -297,9 +297,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private fun initializeRegistrationListener() {
         viewModel.mRegistrationListener = object : NsdManager.RegistrationListener {
 
-            override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo) {
-                Log.d("CONNECTIVITY_PROJECTOR", "onServiceRegistered- $NsdServiceInfo")
-                viewModel.mServiceName = NsdServiceInfo.serviceName
+            override fun onServiceRegistered(nsdServiceInfo: NsdServiceInfo) {
+                Log.d("CONNECTIVITY_PROJECTOR", "onServiceRegistered- $nsdServiceInfo")
+                viewModel.mServiceName = nsdServiceInfo.serviceName
                 onNsdServiceRegistered(viewModel.mServiceName)
             }
 
