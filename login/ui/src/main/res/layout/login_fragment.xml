@@ -119,13 +119,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="-30dp"
+                        android:onClick="@{()-> viewModel.openExternalBrowser()}"
                         android:src="@drawable/ditto" />
 
                     <TextView
                         android:id="@+id/text_welcome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:text="@string/Welcome"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16px" />
