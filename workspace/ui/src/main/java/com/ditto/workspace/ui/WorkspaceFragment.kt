@@ -94,30 +94,30 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (binding.viewPager.adapter == null) {
             val workspacAdapter =
                 WorkspaceAdapter(cfManager)
-            val bundle_one = bundleOf(
+            val garmentBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.garments),
                PATTERN_ID to viewModel.patternId.get()
             )
             fragmentGarment = WorkspaceTabFragment()
-            fragmentGarment.setArguments(bundle_one)
+            fragmentGarment.setArguments(garmentBundle)
 
-            val bundle_two = bundleOf(
+            val liningBundle = bundleOf(
                PATTERN_CATEGORY to getString(R.string.lining),
                PATTERN_ID to viewModel.patternId.get()
             )
             fragmentLining = WorkspaceTabFragment()
-            fragmentLining.setArguments(bundle_two)
+            fragmentLining.setArguments(liningBundle)
 
-            val bundle_three = bundleOf(
+            val interfacingBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.interfacing),
                 PATTERN_ID to viewModel.patternId.get()
             )
             fragmentInterface = WorkspaceTabFragment()
-            fragmentInterface.setArguments(bundle_three)
+            fragmentInterface.setArguments(interfacingBundle)
 
-            workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))
-            workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))
-            workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))
+            workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
+            workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
+            workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))//Interfacing
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
