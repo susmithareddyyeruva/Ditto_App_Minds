@@ -1,6 +1,8 @@
 package com.ditto.login.ui
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -72,7 +74,14 @@ class LoginViewModel @Inject constructor(
                 .subscribeBy { handleFetchResult(it) }
         }
     }
-
+    //redirecting to external browser
+    fun openExternalBrowser(){
+        val url = "https://www.joann.com/create-account"
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    }
     private fun handleFetchResult(result: Any) {
         logger.d("handleFetchResult ${result.toString()}")
         if(result.toString() == "0")
