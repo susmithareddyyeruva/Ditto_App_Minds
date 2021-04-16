@@ -69,20 +69,20 @@ fun View.makeDraggable(
         val xMax = (parentWidth - v.width.toFloat())
         val yMax = (parentHeight - v.height.toFloat())
 
-        var x_max_Point =
+        var xMaxPoint =
             (viewWidthMiddle * Math.abs(cos(Math.toRadians(v.rotation.toDouble()))) + viewHeightMiddle * Math.abs(
                 sin(
                     Math.toRadians(v.rotation.toDouble())
                 )
             )).toFloat()
-        var y_max_Point =
+        var yMaxPoint =
             (viewHeightMiddle * Math.abs(cos(Math.toRadians(v.rotation.toDouble()))) + viewWidthMiddle * Math.abs(
                 sin(
                     Math.toRadians(v.rotation.toDouble())
                 )
             )).toFloat()
-        var xDiff = (viewWidthMiddle - x_max_Point)
-        var yDiff = (viewHeightMiddle - y_max_Point)
+        var xDiff = (viewWidthMiddle - xMaxPoint)
+        var yDiff = (viewHeightMiddle - yMaxPoint)
 
         var newTouchX = event.rawX + widgetDX
         var newTouchY = event.rawY + widgetDY
@@ -139,10 +139,10 @@ fun View.makeDraggable(
                         }
 
                         // checking outside drag to cut bin
-                        if (newTouchX < 0F - xDiff - x_max_Point ||
-                            newTouchX > xMax.toFloat() + xDiff + x_max_Point ||
-                            newTouchY < 0F - yDiff - y_max_Point ||
-                            newTouchY > yMax.toFloat() + yDiff + y_max_Point
+                        if (newTouchX < 0F - xDiff - xMaxPoint ||
+                            newTouchX > xMax.toFloat() + xDiff + xMaxPoint ||
+                            newTouchY < 0F - yDiff - yMaxPoint ||
+                            newTouchY > yMax.toFloat() + yDiff + yMaxPoint
                         ) {
                             if (!((v.x < 0F - xDiff || v.x > xMax.toFloat() + xDiff ||
                                         v.y < 0F - yDiff || v.y > yMax.toFloat() + yDiff)
