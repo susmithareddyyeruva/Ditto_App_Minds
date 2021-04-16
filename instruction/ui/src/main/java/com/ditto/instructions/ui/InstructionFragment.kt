@@ -445,10 +445,12 @@ class InstructionFragment constructor(
                 }
             }
             Utility.AlertType.WIFI -> {
-                startActivityForResult(
-                    Intent(Settings.ACTION_SETTINGS),
-                    REQUEST_ACTIVITY_RESULT_CODE
-                )
+//                startActivityForResult(
+//                    Intent(Settings.ACTION_SETTINGS),
+//                    REQUEST_ACTIVITY_RESULT_CODE
+//                )
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+                enableCalibrateButton(true)
             }
         }
     }
@@ -721,9 +723,9 @@ class InstructionFragment constructor(
                     enableCalibrateButton(true)
                     howTobuttonclick()
                 }
-                else -> {
-                    enableCalibrateButton(true)
-                }
+//                else -> {
+//                    enableCalibrateButton(true)
+//                }
             }
         }
     }
