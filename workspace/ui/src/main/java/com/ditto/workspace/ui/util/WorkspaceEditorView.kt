@@ -2,10 +2,8 @@ package com.ditto.workspace.ui.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -16,14 +14,14 @@ class WorkspaceEditorView : RelativeLayout {
     private var mImgSource: AppCompatImageView? = null
 
     constructor(context: Context?) : super(context) {
-        init(null)
+        init()
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(
         context,
         attrs
     ) {
-        init(attrs)
+        init()
     }
 
     constructor(
@@ -31,7 +29,7 @@ class WorkspaceEditorView : RelativeLayout {
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
-        init(attrs)
+        init()
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -41,11 +39,11 @@ class WorkspaceEditorView : RelativeLayout {
         defStyleAttr: Int,
         defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        init(attrs)
+        init()
     }
 
     @SuppressLint("Recycle")
-    private fun init(attrs: AttributeSet?) {
+    private fun init() {
         //Setup image attributes
         mImgSource = AppCompatImageView(context)
         mImgSource?.setId(imgSrcId)

@@ -866,21 +866,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    private fun initiateprojection() {
-        if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-            viewModel.isProjectionRequest.set(true)
-            startProjecting()
-        } else {
-            // to clear out workspace projection
-            GlobalScope.launch {
-                Utility.sendDittoImage(
-                    requireActivity(),
-                    "solid_black"
-                )
-            }
-        }
-    }
-
     override fun onDrag(view: View?, dragEvent: DragEvent?): Boolean {
 
         val dragData: DragData? = if (dragEvent?.localState == null) {

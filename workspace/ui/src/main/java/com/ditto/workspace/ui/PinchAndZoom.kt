@@ -50,7 +50,7 @@ class PinchAndZoom : AppCompatActivity() {
                 Log.d("Exception","image path")
             }
         }
-        ic_close_button.setOnClickListener(View.OnClickListener {
+        binding.icCloseButton.setOnClickListener(View.OnClickListener {
             this.finish()
             overridePendingTransition(0, 0);
         })

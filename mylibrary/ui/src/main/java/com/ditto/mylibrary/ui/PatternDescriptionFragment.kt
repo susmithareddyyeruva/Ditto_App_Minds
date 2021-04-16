@@ -46,10 +46,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
+import java.io.File
 import java.net.Socket
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener {
@@ -97,7 +97,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         } else {
             setPatternImage()
         }
-        outputDirectory =Utility.getOutputDirectory(requireContext())
+        outputDirectory = Utility.getOutputDirectory(requireContext())
     }
 
     companion object {
@@ -297,39 +297,29 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private suspend fun sendSampleImage(result: Bitmap, isQuickCheck: Boolean) {
         withContext(Dispatchers.IO) {
-                var soc: Socket? = null
-                try {
-                    soc = Socket(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
-                    )
-                    if (soc.isConnected) {
-                        val workspaceStream = ByteArrayOutputStream()
-                        result.compress(Bitmap.CompressFormat.PNG, 0, workspaceStream)
-                        val bitmapdata = workspaceStream.toByteArray()
-                        result.recycle()
-                        val dataOutputStream: DataOutputStream =
-                            DataOutputStream(soc.getOutputStream())
-                        dataOutputStream.write(bitmapdata)
-                        dataOutputStream.close()
-                        withContext(Dispatchers.Main) {
-                            showProgress(false)
-                            if (isQuickCheck)
-                                showQuickCheckDialog()
-                            else
-                                navigateToCalibration()
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                requireContext(),
-                                CONNNECTION_FAILED,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+            var soc: Socket? = null
+            try {
+                soc = Socket(
+                    core.network.Utility.nsdSericeHostName,
+                    core.network.Utility.nsdSericePortName
+                )
+                if (soc.isConnected) {
+                    val workspaceStream = ByteArrayOutputStream()
+                    result.compress(Bitmap.CompressFormat.PNG, 0, workspaceStream)
+                    val bitmapdata = workspaceStream.toByteArray()
+                    result.recycle()
+                    val dataOutputStream: DataOutputStream =
+                        DataOutputStream(soc.getOutputStream())
+                    dataOutputStream.write(bitmapdata)
+                    dataOutputStream.close()
+                    withContext(Dispatchers.Main) {
+                        showProgress(false)
+                        if (isQuickCheck)
+                            showQuickCheckDialog()
+                        else
+                            navigateToCalibration()
                     }
-                } catch (e: Exception) {
-                    logger.d("Exception " + e.message)
+                } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
@@ -337,9 +327,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                } finally {
-                    soc?.close()
                 }
+            } catch (e: Exception) {
+                logger.d("Exception " + e.message)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        CONNNECTION_FAILED,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } finally {
+                soc?.close()
+            }
         }
     }
 
@@ -386,7 +386,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun showConnectivityPopup() {
         val intent = Intent(requireContext(), ConnectivityActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivityForResult(intent,
+        startActivityForResult(
+            intent,
             REQUEST_ACTIVITY_RESULT_CODE
         )
     }
@@ -474,24 +475,24 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             Utility.AlertType.CALIBRATION -> {
                 showProgress(toShow = true)
-                GlobalScope.launch {projectBorderImage()}
+                GlobalScope.launch { projectBorderImage() }
             }
             Utility.AlertType.QUICK_CHECK -> {
                 // to clear out workspace projection
                 if (baseViewModel.activeSocketConnection.get()) {
-                    GlobalScope.launch {Utility.sendDittoImage(requireActivity(), "solid_black")}
+                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
                 }
                 enterWorkspace()
             }
-            Utility.AlertType.DEFAULT ->{
-                Log.d("alertType","DEFAULT")
+            Utility.AlertType.DEFAULT -> {
+                Log.d("alertType", "DEFAULT")
             }
         }
     }
 
     private suspend fun projectBorderImage() {
-        withContext(Dispatchers.IO)  {
-        val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
+        withContext(Dispatchers.IO) {
+            val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
 
             var soc: Socket? = null
             try {
@@ -590,7 +591,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 GlobalScope.launch { projectBorderImage() }
             }
             alertType == Utility.AlertType.DEFAULT -> {
-                Log.d("alertType","DEFAULT")
+                Log.d("alertType", "DEFAULT")
             }
         }
     }
@@ -598,7 +599,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     override fun onNeutralButtonClicked() {
         // to clear out workspace projection
         if (baseViewModel.activeSocketConnection.get()) {
-            GlobalScope.launch {Utility.sendDittoImage(requireActivity(), "solid_black")}
+            GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
         enterWorkspace()
     }
@@ -615,21 +616,4 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
     }
 
-    private fun saveBitmap(bitmap: Bitmap) {
-        val photoFile = File(
-            outputDirectory, "TRACE_IMAGE_" +
-                    SimpleDateFormat(
-                        FILENAME_FORMAT, Locale.US
-                    ).format(System.currentTimeMillis()) + ".jpg"
-        )
-        try {
-            val stream: OutputStream = FileOutputStream(photoFile)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            stream.flush()
-            stream.close()
-           Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
 }
