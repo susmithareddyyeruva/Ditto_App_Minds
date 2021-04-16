@@ -16,6 +16,7 @@ import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
@@ -299,9 +300,23 @@ class Utility {
                         dataOutputStream.close()
                     } else {
                         println("Socket Connection Failed")
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                context,
+                                "Socket Connection failed. Try again!!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 } catch (e: Exception) {
                     println("Socket Connection Failed")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Socket Connection failed. Try again!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } finally {
                     soc?.close()
                     Log .d("TRACE_ Projection :","Send Ditto Finish " + Calendar. getInstance().timeInMillis)
