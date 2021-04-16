@@ -214,11 +214,9 @@ sonarqube {
         property "sonar.projectName", "Ditto"
         property "sonar.projectKey", "Ditto"
         property "sonar.host.url", "http://localhost:9000"
-        property "sonar.language", "java"
-        property "sonar.sources", "src/main/"
-        property "sonar.login", "admin"
-        property "sonar.password", "admin"
-        property "sonar.verbose=true"
+        property "sonar.language", "kotlin"
+        property "sonar.sources", "src/main/java"
+        property "sonar.projectKey", "88736342995a348e01549dbdf0026970a5006e27"
         property "sonar.exclusions", '**/*Test*/**,' +
                 '*.json,' +
                 '**/*test*/**,' +
