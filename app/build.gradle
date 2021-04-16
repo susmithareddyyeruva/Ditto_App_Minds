@@ -3,7 +3,7 @@ plugins {
     id('kotlin-android')
     id('kotlin-android-extensions')
     id('kotlin-kapt')
-    id "org.sonarqube" version "3.1.1"
+  //  id "org.sonarqube" version "3.1.1"
 }
 apply from: '../test_dependencies.gradle'
 
@@ -209,19 +209,19 @@ dependencies {
     implementation project(path: ':howto-domain')
 
 }
-sonarqube {
-    properties {
-        property "sonar.projectName", "Ditto"
-        property "sonar.projectKey", "Ditto"
-        property "sonar.host.url", "http://localhost:9000"
-        property "sonar.language", "kotlin"
-        property "sonar.sources", "src/main/java"
-        property "sonar.projectKey", "88736342995a348e01549dbdf0026970a5006e27"
-        property "sonar.exclusions", '**/*Test*/**,' +
-                '*.json,' +
-                '**/*test*/**,' +
-                '**/.gradle/**,' +
-                '**/R.class'
-    }
-}
+//sonarqube {
+//    properties {
+//        property "sonar.projectName", "Ditto"
+//        property "sonar.projectKey", "Ditto"
+//        property "sonar.host.url", "http://localhost:9000"
+//        property "sonar.language", "kotlin"
+//        property "sonar.sources", "src/main/java"
+//        property "sonar.projectKey", "88736342995a348e01549dbdf0026970a5006e27"
+//        property "sonar.exclusions", '**/*Test*/**,' +
+//                '*.json,' +
+//                '**/*test*/**,' +
+//                '**/.gradle/**,' +
+//                '**/R.class'
+//    }
+//}
 
