@@ -4,10 +4,12 @@
     <item name="nav_graph_id_biometric" type="id"/>
 
     <item name="nav_graph_id_onboarding" type="id"/>
+    <item name="nav_graph_id_video" type="id"/>
     <item name="nav_graph_onboarding" type="id"/>
      <item name="nav_graph_id_home" type="id"/>
     <item name="nav_graph_tutorial" type="id"/>
     <item name="destination_onboarding" type="id"/>
+    <item name="destination_video" type="id"/>
     <item name="nav_graph_mylibrary" type="id"/>
     <item name="howto_navigation" type="id"/>
     <item name="destination_howto" type="id"/>
@@ -23,6 +25,7 @@
     <item name="action_tutorialFragment_to_nav_graph_id_onboarding" type="id"/>
     <item name="action_splashActivity_to_HomeFragment" type="id"/>
     <item name="action_splashActivity_to_Onboarding" type="id"/>
+    <item name="action_splashActivity_to_Video" type="id"/>
     <item name="action_destination_tutorial_to_beamsetupFragment" type="id"/>
     <item name="action_destination_tutorial_to_calibrationFragment" type="id"/>
     <item name="action_onboardingFragment_to_instructionsfragment" type="id"/>

@@ -175,7 +175,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 } else {
                     try {
                         viewModel.liveconnectionstatus.set(getString(R.string.cred_received))
-                        viewModel.splitwificredentials = viewModel.wificredentials.split(",")
+                        viewModel.splitwificredentials = viewModel.wificredentials?.split(",")
                         viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials)
                         /*// Store wifi name in preference
                         Utility.setSharedPref(
