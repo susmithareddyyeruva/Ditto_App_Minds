@@ -74,7 +74,9 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-.idea/sonarlint/
+.idea/sonarlint
+.idea/sonarIssues.xml
+.idea/sonarlint/issuestore/index.pb
 
 
 .DS_Store
