@@ -14,8 +14,8 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
-import trace.mylibrary.domain.GetMylibraryData
-import trace.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 
 import javax.inject.Inject
 

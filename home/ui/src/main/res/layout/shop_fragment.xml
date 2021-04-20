@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.ditto.home_ui.ShopViewModel" />
+            type="com.ditto.home.ui.ShopViewModel" />
 
         <import type="android.view.View" />
     </data>

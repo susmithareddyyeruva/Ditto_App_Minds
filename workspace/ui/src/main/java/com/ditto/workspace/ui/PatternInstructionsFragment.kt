@@ -1,18 +1,17 @@
 package com.ditto.workspace.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import com.ditto.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import trace.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 
 class PatternInstructionsFragment : BaseFragment() {
 

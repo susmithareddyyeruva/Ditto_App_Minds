@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.ditto.howto_ui.HowtoViewModel" />
+            type="com.ditto.howto.ui.HowtoViewModel" />
 
 
         <import type="android.view.View" />

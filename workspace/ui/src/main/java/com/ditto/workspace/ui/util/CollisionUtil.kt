@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
-import trace.workspace.ui.R
+import com.ditto.workspace.ui.R
 import java.lang.ref.WeakReference
 
 

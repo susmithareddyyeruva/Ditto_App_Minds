@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
@@ -22,12 +22,18 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true // for data binding
+        viewBinding = true // for view binding
     }
 }
 
@@ -36,7 +42,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.android.material:material:$material_version"
-    implementation 'androidx.viewpager:viewpager:1.0.0'
+    implementation "androidx.viewpager:viewpager:$androidx_viewpager2_version"
     testImplementation "junit:junit:$junit_test_version"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
@@ -48,7 +54,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_extensions_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation "de.hdodenhof:circleimageview:$circleimageview"
 
 
     /**
@@ -66,8 +72,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-    implementation "androidx.navigation:navigation-fragment:${navigation_fragment}"
-    implementation "androidx.navigation:navigation-ui:${navigation_ui}"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 
@@ -82,4 +86,8 @@ dependencies {
     implementation project(path: ':home-ui')
     implementation project(':logger')
 
+}
+
+repositories {
+    google()
 }

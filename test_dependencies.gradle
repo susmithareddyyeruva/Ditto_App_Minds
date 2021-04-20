@@ -19,12 +19,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:${androidx_lifecycle_version}"
 
     // Workaround for dependency conflict during assembleAndroidTest
-    androidTestImplementation("androidx.arch.core:core-runtime:2.0.1-alpha01")
-
-    // Work around issue with runtime classpath version conflict
-    androidTestImplementation "androidx.arch.core:core-testing:${androidx_arch}"
-    androidTestImplementation "androidx.legacy:legacy-support-core-utils:${legacyCoreUtils}"
-    androidTestImplementation "androidx.lifecycle:lifecycle-runtime:${androidx_lifecycle_version}"
+    androidTestImplementation("androidx.arch.core:core-runtime:2.1.0")
 
 //    androidTestImplementation project(':test_shared')
     androidTestImplementation "androidx.arch.core:core-testing:${androidx_arch}"

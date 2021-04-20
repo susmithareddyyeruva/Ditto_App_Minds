@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
@@ -22,12 +22,18 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true // for data binding
+        viewBinding = true // for view binding
     }
 }
 
@@ -62,8 +68,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-    implementation "androidx.navigation:navigation-fragment:${navigation_fragment}"
-    implementation "androidx.navigation:navigation-ui:${navigation_ui}"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 
@@ -75,9 +79,13 @@ dependencies {
 
     implementation project(':login-domain')
 
-    implementation project(':instruction-ui')
+    implementation project(':instructions-ui')
     implementation project(':home-ui')
     implementation project(':tutorial-ui')
     implementation project(':logger')
     implementation project(path: ':howto-ui')
+}
+
+repositories {
+    google()
 }

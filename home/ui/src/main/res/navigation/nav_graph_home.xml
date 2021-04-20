@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ditto.home_ui.HomeFragment"
+        android:name="com.ditto.home.ui.HomeFragment"
         android:label="Home"
         tools:layout="@layout/home_fragment" >
 
@@ -28,14 +28,14 @@
     </fragment>
     <fragment
         android:id="@+id/buyPatternFragment"
-        android:name="com.ditto.home_ui.BuyPatternFragment"
+        android:name="com.ditto.home.ui.BuyPatternFragment"
         android:label="Buy Pattern"
         tools:layout="@layout/buy_pattern_fragment" />
 
 
     <fragment
         android:id="@+id/ShopFragment"
-        android:name="com.ditto.home_ui.ShopFragment"
+        android:name="com.ditto.home.ui.ShopFragment"
         android:label="Shop Joann"
         tools:layout="@layout/shop_fragment" />
 

@@ -1,7 +1,6 @@
 package com.ditto.login.domain
 
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import non_core.lib.Result
 
@@ -12,4 +11,6 @@ interface LoginRepository {
     fun getDbData(): Single<Result<LoginUser>>
 
     fun createUser(user: LoginUser): Single<Long>
+
+    fun loginUser(user: LoginUser): Single<Result<LoginUser>>
 }

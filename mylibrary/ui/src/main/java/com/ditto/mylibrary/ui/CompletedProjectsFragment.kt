@@ -1,8 +1,6 @@
 package com.ditto.mylibrary.ui
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +10,15 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.my_library_fragment.*
-import trace.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
-import trace.mylibrary.ui.R
-import trace.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.my_library_fragment.*
+import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.ui.R
+import com.ditto.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
 import java.util.*
 import javax.inject.Inject
 import kotlin.Comparator

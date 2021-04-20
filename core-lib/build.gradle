@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
 
     defaultConfig {
@@ -22,13 +22,19 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
         }
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true // for data binding
+        viewBinding = true // for view binding
     }
 
 }
@@ -36,32 +42,27 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.1.0'
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
-
-    implementation "androidx.drawerlayout:drawerlayout:1.1.0"
-    implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.drawerlayout:drawerlayout:$drawerlayout"
+    implementation "com.google.android.material:material:1.1.0-alpha06"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
-
-
-    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_support"
 
+    implementation "androidx.activity:activity-ktx:$androidx_activity"
+    implementation "androidx.fragment:fragment-ktx:$androidx_fragment"
     implementation "androidx.lifecycle:lifecycle-extensions:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$live_data_extensions_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_extensions_version"
- 
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
+
 
     /**
      * RX JAVA
@@ -78,7 +79,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
 
     /**
      * RETROFIT

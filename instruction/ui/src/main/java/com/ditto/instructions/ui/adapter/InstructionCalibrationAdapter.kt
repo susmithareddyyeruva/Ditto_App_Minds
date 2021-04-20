@@ -16,7 +16,7 @@ import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto_ui.adapter.DoubleClickListener
+import com.ditto.howto.adapter.DoubleClickListener
 import com.ditto.instructions.domain.model.InstructionModel
 import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.instructions.ui.databinding.InstructionCalibrationAdapterBinding
