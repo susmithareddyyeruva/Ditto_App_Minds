@@ -749,10 +749,11 @@ class ConnectivityActivity : AppCompatActivity() {
                      var encryptedcred: String = ""
                     val encryptedssid: String? = ConnectivityUtils.encrypt(wifiname.text.toString())
                     val encryptedpwd: String? = ConnectivityUtils.encrypt(wifipwd.text.toString())
+                    val encryptedAuth: String? = ConnectivityUtils.encrypt("ANDROID")
                     if (!encryptedssid.equals("") && !encryptedpwd.equals("")){
-                        encryptedcred = "$encryptedssid,$encryptedpwd"
+                        encryptedcred = "$encryptedssid,$encryptedpwd,$encryptedAuth"
                     } else {
-                        encryptedcred = wifiname.text.toString() + "," + wifipwd.text.toString()
+                        encryptedcred = wifiname.text.toString() + "," + wifipwd.text.toString()+ ","+"ANDROID"
                     }
                     viewModel.isWifiCredLayout.set(false)
                     viewModel.isProjectorLayout.set(true)
