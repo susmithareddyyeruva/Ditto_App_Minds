@@ -17,6 +17,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -515,9 +516,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
 
         override fun onDisplayAdded(displayId: Int) {
+            Log.d("displayListener","onDisplayAdded")
         }
 
         override fun onDisplayRemoved(displayId: Int) {
+            Log.d("displayListener","onDisplayRemoved")
         }
     }
 
@@ -609,12 +612,13 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             Utility.AlertType.CALIBRATION -> sendCalibrationPattern()
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
+                Log.d("event","undefined")
             }
         }
     }
 
     override fun onNeutralButtonClicked() {
-
+        Log.d("event","onNeutralButtonClicked")
     }
 
     private fun restartCamera() {

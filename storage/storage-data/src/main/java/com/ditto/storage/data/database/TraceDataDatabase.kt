@@ -6,15 +6,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.ditto.storage.data.model.OnBoarding
+import com.ditto.storage.data.model.Patterns
+import com.ditto.storage.data.model.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import storage.data.R
-import com.ditto.storage.data.model.OnBoarding
-import com.ditto.storage.data.model.Patterns
-import com.ditto.storage.data.model.User
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -75,7 +75,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
                     .execute(Runnable { dao.insertAllOnboardingData(lcs) })
                 Log.d(TAG, "insertOnboardingData complete")
             } catch (e: JSONException) {
-
+                Log.d("insertOnboardingData","exception")
             }
         }
 
@@ -96,7 +96,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
                     .execute(Runnable { dao.insertAllPatternsData(lcs) })
                 Log.d(TAG, "insertPatternsData complete")
             } catch (e: JSONException) {
-
+                Log.d("insertPatternsData","exception")
             }
         }
 
@@ -117,7 +117,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
                 Log.d(TAG, "" + json.toString())
                 return json.getJSONArray(jsonObject)
             } catch (e: IOException) {
-
+                Log.d("loadJsonArray","exception")
             }
             return null
         }

@@ -315,9 +315,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private fun initializeRegistrationListener() {
         viewModel.mRegistrationListener = object : NsdManager.RegistrationListener {
 
-            override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo) {
-                Log.d("CONNECTIVITY_PROJECTOR", "onServiceRegistered- $NsdServiceInfo")
-                viewModel.mServiceName = NsdServiceInfo.serviceName
+            override fun onServiceRegistered(nsdServiceInfo: NsdServiceInfo) {
+                Log.d("CONNECTIVITY_PROJECTOR", "onServiceRegistered- $nsdServiceInfo")
+                viewModel.mServiceName = nsdServiceInfo.serviceName
                 onNsdServiceRegistered(viewModel.mServiceName)
             }
 
@@ -589,7 +589,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
             this@ProjectorConnectionActivity.runOnUiThread {
-                Toast.makeText(this, "tearDown - socket close", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.teardown), Toast.LENGTH_SHORT).show()
             }
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
@@ -602,6 +602,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 )
                 viewModel.mNsdManager?.unregisterService(viewModel.mRegistrationListener)
             } finally {
+                Log.d("teardown","final block")
             }
             viewModel.mRegistrationListener = null
         }

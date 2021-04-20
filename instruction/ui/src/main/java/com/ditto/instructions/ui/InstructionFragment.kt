@@ -9,7 +9,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.Settings
 import android.util.DisplayMetrics
@@ -26,12 +26,20 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.joann.fabrictracetransform.transform.TransformErrorCode
-import com.joann.fabrictracetransform.transform.performTransform
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.howto.utils.Common
-
+import com.ditto.instructions.ui.adapter.InstructionAdapter
+import com.ditto.instructions.ui.adapter.InstructionCalibrationAdapter
+import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
+import com.joann.fabrictracetransform.transform.TransformErrorCode
+import com.joann.fabrictracetransform.transform.performTransform
+import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
+import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -39,17 +47,10 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.instruction_adapter.view.*
 import kotlinx.android.synthetic.main.instruction_fragment.*
-import kotlinx.coroutines.*
-import com.ditto.instructions.ui.adapter.InstructionAdapter
-import com.ditto.instructions.ui.adapter.InstructionCalibrationAdapter
-import com.ditto.logger.Logger
-import com.ditto.logger.LoggerFactory
-import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
-import core.ui.ViewModelDelegate
-import core.ui.common.Utility
-import com.ditto.instructions.ui.R
-import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.net.Socket
@@ -124,6 +125,7 @@ class InstructionFragment constructor(
 
         instruction_view_pager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
+                Log.d("onPageScroll", "state changed")
             }
 
             override fun onPageScrolled(
@@ -131,6 +133,7 @@ class InstructionFragment constructor(
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
+                Log.d("onPageScrolled", "state scrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -224,7 +227,6 @@ class InstructionFragment constructor(
             }
             is InstructionViewModel.Event.OnCalibrationButtonClicked -> {
                 enableCalibrateButton(false)
-                //showcalibrationbuttonclicked()
                 checkBluetoothWifiPermission()
             }
             is InstructionViewModel.Event.OnSkipTutorial -> {
@@ -373,9 +375,12 @@ class InstructionFragment constructor(
             activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
 
         val dialogBuilder =
-            AlertDialog.Builder(ContextThemeWrapper(requireContext(),
-                R.style.AlertDialogCustom
-            ))
+            AlertDialog.Builder(
+                ContextThemeWrapper(
+                    requireContext(),
+                    R.style.AlertDialogCustom
+                )
+            )
         dialogBuilder
             .setCancelable(false)
             .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -445,10 +450,6 @@ class InstructionFragment constructor(
                 }
             }
             Utility.AlertType.WIFI -> {
-//                startActivityForResult(
-//                    Intent(Settings.ACTION_SETTINGS),
-//                    REQUEST_ACTIVITY_RESULT_CODE
-//                )
                 startActivity(Intent(Settings.ACTION_SETTINGS))
                 enableCalibrateButton(true)
             }
@@ -460,15 +461,13 @@ class InstructionFragment constructor(
      */
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
-            Utility.AlertType.BLE -> {
-//                howTobuttonclick()
+            Utility.AlertType.BLE, Utility.AlertType.WIFI -> {
                 enableCalibrateButton(true)
                 skipToHowToButtonclick()
             }
-            Utility.AlertType.WIFI -> {
-//                howTobuttonclick()
-                enableCalibrateButton(true)
-                skipToHowToButtonclick()
+
+            else -> {
+                Log.d("alert type", "except bluetooth and wifi")
             }
         }
     }
@@ -497,7 +496,6 @@ class InstructionFragment constructor(
             } else if (!Utility.getWifistatus(requireContext())) {
                 showWifiDialogue()
             } else {
-                //showConnectivityPopup()
                 checkSocketConnection()
             }
         } else {
@@ -585,7 +583,7 @@ class InstructionFragment constructor(
             alert?.show()
         } else {
             alert?.dismiss()
-            alert=null
+            alert = null
         }
     }
 
@@ -703,7 +701,8 @@ class InstructionFragment constructor(
     private fun showConnectivityPopup() {
         val intent = Intent(requireContext(), ConnectivityActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivityForResult(intent,
+        startActivityForResult(
+            intent,
             REQUEST_ACTIVITY_RESULT_CODE
         )
     }
@@ -715,17 +714,12 @@ class InstructionFragment constructor(
             when {
                 data?.data.toString().equals("success") -> {
                     baseViewModel.activeSocketConnection.set(true)
-                    /*showProgress()
-                        sendCalibrationPattern()*/
                     projectBorderImage()
                 }
                 data?.data.toString().equals(ConnectivityUtils.SKIP) -> {
                     enableCalibrateButton(true)
                     howTobuttonclick()
                 }
-//                else -> {
-//                    enableCalibrateButton(true)
-//                }
             }
         }
     }

@@ -3,6 +3,7 @@ package com.ditto.projector.wifi
 import android.content.Context
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
+import android.util.Log
 import com.ditto.projector.ui.ProjectorConnectionActivity
 import kotlin.properties.Delegates
 
@@ -32,21 +33,23 @@ class NsdHelper(applicationContext: Context) {
     fun initializeRegistrationListener(){
         mRegistrationListener = object : NsdManager.RegistrationListener {
 
-            override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo) {
-                mServiceName = NsdServiceInfo.serviceName
+            override fun onServiceRegistered(nsdServiceInfo: NsdServiceInfo) {
+                mServiceName = nsdServiceInfo.serviceName
                 //(mContext as ConnectionActivity).onNsdServiceRegistered(mServiceName)
                 (mContext as ProjectorConnectionActivity).onNsdServiceRegistered(mServiceName)
             }
 
             override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                Log.d("RegistrationListener","onRegistrationFailed")
 
             }
 
             override fun onServiceUnregistered(arg0: NsdServiceInfo) {
-
+                Log.d("RegistrationListener","onServiceUnregistered")
             }
 
             override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                Log.d("RegistrationListener","onUnregistrationFailed")
 
             }
         }
@@ -57,6 +60,7 @@ class NsdHelper(applicationContext: Context) {
             try {
                 mNsdManager!!.unregisterService(mRegistrationListener)
             } finally {
+                Log.d("tearDown", "in final block of code")
             }
             mRegistrationListener = null
         }

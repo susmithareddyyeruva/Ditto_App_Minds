@@ -25,12 +25,13 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.joann.fabrictracetransform.transform.TransformErrorCode
-import com.joann.fabrictracetransform.transform.performTransform
-import com.ditto.logger.Logger
-import com.ditto.logger.LoggerFactory
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
+import com.joann.fabrictracetransform.transform.TransformErrorCode
+import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -38,17 +39,19 @@ import core.ui.common.Utility
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
-import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
-import java.io.*
-import java.net.Socket
-import javax.inject.Inject
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.pattern_description_fragment.*
-import kotlinx.coroutines.*
-import com.ditto.mylibrary.ui.R
-import java.text.SimpleDateFormat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
+import java.io.File
+import java.net.Socket
 import java.util.*
+import javax.inject.Inject
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener {
 
@@ -63,6 +66,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+    private val CONNNECTION_FAILED = "Socket Connection failed. Try again!!" // Compliant
+
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -88,15 +93,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         baseViewModel.activeSocketConnection.set(false)
         if (viewModel.data.value == null) {
             arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
-            /* if(arguments?.getString("isFrom").equals("RESUME_RECENT")){
-                 arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
-             }*/
             viewModel.fetchPattern()
             setUIEvents()
         } else {
             setPatternImage()
         }
-        outputDirectory =Utility.getOutputDirectory(requireContext())
+        outputDirectory = Utility.getOutputDirectory(requireContext())
     }
 
     companion object {
@@ -120,7 +122,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (!Utility.getWifistatus(requireContext())) {
                 showWifiDialogue()
             } else {
-                //showConnectivityPopup()
                 checkSocketConnection()
             }
         } else {
@@ -301,50 +302,50 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         //saveBitmap(result)
         logger.d("TRACE_ Projection : sendSampleImage  Start " + Calendar. getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
-                var soc: Socket? = null
-                try {
-                    soc = Socket(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
-                    )
-                    if (soc.isConnected) {
-                        val workspaceStream = ByteArrayOutputStream()
-                        result.compress(Bitmap.CompressFormat.PNG, 0, workspaceStream)
-                        val bitmapdata = workspaceStream.toByteArray()
-                        result.recycle()
-                        val dataOutputStream: DataOutputStream =
-                            DataOutputStream(soc.getOutputStream())
-                        dataOutputStream.write(bitmapdata)
-                        dataOutputStream.close()
-                        withContext(Dispatchers.Main) {
-                            showProgress(false)
-                            if (isQuickCheck)
-                                showQuickCheckDialog()
-                            else
-                                navigateToCalibration()
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Socket Connection failed. Try again!!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+            var soc: Socket? = null
+            try {
+                soc = Socket(
+                    core.network.Utility.nsdSericeHostName,
+                    core.network.Utility.nsdSericePortName
+                )
+                if (soc.isConnected) {
+                    val workspaceStream = ByteArrayOutputStream()
+                    result.compress(Bitmap.CompressFormat.PNG, 0, workspaceStream)
+                    val bitmapdata = workspaceStream.toByteArray()
+                    result.recycle()
+                    val dataOutputStream: DataOutputStream =
+                        DataOutputStream(soc.getOutputStream())
+                    dataOutputStream.write(bitmapdata)
+                    dataOutputStream.close()
+                    withContext(Dispatchers.Main) {
+                        showProgress(false)
+                        if (isQuickCheck)
+                            showQuickCheckDialog()
+                        else
+                            navigateToCalibration()
                     }
-                } catch (e: Exception) {
-                    logger.d("Exception " + e.message)
+                } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            CONNNECTION_FAILED,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                } finally {
-                    soc?.close()
-                    logger.d("TRACE_ Projection : sendSampleImage  Finish " + Calendar. getInstance().timeInMillis)
                 }
+            } catch (e: Exception) {
+                logger.d("Exception " + e.message)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        CONNNECTION_FAILED,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } finally {
+                soc?.close()
+                logger.d("TRACE_ Projection : sendSampleImage  Finish " + Calendar. getInstance().timeInMillis)
+            }
         }
     }
 
@@ -391,7 +392,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun showConnectivityPopup() {
         val intent = Intent(requireContext(), ConnectivityActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivityForResult(intent,
+        startActivityForResult(
+            intent,
             REQUEST_ACTIVITY_RESULT_CODE
         )
     }
@@ -479,22 +481,24 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             Utility.AlertType.CALIBRATION -> {
                 showProgress(toShow = true)
-                GlobalScope.launch {projectBorderImage()}
+                GlobalScope.launch { projectBorderImage() }
             }
             Utility.AlertType.QUICK_CHECK -> {
                 // to clear out workspace projection
                 if (baseViewModel.activeSocketConnection.get()) {
-                    GlobalScope.launch {Utility.sendDittoImage(requireActivity(), "solid_black")}
+                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
                 }
                 enterWorkspace()
             }
-            Utility.AlertType.DEFAULT -> TODO()
+            Utility.AlertType.DEFAULT -> {
+                Log.d("alertType", "DEFAULT")
+            }
         }
     }
 
     private suspend fun projectBorderImage() {
-        withContext(Dispatchers.IO)  {
-        val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
+        withContext(Dispatchers.IO) {
+            val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
 
             var soc: Socket? = null
             try {
@@ -519,7 +523,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            CONNNECTION_FAILED,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -529,7 +533,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Socket Connection failed. Try again!!",
+                        CONNNECTION_FAILED,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -577,29 +581,31 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        when (alertType) {
-            Utility.AlertType.BLE -> {
+        when {
+            alertType == Utility.AlertType.BLE -> {
                 logger.d("Later clicked")
                 enterWorkspace()
             }
-            Utility.AlertType.WIFI -> {
+            alertType == Utility.AlertType.WIFI -> {
                 enterWorkspace()
             }
-            Utility.AlertType.CALIBRATION -> {
+            alertType == Utility.AlertType.CALIBRATION -> {
                 sendQuickCheckImage()
             }
-            Utility.AlertType.QUICK_CHECK -> {
+            alertType == Utility.AlertType.QUICK_CHECK -> {
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
             }
-            Utility.AlertType.DEFAULT -> TODO()
+            alertType == Utility.AlertType.DEFAULT -> {
+                Log.d("alertType", "DEFAULT")
+            }
         }
     }
 
     override fun onNeutralButtonClicked() {
         // to clear out workspace projection
         if (baseViewModel.activeSocketConnection.get()) {
-            GlobalScope.launch {Utility.sendDittoImage(requireActivity(), "solid_black")}
+            GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
         enterWorkspace()
     }
@@ -613,24 +619,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "isFromPatternDescription" to true
                 )
             )
-        }
-    }
-
-    private fun saveBitmap(bitmap: Bitmap) {
-        val photoFile = File(
-            outputDirectory, "TRACE_IMAGE_" +
-                    SimpleDateFormat(
-                        FILENAME_FORMAT, Locale.US
-                    ).format(System.currentTimeMillis()) + ".jpg"
-        )
-        try {
-            val stream: OutputStream = FileOutputStream(photoFile)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            stream.flush()
-            stream.close()
-           Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.ditto.mylibrary.ui
 
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,14 +17,10 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
-import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryData
-
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val getPattern: GetMylibraryData) :
     BaseViewModel() {
-    // TODO: Implement the ViewModel
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
@@ -44,6 +43,7 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
+                Log.d("error","Error undefined")
             }
         }
     }

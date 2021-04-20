@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -13,10 +14,10 @@ import android.widget.EditText
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import com.google.android.material.snackbar.Snackbar
 import com.ditto.workspace.domain.model.DragData
-import core.ui.common.Utility
 import com.ditto.workspace.ui.R
+import com.google.android.material.snackbar.Snackbar
+import core.ui.common.Utility
 
 /**
  * Helper Utility class (Calendar, Date/Time related methods)
@@ -29,15 +30,17 @@ class Utility {
         val workspaceItemId: ObservableInt = ObservableInt(0)
         val onDrag: ObservableBoolean = ObservableBoolean(false)
         val isOverlappingEnabled: ObservableBoolean = ObservableBoolean(false)
-        val isPopupShowing: ObservableBoolean = ObservableBoolean(false) // stop GC clear and app going to background on multiple click
+        val isPopupShowing: ObservableBoolean =
+            ObservableBoolean(false) // stop GC clear and app going to background on multiple click
         val isFirstTimeLoad: ObservableBoolean = ObservableBoolean(false)
+
         @JvmStatic
         val progressCount: ObservableInt = ObservableInt(0)
 
-        val mPatternPieceList : MutableList<Int> = ArrayList()
+        val mPatternPieceList: MutableList<Int> = ArrayList()
         val dragData: ObservableField<DragData> = ObservableField()
         val isMovedtoCalibration: ObservableBoolean = ObservableBoolean(false)
-        var alert : AlertDialog? =  null
+        var alert: AlertDialog? = null
         fun getAlertDialogSaveAndExit(
             context: Context,
             title: String,
@@ -45,7 +48,7 @@ class Utility {
             view: View,
             negativeButton: String,
             positiveButton: String,
-            callback : CallbackDialogListener,
+            callback: CallbackDialogListener,
             alertType: Utility.AlertType
         ) {
             val edittext = view.findViewById(R.id.project_name) as EditText
@@ -58,12 +61,8 @@ class Utility {
             dialogBuilder
                 .setCancelable(false)
                 .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
-                    /*if(edittext.equals("") || edittext.equals(null)) {
-                        edittext.setError("Project Name can't be empty");
-                        return@OnClickListener;
-                    }*/
-                        //dialog.dismiss()
-                        //callback.onSaveButtonClicked(edittext.text.toString(), checkbox.isChecked)
+
+                    Log.d("Alert event", "save and Exit")
                 })
                 .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
                     hidekyboard(
@@ -85,34 +84,28 @@ class Utility {
             )
             alert?.show()
             alert?.getButton(DialogInterface.BUTTON_POSITIVE)?.setOnClickListener {
-                if(edittext.text.toString().isNotEmpty()) {
+                if (edittext.text.toString().isNotEmpty()) {
                     hidekyboard(
                         context,
                         view
                     )
                     alert?.dismiss()
                     callback.onSaveButtonClicked(edittext.text.toString(), checkbox.isChecked)
-                }else{
+                } else {
                     edittext.setError("Project Name can't be empty")
                 }
             }
         }
 
-       /* fun changeAlertPsoition(gravity : Int){
-            alert?.window?.setGravity(gravity)
-        }*/
-
-        fun changeAlertPsoition(gravity : Int, mHeight : Int){
-            //val wmlp: WindowManager.LayoutParams? = alert?.getWindow()?.getAttributes()
-
-            if(gravity==0){
+        fun changeAlertPsoition(gravity: Int, mHeight: Int) {
+            if (gravity == 0) {
                 val wmlp: WindowManager.LayoutParams? = alert?.window?.attributes
                 alert?.window?.setGravity(Gravity.TOP)
                 wmlp?.gravity = Gravity.TOP
-            }else if(gravity == 1){
+            } else if (gravity == 1) {
                 val wmlp: WindowManager.LayoutParams? = alert?.window?.attributes
                 if (wmlp != null) {
-                    wmlp?.x =  0 //x position
+                    wmlp?.x = 0 //x position
                     wmlp?.y = -(mHeight / 3)
                 }
 
@@ -123,7 +116,7 @@ class Utility {
                 )
                 wmlp?.gravity = Gravity.TOP
                 alert?.window?.setGravity(Gravity.TOP)
-            }else{
+            } else {
                 val wmlp: WindowManager.LayoutParams? = alert?.getWindow()?.getAttributes()
                 if (wmlp != null) {
                     wmlp?.x = 0 //x position
@@ -133,18 +126,20 @@ class Utility {
                 wmlp?.gravity = Gravity.CENTER
             }
         }
+
         fun showSnackBar(message: String, view: View) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }
 
-        fun hidekyboard(mContext : Context , mView : View){
-            val inputMethodManager =  mContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        fun hidekyboard(mContext: Context, mView: View) {
+            val inputMethodManager =
+                mContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(mView?.windowToken, 0)
         }
     }
 
     interface CallbackDialogListener {
-        fun onSaveButtonClicked(projectName:String, isCompleted: Boolean?)
+        fun onSaveButtonClicked(projectName: String, isCompleted: Boolean?)
         fun onExitButtonClicked()
     }
 

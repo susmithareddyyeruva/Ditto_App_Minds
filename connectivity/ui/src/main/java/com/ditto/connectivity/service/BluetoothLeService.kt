@@ -9,11 +9,11 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.ditto.logger.Logger
-import com.ditto.logger.LoggerFactory
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.connectivity.ConnectivityUtils.Companion.CHARACTERISTIC_UUID
 import com.ditto.connectivity.ConnectivityUtils.Companion.SERVICE_UUID
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
@@ -28,6 +28,10 @@ class BluetoothLeService : Service() {
         STATE_DISCONNECTED
     private var mMtu = 20
     val CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb"
+    private val INITIALIZATION_FAILED = "BluetoothAdapter not initialized"
+    private val REQUEST_TYPE = "handshakeRequest()"
+
+
     @Inject
     lateinit var loggerFactory: LoggerFactory
 
@@ -37,10 +41,10 @@ class BluetoothLeService : Service() {
 
 
     private val mGattCallback = @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    object : BluetoothGattCallback() {
+    object : BluetoothGattCallback() {  //Getting callback here
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             Log.d(ConnectivityUtils.TAG, "onConnectionStateChange()")
-            var intentAction: String = ""
+            var intentAction = ""
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d(ConnectivityUtils.TAG, "onConnectionStateChange() - STATE_CONNECTED")
                 intentAction =
@@ -58,7 +62,7 @@ class BluetoothLeService : Service() {
                     STATE_DISCONNECTED
 
             } else {
-
+                Log.d("BluetoothProfile","state undefined")
             }
             broadcastUpdate(intentAction)
         }
@@ -71,19 +75,6 @@ class BluetoothLeService : Service() {
                 intentAction =
                     ACTION_GATT_SERVICES_DISCOVERED
                 changeMtu(512)
-           //
-              /*  val gattService =
-                    gatt.getService(UUID.fromString("00001805-0000-1000-8000-00805f9b34fb"))
-                val gattCharacteristic = gattService.getCharacteristic(
-                    UUID.fromString("00002a2b-0000-1000-8000-00805f9b34fb")
-                )
-                gatt.setCharacteristicNotification(gattCharacteristic, true)
-                val descriptor = gattCharacteristic.getDescriptor(
-                    UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
-                )
-                descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-                gatt.writeDescriptor(descriptor)*/
-                //
             } else {
                 intentAction =
                     ACTION_GATT_DISCONNECTED
@@ -100,33 +91,41 @@ class BluetoothLeService : Service() {
                 ConnectivityUtils.TAG,
                 "onCharacteristicChanged(): " + String(characteristic.value)
             )
-            var intentAction: String = ""
+            var intentAction = ""
             if (String(characteristic.value).equals(ConnectivityUtils.HANDSHAKE_RESPONSE)) {
-                
+
                 Log.d(
                     ConnectivityUtils.TAG,
-                    "onCharacteristicChanged():HANDSHAKE RESPONSE - $ACTION_GATT_HANDSHAKE_SUCCESS")
+                    "onCharacteristicChanged():HANDSHAKE RESPONSE - $ACTION_GATT_HANDSHAKE_SUCCESS"
+                )
                 intentAction =
                     ACTION_GATT_HANDSHAKE_SUCCESS
-            } else if (String(characteristic.value).equals(ConnectivityUtils.SERVER_SUCCESS_RESPONSE) || String(characteristic.value).equals(
-                    ConnectivityUtils.SERVice_ALREADY_REGISTERED)) {
+            } else if (String(characteristic.value).equals(ConnectivityUtils.SERVER_SUCCESS_RESPONSE) || String(
+                    characteristic.value
+                ).equals(
+                    ConnectivityUtils.SERVice_ALREADY_REGISTERED
+                )
+            ) {
                 Log.d(
                     ConnectivityUtils.TAG,
-                    "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_SERVER_SUCCESS")
+                    "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_SERVER_SUCCESS"
+                )
 
                 intentAction =
                     ACTION_GATT_SERVER_SUCCESS
-            } else if (String(characteristic.value).equals(ConnectivityUtils.WIFIFAILS)){
+            } else if (String(characteristic.value).equals(ConnectivityUtils.WIFIFAILS)) {
 
                 Log.d(
                     ConnectivityUtils.TAG,
-                    "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_WIFI_FAILURE")
+                    "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_WIFI_FAILURE"
+                )
                 intentAction =
                     ACTION_GATT_WIFI_FAILURE
             } else {
                 Log.d(
                     ConnectivityUtils.TAG,
-                    "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_SERVER_FAILURE")
+                    "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_SERVER_FAILURE"
+                )
                 intentAction =
                     ACTION_GATT_SERVER_FAILURE
             }
@@ -159,16 +158,15 @@ class BluetoothLeService : Service() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     fun handshakeRequest(request: String) {
-        Log.d(ConnectivityUtils.TAG, "handshakeRequest()" + request)
+        Log.d(ConnectivityUtils.TAG, REQUEST_TYPE + request)
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             return
         }
-        val mCustomService = mBluetoothGatt!!.getService(ConnectivityUtils.SERVICE_UUID) ?: return
+        val mCustomService = mBluetoothGatt!!.getService(SERVICE_UUID) ?: return
         val mWriteCharacteristic =
-            mCustomService.getCharacteristic(ConnectivityUtils.CHARACTERISTIC_UUID)
+            mCustomService.getCharacteristic(CHARACTERISTIC_UUID)
         mWriteCharacteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
         mBluetoothGatt!!.setCharacteristicNotification(mWriteCharacteristic, true)
         mWriteCharacteristic.value = request.toByteArray()
@@ -182,61 +180,9 @@ class BluetoothLeService : Service() {
 
         //---------------commented by vishnu-----------//
 
-        /*val uuid: UUID = UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG)
-        val descriptor = mWriteCharacteristic.getDescriptor(uuid).apply {
-            value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-        }
-        mBluetoothGatt!!.writeDescriptor(descriptor)
-
-        val uuid1: UUID = UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG)
-        val descriptor1 = mWriteCharacteristic.getDescriptor(uuid1).apply {
-            value = BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
-        }
-        mBluetoothGatt!!.writeDescriptor(descriptor1)*/
-
-        //--------------------------//
-
-        /*if (mBluetoothGatt?.setCharacteristicNotification(mWriteCharacteristic, true)!!) {
-            val descriptor: BluetoothGattDescriptor =
-                mWriteCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"))
-            if (descriptor != null) {
-                if (mWriteCharacteristic.getProperties() and BluetoothGattCharacteristic.PROPERTY_NOTIFY !== 0) {
-                    descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-                } else if (mWriteCharacteristic.getProperties() and BluetoothGattCharacteristic.PROPERTY_INDICATE !== 0) {
-                    descriptor.value = BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
-                } else {
-                    // The characteristic does not have NOTIFY or INDICATE property set;
-                }
-                if (mBluetoothGatt!!.writeDescriptor(descriptor)) {
-                    // Success
-                } else {
-                    // Failed to set client characteristic notification;
-                }
-            } else {
-                // Failed to set client characteristic notification;
-            }
-        } else {
-            // Failed to register notification;
-        }
-*/
-       /* val descriptor: BluetoothGattDescriptor = mWriteCharacteristic.getDescriptor(
-            UUID.fromString("00002a2b-0000-1000-8000-00805f9b34fb")
-        )*/
-
-
-        /*if (UUID_WRITE == mWriteCharacteristic.uuid) {
-            val descriptor = mWriteCharacteristic.getDescriptor(
-                UUID.fromString(CHARACTERISTIC_UUID.toString())
-            )
-            descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-            mBluetoothGatt!!.writeDescriptor(descriptor)
-        }*/
-
-
-
-        Log.d(ConnectivityUtils.TAG, "handshakeRequest()" + request)
-        Log.d(ConnectivityUtils.TAG, "handshakeRequest()" + request.toByteArray())
-        Log.d(ConnectivityUtils.TAG, "handshakeRequest()" + mWriteCharacteristic)
+        Log.d(ConnectivityUtils.TAG, REQUEST_TYPE + request)
+        Log.d(ConnectivityUtils.TAG, REQUEST_TYPE + request.toByteArray())
+        Log.d(ConnectivityUtils.TAG, REQUEST_TYPE + mWriteCharacteristic)
     }
 
     /**
@@ -251,7 +197,7 @@ class BluetoothLeService : Service() {
         enabled: Boolean
     ) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.d(ConnectivityUtils.TAG, "BluetoothAdapter not initialized")
+            Log.d(ConnectivityUtils.TAG, INITIALIZATION_FAILED)
             return
         }
         mBluetoothGatt!!.setCharacteristicNotification(characteristic, enabled)
@@ -264,28 +210,7 @@ class BluetoothLeService : Service() {
             mBluetoothGatt!!.writeDescriptor(descriptor)
         }
 
-        /*if (mBluetoothGatt?.setCharacteristicNotification(characteristic, true)!!) {
-            val descriptor: BluetoothGattDescriptor =
-                characteristic.getDescriptor(ConnectivityUtils.SERVICE_UUID)
-            if (descriptor != null) {
-                if (characteristic.getProperties() and BluetoothGattCharacteristic.PROPERTY_NOTIFY !== 0) {
-                    descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-                } else if (characteristic.getProperties() and BluetoothGattCharacteristic.PROPERTY_INDICATE !== 0) {
-                    descriptor.value = BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
-                } else {
-                    // The characteristic does not have NOTIFY or INDICATE property set;
-                }
-                if (mBluetoothGatt!!.writeDescriptor(descriptor)) {
-                    // Success
-                } else {
-                    // Failed to set client characteristic notification;
-                }
-            } else {
-                // Failed to set client characteristic notification;
-            }
-        } else {
-            // Failed to register notification;
-        }*/
+
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -294,13 +219,13 @@ class BluetoothLeService : Service() {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             return
         }
-        val mCustomService = mBluetoothGatt!!.getService(ConnectivityUtils.SERVICE_UUID)
+        val mCustomService = mBluetoothGatt!!.getService(SERVICE_UUID)
         if (mCustomService == null) {
             return
         }
 
         val mWriteCharacteristic =
-            mCustomService.getCharacteristic(ConnectivityUtils.CHARACTERISTIC_UUID)
+            mCustomService.getCharacteristic(CHARACTERISTIC_UUID)
         mWriteCharacteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
         mBluetoothGatt!!.setCharacteristicNotification(mWriteCharacteristic, true)
         mWriteCharacteristic.value = credentials.toByteArray()
@@ -424,7 +349,7 @@ class BluetoothLeService : Service() {
     fun disconnect() {
         Log.d(ConnectivityUtils.TAG, "disconnect()")
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.d(ConnectivityUtils.TAG, "BluetoothAdapter not initialized")
+            Log.d(ConnectivityUtils.TAG, INITIALIZATION_FAILED)
             return
         }
         mBluetoothGatt!!.disconnect()
@@ -446,6 +371,7 @@ class BluetoothLeService : Service() {
     }
 
 
+
     /**
      * Request a read on a given `BluetoothGattCharacteristic`. The read result is reported
      * asynchronously through the `BluetoothGattCallback#onCharacteristicRead(android.bluetooth.BluetoothGatt, android.bluetooth.BluetoothGattCharacteristic, int)`
@@ -456,7 +382,7 @@ class BluetoothLeService : Service() {
     fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
         Log.d(ConnectivityUtils.TAG, "readCharacteristic()")
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.d(ConnectivityUtils.TAG, "BluetoothAdapter not initialized")
+            Log.d(ConnectivityUtils.TAG, INITIALIZATION_FAILED)
             return
         }
         mBluetoothGatt!!.readCharacteristic(characteristic)

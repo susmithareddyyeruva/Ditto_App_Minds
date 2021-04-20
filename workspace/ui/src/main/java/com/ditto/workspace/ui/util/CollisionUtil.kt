@@ -261,7 +261,6 @@ object CollisionUtil {
             val c = Canvas(b.get()!!)
             v?.layout(0, 0, v.measuredWidth, v.measuredHeight)
             v?.draw(c)
-//            return b
             return WeakReference(
                 Bitmap.createBitmap(
                     b.get()!!,
@@ -285,7 +284,6 @@ object CollisionUtil {
         val c = Canvas(b.get()!!)
         v?.layout(v.left, v.top, v.right, v.bottom)
         v?.draw(c)
-//        return b
         return WeakReference(
             Bitmap.createBitmap(
                 b.get()!!,
