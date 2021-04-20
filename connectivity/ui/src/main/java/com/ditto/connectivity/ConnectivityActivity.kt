@@ -733,13 +733,20 @@ class ConnectivityActivity : AppCompatActivity() {
                 Log.d(ConnectivityUtils.TAG, "connect clicked in wifi credentials view")
                 hideKeyboard()
                 if (wifiname.text.toString() != null) {
-                    val ssidpwd: String =
-                        wifiname.text.toString() + "," + wifipwd.text.toString()
+                     var encryptedcred: String = ""
+                    val encryptedssid: String? = ConnectivityUtils.encrypt(wifiname.text.toString())
+                    val encryptedpwd: String? = ConnectivityUtils.encrypt(wifipwd.text.toString())
+                    val encryptedAuth: String? = ConnectivityUtils.encrypt("ANDROID")
+                    if (!encryptedssid.equals("") && !encryptedpwd.equals("")){
+                        encryptedcred = "$encryptedssid,$encryptedpwd,$encryptedAuth"
+                    } else {
+                        encryptedcred = wifiname.text.toString() + "," + wifipwd.text.toString()+ ","+"ANDROID"
+                    }
                     viewModel.isWifiCredLayout.set(false)
                     viewModel.isProjectorLayout.set(true)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         viewModel.isWifiError.set(false)
-                        mBluetoothLeService?.connectWIFI(ssidpwd)!!
+                        mBluetoothLeService?.connectWIFI(encryptedcred)!!
                         startWifiWaiting()
                     } else {
                         TODO("VERSION.SDK_INT < LOLLIPOP")
