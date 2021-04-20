@@ -1,3 +1,4 @@
+include ':videoplayer'
 include ':dittoProjectorApp', ':FabricTraceTransform-debug'
 include ':app'
 include ':nav-graph'
@@ -75,4 +76,5 @@ project(':calibration-data').projectDir = new File('calibration/data')
 
 include ':connectivity-ui'
 project(':connectivity-ui').projectDir = new File('connectivity/ui')
+
 

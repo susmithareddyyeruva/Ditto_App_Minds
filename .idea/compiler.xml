@@ -29,11 +29,14 @@
       <module name="ditto-android.onboarding-data" target="1.8" />
       <module name="ditto-android.onboarding-domain" target="1.8" />
       <module name="ditto-android.onboarding-ui" target="1.8" />
+      <module name="ditto-android.player-lib" target="1.8" />
       <module name="ditto-android.splash-data" target="1.8" />
       <module name="ditto-android.splash-domain" target="1.8" />
       <module name="ditto-android.splash-ui" target="1.8" />
       <module name="ditto-android.storage-data" target="1.8" />
       <module name="ditto-android.tutorial-ui" target="1.8" />
+      <module name="ditto-android.video_player" target="1.8" />
+      <module name="ditto-android.videoplayer" target="1.8" />
       <module name="ditto-android.workspace-data" target="1.8" />
       <module name="ditto-android.workspace-domain" target="1.8" />
       <module name="ditto-android.workspace-ui" target="1.8" />
