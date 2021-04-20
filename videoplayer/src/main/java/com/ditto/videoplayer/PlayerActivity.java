@@ -36,7 +36,6 @@ public class PlayerActivity extends AppCompatActivity {
     setContentView(R.layout.activity_player);
 
     playerView = findViewById(R.id.video_view);
-
     playbackStateListener = new PlaybackStateListener();
   }
 
