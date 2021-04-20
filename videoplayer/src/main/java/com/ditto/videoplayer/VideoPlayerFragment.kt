@@ -1,32 +1,32 @@
 package com.ditto.videoplayer
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.ditto.videoplayer.databinding.ActivityPlayerBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
+import core.ui.BaseFragment
+import core.ui.ViewModelDelegate
 
-class VideoPlayerFragment : Fragment() {
+class VideoPlayerFragment : BaseFragment() {
     private var playbackStateListener: PlaybackStateListener? = null
     private var playerView: PlayerView? = null
     private var player: SimpleExoPlayer? = null
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition: Long = 0
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
+    private val viewModel: VideoPlayerViewModel by ViewModelDelegate()
+    lateinit var binding:ActivityPlayerBinding
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,8 +38,13 @@ class VideoPlayerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.activity_player, container, false)
+        binding = ActivityPlayerBinding.inflate(
+            inflater
+        ).also {
+            it.viewModel = viewModel
+            it.lifecycleOwner = viewLifecycleOwner
+        }
+        return binding.videoroot
     }
 
     private class PlaybackStateListener : Player.EventListener {
@@ -82,11 +87,14 @@ class VideoPlayerFragment : Fragment() {
                 .build()
         }
         playerView!!.player = player
-        val mediaItem =
+       /* val mediaItem =
             MediaItem.Builder()
                 .setUri(getString(R.string.media_url_mp4))
                 .setMimeType(MimeTypes.APPLICATION_MPD)
-                .build()
+                .build()*/
+        // Replace this line
+        val mediaItem =
+            MediaItem.fromUri(getString(R.string.media_url_mp4))
         player?.setMediaItem(mediaItem)
         player?.setPlayWhenReady(playWhenReady)
         player?.seekTo(currentWindow, playbackPosition)

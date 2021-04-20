@@ -210,4 +210,5 @@ dependencies {
     implementation project(path: ':howto-data')
     implementation project(path: ':howto-ui')
     implementation project(path: ':howto-domain')
+    implementation project(path: ':videoplayer')
 }
