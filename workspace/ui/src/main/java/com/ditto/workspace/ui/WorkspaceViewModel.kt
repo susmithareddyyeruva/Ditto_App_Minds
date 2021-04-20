@@ -64,7 +64,6 @@ class WorkspaceViewModel @Inject constructor(
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
-//    private var showMirrorDialog: Boolean = true
     var isHorizontalMirror: Boolean = false
     var cutCount: Int = 0
     var isSingleDelete: Boolean = false
@@ -90,7 +89,7 @@ class WorkspaceViewModel @Inject constructor(
     private fun handleInsertDataResult(result: Any) {
         when (result) {
             is Result.OnSuccess<*> -> {
-
+                Log.d("handleInsertDataResult","OnSuccess")
             }
         }
         uiEvents.post(Event.CloseScreen)
@@ -116,6 +115,7 @@ class WorkspaceViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
+                Log.d("handleError","WorkspaceViewModel")
             }
         }
     }
@@ -130,8 +130,8 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.onProject)
     }
 
-    fun clickSize(isSize_45: Boolean) {
-        clickedSize45.set(isSize_45)
+    fun clickSize(isSize45: Boolean) {
+        clickedSize45.set(isSize45)
         uiEvents.post(Event.OnClickInch)
     }
 
@@ -168,7 +168,7 @@ class WorkspaceViewModel @Inject constructor(
     fun setCompletedCount(progress: Int) {
         val totalCount = Utility.progressCount.get() + progress
         data.value?.completedPieces = totalCount
-        println("TRACE: Setting progress")
+        Log.d("TRACE","Setting progress")
         Utility.progressCount.set(totalCount)
         uiEvents.post(Event.updateProgressCount)
     }

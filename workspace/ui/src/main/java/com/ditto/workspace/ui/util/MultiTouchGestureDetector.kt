@@ -413,18 +413,21 @@ class MultiTouchGestureDetector(
             detector: MultiTouchGestureDetector?,
             view: View?
         ) {
+            Log.d("GestureListener", "onScale")
         }
 
         override fun onMove(
             detector: MultiTouchGestureDetector?,
             view: View?
         ) {
+            Log.d("GestureListener", "onMove")
         }
 
         override fun onRotate(
             detector: MultiTouchGestureDetector?,
             view: View?
         ) {
+            Log.d("GestureListener", "onRotate")
         }
 
         override fun onBegin(detector: MultiTouchGestureDetector?): Boolean {

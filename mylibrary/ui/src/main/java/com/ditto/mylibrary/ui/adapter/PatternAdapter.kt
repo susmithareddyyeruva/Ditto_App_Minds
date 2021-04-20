@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.AllPatternsViewModel
-import core.binding.BindableAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryPatternsItemBinding
+import core.binding.BindableAdapter
 
 
 /**
@@ -41,7 +41,6 @@ class PatternAdapter : RecyclerView.Adapter<PatternAdapter.PatternHolder>(),
         holder.patternsItemBinding.viewModel = viewModel
 
         val res: Resources = viewGroup!!.resources
-//        println("ImagefromDB${patterns.get(position).thumbnailImagePath}")
         if (!patterns.get(position).thumbnailImagePath.equals("")){
             val resID: Int = res.getIdentifier(patterns.get(position).thumbnailImagePath, "drawable", viewGroup!!.context.getPackageName())
             val drawable: Drawable = res.getDrawable(resID)

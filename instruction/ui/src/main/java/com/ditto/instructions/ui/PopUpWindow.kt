@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.ditto.howto.utils.Common
 import kotlinx.android.synthetic.main.popup_window.*
-import com.ditto.instructions.ui.R
 
 class PopUpWindow : AppCompatActivity() {
 
@@ -106,12 +105,10 @@ class PopUpWindow : AppCompatActivity() {
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
-        if (Build.VERSION.SDK_INT >= 21) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                this.window.statusBarColor = Color.TRANSPARENT
-                setWindowFlag(this, false)
-            }
+            this.window.statusBarColor = Color.TRANSPARENT
+            setWindowFlag(this, false)
         }
         popup_window_background.setBackgroundColor(Color.TRANSPARENT)
         popup_window_view_with_border.alpha = 1f

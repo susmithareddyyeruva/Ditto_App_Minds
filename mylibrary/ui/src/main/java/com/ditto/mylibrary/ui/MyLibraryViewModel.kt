@@ -1,8 +1,11 @@
 package com.ditto.mylibrary.ui
 
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,8 +16,6 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
-import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryData
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
@@ -70,15 +71,20 @@ class MyLibraryViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
+                Log.d("MyLibraryViewModel","handleError")
             }
         }
     }
 
-    fun activeProjects(){}
+    fun activeProjects(){
+        Log.d("uiEvents","activeProjects")
+    }
     fun completedProjects(){
         uiEvents.post(Event.completedProjects)
     }
-    fun allPatterns(){}
+    fun allPatterns(){
+        Log.d("uiEvents","allPatterns")
+    }
 
     /**
      * Events for this view model

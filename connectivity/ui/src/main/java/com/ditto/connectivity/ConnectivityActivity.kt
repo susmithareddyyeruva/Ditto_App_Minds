@@ -36,13 +36,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.ditto.connectivity.databinding.ConnectivityActivityBinding
+import com.ditto.connectivity.service.BluetoothLeService
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnSuccessListener
-import com.ditto.connectivity.databinding.ConnectivityActivityBinding
-import com.ditto.connectivity.service.BluetoothLeService
-import com.ditto.connectivity.R
 import core.network.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -128,7 +127,7 @@ class ConnectivityActivity : AppCompatActivity() {
         }
 
         turnGPSOn(object :
-            onGpsListener {
+            OnGPSListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
                 if(isGPSEnable) {
                    initWIFIService()
@@ -169,7 +168,6 @@ class ConnectivityActivity : AppCompatActivity() {
     fun initNSD() {
         nsdManager = getSystemService(Context.NSD_SERVICE) as NsdManager?
         Log.d(ConnectivityUtils.TAG, "NSD Initialized")
-//        initializeResolveListener()
     }
 
     inner class MyResolveListener:NsdManager.ResolveListener {
@@ -225,7 +223,6 @@ class ConnectivityActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
             override fun onDiscoveryStopped(serviceType: String) {
                 Log.d(ConnectivityUtils.TAG, "Discovery stopped: $serviceType")
-                //discoveryStopped()
             }
 
             override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
@@ -244,6 +241,7 @@ class ConnectivityActivity : AppCompatActivity() {
             try {
                 nsdManager?.stopServiceDiscovery(discoveryListener)
             } finally {
+                Log.d("discoveryListener","in final block")
             }
             discoveryListener = null
         }
@@ -259,7 +257,6 @@ class ConnectivityActivity : AppCompatActivity() {
         Utility.isServiceConnected = false
         discoverServices()
         startServiceTimer()
-        //checkService()
     }
 
     private fun startServiceTimer(){
@@ -293,7 +290,7 @@ class ConnectivityActivity : AppCompatActivity() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    fun onServiceFound(ServiceName: String) {
+    fun onServiceFound(serviceName: String) {
         Log.d(ConnectivityUtils.TAG, "OnServiceFound()")
         nsdservice = getChosenServiceInfo()
         isServiceFound = true
@@ -301,7 +298,6 @@ class ConnectivityActivity : AppCompatActivity() {
         Utility.nsdSericeHostName = nsdservice?.host?.hostAddress.toString()
         Utility.nsdSericePortName = nsdservice?.port!!.toInt()
         serviceConnectionWaitingJob?.cancel()
-        //startSocketConnection()
         checkSocketConnection()
 
     }
@@ -311,7 +307,6 @@ class ConnectivityActivity : AppCompatActivity() {
         Log.d(ConnectivityUtils.TAG, "startSocketConnection()")
         //runBlocking {
         withContext(Dispatchers.IO) {
-            //val ipAddress: String = nsdservice?.host?.hostAddress.toString()
         val host: InetAddress = nsdservice?.host!!
             Log.d(ConnectivityUtils.TAG, "address" + host + " port " + nsdservice?.port)
             var soc: Socket? = null
@@ -460,8 +455,6 @@ class ConnectivityActivity : AppCompatActivity() {
         }
     }    // Device scan callback.
     private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, rssi, scanRecord ->
-        //viewModel.isProgressBar.set(false)
-        //refresh.isClickable = true
         runOnUiThread {
             mLeDeviceListAdapter!!.addDevice(device)
             mLeDeviceListAdapter!!.notifyDataSetChanged()
@@ -581,11 +574,6 @@ class ConnectivityActivity : AppCompatActivity() {
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-        /* if (mBluetoothLeService != null && !isBLEConnected) {
-             val result = mBluetoothLeService!!.connect(mDeviceAddress)
-             //Log.d(TAG, "Connect request result=" + result)
-         }*/
     }
 
     override fun onPause() {
@@ -602,7 +590,6 @@ class ConnectivityActivity : AppCompatActivity() {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun getGattServices(gattServices: List<BluetoothGattService>?) {
         Log.d(ConnectivityUtils.TAG, "Activity-getGattServices()")
-        //if (gattServices == null) return
         if (gattServices != null) {
             for (gattService in gattServices) {
                 if (gattService.uuid == ConnectivityUtils.SERVICE_UUID) {
@@ -677,7 +664,7 @@ class ConnectivityActivity : AppCompatActivity() {
                 viewModel.isErrorLayout.set(true)
                 stopWaiting()
             } else {
-
+                Log.d("BroadcastReceiver","Action Gatt server undefined")
             }
         }
     }
@@ -765,8 +752,9 @@ class ConnectivityActivity : AppCompatActivity() {
                         TODO("VERSION.SDK_INT < LOLLIPOP")
                     }
                 } else {
-
+                    Log.d("error","instruction error")
                 }
+                Unit
             }
             is ConnectivityViewModel.Event.OnRetryClicked -> {
                 Log.d(ConnectivityUtils.TAG, "clicked retry button in unsucess/error view")
@@ -816,7 +804,7 @@ class ConnectivityActivity : AppCompatActivity() {
             }
 
         } catch (e: Exception) {
-
+            Log.d("exception","wifi")
         }
     }
 
@@ -832,10 +820,11 @@ class ConnectivityActivity : AppCompatActivity() {
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 turnGPSOn(object :
-                    onGpsListener {
+                    OnGPSListener {
                     override fun gpsStatus(isGPSEnable: Boolean) {
                         viewModel.isLocationEnabled.set(isGPSEnable)
                         if(isGPSEnable){
@@ -860,7 +849,7 @@ class ConnectivityActivity : AppCompatActivity() {
     }
 
     ////////////////////////////
-    fun turnGPSOn(onGpsListener: onGpsListener?) {
+    fun turnGPSOn(onGpsListener: OnGPSListener?) {
 
         var locationManager: LocationManager? = null
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -930,7 +919,7 @@ class ConnectivityActivity : AppCompatActivity() {
         }
     }
 
-    interface onGpsListener {
+    interface OnGPSListener {
         fun gpsStatus(isGPSEnable: Boolean)
     }
 
@@ -956,12 +945,12 @@ class ConnectivityActivity : AppCompatActivity() {
         view.viewTreeObserver.addOnGlobalLayoutListener {
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
-            val t_guideline: View? = findViewById<View>(R.id.top_guide)
-            val b_guideline: View? = findViewById<View>(R.id.bottom_guide)
-            var t_params: ConstraintLayout.LayoutParams? = null
-            t_params = t_guideline?.getLayoutParams() as ConstraintLayout.LayoutParams
-            var b_params: ConstraintLayout.LayoutParams? = null
-            b_params = b_guideline?.getLayoutParams() as ConstraintLayout.LayoutParams
+            val topGuideline: View? = findViewById<View>(R.id.top_guide)
+            val bottomGuideline: View? = findViewById<View>(R.id.bottom_guide)
+            var topParams: ConstraintLayout.LayoutParams? = null
+            topParams = topGuideline?.getLayoutParams() as ConstraintLayout.LayoutParams
+            var bottomParams: ConstraintLayout.LayoutParams? = null
+            bottomParams = bottomGuideline?.getLayoutParams() as ConstraintLayout.LayoutParams
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             val decorView = window.decorView
@@ -974,19 +963,19 @@ class ConnectivityActivity : AppCompatActivity() {
 
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height/2)) { // if more than 100 pixels, its probably a keyboard...
                 if(isTablet(this)){
-                    t_params.guidePercent=0.0f
-                    b_params.guidePercent=0.45f
+                    topParams.guidePercent=0.0f
+                    bottomParams.guidePercent=0.45f
                 }else{
-                    t_params.guidePercent=-0.05f
-                    b_params.guidePercent=0.45f
+                    topParams.guidePercent=-0.05f
+                    bottomParams.guidePercent=0.45f
                 }
             } else {
-                t_params.guidePercent=0.25f
-                b_params.guidePercent=0.75f
+                topParams.guidePercent=0.25f
+                bottomParams.guidePercent=0.75f
             }
 
-            t_guideline.setLayoutParams(t_params)
-            b_guideline.setLayoutParams(b_params)
+            topGuideline.setLayoutParams(topParams)
+            bottomGuideline.setLayoutParams(bottomParams)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,14 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.FragmentManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.my_library_fragment.*
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
+import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import com.ditto.mylibrary.ui.R
-import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.my_library_fragment.*
 import javax.inject.Inject
 
 class MyLibraryFragment : BaseFragment() {
@@ -62,7 +62,7 @@ class MyLibraryFragment : BaseFragment() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-//                handleEvent(it)
+                Log.d("handleEvent", "handle event")
             }
 
     }
@@ -73,25 +73,32 @@ class MyLibraryFragment : BaseFragment() {
         adapter.addFragment(
             ActiveProjectsFragment(), getString(
                 R.string.active_projects
-            ))
+            )
+        )
         adapter.addFragment(
             CompletedProjectsFragment(), getString(
                 R.string.completed_projects
-            ))
+            )
+        )
         adapter.addFragment(
             AllPatternsFragment(), getString(
                 R.string.all_patterns
-            ))
+            )
+        )
         view_pager.adapter = adapter
         tabLayout.setupWithViewPager(view_pager)
     }
 
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyLibraryViewModel.Event) =
         when (event) {
             is MyLibraryViewModel.Event.completedProjects -> {
-                Toast.makeText(context,"adadjhf",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "adadjhf", Toast.LENGTH_SHORT).show()
             }
-            else -> {}
+            else -> {
+                Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
+            }
+
         }
 
 }
