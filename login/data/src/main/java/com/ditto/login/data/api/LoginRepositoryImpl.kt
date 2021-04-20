@@ -36,11 +36,8 @@ class LoginRepositoryImpl @Inject constructor(
      */
     override fun getDbData(): Single<Result<LoginUser>> {
         return Single.fromCallable {
-            val data = dbDataDao.getUserData()
-            if (data != null)
-                Result.withValue(data.toUserDomain())
-            else
-                Result.withValue(data.toUserDomain())
+            val dbData = dbDataDao.getUserData()
+            Result.withValue(dbData.toUserDomain())
         }
     }
 

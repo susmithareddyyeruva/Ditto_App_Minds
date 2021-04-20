@@ -2,6 +2,7 @@ package com.ditto.workspace.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -14,16 +15,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import com.ditto.workspace.ui.adapter.WorkspaceAdapter
 import com.ditto.workspace.ui.databinding.FragmentWorkspaceBinding
 import com.ditto.workspace.ui.util.Utility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
-import com.ditto.workspace.ui.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -94,30 +94,30 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (binding.viewPager.adapter == null) {
             val workspacAdapter =
                 WorkspaceAdapter(cfManager)
-            val bundle_one = bundleOf(
-                "PatternCategory" to getString(R.string.garments),
-                "PatternId" to viewModel.patternId.get()
+            val garmentBundle = bundleOf(
+                PATTERN_CATEGORY to getString(R.string.garments),
+               PATTERN_ID to viewModel.patternId.get()
             )
             fragmentGarment = WorkspaceTabFragment()
-            fragmentGarment.setArguments(bundle_one)
+            fragmentGarment.setArguments(garmentBundle)
 
-            val bundle_two = bundleOf(
-                "PatternCategory" to getString(R.string.lining),
-                "PatternId" to viewModel.patternId.get()
+            val liningBundle = bundleOf(
+               PATTERN_CATEGORY to getString(R.string.lining),
+               PATTERN_ID to viewModel.patternId.get()
             )
             fragmentLining = WorkspaceTabFragment()
-            fragmentLining.setArguments(bundle_two)
+            fragmentLining.setArguments(liningBundle)
 
-            val bundle_three = bundleOf(
-                "PatternCategory" to getString(R.string.interfacing),
-                "PatternId" to viewModel.patternId.get()
+            val interfacingBundle = bundleOf(
+                PATTERN_CATEGORY to getString(R.string.interfacing),
+                PATTERN_ID to viewModel.patternId.get()
             )
             fragmentInterface = WorkspaceTabFragment()
-            fragmentInterface.setArguments(bundle_three)
+            fragmentInterface.setArguments(interfacingBundle)
 
-            workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))
-            workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))
-            workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))
+            workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
+            workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
+            workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))//Interfacing
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
@@ -223,16 +223,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.viewPager.currentItem = position
             viewModel.selectedTab.set(position)
         } else {
+            Log.d("updateTab","undefined")
             position = 0
             binding.viewPager.currentItem = position
             viewModel.selectedTab.set(position)
         }
 
-        /*viewModel.data.value?.completedPieces?.let {
-            viewModel.setCompletedCount(
-                it
-            )
-        }*/
     }
 
     private fun handleEvent(event: WorkspaceViewModel.Event) =
@@ -279,6 +275,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     }
 
     override fun onNeutralButtonClicked() {
+        Log.d("alert","onNeutralButtonClicked")
     }
 
     //  handle tab touch
@@ -293,10 +290,14 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 }
                 return false
             } else {
-               core.ui.common.Utility.showSnackBar("Projection is under process.. Please wait",binding.container)
+               core.ui.common.Utility.showSnackBar(resources.getString(R.string.projection_progress),binding.container)
                 return true
             }
         }
         return false
+    }
+    companion object{
+        private const val PATTERN_CATEGORY = "PatternCategory"
+        private const val PATTERN_ID = "PatternId"
     }
 }

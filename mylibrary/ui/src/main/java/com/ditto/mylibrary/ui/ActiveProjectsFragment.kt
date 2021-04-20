@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import androidx.annotation.NonNull
@@ -13,15 +14,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-
+import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.ui.adapter.ActiveProjectAdapter
+import com.ditto.mylibrary.ui.databinding.ActiveProjectsFragmentBinding
+import core.ui.BaseFragment
+import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.adapter.ActiveProjectAdapter
-import core.ui.BaseFragment
-import core.ui.ViewModelDelegate
-import com.ditto.mylibrary.ui.databinding.ActiveProjectsFragmentBinding
 import javax.inject.Inject
 
 class ActiveProjectsFragment : BaseFragment() {
@@ -55,7 +55,7 @@ class ActiveProjectsFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
         viewModel.fetchOnPatternData()
-     }
+    }
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
@@ -66,7 +66,6 @@ class ActiveProjectsFragment : BaseFragment() {
     }
 
     private fun setPatternAdapter() {
-        //val adapter = PatternAdapter()
         val adapter = ActiveProjectAdapter()
         binding.activeProjectsList.adapter = adapter
         adapter.viewModel = viewModel
@@ -133,7 +132,7 @@ class ActiveProjectsFragment : BaseFragment() {
                 renameProject()
             }
             R.id.menu_details -> {
-
+                Log.d("menu", "Detail")
             }
         }
         return true
@@ -171,11 +170,11 @@ class ActiveProjectsFragment : BaseFragment() {
             .setCancelable(false)
             .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
-                //callback.onSaveButtonClicked(edittext.text.toString())
+               Log.d("Alert","positive button click")
             })
             .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
-                //callback.onExitButtonClicked()
+                Log.d("Alert","Negative button click")
             })
 
         val alert = dialogBuilder.create()

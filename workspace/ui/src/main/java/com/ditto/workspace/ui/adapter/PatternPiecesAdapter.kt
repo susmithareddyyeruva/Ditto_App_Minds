@@ -1,6 +1,5 @@
 package com.ditto.workspace.ui.adapter
 
-import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.ditto.workspace.ui.databinding.PatternsPiecesItemBinding
 import com.ditto.workspace.ui.util.Draggable
 import core.binding.BindableAdapter
 import core.ui.common.Utility
-import kotlin.collections.ArrayList
 
 
 /**
@@ -47,7 +45,6 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
     override fun onBindViewHolder(holder: PatternPieceHolder, position: Int) {
         holder.patternsPiecesBinding.viewModel = viewModel
         holder.patternsPiecesBinding.imageArrow.visibility = View.GONE
-        val res: Resources = viewGroup!!.resources
         println("ImagefromDB${patternPieces.get(position).imagePath}")
         if (!patternPieces.get(position).imagePath.equals("")) {
             val drawable = Utility.getDrawableFromString(

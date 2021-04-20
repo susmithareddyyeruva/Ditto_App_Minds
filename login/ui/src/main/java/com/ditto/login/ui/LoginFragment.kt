@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -13,12 +14,11 @@ import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.ui.databinding.LoginFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import com.ditto.login.ui.R
-import com.ditto.login.ui.databinding.LoginFragmentBinding
 import javax.inject.Inject
 
 
@@ -57,33 +57,13 @@ class LoginFragment : BaseFragment() {
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    handleEvent(it)
+                    handleEvent(it)   //Observing UI event
                 }
         }
         setUIEvents()
         setupKeyboardListener(binding.root) // call in OnCreate or similar
 
     }
-
-/*    private fun setKeyboardListner(){
-        binding.root.viewTreeObserver
-            .addOnGlobalLayoutListener {
-                val r = Rect()
-                binding.root.getWindowVisibleDisplayFrame(r)
-                val screenHeight: Int = binding.root.getRootView().getHeight()
-                val keypadHeight: Int = screenHeight - r.bottom
-                if (keypadHeight > screenHeight * 0.15) {
-//                    binding.root.post {
-//                        binding.root.fullScroll(View.FOCUS_DOWN)
-//                        binding.edittextUsername.requestFocus()
-//                    }
-//                    scrollToBottom(binding.root)
-                    binding.root.scrollTo(0,binding.buttonLogin.bottom)
-                } else {
-                    logger.d("Keyboard closed")
-                }
-            }
-    }*/
 
     private fun setUIEvents() {
         binding.edittextPassword.customSelectionActionModeCallback =
@@ -93,7 +73,7 @@ class LoginFragment : BaseFragment() {
                 }
 
                 override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                    return false;
+                    return false
                 }
 
                 override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
@@ -101,15 +81,19 @@ class LoginFragment : BaseFragment() {
                 }
 
                 override fun onDestroyActionMode(mode: ActionMode?) {
+                    Log.d("actionMode","onDestroy")
                 }
             }
 
         //for samsung keyboard
         binding.edittextPassword.addTextChangedListener(object :TextWatcher{
             override fun afterTextChanged(s: Editable?) {
+                Log.d("onTextChange","After")
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.d("onTextChange","Before")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -127,7 +111,7 @@ class LoginFragment : BaseFragment() {
 
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
-            is LoginViewModel.Event.OnLoginClicked -> {
+            is LoginViewModel.Event.OnLoginClicked -> {   //Re directing to On_boarding screen
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
@@ -136,21 +120,6 @@ class LoginFragment : BaseFragment() {
             }
 
         }
-
-//    private fun scrollToBottom(scrollView: NestedScrollView) {
-//        scrollView.postDelayed({
-////            val lastChild = scrollView.getChildAt(scrollView.childCount - 1)
-//            val bottom = binding.buttonLogin.bottom + scrollView.paddingBottom
-//            val sy = scrollView.scrollY
-//            val sh = scrollView.height
-//            val delta = bottom - (sy + sh)
-//            scrollView.smoothScrollBy(0, delta)
-//        }, 20)
-//    }
-
-
-
-
 
     private fun setupKeyboardListener(view: View) {
         view.viewTreeObserver.addOnGlobalLayoutListener {

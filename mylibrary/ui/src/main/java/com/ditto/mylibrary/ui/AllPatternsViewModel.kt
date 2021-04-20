@@ -1,9 +1,12 @@
 package com.ditto.mylibrary.ui
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,8 +17,6 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
-import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryData
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -39,6 +40,7 @@ class AllPatternsViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
+                Log.d("AllPatternsViewModel","handleError")
             }
         }
     }
@@ -90,6 +92,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun removePattern(patternId: Int) {
+        Log.d("pattern","Removed")
 
     }
 

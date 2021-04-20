@@ -8,10 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-
+import com.ditto.mylibrary.ui.databinding.PatternDescImageItemBinding
 import com.ditto.storage.data.model.DescriptionImages
 import core.binding.BindableAdapter
-import com.ditto.mylibrary.ui.databinding.PatternDescImageItemBinding
 
 /**
  * Created by Sesha on  15/08/2020.
@@ -45,7 +44,6 @@ class PatternDescriptionAdapter() : PagerAdapter(), BindableAdapter<List<Descrip
         //binding.instructionvalues = viewModel.data.value
         //
         val res: Resources = parent.resources
-//        println("ImagefromDB${instructiondata.get(position).imagePath}")
         if (!instructiondata.get(position)?.imagePath.equals("")) {
             val resID: Int = res.getIdentifier(
                 instructiondata.get(position)?.imagePath,
@@ -56,17 +54,6 @@ class PatternDescriptionAdapter() : PagerAdapter(), BindableAdapter<List<Descrip
             val bitmap = (drawable as BitmapDrawable).bitmap
             binding.imagePattern.setImageBitmap(bitmap)
         }
-        //
-
-        /*val res: Resources = viewGroup!!.resources
-        println("ImagefromDB${instructiondata.get(position).imagePath}")
-        if (!instructiondata.get(position).imagePath.equals("")){
-            val resID: Int = res.getIdentifier(instructiondata.get(position).imagePath, "drawable", viewGroup!!.context.getPackageName())
-            val drawable: Drawable = res.getDrawable(resID)
-            val bitmap = (drawable as BitmapDrawable).bitmap
-            binding.imagePattern.setImageBitmap(bitmap)
-        }*/
-
         parent.addView(binding.root)
 
         return binding.root

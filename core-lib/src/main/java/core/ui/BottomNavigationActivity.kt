@@ -41,17 +41,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
-        //exceptionhandling()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_navigation)
         binding.bottomNavViewModel = ViewModelProvider(this).get(BottomNavViewModel::class.java)
         binding.toolbarViewModel = ViewModelProvider(this).get(ToolbarViewModel::class.java)
         setSupportActionBar(binding.toolbar)
         setUpNavigation()
-        /*getWindow().setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);*/
         // temp fix for app restarting while switching apps
         if (!isTaskRoot
             && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
@@ -146,10 +140,5 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
     }
 
-    private fun showSystemUI() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-    }
 
 }

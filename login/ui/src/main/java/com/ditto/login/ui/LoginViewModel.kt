@@ -93,9 +93,7 @@ class LoginViewModel @Inject constructor(
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
-            else -> {
 
-            }
         }
     }
 

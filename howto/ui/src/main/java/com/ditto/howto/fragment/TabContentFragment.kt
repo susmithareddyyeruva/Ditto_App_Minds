@@ -1,18 +1,17 @@
 package com.ditto.howto.fragment
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
-import com.ditto.howto.ui.HowtoViewModel
-import com.ditto.howto.ui.PopUpWindow
 import com.ditto.howto.adapter.TabContentAdapter
+import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.utils.Common
+import com.ditto.howto_ui.databinding.TabcontentFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.howto_ui.databinding.TabcontentFragmentBinding
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -71,6 +70,7 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
         binding.tablay.setupWithViewPager(binding.instructionViewPager)
         binding.instructionViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
+                Log.d("PageScroll","onPageScrollStateChanged")
             }
 
             override fun onPageScrolled(
@@ -113,44 +113,39 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
     private fun getprevItem(i: Int): Int {
         return binding.instructionViewPager.currentItem - i
     }
-    /**
-     * [Function] Watch video click
-     */
-    private fun showVideoPopup() {
-        val intent = Intent(requireContext(), PopUpWindow::class.java)
-        startActivity(intent)
-    }
-
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: HowtoViewModel.Event) =
         when (event) {
             is HowtoViewModel.Event.OnNextButtonClicked -> {
                 if(pos== Common.currentSelectedTab.get()) {
                     binding.instructionViewPager.setCurrentItem(getItem(+1), true)
-                } else {}
+                } else {
+                    Log.d("event","OnNextButtonClicked")
+                }
             }
             is HowtoViewModel.Event.OnPreviousButtonClicked -> {
                 if(pos== Common.currentSelectedTab.get()) {
                 binding.instructionViewPager.setCurrentItem(getprevItem(+1), true)
-                } else {}
+                } else {
+                    Log.d("event","OnPreviousButtonClicked")
+                }
             }
             is HowtoViewModel.Event.OnPlayVideoClicked -> {
-                /*showVideoPopup()*/
+                Log.d("event","OnPlayVideoClicked")
             }
-            is HowtoViewModel.Event.OnShowError -> {}
+            is HowtoViewModel.Event.OnShowError -> {
+                Log.d("event","OnShowError")
+            }
             is HowtoViewModel.Event.OnDataUpdated -> {
-
+                Log.d("event","OnDataUpdated")
             }
-            HowtoViewModel.Event.OnSkipTutorial -> {}
+            HowtoViewModel.Event.OnSkipTutorial -> {
+                Log.d("event","OnSkipTutorial")
+            }
         }
 
     override fun onResume() {
         super.onResume()
-        /*if (!Common.isShowingVideoPopup.get()){
-            binding.instructionViewPager.currentItem=0
-            vm.isStartingPage.set(true)
-            vm.isFinalPage.set(false)
-        }*/
-
         if (Common.isNextTabSelected.get()){
             Common.isNextTabSelected.set(false)
             binding.instructionViewPager.currentItem=0

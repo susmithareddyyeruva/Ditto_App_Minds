@@ -1,11 +1,11 @@
 package com.ditto.mylibrary.data
 
 import com.ditto.login.domain.LoginUser
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import io.reactivex.Single
 import non_core.lib.Result
-import com.ditto.mylibrary.domain.MyLibraryRepository
-import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryData
 import javax.inject.Inject
 
 
@@ -20,7 +20,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getUserData()
     }
 
-    override fun getPattern(get:Int): Single<Result<MyLibraryData>> {
+    override fun getPattern(get: Int): Single<Result<MyLibraryData>> {
         return myLibraryRepository.getPatternData(get)
     }
 
@@ -31,9 +31,4 @@ class MyLibraryImpl @Inject constructor(
     override fun completeProject(patternId: Int): Single<Any> {
         return myLibraryRepository.completeProject(patternId)
     }
-
-//    override fun addProject(id : Int): Single<Any> {
-//        return myLibraryRepository.addProject(id)
-//    }
-
 }
