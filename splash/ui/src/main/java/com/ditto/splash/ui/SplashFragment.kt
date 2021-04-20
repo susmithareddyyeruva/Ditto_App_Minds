@@ -54,8 +54,8 @@ class SplashFragment : BaseFragment() {
     private fun handleEvent(event: SplashViewModel.Event) =
         when (event) {
             is SplashViewModel.Event.NavigateToLogin -> {
-                //findNavController().navigate(R.id.action_splashActivity_to_Video)
-                findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
+                findNavController().navigate(R.id.action_splashActivity_to_Video)
+                //findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
             }
             is SplashViewModel.Event.NavigateToOnBoarding -> {
                 findNavController().navigate(R.id.action_splashActivity_to_Onboarding)

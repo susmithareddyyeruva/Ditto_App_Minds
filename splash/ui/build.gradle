@@ -111,9 +111,6 @@ dependencies {
     implementation project(':splash-data')
     implementation project(':logger')
     implementation project(':videoplayer')
-
-
-
 }
 
 repositories {
