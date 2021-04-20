@@ -10,8 +10,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -45,12 +47,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
         binding.bottomNavViewModel = ViewModelProvider(this).get(BottomNavViewModel::class.java)
         binding.toolbarViewModel = ViewModelProvider(this).get(ToolbarViewModel::class.java)
         setSupportActionBar(binding.toolbar)
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         setUpNavigation()
         // temp fix for app restarting while switching apps
         if (!isTaskRoot
             && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
             && intent.action != null
-            && intent.action.equals(Intent.ACTION_MAIN)) {
+            && intent.action.equals(Intent.ACTION_MAIN)
+        ) {
 
             finish()
             return
@@ -76,6 +80,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
         return true
     }
 
+    fun onDrawerItemClick(item: MenuItem) {
+        binding.drawerLayout.openDrawer(Gravity.RIGHT)
+    }
+
     /*
     To hide navigation and status bars
      */
@@ -93,7 +101,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0)
                     }
                     editText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-                        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                        override fun onEditorAction(
+                            v: TextView?,
+                            actionId: Int,
+                            event: KeyEvent?
+                        ): Boolean {
                             if (actionId == EditorInfo.IME_ACTION_DONE) {
                                 hideSystemUI()
                                 return false

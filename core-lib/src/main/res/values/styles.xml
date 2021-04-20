@@ -43,5 +43,17 @@
         <item name="android:splitMotionEvents">false</item>
     </style>
 
+    <style name="text_header" >
+        <item name="android:textSize">@dimen/text_header</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/small_padding</item>
+    </style>
+
+    <style name="text_desc">
+        <item name="android:textSize">@dimen/text_desc</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_margin">@dimen/small_padding</item>
+    </style>
 
 </resources>

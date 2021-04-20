@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_graph_about"
+            android:icon="@drawable/ic_home"
+            android:title="@string/about_the_app_amp_policies"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/nav_graph_support"
+            android:icon="@drawable/ic_library"
+            android:title="Customer Support"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/nav_graph_settings"
+            android:icon="@drawable/ic_tutorial"
+            android:title="Settings"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/nav_graph_faq"
+            android:icon="@drawable/ic_tutorial"
+            android:title="FAQ'S"
+            app:showAsAction="ifRoom" />
+
+    </group>
+
+    <item
+        android:id="@+id/nav_graph_logout"
+        android:icon="@drawable/ic_tutorial"
+        android:title="Log Out"
+        app:showAsAction="always" />
+
+
+</menu>
