@@ -17,7 +17,7 @@
     <string name="connect">CONNECT</string>
     <string name="retry">RETRY</string>
     <string name="connectivity_unsuccess">Connectivity Unsuccessful</string>
-    <string name="error_text">Please try again connecting your device \nagain to com.ditto projector.</string>
+    <string name="error_text">Please try again connecting your device \nagain to ditto projector.</string>
     <string name="ble_connectivity">Turn on your bluetooth</string>
     <string name="wifi_connectivity" tools:ignore="ExtraTranslation">Turn on your WiFi</string>
     <string name="turnon">TURN ON</string>
