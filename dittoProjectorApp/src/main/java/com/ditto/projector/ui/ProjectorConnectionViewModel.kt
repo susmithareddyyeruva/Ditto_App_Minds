@@ -29,6 +29,7 @@ class ProjectorConnectionViewModel : ViewModel() {
     var liveconnectionstatus: ObservableField<String> = ObservableField("N/A")
     var isCallfromBle: ObservableBoolean = ObservableBoolean(false)
     var isBleConnected: ObservableBoolean = ObservableBoolean(false)
+    var isConnectionFromiOS: ObservableBoolean = ObservableBoolean(false)
     var isNsdRegistered: ObservableBoolean = ObservableBoolean(false)
     var isWifiReceiverfound: ObservableBoolean = ObservableBoolean(false)
     var mServiceRegisterPort: ObservableInt = ObservableInt(0)
