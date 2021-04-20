@@ -4,6 +4,7 @@
      <string name="BLEconnected">TRACEbleConnected</string>
     <string name="servicealreadyregistered">ServiceAlreadyRegistered</string>
     <string name="BLEconnectionrequest">TRACERequest</string>
+    <string name="BLEconnectionrequestIOS">TRACERequestIOS</string>
     <string name="BLEdisconnected">TRACEbleDisConnected</string>
     <string name="checking">Checking Wifi Connection..</string>
     <string name="NotConnected">Not Connected</string>
