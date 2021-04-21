@@ -44,7 +44,7 @@ class VideoPlayerFragment : BaseFragment() {
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
         }
-        return binding.videoroot
+        return binding.videoRoot
     }
 
     private class PlaybackStateListener : Player.EventListener {

@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph_id_video"
     app:startDestination="@id/destination_video"
     tools:ignore="UnusedNavigation">
+
     <fragment
         android:id="@+id/destination_video"
         android:name="com.ditto.videoplayer.VideoPlayerFragment"

@@ -16,4 +16,6 @@ limitations under the License. -->
   <color name="colorPrimary">#FFFFFF</color>
   <color name="colorPrimaryDark">#000000</color>
   <color name="colorAccent">#FF4081</color>
+  <color name="appGreen">#73BD00</color>
+  <color name="header_background">#0000008F</color>
 </resources>

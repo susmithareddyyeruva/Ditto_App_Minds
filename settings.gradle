@@ -1,9 +1,9 @@
-include ':videoplayer'
 include ':dittoProjectorApp', ':FabricTraceTransform-debug'
 include ':app'
 include ':nav-graph'
 include ':core-lib'
 include ':non-core-lib'
+include ':videoplayer'
 
 include ':storage-data'
 project(':storage-data').projectDir = new File('storage/storage-data')
