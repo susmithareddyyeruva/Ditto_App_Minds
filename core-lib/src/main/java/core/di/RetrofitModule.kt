@@ -9,11 +9,12 @@ import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
@@ -23,7 +24,6 @@ import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 
 @Module(
@@ -35,19 +35,26 @@ import javax.net.ssl.X509TrustManager
 class RetrofitModule {
     @Provides
     @WbApiRetrofit
-    fun provideRetrofit(@WbBaseUrl baseUrl: String, certificateFactory: SSLSocketFactory?, trustManagerFactory: TrustManagerFactory?): Retrofit {
+    fun provideRetrofit(
+        @WbBaseUrl baseUrl: String,
+        certificateFactory: SSLSocketFactory?,
+        trustManagerFactory: TrustManagerFactory?
+    ): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         val httpClient = OkHttpClient.Builder()
+            .addInterceptor(BasicAuthInterceptor("amrita4@gmail.com","India@123"))
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
 
-
-        certificateFactory?.let {
-            httpClient.sslSocketFactory(certificateFactory, trustManagerFactory!!.trustManagers[0] as X509TrustManager)
-        }
+   /*     certificateFactory?.let {
+            httpClient.sslSocketFactory(
+                certificateFactory,
+                trustManagerFactory!!.trustManagers[0] as X509TrustManager
+            )
+        }*/
 
 
         // add logging interceptor only for DEBUG builds
@@ -77,7 +84,7 @@ class WbSocketCertificateModule {
     @Provides
     fun providesSSLSocketFactory(trustManagerFactory: TrustManagerFactory?): SSLSocketFactory? {
 
-        var sslSocketFactory : SSLSocketFactory? = null
+        var sslSocketFactory: SSLSocketFactory? = null
 
         if (trustManagerFactory != null) {
 
@@ -95,7 +102,7 @@ class WbSocketCertificateModule {
 
     @Provides
     @Singleton
-    fun provideTrustManagerFactory(context : Context): TrustManagerFactory? {
+    fun provideTrustManagerFactory(context: Context): TrustManagerFactory? {
 
         // Load CAs from an InputStream
         // (could be from a resource or ByteArrayInputStream or ...)
@@ -131,5 +138,21 @@ class WbSocketCertificateModule {
         return tmf
     }
 
+}
 
+class BasicAuthInterceptor(user: String?, password: String?) :
+    Interceptor {
+    private val credentials: String
+
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        val authenticatedRequest: Request = request.newBuilder()
+            .header("Authorization", credentials).build()
+        return chain.proceed(authenticatedRequest)
+    }
+
+    init {
+        credentials = Credentials.basic(user!!, password!!)
+    }
 }

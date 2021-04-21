@@ -63,7 +63,17 @@ class LoginViewModel @Inject constructor(
 
             //Making api call for Login
 
-            disposable += useCase.userLogin(
+        /*    disposable += useCase.userLogin(
+                LoginUser(
+                    userName = userName.get(),
+                    isLoggedIn = true
+                )
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { handleFetchResult(it) }*/
+            //Login api
+            disposable += useCase.loginUserWithCredential(
                 LoginUser(
                     userName = userName.get(),
                     isLoggedIn = true
@@ -72,6 +82,11 @@ class LoginViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy { handleFetchResult(it) }
+
+
+
+
+
         }
     }
     //redirecting to external browser

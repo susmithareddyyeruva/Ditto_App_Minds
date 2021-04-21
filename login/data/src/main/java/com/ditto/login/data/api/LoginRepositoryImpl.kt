@@ -1,12 +1,15 @@
 package com.ditto.login.data.api
 
 import android.content.Context
+import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
+import com.ditto.login.data.model.LoginRequest
 import com.ditto.login.domain.LoginRepository
+import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.storage.data.database.UserDao
 import core.network.Utility
@@ -57,6 +60,21 @@ class LoginRepositoryImpl @Inject constructor(
         }
         return loginService.userLogin()
             .doOnSuccess { dbDataDao.deleteAndInsert(user.toDomain()) }
+            .map { Result.withValue(it.toUserDomain()) }
+            .onErrorReturn {
+                Result.withError(
+                    LoginFetchError("Error fetching data", it)
+                )
+            }
+    }
+
+    override fun loginUserWithCredential(user: LoginUser): Single<Result<LoginResultDomain>> {
+        if (!Utility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        val loginRequest = LoginRequest("credentials")
+        return loginService.loginWithCredential("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", loginRequest)
+            .doOnSuccess { Log.d("Login", "*****Login Success**") }
             .map { Result.withValue(it.toUserDomain()) }
             .onErrorReturn {
                 Result.withError(

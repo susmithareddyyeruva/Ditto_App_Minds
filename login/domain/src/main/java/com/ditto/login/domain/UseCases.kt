@@ -8,5 +8,7 @@ interface GetLoginDbUseCase {
     fun invoke(): Single<Result<LoginUser>>
     fun createUser(user: LoginUser): Single<Long>
     fun userLogin(user: LoginUser):Single<Result<LoginUser>>
+    fun loginUserWithCredential(user: LoginUser): Single<Result<LoginResultDomain>>
+
 }
 
