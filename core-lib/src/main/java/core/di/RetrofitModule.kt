@@ -36,27 +36,14 @@ class RetrofitModule {
     @Provides
     @WbApiRetrofit
     fun provideRetrofit(
-        @WbBaseUrl baseUrl: String,
-        certificateFactory: SSLSocketFactory?,
-        trustManagerFactory: TrustManagerFactory?
+        @WbBaseUrl baseUrl: String
     ): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
-
         val httpClient = OkHttpClient.Builder()
-            .addInterceptor(BasicAuthInterceptor("amrita4@gmail.com","India@123"))
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-
-   /*     certificateFactory?.let {
-            httpClient.sslSocketFactory(
-                certificateFactory,
-                trustManagerFactory!!.trustManagers[0] as X509TrustManager
-            )
-        }*/
-
-
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)

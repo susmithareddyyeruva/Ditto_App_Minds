@@ -8,6 +8,7 @@ import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.data.model.LoginRequest
+import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginRepository
 import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
@@ -18,6 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
+import okhttp3.Credentials
 import javax.inject.Inject
 
 /**
@@ -68,12 +70,18 @@ class LoginRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun loginUserWithCredential(user: LoginUser): Single<Result<LoginResultDomain>> {
+    override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
         if (!Utility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val loginRequest = LoginRequest("credentials")
-        return loginService.loginWithCredential("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", loginRequest)
+        val basic =
+            Credentials.basic(username = user.Username ?: "", password = user.Password ?: "")
+        return loginService.loginWithCredential(
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            loginRequest,
+            basic
+        )
             .doOnSuccess { Log.d("Login", "*****Login Success**") }
             .map { Result.withValue(it.toUserDomain()) }
             .onErrorReturn {

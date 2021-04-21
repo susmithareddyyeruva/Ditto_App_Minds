@@ -9,6 +9,8 @@ import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.GetLoginDbUseCase
+import com.ditto.login.domain.LoginInputData
+import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -16,6 +18,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
+import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
@@ -31,6 +35,7 @@ class LoginViewModel @Inject constructor(
     var versionName: ObservableField<String> = ObservableField<String>("")
     val isEmailValidated: ObservableBoolean = ObservableBoolean(true)
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
+    val loadingIndicator: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -44,85 +49,89 @@ class LoginViewModel @Inject constructor(
         if (TextUtils.isEmpty(userName.get()) || !isEmailValid()) {
             isEmailValidated.set(false)
             logger.d("username invalid")
-        } else if (TextUtils.isEmpty(password.get()) || !isPasswordValid()) {
+        } else if (TextUtils.isEmpty(password.get())) {
             isPasswordValidated.set(false)
             logger.d("password invalid")
         } else {
             isEmailValidated.set(true)
             isPasswordValidated.set(true)
-            disposable += useCase.createUser(
-                LoginUser(
-                    userName = userName.get(),
-                    isLoggedIn = true
-                )
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFetchResult(it) }
-
 
             //Making api call for Login
-
-        /*    disposable += useCase.userLogin(
-                LoginUser(
-                    userName = userName.get(),
-                    isLoggedIn = true
-                )
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFetchResult(it) }*/
-            //Login api
+            loadingIndicator.set(true)
             disposable += useCase.loginUserWithCredential(
-                LoginUser(
-                    userName = userName.get(),
-                    isLoggedIn = true
-                )
+                LoginInputData(userName.get(), password.get())
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFetchResult(it) }
-
-
-
-
-
+                .subscribeBy { handlLoginResult(it) }
         }
     }
+
     //redirecting to external browser
-    fun openExternalBrowser(){
+    fun openExternalBrowser() {
         val url = "https://www.joann.com/create-account"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
+
+    private fun handlLoginResult(result: Result<LoginResultDomain>) {
+        logger.d("handleFetchResult ${result.toString()}")
+        loadingIndicator.set(false)
+        when (result) {
+            is Result.OnSuccess -> {
+                if (result.data.auth_type.equals("registered")) {
+
+                    disposable += useCase.createUser(
+                        LoginUser(
+                            userName = userName.get(),
+                            isLoggedIn = true
+                        )
+                    )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy { handleFetchResult(it) }
+                }
+
+            }
+            is Result.OnError ->
+                //handleError(Error("", null))
+                handleError(result.error)
+
+
+        }
+    }
+
     private fun handleFetchResult(result: Any) {
         logger.d("handleFetchResult ${result.toString()}")
-        if(result.toString() == "0")
         uiEvents.post(Event.OnLoginClicked)
-        else
-            handleError(Error("",null))
     }
 
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
+            else -> {
+               uiEvents.post(Event.OnLoginFailed)
+            }
+
 
         }
     }
 
     private fun isEmailValid(): Boolean {
-        return userName.get().equals("Ditto")
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(userName.get()).matches()
     }
 
-    private fun isPasswordValid(): Boolean {
-        return password.get().equals("Ditto")
-    }
     /**
      * Events for this view model
      */
     sealed class Event {
         object OnLoginClicked : Event()
+
+        /**
+         * Event emitted by [events] when the data updated successfully
+         */
+        object OnLoginFailed : Event()
     }
 }
