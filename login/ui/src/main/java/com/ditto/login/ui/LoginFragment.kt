@@ -17,6 +17,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.databinding.LoginFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
@@ -51,8 +52,9 @@ class LoginFragment : BaseFragment() {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val pinfo: PackageInfo = requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0)
-        viewModel.versionName.set("Version "+pinfo.versionName)
+        val pinfo: PackageInfo = requireActivity().getPackageManager()
+            .getPackageInfo(requireActivity().getPackageName(), 0)
+        viewModel.versionName.set("Version " + pinfo.versionName)
         if (savedInstanceState == null) {
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,23 +83,23 @@ class LoginFragment : BaseFragment() {
                 }
 
                 override fun onDestroyActionMode(mode: ActionMode?) {
-                    Log.d("actionMode","onDestroy")
+                    Log.d("actionMode", "onDestroy")
                 }
             }
 
         //for samsung keyboard
-        binding.edittextPassword.addTextChangedListener(object :TextWatcher{
+        binding.edittextPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                Log.d("onTextChange","After")
+                Log.d("onTextChange", "After")
 
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.d("onTextChange","Before")
+                Log.d("onTextChange", "Before")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(count>1)
+                if (count > 1)
                     binding.edittextPassword.setText("")
             }
 
@@ -114,10 +116,19 @@ class LoginFragment : BaseFragment() {
             is LoginViewModel.Event.OnLoginClicked -> {   //Re directing to On_boarding screen
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_loginFragment_to_OnboardingFragment,
+                        bundle
+                    )
                 }
+
                 Unit
             }
+            is LoginViewModel.Event.OnLoginFailed -> {
+                showSnackBar()
+            }
+
+
 
         }
 
@@ -142,4 +153,10 @@ class LoginFragment : BaseFragment() {
         smoothScrollBy(0, delta) //***/2 *****3/2
     }
 
+    private fun showSnackBar() {
+        Utility.showSnackBar(
+            resources.getString(R.string.login_failed),
+            binding.rootLayout
+        )
+    }
 }
