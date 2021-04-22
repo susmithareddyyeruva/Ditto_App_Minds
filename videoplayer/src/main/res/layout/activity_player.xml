@@ -51,12 +51,12 @@
             android:textColor="@android:color/white"
             android:background="@color/header_background"
             android:paddingStart="@dimen/exo_progress_height"
+            android:paddingEnd="@dimen/exo_progress_height"
             android:paddingTop="@dimen/exo_progress_height"
             android:paddingBottom="@dimen/exo_progress_height"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
