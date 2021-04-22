@@ -317,6 +317,13 @@ class Utility {
             }
             return byteBuffer.toByteArray()
         }
+
+        fun redirectToExternalBrowser(context: Context, url: String) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }
     }
 
     interface CallbackDialogListener {

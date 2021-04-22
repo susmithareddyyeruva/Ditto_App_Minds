@@ -10,6 +10,7 @@ import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginUser
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -71,6 +72,17 @@ class LoginViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy { handleFetchResult(it) }
         }
+    }
+
+
+    //redirecting to external browser
+    fun signUpRedirection(){
+        Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
+    }
+
+    fun forgotPasswordRedirection(){
+        Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
+
     }
 
     private fun handleFetchResult(result: Any) {
