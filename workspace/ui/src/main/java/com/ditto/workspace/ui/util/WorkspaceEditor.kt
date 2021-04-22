@@ -89,21 +89,20 @@ class WorkspaceEditor private constructor(builder: Builder) {
         }
         // checking overlapping only for dragged pieces
         // TODO : PUT isOverlappingEnabled true IF OVERLAPPING NEEDED
-        if (Utility.isOverlappingEnabled.get()) {
-            if (isDraggedPiece && checkOverlappingCondition(
-                    CollisionUtil.drawableToBitmap(
-                        drawable,
-                        scaleFactor
-                    ),
-                    null,
-                    workspaceItem?.xcoordinate?.toInt(),
-                    workspaceItem?.ycoordinate?.toInt()
-                )
-            ) {
-                dragListener.onOverlapped(true)
-                return
-            }
+        if (Utility.isOverlappingEnabled.get() && isDraggedPiece && checkOverlappingCondition(
+                CollisionUtil.drawableToBitmap(
+                    drawable,
+                    scaleFactor
+                ),
+                null,
+                workspaceItem?.xcoordinate?.toInt(),
+                workspaceItem?.ycoordinate?.toInt()
+            )
+        ) {
+            dragListener.onOverlapped(true)
+            return
         }
+
         imageRootView?.makeDraggable(
             sticky,
             workspaceItem,
@@ -117,9 +116,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
                     workspaceItem?.pivotY = view.pivotY
                     workspaceItem?.rotationAngle = view.rotation
                     addedViewsModel.find { it.id == workspaceItem?.id } to (workspaceItem)
-//                    setDataToWorkspaceModel(view,workspaceItem)
                     clearAllSelection()
-                    //dragListener.onTouch(view, workspaceItem)
                     imageView = view.findViewById(R.id.imgPhotoEditorImage) as ImageView
                     imageView?.tag = workspaceItem?.id
                     imageView?.setColorFilter(
@@ -187,22 +184,6 @@ class WorkspaceEditor private constructor(builder: Builder) {
             dragListener.onDragCompleted()
         }
     }
-
-    /**
-     * Set to workspace model
-     */
-    private fun setDataToWorkspaceModel(
-        view: View,
-        workspaceItem: WorkspaceItems?
-    ) {
-        workspaceItem?.xcoordinate = view.x
-        workspaceItem?.ycoordinate = view.y
-        workspaceItem?.pivotX = view.pivotX
-        workspaceItem?.pivotY = view.pivotY
-        workspaceItem?.rotationAngle = view.rotation
-        addedViewsModel.find { it.id == workspaceItem?.id } to (workspaceItem)
-    }
-
 
     /**
     }
@@ -483,27 +464,22 @@ class WorkspaceEditor private constructor(builder: Builder) {
 
         // Check if it overlaps on mirroring
         // TODO : PUT isOverlappingEnabled true IF OVERLAPPING NEEDED
-        if (Utility.isOverlappingEnabled.get()) {
-            if (checkOverlappingCondition(
-                    CollisionUtil.getViewBitmap((imageView?.parent as View))
-                        .get(),
-                    (imageView?.parent as View),
-                    (imageView?.parent as View).x.toInt(),
-                    (imageView?.parent as View).y.toInt()
-                )
-            ) {
-                (imageView?.parent as View).rotation = orginalRotation
-                imageView?.rotationY = if (imageView?.rotationY == 180F) 0f else 180F
-                (imageView?.parent as View).x = orginalX
-                (imageView?.parent as View).y = orginalY
-                mOnWorkspaceImageDragListener?.onOverlapped(true)
-                return
-            }
+        if (Utility.isOverlappingEnabled.get() && checkOverlappingCondition(
+                CollisionUtil.getViewBitmap((imageView?.parent as View))
+                    .get(),
+                (imageView?.parent as View),
+                (imageView?.parent as View).x.toInt(),
+                (imageView?.parent as View).y.toInt()
+            )
+        ) {
+            (imageView?.parent as View).rotation = orginalRotation
+            imageView?.rotationY = if (imageView?.rotationY == 180F) 0f else 180F
+            (imageView?.parent as View).x = orginalX
+            (imageView?.parent as View).y = orginalY
+            mOnWorkspaceImageDragListener?.onOverlapped(true)
+            return
         }
         (addedViews.find { it.tag == imageView?.tag }) to (imageView?.parent as View)
-//        var workspaceItem=addedViewsModel.find { it.id == imageView?.tag }
-//        workspaceItem?.isMirrorH = (imageView?.rotationY == 180F)
-//        setDataToWorkspaceModel((imageView?.parent as View),workspaceItem)
 
         addedViewsModel.find { it.id == imageView?.tag }?.isMirrorH =
             (imageView?.rotationY == 180F)
@@ -541,29 +517,22 @@ class WorkspaceEditor private constructor(builder: Builder) {
 
         // Check if it overlaps on mirroring
         // TODO : PUT isOverlappingEnabled true IF OVERLAPPING NEEDED
-        if (Utility.isOverlappingEnabled.get()) {
-            if (checkOverlappingCondition(
-                    CollisionUtil.getViewBitmap((imageView?.parent as View))
-                        .get(),
-                    (imageView?.parent as View),
-                    (imageView?.parent as View).x.toInt(),
-                    (imageView?.parent as View).y.toInt()
-                )
-            ) {
-                (imageView?.parent as View).rotation = orginalRotation
-                imageView?.rotationX = if (imageView?.rotationX == 180F) 0f else 180F
-                (imageView?.parent as View).x = orginalX
-                (imageView?.parent as View).y = orginalY
-                mOnWorkspaceImageDragListener?.onOverlapped(true)
-                return
-            }
+        if (Utility.isOverlappingEnabled.get() && checkOverlappingCondition(
+                CollisionUtil.getViewBitmap((imageView?.parent as View))
+                    .get(),
+                (imageView?.parent as View),
+                (imageView?.parent as View).x.toInt(),
+                (imageView?.parent as View).y.toInt()
+            )
+        ) {
+            (imageView?.parent as View).rotation = orginalRotation
+            imageView?.rotationX = if (imageView?.rotationX == 180F) 0f else 180F
+            (imageView?.parent as View).x = orginalX
+            (imageView?.parent as View).y = orginalY
+            mOnWorkspaceImageDragListener?.onOverlapped(true)
+            return
         }
         (addedViews.find { it.tag == imageView?.tag }) to (imageView?.parent as View)
-
-//        var workspaceItem=addedViewsModel.find { it.id == imageView?.tag }
-//        workspaceItem?.isMirrorV = (imageView?.rotationX == 180F)
-//        setDataToWorkspaceModel((imageView?.parent as View),workspaceItem)
-
         addedViewsModel.find { it.id == imageView?.tag }?.isMirrorV =
             (imageView?.rotationX == 180F)
         addedViewsModel.find { it.id == imageView?.tag }?.xcoordinate =

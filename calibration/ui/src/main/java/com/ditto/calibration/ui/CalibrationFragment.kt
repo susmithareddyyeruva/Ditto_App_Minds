@@ -17,6 +17,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -314,6 +315,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun calibrateImage() {
+        logger.d("TRACE_ Projection : performCalibration  Start" + Calendar. getInstance().timeInMillis)
         showProgress(true)
         viewModel.disposable += Observable.fromCallable {
             performCalibration(imageArray.toTypedArray(), context?.applicationContext)
@@ -324,6 +326,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun transform() {
+        logger.d("TRACE_ Projection : performTransform  Start" + Calendar. getInstance().timeInMillis)
         showProgress(true)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
 
@@ -354,7 +357,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isRecalibration: Boolean) {
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
-        //alert?.dismiss()
+        logger.d("TRACE_ Projection : transformation " + Calendar. getInstance().timeInMillis)
         when (result.first) {
             TransformErrorCode.Success -> GlobalScope.launch {
                 sendTransformedImage(
@@ -376,6 +379,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private suspend fun sendTransformedImage(result: Bitmap, isRecalibration: Boolean) {
+        logger.d("TRACE_ Projection : send Image Start" + Calendar. getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
             var soc: Socket? = null
             try {
@@ -420,6 +424,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 }
             } finally {
                 soc?.close()
+                logger.d("TRACE_ Projection : send Image Finish" + Calendar. getInstance().timeInMillis)
             }
         }
     }
@@ -511,9 +516,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
 
         override fun onDisplayAdded(displayId: Int) {
+            Log.d("displayListener","onDisplayAdded")
         }
 
         override fun onDisplayRemoved(displayId: Int) {
+            Log.d("displayListener","onDisplayRemoved")
         }
     }
 
@@ -605,12 +612,13 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             Utility.AlertType.CALIBRATION -> sendCalibrationPattern()
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
+                Log.d("event","undefined")
             }
         }
     }
 
     override fun onNeutralButtonClicked() {
-
+        Log.d("event","onNeutralButtonClicked")
     }
 
     private fun restartCamera() {
@@ -639,6 +647,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
 
     override fun OnCalibrationReponse(calibrationResponse: Util.CalibrationType) {
+        logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar. getInstance().timeInMillis)
         showProgress(false)
         when (calibrationResponse) {
             Util.CalibrationType.Success -> {

@@ -14,7 +14,9 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
@@ -24,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
+import java.util.*
 import kotlin.math.PI
 
 
@@ -278,6 +281,7 @@ class Utility {
         }
 
         suspend fun sendDittoImage(context: Context, imageName: String) {
+            Log.d("TRACE_ Projection :","Send Ditto start " + Calendar. getInstance().timeInMillis)
             val uri = Uri.parse(
                 "android.resource://" + context.packageName
                     .toString() + "/drawable/$imageName"
@@ -294,14 +298,28 @@ class Utility {
                         dataOutputStream.write(bytes)
                         println("*****bytes.length = " + bytes?.size)
                         dataOutputStream.close()
-
                     } else {
                         println("Socket Connection Failed")
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                context,
+                                "Socket Connection failed. Try again!!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 } catch (e: Exception) {
                     println("Socket Connection Failed")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Socket Connection failed. Try again!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } finally {
                     soc?.close()
+                    Log .d("TRACE_ Projection :","Send Ditto Finish " + Calendar. getInstance().timeInMillis)
                 }
             }
         }

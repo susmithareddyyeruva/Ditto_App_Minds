@@ -3,14 +3,14 @@ package com.ditto.workspace.ui
 import android.app.ActionBar
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.ditto.workspace.ui.databinding.PinchzoomActivityBinding
 import com.ditto.workspace.ui.util.Utility
 import kotlinx.android.synthetic.main.pinchzoom_activity.*
-import com.ditto.workspace.ui.R
-import com.ditto.workspace.ui.databinding.PinchzoomActivityBinding
 
 class PinchAndZoom : AppCompatActivity() {
 
@@ -47,10 +47,10 @@ class PinchAndZoom : AppCompatActivity() {
                 //myZoomageView?.scaleType = ImageView.ScaleType.FIT_XY
                 myZoomageView?.setImageDrawable(drawable)
             } catch (e: Exception) {
-
+                Log.d("Exception","image path")
             }
         }
-        ic_close_button.setOnClickListener(View.OnClickListener {
+        binding.icCloseButton.setOnClickListener(View.OnClickListener {
             this.finish()
             overridePendingTransition(0, 0);
         })

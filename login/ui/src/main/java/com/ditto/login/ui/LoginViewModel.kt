@@ -1,6 +1,8 @@
 package com.ditto.login.ui
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -75,6 +77,7 @@ class LoginViewModel @Inject constructor(
     }
 
 
+
     //redirecting to external browser
     fun signUpRedirection(){
         Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
@@ -96,9 +99,7 @@ class LoginViewModel @Inject constructor(
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
-            else -> {
 
-            }
         }
     }
 

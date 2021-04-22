@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.adapter.PatternAdapter
+import com.ditto.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.R
-import com.ditto.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
 import java.util.*
 import javax.inject.Inject
 import kotlin.Comparator
@@ -78,7 +78,7 @@ class CompletedProjectsFragment : BaseFragment() {
 
         patternData?.let { adapter.setListData(it) }
     }
-
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) =
         when (event) {
 
@@ -103,8 +103,9 @@ class CompletedProjectsFragment : BaseFragment() {
             }
 
             is AllPatternsViewModel.Event.OnOptionsClicked -> {
+                Log.d("error","instruction error")
             }
-            //showPopupMenu(event.view, event.patternId)
+
 
         }
 

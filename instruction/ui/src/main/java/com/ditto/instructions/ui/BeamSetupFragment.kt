@@ -1,27 +1,25 @@
 package com.ditto.instructions.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
 import com.ditto.instructions.ui.adapter.TabsAdapter
+import com.ditto.instructions.ui.databinding.FragmentBeamSetupBinding
+import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import com.ditto.instructions.ui.R
-import com.ditto.instructions.ui.databinding.FragmentBeamSetupBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -100,6 +98,8 @@ class BeamSetupFragment : BaseFragment() {
     /**
      * [Function] Handling events from view model
      */
+
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: InstructionViewModel.Event) =
         when (event) {
             is InstructionViewModel.Event.OnInstructionDataUpdated -> {
@@ -107,6 +107,7 @@ class BeamSetupFragment : BaseFragment() {
             }
 
             is InstructionViewModel.Event.OnShowError -> {
+                Log.d("error","instruction error")
 
             }
             is InstructionViewModel.Event.OnSkipTutorial -> {
@@ -114,6 +115,7 @@ class BeamSetupFragment : BaseFragment() {
             }
 
             else -> {
+                Log.d("instruction","event ")
             }
         }
 
@@ -147,6 +149,7 @@ class BeamSetupFragment : BaseFragment() {
         viewModel.isShowindicator.set(false)
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
+                Log.d("onPageScroll","onPageScrollStateChanged")
             }
 
             override fun onPageScrolled(
@@ -154,19 +157,26 @@ class BeamSetupFragment : BaseFragment() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
+                Log.d("onPageScroll","onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
+                Log.d("onPageScroll","onPageSelected")
             }
         })
 
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
+                Log.d("onTabSelection","onTabSelected")
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                Log.d("onTabSelection","onTabUnselected")
+            }
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                Log.d("onTabSelection","onTabReselected")
+            }
         })
     }
 }

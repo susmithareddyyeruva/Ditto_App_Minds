@@ -31,28 +31,5 @@ internal fun Instructions.toDomain(): HowToModel {
     )
 }
 
-/*internal fun Instructions.toDomain():HowToData{
-    return HowToData(
-        id1 = this.id,
-        title1 = this.title,
-        description1 = this.description,
-        imagePath1 =  this.imagePath,
-        instructions1 = this.instructions.map { it.toDomain() }
-    )
-}*/
-
-/*
-
-internal fun Tabcontent.toDomain(): HowToModel {
-    return HowToModel(
-        id = this.id_tc,
-        title = this.title_tc,
-        description = this.description_tc,
-        imagePath=  this.imagePath_tc,
-        videoPath = this.videoPath_tc
-
-    )
-}
-*/
 
 

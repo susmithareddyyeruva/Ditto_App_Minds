@@ -15,7 +15,7 @@
     <string name="skips">Skip</string>
     <string name="ditto_connect">Ditto projector is not connected</string>
     <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>
-    <string name="error_text">Please try again connecting your device \nagain to com.ditto projector.</string>
+    <string name="error_text">Please try again connecting your device \nagain to ditto projector.</string>
     <string name="ble_connectivity">Turn on your bluetooth</string>
     <string name="wifi_connectivity" tools:ignore="ExtraTranslation">Turn on your WiFi</string>
     <string name="turnon">TURN ON</string>

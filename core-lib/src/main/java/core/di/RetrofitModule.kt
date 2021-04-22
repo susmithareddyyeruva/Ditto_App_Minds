@@ -20,7 +20,10 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import javax.net.ssl.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 
 @Module(
@@ -105,9 +108,6 @@ class WbSocketCertificateModule {
         } catch (fnfe: FileNotFoundException) {
             fnfe.printStackTrace()
         }
-
-        //val caInput: InputStream = context.resources.openRawResource(certificateId);
-
         var tmf: TrustManagerFactory? = null
 
         if (caInput != null) {
