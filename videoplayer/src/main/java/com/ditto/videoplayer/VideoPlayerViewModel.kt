@@ -19,10 +19,19 @@ class VideoPlayerViewModel @Inject constructor() : BaseViewModel() {
         isPlayButtonVisible.set(false)
     }
 
+    fun onSkipButtonClicked() {
+        uiEvents.post(Event.OnSkipButtonClicked)
+    }
+
     sealed class Event {
         /**
-         * Event emitted by [events] when the data received successfully
+         * Event emitted by [events] when the playButton is clicked
          */
         object OnPlayButtonClicked : Event()
+
+        /**
+         * Event emitted by [events] when the skip is clicked
+         */
+        object OnSkipButtonClicked : Event()
     }
 }

@@ -13,5 +13,16 @@
         app:launchSingleTop="true"
         tools:layout="@layout/activity_player">
 
+        <action
+            android:id="@+id/action_VideoPlayer_to_Onboarding"
+            app:destination="@id/nav_graph_id_onboarding"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_video"
+            app:popUpToInclusive="true" />
+
     </fragment>
 </navigation>

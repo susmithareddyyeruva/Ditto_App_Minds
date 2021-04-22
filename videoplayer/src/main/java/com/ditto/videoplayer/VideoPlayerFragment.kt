@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.databinding.ActivityPlayerBinding
@@ -70,6 +72,9 @@ class VideoPlayerFragment : BaseFragment() {
             is VideoPlayerViewModel.Event.OnPlayButtonClicked -> {
                 startPlayer()
             }
+            is VideoPlayerViewModel.Event.OnSkipButtonClicked -> {
+                findNavController().navigate(R.id.action_VideoPlayer_to_Onboarding)
+            }
             else -> logger.d("Invalid Event")
         }
 
@@ -105,7 +110,7 @@ class VideoPlayerFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         hideSystemUi()
-        if (Util.SDK_INT <= 23 || player == null) {
+        if (player == null) {
             initializePlayer()
         }
     }
@@ -121,11 +126,15 @@ class VideoPlayerFragment : BaseFragment() {
                 .build()
         }
         binding.videoView.player = player
-       /* val mediaItem =
-            MediaItem.Builder()
-                .setUri(getString(R.string.media_url_mp4))
-                .setMimeType(MimeTypes.APPLICATION_MPD)
-                .build()*/
+        // exoplayer not supporting data binding
+        binding.videoView.findViewById<TextView>(R.id.skip).setOnClickListener {
+            findNavController().navigate(R.id.action_VideoPlayer_to_Onboarding)
+        }
+        /* val mediaItem =
+             MediaItem.Builder()
+                 .setUri(getString(R.string.media_url_mp4))
+                 .setMimeType(MimeTypes.APPLICATION_MPD)
+                 .build()*/
         // Replace this line
         val mediaItem =
             MediaItem.fromUri(getString(R.string.media_url_mp4))
@@ -162,9 +171,9 @@ class VideoPlayerFragment : BaseFragment() {
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
     override fun onPause() {
-        super.onPause()
-        if (Util.SDK_INT <= 23) {
+//        if (Util.SDK_INT <= 23) {
             releasePlayer()
-        }
+//        }
+        super.onPause()
     }
 }
