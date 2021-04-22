@@ -96,14 +96,14 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 WorkspaceAdapter(cfManager)
             val garmentBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.garments),
-               PATTERN_ID to viewModel.patternId.get()
+                PATTERN_ID to viewModel.patternId.get()
             )
             fragmentGarment = WorkspaceTabFragment()
             fragmentGarment.setArguments(garmentBundle)
 
             val liningBundle = bundleOf(
-               PATTERN_CATEGORY to getString(R.string.lining),
-               PATTERN_ID to viewModel.patternId.get()
+                PATTERN_CATEGORY to getString(R.string.lining),
+                PATTERN_ID to viewModel.patternId.get()
             )
             fragmentLining = WorkspaceTabFragment()
             fragmentLining.setArguments(liningBundle)
@@ -117,7 +117,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
             workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
             workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
-            workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))//Interfacing
+            workspacAdapter.addFragment(
+                fragmentInterface,
+                getString(R.string.interfacing)
+            )//Interfacing
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
@@ -172,9 +175,11 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     }
 
     private fun updateTab() {
-        if (viewModel.data.value?.patternPieces?.filter { it.tabCategory == getString(
-                R.string.garments
-            ) }?.size == 0) {
+        if (viewModel.data.value?.patternPieces?.filter {
+                it.tabCategory == getString(
+                    R.string.garments
+                )
+            }?.size == 0) {
             (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(0).isEnabled = false
             (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(0)
                 .setBackgroundResource(R.drawable.tab_disabled)
@@ -184,9 +189,11 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             tv.tag = 0
             tv.setOnTouchListener(this)
         }
-        if (viewModel.data.value?.patternPieces?.filter { it.tabCategory == getString(
-                R.string.lining
-            ) }?.size == 0) {
+        if (viewModel.data.value?.patternPieces?.filter {
+                it.tabCategory == getString(
+                    R.string.lining
+                )
+            }?.size == 0) {
             (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
             (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(1)
                 .setBackgroundResource(R.drawable.tab_disabled)
@@ -196,9 +203,11 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             tv.tag = 1
             tv.setOnTouchListener(this)
         }
-        if (viewModel.data.value?.patternPieces?.filter { it.tabCategory == getString(
-                R.string.interfacing
-            ) }?.size == 0) {
+        if (viewModel.data.value?.patternPieces?.filter {
+                it.tabCategory == getString(
+                    R.string.interfacing
+                )
+            }?.size == 0) {
             (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(2).isEnabled = false
             (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(2)
                 .setBackgroundResource(R.drawable.tab_disabled)
@@ -223,7 +232,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.viewPager.currentItem = position
             viewModel.selectedTab.set(position)
         } else {
-            Log.d("updateTab","undefined")
+            Log.d("updateTab", "undefined")
             position = 0
             binding.viewPager.currentItem = position
             viewModel.selectedTab.set(position)
@@ -245,14 +254,14 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     }
 
     private fun onTabSwitchAlert() {
-       core.ui.common.Utility.getAlertDialogue(
+        core.ui.common.Utility.getAlertDialogue(
             requireContext(),
             getString(R.string.switching),
             getString(R.string.switching_message),
             getString(R.string.cancel),
             getString(R.string.ok),
             this,
-           core.ui.common.Utility.AlertType.TAB_SWITCH
+            core.ui.common.Utility.AlertType.TAB_SWITCH
         )
 
     }
@@ -261,7 +270,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     override fun onPositiveButtonClicked(alertType: core.ui.common.Utility.AlertType) {
         if (alertType == core.ui.common.Utility.AlertType.TAB_SWITCH) {
             if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch {core.ui.common.Utility.sendDittoImage(requireActivity(), "solid_black")}
+                GlobalScope.launch {
+                    core.ui.common.Utility.sendDittoImage(
+                        requireActivity(),
+                        "solid_black"
+                    )
+                }
             }
             binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
             clearWorkspace()
@@ -275,7 +289,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     }
 
     override fun onNeutralButtonClicked() {
-        Log.d("alert","onNeutralButtonClicked")
+        Log.d("alert", "onNeutralButtonClicked")
     }
 
     //  handle tab touch
@@ -290,13 +304,17 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 }
                 return false
             } else {
-               core.ui.common.Utility.showSnackBar(resources.getString(R.string.projection_progress),binding.container)
+                core.ui.common.Utility.showSnackBar(
+                    resources.getString(R.string.projection_progress),
+                    binding.container
+                )
                 return true
             }
         }
         return false
     }
-    companion object{
+
+    companion object {
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
     }

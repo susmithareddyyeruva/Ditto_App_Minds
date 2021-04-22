@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.databinding.ActivityPlayerBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -16,23 +18,25 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import javax.inject.Inject
 
 class VideoPlayerFragment : BaseFragment() {
-    private var playbackStateListener: PlaybackStateListener? = null
-    private var playerView: PlayerView? = null
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+
+    val logger: Logger by lazy {
+        loggerFactory.create(VideoPlayerFragment::class.java.simpleName)
+    }
+
     private var player: SimpleExoPlayer? = null
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition: Long = 0
     private val viewModel: VideoPlayerViewModel by ViewModelDelegate()
+    private var playbackStateListener: PlaybackStateListener? = null
     lateinit var binding:ActivityPlayerBinding
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        playerView = view.findViewById(R.id.video_view)
-        playbackStateListener = PlaybackStateListener()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +51,29 @@ class VideoPlayerFragment : BaseFragment() {
         return binding.videoRoot
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setUIEvents()
+        playbackStateListener = PlaybackStateListener()
+    }
+
+    private fun setUIEvents() {
+        viewModel.disposable += viewModel.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+            }
+    }
+
+    private fun handleEvent(event: VideoPlayerViewModel.Event) =
+        when (event) {
+            is VideoPlayerViewModel.Event.OnPlayButtonClicked -> {
+                startPlayer()
+            }
+            else -> logger.d("Invalid Event")
+        }
+
+
     private class PlaybackStateListener : Player.EventListener {
         override fun onPlaybackStateChanged(playbackState: Int) {
             val stateString: String
@@ -59,7 +86,14 @@ class VideoPlayerFragment : BaseFragment() {
             }
             Log.d("EXOPLAYER", "changed state to $stateString")
         }
+
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            super.onIsPlayingChanged(isPlaying)
+        }
+
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -86,7 +120,7 @@ class VideoPlayerFragment : BaseFragment() {
                 .setTrackSelector(trackSelector)
                 .build()
         }
-        playerView!!.player = player
+        binding.videoView.player = player
        /* val mediaItem =
             MediaItem.Builder()
                 .setUri(getString(R.string.media_url_mp4))
@@ -102,6 +136,11 @@ class VideoPlayerFragment : BaseFragment() {
         player?.prepare()
     }
 
+    private fun startPlayer() {
+        player!!.playWhenReady = true
+        player!!.playbackState
+    }
+
     private fun releasePlayer() {
         if (player != null) {
             playbackPosition = player!!.currentPosition
@@ -115,7 +154,7 @@ class VideoPlayerFragment : BaseFragment() {
 
     @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
-        playerView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+        binding.videoRoot.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
