@@ -4,5 +4,23 @@
     <dimen name="size_16px">20sp</dimen>
     <dimen name="size_14px">18sp</dimen>
     <dimen name="size_12px">16sp</dimen>
+    <dimen name="text_size_forgot_psw">22sp</dimen>
+    <dimen name="text_size_you_will">18sp</dimen>
+    <dimen name="text_size_ditto_size">18sp</dimen>
+    <dimen name="linear_login_credentials_margin_start">82.5dp</dimen>
+    <dimen name="textview_welcome">24sp</dimen>
     <dimen name="edittext_height">44dp</dimen>
+    <dimen name="edittext_heightn">60dp</dimen>
+    <dimen name="edittext_email_margintop">50.86dp</dimen>
+    <dimen name="edittext_password_margintop">13.5dp</dimen>
+    <dimen name="edittext_email_padding_left">14.5dp</dimen>
+    <dimen name="textview_forgot_password_margintop">16.64dp</dimen>
+    <dimen name="textview_forgot_password_marginbottom">31dp</dimen>
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="button_login_text_size">20sp</dimen>
+    <dimen name="button_login_margin_bottom">30dp</dimen>
+    <dimen name="textview_signup_margin_bottom">10dp</dimen>
+    <dimen name="textview_see_more_margin_top">51dp</dimen>
+    <dimen name="textview_see_more_margin_bottom">81dp</dimen>
+
 </resources>

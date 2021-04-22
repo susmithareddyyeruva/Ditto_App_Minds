@@ -89,6 +89,7 @@ dependencies {
     implementation project(path: ':mylibrary-ui')
     implementation project(path: ':tutorial-ui')
 
-
+    implementation 'com.github.bumptech.glide:glide:3.6.0'
+    implementation 'com.caverock:androidsvg-aar:1.4'
 
 }

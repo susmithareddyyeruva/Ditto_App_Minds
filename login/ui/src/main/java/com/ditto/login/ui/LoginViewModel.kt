@@ -6,10 +6,13 @@ import android.net.Uri
 import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
+import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginViewPagerData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,6 +36,8 @@ class LoginViewModel @Inject constructor(
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+
+    var viewPagerData : MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
 
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
@@ -75,7 +80,7 @@ class LoginViewModel @Inject constructor(
         }
     }
     //redirecting to external browser
-    fun openExternalBrowser(){
+    fun openExternalBrowser() {
         val url = "https://www.joann.com/create-account"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
@@ -84,10 +89,10 @@ class LoginViewModel @Inject constructor(
     }
     private fun handleFetchResult(result: Any) {
         logger.d("handleFetchResult ${result.toString()}")
-        if(result.toString() == "0")
-        uiEvents.post(Event.OnLoginClicked)
+        if (result.toString() == "0")
+            uiEvents.post(Event.OnLoginClicked)
         else
-            handleError(Error("",null))
+            handleError(Error("", null))
     }
 
     private fun handleError(error: Error) {
@@ -109,5 +114,34 @@ class LoginViewModel @Inject constructor(
      */
     sealed class Event {
         object OnLoginClicked : Event()
+    }
+
+    fun fetchViewPagerData() {
+        lateinit var languageList: List<LoginViewPagerData>
+
+        languageList = listOf(
+            LoginViewPagerData(
+                1,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "SVG"
+            ),
+            LoginViewPagerData(
+                2,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "SVG"
+            ),
+            LoginViewPagerData(
+                3,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "SVG"
+            ),
+            LoginViewPagerData(
+                4,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "SVG"
+            )
+        )
+
+        viewPagerData.value = languageList
     }
 }

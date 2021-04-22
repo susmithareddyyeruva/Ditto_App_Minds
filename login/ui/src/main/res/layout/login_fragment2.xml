@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.login.ui.LoginViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <LinearLayout
+                    android:id="@+id/linear_image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:background="@color/blue">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/login_view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_login_credentials"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/linear_login_credentials_margin_start"
+                    android:layout_weight="45"
+                    android:orientation="vertical"
+                    android:weightSum="100">
+
+                    <TextView
+                        android:id="@+id/text_welcome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center"
+                        android:text="@string/Welcome"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textview_welcome" />
+
+                    <EditText
+                        android:id="@+id/edittext_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_heightn"
+                        android:layout_marginTop="@dimen/edittext_email_margintop"
+                        android:autofillHints="@string/email"
+                        android:background="@drawable/edittext_border_white"
+                        android:cursorVisible="true"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:ems="10"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:hint="@string/email"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="@dimen/edittext_email_padding_left"
+                        android:paddingRight="@dimen/edittext_email_padding_left"
+                        android:singleLine="true"
+                        android:text="@={viewModel.userName}"
+                        android:textColorHint="@color/texthint"
+                        android:textCursorDrawable="@drawable/cursor"
+                        android:textSize="@dimen/size_16px"
+                        app:error="@{viewModel.isEmailValidated ?null : `Enter valid username`}" />
+
+                    <EditText
+                        android:id="@+id/edittext_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_heightn"
+                        android:layout_marginTop="@dimen/edittext_password_margintop"
+                        android:background="@drawable/edittext_border_white"
+                        android:cursorVisible="true"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:hint="@string/Password"
+                        android:imeOptions="actionDone|flagNoExtractUi"
+                        android:inputType="textPassword"
+                        android:longClickable="false"
+                        android:paddingLeft="@dimen/edittext_email_padding_left"
+                        android:singleLine="true"
+                        android:text="@={viewModel.password}"
+                        android:textColorHint="@color/texthint"
+                        android:textCursorDrawable="@drawable/cursor"
+                        android:textSize="@dimen/size_16px"
+                        app:error="@{viewModel.isPasswordValidated ?null : `Enter valid password`}" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/textview_forgot_password_margintop"
+                        android:layout_marginBottom="@dimen/textview_forgot_password_marginbottom"
+                        android:autoLink="all"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center_horizontal"
+                        android:linksClickable="true"
+                        android:selectAllOnFocus="false"
+                        android:text="@string/forgot_password"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_forgot_psw" />
+
+                    <Button
+                        android:id="@+id/button_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_weight=".9"
+                        android:background="@drawable/ic_button_border"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:onClick="@{() -> viewModel.validateCredentials()}"
+                        android:text="@string/Login"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/button_login_text_size" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_dont_have_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/button_login_margin_bottom"
+                        android:layout_marginBottom="@dimen/textview_signup_margin_bottom"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:autoLink="all"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
+                            android:gravity="center_horizontal"
+                            android:linksClickable="true"
+                            android:selectAllOnFocus="false"
+                            android:text="@string/dont_have_account"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_forgot_psw" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="5dp"
+                            android:autoLink="all"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="center_horizontal"
+                            android:linksClickable="true"
+                            android:onClick="@{()-> viewModel.openExternalBrowser()}"
+                            android:selectAllOnFocus="false"
+                            android:text="@string/sign_up"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/text_size_forgot_psw" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:text="@string/you_will_be_redirected_to_ditto"
+                        android:textColor="@color/texthint"
+                        android:textSize="@dimen/text_size_you_will" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="@dimen/textview_see_more_margin_top"
+                        android:layout_marginBottom="@dimen/textview_see_more_margin_bottom"
+                        android:autoLink="all"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center_horizontal"
+                        android:linksClickable="true"
+                        android:selectAllOnFocus="false"
+                        android:text="@string/see_more"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_forgot_psw" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:text="@string/ditto_site"
+                        android:textColor="@color/textview_diito_site"
+                        android:textSize="@dimen/text_size_ditto_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <TextView
+            android:id="@+id/text_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/default_padding"
+            android:text="@={viewModel.versionName}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_16px"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>
