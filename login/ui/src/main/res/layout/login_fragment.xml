@@ -119,6 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="-30dp"
+                        android:onClick="@{()-> viewModel.signUpRedirection()}"
                         android:src="@drawable/ditto" />
 
                     <TextView
@@ -126,6 +127,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/Welcome"
+                        android:onClick="@{()-> viewModel.forgotPasswordRedirection()}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16px" />
 

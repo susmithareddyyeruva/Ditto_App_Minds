@@ -12,6 +12,7 @@ import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginUser
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -74,14 +75,19 @@ class LoginViewModel @Inject constructor(
                 .subscribeBy { handleFetchResult(it) }
         }
     }
+
+
+
     //redirecting to external browser
-    fun openExternalBrowser(){
-        val url = "https://www.joann.com/create-account"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+    fun signUpRedirection(){
+        Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
     }
+
+    fun forgotPasswordRedirection(){
+        Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
+
+    }
+
     private fun handleFetchResult(result: Any) {
         logger.d("handleFetchResult ${result.toString()}")
         if(result.toString() == "0")
