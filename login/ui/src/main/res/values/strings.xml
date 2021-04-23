@@ -2,13 +2,13 @@
     <string name="app_name">login-ui</string>
     <string name="login_imgDesc">Explore a hassle free way of cutting and sewing..</string>
     <string name="login_welcome">Welcome!</string>
-    <string name="username">Username</string>
+    <string name="username">Email</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
 
     <string name="logintext">Explore a hassle free way of cutting and sewing..</string>
     <string name="Welcome">Welcome!</string>
-    <string name="Username">Username</string>
+    <string name="Username">Email</string>
     <string name="Password">Password</string>
     <string name="Login">Login</string>
     <string name="login_failed">Login Failed</string>

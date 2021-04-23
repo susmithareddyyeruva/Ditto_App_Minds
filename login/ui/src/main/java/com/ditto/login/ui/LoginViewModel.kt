@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.text.TextUtils
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
@@ -21,6 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
+import non_core.lib.error.RemoteConfigError
 import javax.inject.Inject
 
 
@@ -36,6 +38,7 @@ class LoginViewModel @Inject constructor(
     val isEmailValidated: ObservableBoolean = ObservableBoolean(true)
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
     val loadingIndicator: ObservableBoolean = ObservableBoolean(false)
+    var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -111,8 +114,14 @@ class LoginViewModel @Inject constructor(
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
+            is RemoteConfigError -> Log.d(
+                "LoginViewModel",
+                "Remote Config fetch error : ${error.message}"
+            )
             else -> {
-               uiEvents.post(Event.OnLoginFailed)
+
+                errorString.set(error.message)
+                uiEvents.post(Event.OnLoginFailed)
             }
 
 

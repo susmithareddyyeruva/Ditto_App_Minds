@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.data.error.LoginError
 import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
@@ -13,6 +14,8 @@ import com.ditto.login.domain.LoginRepository
 import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.storage.data.database.UserDao
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import core.network.Utility
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
 import okhttp3.Credentials
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -85,9 +89,25 @@ class LoginRepositoryImpl @Inject constructor(
             .doOnSuccess { Log.d("Login", "*****Login Success**") }
             .map { Result.withValue(it.toUserDomain()) }
             .onErrorReturn {
+                val error = it as HttpException
+                var errorMessage="Error Fetching data"
+                if (error.code()==401){
+                    val errorBody = error.response()!!.errorBody()!!.string()
+                    Log.d("LoginError", errorBody)
+                    val gson = Gson()
+                    val type = object : TypeToken<LoginError>() {}.type
+                    val errorResponse: LoginError? = gson.fromJson(errorBody, type)
+                     errorMessage = errorResponse?.fault?.message ?: "Error Fetching data"
+                    Log.d("LoginErrorResponse", errorMessage)
+                }
+
+
                 Result.withError(
-                    LoginFetchError("Error fetching data", it)
+                    LoginFetchError(errorMessage, it)
                 )
             }
+
+
     }
 }
+

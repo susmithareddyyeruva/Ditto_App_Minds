@@ -4,6 +4,10 @@ sealed class Error(
     val message: String,
     val throwable: Throwable?
 )
+open class RemoteConfigError(
+    message: String = "Remote Config Fetching error",
+    throwable: Throwable? = null
+) : FeatureError(message, throwable)
 
 open class UnknownError(
     message: String = "Unknown Error",
@@ -27,3 +31,4 @@ abstract class FeatureError(
     message: String,
     throwable: Throwable? = null
 ) : Error(message, throwable)
+
