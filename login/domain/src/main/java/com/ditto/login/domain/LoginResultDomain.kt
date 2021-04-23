@@ -1,5 +1,7 @@
 package com.ditto.login.domain
 
+import com.ditto.login.domain.error.FaultDomain
+
 data class LoginResultDomain(
     val _type: String,
     val _v: String,
@@ -18,5 +20,6 @@ data class LoginResultDomain(
     val login: String,
     val previous_login_time: String,
     val previous_visit_time: String,
-    val salutation: String
+    val salutation: String,
+    val faultDomain: FaultDomain?
 )

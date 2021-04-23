@@ -86,19 +86,27 @@ class LoginRepositoryImpl @Inject constructor(
             loginRequest,
             basic
         )
-            .doOnSuccess { Log.d("Login", "*****Login Success**") }
-            .map { Result.withValue(it.toUserDomain()) }
+            .doOnSuccess {
+                Log.d("Login", "*****Login Success**")
+            }
+            .map {
+                Log.d("Login", "*****Login Success MAP**")
+                Result.withValue(it.toUserDomain())
+
+            }
             .onErrorReturn {
                 val error = it as HttpException
-                var errorMessage="Error Fetching data"
-                if (error.code()==401){
+                var errorMessage = "Error Fetching data"
+                try {
                     val errorBody = error.response()!!.errorBody()!!.string()
                     Log.d("LoginError", errorBody)
                     val gson = Gson()
                     val type = object : TypeToken<LoginError>() {}.type
                     val errorResponse: LoginError? = gson.fromJson(errorBody, type)
-                     errorMessage = errorResponse?.fault?.message ?: "Error Fetching data"
+                    errorMessage = errorResponse?.fault?.message ?: "Error Fetching data"
                     Log.d("LoginErrorResponse", errorMessage)
+                } catch (e: Exception) {
+                    Log.d("LoginErrorResponse", e.localizedMessage)
                 }
 
 

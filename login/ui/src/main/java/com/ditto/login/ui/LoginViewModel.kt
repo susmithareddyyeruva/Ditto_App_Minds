@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
         loadingIndicator.set(false)
         when (result) {
             is Result.OnSuccess -> {
-                if (result.data.auth_type.equals("registered")) {
+                if (result.data.faultDomain == null) {//User login successfull
 
                     disposable += useCase.createUser(
                         LoginUser(
@@ -95,11 +95,13 @@ class LoginViewModel @Inject constructor(
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy { handleFetchResult(it) }
+                } else { //http status code is 200  also have error
+                    errorString.set(result.data.faultDomain?.message?:"")
+                    uiEvents.post(Event.OnLoginFailed)
                 }
 
             }
             is Result.OnError ->
-                //handleError(Error("", null))
                 handleError(result.error)
 
 

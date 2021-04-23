@@ -1,5 +1,6 @@
 package com.ditto.login.data.model
 
+import com.ditto.login.data.error.Fault
 import com.google.gson.annotations.SerializedName
 
 data class LoginResult(
@@ -38,5 +39,7 @@ data class LoginResult(
     @SerializedName("_type")
     val type: String,
     @SerializedName("_v")
-    val v: String
+    val v: String,
+    @SerializedName("fault")
+    val fault: Fault?,
 )
