@@ -65,6 +65,7 @@ class LoginFragment : BaseFragment() {
         setUIEvents()
         setupKeyboardListener(binding.root) // call in OnCreate or similar
 
+
     }
 
     private fun setUIEvents() {
@@ -104,11 +105,7 @@ class LoginFragment : BaseFragment() {
             }
 
         })
-        viewModel.disposable += viewModel.events
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                handleEvent(it)
-            }
+
     }
 
     private fun handleEvent(event: LoginViewModel.Event) =
@@ -126,8 +123,8 @@ class LoginFragment : BaseFragment() {
             }
             is LoginViewModel.Event.OnLoginFailed -> {
                 showSnackBar()
-            }
 
+            }
 
 
         }
@@ -154,8 +151,9 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun showSnackBar() {
+        val errorMessage = viewModel.errorString.get() ?: ""
         Utility.showSnackBar(
-            resources.getString(R.string.login_failed),
+            errorMessage,
             binding.rootLayout
         )
     }
