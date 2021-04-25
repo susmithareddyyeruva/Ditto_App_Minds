@@ -10,4 +10,6 @@ abstract class BaseViewModel : ViewModel() {
     val activeSocketConnection: ObservableBoolean = ObservableBoolean(false)
     val isSaveExitButtonClicked: ObservableBoolean = ObservableBoolean(false)
     val isProjecting: ObservableBoolean = ObservableBoolean(false)
+
+    val isGuest: ObservableBoolean = ObservableBoolean(false)
 }

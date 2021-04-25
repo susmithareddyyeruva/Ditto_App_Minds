@@ -8,6 +8,7 @@
     <color name="headerbar">#F4F4F4</color>
     <color name="disable">#C0C0C0</color>
     <color name="disable1">#7C7272</color>
+    <color name="subscription_yellow">#FAC20C</color>
     <color name="logout_red">#E33B19</color>
     <color name="sign_in_blue">#136BC1</color>
 </resources>
