@@ -9,45 +9,91 @@
         android:paddingTop="@dimen/medium_padding"
         android:paddingBottom="@dimen/medium_padding">
 
+
         <TextView
             android:id="@+id/text_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/high_padding"
-            android:paddingEnd="@dimen/high_padding"
+            android:paddingStart="@dimen/large_padding"
             android:paddingTop="@dimen/medium_padding"
+            android:paddingEnd="@dimen/large_padding"
             android:paddingBottom="@dimen/medium_padding"
             android:text="Joann Test"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_header"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/image_subscription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:src="@drawable/ic_quality"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/text_subscription" />
+
         <TextView
             android:id="@+id/text_email"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/high_padding"
-            android:paddingEnd="@dimen/high_padding"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
             android:text="joann@test.com"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_desc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+        <TextView
+            android:id="@+id/text_subscription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:text="Subscription"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
         <TextView
             android:id="@+id/text_phone"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/high_padding"
-            android:paddingEnd="@dimen/high_padding"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
             android:text="+91 9495310131"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_desc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_email" />
+
+        <TextView
+            android:id="@+id/subscription_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:text="769 days left"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_email" />
 

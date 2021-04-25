@@ -38,20 +38,20 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:gravity="center"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
-                    app:menu="@menu/toolbar_menu"
-                    android:gravity="center"
-                    app:contentInsetStartWithNavigation="0dp">
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:menu="@menu/toolbar_menu">
 
                     <TextView
                         android:id="@+id/header_view_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
                         android:gravity="center"
-                        android:text="@{toolbarViewModel.toolbarTitle}" />
+                        android:text="@{toolbarViewModel.toolbarTitle}"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
 
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>
@@ -67,9 +67,9 @@
                     android:layout_height="?attr/actionBarSize"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
+                    app:contentInsetStartWithNavigation="0dp"
                     app:menu="@menu/toolbar_menu"
-                    app:titleTextColor="@android:color/transparent"
-                    app:contentInsetStartWithNavigation="0dp">
+                    app:titleTextColor="@android:color/transparent">
 
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>
@@ -103,7 +103,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment"
-                    app:menu="@menu/bottom_nav_menu"/>
+                    app:menu="@menu/bottom_nav_menu" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -114,11 +114,14 @@
             android:id="@+id/nav_slide_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:insetForeground="@android:color/transparent"
             android:layout_gravity="end"
-            app:menu="@menu/side_nav_menu"
+            android:fitsSystemWindows="true"
+            app:insetForeground="@android:color/transparent"
             app:headerLayout="@layout/nav_drawer_header"
-            android:fitsSystemWindows="true" />
+            app:menu="@menu/side_nav_menu">
+
+            <include layout="@layout/nav_drawer_header" />
+        </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

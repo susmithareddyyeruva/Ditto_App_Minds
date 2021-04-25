@@ -5,12 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,6 +21,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
 import dagger.android.AndroidInjection
@@ -28,10 +30,12 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
+
 /**
  * Main Bottom Navigation Activity launcher class holding navHost and initial position at Splash.
  */
-class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
+class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
+    NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
@@ -47,8 +51,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
         binding.bottomNavViewModel = ViewModelProvider(this).get(BottomNavViewModel::class.java)
         binding.toolbarViewModel = ViewModelProvider(this).get(ToolbarViewModel::class.java)
         setSupportActionBar(binding.toolbar)
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         setUpNavigation()
+        setUpNavigationDrawer()
         // temp fix for app restarting while switching apps
         if (!isTaskRoot
             && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
@@ -67,6 +71,42 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
         setupActionBarWithNavController(navController)
         setupWithNavController(navView, navController)
     }
+
+    private fun setUpNavigationDrawer() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        setMenuItem(false)
+        binding.navSlideView.setNavigationItemSelectedListener(this);
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+        })
+    }
+
+    private fun setMenuItem(isGuest: Boolean) {
+        val nav_Menu: Menu = binding.navSlideView.getMenu()
+        nav_Menu.findItem(R.id.nav_graph_logout).isVisible = !isGuest
+        setMenuItemColor(nav_Menu.findItem(R.id.nav_graph_logout), getColor(R.color.logout_red))
+        nav_Menu.findItem(R.id.nav_graph_sign_up).isVisible = isGuest
+        setMenuItemColor(nav_Menu.findItem(R.id.nav_graph_sign_up), getColor(R.color.sign_in_blue))
+    }
+
+    private fun setMenuItemColor(menu: MenuItem, color: Int) {
+        val spanString = SpannableString(menu.title.toString())
+        spanString.setSpan(ForegroundColorSpan(color), 0, spanString.length, 0)
+        menu.title = spanString
+    }
+
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
@@ -143,7 +183,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     private fun hideSystemUI() {
-
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -152,5 +191,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector {
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return when (item?.itemId) {
+            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates, R.id.nav_graph_sign_up, R.id.nav_graph_logout -> {
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                false
+            }
+            else -> {
+                false
+            }
+        }
 
+    }
 }

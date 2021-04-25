@@ -1,4 +1,5 @@
 <resources>
     <string name="drawable_string">drawable</string>
     <string name="about_the_app_amp_policies"><![CDATA[About The App & Policies]]></string>
+    <string name="image_slide_menu">Image Slide Menu</string>
 </resources>

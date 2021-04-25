@@ -5,7 +5,7 @@
 
     <dimen name="small_padding">5dp</dimen>
     <dimen name="medium_padding">10dp</dimen>
-    <dimen name="high_padding">15dp</dimen>
+    <dimen name="large_padding">15dp</dimen>
 
     <dimen name="text_header">26sp</dimen>
     <dimen name="text_desc">14sp</dimen>
