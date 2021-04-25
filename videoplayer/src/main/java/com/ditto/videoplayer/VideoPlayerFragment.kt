@@ -126,10 +126,6 @@ class VideoPlayerFragment : BaseFragment() {
                 .build()
         }
         binding.videoView.player = player
-        // exoplayer not supporting data binding
-        binding.videoView.findViewById<TextView>(R.id.skip).setOnClickListener {
-            findNavController().navigate(R.id.action_VideoPlayer_to_Onboarding)
-        }
         /* val mediaItem =
              MediaItem.Builder()
                  .setUri(getString(R.string.media_url_mp4))

@@ -33,8 +33,9 @@
             android:id="@+id/image_play"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:src="@drawable/ic_play"
+            android:contentDescription="@string/play"
             android:onClick="@{() -> viewModel.onPlayButtonClicked()}"
+            android:src="@drawable/ic_play"
             android:visibility="@{viewModel.isPlayButtonVisible() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
@@ -42,23 +43,50 @@
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent=".3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/play" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/header_background"
+            android:paddingStart="@dimen/padding_header"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingEnd="@dimen/padding_header"
+            android:paddingBottom="@dimen/medium_padding"
             android:text="@string/ditto_application_overview"
             android:textColor="@android:color/white"
-            android:background="@color/header_background"
-            android:paddingStart="@dimen/exo_progress_height"
-            android:paddingEnd="@dimen/exo_progress_height"
-            android:paddingTop="@dimen/exo_progress_height"
-            android:paddingBottom="@dimen/exo_progress_height"
+            android:textSize="@dimen/header_size"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:background="@color/appGreen"
+            android:drawablePadding="@dimen/medium_padding"
+            android:fontFamily="@font/avenir_next_it_pro_bold"
+            android:onClick="@{() -> viewModel.onSkipButtonClicked()}"
+            android:paddingLeft="@dimen/padding_skip"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingRight="@dimen/padding_skip"
+            android:paddingBottom="@dimen/medium_padding"
+            android:text="@string/skip_video"
+            android:textColor="@android:color/white"
+            app:drawableEndCompat="@drawable/ic_skip"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_guidelines"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_guidelines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".91" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
