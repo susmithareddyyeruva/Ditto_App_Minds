@@ -32,7 +32,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true // for data binding
         viewBinding = true // for view binding
     }
@@ -94,6 +94,11 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    /**
+    * Lottie progress
+    */
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     implementation project(':non-core-lib')
     implementation project(':nav-graph')

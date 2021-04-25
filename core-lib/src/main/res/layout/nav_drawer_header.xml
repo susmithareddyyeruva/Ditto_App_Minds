@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bottomNavViewModel"
+            type="core.ui.BottomNavViewModel" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:paddingTop="@dimen/medium_padding"
+        android:paddingBottom="@dimen/medium_padding">
+
+
+        <TextView
+            android:id="@+id/text_name"
+            style="@style/text_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_it_pro_bold"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:text="Joann Test"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_subscription"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:src="@drawable/ic_quality"
+            android:visibility="@{bottomNavViewModel.isGuest() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/text_subscription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
+        <TextView
+            android:id="@+id/text_email"
+            style="@style/text_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:text="joann@test.com"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+        <TextView
+            android:id="@+id/text_subscription"
+            style="@style/text_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:text="Subscription"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_desc"
+            android:visibility="@{bottomNavViewModel.isGuest() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+        <TextView
+            android:id="@+id/text_phone"
+            style="@style/text_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:text="+91 9495310131"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_desc"
+            android:visibility="@{bottomNavViewModel.isGuest() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_email" />
+
+        <TextView
+            android:id="@+id/subscription_days"
+            style="@style/text_subscription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:text="769 days left"
+            android:textColor="@color/subscription_yellow"
+            android:textSize="@dimen/text_desc"
+            android:visibility="@{bottomNavViewModel.isGuest() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_email" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
