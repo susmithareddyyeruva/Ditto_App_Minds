@@ -9,12 +9,11 @@ import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
 import dagger.Provides
-import okhttp3.*
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.FileNotFoundException
-import java.io.IOException
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
@@ -127,7 +126,7 @@ class WbSocketCertificateModule {
 
 }
 
-class BasicAuthInterceptor(user: String?, password: String?) :
+/*class BasicAuthInterceptor(user: String?, password: String?) :
     Interceptor {
     private val credentials: String
 
@@ -142,4 +141,4 @@ class BasicAuthInterceptor(user: String?, password: String?) :
     init {
         credentials = Credentials.basic(user!!, password!!)
     }
-}
+}*/
