@@ -96,7 +96,7 @@ class LoginViewModel @Inject constructor(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy { handleFetchResult(it) }
                 } else { //http status code is 200  also have error
-                    errorString.set(result.data.faultDomain?.message?:"")
+                    errorString.set(result.data.faultDomain?.message ?: "")
                     uiEvents.post(Event.OnLoginFailed)
                 }
 
@@ -121,7 +121,6 @@ class LoginViewModel @Inject constructor(
                 "Remote Config fetch error : ${error.message}"
             )
             else -> {
-
                 errorString.set(error.message)
                 uiEvents.post(Event.OnLoginFailed)
             }

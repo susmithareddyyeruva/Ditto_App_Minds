@@ -107,6 +107,7 @@ class LoginRepositoryImpl @Inject constructor(
                     Log.d("LoginErrorResponse", errorMessage)
                 } catch (e: Exception) {
                     Log.d("LoginErrorResponse", e.localizedMessage)
+                    errorMessage = e.message.toString()
                 }
 
 
