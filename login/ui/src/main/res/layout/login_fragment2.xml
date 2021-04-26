@@ -39,10 +39,29 @@
                     android:layout_height="match_parent"
                     android:layout_weight="50">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/login_view_pager"
+                    <FrameLayout
+                        android:id="@+id/frame_layout_viewpager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content">
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/login_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/login_tablay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:clickable="false"
+                            android:focusable="false"
+                            app:tabBackground="@drawable/view_pager_carousel"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp" />
+
+                    </FrameLayout>
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -239,6 +258,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center_horizontal"
                         android:linksClickable="true"
+                        android:onClick="@{()-> viewModel.forgotPasswordRedirection()}"
                         android:selectAllOnFocus="false"
                         android:text="@string/forgot_password"
                         android:textColor="@color/blue"
@@ -287,7 +307,7 @@
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center_horizontal"
                             android:linksClickable="true"
-                            android:onClick="@{()-> viewModel.openExternalBrowser()}"
+                            android:onClick="@{()-> viewModel.signUpRedirection()}"
                             android:selectAllOnFocus="false"
                             android:text="@string/sign_up"
                             android:textColor="@color/blue"
