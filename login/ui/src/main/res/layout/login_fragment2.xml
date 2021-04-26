@@ -35,7 +35,7 @@
 
                 <RelativeLayout
                     android:id="@+id/linear_image"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dimen_0"
                     android:layout_height="match_parent"
                     android:layout_weight="50">
 
@@ -44,22 +44,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/login_view_pager"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent">
 
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/login_tablay"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|bottom"
-                            android:clickable="false"
-                            android:focusable="false"
-                            app:tabBackground="@drawable/view_pager_carousel"
-                            app:tabGravity="center"
-                            app:tabIndicatorHeight="0dp" />
+                            <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/login_view_pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
 
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline_to"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintGuide_percent=".73" />
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/login_tablay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:clickable="false"
+                                android:focusable="false"
+                                app:tabBackground="@drawable/view_pager_carousel"
+                                app:tabGravity="center"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/guideline_to"
+                                app:tabIndicatorHeight="@dimen/dimen_0" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </FrameLayout>
 
 
@@ -118,7 +136,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="@dimen/dimen_0"
                             android:background="@color/color_login_image_desc_background"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@id/guideline_left"
@@ -127,8 +145,8 @@
 
                         <TextView
                             android:id="@+id/image_desc"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="@dimen/dimen_0"
+                            android:layout_height="@dimen/dimen_0"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:paddingBottom="5dp"
                             android:paddingStart="@dimen/text_view_we_got_padding_start"
@@ -154,13 +172,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:layout_constraintGuide_begin="0dp"
+                            app:layout_constraintGuide_begin="@dimen/dimen_0"
                             app:layout_constraintGuide_percent="0.80" />
 
                         <TextView
                             android:id="@+id/tv_we_got_this"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="@dimen/dimen_0"
+                            android:layout_height="@dimen/dimen_0"
                             android:background="@drawable/ic_button_green"
                             android:fontFamily="@font/avenir_next_lt_pro_bold"
                             android:paddingBottom="@dimen/text_view_we_got_padding_bottom"
@@ -185,7 +203,7 @@
 
                 <LinearLayout
                     android:id="@+id/linear_login_credentials"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dimen_0"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/linear_login_credentials_margin_start"

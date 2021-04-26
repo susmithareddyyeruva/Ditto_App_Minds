@@ -27,5 +27,6 @@
     <dimen name="text_view_we_got_padding_start">20dp</dimen>
     <dimen name="text_view_we_got_padding_top">14dp</dimen>
     <dimen name="text_view_we_got_padding_bottom">14dp</dimen>
+    <dimen name="view_pager_dot_size">9dp</dimen>
 
 </resources>
