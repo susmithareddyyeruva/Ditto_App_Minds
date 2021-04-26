@@ -94,11 +94,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     private fun setMenuItem(isGuest: Boolean) {
-        val nav_Menu: Menu = binding.navSlideView.getMenu()
-        nav_Menu.findItem(R.id.nav_graph_logout).isVisible = !isGuest
-        setMenuItemColor(nav_Menu.findItem(R.id.nav_graph_logout), getColor(R.color.logout_red))
-        nav_Menu.findItem(R.id.nav_graph_sign_up).isVisible = isGuest
-        setMenuItemColor(nav_Menu.findItem(R.id.nav_graph_sign_up), getColor(R.color.sign_in_blue))
+        val navMenu: Menu = binding.navSlideView.getMenu()
+        navMenu.findItem(R.id.nav_graph_logout).isVisible = !isGuest
+        setMenuItemColor(navMenu.findItem(R.id.nav_graph_logout), getColor(R.color.logout_red))
+        navMenu.findItem(R.id.nav_graph_sign_up).isVisible = isGuest
+        setMenuItemColor(navMenu.findItem(R.id.nav_graph_sign_up), getColor(R.color.sign_in_blue))
     }
 
     private fun setMenuItemColor(menu: MenuItem, color: Int) {

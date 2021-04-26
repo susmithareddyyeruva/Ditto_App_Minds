@@ -49,7 +49,7 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$legacy_support"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "androidx.drawerlayout:drawerlayout:$drawerlayout"
-    implementation "com.google.android.material:material:1.1.0-alpha06"
+    implementation "com.google.android.material:material:$material_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
     implementation "androidx.core:core-ktx:$androidx_core_version"
