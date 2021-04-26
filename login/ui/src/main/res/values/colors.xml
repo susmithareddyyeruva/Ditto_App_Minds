@@ -11,7 +11,10 @@
     <color name="texthint">#707070</color>
     <color name="black">#000</color>
     <color name="White">#fff</color>blue
-    <color name="blue">#136BC1</color>
+    <color name="blue">#FF136BC1</color>
+    <color name="btn_we_got_this">#05AE9A</color>
+    <color name="color_login_image_desc_background">#D173BD00</color>
+    <color name="color_login_image_desc">#FFEFEFEF</color>
 
 
 </resources>

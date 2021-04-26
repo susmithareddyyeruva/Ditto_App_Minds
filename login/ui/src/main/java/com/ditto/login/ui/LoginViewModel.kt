@@ -123,22 +123,22 @@ class LoginViewModel @Inject constructor(
             LoginViewPagerData(
                 1,
                 "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "SVG"
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
             ),
             LoginViewPagerData(
                 2,
                 "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "SVG"
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
             ),
             LoginViewPagerData(
                 3,
                 "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "SVG"
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
             ),
             LoginViewPagerData(
                 4,
                 "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "SVG"
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
             )
         )
 

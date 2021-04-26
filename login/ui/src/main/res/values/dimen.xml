@@ -9,7 +9,8 @@
     <dimen name="text_size_forgot_psw">14sp</dimen>
     <dimen name="text_size_you_will">12sp</dimen>
     <dimen name="text_size_ditto_size">10sp</dimen>
-
+    <dimen name="textview_we_got_this">14sp</dimen>
+    <dimen name="textview_image_dec">11sp</dimen>
     <dimen name="edittext_height">30dp</dimen>
     <dimen name="textview_welcome">16sp</dimen>
     <dimen name="edittext_heightn">40dp</dimen>
@@ -25,4 +26,7 @@
     <dimen name="textview_signup_margin_bottom">6dp</dimen>
     <dimen name="textview_see_more_margin_top">9dp</dimen>
     <dimen name="textview_see_more_margin_bottom">24dp</dimen>
+    <dimen name="text_view_we_got_padding_start">15dp</dimen>
+    <dimen name="text_view_we_got_padding_top">5dp</dimen>
+    <dimen name="text_view_we_got_padding_bottom">5dp</dimen>
 </resources>

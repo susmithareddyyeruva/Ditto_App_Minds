@@ -9,6 +9,8 @@
     <dimen name="text_size_ditto_size">18sp</dimen>
     <dimen name="linear_login_credentials_margin_start">82.5dp</dimen>
     <dimen name="textview_welcome">24sp</dimen>
+    <dimen name="textview_we_got_this">24sp</dimen>
+    <dimen name="textview_image_dec">16sp</dimen>
     <dimen name="edittext_height">44dp</dimen>
     <dimen name="edittext_heightn">60dp</dimen>
     <dimen name="edittext_email_margintop">50.86dp</dimen>
@@ -22,5 +24,8 @@
     <dimen name="textview_signup_margin_bottom">10dp</dimen>
     <dimen name="textview_see_more_margin_top">51dp</dimen>
     <dimen name="textview_see_more_margin_bottom">81dp</dimen>
+    <dimen name="text_view_we_got_padding_start">20dp</dimen>
+    <dimen name="text_view_we_got_padding_top">14dp</dimen>
+    <dimen name="text_view_we_got_padding_bottom">14dp</dimen>
 
 </resources>

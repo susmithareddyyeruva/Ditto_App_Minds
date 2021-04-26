@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -34,19 +33,136 @@
                 android:orientation="horizontal"
                 android:weightSum="100">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/linear_image"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:background="@color/blue">
+                    android:layout_weight="50">
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/login_view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-                </LinearLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintGuide_percent=".38"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <View
+                            android:id="@+id/view2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline_right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent=".05" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.98" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline_top"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent=".81" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent=".98" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:background="@color/color_login_image_desc_background"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/guideline_left"
+                            app:layout_constraintStart_toStartOf="@id/guideline_right"
+                            app:layout_constraintTop_toTopOf="@id/guideline2" />
+
+                        <TextView
+                            android:id="@+id/image_desc"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="@dimen/text_view_we_got_padding_start"
+                            android:text=" The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+                            android:textColor="@color/edittext_fill_white"
+                            android:textSize="@dimen/textview_image_dec"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+                            app:layout_constraintEnd_toEndOf="@id/guideline_left"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/guideline_top" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.75" />
+
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/horizontal_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_begin="0dp"
+                            app:layout_constraintGuide_percent="0.80" />
+
+                        <TextView
+                            android:id="@+id/tv_we_got_this"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@drawable/ic_button_green"
+                            android:fontFamily="@font/avenir_next_lt_pro_bold"
+                            android:paddingBottom="@dimen/text_view_we_got_padding_bottom"
+                            android:paddingStart="@dimen/text_view_we_got_padding_start"
+                            android:paddingTop="@dimen/text_view_we_got_padding_top"
+                            android:text="@string/we_got_this"
+                            android:textColor="@color/White"
+                            android:textSize="@dimen/textview_we_got_this"
+                            app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline"
+                            app:layout_constraintEnd_toEndOf="@+id/horizontal_guideline"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline"
+                            app:layout_constraintHeight_default="percent"
+                            app:layout_constraintHeight_percent="0.08"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintWidth_default="percent"
+                            app:layout_constraintWidth_percent="0.38" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/linear_login_credentials"
@@ -206,18 +322,32 @@
                         android:textColor="@color/blue"
                         android:textSize="@dimen/text_size_forgot_psw" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/avenir_next_lt_pro_regular"
-                        android:text="@string/ditto_site"
-                        android:textColor="@color/textview_diito_site"
-                        android:textSize="@dimen/text_size_ditto_size" />
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/linear_ditto_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/copyright" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
+                            android:text="@string/ditto_site"
+                            android:textColor="@color/textview_diito_site"
+                            android:textSize="@dimen/text_size_ditto_size" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
             </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
 
 
