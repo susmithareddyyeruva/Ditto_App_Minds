@@ -68,7 +68,7 @@ class LoginFragment : BaseFragment() {
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
         setViewpagerImageAdapter()
         setUIEvents()
-        setupKeyboardListener(binding.root) // call in OnCreate or similar
+        //setupKeyboardListener(binding.root) // call in OnCreate or similar
 
     }
 
