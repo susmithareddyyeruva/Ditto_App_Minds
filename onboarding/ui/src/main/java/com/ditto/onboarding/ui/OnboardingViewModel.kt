@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
 import com.ditto.onboarding.domain.model.OnboardingData
+import com.ditto.storage.domain.StorageManager
+import core.USER_EMAIL
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +23,8 @@ import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
 class OnboardingViewModel @Inject constructor(
-    private val getOnboardingData: GetOnboardingData
+    private val getOnboardingData: GetOnboardingData,
+    private val storageManager: StorageManager
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<OnboardingData>> = MutableLiveData()
@@ -34,6 +37,7 @@ class OnboardingViewModel @Inject constructor(
     val isWifiOn: ObservableBoolean = ObservableBoolean(false)
     val onBoardingTitle: ObservableField<String> = ObservableField("")
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
+    var userEmail: ObservableField<String> = ObservableField<String>("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var userId: Int = 0
@@ -41,6 +45,7 @@ class OnboardingViewModel @Inject constructor(
     init {
         fetchOnBoardingData()
         fetchDbUser()
+        userEmail.set(storageManager.getStringValue(USER_EMAIL))
     }
 
     override fun onCleared() {

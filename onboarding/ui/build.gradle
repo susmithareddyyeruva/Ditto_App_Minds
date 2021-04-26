@@ -84,6 +84,9 @@ dependencies {
     implementation project(':tutorial-ui')
     implementation project(':logger')
     implementation project(path: ':howto-ui')
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
 }
 
 repositories {
