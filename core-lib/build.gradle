@@ -99,4 +99,5 @@ dependencies {
 
     implementation project(':non-core-lib')
     implementation project(':nav-graph')
+    implementation project(path: ':storage-domain')
 }

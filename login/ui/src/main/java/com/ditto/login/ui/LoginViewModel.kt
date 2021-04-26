@@ -13,6 +13,8 @@ import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
+import com.ditto.storage.domain.StorageManager
+import core.USER_EMAIL
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +31,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val context: Context,
     val loggerFactory: LoggerFactory,
-    val useCase: GetLoginDbUseCase
+    val useCase: GetLoginDbUseCase,
+    val storageManager: StorageManager
 ) : BaseViewModel() {
 
     var userName: ObservableField<String> = ObservableField<String>("")
@@ -85,7 +88,7 @@ class LoginViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.faultDomain == null) {//User login successfull
-
+                    storageManager.savePrefs(USER_EMAIL, result.data.email)
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
