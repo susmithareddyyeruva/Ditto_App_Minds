@@ -4,5 +4,5 @@
     <item android:drawable="@drawable/viewpager_tab_colour"
         android:state_selected="true"/>
 
-    <item android:drawable="@drawable/default_dot"/>
+    <item android:drawable="@drawable/default_dot_carousel"/>
 </selector>
