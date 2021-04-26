@@ -1,6 +1,7 @@
 package com.ditto.login.ui
 
 import android.content.pm.PackageInfo
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -76,6 +77,7 @@ class LoginFragment : BaseFragment() {
         login_view_pager.adapter = adapter
         adapter.viewModel = viewModel
         login_view_pager.adapter?.notifyDataSetChanged()
+        login_tablay.setupWithViewPager(login_view_pager)
 
         viewModel.viewPagerData.value?.let {
             if(it != null){
