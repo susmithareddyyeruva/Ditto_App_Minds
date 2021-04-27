@@ -60,7 +60,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                app:layout_constraintGuide_percent=".73" />
+                                app:layout_constraintGuide_percent=".74" />
 
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/login_tablay"

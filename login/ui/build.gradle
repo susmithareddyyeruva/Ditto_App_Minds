@@ -34,7 +34,7 @@ android {
             debuggable true
             minifyEnabled false
             buildConfigField "String", "SIGN_UP_URL", "\"https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\""  //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\" https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\""  //--- DEV
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\""  //--- DEV
         }
     }
     buildFeatures{
@@ -93,8 +93,5 @@ dependencies {
     implementation project(path: ':home-ui')
     implementation project(path: ':mylibrary-ui')
     implementation project(path: ':tutorial-ui')
-
-    implementation 'com.github.bumptech.glide:glide:3.6.0'
-    implementation 'com.caverock:androidsvg-aar:1.4'
 
 }
