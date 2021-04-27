@@ -104,8 +104,11 @@ class LoginViewModel @Inject constructor(
                 }
 
             }
-            is Result.OnError ->
+            is Result.OnError ->{
                 handleError(result.error)
+                loadingIndicator.set(false)
+            }
+
 
 
         }
