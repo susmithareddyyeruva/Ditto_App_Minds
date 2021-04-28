@@ -121,7 +121,11 @@ class LoginViewModel @Inject constructor(
 
     private fun handleError(error: Error) {
         when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                errorString.set(error.message)
+                uiEvents.post(Event.OnLoginFailed)
+            }
             is RemoteConfigError -> Log.d(
                 "LoginViewModel",
                 "Remote Config fetch error : ${error.message}"
@@ -130,7 +134,6 @@ class LoginViewModel @Inject constructor(
                 errorString.set(error.message)
                 uiEvents.post(Event.OnLoginFailed)
             }
-
 
         }
     }
