@@ -205,6 +205,18 @@
                     android:layout_height="match_parent"
                     android:layout_weight="50">
 
+                    <TextView
+                        android:id="@+id/text_welcome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center_horizontal"
+                        android:text="@string/Welcome"
+                        android:textColor="@color/black"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="@dimen/welcome_margin_top"
+                        android:textSize="@dimen/textview_welcome" />
+
                     <LinearLayout
                         android:id="@+id/linear_login_credentials"
                         android:layout_width="match_parent"
@@ -216,15 +228,7 @@
                         android:orientation="vertical"
                         android:weightSum="100">
 
-                        <TextView
-                            android:id="@+id/text_welcome"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            android:gravity="center"
-                            android:text="@string/Welcome"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/textview_welcome" />
+
 
                         <EditText
                             android:id="@+id/edittext_username"
@@ -379,9 +383,8 @@
 
                         <ImageView
                             android:id="@+id/linear_ditto_image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="-5dp"
+                            android:layout_width="@dimen/copy_right_image_size"
+                            android:layout_height="@dimen/copy_right_image_size"
                             android:src="@drawable/copyright" />
 
                         <TextView
@@ -390,7 +393,6 @@
                             android:layout_marginLeft="-2dp"
                             android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:text="@string/ditto_site"
-                            android:gravity="center"
                             android:textColor="@color/textview_diito_site"
                             android:textSize="@dimen/text_size_ditto_size" />
                     </LinearLayout>

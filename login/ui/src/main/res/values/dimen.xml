@@ -15,7 +15,8 @@
     <dimen name="textview_welcome">16sp</dimen>
     <dimen name="edittext_heightn">40dp</dimen>
     <dimen name="linear_login_credentials_margin_start">39.5dp</dimen>
-    <dimen name="edittext_email_margintop">10.5dp</dimen>
+    <dimen name="linear_login_credentials_margin_end">39.5</dimen>
+    <dimen name="edittext_email_margintop">11.5dp</dimen>
     <dimen name="edittext_email_padding_left">11.5dp</dimen>
     <dimen name="edittext_password_margintop">10dp</dimen>
     <dimen name="textview_forgot_password_margintop">10.5dp</dimen>
@@ -23,11 +24,13 @@
     <dimen name="button_height">40dp</dimen>
     <dimen name="button_login_text_size">14sp</dimen>
     <dimen name="button_login_margin_bottom">16dp</dimen>
-    <dimen name="textview_signup_margin_bottom">6dp</dimen>
+    <dimen name="textview_signup_margin_bottom">5dp</dimen>
     <dimen name="textview_see_more_margin_top">9dp</dimen>
-    <dimen name="textview_see_more_margin_bottom">24dp</dimen>
+    <dimen name="textview_see_more_margin_bottom">25dp</dimen>
     <dimen name="text_view_we_got_padding_start">15dp</dimen>
     <dimen name="text_view_we_got_padding_top">5dp</dimen>
     <dimen name="text_view_we_got_padding_bottom">5dp</dimen>
     <dimen name="view_pager_dot_size">5.5dp</dimen>
+    <dimen name="welcome_margin_top">30dp</dimen>
+    <dimen name="copy_right_image_size">18dp</dimen>
 </resources>

@@ -1,7 +1,6 @@
 package com.ditto.login.ui
 
 import android.content.pm.PackageInfo
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +16,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragment2Binding
+import com.ditto.login.ui.databinding.LoginFragment3Binding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +35,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private val viewModel: LoginViewModel by ViewModelDelegate()
-    lateinit var binding: LoginFragment2Binding
+    lateinit var binding: LoginFragment3Binding
 
 
     override fun onCreateView(
@@ -43,7 +43,7 @@ class LoginFragment : BaseFragment() {
         @Nullable container: ViewGroup?,
         @Nullable savedInstanceState: Bundle?
     ): View? {
-        binding = LoginFragment2Binding.inflate(
+        binding = LoginFragment3Binding.inflate(
             inflater
         ).also {
             it.viewModel = viewModel
