@@ -94,6 +94,9 @@ dependencies {
     implementation project(path: ':home-ui')
     implementation project(path: ':mylibrary-ui')
     implementation project(path: ':tutorial-ui')
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
 
 
 

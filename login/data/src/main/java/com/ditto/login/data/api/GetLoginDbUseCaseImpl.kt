@@ -1,8 +1,6 @@
 package com.ditto.login.data.api
 
-import com.ditto.login.domain.GetLoginDbUseCase
-import com.ditto.login.domain.LoginRepository
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.*
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -20,5 +18,9 @@ class GetLoginDbUseCaseImpl @Inject constructor(
 
     override fun userLogin(user: LoginUser): Single<Result<LoginUser>> {
         return loginRepository.loginUser(user)
+    }
+
+    override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
+        return loginRepository.loginUserWithCredential(user)
     }
 }

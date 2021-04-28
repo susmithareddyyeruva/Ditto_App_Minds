@@ -25,10 +25,12 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
         debug {
             debuggable true
             minifyEnabled false
+            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
     }
 
@@ -97,4 +99,5 @@ dependencies {
 
     implementation project(':non-core-lib')
     implementation project(':nav-graph')
+    implementation project(path: ':storage-domain')
 }

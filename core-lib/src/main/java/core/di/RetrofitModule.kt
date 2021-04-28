@@ -23,7 +23,6 @@ import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 
 @Module(
@@ -35,21 +34,15 @@ import javax.net.ssl.X509TrustManager
 class RetrofitModule {
     @Provides
     @WbApiRetrofit
-    fun provideRetrofit(@WbBaseUrl baseUrl: String, certificateFactory: SSLSocketFactory?, trustManagerFactory: TrustManagerFactory?): Retrofit {
+    fun provideRetrofit(
+        @WbBaseUrl baseUrl: String
+    ): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
-
         val httpClient = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-
-
-        certificateFactory?.let {
-            httpClient.sslSocketFactory(certificateFactory, trustManagerFactory!!.trustManagers[0] as X509TrustManager)
-        }
-
-
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -77,7 +70,7 @@ class WbSocketCertificateModule {
     @Provides
     fun providesSSLSocketFactory(trustManagerFactory: TrustManagerFactory?): SSLSocketFactory? {
 
-        var sslSocketFactory : SSLSocketFactory? = null
+        var sslSocketFactory: SSLSocketFactory? = null
 
         if (trustManagerFactory != null) {
 
@@ -95,7 +88,7 @@ class WbSocketCertificateModule {
 
     @Provides
     @Singleton
-    fun provideTrustManagerFactory(context : Context): TrustManagerFactory? {
+    fun provideTrustManagerFactory(context: Context): TrustManagerFactory? {
 
         // Load CAs from an InputStream
         // (could be from a resource or ByteArrayInputStream or ...)
@@ -131,5 +124,21 @@ class WbSocketCertificateModule {
         return tmf
     }
 
-
 }
+
+/*class BasicAuthInterceptor(user: String?, password: String?) :
+    Interceptor {
+    private val credentials: String
+
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        val authenticatedRequest: Request = request.newBuilder()
+            .header("Authorization", credentials).build()
+        return chain.proceed(authenticatedRequest)
+    }
+
+    init {
+        credentials = Credentials.basic(user!!, password!!)
+    }
+}*/
