@@ -17,6 +17,7 @@ import com.ditto.storage.domain.StorageManager
 import core.USER_EMAIL
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -55,7 +56,7 @@ class LoginViewModel @Inject constructor(
         if (TextUtils.isEmpty(userName.get()) || !isEmailValid()) {
             isEmailValidated.set(false)
             logger.d("username invalid")
-        } else if (TextUtils.isEmpty(password.get())) {
+        } else if (TextUtils.isEmpty(password.get()) || !isPasswordValid()) {
             isPasswordValidated.set(false)
             logger.d("password invalid")
         } else {
@@ -69,9 +70,12 @@ class LoginViewModel @Inject constructor(
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handlLoginResult(it) }
+                .subscribeBy { handleFetchResult(it) }
         }
     }
+
+
+
 
     //redirecting to external browser
     fun openExternalBrowser() {
@@ -80,6 +84,8 @@ class LoginViewModel @Inject constructor(
         intent.data = Uri.parse(url)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
+    fun signUpRedirection(){
+        Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
     }
 
     private fun handlLoginResult(result: Result<LoginResultDomain>) {
@@ -112,6 +118,12 @@ class LoginViewModel @Inject constructor(
 
 
         }
+    }
+
+
+    fun forgotPasswordRedirection(){
+        Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
+
     }
 
     private fun handleFetchResult(result: Any) {
