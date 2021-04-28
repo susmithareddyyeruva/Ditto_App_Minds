@@ -1,8 +1,6 @@
 package com.ditto.login.ui
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableBoolean
@@ -56,7 +54,7 @@ class LoginViewModel @Inject constructor(
         if (TextUtils.isEmpty(userName.get()) || !isEmailValid()) {
             isEmailValidated.set(false)
             logger.d("username invalid")
-        } else if (TextUtils.isEmpty(password.get()) || !isPasswordValid()) {
+        } else if (TextUtils.isEmpty(password.get())) {
             isPasswordValidated.set(false)
             logger.d("password invalid")
         } else {
@@ -75,26 +73,17 @@ class LoginViewModel @Inject constructor(
     }
 
 
-
-
-    //redirecting to external browser
-    fun openExternalBrowser() {
-        val url = "https://www.joann.com/create-account"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-    fun signUpRedirection(){
+    fun signUpRedirection() {
         Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
     }
 
-    private fun handlLoginResult(result: Result<LoginResultDomain>) {
+    fun handleFetchResult(result: Result<LoginResultDomain>) {
         logger.d("handleFetchResult ${result.toString()}")
         loadingIndicator.set(false)
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.faultDomain == null) {//User login successfull
-                    storageManager.savePrefs(USER_EMAIL, result.data.email?:"")
+                    storageManager.savePrefs(USER_EMAIL, result.data.email ?: "")
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
@@ -110,18 +99,17 @@ class LoginViewModel @Inject constructor(
                 }
 
             }
-            is Result.OnError ->{
+            is Result.OnError -> {
                 handleError(result.error)
                 loadingIndicator.set(false)
             }
-
 
 
         }
     }
 
 
-    fun forgotPasswordRedirection(){
+    fun forgotPasswordRedirection() {
         Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
 
     }
@@ -166,3 +154,4 @@ class LoginViewModel @Inject constructor(
         object OnLoginFailed : Event()
     }
 }
+
