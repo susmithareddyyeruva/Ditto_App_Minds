@@ -88,7 +88,7 @@ class LoginViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.faultDomain == null) {//User login successfull
-                    storageManager.savePrefs(USER_EMAIL, result.data.email)
+                    storageManager.savePrefs(USER_EMAIL, result.data.email?:"")
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),

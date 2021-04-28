@@ -25,12 +25,12 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASEURL", "\"https://dev05-na03-joann.demandware.net/s/ditto/dw/shop/v19_1/\""
+            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", "BASEURL", "\"https://dev05-na03-joann.demandware.net/s/ditto/dw/shop/v19_1/\""
+            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
     }
 
