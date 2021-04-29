@@ -363,7 +363,7 @@
                             android:autoLink="all"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center_horizontal"
-                            android:linksClickable="true"
+                            android:onClick="@{()-> viewModel.guestLogin()}"
                             android:selectAllOnFocus="false"
                             android:text="@string/see_more"
                             android:textColor="@color/blue"
