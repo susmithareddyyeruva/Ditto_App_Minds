@@ -20,7 +20,7 @@ open class NetworkError(
 ) : Error(message, throwable)
 
 open class NoNetworkError(
-    message: String = "No Network Error",
+    message: String = "No Internet connection available !",
     throwable: Throwable? = null
 ) : Error(message, throwable)
 

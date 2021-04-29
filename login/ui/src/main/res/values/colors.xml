@@ -5,8 +5,16 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="edittext_fill">#4DC0C0C0</color>
-    <color name="texthint">#63666B</color>
+    <color name="edittext_fill_white">#FFFFFF</color>
+    <color name="edittext_fill_stroke">#707070</color>
+    <color name="textview_diito_site">#6F7170</color>
+    <color name="texthint">#707070</color>
     <color name="black">#000</color>
-    <color name="White">#fff</color>
+    <color name="White">#fff</color>blue
+    <color name="blue">#FF136BC1</color>
+    <color name="btn_we_got_this">#05AE9A</color>
+    <color name="color_login_image_desc_background">#D173BD00</color>
+    <color name="color_login_image_desc">#FFEFEFEF</color>
+
 
 </resources>

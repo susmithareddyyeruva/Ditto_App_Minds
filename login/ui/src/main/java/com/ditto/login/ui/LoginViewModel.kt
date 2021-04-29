@@ -1,18 +1,18 @@
 package com.ditto.login.ui
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.storage.domain.StorageManager
 import core.USER_EMAIL
 import core.USER_FIRST_NAME
@@ -20,6 +20,7 @@ import core.USER_LAST_NAME
 import core.USER_PHONE
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -48,6 +49,8 @@ class LoginViewModel @Inject constructor(
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
+    var viewPagerData : MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
+
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
     }
@@ -72,20 +75,16 @@ class LoginViewModel @Inject constructor(
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handlLoginResult(it) }
+                .subscribeBy { handleFetchResult(it) }
         }
     }
 
-    //redirecting to external browser
-    fun openExternalBrowser() {
-        val url = "https://www.joann.com/create-account"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+
+    fun signUpRedirection() {
+        Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
     }
 
-    private fun handlLoginResult(result: Result<LoginResultDomain>) {
+    fun handleFetchResult(result: Result<LoginResultDomain>) {
         logger.d("handleFetchResult ${result.toString()}")
         loadingIndicator.set(false)
         when (result) {
@@ -116,9 +115,17 @@ class LoginViewModel @Inject constructor(
                 }
 
             }
-            is Result.OnError ->
+            is Result.OnError -> {
                 handleError(result.error)
+                loadingIndicator.set(false)
+            }
         }
+    }
+
+
+    fun forgotPasswordRedirection() {
+        Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
+
     }
 
     private fun handleFetchResult(result: Any) {
@@ -128,7 +135,11 @@ class LoginViewModel @Inject constructor(
 
     private fun handleError(error: Error) {
         when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                errorString.set(error.message)
+                uiEvents.post(Event.OnLoginFailed)
+            }
             is RemoteConfigError -> Log.d(
                 "LoginViewModel",
                 "Remote Config fetch error : ${error.message}"
@@ -137,7 +148,6 @@ class LoginViewModel @Inject constructor(
                 errorString.set(error.message)
                 uiEvents.post(Event.OnLoginFailed)
             }
-
 
         }
     }
@@ -166,4 +176,34 @@ class LoginViewModel @Inject constructor(
          */
         object OnSeeMoreClicked : Event()
     }
+
+    fun fetchViewPagerData() {
+        lateinit var languageList: List<LoginViewPagerData>
+
+        languageList = listOf(
+            LoginViewPagerData(
+                1,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            ),
+            LoginViewPagerData(
+                2,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            ),
+            LoginViewPagerData(
+                3,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            ),
+            LoginViewPagerData(
+                4,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            )
+        )
+
+        viewPagerData.value = languageList
+    }
 }
+

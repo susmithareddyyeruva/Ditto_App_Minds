@@ -27,6 +27,7 @@ import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
 import java.util.*
+import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -334,6 +335,13 @@ class Utility {
                 byteBuffer.write(buffer, 0, len)
             }
             return byteBuffer.toByteArray()
+        }
+
+        fun redirectToExternalBrowser(context: Context, url: String) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
         }
     }
 
