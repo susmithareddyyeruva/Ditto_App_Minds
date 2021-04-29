@@ -2,4 +2,7 @@
     <string name="drawable_string">drawable</string>
     <string name="about_the_app_amp_policies"><![CDATA[About The App & Policies]]></string>
     <string name="image_slide_menu">Image Slide Menu</string>
+    <string name="hi_there">Hi There</string>
+    <string name="sign_in_to_explore_more">Sign in to explore more</string>
+    <string name="subscription">Subscription</string>
 </resources>

@@ -106,6 +106,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment"
                     app:menu="@menu/bottom_nav_menu" />
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{bottomNavViewModel.showProgress}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/ditto_loader" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -123,9 +136,9 @@
             app:itemTextAppearance="@style/text_menu"
             app:menu="@menu/side_nav_menu">
 
-            <include
-                android:id="@+id/navigation_header"
-                layout="@layout/nav_drawer_header"/>
+<!--            <include-->
+<!--                android:id="@+id/navigation_header"-->
+<!--                layout="@layout/nav_drawer_header" />-->
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>

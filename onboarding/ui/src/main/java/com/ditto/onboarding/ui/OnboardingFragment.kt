@@ -66,7 +66,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         setUIEvents()
         setToolbar()
         checkBluetoothWifiPermission()
-        Log.d("USER_EMAIL", viewModel.userEmail.get() ?: "")
     }
 
     companion object {

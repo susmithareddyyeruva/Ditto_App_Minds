@@ -19,6 +19,7 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         enabled = this.enabled,
         first_name = this.firstName,
         gender = this.gender,
+        phone_home = this.phoneHome,
         last_login_time = this.lastLoginTime,
         last_modified = this.lastModified,
         last_name = this.lastName,

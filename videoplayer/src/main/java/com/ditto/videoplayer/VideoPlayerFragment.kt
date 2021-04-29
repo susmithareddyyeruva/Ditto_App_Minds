@@ -61,6 +61,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
         playbackStateListener = PlaybackStateListener()
+        PlaybackStateListener.exoPlayerStateListener = this
     }
 
     private fun setUIEvents() {
@@ -125,7 +126,6 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     }
 
     private fun startPlayer() {
-        PlaybackStateListener.exoPlayerStateListener = this
         player!!.playWhenReady = true
         player!!.playbackState
     }

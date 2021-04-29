@@ -13,17 +13,21 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
+import core.lib.databinding.NavDrawerHeaderBinding
+import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -53,6 +57,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         setSupportActionBar(binding.toolbar)
         setUpNavigation()
         setUpNavigationDrawer()
+        setMenuBinding()
         // temp fix for app restarting while switching apps
         if (!isTaskRoot
             && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
@@ -74,7 +79,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     private fun setUpNavigationDrawer() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        setMenuItem(false)
         binding.navSlideView.setNavigationItemSelectedListener(this);
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
@@ -93,7 +97,13 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         })
     }
 
-    private fun setMenuItem(isGuest: Boolean) {
+    private fun setMenuBinding() {
+        val viewHeader = binding.navSlideView.getHeaderView(0)
+        val navViewHeaderBinding: NavDrawerHeaderBinding = NavDrawerHeaderBinding.bind(viewHeader)
+        navViewHeaderBinding.bottomNavViewModel = binding.bottomNavViewModel
+    }
+
+    fun setMenuItem(isGuest: Boolean) {
         val navMenu: Menu = binding.navSlideView.getMenu()
         navMenu.findItem(R.id.nav_graph_logout).isVisible = !isGuest
         setMenuItemColor(navMenu.findItem(R.id.nav_graph_logout), getColor(R.color.logout_red))
@@ -193,8 +203,13 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates, R.id.nav_graph_sign_up, R.id.nav_graph_logout -> {
+            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates, R.id.nav_graph_sign_up-> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                false
+            }
+            R.id.nav_graph_logout ->{
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                finish()
                 false
             }
             else -> {

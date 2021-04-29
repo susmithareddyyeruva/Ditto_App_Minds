@@ -15,11 +15,16 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.databinding.LoginFragmentBinding
+import core.USER_EMAIL
+import core.USER_FIRST_NAME
+import core.USER_LAST_NAME
+import core.USER_PHONE
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
@@ -110,23 +115,29 @@ class LoginFragment : BaseFragment() {
 
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
-            is LoginViewModel.Event.OnLoginClicked -> {   //Re directing to On_boarding screen
+            is LoginViewModel.Event.OnLoginClicked -> {
+                getUserDetails()
+                //Re directing to On_boarding screen
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    findNavController().navigate(
-                        R.id.action_loginFragment_to_OnboardingFragment,
-                        bundle
-                    )
-                }
+                    findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                } else {
 
-                Unit
+                }
+            }
+            is LoginViewModel.Event.OnSeeMoreClicked -> {
+                bottomNavViewModel.isGuestBase.set(true)
+                val bundle = bundleOf("UserId" to 0)
+                if (findNavController().currentDestination?.id == R.id.destination_login) {
+                    getUserDetails()
+                    findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                } else {
+
+                }
             }
             is LoginViewModel.Event.OnLoginFailed -> {
                 showSnackBar()
-
             }
-
-
         }
 
     private fun setupKeyboardListener(view: View) {
@@ -137,6 +148,13 @@ class LoginFragment : BaseFragment() {
                 onKeyboardShow()
             }
         }
+    }
+
+    private fun getUserDetails() {
+        bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
+        bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
+        bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)
+        bottomNavViewModel.userLastNameBase.set(viewModel.userLastName)
     }
 
     private fun onKeyboardShow() {

@@ -10,4 +10,7 @@ const val GITHUB_SIGNED_IN = "LOGGED IN : GITHUB"
 const val GOOGLE_SIGNED_IN = "LOGGED IN : GOOGLE"
 
 //Shared Preference Keys
-const val USER_EMAIL=""
+const val USER_EMAIL = "USER_EMAIL"
+const val USER_PHONE = "USER_PHONE"
+const val USER_FIRST_NAME = "USER_FIRST_NAME"
+const val USER_LAST_NAME = "USER_LAST_NAME"

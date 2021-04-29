@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="nav_graph_id_login" type="id"/>
-    <item name="nav_graph_id_biometric" type="id"/>
+    <item name="nav_graph_id_login" type="id" />
+    <item name="nav_graph_id_biometric" type="id" />
 
-    <item name="nav_graph_id_onboarding" type="id"/>
-    <item name="nav_graph_id_video" type="id"/>
-    <item name="nav_graph_onboarding" type="id"/>
-     <item name="nav_graph_id_home" type="id"/>
-    <item name="nav_graph_tutorial" type="id"/>
-    <item name="destination_onboarding" type="id"/>
-    <item name="destination_video" type="id"/>
-    <item name="nav_graph_mylibrary" type="id"/>
-    <item name="howto_navigation" type="id"/>
-    <item name="destination_howto" type="id"/>
-    <item name="instruction_navigation" type="id"/>
-    <item name="nav_graph_workspace" type="id"/>
-
+    <item name="nav_graph_id_onboarding" type="id" />
+    <item name="nav_graph_id_video" type="id" />
+    <item name="nav_graph_onboarding" type="id" />
+    <item name="nav_graph_id_home" type="id" />
+    <item name="nav_graph_tutorial" type="id" />
+    <item name="destination_onboarding" type="id" />
+    <item name="destination_video" type="id" />
+    <item name="nav_graph_mylibrary" type="id" />
+    <item name="howto_navigation" type="id" />
+    <item name="destination_howto" type="id" />
+    <item name="instruction_navigation" type="id" />
+    <item name="nav_graph_workspace" type="id" />
 
 
     <!--action items-->
-    <item name="action_splashActivity_to_LoginFragment" type="id"/>
-    <item name="action_loginFragment_to_OnboardingFragment" type="id"/>
-    <item name="action_destination_calibrationFragment_to_instruction_navigation" type="id"/>
-    <item name="action_tutorialFragment_to_nav_graph_id_onboarding" type="id"/>
-    <item name="action_splashActivity_to_HomeFragment" type="id"/>
-    <item name="action_splashActivity_to_Onboarding" type="id"/>
-    <item name="action_splashActivity_to_Video" type="id"/>
-    <item name="action_destination_tutorial_to_beamsetupFragment" type="id"/>
-    <item name="action_destination_tutorial_to_calibrationFragment" type="id"/>
-    <item name="action_onboardingFragment_to_instructionsfragment" type="id"/>
-    <item name="action_destination_howto_to_nav_graph_id_home" type="id"/>
-    <item name="action_destination_calibrationFragment_to_workspace_navigation" type="id"/>
-    <item name="action_destination_calibrationFragment_to_howto_navigation" type="id"/>
-    <item name="action_onboardingFragment_to_calibrationfragment" type="id"/>
-    <item name="action_onboardingFragment_to_calibrationfragment_From_Tutorial" type="id"/>
-    <item name="action_onboardingFragment_to_calibrationfragment_checkedbox_clicked" type="id"/>
+    <item name="action_splashActivity_to_LoginFragment" type="id" />
+    <item name="action_loginFragment_to_OnboardingFragment" type="id" />
+    <item name="action_destination_calibrationFragment_to_instruction_navigation" type="id" />
+    <item name="action_tutorialFragment_to_nav_graph_id_onboarding" type="id" />
+    <item name="action_splashActivity_to_HomeFragment" type="id" />
+    <item name="action_splashActivity_to_Onboarding" type="id" />
+    <item name="action_splashActivity_to_Video" type="id" />
+    <item name="action_destination_tutorial_to_beamsetupFragment" type="id" />
+    <item name="action_destination_tutorial_to_calibrationFragment" type="id" />
+    <item name="action_onboardingFragment_to_instructionsfragment" type="id" />
+    <item name="action_destination_howto_to_nav_graph_id_home" type="id" />
+    <item name="action_destination_calibrationFragment_to_workspace_navigation" type="id" />
+    <item name="action_destination_calibrationFragment_to_howto_navigation" type="id" />
+    <item name="action_onboardingFragment_to_calibrationfragment" type="id" />
+    <item name="action_onboardingFragment_to_calibrationfragment_From_Tutorial" type="id" />
+    <item name="action_onboardingFragment_to_calibrationfragment_checkedbox_clicked" type="id" />
 
     <!--action items for Instruction Fragment-->
-    <item name="calibration_nav_graph" type="id"/>
-    <item name="instruction_calibration_nav" type="id"/>
-    <item name="patternDescriptionFragment" type="id"/>
-    <item name="action_instructionFragment_to_homefragment" type="id"/>
-<!--
-    <item name="action_destination_instruction_to_calibration_nav_graph" type="id"/>
--->
-    <item name="action_destination_instruction_self" type="id"/>
-    <item name="action_pattern_description_to_calibration" type="id"/>
+    <item name="calibration_nav_graph" type="id" />
+    <item name="instruction_calibration_nav" type="id" />
+    <item name="patternDescriptionFragment" type="id" />
+    <item name="action_instructionFragment_to_homefragment" type="id" />
+    <!--
+        <item name="action_destination_instruction_to_calibration_nav_graph" type="id"/>
+    -->
+    <item name="action_destination_instruction_self" type="id" />
+    <item name="action_pattern_description_to_calibration" type="id" />
 
-    <item name="action_workspace_to_calibration" type="id"/>
+    <item name="action_workspace_to_calibration" type="id" />
 
 
-    <item name="action_home_to_pattern_details" type="id"/>
-    <item name="patternDescriptionFragmentFromHome" type="id"/>
+    <item name="action_home_to_pattern_details" type="id" />
+    <item name="patternDescriptionFragmentFromHome" type="id" />
+    <item name="action_loginFragment_to_VideoFragment" type="id" />
 </resources>

@@ -12,4 +12,8 @@ abstract class BaseViewModel : ViewModel() {
     val isProjecting: ObservableBoolean = ObservableBoolean(false)
 
     val isGuest: ObservableBoolean = ObservableBoolean(false)
+    var userEmail: String = ""
+    var userPhone: String = ""
+    var userFirstName: String = ""
+    var userLastName: String = ""
 }

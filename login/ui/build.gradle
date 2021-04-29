@@ -30,6 +30,8 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+            buildConfigField "String", "SIGN_UP_URL", "\"https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
         }
     }
     buildFeatures{
@@ -77,6 +79,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 
     implementation 'com.synnapps:carouselview:0.1.4'
+    implementation project(path: ':videoplayer')
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
 
