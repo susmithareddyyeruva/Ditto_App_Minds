@@ -14,6 +14,8 @@ data class LoginResult(
     val customerNo: String,
     @SerializedName("email")
     val email: String,
+    @SerializedName("phone_home")
+    val phoneHome: String,
     @SerializedName("enabled")
     val enabled: Boolean,
     @SerializedName("first_name")

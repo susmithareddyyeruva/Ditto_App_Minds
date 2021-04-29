@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/nav_g1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_graph_about"
+            android:icon="@drawable/ic_menu_about_app"
+            android:title="@string/about_the_app_amp_policies" />
+
+        <item
+            android:id="@+id/nav_graph_support"
+            android:icon="@drawable/ic_menu_support"
+            android:title="Customer Support" />
+
+        <item
+            android:id="@+id/nav_graph_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="Settings" />
+
+        <item
+            android:id="@+id/nav_graph_faq"
+            android:icon="@drawable/ic_menu_faq"
+            android:title="FAQ'S" />
+
+        <item
+            android:id="@+id/nav_graph_software_updates"
+            android:icon="@drawable/ic_menu_update"
+            android:title="Software Updates" />
+
+    </group>
+    <group
+        android:id="@+id/nav_g2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_graph_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="Log Out"
+            app:showAsAction="always" />
+
+        <item
+            android:id="@+id/nav_graph_sign_up"
+            android:icon="@drawable/ic_menu_signup"
+            android:title="Sign in"
+            app:showAsAction="always" />
+    </group>
+
+</menu>

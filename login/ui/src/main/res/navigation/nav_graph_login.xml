@@ -7,6 +7,7 @@
     tools:ignore="UnusedNavigation">
 
     <include app:graph="@navigation/nav_graph_onboarding" />
+    <include app:graph="@navigation/nav_graph_video" />
     <fragment
         android:id="@+id/destination_login"
         android:name="com.ditto.login.ui.LoginFragment"
@@ -23,6 +24,19 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/destination_login"
             app:popUpToInclusive="true">
+        </action>
+
+        <action
+            android:id="@+id/action_loginFragment_to_VideoFragment"
+            app:destination="@id/nav_graph_id_video"
+            app:launchSingleTop="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_login"
+            app:popUpToInclusive="true">
+
         </action>
 
     </fragment>

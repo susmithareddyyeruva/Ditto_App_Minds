@@ -14,6 +14,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -50,6 +51,8 @@ class HomeFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(true)
+        bottomNavViewModel.refreshMenu(context)
+        (activity as BottomNavigationActivity)?.setMenuItem(bottomNavViewModel.isGuestBase.get())
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         homeViewModel.disposable += homeViewModel.events

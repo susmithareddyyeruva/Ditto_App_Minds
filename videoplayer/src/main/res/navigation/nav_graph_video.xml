@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_id_video"
+    app:startDestination="@id/destination_video"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/destination_video"
+        android:name="com.ditto.videoplayer.VideoPlayerFragment"
+        android:label="Video"
+        app:launchSingleTop="true"
+        tools:layout="@layout/activity_player">
+
+        <action
+            android:id="@+id/action_VideoPlayer_to_Onboarding"
+            app:destination="@id/nav_graph_id_onboarding"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/destination_video"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+</navigation>

@@ -8,6 +8,10 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.splash.ui.databinding.SplashActivityBinding
+import core.USER_EMAIL
+import core.USER_FIRST_NAME
+import core.USER_LAST_NAME
+import core.USER_PHONE
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -57,9 +61,21 @@ class SplashFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
             }
             is SplashViewModel.Event.NavigateToOnBoarding -> {
+                // navigate to onboarding
+                getUserDetails()
+//              findNavController().navigate(R.id.action_splashActivity_to_VideoFragment)
                 findNavController().navigate(R.id.action_splashActivity_to_Onboarding)
-            }is SplashViewModel.Event.NavigateToDashboard -> {
+            }
+            is SplashViewModel.Event.NavigateToDashboard -> {
+                getUserDetails()
                 findNavController().navigate(R.id.action_splashActivity_to_HomeFragment)
             }
         }
+
+    private fun getUserDetails() {
+        bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
+        bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
+        bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)
+        bottomNavViewModel.userLastNameBase.set(viewModel.userLastName)
+    }
 }

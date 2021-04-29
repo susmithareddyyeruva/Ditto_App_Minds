@@ -3,6 +3,7 @@ include ':app'
 include ':nav-graph'
 include ':core-lib'
 include ':non-core-lib'
+include ':videoplayer'
 
 include ':storage-data'
 project(':storage-data').projectDir = new File('storage/storage-data')
@@ -75,4 +76,5 @@ project(':calibration-data').projectDir = new File('calibration/data')
 
 include ':connectivity-ui'
 project(':connectivity-ui').projectDir = new File('connectivity/ui')
+
 

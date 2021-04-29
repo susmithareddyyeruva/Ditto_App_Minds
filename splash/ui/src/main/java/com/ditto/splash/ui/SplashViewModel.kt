@@ -16,6 +16,11 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import com.ditto.storage.data.database.TraceDataDatabase
+import com.ditto.storage.domain.StorageManager
+import core.USER_EMAIL
+import core.USER_FIRST_NAME
+import core.USER_LAST_NAME
+import core.USER_PHONE
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.rxkotlin.plusAssign
@@ -24,7 +29,8 @@ import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
     private val getDbUseCase: GetDbDataUseCase,
-    private val updateDbUseCase: UpdateDbUseCase
+    private val updateDbUseCase: UpdateDbUseCase,
+    val storageManager: StorageManager
 ) : BaseViewModel() {
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
@@ -32,11 +38,11 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
+        getUserDetails()
         GlobalScope.launch {
             delay(3000)
             fetchDbUser()
         }
-
         updateDb()
     }
 
@@ -45,6 +51,13 @@ class SplashViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
+    }
+
+    private fun getUserDetails() {
+        userEmail = storageManager.getStringValue(USER_EMAIL).toString()
+        userPhone = storageManager.getStringValue(USER_PHONE).toString()
+        userFirstName = storageManager.getStringValue(USER_FIRST_NAME).toString()
+        userLastName = storageManager.getStringValue(USER_LAST_NAME).toString()
     }
 
     private fun fetchDbUser() {
@@ -60,13 +73,15 @@ class SplashViewModel @Inject constructor(
             is Result.OnSuccess<LoginUser> -> {
                 dbLoadError.set(false)
                 Log.d(TraceDataDatabase.TAG, "- Success- ViewModel")
-                if(result.data.userName?.isEmpty()!!) {
+                if (result.data.userName?.isEmpty()!!) {
                     uiEvents.post(Event.NavigateToLogin)
-                } else if(result.data.userName?.isNotEmpty()!! &&
-                        result.data.dndOnboarding!!) {
+                } else if (result.data.userName?.isNotEmpty()!! &&
+                    result.data.dndOnboarding!!
+                ) {
                     uiEvents.post(Event.NavigateToDashboard)
-                } else if(result.data.userName?.isNotEmpty()!! &&
-                    !result.data.dndOnboarding!!) {
+                } else if (result.data.userName?.isNotEmpty()!! &&
+                    !result.data.dndOnboarding!!
+                ) {
                     uiEvents.post(Event.NavigateToOnBoarding)
                 }
             }

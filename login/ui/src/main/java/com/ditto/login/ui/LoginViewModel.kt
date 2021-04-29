@@ -15,6 +15,9 @@ import com.ditto.login.domain.LoginUser
 import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.storage.domain.StorageManager
 import core.USER_EMAIL
+import core.USER_FIRST_NAME
+import core.USER_LAST_NAME
+import core.USER_PHONE
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
@@ -86,8 +89,17 @@ class LoginViewModel @Inject constructor(
         loadingIndicator.set(false)
         when (result) {
             is Result.OnSuccess -> {
-                if (result.data.faultDomain == null) {//User login successfull
+                if (result.data.faultDomain == null) {
+                    //User login successfull
                     storageManager.savePrefs(USER_EMAIL, result.data.email ?: "")
+                    storageManager.savePrefs(USER_PHONE, result.data.phone_home ?: "")
+                    storageManager.savePrefs(USER_FIRST_NAME, result.data.first_name ?: "")
+                    storageManager.savePrefs(USER_LAST_NAME, result.data.last_name ?: "")
+                    userEmail = result.data.email ?: ""
+                    userPhone = result.data.phone_home ?: ""
+                    userFirstName = result.data.first_name ?: ""
+                    userLastName = result.data.last_name ?: ""
+
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
@@ -107,8 +119,6 @@ class LoginViewModel @Inject constructor(
                 handleError(result.error)
                 loadingIndicator.set(false)
             }
-
-
         }
     }
 
@@ -146,6 +156,10 @@ class LoginViewModel @Inject constructor(
         return android.util.Patterns.EMAIL_ADDRESS.matcher(userName.get()).matches()
     }
 
+    fun guestLogin() {
+        uiEvents.post(Event.OnSeeMoreClicked)
+    }
+
     /**
      * Events for this view model
      */
@@ -156,6 +170,11 @@ class LoginViewModel @Inject constructor(
          * Event emitted by [events] when the data updated successfully
          */
         object OnLoginFailed : Event()
+
+        /**
+         * Event emitted by [events] when the data updated successfully
+         */
+        object OnSeeMoreClicked : Event()
     }
 
     fun fetchViewPagerData() {

@@ -15,6 +15,7 @@ data class LoginResultDomain(
     val gender: Int?,
     val last_login_time: String?,
     val last_modified: String?,
+    val phone_home: String?,
     val last_name: String?,
     val last_visit_time: String,
     val login: String?,
