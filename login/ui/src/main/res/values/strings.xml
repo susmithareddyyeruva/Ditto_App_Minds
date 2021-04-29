@@ -3,6 +3,7 @@
     <string name="login_imgDesc">Explore a hassle free way of cutting and sewing..</string>
     <string name="login_welcome">Welcome!</string>
     <string name="username">Email</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
 
@@ -12,5 +13,12 @@
     <string name="Password">Password</string>
     <string name="Login">Login</string>
     <string name="login_failed">Login Failed</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="dont_have_account">Don’t have an account?</string>
+    <string name="you_will_be_redirected_to_ditto">You will be redirected to ditto.com</string>
+    <string name="sign_up"><u>Sign Up</u></string>
+    <string name="see_more"><u>See more</u></string>
+    <string name="ditto_site"> www.ditto.com.reg.2021</string>
+    <string name="we_got_this">WE GOT THIS</string>
 
 </resources>

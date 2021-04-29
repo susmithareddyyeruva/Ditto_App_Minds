@@ -5,12 +5,14 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.storage.domain.StorageManager
 import core.USER_EMAIL
 import core.event.UiEvents
@@ -43,6 +45,8 @@ class LoginViewModel @Inject constructor(
     var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+
+    var viewPagerData : MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
 
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
@@ -152,6 +156,35 @@ class LoginViewModel @Inject constructor(
          * Event emitted by [events] when the data updated successfully
          */
         object OnLoginFailed : Event()
+    }
+
+    fun fetchViewPagerData() {
+        lateinit var languageList: List<LoginViewPagerData>
+
+        languageList = listOf(
+            LoginViewPagerData(
+                1,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            ),
+            LoginViewPagerData(
+                2,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            ),
+            LoginViewPagerData(
+                3,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            ),
+            LoginViewPagerData(
+                4,
+                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
+                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+            )
+        )
+
+        viewPagerData.value = languageList
     }
 }
 

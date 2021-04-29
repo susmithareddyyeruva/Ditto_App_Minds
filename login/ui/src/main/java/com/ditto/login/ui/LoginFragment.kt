@@ -14,12 +14,14 @@ import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
@@ -62,8 +64,27 @@ class LoginFragment : BaseFragment() {
                     handleEvent(it)   //Observing UI event
                 }
         }
+
+        viewModel.fetchViewPagerData()
+        Log.d("list123", "${viewModel.viewPagerData.value?.size}")
+        setViewpagerImageAdapter()
         setUIEvents()
-        setupKeyboardListener(binding.root) // call in OnCreate or similar
+        //setupKeyboardListener(binding.root) // call in OnCreate or similar
+
+    }
+
+    private fun setViewpagerImageAdapter() {
+        val adapter = LoginViewPagerAdapter()
+        login_view_pager.adapter = adapter
+        adapter.viewModel = viewModel
+        login_view_pager.adapter?.notifyDataSetChanged()
+        login_tablay.setupWithViewPager(login_view_pager)
+
+        viewModel.viewPagerData.value?.let {
+            if(it != null){
+                adapter.setListData(it)
+            }
+        }
 
 
     }

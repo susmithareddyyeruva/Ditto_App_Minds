@@ -81,4 +81,5 @@ ext {
     stetho='1.5.1'
     timber='4.7.1'
     play_services_location='18.0.0'
+    carousel_view='0.1.4'
 }
