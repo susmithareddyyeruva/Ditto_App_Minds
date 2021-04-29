@@ -15,13 +15,12 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
-import com.ditto.login.ui.databinding.LoginFragment2Binding
 import com.ditto.login.ui.databinding.LoginFragment3Binding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.login_fragment2.*
+import kotlinx.android.synthetic.main.login_fragment3.*
 import javax.inject.Inject
 
 
