@@ -3,6 +3,7 @@
     <string name="login_imgDesc">Explore a hassle free way of cutting and sewing..</string>
     <string name="login_welcome">Welcome!</string>
     <string name="username">Email</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
 

@@ -6,16 +6,15 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.storage.domain.StorageManager
 import core.USER_EMAIL
-import com.ditto.login.domain.model.LoginViewPagerData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility

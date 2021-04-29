@@ -238,7 +238,6 @@
                             android:autofillHints="@string/email"
                             android:background="@drawable/edittext_border_white"
                             android:cursorVisible="true"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:ems="10"
                             android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:hint="@string/email"
@@ -251,7 +250,7 @@
                             android:textColorHint="@color/texthint"
                             android:textCursorDrawable="@drawable/cursor"
                             android:textSize="@dimen/size_16px"
-                            app:error="@{viewModel.isEmailValidated ?null : `Enter valid username`}" />
+                            app:error="@{viewModel.isEmailValidated ?null : `Invalid Email`}" />
 
                         <EditText
                             android:id="@+id/edittext_password"
@@ -260,20 +259,19 @@
                             android:layout_marginTop="@dimen/edittext_password_margintop"
                             android:background="@drawable/edittext_border_white"
                             android:cursorVisible="true"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:hint="@string/Password"
                             android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="textPassword"
                             android:longClickable="false"
                             android:paddingLeft="@dimen/edittext_email_padding_left"
+                            android:paddingRight="@dimen/edittext_email_padding_left"
                             android:singleLine="true"
                             android:text="@={viewModel.password}"
                             android:textColorHint="@color/texthint"
                             android:textCursorDrawable="@drawable/cursor"
                             android:textSize="@dimen/size_16px"
-                            app:error="@{viewModel.isPasswordValidated ?null : `Enter valid password`}" />
-
+                            app:error="@{viewModel.isPasswordValidated ?null : `Invalid Password`}" />
 
                         <TextView
                             android:layout_width="wrap_content"

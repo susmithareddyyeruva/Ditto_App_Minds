@@ -26,9 +26,6 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SIGN_UP_URL", "\"https://www.joann.com/create-account\""  //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev05-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\""  //--- DEV
-
         }
         debug {
             debuggable true
@@ -94,7 +91,9 @@ dependencies {
     implementation project(path: ':home-ui')
     implementation project(path: ':mylibrary-ui')
     implementation project(path: ':tutorial-ui')
-
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
 
 
 }
