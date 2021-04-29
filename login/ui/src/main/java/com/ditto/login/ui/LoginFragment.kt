@@ -85,7 +85,7 @@ class LoginFragment : BaseFragment() {
         login_tablay.setupWithViewPager(login_view_pager)
 
         viewModel.viewPagerData.value?.let {
-            if(it != null){
+            if (it != null) {
                 adapter.setListData(it)
             }
         }
@@ -158,6 +158,8 @@ class LoginFragment : BaseFragment() {
             is LoginViewModel.Event.OnLoginFailed -> {
                 showSnackBar()
             }
+            LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
 
     private fun setupKeyboardListener(view: View) {

@@ -44,7 +44,6 @@ class LoginViewModel @Inject constructor(
     var versionName: ObservableField<String> = ObservableField<String>("")
     val isEmailValidated: ObservableBoolean = ObservableBoolean(true)
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
-    val loadingIndicator: ObservableBoolean = ObservableBoolean(false)
     var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -69,7 +68,7 @@ class LoginViewModel @Inject constructor(
             isPasswordValidated.set(true)
 
             //Making api call for Login
-            loadingIndicator.set(true)
+            uiEvents.post(Event.OnShowProgress)
             disposable += useCase.loginUserWithCredential(
                 LoginInputData(userName.get(), password.get())
             )
@@ -86,7 +85,7 @@ class LoginViewModel @Inject constructor(
 
     fun handleFetchResult(result: Result<LoginResultDomain>) {
         logger.d("handleFetchResult ${result.toString()}")
-        loadingIndicator.set(false)
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.faultDomain == null) {
@@ -117,7 +116,7 @@ class LoginViewModel @Inject constructor(
             }
             is Result.OnError -> {
                 handleError(result.error)
-                loadingIndicator.set(false)
+                uiEvents.post(Event.OnHideProgress)
             }
         }
     }
@@ -175,6 +174,8 @@ class LoginViewModel @Inject constructor(
          * Event emitted by [events] when the data updated successfully
          */
         object OnSeeMoreClicked : Event()
+        object OnShowProgress : Event()
+        object OnHideProgress : Event()
     }
 
     fun fetchViewPagerData() {
