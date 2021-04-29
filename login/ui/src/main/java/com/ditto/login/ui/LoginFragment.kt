@@ -15,13 +15,13 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
-import com.ditto.login.ui.databinding.LoginFragment3Binding
+import com.ditto.login.ui.databinding.LoginFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.login_fragment3.*
+import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
@@ -35,7 +35,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private val viewModel: LoginViewModel by ViewModelDelegate()
-    lateinit var binding: LoginFragment3Binding
+    lateinit var binding: LoginFragmentBinding
 
 
     override fun onCreateView(
@@ -43,7 +43,7 @@ class LoginFragment : BaseFragment() {
         @Nullable container: ViewGroup?,
         @Nullable savedInstanceState: Bundle?
     ): View? {
-        binding = LoginFragment3Binding.inflate(
+        binding = LoginFragmentBinding.inflate(
             inflater
         ).also {
             it.viewModel = viewModel
