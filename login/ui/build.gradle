@@ -33,8 +33,9 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", "SIGN_UP_URL", "\"https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\""  //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://staging.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\""  //--- DEV
+            buildConfigField "String", "SIGN_UP_URL", "\"https://www.joann.com/create-account\""  //--- DEV
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev05-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\""  //--- DEV
+
         }
     }
     buildFeatures{
@@ -81,7 +82,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 
-    implementation "com.synnapps:carouselview:$carousel_view"
+    implementation 'com.synnapps:carouselview:0.1.4'
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
 
@@ -93,5 +94,7 @@ dependencies {
     implementation project(path: ':home-ui')
     implementation project(path: ':mylibrary-ui')
     implementation project(path: ':tutorial-ui')
+
+
 
 }

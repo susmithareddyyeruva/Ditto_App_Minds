@@ -1,20 +1,29 @@
 package com.ditto.login.data.api
 
 import android.content.Context
+import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.data.error.LoginError
 import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
+import com.ditto.login.data.model.LoginRequest
+import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginRepository
+import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.storage.data.database.UserDao
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import core.network.Utility
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
+import okhttp3.Credentials
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -64,4 +73,55 @@ class LoginRepositoryImpl @Inject constructor(
                 )
             }
     }
+
+    override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
+        if (!Utility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        val loginRequest = LoginRequest("credentials")
+        val basic =
+            Credentials.basic(username = user.Username ?: "", password = user.Password ?: "")
+        return loginService.loginWithCredential(
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            loginRequest,
+            basic
+        )
+            .doOnSuccess {
+                Log.d("Login", "*****Login Success**")
+            }
+            .map {
+                Log.d("Login", "*****Login Success MAP**")
+                Result.withValue(it.toUserDomain())
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    Log.d("Try", "try block")
+                    val error = it as HttpException
+                    if (error!=null) {
+                        val errorBody = error.response()!!.errorBody()!!.string()
+                        Log.d("LoginError", errorBody)
+                        val gson = Gson()
+                        val type = object : TypeToken<LoginError>() {}.type
+                        val errorResponse: LoginError? = gson.fromJson(errorBody, type)
+                        errorMessage = errorResponse?.fault?.message ?: "Error Fetching data"
+                        Log.d("LoginErrorResponse", errorMessage)
+                    }
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = e.message.toString()
+
+
+                }
+
+
+                Result.withError(
+                    LoginFetchError(errorMessage, it)
+                )
+            }
+
+
+    }
 }
+
