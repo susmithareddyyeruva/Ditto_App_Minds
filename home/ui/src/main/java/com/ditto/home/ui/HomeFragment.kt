@@ -9,10 +9,10 @@ import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.example.home_ui.databinding.HomeFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
+import com.example.home_ui.databinding.HomeFragmentBinding
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate

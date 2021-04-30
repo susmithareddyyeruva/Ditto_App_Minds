@@ -3,6 +3,7 @@ package core.ui
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import core.appstate.AppState
 import core.lib.R
 import javax.inject.Inject
 
@@ -19,14 +20,21 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var userFirstNameBase: ObservableField<String> = ObservableField("")
     var userLastNameBase: ObservableField<String> = ObservableField("")
 
+    init {
+        if (AppState.getIsGuest() ?: false)
+            isGuestBase.set(true) else
+            isGuestBase.set(false)
+    }
+
     fun refreshMenu(context: Context?) {
-        if (isGuestBase.get()) {
+        if (AppState.getIsGuest() ?: false) {
             menuTitle.set(context?.getString(R.string.hi_there))
-           menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
+            menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
 
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             menuDescription.set(userEmailBase.get())
         }
     }
+
 }

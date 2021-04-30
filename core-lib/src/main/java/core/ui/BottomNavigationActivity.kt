@@ -13,21 +13,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import core.appstate.AppState
 import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
-import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -203,13 +201,21 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates, R.id.nav_graph_sign_up-> {
+            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates, R.id.nav_graph_sign_up -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-            R.id.nav_graph_logout ->{
+            R.id.nav_graph_logout -> {
+                AppState.logout()
+                AppState.setIsGuest(true)
+                binding.bottomNavViewModel?.isGuestBase?.set(true)
+                setMenuItem(binding.bottomNavViewModel?.isGuestBase?.get() ?: true)
+                binding.bottomNavViewModel?.userEmailBase?.set("")
+                binding.bottomNavViewModel?.userFirstNameBase?.set("")
+                binding.bottomNavViewModel?.userLastNameBase?.set("")
+                binding.bottomNavViewModel?.userPhoneBase?.set("")
+                binding.bottomNavViewModel?.refreshMenu(this)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                finish()
                 false
             }
             else -> {

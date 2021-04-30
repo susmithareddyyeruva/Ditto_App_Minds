@@ -16,10 +16,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
-import core.USER_EMAIL
-import core.USER_FIRST_NAME
-import core.USER_LAST_NAME
-import core.USER_PHONE
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -147,6 +144,7 @@ class LoginFragment : BaseFragment() {
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
                 bottomNavViewModel.isGuestBase.set(true)
+                AppState.setIsGuest(true)
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     getUserDetails()

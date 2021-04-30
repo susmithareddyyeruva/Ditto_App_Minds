@@ -9,6 +9,7 @@ object AppState {
     private const val KEY_MOBILE = "mobile"
     private const val KEY_FIRST_NAME = "firstname"
     private const val KEY_LAST_NAME = "lastname"
+    private const val KEY_IS_GUEST = "guest"
 
     fun init(context: Context) {
         pref = PreferenceStorageImpl(context)
@@ -45,5 +46,16 @@ object AppState {
 
     fun saveLastName(lastName: String) {
         pref?.saveString(KEY_LAST_NAME, lastName)
+    }
+    fun getIsGuest(): Boolean? {
+        val isGuest = pref?.getBoolean(KEY_IS_GUEST)
+        return isGuest
+    }
+    fun setIsGuest(guest: Boolean) {
+        pref?.saveBoolean(KEY_IS_GUEST, guest)
+    }
+    fun logout(){
+        pref?.clear()
+
     }
 }
