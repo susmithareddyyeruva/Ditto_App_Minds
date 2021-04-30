@@ -3,8 +3,7 @@ package core.ui
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
-import core.event.UiEvents
+import core.appstate.AppState
 import core.lib.R
 import javax.inject.Inject
 
@@ -24,10 +23,12 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     fun refreshMenu(context: Context?) {
         if (isGuestBase.get()) {
             menuTitle.set(context?.getString(R.string.hi_there))
-            menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
+            AppState.saveEmail(context?.getString(R.string.sign_in_to_explore_more)?:"")
+            menuDescription.set(AppState.getEmail())
+
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
-            menuDescription.set(userEmailBase.get())
+            menuDescription.set(AppState.getEmail())
         }
     }
 }

@@ -18,6 +18,7 @@ import core.USER_EMAIL
 import core.USER_FIRST_NAME
 import core.USER_LAST_NAME
 import core.USER_PHONE
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
@@ -48,7 +49,7 @@ class LoginViewModel @Inject constructor(
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
-    var viewPagerData : MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
+    var viewPagerData: MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
 
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
@@ -99,6 +100,10 @@ class LoginViewModel @Inject constructor(
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
 
+                    AppState.saveEmail(result.data.email ?: context.getString(R.string.sign_in_to_explore_more))
+                    AppState.saveMobile(result.data.phone_home ?: "")
+                    AppState.saveFirstName(result.data.first_name ?: "")
+                    AppState.saveLastName(result.data.last_name ?: "")
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
