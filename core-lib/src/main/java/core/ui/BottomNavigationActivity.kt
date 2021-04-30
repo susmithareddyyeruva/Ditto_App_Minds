@@ -209,7 +209,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 AppState.logout()
                 AppState.setIsGuest(true)
                 binding.bottomNavViewModel?.isGuestBase?.set(true)
-                setMenuItem(binding.bottomNavViewModel?.isGuestBase?.get() ?: true)
+                setMenuItem(true)
                 binding.bottomNavViewModel?.userEmailBase?.set("")
                 binding.bottomNavViewModel?.userFirstNameBase?.set("")
                 binding.bottomNavViewModel?.userLastNameBase?.set("")
