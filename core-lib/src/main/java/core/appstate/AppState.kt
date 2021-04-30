@@ -23,7 +23,14 @@ object AppState {
         val mob = pref?.getString(KEY_MOBILE)
         return mob
     }
-
+    fun getFirstName(): String? {
+        val first = pref?.getString(KEY_FIRST_NAME)
+        return first
+    }
+    fun getLastName(): String? {
+        val lastName = pref?.getString(KEY_LAST_NAME)
+        return lastName
+    }
     fun saveMobile(mobile: String) {
         pref?.saveString(KEY_MOBILE, mobile)
     }
