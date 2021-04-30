@@ -5,4 +5,5 @@
     <string name="hi_there">Hi There</string>
     <string name="sign_in_to_explore_more">Sign in to explore more</string>
     <string name="subscription">Subscription</string>
+    <string name="no_internet_available">No Internet connection available !</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.ditto.videoplayer.utility
 
 import android.util.Log
+import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 
@@ -24,8 +25,14 @@ class PlaybackStateListener : Player.EventListener {
         exoPlayerStateListener?.getPlayingState(isPlaying)
     }
 
+    override fun onPlayerError(error: ExoPlaybackException) {
+        super.onPlayerError(error)
+        exoPlayerStateListener?.onPlayerError(error?.cause?.message.toString())
+    }
+
     interface ExoPlayerStateListener {
         fun getPlayingState(isPlaying: Boolean)
+        fun onPlayerError(error: String?)
     }
 
     companion object {
