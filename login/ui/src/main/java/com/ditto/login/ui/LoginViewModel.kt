@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
         Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
     }
 
-    fun handleFetchResult(result: Result<LoginResultDomain>) {
+    private fun handleFetchResult(result: Result<LoginResultDomain>) {
         logger.d("handleFetchResult ${result.toString()}")
         uiEvents.post(Event.OnHideProgress)
         when (result) {
