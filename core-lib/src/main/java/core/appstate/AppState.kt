@@ -47,9 +47,9 @@ object AppState {
     fun saveLastName(lastName: String) {
         pref?.saveString(KEY_LAST_NAME, lastName)
     }
-    fun getIsGuest(): Boolean? {
+    fun getIsGuest(): Boolean {
         val isGuest = pref?.getBoolean(KEY_IS_GUEST)
-        return isGuest
+        return isGuest?:false
     }
     fun setIsGuest(guest: Boolean) {
         pref?.saveBoolean(KEY_IS_GUEST, guest)
