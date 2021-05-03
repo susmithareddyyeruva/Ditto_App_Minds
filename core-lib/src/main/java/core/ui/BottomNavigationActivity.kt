@@ -93,6 +93,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             override fun onDrawerStateChanged(newState: Int) {
             }
         })
+
     }
 
     private fun setMenuBinding() {
@@ -207,7 +208,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             }
             R.id.nav_graph_logout -> {
                 AppState.logout()
-                AppState.setIsGuest(true)
+                AppState.setIsLogged(false)
                 binding.bottomNavViewModel?.isGuestBase?.set(true)
                 setMenuItem(true)
                 binding.bottomNavViewModel?.userEmailBase?.set("")

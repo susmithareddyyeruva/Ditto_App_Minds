@@ -99,12 +99,7 @@ class LoginViewModel @Inject constructor(
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
-
-                    AppState.saveEmail(result.data.email ?: "")
-                    AppState.saveMobile(result.data.phone_home ?: "")
-                    AppState.saveFirstName(result.data.first_name ?: "")
-                    AppState.saveLastName(result.data.last_name ?: "")
-                    AppState.setIsGuest(false)
+                    AppState.setIsLogged(true)
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),

@@ -7,6 +7,11 @@ import com.ditto.login.domain.LoginUser
 import com.ditto.splash.domain.GetDbDataUseCase
 import com.ditto.splash.domain.UpdateDbUseCase
 import com.ditto.storage.data.database.TraceDataDatabase
+import com.ditto.storage.domain.StorageManager
+import core.USER_EMAIL
+import core.USER_FIRST_NAME
+import core.USER_LAST_NAME
+import core.USER_PHONE
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -25,7 +30,8 @@ import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
     private val getDbUseCase: GetDbDataUseCase,
-    private val updateDbUseCase: UpdateDbUseCase
+    private val updateDbUseCase: UpdateDbUseCase,
+    private val storageManager: StorageManager
 ) : BaseViewModel() {
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
@@ -41,7 +47,7 @@ class SplashViewModel @Inject constructor(
         updateDb()
     }
 
-   /* private fun deleteUserTable(result: Result<LoginUser>) {
+ /*   private fun deleteUserTable(result: Result<LoginUser>) {
         disposable += getDbUseCase.deleteDbUser(result)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -59,10 +65,10 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun getUserDetails() {
-        userEmail = AppState.getEmail()
-        userPhone = AppState.getMobile()
-        userFirstName = AppState.getFirstName()
-        userLastName = AppState.getLastName()
+        userEmail = storageManager.getStringValue(USER_EMAIL)
+        userPhone = storageManager.getStringValue(USER_PHONE)
+        userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
+        userLastName = storageManager.getStringValue(USER_LAST_NAME)
     }
 
     private fun fetchDbUser() {
@@ -76,7 +82,7 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<LoginUser>) {
-        if (!AppState.getIsGuest()) {
+        if (AppState.getIsLogged()) {
             when (result) {
                 is Result.OnSuccess<LoginUser> -> {
                     dbLoadError.set(false)
@@ -95,7 +101,7 @@ class SplashViewModel @Inject constructor(
                 }
                 is Result.OnError<LoginUser> -> handleError(result.error)
             }
-        }else{
+        }else{  //Guest User
             dbLoadError.set(false)
             uiEvents.post(Event.NavigateToLogin)
            // deleteUserTable(result)

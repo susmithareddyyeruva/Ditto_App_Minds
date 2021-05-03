@@ -4,57 +4,31 @@ import android.content.Context
 
 object AppState {
     private var pref: PreferenceStorage? = null
-    private const val FIRST_RUN = "IS_FIRST_RUN"
-    private const val KEY_EMAIL = "email"
-    private const val KEY_MOBILE = "mobile"
-    private const val KEY_FIRST_NAME = "firstname"
-    private const val KEY_LAST_NAME = "lastname"
-    private const val KEY_IS_GUEST = "guest"
+    private const val KEY_IS_LOGGED = "logged"
+    private const val KEY_TOKEN = "token"
 
     fun init(context: Context) {
         pref = PreferenceStorageImpl(context)
     }
 
-    fun getEmail(): String? {
-        val email = pref?.getString(KEY_EMAIL)
-        return email
+    fun getToken(): String? {
+        val token = pref?.getString(KEY_TOKEN)
+        return token
     }
 
-    fun getMobile(): String? {
-        val mob = pref?.getString(KEY_MOBILE)
-        return mob
+    fun saveToken(token: String) {
+        pref?.saveString(KEY_TOKEN, token)
     }
-    fun getFirstName(): String? {
-        val first = pref?.getString(KEY_FIRST_NAME)
-        return first
-    }
-    fun getLastName(): String? {
-        val lastName = pref?.getString(KEY_LAST_NAME)
-        return lastName
-    }
-    fun saveMobile(mobile: String) {
-        pref?.saveString(KEY_MOBILE, mobile)
+    fun getIsLogged(): Boolean {
+        val isGuest = pref?.getBoolean(KEY_IS_LOGGED)
+        return isGuest ?: false
     }
 
-    fun saveEmail(email: String) {
-        pref?.saveString(KEY_EMAIL, email)
+    fun setIsLogged(guest: Boolean) {
+        pref?.saveBoolean(KEY_IS_LOGGED, guest)
     }
 
-    fun saveFirstName(firstName: String) {
-        pref?.saveString(KEY_FIRST_NAME, firstName)
-    }
-
-    fun saveLastName(lastName: String) {
-        pref?.saveString(KEY_LAST_NAME, lastName)
-    }
-    fun getIsGuest(): Boolean {
-        val isGuest = pref?.getBoolean(KEY_IS_GUEST)
-        return isGuest?:false
-    }
-    fun setIsGuest(guest: Boolean) {
-        pref?.saveBoolean(KEY_IS_GUEST, guest)
-    }
-    fun logout(){
+    fun logout() {
         pref?.clear()
 
     }

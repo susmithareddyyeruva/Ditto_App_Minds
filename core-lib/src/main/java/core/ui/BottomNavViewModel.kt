@@ -21,13 +21,13 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var userLastNameBase: ObservableField<String> = ObservableField("")
 
     init {
-        if (AppState.getIsGuest())
-            isGuestBase.set(true) else
-            isGuestBase.set(false)
+        if (AppState.getIsLogged())
+            isGuestBase.set(false) else
+            isGuestBase.set(true)
     }
 
     fun refreshMenu(context: Context?) {
-        if (AppState.getIsGuest()) {
+        if (!AppState.getIsLogged()) {
             menuTitle.set(context?.getString(R.string.hi_there))
             menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
 
@@ -37,7 +37,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun logout(){
+    fun logout() {
 
     }
 
