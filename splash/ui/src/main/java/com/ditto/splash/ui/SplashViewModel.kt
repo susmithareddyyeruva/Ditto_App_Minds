@@ -47,15 +47,20 @@ class SplashViewModel @Inject constructor(
         updateDb()
     }
 
- /*   private fun deleteUserTable(result: Result<LoginUser>) {
-        disposable += getDbUseCase.deleteDbUser(result)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy {
+    private fun deleteUserTable(result: Result<LoginUser>) {
+        when (result) {
+            is Result.OnSuccess<LoginUser> -> {
+                disposable += getDbUseCase.deleteDbUser(result.data)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy {
 
+                        Log.d("DB","====USER DELETED===")
 
+                    }
             }
-    }*/
+        }
+    }
 
     private fun updateDb() {
         disposable += updateDbUseCase.invoke()
@@ -72,13 +77,13 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun fetchDbUser() {
-            dbLoadError.set(false)
-            disposable += getDbUseCase.getUser()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
-                    handleFetchResult(it)
-                }
+        dbLoadError.set(false)
+        disposable += getDbUseCase.getUser()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                handleFetchResult(it)
+            }
     }
 
     private fun handleFetchResult(result: Result<LoginUser>) {
@@ -97,14 +102,15 @@ class SplashViewModel @Inject constructor(
                         !result.data.dndOnboarding!!
                     ) {
                         uiEvents.post(Event.NavigateToOnBoarding)
+
                     }
                 }
                 is Result.OnError<LoginUser> -> handleError(result.error)
             }
-        }else{  //Guest User
+        } else {  //Guest User
             dbLoadError.set(false)
             uiEvents.post(Event.NavigateToLogin)
-           // deleteUserTable(result)
+            deleteUserTable(result)
         }
     }
 
