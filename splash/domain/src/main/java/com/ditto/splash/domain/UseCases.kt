@@ -7,6 +7,8 @@ import non_core.lib.Result
 
 interface GetDbDataUseCase {
     fun getUser(): Single<Result<LoginUser>>
+
+    fun deleteDbUser(user: LoginUser):Single<Boolean>
 }
 interface UpdateDbUseCase {
     fun invoke(): Single<Any>
