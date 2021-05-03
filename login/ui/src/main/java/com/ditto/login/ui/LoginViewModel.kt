@@ -103,6 +103,22 @@ class LoginViewModel @Inject constructor(
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
+                            _type = result.data._type,
+                            auth_type = result.data.auth_type,
+                            customer_id = result.data.customer_id,
+                            customer_no = result.data.customer_no,
+                            email = result.data.email,
+                            first_name = result.data.first_name,
+                            last_name = result.data.last_name,
+                            last_visit_time = result.data.last_visit_time,
+                            last_modified = result.data.last_modified,
+                            last_login_time = result.data.last_login_time,
+                            gender = result.data.gender,
+                            phone_home = result.data.phone_home,
+                            login = result.data.phone_home,
+                            previous_login_time = result.data.previous_login_time,
+                            previous_visit_time = result.data.previous_visit_time,
+                            salutation = result.data.salutation,
                             isLoggedIn = true
                         )
                     )

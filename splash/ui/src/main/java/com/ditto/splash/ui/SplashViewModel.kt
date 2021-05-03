@@ -110,7 +110,6 @@ class SplashViewModel @Inject constructor(
         } else {  //Guest User
             dbLoadError.set(false)
             uiEvents.post(Event.NavigateToLogin)
-            deleteUserTable(result)
         }
     }
 

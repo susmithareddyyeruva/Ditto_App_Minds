@@ -36,9 +36,4 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             menuDescription.set(userEmailBase.get())
         }
     }
-
-    fun logout() {
-
-    }
-
 }
