@@ -11,4 +11,5 @@ import non_core.lib.Result
 interface DbRepository {
     fun getDbData(): Single<Any>
     fun getUser(): Single<Result<LoginUser>>
+    fun deleteUser(user: LoginUser): Single<Boolean>
 }

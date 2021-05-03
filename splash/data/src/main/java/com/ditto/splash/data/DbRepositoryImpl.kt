@@ -1,19 +1,20 @@
 package com.ditto.splash.data
 
 import android.content.Context
+import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.splash.domain.DbRepository
 import com.ditto.login.domain.LoginUser
-import com.joann.fabrictracetransform.transform.performTransform
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import non_core.lib.Result
+import com.ditto.splash.domain.DbRepository
 import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.data.database.UserDao
+import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.common.Utility
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
 import javax.inject.Inject
 
 /**
@@ -77,5 +78,11 @@ class DbRepositoryImpl @Inject constructor(
             else
                 Result.withValue(LoginUser(""))
         }
+    }
+
+    override fun deleteUser(user: LoginUser): Single<Boolean> {
+        return dbUserDataDao.deleteUserData(user.toDomain())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }
