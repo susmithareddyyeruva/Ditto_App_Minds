@@ -16,10 +16,6 @@ class GetLoginDbUseCaseImpl @Inject constructor(
         return loginRepository.createUser(user)
     }
 
-    override fun userLogin(user: LoginUser): Single<Result<LoginUser>> {
-        return loginRepository.loginUser(user)
-    }
-
     override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
         return loginRepository.loginUserWithCredential(user)
     }
