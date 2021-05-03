@@ -217,7 +217,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.bottomNavViewModel?.userPhoneBase?.set("")
                 binding.bottomNavViewModel?.refreshMenu(this)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                false
+                true
             }
             else -> {
                 false
