@@ -41,6 +41,16 @@ class SplashViewModel @Inject constructor(
         updateDb()
     }
 
+   /* private fun deleteUserTable(result: Result<LoginUser>) {
+        disposable += getDbUseCase.deleteDbUser(result)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+
+
+            }
+    }*/
+
     private fun updateDb() {
         disposable += updateDbUseCase.invoke()
             .subscribeOn(Schedulers.io())
@@ -56,31 +66,39 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun fetchDbUser() {
-        dbLoadError.set(false)
-        disposable += getDbUseCase.getUser()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResult(it) }
+            dbLoadError.set(false)
+            disposable += getDbUseCase.getUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    handleFetchResult(it)
+                }
     }
 
     private fun handleFetchResult(result: Result<LoginUser>) {
-        when (result) {
-            is Result.OnSuccess<LoginUser> -> {
-                dbLoadError.set(false)
-                Log.d(TraceDataDatabase.TAG, "- Success- ViewModel")
-                if (result.data.userName?.isEmpty()!!) {
-                    uiEvents.post(Event.NavigateToLogin)
-                } else if (result.data.userName?.isNotEmpty()!! &&
-                    result.data.dndOnboarding!!
-                ) {
-                    uiEvents.post(Event.NavigateToDashboard)
-                } else if (result.data.userName?.isNotEmpty()!! &&
-                    !result.data.dndOnboarding!!
-                ) {
-                    uiEvents.post(Event.NavigateToOnBoarding)
+        if (!AppState.getIsGuest()) {
+            when (result) {
+                is Result.OnSuccess<LoginUser> -> {
+                    dbLoadError.set(false)
+                    Log.d(TraceDataDatabase.TAG, "- Success- ViewModel")
+                    if (result.data.userName?.isEmpty()!!) {
+                        uiEvents.post(Event.NavigateToLogin)
+                    } else if (result.data.userName?.isNotEmpty()!! &&
+                        result.data.dndOnboarding!!
+                    ) {
+                        uiEvents.post(Event.NavigateToDashboard)
+                    } else if (result.data.userName?.isNotEmpty()!! &&
+                        !result.data.dndOnboarding!!
+                    ) {
+                        uiEvents.post(Event.NavigateToOnBoarding)
+                    }
                 }
+                is Result.OnError<LoginUser> -> handleError(result.error)
             }
-            is Result.OnError<LoginUser> -> handleError(result.error)
+        }else{
+            dbLoadError.set(false)
+            uiEvents.post(Event.NavigateToLogin)
+           // deleteUserTable(result)
         }
     }
 
