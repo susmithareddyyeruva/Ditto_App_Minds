@@ -11,7 +11,12 @@
         android:name="com.ditto.home.ui.HomeFragment"
         android:label="Home"
         tools:layout="@layout/home_fragment" >
-
+        <action
+            android:id="@+id/action_global_loginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:launchSingleTop="false"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_home_to_buy_pattern"
             app:destination="@id/buyPatternFragment"/>

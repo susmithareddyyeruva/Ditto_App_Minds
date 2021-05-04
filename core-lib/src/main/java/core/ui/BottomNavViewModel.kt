@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import core.appstate.AppState
+import core.event.UiEvents
 import core.lib.R
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var userPhoneBase: ObservableField<String> = ObservableField("")
     var userFirstNameBase: ObservableField<String> = ObservableField("")
     var userLastNameBase: ObservableField<String> = ObservableField("")
+    private val uiEvents = UiEvents<Event>()
+    val events = uiEvents.stream()
 
     init {
         if (AppState.getIsLogged())
@@ -35,5 +38,13 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             menuDescription.set(userEmailBase.get())
         }
+    }
+
+    fun logout() {
+        uiEvents.post(Event.NavigateToLogin)
+    }
+
+    sealed class Event {
+        object NavigateToLogin : Event()
     }
 }

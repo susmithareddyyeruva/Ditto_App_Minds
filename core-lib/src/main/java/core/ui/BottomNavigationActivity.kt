@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -30,6 +31,8 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 
@@ -66,6 +69,27 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             finish()
             return
         }
+        binding.bottomNavViewModel!!.disposable += binding.bottomNavViewModel!!.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+            }
+    }
+
+    private fun handleEvent(
+        event: BottomNavViewModel.Event?
+    ) {
+        when (event) {
+            is BottomNavViewModel.Event.NavigateToLogin -> {
+                Log.d("EVENT", "LOGOUT CLICKED")
+                binding.bottomNavViewModel?.visibility?.set(false)
+                binding.toolbarViewModel?.isShowActionBar?.set(false)
+                binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
+                hidemenu()
+                navController.navigate(R.id.action_global_loginFragment)
+            }
+        }
+
     }
 
     private fun setUpNavigation() {
@@ -210,13 +234,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 AppState.logout()
                 AppState.setIsLogged(false)
                 binding.bottomNavViewModel?.isGuestBase?.set(true)
-                setMenuItem(true)
                 binding.bottomNavViewModel?.userEmailBase?.set("")
                 binding.bottomNavViewModel?.userFirstNameBase?.set("")
                 binding.bottomNavViewModel?.userLastNameBase?.set("")
                 binding.bottomNavViewModel?.userPhoneBase?.set("")
+                setMenuItem(true)
                 binding.bottomNavViewModel?.refreshMenu(this)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                binding.bottomNavViewModel?.logout()
                 true
             }
             else -> {
