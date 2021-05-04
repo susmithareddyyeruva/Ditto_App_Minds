@@ -42,7 +42,12 @@ class SplashViewModel @Inject constructor(
         getUserDetails()
         GlobalScope.launch {
             delay(3000)
-            fetchDbUser()
+            if (AppState.getIsLogged()) {
+                fetchDbUser()
+            } else { //Guest User
+                dbLoadError.set(false)
+                uiEvents.post(Event.NavigateToLogin)
+            }
         }
         updateDb()
     }
@@ -87,7 +92,6 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<LoginUser>) {
-        if (AppState.getIsLogged()) {
             when (result) {
                 is Result.OnSuccess<LoginUser> -> {
                     dbLoadError.set(false)
@@ -107,10 +111,7 @@ class SplashViewModel @Inject constructor(
                 }
                 is Result.OnError<LoginUser> -> handleError(result.error)
             }
-        } else {  //Guest User
-            dbLoadError.set(false)
-            uiEvents.post(Event.NavigateToLogin)
-        }
+
     }
 
     private fun handleError(error: Error) {
