@@ -140,7 +140,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         menu.title = spanString
     }
 
-
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
 
@@ -226,22 +225,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates, R.id.nav_graph_sign_up -> {
+            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-            R.id.nav_graph_logout -> {
-                AppState.logout()
-                AppState.setIsLogged(false)
-                binding.bottomNavViewModel?.isGuestBase?.set(true)
-                binding.bottomNavViewModel?.userEmailBase?.set("")
-                binding.bottomNavViewModel?.userFirstNameBase?.set("")
-                binding.bottomNavViewModel?.userLastNameBase?.set("")
-                binding.bottomNavViewModel?.userPhoneBase?.set("")
-                setMenuItem(true)
-                binding.bottomNavViewModel?.refreshMenu(this)
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                binding.bottomNavViewModel?.logout()
+            R.id.nav_graph_logout ,R.id.nav_graph_sign_up-> {
+                logoutUser()
                 true
             }
             else -> {
@@ -249,5 +238,19 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             }
         }
 
+    }
+
+    private fun logoutUser() {
+        AppState.logout()
+        AppState.setIsLogged(false)
+        binding.bottomNavViewModel?.isGuestBase?.set(true)
+        binding.bottomNavViewModel?.userEmailBase?.set("")
+        binding.bottomNavViewModel?.userFirstNameBase?.set("")
+        binding.bottomNavViewModel?.userLastNameBase?.set("")
+        binding.bottomNavViewModel?.userPhoneBase?.set("")
+        setMenuItem(true)
+        binding.bottomNavViewModel?.refreshMenu(this)
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        binding.bottomNavViewModel?.logout()
     }
 }
