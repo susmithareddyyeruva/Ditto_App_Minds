@@ -11,10 +11,20 @@
         android:name="com.ditto.home.ui.HomeFragment"
         android:label="Home"
         tools:layout="@layout/home_fragment" >
-        <action
+       <!-- <action
             android:id="@+id/action_global_loginFragment"
             app:destination="@id/nav_graph_id_login"
             app:launchSingleTop="false"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />-->
+        <action
+            android:id="@+id/action_splashActivity_to_LoginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:launchSingleTop="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_graph"
             app:popUpToInclusive="true" />
         <action
