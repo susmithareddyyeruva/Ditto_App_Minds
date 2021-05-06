@@ -231,7 +231,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates -> {
+R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
@@ -243,7 +243,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 logoutUser(false)
                 true
             }
-            else -> {
+           else -> {
                 false
             }
         }

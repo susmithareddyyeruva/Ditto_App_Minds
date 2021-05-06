@@ -24,8 +24,11 @@ import com.google.android.exoplayer2.util.Util
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import non_core.lib.Result
+import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerStateListener {
@@ -75,7 +78,11 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     private fun handleEvent(event: VideoPlayerViewModel.Event) =
         when (event) {
             is VideoPlayerViewModel.Event.OnPlayButtonClicked -> {
-                startPlayer()
+                if (!core.network.Utility.isNetworkAvailable(requireContext())) {
+                    showSnackBar(getString(R.string.no_internet_available))
+                }else{
+                    startPlayer()
+                }
             }
             is VideoPlayerViewModel.Event.OnSkipButtonClicked -> {
                 findNavController().navigate(R.id.action_VideoPlayer_to_Onboarding)
@@ -161,5 +168,19 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
 
     override fun getPlayingState(isPlaying: Boolean) {
         viewModel.isPlayButtonVisible.set(!isPlaying)
+    }
+
+    override fun onPlayerError(error: String?) {
+        showSnackBar(error)
+    }
+
+    private fun showSnackBar(error: String?) {
+        viewModel.isPlayButtonVisible.set(true)
+        val errorMessage = getString(R.string.no_internet_available)
+        //if (error.isNullOrEmpty()) getString(R.string.no_internet_available) else error
+        Utility.showSnackBar(
+            errorMessage,
+            binding.videoView
+        )
     }
 }
