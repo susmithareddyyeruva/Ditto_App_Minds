@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_home_to_pattern_details"
             app:destination="@id/patternDescriptionFragmentFromHome" />
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
 
     </fragment>
     <fragment
@@ -72,4 +75,9 @@
         android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
         android:label="Pattern Instructions">
     </fragment>
+    <fragment
+        android:id="@+id/customerCareFragment"
+        android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
+        android:label="Customer Support"
+        tools:layout="@layout/customer_care_fragment"/>
 </navigation>
