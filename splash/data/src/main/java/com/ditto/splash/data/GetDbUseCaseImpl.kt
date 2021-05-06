@@ -14,8 +14,4 @@ class GetDbUseCaseImpl @Inject constructor(
     override fun getUser(): Single<Result<LoginUser>> {
         return dbRepository.getUser()
     }
-
-    override fun deleteDbUser(user: LoginUser): Single<Boolean> {
-        return dbRepository.deleteUser(user)
-    }
 }
