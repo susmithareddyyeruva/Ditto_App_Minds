@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(true)
         bottomNavViewModel.refreshMenu(context)
-        (activity as BottomNavigationActivity)?.setMenuItem(bottomNavViewModel.isGuestBase.get())
+        (activity as BottomNavigationActivity)?.refreshMenuItem()
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         homeViewModel.disposable += homeViewModel.events
