@@ -53,4 +53,5 @@
     <item name="patternDescriptionFragmentFromHome" type="id" />
     <item name="action_loginFragment_to_VideoFragment" type="id" />
     <item name="action_fragments_to_customerCareFragment" type="id" />
+    <item name="action_destination_to_FQAfragment" type="id" />
 </resources>
