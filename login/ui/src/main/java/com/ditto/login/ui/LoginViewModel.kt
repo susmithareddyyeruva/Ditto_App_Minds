@@ -176,6 +176,14 @@ class LoginViewModel @Inject constructor(
         uiEvents.post(Event.OnSeeMoreClicked)
     }
 
+    fun deleteUserInfo() {
+        disposable += useCase.deleteDbUser(storageManager.getStringValue(USER_EMAIL) ?: "")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
+    }
+
     /**
      * Events for this view model
      */

@@ -20,6 +20,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var userPhoneBase: ObservableField<String> = ObservableField("")
     var userFirstNameBase: ObservableField<String> = ObservableField("")
     var userLastNameBase: ObservableField<String> = ObservableField("")
+    val isLogoutEvent: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -42,8 +43,11 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
     fun logout() {
         uiEvents.post(Event.NavigateToLogin)
+        isLogoutEvent.set(true)
     }
-
+    fun sigin() {
+        uiEvents.post(Event.NavigateToLogin)
+    }
     sealed class Event {
         object NavigateToLogin : Event()
     }

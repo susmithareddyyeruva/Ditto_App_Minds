@@ -109,5 +109,11 @@ class LoginRepositoryImpl @Inject constructor(
 
 
     }
+
+    override fun deleteDbUser(user: String): Single<Boolean> {
+        return dbDataDao.deleteUserDataInfo(user)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }
 

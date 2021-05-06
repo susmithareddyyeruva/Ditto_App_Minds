@@ -63,6 +63,7 @@ class LoginFragment : BaseFragment() {
                 .subscribe {
                     handleEvent(it)   //Observing UI event
                 }
+
         }
 
         viewModel.fetchViewPagerData()
@@ -84,6 +85,11 @@ class LoginFragment : BaseFragment() {
             if (it != null) {
                 adapter.setListData(it)
             }
+        }
+        if (bottomNavViewModel.isLogoutEvent.get()){
+            Log.d("LOGIN SCREEN ","LOGOUT HAPPENED")
+            viewModel.deleteUserInfo()
+            bottomNavViewModel.isLogoutEvent.set(false)
         }
 
 

@@ -88,6 +88,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 hidemenu()
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
+
         }
 
     }
@@ -214,6 +215,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
     }
 
+    override fun onBackPressed() {
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        super.onBackPressed()
+    }
+
     private fun hideSystemUI() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -229,8 +235,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-            R.id.nav_graph_logout ,R.id.nav_graph_sign_up-> {
-                logoutUser()
+            R.id.nav_graph_logout -> {
+                logoutUser(true)
+                true
+            }
+            R.id.nav_graph_sign_up -> {
+                logoutUser(false)
                 true
             }
             else -> {
@@ -240,7 +250,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     }
 
-    private fun logoutUser() {
+    private fun logoutUser(isLogout: Boolean) {
         AppState.logout()
         AppState.setIsLogged(false)
         binding.bottomNavViewModel?.isGuestBase?.set(true)
@@ -251,6 +261,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         setMenuItem(true)
         binding.bottomNavViewModel?.refreshMenu(this)
         binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-        binding.bottomNavViewModel?.logout()
+        if (isLogout) {
+            binding.bottomNavViewModel?.logout()
+        } else {
+            binding.bottomNavViewModel?.sigin()
+        }
     }
+
 }

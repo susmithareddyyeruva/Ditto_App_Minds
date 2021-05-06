@@ -1,7 +1,6 @@
 package com.ditto.splash.data
 
 import android.content.Context
-import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.splash.domain.DbRepository
@@ -80,9 +79,4 @@ class DbRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteUser(user: LoginUser): Single<Boolean> {
-        return dbUserDataDao.deleteUserData(user.toDomain())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
 }

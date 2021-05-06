@@ -19,4 +19,8 @@ class GetLoginDbUseCaseImpl @Inject constructor(
     override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
         return loginRepository.loginUserWithCredential(user)
     }
+
+    override fun deleteDbUser(user: String): Single<Boolean> {
+        return loginRepository.deleteDbUser(user)
+    }
 }
