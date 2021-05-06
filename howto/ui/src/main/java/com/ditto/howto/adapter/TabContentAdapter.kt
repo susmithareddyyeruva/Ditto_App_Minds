@@ -77,12 +77,12 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                         }
                     })
                 } else {
-                    bindingWS.imageStep.setOnClickListener {
+                    /*bindingWS.imageStep.setOnClickListener {
                         if (!Common.isShowingVideoPopup.get()) {
                             Common.isShowingVideoPopup.set(true)
                             showVideoPopup(mContext, tabdata[position].videopath1)
                         }
-                    }
+                    }*/
                 }
             }
         bindingWS.textContent.text = HtmlCompat.fromHtml(

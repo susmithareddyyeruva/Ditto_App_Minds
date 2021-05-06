@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.ditto.howto.adapter.TabsPagerAdapter
@@ -105,7 +106,19 @@ class HowtoFragment : BaseFragment() {
                 }
                 Unit
             }
+            is HowtoViewModel.Event.OnItemClick -> {
 
+                if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 3)) {
+
+                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to "How to","from" to "tutorial")
+
+                    findNavController().navigate(
+                        com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
+                        bundle
+                    )
+
+                } else {}
+            }
             else -> {
                 Log.d("button event","Button clicked except onSkip")
             }
