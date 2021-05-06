@@ -45,12 +45,6 @@ abstract class UserDao {
         return insertUserData(user)
     }
 
-    @Transaction
-    open fun deleteUserTable(user: User): Boolean {
-        deleteUserData(user.id)
-        return true
-    }
-
     @Query("DELETE FROM user_data WHERE id= :id")
     abstract fun deleteUserData(id: Int)
 
@@ -69,9 +63,18 @@ abstract class UserDao {
         }
     }
 
-    fun deleteUserData(user: User): Single<Boolean> {
+    fun deleteUserDataInfo(email: String): Single<Boolean> {
         return Single.create {
-            it.onSuccess(deleteUserTable(user))
+            it.onSuccess(deleteUserInfo(email))
         }
     }
+
+    @Transaction
+    open fun deleteUserInfo(user: String): Boolean {
+        deleteUser(user)
+        return true
+    }
+
+    @Query("DELETE FROM user_data WHERE userName= :user")
+    abstract fun deleteUser(user: String)
 }

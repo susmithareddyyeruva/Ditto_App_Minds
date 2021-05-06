@@ -52,21 +52,6 @@ class SplashViewModel @Inject constructor(
         updateDb()
     }
 
-    private fun deleteUserTable(result: Result<LoginUser>) {
-        when (result) {
-            is Result.OnSuccess<LoginUser> -> {
-                disposable += getDbUseCase.deleteDbUser(result.data)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy {
-
-                        Log.d("DB","====USER DELETED===")
-
-                    }
-            }
-        }
-    }
-
     private fun updateDb() {
         disposable += updateDbUseCase.invoke()
             .subscribeOn(Schedulers.io())
@@ -92,25 +77,25 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<LoginUser>) {
-            when (result) {
-                is Result.OnSuccess<LoginUser> -> {
-                    dbLoadError.set(false)
-                    Log.d(TraceDataDatabase.TAG, "- Success- ViewModel")
-                    if (result.data.userName?.isEmpty()!!) {
-                        uiEvents.post(Event.NavigateToLogin)
-                    } else if (result.data.userName?.isNotEmpty()!! &&
-                        result.data.dndOnboarding!!
-                    ) {
-                        uiEvents.post(Event.NavigateToDashboard)
-                    } else if (result.data.userName?.isNotEmpty()!! &&
-                        !result.data.dndOnboarding!!
-                    ) {
-                        uiEvents.post(Event.NavigateToOnBoarding)
+        when (result) {
+            is Result.OnSuccess<LoginUser> -> {
+                dbLoadError.set(false)
+                Log.d(TraceDataDatabase.TAG, "- Success- ViewModel")
+                if (result.data.userName?.isEmpty()!!) {
+                    uiEvents.post(Event.NavigateToLogin)
+                } else if (result.data.userName?.isNotEmpty()!! &&
+                    result.data.dndOnboarding!!
+                ) {
+                    uiEvents.post(Event.NavigateToDashboard)
+                } else if (result.data.userName?.isNotEmpty()!! &&
+                    !result.data.dndOnboarding!!
+                ) {
+                    uiEvents.post(Event.NavigateToOnBoarding)
 
-                    }
                 }
-                is Result.OnError<LoginUser> -> handleError(result.error)
             }
+            is Result.OnError<LoginUser> -> handleError(result.error)
+        }
 
     }
 
