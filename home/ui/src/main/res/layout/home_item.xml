@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.home.ui.HomeViewModel" />
+
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/medium_padding"
+        app:cardBackgroundColor="@android:color/holo_red_dark"
+        app:cardCornerRadius="@dimen/large_padding">
+
+        <!--        android:onClick="@{() -> viewModel.onItemClick(viewModel.id)}"-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:contentDescription="@string/home_image"
+                android:scaleType="centerCrop"
+                android:tag="image_tag"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="300:212"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_pattern_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_text"
+                android:gravity="center_horizontal"
+                android:text="@string/pattern_library"
+                android:fontFamily="@font/avenir_next_it_pro_bold"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_pattern_header"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".65" />
+            <!--            android:text="@{viewModel.title}"-->
+
+            <!--            android:text="@{viewModel.description}"-->
+            <TextView
+                android:id="@+id/text_pattern_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_text"
+                android:layout_marginEnd="@dimen/margin_text"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:text="@string/all_your_patterns_in_one_place"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_pattern_desc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_pattern_header" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/image_view_desc"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/home_image"
+                app:cardElevation="@dimen/large_elevation"
+                android:background="@drawable/ic_home_desc_bg"
+                android:tag="image_tag"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".80"
+                app:layout_constraintWidth_percent=".80"
+                app:layout_constraintHeight_percent=".35"/>
+
+            <TextView
+                android:id="@+id/text_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/text_over_large_elevation"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:paddingStart="@dimen/small_padding"
+                android:paddingEnd="@dimen/small_padding"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:textSize="@dimen/text_menu"
+                app:layout_constraintBottom_toTopOf="@+id/text_desc"
+                app:layout_constraintEnd_toEndOf="@+id/image_view_desc"
+                app:layout_constraintStart_toStartOf="@+id/image_view_desc"
+                app:layout_constraintTop_toTopOf="@+id/image_view_desc"
+                app:layout_constraintVertical_bias=".35"
+                app:layout_constraintVertical_chainStyle="packed" />
+            <!--            android:text="@{viewModel.title}"-->
+
+            <!--            android:text="@{viewModel.description}"-->
+            <TextView
+                android:id="@+id/text_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_text"
+                android:layout_marginEnd="@dimen/margin_text"
+                android:elevation="@dimen/text_over_large_elevation"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/small_padding"
+                android:paddingEnd="@dimen/small_padding"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:textColor="@color/home_tile_blue"
+                android:textSize="@dimen/text_menu"
+                app:layout_constraintBottom_toBottomOf="@+id/image_view_desc"
+                app:layout_constraintEnd_toEndOf="@+id/image_view_desc"
+                app:layout_constraintStart_toStartOf="@+id/image_view_desc"
+                app:layout_constraintTop_toBottomOf="@+id/text_header" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_pattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="text_pattern_header,text_pattern_desc" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_non_pattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:constraint_referenced_ids="text_header,text_desc,image_view_desc" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
