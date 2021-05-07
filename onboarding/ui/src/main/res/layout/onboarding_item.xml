@@ -17,7 +17,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/onboarding_card"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_card"
         android:layout_marginTop="@dimen/margin_onboardcard_top"
@@ -25,7 +25,7 @@
         app:contentPaddingBottom="@dimen/margin_text"
         android:elevation="@dimen/elevation_card"
         android:onClick="@{() -> viewModel.onItemClick(onboardingValue.id)}"
-        app:cardBackgroundColor="@color/cardColor">
+        app:cardBackgroundColor="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,6 +36,7 @@
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:tag="image_tag"
+                android:layout_margin="6dp"
                 app:layout_constraintDimensionRatio="294:220"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +50,7 @@
                 android:text="@{onboardingValue.title}"
                 android:textAppearance="@style/text_desc"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -59,9 +61,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_text"
                 android:layout_marginEnd="@dimen/margin_text"
+                android:gravity="center"
                 android:maxLines="2"
-                android:textAppearance="@style/text_desc"
                 android:text="@{onboardingValue.description}"
+                android:textAppearance="@style/text_desc"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_header" />
@@ -71,18 +75,35 @@
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginEnd="@dimen/margin_text"
-                android:background="@drawable/black_count_bg"
+                android:background="@drawable/meroon_count_bg"
                 android:textAppearance="@style/text_count"
                 android:gravity="center"
+                android:padding="8dp"
+                android:textSize="@dimen/circle_value_dimen"
                 android:text="@{Integer.toString(onboardingValue.id)}"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintVertical_bias="0.69"
+                app:layout_constraintVertical_bias="0.74"
                 app:layout_constraintWidth_default="percent"
                 app:layout_constraintWidth_percent="0.23" />
-
+            <TextView
+                android:id="@+id/theme_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_group_103036"
+                android:drawablePadding="8dp"
+                android:gravity="start"
+                android:padding="6dp"
+                android:textSize="@dimen/size_18sp"
+                android:text="@{onboardingValue.title}"
+                android:fontFamily="@font/avenir_next_it_pro_bold"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.166" />
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
