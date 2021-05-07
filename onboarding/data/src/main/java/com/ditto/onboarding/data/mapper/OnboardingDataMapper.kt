@@ -39,16 +39,16 @@ fun Onboarding.toDomain(): OnboardingDomain {
         id = this.id,
         imagePath = this.imagePath,
         title = this.title,
-        instructions = this.instructions.map { it.toDomain() })
+        instructions = this.instructions?.map { it.toDomain() })
 }
 
-fun Instruction.toDomain(): InstructionDomain {
+fun Instruction.toDomain(): InstructionDomain{
     return InstructionDomain(description = this.description,
         id = this.id,
         imagePath = this.imagePath,
         videoPath = this.videoPath,
         title = this.title,
-        instructions = this.instructions.map { it.toDomain() })
+        instructions = this.instructions?.map { it.toDomain() })
 }
 
 fun InstructionX.toDomain(): InstructionXDomain {
