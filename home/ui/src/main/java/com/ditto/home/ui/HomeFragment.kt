@@ -9,10 +9,11 @@ import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.example.home_ui.databinding.HomeFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
+import com.example.home_ui.databinding.HomeFragmentBinding
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -52,7 +53,13 @@ class HomeFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(true)
         bottomNavViewModel.refreshMenu(context)
-        (activity as BottomNavigationActivity)?.setMenuItem(bottomNavViewModel.isGuestBase.get())
+        if (AppState.getIsLogged()) {
+            (activity as BottomNavigationActivity)?.setMenuItem(false)
+            bottomNavViewModel.isGuestBase.set(false)
+        } else {
+            (activity as BottomNavigationActivity)?.setMenuItem(true)
+            bottomNavViewModel.isGuestBase.set(true)
+        }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         homeViewModel.disposable += homeViewModel.events
@@ -80,10 +87,13 @@ class HomeFragment : BaseFragment() {
             }
             is HomeViewModel.Event.OnClickResumeRecent -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                    if(context?.let { Utility.getSharedPref(it) }!=0){
-                        val bundle = bundleOf("clickedID" to context?.let { Utility.getSharedPref(it) },"isFrom" to "RESUME_RECENT")
-                        findNavController().navigate(R.id.action_home_to_pattern_details,bundle)
-                    }else{
+                    if (context?.let { Utility.getSharedPref(it) } != 0) {
+                        val bundle = bundleOf(
+                            "clickedID" to context?.let { Utility.getSharedPref(it) },
+                            "isFrom" to "RESUME_RECENT"
+                        )
+                        findNavController().navigate(R.id.action_home_to_pattern_details, bundle)
+                    } else {
                         logger.d("OnClickResumeRecent - No Recent Resume Items")
                     }
                 } else {

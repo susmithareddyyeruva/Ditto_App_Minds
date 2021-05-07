@@ -16,7 +16,6 @@
         android:name="com.ditto.tutorial.ui.TutorialFragment"
         android:label=""
         tools:layout="@layout/fragment_tutorial">
-
         <action
             android:id="@+id/action_destination_tutorial_to_beamsetupFragment"
             app:destination="@id/instruction_navigation"
