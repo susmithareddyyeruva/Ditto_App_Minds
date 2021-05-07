@@ -15,6 +15,7 @@ import com.ditto.login.data.di.LoginDbModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.mylibrary.data.di.MyLibraryDataModule
 import com.ditto.mylibrary.ui.di.MyLibraryFragmentModule
+import com.ditto.onboarding.data.di.OnboardingApiModule
 import com.ditto.onboarding.data.di.OnboardingDataModule
 import com.ditto.onboarding.ui.di.OnBoardingFragmentModule
 import com.ditto.splash.data.di.SplashDbModule
@@ -41,7 +42,7 @@ import javax.inject.Singleton
         LoginFragmentModule::class, InstructionFragmentModule::class, InstructionModule::class, HomeFragmentModule::class,
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
         WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,LoginApiModule::class,
-        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class]
+        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class]
 )
 @Singleton
 interface AppComponent : AndroidInjector<DittoApplication> {
