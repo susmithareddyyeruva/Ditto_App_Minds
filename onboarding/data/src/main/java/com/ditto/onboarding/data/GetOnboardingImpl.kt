@@ -1,11 +1,11 @@
 package com.ditto.onboarding.data
 
 import com.ditto.login.domain.LoginUser
-import io.reactivex.Single
-import non_core.lib.Result
 import com.ditto.onboarding.domain.GetOnboardingData
 import com.ditto.onboarding.domain.OnboardingRepository
 import com.ditto.onboarding.domain.model.OnboardingData
+import io.reactivex.Single
+import non_core.lib.Result
 import javax.inject.Inject
 
 
@@ -14,6 +14,10 @@ class GetOnboardingImpl @Inject constructor(
 ) : GetOnboardingData {
     override fun invoke(): Single<Result<List<OnboardingData>>> {
         return onboardingRepository.getOnboardingData()
+    }
+
+    override fun invokeOnboardingContent(): Single<Result<OnBoardingResult>> {
+        return onboardingRepository.getOnboardingContent()
     }
 
     override fun getUser(): Single<Result<LoginUser>> {

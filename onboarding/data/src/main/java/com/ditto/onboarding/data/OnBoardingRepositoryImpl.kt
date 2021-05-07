@@ -1,14 +1,26 @@
 package com.ditto.onboarding.data
 
+import android.content.Context
+import android.util.Log
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
+import com.ditto.login.data.api.LoginRepositoryImpl
+import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.LoginUser
-import io.reactivex.Single
-import non_core.lib.Result
-import com.ditto.storage.data.database.OnBoardingDao
-import com.ditto.storage.data.database.UserDao
+import com.ditto.onboarding.data.api.OnBoardingService
 import com.ditto.onboarding.data.mapper.toDomain
 import com.ditto.onboarding.domain.OnboardingRepository
+import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
+import com.ditto.storage.data.database.OnBoardingDao
+import com.ditto.storage.data.database.UserDao
+import core.CLIENT_ID
+import core.network.Utility
+import io.reactivex.Single
+import non_core.lib.Result
+import non_core.lib.error.NoNetworkError
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -16,8 +28,16 @@ import javax.inject.Inject
  */
 class OnBoardingRepositoryImpl @Inject constructor(
     private val dbDataDao: @JvmSuppressWildcards UserDao,
-    private val onboardingDao: @JvmSuppressWildcards OnBoardingDao
+    private val onboardingDao: @JvmSuppressWildcards OnBoardingDao,
+    private val onBoardingService: @JvmSuppressWildcards OnBoardingService,
+    private val loggerFactory: LoggerFactory
 ) : OnboardingRepository {
+    @Inject
+    lateinit var context: Context
+    val logger: Logger by lazy {
+        loggerFactory.create(LoginRepositoryImpl::class.java.simpleName)
+    }
+
     /**
      * fetches data from local store first. if not available locally, fetches from server
      */
@@ -27,6 +47,42 @@ class OnBoardingRepositoryImpl @Inject constructor(
             val data = onboardingDao.getOnboardingData()
             Result.withValue(data.toDomain())
         }
+    }
+
+    override fun getOnboardingContent(): Single<Result<OnBoardingResultDomain>> {
+        if (!Utility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return onBoardingService.getContentApi(
+            CLIENT_ID,
+        )
+            .doOnSuccess {
+                logger.d("*****Onboarding Success**")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                    val error = it as HttpException
+                    if (error != null) {
+                        logger.d("Error Onboarding")
+                    }
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = e.message.toString()
+
+
+                }
+
+
+                Result.withError(
+                    LoginFetchError(errorMessage, it)
+                )
+            }
     }
 
     /**
@@ -50,7 +106,12 @@ class OnBoardingRepositoryImpl @Inject constructor(
         isWifiLaterClicked: Boolean
     ): Single<Any> {
         return Single.fromCallable {
-            dbDataDao.updateDndOnboardingUser(id,dndOnboarding, isBleLaterClicked, isWifiLaterClicked)
+            dbDataDao.updateDndOnboardingUser(
+                id,
+                dndOnboarding,
+                isBleLaterClicked,
+                isWifiLaterClicked
+            )
         }
     }
 }
