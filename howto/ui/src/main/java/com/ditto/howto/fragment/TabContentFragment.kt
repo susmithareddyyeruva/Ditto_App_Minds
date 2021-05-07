@@ -145,6 +145,9 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
             HowtoViewModel.Event.OnSkipTutorial -> {
                 Log.d("event","OnSkipTutorial")
             }
+            HowtoViewModel.Event.OnSpinchAndZoom -> {
+                Log.d("event","OnSpinchAndZoom")
+            }
         }
 
     override fun onResume() {

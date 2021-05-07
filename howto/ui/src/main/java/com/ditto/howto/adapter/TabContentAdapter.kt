@@ -15,7 +15,6 @@ import androidx.viewpager.widget.PagerAdapter
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.ui.PopUpWindow
-import com.ditto.howto.utils.Common
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
@@ -72,17 +71,19 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                 if(pos==3) {
                     bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
                         override fun onDoubleClick(v: View) {
-                            Common.isShowingVideoPopup.set(true)
-                                showPinchZoomPopup(mContext, tabdata[position].imagePath1)
+                            //Common.isShowingVideoPopup.set(true)
+                            viewModel.onDoubleClick(tabdata[position].imagePath1)
+                            //showPinchZoomPopup(mContext, tabdata[position].imagePath1)
                         }
                     })
                 } else {
-                    /*bindingWS.imageStep.setOnClickListener {
-                        if (!Common.isShowingVideoPopup.get()) {
+                    bindingWS.imageStep.setOnClickListener {
+                        viewModel.onItemClick(tabdata[position].videopath1,"How To")
+                        /*if (!Common.isShowingVideoPopup.get()) {
                             Common.isShowingVideoPopup.set(true)
                             showVideoPopup(mContext, tabdata[position].videopath1)
-                        }
-                    }*/
+                        }*/
+                    }
                 }
             }
         bindingWS.textContent.text = HtmlCompat.fromHtml(
