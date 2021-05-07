@@ -6,5 +6,5 @@ data class InstructionDomain(
     val imagePath: String?,
     val title: String?,
     val videoPath: String?,
-    val instructions: List<InstructionXDomain>?,
+    val instructions: List<OnboardingDomain>?,
 )

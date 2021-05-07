@@ -11,7 +11,7 @@ data class Instruction(
     @SerializedName("imagePath")
     val imagePath: String?,
     @SerializedName("instructions")
-    val instructions: List<InstructionX>?,
+    val instructionsOnboarding: List<Onboarding>?,
     @SerializedName("title")
     val title: String?,
     @SerializedName("videoPath")

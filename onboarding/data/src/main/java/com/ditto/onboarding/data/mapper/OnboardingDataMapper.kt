@@ -2,6 +2,7 @@ package com.ditto.onboarding.data.mapper
 
 import com.ditto.onboarding.data.model.*
 import com.ditto.onboarding.domain.model.*
+import com.ditto.storage.data.model.Instructions
 import com.ditto.storage.data.model.OnBoarding
 
 internal fun List<OnBoarding>.toDomain(): List<OnboardingData> {
@@ -21,9 +22,10 @@ fun OnBoardingResult.toDomain(): OnBoardingResultDomain {
         _v = this.version,
         c_body = this.cBody.toDomain(),
         id = this.id,
-        name = this.name
+        name = this.name,
 
-    )
+
+        )
 }
 
 
@@ -42,16 +44,53 @@ fun Onboarding.toDomain(): OnboardingDomain {
         instructions = this.instructions?.map { it.toDomain() })
 }
 
-fun Instruction.toDomain(): InstructionDomain{
+fun List<Onboarding>.toStorage(): List<OnBoarding> {
+    return this.map {
+        OnBoarding(
+            id = it.id ?: 0,
+            title = it.title ?: "",
+            description = it.description ?: "",
+            imagepath = it.imagePath ?: "",
+            instructions = it.instructions?.toStorageModel()?: emptyList()
+        )
+    }
+}
+
+fun List<Instruction>.toStorageModel(): List<Instructions> {
+    return this.map {
+        Instructions(
+            id = it.id ?: 0,
+            title = it.title ?: "",
+            description = it.description ?: "",
+            imagePath = it.imagePath ?: "",
+            instructions = it.instructionsOnboarding?.toStorage()?: emptyList()
+        )
+    }
+
+}
+
+fun List<InstructionX>.toStorageClass(): List<OnBoarding> {
+    return this.map {
+        OnBoarding(
+            id = it.id ?: 0,
+            title = it.title ?: "",
+            description = it.description ?: "",
+            imagepath = it.imagePath ?: ""
+        )
+    }
+}
+
+fun Instruction.toDomain(): InstructionDomain {
     return InstructionDomain(description = this.description,
         id = this.id,
         imagePath = this.imagePath,
-        videoPath = this.videoPath,
         title = this.title,
-        instructions = this.instructions?.map { it.toDomain() })
+        videoPath = null,
+        instructions = this.instructionsOnboarding?.map { it.toDomain() })
 }
 
-fun InstructionX.toDomain(): InstructionXDomain {
+
+/*fun InstructionX.toDomain(): InstructionXDomain {
     return InstructionXDomain(
         description = this.description,
         id = this.id,
@@ -59,7 +98,7 @@ fun InstructionX.toDomain(): InstructionXDomain {
         imagePath = this.imagePath,
         title = this.title
     )
-}
+}*/
 
 
 

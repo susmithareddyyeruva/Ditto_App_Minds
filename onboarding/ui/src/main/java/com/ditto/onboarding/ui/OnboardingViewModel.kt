@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
 import com.ditto.onboarding.domain.model.OnBoardingResultDomain
+import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.onboarding.domain.model.OnboardingDomain
 import com.ditto.storage.domain.StorageManager
 import core.event.UiEvents
@@ -27,7 +28,8 @@ class OnboardingViewModel @Inject constructor(
     private val storageManager: StorageManager
 ) : BaseViewModel() {
 
-    var data: MutableLiveData<List<OnboardingDomain>> = MutableLiveData()
+    var data: MutableLiveData<List<OnboardingData>> = MutableLiveData()
+    var dataFromApi: MutableLiveData<List<OnboardingDomain>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
     val dontShowThisScreen: ObservableBoolean = ObservableBoolean(false)
     val isFromHome_Observable: ObservableBoolean = ObservableBoolean(false)
@@ -42,7 +44,8 @@ class OnboardingViewModel @Inject constructor(
     var userId: Int = 0
 
     init {
-        fetchOnBoardingData()
+        fromApi()
+        //fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -53,16 +56,19 @@ class OnboardingViewModel @Inject constructor(
 
     //fetch data from repo (via usecase)
     private fun fetchOnBoardingData() {
-/*        disposable += getOnboardingData.invoke()
-            .whileSubscribed { it }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResult(it) }*/
-        disposable += getOnboardingData.invokeOnboardingContent()
+        disposable += getOnboardingData.invoke()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+
+    }
+    fun fromApi(){
+        disposable += getOnboardingData.invokeOnboardingContent()//Api call for content api
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResultFrpmApi(it) }
     }
 
     private fun fetchDbUser() {
@@ -82,10 +88,22 @@ class OnboardingViewModel @Inject constructor(
             is Result.OnError -> handleError(result.error)
         }
     }*/
-    private fun handleFetchResult(result: Result<OnBoardingResultDomain>) {
+    private fun handleFetchResult(result: Result<List<OnboardingData>>) {
         when (result) {
             is Result.OnSuccess -> {
-                data.value = result.data.c_body.onboarding?: emptyList()
+                data.value = result.data
+                //storing data to Database
+                activeInternetConnection.set(true)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+    private fun handleFetchResultFrpmApi(result: Result<OnBoardingResultDomain>) {
+        when (result) {
+            is Result.OnSuccess -> {
+                dataFromApi.value = result.data.c_body.onboarding?: emptyList()
+                //storing data to Database
+                fetchOnBoardingData()
                 activeInternetConnection.set(true)
             }
             is Result.OnError -> handleError(result.error)

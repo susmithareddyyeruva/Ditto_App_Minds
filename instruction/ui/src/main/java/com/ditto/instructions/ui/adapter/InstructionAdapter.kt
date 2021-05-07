@@ -7,8 +7,6 @@ package com.ditto.instructions.ui.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +14,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto.adapter.DoubleClickListener
 import com.ditto.instructions.domain.model.InstructionsData
 import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.instructions.ui.databinding.InstructionAdapterBinding
@@ -53,7 +50,7 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
         binding.textContentHeader.text = instructiondata[position].title
         binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
         val res: Resources = parent.resources
-        if (!instructiondata.get(position).imagePath.equals("")) {
+     /*   if (!instructiondata.get(position).imagePath.equals("")) {
             val resID: Int? = res.getIdentifier(
                 instructiondata.get(position).imagePath,
                 "drawable",
@@ -67,7 +64,7 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
                     viewModel.onClickPlayVideo()
                 }
             })
-        }
+        }*/
         binding.textContent.setMovementMethod(ScrollingMovementMethod())
         parent.addView(binding.root)
         return binding.root

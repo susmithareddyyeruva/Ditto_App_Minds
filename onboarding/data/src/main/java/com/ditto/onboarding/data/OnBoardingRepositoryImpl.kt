@@ -5,11 +5,12 @@ import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
-import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.onboarding.data.api.OnBoardingService
+import com.ditto.onboarding.data.error.ContentApiFetchError
 import com.ditto.onboarding.data.mapper.toDomain
+import com.ditto.onboarding.data.mapper.toStorage
 import com.ditto.onboarding.domain.OnboardingRepository
 import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
@@ -58,9 +59,27 @@ class OnBoardingRepositoryImpl @Inject constructor(
         )
             .doOnSuccess {
                 logger.d("*****Onboarding Success**")
+                val data= it.cBody.onboarding.toStorage()
+                onboardingDao.insertAllOnboardingData(data)
+
+            /*    try {
+                    val data= it.cBody.onboarding.toStorage()
+                    onboardingDao.insertAllOnboardingData(data)
+                    val collectionType = object : TypeToken<Collection<OnBoarding>>() {}.type
+                    val lcs = Gson().fromJson(it.toString(), collectionType) as List<OnBoarding>
+                    Executors.newSingleThreadExecutor()
+                        .execute(Runnable { onboardingDao.insertAllOnboardingData(lcs) })
+                    logger.d("insertOnboardingData complete")
+                } catch (e: JSONException) {
+                    logger.d("insertOnboardingData  exception")
+                }*/
+
+                /*  val data= it.cBody.onboarding.toStorage()
+                  onboardingDao.insertAllOnboardingData(data)*/
             }
             .map {
                 Result.withValue(it.toDomain())
+
 
             }
             .onErrorReturn {
@@ -80,7 +99,7 @@ class OnBoardingRepositoryImpl @Inject constructor(
 
 
                 Result.withError(
-                    LoginFetchError(errorMessage, it)
+                    ContentApiFetchError(errorMessage, it)
                 )
             }
     }

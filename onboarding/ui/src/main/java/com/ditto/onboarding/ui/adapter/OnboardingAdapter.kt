@@ -3,7 +3,7 @@ package com.ditto.onboarding.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ditto.onboarding.domain.model.OnboardingDomain
+import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.onboarding.ui.OnboardingViewModel
 import com.ditto.onboarding.ui.R
 import com.ditto.onboarding.ui.databinding.OnboardingItemBinding
@@ -14,14 +14,14 @@ import core.binding.BindableAdapter
  * Adapter class to map List<OnboardingData> with RecyclerView
  */
 class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolder>(),
-    BindableAdapter<List<OnboardingDomain>> {
+    BindableAdapter<List<OnboardingData>> {
 
     private val images = intArrayOf(R.drawable.onboard_beam,R.drawable.onboard_calib,R.drawable.onboard_howto)
 
     lateinit var viewModel: OnboardingViewModel
-    private var onBoarding: List<OnboardingDomain> = emptyList()
+    private var onBoarding: List<OnboardingData> = emptyList()
 
-    override fun setListData(items: List<OnboardingDomain>) {
+    override fun setListData(items: List<OnboardingData>) {
         onBoarding = items
         notifyDataSetChanged()
     }

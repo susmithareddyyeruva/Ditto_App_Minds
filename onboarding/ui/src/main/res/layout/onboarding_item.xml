@@ -10,7 +10,7 @@
 
         <variable
             name="onboardingValue"
-            type="com.ditto.onboarding.domain.model.OnboardingDomain" />
+            type="com.ditto.onboarding.domain.model.OnboardingData" />
 
     </data>
 

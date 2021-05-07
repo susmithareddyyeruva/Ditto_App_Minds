@@ -77,4 +77,6 @@ dependencies {
     implementation project(path: ':login-data')
     implementation project(':logger')
 
+    implementation project(path: ':instructions-domain')
+
 }

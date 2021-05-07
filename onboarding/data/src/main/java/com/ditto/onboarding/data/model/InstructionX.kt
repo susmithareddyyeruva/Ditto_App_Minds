@@ -14,4 +14,5 @@ data class InstructionX(
     val title: String?,
     @SerializedName("videoPath")
     val videoPath: String?
+
 )

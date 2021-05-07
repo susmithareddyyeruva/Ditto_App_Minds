@@ -125,6 +125,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 handleEvent(it)
+
             }
     }
 
