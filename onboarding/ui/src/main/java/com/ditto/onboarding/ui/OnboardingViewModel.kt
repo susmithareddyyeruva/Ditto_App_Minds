@@ -7,7 +7,8 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
-import com.ditto.onboarding.domain.model.OnboardingData
+import com.ditto.onboarding.domain.model.OnBoardingResultDomain
+import com.ditto.onboarding.domain.model.OnboardingDomain
 import com.ditto.storage.domain.StorageManager
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -26,7 +27,7 @@ class OnboardingViewModel @Inject constructor(
     private val storageManager: StorageManager
 ) : BaseViewModel() {
 
-    var data: MutableLiveData<List<OnboardingData>> = MutableLiveData()
+    var data: MutableLiveData<List<OnboardingDomain>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
     val dontShowThisScreen: ObservableBoolean = ObservableBoolean(false)
     val isFromHome_Observable: ObservableBoolean = ObservableBoolean(false)
@@ -52,7 +53,12 @@ class OnboardingViewModel @Inject constructor(
 
     //fetch data from repo (via usecase)
     private fun fetchOnBoardingData() {
-        disposable += getOnboardingData.invoke()
+/*        disposable += getOnboardingData.invoke()
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }*/
+        disposable += getOnboardingData.invokeOnboardingContent()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -67,7 +73,7 @@ class OnboardingViewModel @Inject constructor(
             .subscribeBy { handleUserResult(it) }
     }
 
-    private fun handleFetchResult(result: Result<List<OnboardingData>>) {
+ /*   private fun handleFetchResult(result: Result<List<OnboardingData>>) {
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
@@ -75,8 +81,16 @@ class OnboardingViewModel @Inject constructor(
             }
             is Result.OnError -> handleError(result.error)
         }
+    }*/
+    private fun handleFetchResult(result: Result<OnBoardingResultDomain>) {
+        when (result) {
+            is Result.OnSuccess -> {
+                data.value = result.data.c_body.onboarding?: emptyList()
+                activeInternetConnection.set(true)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
     }
-
     private fun handleUserResult(result: Result<LoginUser>) {
         when (result) {
             is Result.OnSuccess<LoginUser> -> {
