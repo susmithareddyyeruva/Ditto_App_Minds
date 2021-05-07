@@ -9,6 +9,7 @@ import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.ditto.home.ui.adapter.HomeAdapter
 import com.example.home_ui.databinding.HomeFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -19,6 +20,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
 
 
@@ -55,6 +57,7 @@ class HomeFragment : BaseFragment() {
         (activity as BottomNavigationActivity)?.setMenuItem(bottomNavViewModel.isGuestBase.get())
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        setHomeAdapter()
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -91,5 +94,11 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
+
+    private fun setHomeAdapter() {
+        val adapter = HomeAdapter()
+        recycler_view.adapter = adapter
+        adapter.viewModel = homeViewModel
+    }
 
 }

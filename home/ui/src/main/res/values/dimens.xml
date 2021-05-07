@@ -7,6 +7,14 @@
     <dimen name="card_width">174dp</dimen>
     <dimen name="card_text_margin">8dp</dimen>
 
+
+    <dimen name="text_pattern_header">16sp</dimen>
+    <dimen name="text_pattern_desc">10sp</dimen>
+
+    <dimen name="large_elevation">15dp</dimen>
+    <dimen name="text_over_large_elevation">16dp</dimen>
+
+
     <dimen name="size_14sp">14sp</dimen>
     <dimen name="size_18sp">18sp</dimen>
     <dimen name="size_20sp">20sp</dimen>
