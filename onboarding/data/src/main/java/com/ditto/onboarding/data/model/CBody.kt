@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CBody(
     @SerializedName("onboarding")
-    var onboarding: List<Onboarding>
+    var onboarding: List<Onboarding> = emptyList()
 )

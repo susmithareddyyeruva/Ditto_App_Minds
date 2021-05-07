@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Onboarding(
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("imagePath")
-    val imagePath: String,
+    val imagePath: String?,
     @SerializedName("instructions")
-    val instructions: List<Instruction>,
+    val instructions: List<Instruction>?,
     @SerializedName("title")
-    val title: String
+    val title: String?
 )

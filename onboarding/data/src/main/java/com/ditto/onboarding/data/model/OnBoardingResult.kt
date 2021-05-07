@@ -7,11 +7,11 @@ data class OnBoardingResult(
     @SerializedName("c_body")
     val cBody: CBody,
     @SerializedName("id")
-    val id: String,
+    val id: String?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("_type")
-    val type: String,
+    val type: String?,
     @SerializedName("_v")
-    val version: String
+    val version: String?
 )
