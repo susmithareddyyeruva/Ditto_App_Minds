@@ -63,6 +63,14 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             null
         )
         childModelsList.add(childModel)
+
+        childModel = MenuModel(
+            "Workspace Pro Settings",
+            "ic_menu_settings",
+            null
+        )
+        childModelsList.add(childModel)
+
         childModel = MenuModel(
             "Privacy and settings",
             "ic_menu_privacy",
