@@ -3,6 +3,7 @@ package com.ditto.onboarding.data
 import com.ditto.login.domain.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
 import com.ditto.onboarding.domain.OnboardingRepository
+import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
 import io.reactivex.Single
 import non_core.lib.Result
@@ -16,7 +17,7 @@ class GetOnboardingImpl @Inject constructor(
         return onboardingRepository.getOnboardingData()
     }
 
-    override fun invokeOnboardingContent(): Single<Result<OnBoardingResult>> {
+    override fun invokeOnboardingContent(): Single<Result<OnBoardingResultDomain>> {
         return onboardingRepository.getOnboardingContent()
     }
 
