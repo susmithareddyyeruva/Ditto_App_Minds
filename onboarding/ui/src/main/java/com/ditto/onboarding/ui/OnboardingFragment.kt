@@ -121,6 +121,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     private fun setUIEvents() {
+        bottomNavViewModel.showProgress.set(true)
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -179,6 +180,8 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 Unit
 
             }
+            OnboardingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+
 
         }
 

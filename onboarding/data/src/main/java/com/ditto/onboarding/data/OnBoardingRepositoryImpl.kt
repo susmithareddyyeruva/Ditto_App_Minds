@@ -59,23 +59,8 @@ class OnBoardingRepositoryImpl @Inject constructor(
         )
             .doOnSuccess {
                 logger.d("*****Onboarding Success**")
-                val data= it.cBody.onboarding.toStorage()
-                onboardingDao.insertAllOnboardingData(data)
-
-            /*    try {
-                    val data= it.cBody.onboarding.toStorage()
-                    onboardingDao.insertAllOnboardingData(data)
-                    val collectionType = object : TypeToken<Collection<OnBoarding>>() {}.type
-                    val lcs = Gson().fromJson(it.toString(), collectionType) as List<OnBoarding>
-                    Executors.newSingleThreadExecutor()
-                        .execute(Runnable { onboardingDao.insertAllOnboardingData(lcs) })
-                    logger.d("insertOnboardingData complete")
-                } catch (e: JSONException) {
-                    logger.d("insertOnboardingData  exception")
-                }*/
-
-                /*  val data= it.cBody.onboarding.toStorage()
-                  onboardingDao.insertAllOnboardingData(data)*/
+                val data = it.cBody.onboarding.toStorage()
+                onboardingDao.insertAllOnboardingData(data)// Storring onboarding content  to Database
             }
             .map {
                 Result.withValue(it.toDomain())

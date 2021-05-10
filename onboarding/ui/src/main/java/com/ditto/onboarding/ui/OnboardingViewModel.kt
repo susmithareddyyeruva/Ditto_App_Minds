@@ -1,5 +1,6 @@
 package com.ditto.onboarding.ui
 
+import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -25,7 +26,8 @@ import javax.inject.Inject
 
 class OnboardingViewModel @Inject constructor(
     private val getOnboardingData: GetOnboardingData,
-    private val storageManager: StorageManager
+    private val storageManager: StorageManager,
+    private val context: Context
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<OnboardingData>> = MutableLiveData()
@@ -44,8 +46,12 @@ class OnboardingViewModel @Inject constructor(
     var userId: Int = 0
 
     init {
-        fromApi()
-        //fetchOnBoardingData()
+        if (core.network.Utility.isNetworkAvailable(context)) {
+            fetchOnBoardingDataFromApi()
+
+        } else {
+            fetchOnBoardingData()
+        }
         fetchDbUser()
     }
 
@@ -63,12 +69,13 @@ class OnboardingViewModel @Inject constructor(
             .subscribeBy { handleFetchResult(it) }
 
     }
-    fun fromApi(){
+
+    fun fetchOnBoardingDataFromApi() {
         disposable += getOnboardingData.invokeOnboardingContent()//Api call for content api
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultFrpmApi(it) }
+            .subscribeBy { handleFetchResultFromApi(it) }
     }
 
     private fun fetchDbUser() {
@@ -79,15 +86,6 @@ class OnboardingViewModel @Inject constructor(
             .subscribeBy { handleUserResult(it) }
     }
 
- /*   private fun handleFetchResult(result: Result<List<OnboardingData>>) {
-        when (result) {
-            is Result.OnSuccess -> {
-                data.value = result.data
-                activeInternetConnection.set(true)
-            }
-            is Result.OnError -> handleError(result.error)
-        }
-    }*/
     private fun handleFetchResult(result: Result<List<OnboardingData>>) {
         when (result) {
             is Result.OnSuccess -> {
@@ -98,10 +96,12 @@ class OnboardingViewModel @Inject constructor(
             is Result.OnError -> handleError(result.error)
         }
     }
-    private fun handleFetchResultFrpmApi(result: Result<OnBoardingResultDomain>) {
+
+    private fun handleFetchResultFromApi(result: Result<OnBoardingResultDomain>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                dataFromApi.value = result.data.c_body.onboarding?: emptyList()
+                dataFromApi.value = result.data.c_body.onboarding ?: emptyList()
                 //storing data to Database
                 fetchOnBoardingData()
                 activeInternetConnection.set(true)
@@ -109,13 +109,14 @@ class OnboardingViewModel @Inject constructor(
             is Result.OnError -> handleError(result.error)
         }
     }
+
     private fun handleUserResult(result: Result<LoginUser>) {
         when (result) {
             is Result.OnSuccess<LoginUser> -> {
                 isBleLaterClicked.set(result.data.bleDialogVisible ?: false)
                 isWifiLaterClicked.set(result.data.wifiDialogVisible ?: false)
                 uiEvents.post(Event.OnShowBleDialogue)
-                Log.d("SDFasdf",result.data.wifiDialogVisible.toString())
+                Log.d("SDFasdf", result.data.wifiDialogVisible.toString())
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -127,7 +128,7 @@ class OnboardingViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("OnboardingViewModel","handleError")
+                Log.d("OnboardingViewModel", "handleError")
             }
         }
     }
@@ -151,7 +152,7 @@ class OnboardingViewModel @Inject constructor(
         clickLater()
     }
 
-    private fun clickLater( ) {
+    private fun clickLater() {
         disposable += getOnboardingData.updateDontShowThisScreen(
             0,
             dontShowThisScreen.get(),
@@ -177,7 +178,7 @@ class OnboardingViewModel @Inject constructor(
         if (result) {
             uiEvents.post(Event.OnClickSkipAndContinue)
         } else {
-           // uiEvents.post(Event.OnItemClick)
+            // uiEvents.post(Event.OnItemClick)
         }
     }
 
@@ -196,6 +197,8 @@ class OnboardingViewModel @Inject constructor(
         object OnItemClick : Event()
 
         object OnShowBleDialogue : Event()
+
+        object OnHideProgress : Event()
 
     }
 }

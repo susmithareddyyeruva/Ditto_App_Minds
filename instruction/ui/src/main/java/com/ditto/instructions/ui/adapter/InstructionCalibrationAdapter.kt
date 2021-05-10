@@ -7,8 +7,6 @@ package com.ditto.instructions.ui.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto.adapter.DoubleClickListener
 import com.ditto.instructions.domain.model.InstructionModel
 import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.instructions.ui.databinding.InstructionCalibrationAdapterBinding
@@ -52,7 +49,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
         binding.textContentHeader.text = instructiondata[position].title
         binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
         val res: Resources = parent.resources
-        if (!instructiondata.get(position).imagePath.equals("")) {
+     /*   if (!instructiondata.get(position).imagePath.equals("")) {
             val resID: Int? = res.getIdentifier(
                 instructiondata.get(position).imagePath,
                 "drawable",
@@ -66,7 +63,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
                     viewModel.onClickPlayVideo()
                 }
             })
-        }
+        }*/
 
         val observer: ViewTreeObserver = binding.scrollViewContent.viewTreeObserver
         observer.addOnGlobalLayoutListener {

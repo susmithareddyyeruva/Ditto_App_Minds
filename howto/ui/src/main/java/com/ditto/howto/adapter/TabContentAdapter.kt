@@ -3,8 +3,6 @@ package com.ditto.howto.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import androidx.viewpager.widget.PagerAdapter
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.ui.PopUpWindow
-import com.ditto.howto.utils.Common
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
@@ -59,7 +56,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
             bindingWS.instructionvalues = tabdata.get(position)
             bindingWS.position = pos
             val res: Resources = parent.resources
-            if (!tabdata.get(position).imagePath1.equals("")) {
+      /*      if (!tabdata.get(position).imagePath1.equals("")) {
                 val resID: Int = res.getIdentifier(
                     tabdata.get(position).imagePath1,
                     "drawable",
@@ -84,7 +81,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                         }
                     }
                 }
-            }
+            }*/
         bindingWS.textContent.text = HtmlCompat.fromHtml(
             tabdata.get(position).description1,
             HtmlCompat.FROM_HTML_MODE_LEGACY
