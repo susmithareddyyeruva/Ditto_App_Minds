@@ -11,7 +11,7 @@ internal fun List<OnBoarding>.toDomain(): List<OnboardingData> {
             id = it.id,
             title = it.title,
             description = it.description,
-            image = it.instructions[0].imagePath
+            image = it.imagepath
         )
     }
 }
