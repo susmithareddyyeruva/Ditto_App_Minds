@@ -41,6 +41,7 @@ class OnboardingViewModel @Inject constructor(
     val isWifiOn: ObservableBoolean = ObservableBoolean(false)
     val onBoardingTitle: ObservableField<String> = ObservableField("")
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
+    var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var userId: Int = 0
@@ -91,7 +92,9 @@ class OnboardingViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
-                //storing data to Database
+             if (data.value.isNullOrEmpty()){
+                 handleError(NoNetworkError())
+             }
                 activeInternetConnection.set(true)
             }
             is Result.OnError -> handleError(result.error)
@@ -127,8 +130,14 @@ class OnboardingViewModel @Inject constructor(
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
+            is NoNetworkError ->{
+                errorString.set(error.message)
+                activeInternetConnection.set(false)
+                uiEvents.post(Event.NoNetworkError)
+            }
             else -> {
+                errorString.set(error.message)
+                uiEvents.post(Event.DatFetchError)
                 Log.d("OnboardingViewModel", "handleError")
             }
         }
@@ -200,6 +209,10 @@ class OnboardingViewModel @Inject constructor(
         object OnShowBleDialogue : Event()
 
         object OnHideProgress : Event()
+
+        object NoNetworkError : Event()
+
+        object DatFetchError : Event()
 
     }
 }

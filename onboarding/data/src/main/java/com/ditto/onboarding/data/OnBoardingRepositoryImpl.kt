@@ -16,6 +16,7 @@ import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.UserDao
+import com.ditto.storage.data.model.OnBoarding
 import core.CLIENT_ID
 import core.network.Utility
 import io.reactivex.Single
@@ -46,11 +47,11 @@ class OnBoardingRepositoryImpl @Inject constructor(
         return Single.fromCallable {
             //fetch from local DB
             val data = onboardingDao.getOnboardingData()
-            if (data.isEmpty()){
-                Result.withValue(NoNetworkError())
-
+            if (data.isEmpty()) {
+                Result.withValue(OnBoarding())
             }
-            Result.withValue(data.toDomain())
+                Result.withValue(data.toDomain())
+
         }
     }
 

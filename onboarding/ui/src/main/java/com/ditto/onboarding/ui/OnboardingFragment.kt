@@ -181,9 +181,19 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
             }
             OnboardingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
-
-
+            OnboardingViewModel.Event.NoNetworkError -> {
+                showSnackBar()
+            }
+            OnboardingViewModel.Event.DatFetchError -> showSnackBar()
         }
+
+    private fun showSnackBar() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.showSnackBar(
+            errorMessage,
+            binding.container
+        )
+    }
 
     private fun navigateInstructionOrCaliberation(bundle: Bundle) {
         if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
