@@ -62,6 +62,13 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
+        if (core.network.Utility.isNetworkAvailable(requireContext())) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnBoardingDataFromApi()
+
+        } else {
+            viewModel.fetchOnBoardingData()
+        }
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
@@ -121,7 +128,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     private fun setUIEvents() {
-        bottomNavViewModel.showProgress.set(true)
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -180,11 +186,12 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 Unit
 
             }
-            OnboardingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
-            OnboardingViewModel.Event.NoNetworkError -> {
+            is OnboardingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            is OnboardingViewModel.Event.NoNetworkError -> {
                 showSnackBar()
             }
-            OnboardingViewModel.Event.DatFetchError -> showSnackBar()
+            is OnboardingViewModel.Event.DatFetchError -> showSnackBar()
+            is OnboardingViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
 
     private fun showSnackBar() {
