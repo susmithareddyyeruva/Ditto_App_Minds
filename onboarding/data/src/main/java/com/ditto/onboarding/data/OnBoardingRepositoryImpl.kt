@@ -46,6 +46,10 @@ class OnBoardingRepositoryImpl @Inject constructor(
         return Single.fromCallable {
             //fetch from local DB
             val data = onboardingDao.getOnboardingData()
+            if (data.isEmpty()){
+                Result.withValue(NoNetworkError())
+
+            }
             Result.withValue(data.toDomain())
         }
     }
