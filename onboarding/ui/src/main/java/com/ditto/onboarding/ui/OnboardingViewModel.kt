@@ -47,12 +47,6 @@ class OnboardingViewModel @Inject constructor(
     var userId: Int = 0
 
     init {
-        if (core.network.Utility.isNetworkAvailable(context)) {
-            fetchOnBoardingDataFromApi()
-
-        } else {
-            fetchOnBoardingData()
-        }
         fetchDbUser()
     }
 
@@ -62,7 +56,7 @@ class OnboardingViewModel @Inject constructor(
     }
 
     //fetch data from repo (via usecase)
-    private fun fetchOnBoardingData() {
+     fun fetchOnBoardingData() {
         disposable += getOnboardingData.invoke()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -213,6 +207,8 @@ class OnboardingViewModel @Inject constructor(
         object NoNetworkError : Event()
 
         object DatFetchError : Event()
+
+        object OnShowProgress : Event()
 
     }
 }
