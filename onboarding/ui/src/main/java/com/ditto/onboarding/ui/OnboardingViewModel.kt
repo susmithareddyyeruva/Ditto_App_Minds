@@ -87,6 +87,7 @@ class OnboardingViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<List<OnboardingData>>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
