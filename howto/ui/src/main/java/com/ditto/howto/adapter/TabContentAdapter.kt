@@ -10,9 +10,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.ui.PopUpWindow
+import com.ditto.howto.utils.Common
+import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
@@ -56,21 +59,21 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
             bindingWS.instructionvalues = tabdata.get(position)
             bindingWS.position = pos
             val res: Resources = parent.resources
-      /*      if (!tabdata.get(position).imagePath1.equals("")) {
+            if (!tabdata.get(position).imagePath1.equals("")) {
                 val resID: Int = res.getIdentifier(
                     tabdata.get(position).imagePath1,
                     "drawable",
                     parent.context.getPackageName()
                 )
-                val drawable: Drawable = res.getDrawable(resID)
-                val bitmap = (drawable as BitmapDrawable).bitmap
-                bindingWS.imageStep.setImageBitmap(bitmap)
-                bindingWS.imageStep.setImageDrawable(drawable)
+                Glide.with(parent.context)
+                    .load(tabdata.get(position).imagePath1)
+                    .placeholder(R.drawable.demo)
+                    .into(bindingWS.imageStep)
                 if(pos==3) {
                     bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
                         override fun onDoubleClick(v: View) {
                             Common.isShowingVideoPopup.set(true)
-                                showPinchZoomPopup(mContext, tabdata[position].imagePath1)
+                            showPinchZoomPopup(mContext, tabdata[position].imagePath1)
                         }
                     })
                 } else {
@@ -81,7 +84,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                         }
                     }
                 }
-            }*/
+            }
         bindingWS.textContent.text = HtmlCompat.fromHtml(
             tabdata.get(position).description1,
             HtmlCompat.FROM_HTML_MODE_LEGACY

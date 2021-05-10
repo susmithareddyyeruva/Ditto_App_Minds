@@ -14,6 +14,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
+import com.ditto.howto.adapter.DoubleClickListener
+import com.ditto.howto_ui.R
 import com.ditto.instructions.domain.model.InstructionsData
 import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.instructions.ui.databinding.InstructionAdapterBinding
@@ -50,21 +53,22 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
         binding.textContentHeader.text = instructiondata[position].title
         binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
         val res: Resources = parent.resources
-     /*   if (!instructiondata.get(position).imagePath.equals("")) {
+        if (!instructiondata.get(position).imagePath.equals("")) {
             val resID: Int? = res.getIdentifier(
                 instructiondata.get(position).imagePath,
                 "drawable",
                 parent.context.packageName
             )
-            val drawable: Drawable? = resID?.let { res.getDrawable(it) }
-            val bitmap = (drawable as BitmapDrawable).bitmap
-            binding.imageStep.setImageBitmap(bitmap)
+            Glide.with(parent.context)
+                .load(instructiondata[position].imagePath)
+                .placeholder(R.drawable.demo)
+                .into(binding.imageStep)
             binding.imageStep.setOnClickListener(object : DoubleClickListener() {
                 override fun onDoubleClick(v: View) {
                     viewModel.onClickPlayVideo()
                 }
             })
-        }*/
+        }
         binding.textContent.setMovementMethod(ScrollingMovementMethod())
         parent.addView(binding.root)
         return binding.root

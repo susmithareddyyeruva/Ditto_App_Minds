@@ -85,4 +85,5 @@ ext {
     play_services_location='18.0.0'
     carousel_view='0.1.4'
     lottieVersion = "3.4.0"
+    glideVersion = "4.12.0"
 }
