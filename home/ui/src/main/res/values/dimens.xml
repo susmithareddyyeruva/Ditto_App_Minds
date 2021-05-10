@@ -8,6 +8,9 @@
     <dimen name="card_text_margin">8dp</dimen>
 
 
+    <dimen name="text_header">24sp</dimen>
+    <dimen name="text_desc">16sp</dimen>
+
     <dimen name="text_pattern_header">16sp</dimen>
     <dimen name="text_pattern_desc">10sp</dimen>
 
@@ -20,4 +23,5 @@
     <dimen name="size_20sp">20sp</dimen>
     <dimen name="instruction_margin">15sp</dimen>
     <dimen name="instruction_button_margin">22sp</dimen>
+
 </resources>

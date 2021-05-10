@@ -90,4 +90,8 @@ dependencies {
     implementation project(path: ':nav-graph')
     implementation project(path: ':home-domain')
 
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
+
 }

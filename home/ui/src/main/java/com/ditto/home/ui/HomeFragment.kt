@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        bottomNavViewModel.visibility.set(true)
+        bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.setMenuItem(bottomNavViewModel.isGuestBase.get())
         toolbarViewModel.isShowActionBar.set(false)
@@ -67,7 +67,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleEvent(event: HomeViewModel.Event) =
         when (event) {
-            is HomeViewModel.Event.OnClickBuyPattern -> {
+            is HomeViewModel.Event.OnClickDitto -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     findNavController().navigate(R.id.action_home_to_buy_pattern)
                 } else {
@@ -81,16 +81,19 @@ class HomeFragment : BaseFragment() {
                     logger.d("OnClickJoann failed")
                 }
             }
-            is HomeViewModel.Event.OnClickResumeRecent -> {
+            is HomeViewModel.Event.OnClickMyPatterns -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                    if(context?.let { Utility.getSharedPref(it) }!=0){
                         val bundle = bundleOf("clickedID" to context?.let { Utility.getSharedPref(it) },"isFrom" to "RESUME_RECENT")
-                        findNavController().navigate(R.id.action_home_to_pattern_details,bundle)
-                    }else{
-                        logger.d("OnClickResumeRecent - No Recent Resume Items")
-                    }
+                        findNavController().navigate(R.id.action_home_to_my_library,bundle)
                 } else {
                     logger.d("OnClickResumeRecent failed")
+                }
+            }
+            HomeViewModel.Event.OnClickTutorial -> {
+                if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                    findNavController().navigate(R.id.action_home_to_tutorial)
+                } else {
+                    logger.d("OnClickJoann failed")
                 }
             }
         }
