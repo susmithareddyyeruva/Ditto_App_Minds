@@ -331,16 +331,13 @@ class InstructionFragment constructor(
      * [Function] Watch video click
      */
     private fun showVideoPopup() {
-
         val position = Common.currentSelectedTab.get()
-       // Toast.makeText(activity, "on click of how to play in fragment $position", Toast.LENGTH_SHORT).show()
-
-        val filePath = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
+        val filePath = if (viewModel.instructionID.get() == 1) {
             viewModel.data.value?.instructions?.get(position)?.instructions?.get(
                 instruction_view_pager.currentItem
             )?.videoPath
         } else {
-            viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.videoPath // calibration
+            viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.videoPath
         }
 
         val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
@@ -357,9 +354,6 @@ class InstructionFragment constructor(
         title: String?,
         from: String
     ) {
-
-        //Toast.makeText(context, "on click of how to play in fragment", Toast.LENGTH_SHORT).show()
-
         if (findNavController().currentDestination?.id == R.id.destination_instruction
         ) {
             var titlen= if(position==0){
