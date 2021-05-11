@@ -85,7 +85,7 @@ fun Instruction.toDomain(): InstructionDomain {
         id = this.id,
         imagePath = this.imagePath,
         title = this.title,
-        videoPath = null,
+        videoPath = this.videoPath,
         instructions = this.instructionsOnboarding?.map { it.toDomain() })
 }
 

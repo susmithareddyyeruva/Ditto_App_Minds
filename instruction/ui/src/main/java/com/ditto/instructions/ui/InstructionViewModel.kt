@@ -7,11 +7,11 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.instructions.domain.GetInstructionDataUsecase
+import com.ditto.instructions.domain.model.InstructionsData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.whileSubscribed
-import com.ditto.instructions.domain.GetInstructionDataUsecase
-import com.ditto.instructions.domain.model.InstructionsData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -56,6 +56,7 @@ class InstructionViewModel @Inject constructor(
      *[Function] Handling response after DB call
      */
     private fun handleFetchResult(result: Result<InstructionsData>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
@@ -173,6 +174,9 @@ class InstructionViewModel @Inject constructor(
          * Event emitted by [events] when skip tutorial clicked
          */
         object OnSkipTutorial : Event()
+
+        object OnHideProgress : Event()
+        object OnShowProgress : Event()
 
     }
 

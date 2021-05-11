@@ -114,6 +114,7 @@ class InstructionFragment constructor(
         viewModel.tabPosition.set(position)
         viewModel.isShowindicator.set(true)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -232,6 +233,10 @@ class InstructionFragment constructor(
             is InstructionViewModel.Event.OnSkipTutorial -> {
                 clickSkipTutorial()
             }
+            is InstructionViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(
+                false
+            )
+            is InstructionViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
 
     /**
