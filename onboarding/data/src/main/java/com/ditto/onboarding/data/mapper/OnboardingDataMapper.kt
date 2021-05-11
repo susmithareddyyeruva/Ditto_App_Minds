@@ -51,6 +51,7 @@ fun List<Onboarding>.toStorage(): List<OnBoarding> {
             title = it.title ?: "",
             description = it.description ?: "",
             imagepath = it.imagePath ?: "",
+            videoPath = it.videoPath ?: "",
             instructions = it.instructions?.toStorageModel()?: emptyList()
         )
     }
@@ -63,6 +64,7 @@ fun List<Instruction>.toStorageModel(): List<Instructions> {
             title = it.title ?: "",
             description = it.description ?: "",
             imagePath = it.imagePath ?: "",
+            videoPath = it.videoPath ?: "",
             instructions = it.instructionsOnboarding?.toStorage()?: emptyList()
         )
     }

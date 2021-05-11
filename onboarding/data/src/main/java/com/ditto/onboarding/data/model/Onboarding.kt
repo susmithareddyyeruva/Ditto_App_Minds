@@ -13,5 +13,7 @@ data class Onboarding(
     @SerializedName("instructions")
     val instructions: List<Instruction>?,
     @SerializedName("title")
-    val title: String?
+    val title: String?,
+    @SerializedName("videoPath")
+    var videoPath: String = ""
 )
