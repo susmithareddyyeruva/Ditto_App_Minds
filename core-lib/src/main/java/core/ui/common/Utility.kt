@@ -20,13 +20,16 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
+import core.appstate.AppState
 import core.lib.R
 import core.network.Utility
+import core.ui.TokenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
 import java.util.*
+import javax.inject.Inject
 import kotlin.jvm.Throws
 import kotlin.math.PI
 
@@ -34,7 +37,15 @@ import kotlin.math.PI
 /**
  * Helper Utility class
  */
-class Utility {
+class Utility @Inject constructor(
+    private val tokenViewModel: TokenViewModel
+) {
+
+
+    fun refreshToken(){
+        AppState.saveToken("",0)
+        tokenViewModel.calltoken()
+    }
 
     enum class AlertType {
         BLE,
@@ -52,6 +63,16 @@ class Utility {
     companion object {
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
+
+        fun isTokenExpired():Boolean{
+            if (AppState.getExpiryTime()?.equals(0)!!){
+                return true
+            } else {
+                val currentTime : Long = Calendar.getInstance().time.time
+                val expiryTime : Long? = AppState.getExpiryTime()
+                return currentTime > expiryTime!!
+            }
+        }
 
         fun getAlertDialogue(
             context: Context,
