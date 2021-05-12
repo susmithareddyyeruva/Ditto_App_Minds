@@ -53,6 +53,7 @@
     <item name="patternDescriptionFragmentFromHome" type="id" />
     <item name="action_loginFragment_to_VideoFragment" type="id" />
     <item name="action_fragments_to_customerCareFragment" type="id" />
+    <item name="action_destination_to_FQAfragment" type="id" />
     <item name="action_destination_howto_to_nav_graph_id_video" type="id" />
     <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
 </resources>

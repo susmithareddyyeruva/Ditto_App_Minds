@@ -232,7 +232,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-R.id.nav_graph_about, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates -> {
+
+R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates -> {
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
@@ -240,6 +242,11 @@ R.id.nav_graph_about, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_grap
               binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
                 navController.navigate(R.id.action_fragments_to_customerCareFragment)
+                true
+            }
+            R.id.nav_graph_faq -> {
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                navController.navigate(R.id.action_destination_to_FQAfragment)
                 true
             }
             R.id.nav_graph_logout -> {
