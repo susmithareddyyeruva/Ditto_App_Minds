@@ -81,6 +81,7 @@ dependencies {
     implementation project(path: ':non-core-lib')
     implementation project(path: ':howto-domain')
     implementation project(path: ':workspace-ui')
+    implementation project(path: ':videoplayer')
 
 /*    implementation project(path: ':instruction-ui')
     implementation project(path: ':instructions-domain')

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,11 +15,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/black"
-        android:paddingTop="@dimen/medium_padding"
-        android:paddingBottom="@dimen/medium_padding">
+        android:layout_height="match_parent"
+        android:background="@color/logout_red">
 
+        <View
+            android:id="@+id/header_background_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_header_barrier"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_name"
@@ -27,7 +35,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_it_pro_bold"
             android:paddingStart="@dimen/large_padding"
-            android:paddingTop="@dimen/medium_padding"
+            android:paddingTop="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
             android:paddingBottom="@dimen/medium_padding"
             android:singleLine="true"
@@ -44,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:paddingStart="@dimen/large_padding"
-            android:paddingTop="@dimen/medium_padding"
+            android:paddingTop="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
             android:paddingBottom="@dimen/medium_padding"
             android:src="@drawable/ic_quality"
@@ -124,5 +132,30 @@
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_email" />
+
+        <View
+            android:id="@+id/bottom_header_barrier"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_large_padding"
+            app:layout_constraintTop_toBottomOf="@+id/subscription_days" />
+
+        <core.ui.common.NoScrollExListView
+            android:id="@+id/expandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:childIndicator="@null"
+            android:dividerHeight="0dp"
+            android:headerDividersEnabled="true"
+            android:groupIndicator="@null"
+            android:childDivider="@null"
+            android:divider="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_background_view"
+            app:layout_constraintVertical_bias="0"
+            tools:listitem="@layout/nav_menu_list_child" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

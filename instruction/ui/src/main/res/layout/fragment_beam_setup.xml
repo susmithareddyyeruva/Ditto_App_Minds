@@ -61,7 +61,7 @@
                         android:gravity="center"
                         android:onClick="@{() -> viewModel.onSkip()}"
                         android:text="@string/skip"
-                        android:textColor="@color/skip_text"
+                        android:textColor="@color/app_grey"
                         android:textSize="@dimen/size_14sp"
                         android:visibility="@{viewModel.isFromOnboardinScreen()}" />
 

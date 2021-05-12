@@ -72,17 +72,13 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                     .into(bindingWS.imageStep)
                 if(pos==3) {
                     bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
-                        override fun onDoubleClick(v: View) {
-                            Common.isShowingVideoPopup.set(true)
-                            showPinchZoomPopup(mContext, tabdata[position].imagePath1)
+                        override fun onDoubleClick(v: View) { 
+                            viewModel.onDoubleClick(tabdata[position].imagePath1) 
                         }
                     })
                 } else {
                     bindingWS.imageStep.setOnClickListener {
-                        if (!Common.isShowingVideoPopup.get()) {
-                            Common.isShowingVideoPopup.set(true)
-                            showVideoPopup(mContext, tabdata[position].videopath1)
-                        }
+                        viewModel.onItemClick(tabdata[position].videopath1,"How To")
                     }
                 }
             }

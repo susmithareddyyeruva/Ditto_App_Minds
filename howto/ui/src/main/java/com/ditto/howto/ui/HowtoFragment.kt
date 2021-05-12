@@ -1,5 +1,6 @@
 package com.ditto.howto.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.ditto.howto.adapter.TabsPagerAdapter
@@ -16,6 +19,7 @@ import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.HowtoFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.workspace.ui.PinchAndZoom
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import core.ui.BaseFragment
@@ -108,11 +112,36 @@ class HowtoFragment : BaseFragment() {
             }
             is HowtoViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             is HowtoViewModel.Event.OnShowProgress ->bottomNavViewModel.showProgress.set(true)
+            is HowtoViewModel.Event.OnSpinchAndZoom -> {
+                showPinchZoomPopup(viewModel.imagePath)
+            }
+            is HowtoViewModel.Event.OnItemClick -> {
+
+                if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 3)) {
+
+                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to "How To","from" to "tutorial")
+
+                    findNavController().navigate(
+                        com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
+                        bundle
+                    )
+
+                } else {}
+            }
             else -> {
                 Log.d("button event","Button clicked except onSkip")
             }
         }
 
+    fun showPinchZoomPopup(imagePath: String?) {
+        val intent = Intent(context, PinchAndZoom::class.java)
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.putExtra("ImageURL", imagePath)
+        context?.let { ContextCompat.startActivity(it, intent, null) }
+    }
     /**
      * [Function] To show error popup
      */

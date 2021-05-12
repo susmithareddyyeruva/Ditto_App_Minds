@@ -95,6 +95,7 @@ dependencies {
     implementation project(path: ':howto-ui')
     implementation project(path: ':workspace-ui')
     implementation project(path: ':connectivity-ui')
+    implementation project(path: ':videoplayer')
     implementation project(path: ':FabricTraceTransform-debug')
 }
 

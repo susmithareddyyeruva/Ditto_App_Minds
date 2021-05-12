@@ -32,7 +32,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "2.03(2)"
+        versionName "2.04(509)"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,8 +42,8 @@ android {
     buildTypes {
         release {
             debuggable false
-            minifyEnabled true
-            shrinkResources true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
             buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
@@ -214,6 +214,9 @@ dependencies {
     implementation project(path: ':howto-domain')
     implementation project(path: ':videoplayer')
 
+    implementation project(path: ':menuitems-ui')
+    implementation project(path: ':menuitems-domain')
+    implementation project(path: ':menuitems-data')
 }
 //sonarqube {
 //    properties {
