@@ -25,7 +25,6 @@
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
-
     </fragment>
     <fragment
         android:id="@+id/allPatternsFragment"
