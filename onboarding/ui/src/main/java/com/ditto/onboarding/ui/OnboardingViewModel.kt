@@ -1,5 +1,6 @@
 package com.ditto.onboarding.ui
 
+import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -7,7 +8,9 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
+import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
+import com.ditto.onboarding.domain.model.OnboardingDomain
 import com.ditto.storage.domain.StorageManager
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -23,10 +26,12 @@ import javax.inject.Inject
 
 class OnboardingViewModel @Inject constructor(
     private val getOnboardingData: GetOnboardingData,
-    private val storageManager: StorageManager
+    private val storageManager: StorageManager,
+    private val context: Context
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<OnboardingData>> = MutableLiveData()
+    var dataFromApi: MutableLiveData<List<OnboardingDomain>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
     val dontShowThisScreen: ObservableBoolean = ObservableBoolean(false)
     val isFromHome_Observable: ObservableBoolean = ObservableBoolean(false)
@@ -36,12 +41,12 @@ class OnboardingViewModel @Inject constructor(
     val isWifiOn: ObservableBoolean = ObservableBoolean(false)
     val onBoardingTitle: ObservableField<String> = ObservableField("")
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
+    var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var userId: Int = 0
 
     init {
-        fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -51,12 +56,21 @@ class OnboardingViewModel @Inject constructor(
     }
 
     //fetch data from repo (via usecase)
-    private fun fetchOnBoardingData() {
+     fun fetchOnBoardingData() {
         disposable += getOnboardingData.invoke()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+
+    }
+
+    fun fetchOnBoardingDataFromApi() {
+        disposable += getOnboardingData.invokeOnboardingContent()//Api call for content api
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResultFromApi(it) }
     }
 
     private fun fetchDbUser() {
@@ -68,9 +82,26 @@ class OnboardingViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<List<OnboardingData>>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
+             if (data.value.isNullOrEmpty()){
+                 handleError(NoNetworkError())
+             }
+                activeInternetConnection.set(true)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+
+    private fun handleFetchResultFromApi(result: Result<OnBoardingResultDomain>) {
+        uiEvents.post(Event.OnHideProgress)
+        when (result) {
+            is Result.OnSuccess -> {
+                dataFromApi.value = result.data.c_body.onboarding ?: emptyList()
+                //storing data to Database
+                fetchOnBoardingData()
                 activeInternetConnection.set(true)
             }
             is Result.OnError -> handleError(result.error)
@@ -83,7 +114,7 @@ class OnboardingViewModel @Inject constructor(
                 isBleLaterClicked.set(result.data.bleDialogVisible ?: false)
                 isWifiLaterClicked.set(result.data.wifiDialogVisible ?: false)
                 uiEvents.post(Event.OnShowBleDialogue)
-                Log.d("SDFasdf",result.data.wifiDialogVisible.toString())
+                Log.d("SDFasdf", result.data.wifiDialogVisible.toString())
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -93,9 +124,15 @@ class OnboardingViewModel @Inject constructor(
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
+            is NoNetworkError ->{
+                errorString.set(error.message)
+                activeInternetConnection.set(false)
+                uiEvents.post(Event.NoNetworkError)
+            }
             else -> {
-                Log.d("OnboardingViewModel","handleError")
+                errorString.set(error.message)
+                uiEvents.post(Event.DatFetchError)
+                Log.d("OnboardingViewModel", "handleError")
             }
         }
     }
@@ -119,7 +156,7 @@ class OnboardingViewModel @Inject constructor(
         clickLater()
     }
 
-    private fun clickLater( ) {
+    private fun clickLater() {
         disposable += getOnboardingData.updateDontShowThisScreen(
             0,
             dontShowThisScreen.get(),
@@ -145,7 +182,7 @@ class OnboardingViewModel @Inject constructor(
         if (result) {
             uiEvents.post(Event.OnClickSkipAndContinue)
         } else {
-           // uiEvents.post(Event.OnItemClick)
+            // uiEvents.post(Event.OnItemClick)
         }
     }
 
@@ -164,6 +201,14 @@ class OnboardingViewModel @Inject constructor(
         object OnItemClick : Event()
 
         object OnShowBleDialogue : Event()
+
+        object OnHideProgress : Event()
+
+        object NoNetworkError : Event()
+
+        object DatFetchError : Event()
+
+        object OnShowProgress : Event()
 
     }
 }

@@ -83,4 +83,5 @@ ext {
     timber='4.7.1'
     play_services_location='18.0.0'
     lottieVersion = "3.4.0"
+    glideVersion = "4.12.0"
 }

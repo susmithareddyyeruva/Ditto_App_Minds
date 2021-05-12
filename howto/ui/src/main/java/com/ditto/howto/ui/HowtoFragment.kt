@@ -76,6 +76,7 @@ class HowtoFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         Common.currentSelectedTab.set(0)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +110,8 @@ class HowtoFragment : BaseFragment() {
                 }
                 Unit
             }
+            is HowtoViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            is HowtoViewModel.Event.OnShowProgress ->bottomNavViewModel.showProgress.set(true)
             is HowtoViewModel.Event.OnSpinchAndZoom -> {
                 showPinchZoomPopup(viewModel.imagePath)
             }

@@ -35,7 +35,7 @@ class DbRepositoryImpl @Inject constructor(
         return Single.fromCallable {
             val data = dbDataDao.getOnboardingData()
             if (data.isEmpty()) {
-                TraceDataDatabase.preLoadOnboardingData(context)
+              TraceDataDatabase.preLoadOnboardingData(context)
             }
         }.flatMap {
             updatePatternsData()

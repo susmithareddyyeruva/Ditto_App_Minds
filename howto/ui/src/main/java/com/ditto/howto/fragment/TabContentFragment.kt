@@ -139,6 +139,8 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
             is HowtoViewModel.Event.OnDataUpdated -> {
                 Log.d("event","OnDataUpdated")
             }
+            is HowtoViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            is HowtoViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
             is HowtoViewModel.Event.OnItemClick -> {
                 Log.d("event12", "OnVideoPlay")
             }
