@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +68,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                 )
                 Glide.with(parent.context)
                     .load(tabdata.get(position).imagePath1)
-                    .placeholder(R.drawable.demo)
+                    .placeholder(R.drawable.ic_placeholder)
                     .into(bindingWS.imageStep)
                 if(pos==3) {
                     bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {

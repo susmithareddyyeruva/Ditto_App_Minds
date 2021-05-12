@@ -60,7 +60,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
             )
             Glide.with(parent.context)
                 .load(instructiondata[position].imagePath)
-                .placeholder(R.drawable.demo)
+                .placeholder(R.drawable.ic_placeholder)
                 .into(binding.imageStep)
             binding.imageStep.setOnClickListener(object : DoubleClickListener() {
                 override fun onDoubleClick(v: View) {

@@ -40,7 +40,7 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
         holder.rowonboardingBinding.viewModel = viewModel
         Glide.with(holder.rowonboardingBinding.cardView.context)
             .load(onBoarding[position].image)
-            .placeholder(com.ditto.howto_ui.R.drawable.demo)
+            .placeholder(com.ditto.howto_ui.R.drawable.ic_placeholder)
             .into(holder.rowonboardingBinding.imageView)
     }
 

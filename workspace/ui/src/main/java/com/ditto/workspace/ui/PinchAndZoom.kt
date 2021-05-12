@@ -50,7 +50,7 @@ class PinchAndZoom : AppCompatActivity() {
 
                 Glide.with(this)
                     .load(imagepath)
-                    .placeholder(R.drawable.demo_fabric)
+                    .placeholder(R.drawable.ic_placeholder)
                     .into(myZoomageView)
             } catch (e: Exception) {
                 Log.d("Exception","image path")
