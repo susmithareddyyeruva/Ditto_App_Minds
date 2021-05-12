@@ -62,17 +62,18 @@ class SplashFragment : BaseFragment() {
             }
             is SplashViewModel.Event.NavigateToOnBoarding -> {
                 // navigate to onboarding
-                getUserDetails()
+                getUserDetails(false)
 //              findNavController().navigate(R.id.action_splashActivity_to_VideoFragment)
                 findNavController().navigate(R.id.action_splashActivity_to_Onboarding)
             }
             is SplashViewModel.Event.NavigateToDashboard -> {
-                getUserDetails()
+                getUserDetails(false)
                 findNavController().navigate(R.id.action_splashActivity_to_HomeFragment)
             }
         }
 
-    private fun getUserDetails() {
+    private fun getUserDetails(isGuest : Boolean) {
+        bottomNavViewModel.isGuestBase.set(isGuest)
         bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
         bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)

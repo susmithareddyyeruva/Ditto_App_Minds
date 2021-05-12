@@ -16,10 +16,6 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
-import core.USER_EMAIL
-import core.USER_FIRST_NAME
-import core.USER_LAST_NAME
-import core.USER_PHONE
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -67,6 +63,7 @@ class LoginFragment : BaseFragment() {
                 .subscribe {
                     handleEvent(it)   //Observing UI event
                 }
+
         }
 
         viewModel.fetchViewPagerData()
@@ -88,6 +85,11 @@ class LoginFragment : BaseFragment() {
             if (it != null) {
                 adapter.setListData(it)
             }
+        }
+        if (bottomNavViewModel.isLogoutEvent.get()){
+            Log.d("LOGIN SCREEN ","LOGOUT HAPPENED")
+            viewModel.deleteUserInfo()
+            bottomNavViewModel.isLogoutEvent.set(false)
         }
 
 
@@ -136,7 +138,7 @@ class LoginFragment : BaseFragment() {
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
             is LoginViewModel.Event.OnLoginClicked -> {
-                getUserDetails()
+                getUserDetails(false)
                 //Re directing to On_boarding screen
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
@@ -146,10 +148,9 @@ class LoginFragment : BaseFragment() {
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                bottomNavViewModel.isGuestBase.set(true)
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    getUserDetails()
+                    getUserDetails(true)
                     findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                 } else {
 
@@ -172,7 +173,8 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun getUserDetails() {
+    private fun getUserDetails(isGuest : Boolean) {
+        bottomNavViewModel.isGuestBase.set(isGuest)
         bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
         bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)

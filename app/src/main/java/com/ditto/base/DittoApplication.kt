@@ -7,6 +7,7 @@ import com.facebook.stetho.Stetho
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
+import core.appstate.AppState
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
@@ -33,5 +34,6 @@ class DittoApplication : DaggerApplication() {
             this, BuildConfig.APP_CENTER_KEY ,
             Analytics::class.java, Crashes::class.java
         )
+        AppState.init(this)
     }
 }

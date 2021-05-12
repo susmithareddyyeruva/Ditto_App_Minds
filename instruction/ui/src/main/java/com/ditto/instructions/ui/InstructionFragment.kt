@@ -114,6 +114,7 @@ class InstructionFragment constructor(
         viewModel.tabPosition.set(position)
         viewModel.isShowindicator.set(true)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -232,6 +233,10 @@ class InstructionFragment constructor(
             is InstructionViewModel.Event.OnSkipTutorial -> {
                 clickSkipTutorial()
             }
+            is InstructionViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(
+                false
+            )
+            is InstructionViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
 
     /**
@@ -331,8 +336,7 @@ class InstructionFragment constructor(
      * [Function] Watch video click
      */
     private fun showVideoPopup() {
-        Common.isShowingVideoPopup.set(true)
-        val intent = Intent(requireActivity(), PopUpWindow::class.java)
+        val position = Common.currentSelectedTab.get()
         val filePath = if (viewModel.instructionID.get() == 1) {
             viewModel.data.value?.instructions?.get(position)?.instructions?.get(
                 instruction_view_pager.currentItem
@@ -340,11 +344,41 @@ class InstructionFragment constructor(
         } else {
             viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.videoPath
         }
-        intent.putExtra(
-            "filename",
-            filePath
-        )
-        startActivity(intent)
+
+        val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
+            viewModel.data.value?.instructions?.get(position)?.instructions?.get(instruction_view_pager.currentItem)?.title
+        } else {
+            viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.title // calibration
+        }
+
+        displayFullScreenVideo(filePath,title,"tutorial")
+    }
+
+    private fun displayFullScreenVideo(
+        filePath: String?,
+        title: String?,
+        from: String
+    ) {
+        if (findNavController().currentDestination?.id == R.id.destination_instruction
+        ) {
+            var titlen= if(position==0){
+                "Beam Setup"
+            }else{
+                "Beam Takedown"
+            }
+            val bundle = bundleOf("videoPath" to filePath,"title" to titlen,"from" to from)
+            findNavController().navigate(
+                R.id.action_destination_instruction_to_nav_graph_id_video,
+                bundle
+            )
+        } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
+            val bundle = bundleOf("videoPath" to filePath,"title" to "Calibration","from" to from)
+
+            findNavController().navigate(
+                R.id.action_destination_instruction_calibration_fragment_to_nav_graph_id_video,
+                bundle
+            )
+        }
     }
 
     /**

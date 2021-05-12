@@ -65,6 +65,13 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
+        if (core.network.Utility.isNetworkAvailable(requireContext())) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnBoardingDataFromApi()
+
+        } else {
+            viewModel.fetchOnBoardingData()
+        }
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
@@ -132,6 +139,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 handleEvent(it)
+
             }
     }
 
@@ -185,8 +193,21 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 Unit
 
             }
-
+            is OnboardingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            is OnboardingViewModel.Event.NoNetworkError -> {
+                showSnackBar()
+            }
+            is OnboardingViewModel.Event.DatFetchError -> showSnackBar()
+            is OnboardingViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
+
+    private fun showSnackBar() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.showSnackBar(
+            errorMessage,
+            binding.container
+        )
+    }
 
     private fun navigateInstructionOrCaliberation(bundle: Bundle) {
         if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition

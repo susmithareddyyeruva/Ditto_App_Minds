@@ -24,8 +24,8 @@
             android:layout_height="match_parent"
             app:controller_layout_id="@layout/custom_layout"
             app:hide_on_touch="false"
-            app:played_color="@color/appGreen"
-            app:scrubber_color="@color/appGreen"
+            app:played_color="@color/appRed"
+            app:scrubber_color="@color/appRed"
             app:show_timeout="0"
             app:use_controller="true" />
 
@@ -62,21 +62,36 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{() -> viewModel.onCloseButtonClicked()}"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_close" />
+
         <TextView
             android:id="@+id/skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/small_padding"
-            android:background="@color/appGreen"
+            android:layout_marginBottom="@dimen/margin_bottom_skip"
+            android:background="@color/colorWhite"
             android:drawablePadding="@dimen/medium_padding"
-            android:fontFamily="@font/avenir_next_it_pro_bold"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.onSkipButtonClicked()}"
             android:paddingLeft="@dimen/padding_skip"
             android:paddingTop="@dimen/medium_padding"
+            android:textSize="@dimen/skip_video_size"
             android:paddingRight="@dimen/padding_skip"
             android:paddingBottom="@dimen/medium_padding"
             android:text="@string/skip_video"
-            android:textColor="@android:color/white"
+            android:layout_marginEnd="@dimen/skip_margin_end"
+            android:textColor="@color/appGray"
             app:drawableEndCompat="@drawable/ic_skip"
             app:layout_constraintBottom_toTopOf="@+id/bottom_guidelines"
             app:layout_constraintRight_toRightOf="parent" />

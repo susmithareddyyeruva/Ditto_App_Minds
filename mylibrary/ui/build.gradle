@@ -99,6 +99,7 @@ dependencies {
 
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':menuitems-ui')
 
 }
 

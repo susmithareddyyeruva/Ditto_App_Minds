@@ -61,7 +61,7 @@
                         android:gravity="center"
                         android:onClick="@{() -> viewModel.onSkip()}"
                         android:text="@string/howtoskip"
-                        android:textColor="@color/skip_text"
+                        android:textColor="@color/app_grey"
                         android:textSize="@dimen/size_14sp" />
 
                 </LinearLayout>
@@ -76,15 +76,6 @@
             android:layout_marginRight="20dp"
             >
 
-            <ProgressBar
-                android:id="@+id/determinateBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isShowindicator()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar"

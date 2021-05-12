@@ -41,4 +41,8 @@ abstract class OnBoardingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
     abstract fun insertAllOnboardingData(onBoarding: List<OnBoarding>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @JvmSuppressWildcards
+    abstract fun insertAllOnboardingDataDup(onBoarding: List<OnBoarding>)
 }

@@ -7,31 +7,38 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
+import android.widget.ExpandableListView.OnChildClickListener
+import android.widget.ExpandableListView.OnGroupClickListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import core.appstate.AppState
 import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
-import core.ui.common.Utility
+import core.ui.adapter.ExpandableMenuListAdapter
+import core.ui.common.MenuModel
+import core.ui.common.NoScrollExListView
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import kotlinx.android.synthetic.main.nav_drawer_header.*
+import java.util.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 
@@ -46,6 +53,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     private lateinit var binding: ActivityBottomNavigationBinding
     private lateinit var navController: NavController
     var ishidemenu: Boolean = false
+    lateinit var expandableListView: NoScrollExListView
+    lateinit var expandableListAdapter : ExpandableMenuListAdapter
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +66,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         setSupportActionBar(binding.toolbar)
         setUpNavigation()
         setUpNavigationDrawer()
-        setMenuBinding()
         // temp fix for app restarting while switching apps
+        bindMenuHeader()
+        populateExpandableList()
+
         if (!isTaskRoot
             && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
             && intent.action != null
@@ -68,6 +79,28 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             finish()
             return
         }
+        binding.bottomNavViewModel!!.disposable += binding.bottomNavViewModel!!.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+            }
+    }
+
+    private fun handleEvent(
+        event: BottomNavViewModel.Event?
+    ) {
+        when (event) {
+            is BottomNavViewModel.Event.NavigateToLogin -> {
+                Log.d("EVENT", "LOGOUT CLICKED")
+                binding.bottomNavViewModel?.visibility?.set(false)
+                binding.toolbarViewModel?.isShowActionBar?.set(false)
+                binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
+                hidemenu()
+                navController.navigate(R.id.action_splashActivity_to_LoginFragment)
+            }
+
+        }
+
     }
 
     private fun setUpNavigation() {
@@ -95,20 +128,58 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             override fun onDrawerStateChanged(newState: Int) {
             }
         })
+
     }
 
-    private fun setMenuBinding() {
+
+    private fun populateExpandableList() {
+        expandableListAdapter = ExpandableMenuListAdapter(this, binding.bottomNavViewModel!!.headerList,
+            binding.bottomNavViewModel!!.childList)
+        expandableListView =  binding.navSlideView.getHeaderView(0).findViewById(R.id.expandableListView)
+        expandableListView.setAdapter(expandableListAdapter)
+        expandableListView.setOnGroupClickListener(OnGroupClickListener { parent, v, groupPosition, id ->
+            if (binding.bottomNavViewModel!!.headerList.get(groupPosition).subMenu == null) {
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                binding.bottomNavViewModel!!.headerList.get(groupPosition).menuName?.let {
+                    handlemenuClick(
+                        it
+                    )
+                }
+            } else {
+                if (parent.isGroupExpanded(groupPosition)) {
+                    v?.findViewById<ImageView>(R.id.ic_menu_drop_image)
+                        ?.setImageResource(R.drawable.ic_menu_down)
+                    // Do your Staff
+                } else {
+                    v?.findViewById<ImageView>(R.id.ic_menu_drop_image)
+                        ?.setImageResource(R.drawable.ic_menu_up)
+                    // Expanded ,Do your Staff
+                }
+            }
+            false
+        })
+        expandableListView.setOnChildClickListener(OnChildClickListener { parent, v, groupPosition, childPosition, id ->
+            if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
+                Toast.makeText(
+                    this,
+                    binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName,
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
+            false
+        })
+        expandableListAdapter.notifyDataSetChanged()
+    }
+
+    fun refreshMenuItem() {
+        expandableListAdapter.notifyDataSetChanged()
+    }
+
+    fun bindMenuHeader() {
         val viewHeader = binding.navSlideView.getHeaderView(0)
         val navViewHeaderBinding: NavDrawerHeaderBinding = NavDrawerHeaderBinding.bind(viewHeader)
         navViewHeaderBinding.bottomNavViewModel = binding.bottomNavViewModel
-    }
-
-    fun setMenuItem(isGuest: Boolean) {
-        val navMenu: Menu = binding.navSlideView.getMenu()
-        navMenu.findItem(R.id.nav_graph_logout).isVisible = !isGuest
-        setMenuItemColor(navMenu.findItem(R.id.nav_graph_logout), getColor(R.color.logout_red))
-        navMenu.findItem(R.id.nav_graph_sign_up).isVisible = isGuest
-        setMenuItemColor(navMenu.findItem(R.id.nav_graph_sign_up), getColor(R.color.sign_in_blue))
     }
 
     private fun setMenuItemColor(menu: MenuItem, color: Int) {
@@ -116,8 +187,15 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         spanString.setSpan(ForegroundColorSpan(color), 0, spanString.length, 0)
         menu.title = spanString
     }
-
-
+      
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            return
+        }
+        super.onBackPressed()
+    }
+      
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
 
@@ -201,17 +279,70 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
     }
 
+    @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq,
-            R.id.nav_graph_software_updates, R.id.nav_graph_sign_up, R.id.nav_graph_logout -> {
+
+                R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates -> {
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-            else -> {
+              R.id.nav_graph_support -> {
+              binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+
+                navController.navigate(R.id.action_fragments_to_customerCareFragment)
+                true
+            }
+            R.id.nav_graph_faq -> {
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                navController.navigate(R.id.action_destination_to_FQAfragment)
+                true
+            }
+            R.id.nav_graph_logout -> {
+                logoutUser(true)
+                true
+            }
+            R.id.nav_graph_sign_up -> {
+                logoutUser(false)
+                true
+            }
+           else -> {
                 false
             }
         }
 
+    }
+
+    private fun logoutUser(isLogout: Boolean) {
+        AppState.logout()
+        AppState.setIsLogged(false)
+        binding.bottomNavViewModel?.isGuestBase?.set(true)
+        binding.bottomNavViewModel?.userEmailBase?.set("")
+        binding.bottomNavViewModel?.userFirstNameBase?.set("")
+        binding.bottomNavViewModel?.userLastNameBase?.set("")
+        binding.bottomNavViewModel?.userPhoneBase?.set("")
+        binding.bottomNavViewModel?.refreshMenu(this)
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        if (isLogout) {
+            binding.bottomNavViewModel?.logout()
+        } else {
+            binding.bottomNavViewModel?.sigin()
+        }
+    }
+
+    private fun handlemenuClick (selectedmenu : String){
+        if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
+            navController.navigate(R.id.action_fragments_to_customerCareFragment)
+        } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
+            navController.navigate(R.id.action_destination_to_FQAfragment)
+        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
+            logoutUser(true)
+        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
+            logoutUser(false)
+        }  else {
+            Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG)
+                .show()
+        }
     }
 }
