@@ -13,4 +13,5 @@
     <string name="str_phn_timings">Weekdays: 8AM - 6PM | Weekends: 9AM - 1PM</string>
     <string name="str_support">Support</string>
     <string name="str_patterns_url">https://www.joann.com/sewing/patterns/</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

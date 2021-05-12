@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_destination_to_FQAfragment"
             app:destination="@id/FQAfragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
 
     </fragment>
     <fragment
@@ -102,4 +105,9 @@
         android:id="@+id/FQAfragment"
         android:name="com.ditto.menuitems_ui.faq.ui.FQAfragment"
         android:label="Frequently Asked Questions" />
+
+    <fragment
+        android:id="@+id/aboutAppFragment"
+        android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
+        android:label="AboutAppFragment" />
 </navigation>
