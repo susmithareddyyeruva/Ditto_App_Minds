@@ -55,11 +55,9 @@ class HomeFragment : BaseFragment() {
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
         if (AppState.getIsLogged()) {
-            (activity as BottomNavigationActivity)?.setMenuItem(false)
-            bottomNavViewModel.isGuestBase.set(false)
+             bottomNavViewModel.isGuestBase.set(false)
         } else {
-            (activity as BottomNavigationActivity)?.setMenuItem(true)
-            bottomNavViewModel.isGuestBase.set(true)
+             bottomNavViewModel.isGuestBase.set(true)
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)

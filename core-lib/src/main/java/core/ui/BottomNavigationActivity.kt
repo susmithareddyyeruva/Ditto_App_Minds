@@ -139,9 +139,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         expandableListView.setAdapter(expandableListAdapter)
         expandableListView.setOnGroupClickListener(OnGroupClickListener { parent, v, groupPosition, id ->
             if (binding.bottomNavViewModel!!.headerList.get(groupPosition).subMenu == null) {
-                Toast.makeText(this, binding.bottomNavViewModel!!.headerList.get(groupPosition).menuName, Toast.LENGTH_LONG)
-                    .show()
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                binding.bottomNavViewModel!!.headerList.get(groupPosition).menuName?.let {
+                    handlemenuClick(
+                        it
+                    )
+                }
             } else {
                 if (parent.isGroupExpanded(groupPosition)) {
                     v?.findViewById<ImageView>(R.id.ic_menu_drop_image)
@@ -267,11 +270,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
     }
 
-    override fun onBackPressed() {
-        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-        super.onBackPressed()
-    }
-
     private fun hideSystemUI() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -285,7 +283,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
 
-R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates -> {
+                R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates -> {
 
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
@@ -324,7 +322,6 @@ R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates ->
         binding.bottomNavViewModel?.userFirstNameBase?.set("")
         binding.bottomNavViewModel?.userLastNameBase?.set("")
         binding.bottomNavViewModel?.userPhoneBase?.set("")
-        setMenuItem(true)
         binding.bottomNavViewModel?.refreshMenu(this)
         binding.drawerLayout.closeDrawer(Gravity.RIGHT)
         if (isLogout) {
@@ -334,4 +331,18 @@ R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates ->
         }
     }
 
+    private fun handlemenuClick (selectedmenu : String){
+        if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
+            navController.navigate(R.id.action_fragments_to_customerCareFragment)
+        } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
+            navController.navigate(R.id.action_destination_to_FQAfragment)
+        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
+            logoutUser(true)
+        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
+            logoutUser(false)
+        }  else {
+            Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG)
+                .show()
+        }
+    }
 }

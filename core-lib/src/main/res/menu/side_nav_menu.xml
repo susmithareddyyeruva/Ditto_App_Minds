@@ -13,22 +13,22 @@
         <item
             android:id="@+id/nav_graph_support"
             android:icon="@drawable/ic_menu_support"
-            android:title="Customer Support" />
+            android:title="@string/str_menu_customersupport" />
 
         <item
             android:id="@+id/nav_graph_settings"
             android:icon="@drawable/ic_menu_settings"
-            android:title="Settings" />
+            android:title="@string/str_menu_settings" />
 
         <item
             android:id="@+id/nav_graph_faq"
             android:icon="@drawable/ic_menu_faq"
-            android:title="FAQ'S" />
+            android:title="@string/str_menu_faq" />
 
         <item
             android:id="@+id/nav_graph_software_updates"
             android:icon="@drawable/ic_menu_update"
-            android:title="Software Updates" />
+            android:title="@string/str_menu_softwareupdate" />
 
     </group>
     <group
@@ -37,13 +37,13 @@
         <item
             android:id="@+id/nav_graph_logout"
             android:icon="@drawable/ic_menu_logout"
-            android:title="Log Out"
+            android:title="@string/str_menu_logout"
             app:showAsAction="always" />
 
         <item
             android:id="@+id/nav_graph_sign_up"
             android:icon="@drawable/ic_menu_signup"
-            android:title="Sign in"
+            android:title="@string/str_menu_signin"
             app:showAsAction="always" />
     </group>
 
