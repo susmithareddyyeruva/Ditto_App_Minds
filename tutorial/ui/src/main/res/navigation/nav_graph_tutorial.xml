@@ -38,6 +38,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
 
 
     </fragment>
@@ -69,6 +72,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
 
 
     </fragment>
@@ -79,6 +85,14 @@
         android:label="How To">
 
 
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/customerCareFragment"
+        tools:layout="@layout/customer_care_fragment"
+        android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
+        android:label="Customer Support" />
 
 </navigation>

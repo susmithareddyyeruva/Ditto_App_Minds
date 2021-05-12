@@ -229,11 +229,18 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
     }
 
+    @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-R.id.nav_graph_about, R.id.nav_graph_support, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates -> {
+R.id.nav_graph_about, R.id.nav_graph_settings, R.id.nav_graph_faq, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
+            }
+              R.id.nav_graph_support -> {
+              binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+
+                navController.navigate(R.id.action_fragments_to_customerCareFragment)
+                true
             }
             R.id.nav_graph_logout -> {
                 logoutUser(true)

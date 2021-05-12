@@ -214,6 +214,9 @@ dependencies {
     implementation project(path: ':howto-domain')
     implementation project(path: ':videoplayer')
 
+    implementation project(path: ':menuitems-ui')
+    implementation project(path: ':menuitems-domain')
+    implementation project(path: ':menuitems-data')
 }
 //sonarqube {
 //    properties {

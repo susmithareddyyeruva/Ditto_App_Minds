@@ -22,6 +22,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
     </fragment>
     <fragment
         android:id="@+id/allPatternsFragment"
@@ -30,6 +33,9 @@
         <!--<action
             android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
             app:destination="@id/patternDescriptionFragment" />-->
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
     </fragment>
     <fragment
         android:id="@+id/patternDescriptionFragment"
@@ -60,6 +66,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
 
     </fragment>
     <fragment
@@ -67,5 +76,10 @@
         android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
         android:label="Pattern Instructions">
     </fragment>
+    <fragment
+        android:id="@+id/customerCareFragment"
+        android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
+        tools:layout="@layout/customer_care_fragment"
+        android:label="Customer Support" />
 
 </navigation>
