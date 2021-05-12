@@ -53,6 +53,7 @@ class HomeFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(true)
         bottomNavViewModel.refreshMenu(context)
+        (activity as BottomNavigationActivity)?.refreshMenuItem()
         if (AppState.getIsLogged()) {
             (activity as BottomNavigationActivity)?.setMenuItem(false)
             bottomNavViewModel.isGuestBase.set(false)

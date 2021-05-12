@@ -60,39 +60,34 @@
         android:label="Shop Joann"
         tools:layout="@layout/shop_fragment" />
 
-    <fragment
-        android:id="@+id/patternDescriptionFragmentFromHome"
-        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
-        android:label="PatternDescriptionFragment" >
+<!--    <fragment-->
+<!--        android:id="@+id/patternDescriptionFragmentFromHome"-->
+<!--        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"-->
+<!--        android:label="PatternDescriptionFragmentFromHome" >-->
 
-        <action
-            android:id="@+id/action_patternDescriptionFragment_to_WorkspaceFragment"
-            app:destination="@id/nav_graph_workspace"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
-            app:destination="@id/patternInstructionsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_pattern_description_to_calibration"
-            app:destination="@id/calibration_nav_graph"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
+<!--        <action-->
+<!--            android:id="@+id/action_patternDescriptionFragmentFromHome_to_WorkspaceFragment"-->
+<!--            app:destination="@id/nav_graph_workspace"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"/>-->
+<!--        <action-->
+<!--            android:id="@+id/action_patternDescriptionFragmentFromHome_to_pattern_instructions_Fragment"-->
+<!--            app:destination="@id/patternInstructionsFragment"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"/>-->
+<!--        <action-->
+<!--            android:id="@+id/action_pattern_description_from_home_to_calibration"-->
+<!--            app:destination="@id/calibration_nav_graph"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"/>-->
+<!--    </fragment>-->
 
-    <fragment
-        android:id="@+id/patternInstructionsFragment"
-        android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
-        android:label="Pattern Instructions">
-    </fragment>
     <fragment
         android:id="@+id/customerCareFragment"
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
@@ -102,4 +97,5 @@
         android:id="@+id/FQAfragment"
         android:name="com.ditto.menuitems_ui.faq.ui.FQAfragment"
         android:label="Frequently Asked Questions" />
+  
 </navigation>

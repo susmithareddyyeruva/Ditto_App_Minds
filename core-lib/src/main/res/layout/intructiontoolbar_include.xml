@@ -31,7 +31,7 @@
             android:id="@+id/header_view_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/skip_text"
+            android:textColor="@color/app_grey"
             android:visibility="@{toolbarViewModel.isShowSkip()}"
             android:onClick="@{() -> toolbarViewModel.onSkip()}"
             android:text="@string/skip"
