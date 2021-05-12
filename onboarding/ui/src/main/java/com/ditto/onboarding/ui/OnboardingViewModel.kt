@@ -40,6 +40,10 @@ class OnboardingViewModel @Inject constructor(
     val isBluetoothOn: ObservableBoolean = ObservableBoolean(false)
     val isWifiOn: ObservableBoolean = ObservableBoolean(false)
     val onBoardingTitle: ObservableField<String> = ObservableField("")
+    val onBoardingSubTitle: ObservableField<String> = ObservableField("")
+    val onBoardingUserName: ObservableField<String> = ObservableField("")
+
+
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()

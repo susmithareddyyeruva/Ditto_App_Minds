@@ -4,6 +4,8 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -16,6 +18,7 @@ import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
@@ -72,8 +75,11 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
+        setHeadingTitle()
         checkBluetoothWifiPermission()
+        Log.d("Nameee","userFirstName"+bottomNavViewModel.userFirstNameBase.get())
     }
+
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
@@ -116,6 +122,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 ).show()
             }
         }
+
     }
 
 
@@ -327,15 +334,28 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     private fun setToolbar() {
         if (isFromHomeScreen) {
-            viewModel.onBoardingTitle.set(getString(R.string.tutorialheader))
             toolbarViewModel.isShowTransparentActionBar.set(true)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(true)
         } else {
-            viewModel.onBoardingTitle.set(getString(R.string.Welcomeheader))
+
             toolbarViewModel.isShowTransparentActionBar.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(false)
         }
     }
+
+    private fun setHeadingTitle() {
+    if(bottomNavViewModel.isGuestBase.get()){
+        viewModel.onBoardingTitle.set(getString(R.string.Welcomeheader))
+        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
+    }else{
+        viewModel.onBoardingTitle.set(getString(R.string.tutorialheader))
+        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header))
+        viewModel.onBoardingUserName.set(bottomNavViewModel.userFirstNameBase.get())
+
+    }
+
+    }
+
 }
