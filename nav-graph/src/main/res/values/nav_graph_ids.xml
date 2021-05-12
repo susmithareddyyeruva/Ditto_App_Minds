@@ -52,4 +52,6 @@
     <item name="action_home_to_pattern_details" type="id" />
     <item name="patternDescriptionFragmentFromHome" type="id" />
     <item name="action_loginFragment_to_VideoFragment" type="id" />
+    <item name="action_destination_howto_to_nav_graph_id_video" type="id" />
+    <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
 </resources>
