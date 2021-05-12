@@ -7,31 +7,32 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import core.appstate.AppState
 import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
-import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 
@@ -68,6 +69,28 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             finish()
             return
         }
+        binding.bottomNavViewModel!!.disposable += binding.bottomNavViewModel!!.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+            }
+    }
+
+    private fun handleEvent(
+        event: BottomNavViewModel.Event?
+    ) {
+        when (event) {
+            is BottomNavViewModel.Event.NavigateToLogin -> {
+                Log.d("EVENT", "LOGOUT CLICKED")
+                binding.bottomNavViewModel?.visibility?.set(false)
+                binding.toolbarViewModel?.isShowActionBar?.set(false)
+                binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
+                hidemenu()
+                navController.navigate(R.id.action_splashActivity_to_LoginFragment)
+            }
+
+        }
+
     }
 
     private fun setUpNavigation() {
@@ -95,6 +118,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             override fun onDrawerStateChanged(newState: Int) {
             }
         })
+
     }
 
     private fun setMenuBinding() {
@@ -116,7 +140,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         spanString.setSpan(ForegroundColorSpan(color), 0, spanString.length, 0)
         menu.title = spanString
     }
-
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
@@ -192,6 +215,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
     }
 
+    override fun onBackPressed() {
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        super.onBackPressed()
+    }
+
     private fun hideSystemUI() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -204,13 +232,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_about,  R.id.nav_graph_settings,
-            R.id.nav_graph_software_updates, R.id.nav_graph_sign_up, R.id.nav_graph_logout -> {
+
+R.id.nav_graph_about, R.id.nav_graph_settings,R.id.nav_graph_software_updates -> {
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-            R.id.nav_graph_support -> {
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+              R.id.nav_graph_support -> {
+              binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
                 navController.navigate(R.id.action_fragments_to_customerCareFragment)
                 true
@@ -220,10 +249,37 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 navController.navigate(R.id.action_destination_to_FQAfragment)
                 true
             }
-            else -> {
+            R.id.nav_graph_logout -> {
+                logoutUser(true)
+                true
+            }
+            R.id.nav_graph_sign_up -> {
+                logoutUser(false)
+                true
+            }
+           else -> {
                 false
             }
         }
 
     }
+
+    private fun logoutUser(isLogout: Boolean) {
+        AppState.logout()
+        AppState.setIsLogged(false)
+        binding.bottomNavViewModel?.isGuestBase?.set(true)
+        binding.bottomNavViewModel?.userEmailBase?.set("")
+        binding.bottomNavViewModel?.userFirstNameBase?.set("")
+        binding.bottomNavViewModel?.userLastNameBase?.set("")
+        binding.bottomNavViewModel?.userPhoneBase?.set("")
+        setMenuItem(true)
+        binding.bottomNavViewModel?.refreshMenu(this)
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        if (isLogout) {
+            binding.bottomNavViewModel?.logout()
+        } else {
+            binding.bottomNavViewModel?.sigin()
+        }
+    }
+
 }

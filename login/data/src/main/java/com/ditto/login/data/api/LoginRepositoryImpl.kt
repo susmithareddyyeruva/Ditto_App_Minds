@@ -60,20 +60,6 @@ class LoginRepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun loginUser(user: LoginUser): Single<Result<LoginUser>> {
-        if (!Utility.isNetworkAvailable(context)) {
-            return Single.just(Result.OnError(NoNetworkError()))
-        }
-        return loginService.userLogin()
-            .doOnSuccess { dbDataDao.deleteAndInsert(user.toDomain()) }
-            .map { Result.withValue(it.toUserDomain()) }
-            .onErrorReturn {
-                Result.withError(
-                    LoginFetchError("Error fetching data", it)
-                )
-            }
-    }
-
     override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
         if (!Utility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
@@ -122,6 +108,12 @@ class LoginRepositoryImpl @Inject constructor(
             }
 
 
+    }
+
+    override fun deleteDbUser(user: String): Single<Boolean> {
+        return dbDataDao.deleteUserDataInfo(user)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }
 

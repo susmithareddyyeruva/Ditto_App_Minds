@@ -76,7 +76,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guide_content_end"
             app:layout_constraintStart_toStartOf="@+id/guide_content_start"
-            app:layout_constraintTop_toBottomOf="@+id/guide_image_top" />
+            app:layout_constraintTop_toBottomOf="@+id/guide_image_top"
+            />
+        <!--android:onClick="@{()->viewModel.onItemClick(instructionvalues.videopath1,instructionvalues.title1)}"-->
 
         <ImageView
             android:id="@+id/image_play"
