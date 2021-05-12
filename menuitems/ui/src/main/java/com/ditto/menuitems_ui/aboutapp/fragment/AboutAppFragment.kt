@@ -1,11 +1,16 @@
 package com.ditto.menuitems_ui.aboutapp.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import com.ditto.menuitems_ui.R
+import com.ditto.menuitems_ui.databinding.FragmentAboutAppBinding
+import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
+import core.ui.ViewModelDelegate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,7 +22,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [AboutAppFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AboutAppFragment : Fragment() {
+class AboutAppFragment : BaseFragment() {
+
+    private val viewModel: AboutAppViewModel by ViewModelDelegate()
+    lateinit var binding: FragmentAboutAppBinding
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -30,13 +39,33 @@ class AboutAppFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_app, container, false)
+        binding = FragmentAboutAppBinding.inflate(inflater).also {
+            it.viewmodel = viewModel
+            it.lifecycleOwner = viewLifecycleOwner
+        }
+        return binding.root
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setuptoolbar()
+    }
+
+    private fun setuptoolbar(){
+        bottomNavViewModel.visibility.set(false)
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(true)
+        toolbarViewModel.isShowActionMenu.set(false)
+        (activity as BottomNavigationActivity).hidemenu()
+        (activity as BottomNavigationActivity).setToolbarTitle("About The App & Policies")
+    }
+
 
     companion object {
         /**
