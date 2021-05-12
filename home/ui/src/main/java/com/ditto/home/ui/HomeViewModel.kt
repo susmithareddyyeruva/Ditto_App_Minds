@@ -14,8 +14,6 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
     val events = uiEvents.stream()
     val homeItem: ArrayList<HomeData> = ArrayList()
     var header: ObservableField<String> = ObservableField()
-    var description: ObservableField<String> = ObservableField()
-
 
     sealed class Event {
         object OnClickMyPatterns : Event()
@@ -50,11 +48,9 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
         if (storageManager.getStringValue(USER_FIRST_NAME) == null) {
             isGuest.set(true)
             header.set("Hi There,")
-            description.set("Let's get started !")
         } else {
             isGuest.set(false)
             header.set("Nikhil")
-            description.set("What would you like to do today?")
         }
     }
 

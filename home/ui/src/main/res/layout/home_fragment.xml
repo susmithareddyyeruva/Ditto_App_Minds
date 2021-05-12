@@ -288,7 +288,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:paddingStart="@dimen/medium_padding"
-                android:text="@{viewModel.description.toString()}"
+                android:text="@string/welcome_message"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_desc"
                 app:layout_constraintBottom_toTopOf="@+id/recycler_view"
