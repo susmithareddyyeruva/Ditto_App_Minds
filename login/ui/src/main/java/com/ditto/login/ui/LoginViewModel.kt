@@ -18,6 +18,7 @@ import core.USER_EMAIL
 import core.USER_FIRST_NAME
 import core.USER_LAST_NAME
 import core.USER_PHONE
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
@@ -48,7 +49,7 @@ class LoginViewModel @Inject constructor(
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
-    var viewPagerData : MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
+    var viewPagerData: MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
 
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
@@ -83,7 +84,7 @@ class LoginViewModel @Inject constructor(
         Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
     }
 
-    fun handleFetchResult(result: Result<LoginResultDomain>) {
+    private fun handleFetchResult(result: Result<LoginResultDomain>) {
         logger.d("handleFetchResult ${result.toString()}")
         uiEvents.post(Event.OnHideProgress)
         when (result) {
@@ -98,10 +99,26 @@ class LoginViewModel @Inject constructor(
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
-
+                    AppState.setIsLogged(true)
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
+                            _type = result.data._type,
+                            auth_type = result.data.auth_type,
+                            customer_id = result.data.customer_id,
+                            customer_no = result.data.customer_no,
+                            email = result.data.email,
+                            first_name = result.data.first_name,
+                            last_name = result.data.last_name,
+                            last_visit_time = result.data.last_visit_time,
+                            last_modified = result.data.last_modified,
+                            last_login_time = result.data.last_login_time,
+                            gender = result.data.gender,
+                            phone_home = result.data.phone_home,
+                            login = result.data.phone_home,
+                            previous_login_time = result.data.previous_login_time,
+                            previous_visit_time = result.data.previous_visit_time,
+                            salutation = result.data.salutation,
                             isLoggedIn = true
                         )
                     )
@@ -157,6 +174,14 @@ class LoginViewModel @Inject constructor(
 
     fun guestLogin() {
         uiEvents.post(Event.OnSeeMoreClicked)
+    }
+
+    fun deleteUserInfo() {
+        disposable += useCase.deleteDbUser(storageManager.getStringValue(USER_EMAIL) ?: "")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
     }
 
     /**

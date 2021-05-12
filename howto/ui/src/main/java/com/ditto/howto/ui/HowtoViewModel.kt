@@ -38,6 +38,9 @@ class HowtoViewModel @Inject constructor(
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
     var toolbarTitle: ObservableField<String> = ObservableField("")
+    var videoUrl: String=""
+    var title: String=""
+    var imagePath: String=""
     /**
      *[Function] ViewPager Next Button Click
      */
@@ -100,6 +103,16 @@ class HowtoViewModel @Inject constructor(
         uiEvents.post(Event.OnShowError)
     }
 
+    fun onItemClick(videourl:String,titlem:String) {
+        videoUrl = videourl
+        title = titlem
+        uiEvents.post(Event.OnItemClick)
+    }
+
+    fun onDoubleClick(imagePathm:String) {
+        imagePath = imagePathm
+        uiEvents.post(Event.OnSpinchAndZoom)
+    }
     /**
      * Events for this view model
      */
@@ -110,6 +123,8 @@ class HowtoViewModel @Inject constructor(
         object OnNextButtonClicked : Event()
         object OnPreviousButtonClicked : Event()
         object OnPlayVideoClicked : Event()
+        object OnItemClick : Event()
+        object OnSpinchAndZoom : Event()
     }
 
 }

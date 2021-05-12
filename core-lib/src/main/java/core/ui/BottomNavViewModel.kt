@@ -3,7 +3,7 @@ package core.ui
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
+import core.appstate.AppState
 import core.event.UiEvents
 import core.lib.R
 import core.ui.common.MenuModel
@@ -25,13 +25,24 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var userLastNameBase: ObservableField<String> = ObservableField("")
     var headerList: MutableList<MenuModel> = ArrayList<MenuModel>()
     var childList = HashMap<MenuModel, List<MenuModel>?>()
+    val isLogoutEvent: ObservableBoolean = ObservableBoolean(false)
+    private val uiEvents = UiEvents<Event>()
+    val events = uiEvents.stream()
 
+    init {
+        prepareMenuData()
+        if (AppState.getIsLogged())
+            isGuestBase.set(false) else
+            isGuestBase.set(true)
+      
+    }
 
     fun refreshMenu(context: Context?) {
         prepareMenuData()
-        if (isGuestBase.get()) {
+        if (!AppState.getIsLogged()) {
             menuTitle.set(context?.getString(R.string.hi_there))
             menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
+
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             menuDescription.set(userEmailBase.get())
@@ -117,7 +128,14 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    init {
-        prepareMenuData()
+    fun logout() {
+        uiEvents.post(Event.NavigateToLogin)
+        isLogoutEvent.set(true)
+    }
+    fun sigin() {
+        uiEvents.post(Event.NavigateToLogin)
+    }
+    sealed class Event {
+        object NavigateToLogin : Event()
     }
 }

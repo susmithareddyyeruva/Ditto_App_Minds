@@ -12,7 +12,7 @@ interface LoginRepository {
 
     fun createUser(user: LoginUser): Single<Long>
 
-    fun loginUser(user: LoginUser): Single<Result<LoginUser>>
-
     fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>>
+
+    fun deleteDbUser(user: String):Single<Boolean>
 }
