@@ -10,6 +10,7 @@
             name="viewmodel"
             type="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
@@ -32,21 +33,43 @@
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_end"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".93" />
-        <TextView
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:gravity="start"
-            android:text="@string/about_app"
-            android:textColor="@color/black"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guide_end"
             app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/guide_top"/>
+            app:layout_constraintTop_toTopOf="@id/guide_top">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/bottom_common"
+                    android:layout_marginBottom="@dimen/bottom_common"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:gravity="start"
+                    android:scrollbars="vertical"
+                    android:text="@string/about_app"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

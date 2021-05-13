@@ -4,9 +4,10 @@
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
 
     <dimen name="small_padding">5dp</dimen>
+    <dimen name="small_paddingx">8dp</dimen>
     <dimen name="medium_padding">10dp</dimen>
     <dimen name="large_padding">15dp</dimen>
-
+    <dimen name="bottom_common">40dp</dimen>
     <dimen name="text_header">20sp</dimen>
     <dimen name="text_desc">12sp</dimen>
     <dimen name="text_menu">14sp</dimen>
