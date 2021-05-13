@@ -43,7 +43,8 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/nav_graph_mylibrary" />
+            app:popUpTo="@+id/nav_graph_mylibrary"
+            app:popUpToInclusive="true"  />
 
         <action
             android:id="@+id/action_home_to_tutorial"
@@ -52,7 +53,8 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/nav_graph_id_onboarding" />
+            app:popUpTo="@+id/nav_graph_id_login"
+            app:popUpToInclusive="true"  />
 
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
