@@ -49,7 +49,7 @@ class SplashViewModel @Inject constructor(
                 uiEvents.post(Event.NavigateToLogin)
             }
         }
-        //updateDb()
+        updateDb()
     }
 
     private fun updateDb() {
