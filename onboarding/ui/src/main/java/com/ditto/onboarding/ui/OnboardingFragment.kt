@@ -4,6 +4,8 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -16,6 +18,7 @@ import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
@@ -62,11 +65,21 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
+        if (core.network.Utility.isNetworkAvailable(requireContext())) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnBoardingDataFromApi()
+
+        } else {
+            viewModel.fetchOnBoardingData()
+        }
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
+        setHeadingTitle()
         checkBluetoothWifiPermission()
+        Log.d("Nameee","userFirstName"+bottomNavViewModel.userFirstNameBase.get())
     }
+
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
@@ -109,6 +122,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 ).show()
             }
         }
+
     }
 
 
@@ -125,6 +139,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 handleEvent(it)
+
             }
     }
 
@@ -178,8 +193,21 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 Unit
 
             }
-
+            is OnboardingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            is OnboardingViewModel.Event.NoNetworkError -> {
+                showSnackBar()
+            }
+            is OnboardingViewModel.Event.DatFetchError -> showSnackBar()
+            is OnboardingViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
+
+    private fun showSnackBar() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.showSnackBar(
+            errorMessage,
+            binding.container
+        )
+    }
 
     private fun navigateInstructionOrCaliberation(bundle: Bundle) {
         if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
@@ -306,15 +334,28 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     private fun setToolbar() {
         if (isFromHomeScreen) {
-            viewModel.onBoardingTitle.set(getString(R.string.tutorialheader))
             toolbarViewModel.isShowTransparentActionBar.set(true)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(true)
         } else {
-            viewModel.onBoardingTitle.set(getString(R.string.Welcomeheader))
+
             toolbarViewModel.isShowTransparentActionBar.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(false)
         }
     }
+
+    private fun setHeadingTitle() {
+    if(bottomNavViewModel.isGuestBase.get()){
+        viewModel.onBoardingTitle.set(getString(R.string.Welcomeheader))
+        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
+    }else{
+        viewModel.onBoardingTitle.set(getString(R.string.tutorialheader))
+        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header))
+        viewModel.onBoardingUserName.set(bottomNavViewModel.userFirstNameBase.get())
+
+    }
+
+    }
+
 }

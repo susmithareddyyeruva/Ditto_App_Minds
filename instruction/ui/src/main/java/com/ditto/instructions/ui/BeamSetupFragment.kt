@@ -67,6 +67,7 @@ class BeamSetupFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())

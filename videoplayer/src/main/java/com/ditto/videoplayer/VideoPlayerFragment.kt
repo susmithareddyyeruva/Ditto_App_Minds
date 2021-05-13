@@ -6,29 +6,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.databinding.ActivityPlayerBinding
 import com.ditto.videoplayer.utility.PlaybackStateListener
-import com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT
-import com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import non_core.lib.Result
-import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerStateListener {
@@ -56,6 +49,16 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
         ).also {
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
+        }.apply {
+            if (arguments != null) {
+                arguments?.getString("videoPath")?.let { viewModel?.videoUrl = it }
+                arguments?.getString("title")?.let { viewModel?.title = it }
+                arguments?.getString("from")?.let { viewModel?.from = it }
+                Log.d("VideoPlayerFragment123", " title: ${viewModel?.title}")
+                //Toast.makeText(activity, " value + ${viewModel?.title}", Toast.LENGTH_SHORT).show()
+            } else {
+
+            }
         }
         return binding.videoRoot
     }
@@ -63,8 +66,25 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
+        setupToolbar()
+        if (viewModel?.from.equals("tutorial")) {
+            binding.skip.visibility = View.GONE
+            binding.close.visibility = View.VISIBLE
+            binding.header.text = viewModel?.title
+        }else{
+            binding.skip.visibility = View.VISIBLE
+            binding.close.visibility = View.GONE
+        }
         playbackStateListener = PlaybackStateListener()
         PlaybackStateListener.exoPlayerStateListener = this
+    }
+
+    private fun setupToolbar() {
+            bottomNavViewModel.visibility.set(false)
+            toolbarViewModel.isShowActionBar.set(false)
+            toolbarViewModel.isShowTransparentActionBar.set(false)
+            (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            (activity as BottomNavigationActivity).hidemenu()
     }
 
     private fun setUIEvents() {
@@ -86,6 +106,9 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
             }
             is VideoPlayerViewModel.Event.OnSkipButtonClicked -> {
                 findNavController().navigate(R.id.action_VideoPlayer_to_Onboarding)
+            }
+            is VideoPlayerViewModel.Event.OnCloseButtonClicked -> {
+                findNavController().navigateUp()
             }
             else -> logger.d("Invalid Event")
         }

@@ -2,18 +2,18 @@ package com.ditto.splash.data
 
 import android.content.Context
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.splash.domain.DbRepository
 import com.ditto.login.domain.LoginUser
-import com.joann.fabrictracetransform.transform.performTransform
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import non_core.lib.Result
+import com.ditto.splash.domain.DbRepository
 import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.data.database.UserDao
+import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.common.Utility
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
 import javax.inject.Inject
 
 /**
@@ -35,7 +35,7 @@ class DbRepositoryImpl @Inject constructor(
         return Single.fromCallable {
             val data = dbDataDao.getOnboardingData()
             if (data.isEmpty()) {
-                TraceDataDatabase.preLoadOnboardingData(context)
+              TraceDataDatabase.preLoadOnboardingData(context)
             }
         }.flatMap {
             updatePatternsData()
@@ -78,4 +78,5 @@ class DbRepositoryImpl @Inject constructor(
                 Result.withValue(LoginUser(""))
         }
     }
+
 }

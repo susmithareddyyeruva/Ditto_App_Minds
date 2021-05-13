@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_head">Choose one of the methods to contact us.</string>
+    <string name="str_email">EMAIL</string>
+    <string name="str_waittime">Wait Time : 24 hours</string>
+    <string name="str_quest">Questions or Comments?</string>
+    <string name="str_email_text">Email <u>joannsupports@joann.com</u> to our customer care representatives and we will get back soon.</string>
+    <string name="str_phone">PHONE</string>
+    <string name="str_phn_waittime">Wait Time: Less than 30 sec</string>
+    <string name="str_ustoll">US Toll Free:</string>
+    <string name="str_mob_no">1800 000 2345</string>
+    <string name="str_get_email">joannsupports@joann.com</string>
+    <string name="str_phn_timings">Weekdays: 8AM - 6PM | Weekends: 9AM - 1PM</string>
+    <string name="str_support">Support</string>
+    <string name="str_patterns_url">https://www.joann.com/sewing/patterns/</string>
+</resources>

@@ -21,7 +21,12 @@
     <dimen name="checkbox">6dp</dimen>
     <dimen name="dimen_0">0dp</dimen>
     <dimen name="elevation_card">15dp</dimen>
-    <dimen name="margin_card">50dp</dimen>
+    <dimen name="margin_card">30dp</dimen>
     <dimen name="margin_text">20dp</dimen>
     <dimen name="margin_onboardcard_top">70dp</dimen>
+    <dimen name="onboarding_card">450dp</dimen>
+    <dimen name="title_margin">50dp</dimen>
+    <dimen name="title_margin_top">18dp</dimen>
+    <dimen name="circle_value_dimen">24sp</dimen>
+
 </resources>

@@ -40,7 +40,6 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-
                         <TextView
                             android:id="@+id/header_view_title"
                             android:layout_width="wrap_content"
@@ -67,10 +66,7 @@
                             android:textSize="@dimen/size_14sp"
                             android:drawablePadding="16dp"
                             android:paddingEnd="16dp"
-
                             app:drawableEndCompat="@drawable/right_arrow" />
-
-
 
                 </LinearLayout>
 
@@ -83,15 +79,6 @@
 
             >
 
-            <ProgressBar
-                android:id="@+id/determinateBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isShowindicator()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar"

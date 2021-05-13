@@ -39,10 +39,9 @@
                 android:id="@+id/image_step"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="@{!viewModel.isWatchVideoClicked()}"
                 android:onClick="@{() -> viewModel.onClickPlayVideo()}"
                 android:src="@drawable/video_thumbnail" />
-
+            <!--android:clickable="@{!viewModel.isWatchVideoClicked()}"-->
         </LinearLayout>
 
         <ImageView

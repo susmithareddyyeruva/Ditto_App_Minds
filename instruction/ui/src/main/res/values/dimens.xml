@@ -8,4 +8,5 @@
     <dimen name="size_21sp">21sp</dimen>
     <dimen name="size_21dp">21dp</dimen>
     <dimen name="width_percent">0.50</dimen>
+    <dimen name="size_34sp">24sp</dimen>
 </resources>

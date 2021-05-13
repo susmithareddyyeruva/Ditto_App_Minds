@@ -25,6 +25,7 @@
     <dimen name="elevation_card">15dp</dimen>
     <dimen name="margin_card">50dp</dimen>
     <dimen name="margin_text">20dp</dimen>
-    <dimen name="size_24px">24dp</dimen>
+    <dimen name="size_24px">44dp</dimen>
+    <dimen name="size_34sp">34sp</dimen>
     <dimen name="size_14sp">18sp</dimen>
 </resources>
