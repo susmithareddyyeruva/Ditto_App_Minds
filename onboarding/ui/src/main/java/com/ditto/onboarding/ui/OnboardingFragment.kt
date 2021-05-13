@@ -333,21 +333,21 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     private fun setToolbar() {
-        if (isFromHomeScreen) {
-            toolbarViewModel.isShowTransparentActionBar.set(true)
-            toolbarViewModel.isShowActionBar.set(false)
-            bottomNavViewModel.visibility.set(true)
-        } else {
-
+//        if (isFromHomeScreen) {
+//            toolbarViewModel.isShowTransparentActionBar.set(true)
+//            toolbarViewModel.isShowActionBar.set(false)
+//            bottomNavViewModel.visibility.set(true)
+//        } else {
             toolbarViewModel.isShowTransparentActionBar.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(false)
-        }
+//        }
     }
 
     private fun setHeadingTitle() {
     if(bottomNavViewModel.isGuestBase.get()){
-        viewModel.onBoardingTitle.set(getString(R.string.Welcomeheader))
+        viewModel.onBoardingTitle.set("")
+        viewModel.onBoardingUserName.set(getString(R.string.Welcomeheader))
         viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
     }else{
         viewModel.onBoardingTitle.set(getString(R.string.tutorialheader))

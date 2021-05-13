@@ -38,11 +38,23 @@
             app:destination="@id/workspaceFragment"/>
         <action
             android:id="@+id/action_home_to_my_library"
-            app:destination="@id/nav_graph_mylibrary" />
+            app:destination="@id/nav_graph_mylibrary"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_graph_mylibrary"
+            app:popUpToInclusive="true"  />
 
         <action
             android:id="@+id/action_home_to_tutorial"
-            app:destination="@id/nav_graph_tutorial" />
+            app:destination="@id/nav_graph_id_onboarding"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_graph_id_onboarding"
+            app:popUpToInclusive="true"  />
 
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"

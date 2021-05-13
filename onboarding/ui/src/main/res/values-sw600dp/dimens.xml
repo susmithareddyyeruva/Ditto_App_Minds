@@ -28,5 +28,6 @@
     <dimen name="title_margin">50dp</dimen>
     <dimen name="title_margin_top">18dp</dimen>
     <dimen name="circle_value_dimen">24sp</dimen>
+    <dimen name="padding_header_desc">15dp</dimen>
 
 </resources>

@@ -9,14 +9,13 @@
             name="viewModel"
             type="com.ditto.onboarding.ui.OnboardingViewModel" />
 
-
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F4F5F7">
+        android:layout_height="match_parent">
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -65,6 +64,20 @@
             app:layout_constraintStart_toEndOf="@+id/txt_heading"
             app:layout_constraintTop_toBottomOf="@+id/guideline_heading" />
 
+        <TextView
+            android:id="@+id/subheading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_header_desc"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:text="@{viewModel.onBoardingSubTitle}"
+            android:textSize="@dimen/size_16px"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/title_margin"
+            app:layout_constraintTop_toBottomOf="@+id/txt_heading"
+            app:layout_constraintVertical_bias="0.0" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -94,7 +107,7 @@
             android:layout_marginStart="@dimen/margin_card"
             android:layout_marginEnd="@dimen/margin_card"
             app:contentPaddingBottom="@dimen/margin_text"
-            android:visibility="@{!viewModel.isFromHome_Observable()}"
+            android:visibility="@{ viewModel.isFromHome_Observable() ? View.GONE : View.VISIBLE}"
             app:layout_constraintTop_toBottomOf="@+id/guideline_bottom">
             <TextView
                 android:id="@+id/txt_skip_continue"
@@ -123,21 +136,6 @@
                 android:text="@string/dont_show_t"
                  />
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/subheading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/title_margin_top"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:text="@{viewModel.onBoardingSubTitle}"
-            android:textSize="@dimen/size_16px"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/title_margin"
-            app:layout_constraintTop_toBottomOf="@+id/txt_heading"
-            app:layout_constraintVertical_bias="0.0" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

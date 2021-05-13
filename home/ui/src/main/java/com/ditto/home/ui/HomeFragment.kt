@@ -97,7 +97,8 @@ class HomeFragment : BaseFragment() {
             }
             HomeViewModel.Event.OnClickTutorial -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                    findNavController().navigate(R.id.action_home_to_tutorial)
+                    val bundle = bundleOf("isFromHome" to true)
+                    findNavController().navigate(R.id.action_home_to_tutorial,bundle)
                 } else {
                     logger.d("OnClickJoann failed")
                 }
