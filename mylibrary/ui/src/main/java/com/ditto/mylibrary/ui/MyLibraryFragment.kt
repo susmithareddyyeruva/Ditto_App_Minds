@@ -55,7 +55,7 @@ class MyLibraryFragment : BaseFragment() {
         setTabsAdapter()
 
         toolbarViewModel.isShowActionBar.set(false)
-        toolbarViewModel.isShowTransparentActionBar.set(true)
+        toolbarViewModel.isShowTransparentActionBar.set(false)
         //(activity as BottomNavigationActivity).setToolbarTitle("Pattern Description")
         (activity as BottomNavigationActivity).showmenu()
 

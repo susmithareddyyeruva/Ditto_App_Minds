@@ -79,4 +79,9 @@ project(':calibration-data').projectDir = new File('calibration/data')
 include ':connectivity-ui'
 project(':connectivity-ui').projectDir = new File('connectivity/ui')
 
-
+include ':menuitems-domain'
+project(':menuitems-domain').projectDir = new File('menuitems/domain')
+include ':menuitems-data'
+project(':menuitems-data').projectDir = new File('menuitems/data')
+include ':menuitems-ui'
+project(':menuitems-ui').projectDir = new File('menuitems/ui')

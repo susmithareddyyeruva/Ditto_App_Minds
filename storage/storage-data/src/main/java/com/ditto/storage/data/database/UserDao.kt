@@ -1,8 +1,8 @@
 package com.ditto.storage.data.database
 
 import androidx.room.*
-import io.reactivex.Single
 import com.ditto.storage.data.model.User
+import io.reactivex.Single
 
 
 /**
@@ -14,14 +14,23 @@ abstract class UserDao {
     abstract fun getUserData(): User
 
     @Transaction
-    open fun updateDndOnboarding(id : Int,dndOnboarding: Boolean,isLaterClicked:Boolean,isWifiLaterClicked:Boolean ): User {
-        updateDndOnboardingUser(id,dndOnboarding,isLaterClicked,isWifiLaterClicked)
+    open fun updateDndOnboarding(
+        id: Int,
+        dndOnboarding: Boolean,
+        isLaterClicked: Boolean,
+        isWifiLaterClicked: Boolean
+    ): User {
+        updateDndOnboardingUser(id, dndOnboarding, isLaterClicked, isWifiLaterClicked)
         return getUserData()
     }
 
     @Query("UPDATE user_data SET dndOnboarding=:dndOnboarding , bleDialogVisible=:isLaterClicked,wifiDialogVisible=:isWifiLaterClicked WHERE id = :id")
-    abstract fun updateDndOnboardingUser(id : Int,dndOnboarding: Boolean,isLaterClicked:Boolean,isWifiLaterClicked: Boolean )
-
+    abstract fun updateDndOnboardingUser(
+        id: Int,
+        dndOnboarding: Boolean,
+        isLaterClicked: Boolean,
+        isWifiLaterClicked: Boolean
+    )
 
 
     /**
@@ -48,10 +57,24 @@ abstract class UserDao {
     abstract fun insertUserData(user: User): Long
 
 
-    fun deleteAndInsert(user: User): Single<Long>{
+    fun deleteAndInsert(user: User): Single<Long> {
         return Single.create {
             it.onSuccess(setUserData(user))
         }
     }
 
+    fun deleteUserDataInfo(email: String): Single<Boolean> {
+        return Single.create {
+            it.onSuccess(deleteUserInfo(email))
+        }
+    }
+
+    @Transaction
+    open fun deleteUserInfo(user: String): Boolean {
+        deleteUser(user)
+        return true
+    }
+
+    @Query("DELETE FROM user_data WHERE userName= :user")
+    abstract fun deleteUser(user: String)
 }

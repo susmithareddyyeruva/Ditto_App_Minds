@@ -114,6 +114,7 @@ class InstructionFragment constructor(
         viewModel.tabPosition.set(position)
         viewModel.isShowindicator.set(true)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -176,7 +177,10 @@ class InstructionFragment constructor(
             adapter.setListData(viewModel.data.value?.instructions!!)
             viewModel.isFinalPage.set(false)
             viewModel.isStartingPage.set(true)
+            binding.bottomViewpager.visibility=View.VISIBLE
         } else {
+            binding.bottomViewpager.visibility=View.INVISIBLE
+
             val adapter =
                 InstructionAdapter(position)
             instruction_view_pager.adapter = adapter
@@ -232,6 +236,10 @@ class InstructionFragment constructor(
             is InstructionViewModel.Event.OnSkipTutorial -> {
                 clickSkipTutorial()
             }
+            is InstructionViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(
+                false
+            )
+            is InstructionViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
 
     /**
@@ -331,8 +339,7 @@ class InstructionFragment constructor(
      * [Function] Watch video click
      */
     private fun showVideoPopup() {
-        Common.isShowingVideoPopup.set(true)
-        val intent = Intent(requireActivity(), PopUpWindow::class.java)
+        val position = Common.currentSelectedTab.get()
         val filePath = if (viewModel.instructionID.get() == 1) {
             viewModel.data.value?.instructions?.get(position)?.instructions?.get(
                 instruction_view_pager.currentItem
@@ -340,11 +347,41 @@ class InstructionFragment constructor(
         } else {
             viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.videoPath
         }
-        intent.putExtra(
-            "filename",
-            filePath
-        )
-        startActivity(intent)
+
+        val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
+            viewModel.data.value?.instructions?.get(position)?.instructions?.get(instruction_view_pager.currentItem)?.title
+        } else {
+            viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.title // calibration
+        }
+
+        displayFullScreenVideo(filePath,title,"tutorial")
+    }
+
+    private fun displayFullScreenVideo(
+        filePath: String?,
+        title: String?,
+        from: String
+    ) {
+        if (findNavController().currentDestination?.id == R.id.destination_instruction
+        ) {
+            var titlen= if(position==0){
+                "Beam Setup"
+            }else{
+                "Beam Takedown"
+            }
+            val bundle = bundleOf("videoPath" to filePath,"title" to titlen,"from" to from)
+            findNavController().navigate(
+                R.id.action_destination_instruction_to_nav_graph_id_video,
+                bundle
+            )
+        } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
+            val bundle = bundleOf("videoPath" to filePath,"title" to "Calibration","from" to from)
+
+            findNavController().navigate(
+                R.id.action_destination_instruction_calibration_fragment_to_nav_graph_id_video,
+                bundle
+            )
+        }
     }
 
     /**
@@ -479,6 +516,8 @@ class InstructionFragment constructor(
     override fun onResume() {
         super.onResume()
         viewModel.isWatchVideoClicked.set(false)
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

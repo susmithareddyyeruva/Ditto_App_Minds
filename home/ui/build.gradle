@@ -94,4 +94,6 @@ dependencies {
     implementation project(path: ':storage-data')
     implementation project(path: ':storage-domain')
 
+    implementation project(path: ':menuitems-ui')
+
 }

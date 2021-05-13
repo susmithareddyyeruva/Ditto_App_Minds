@@ -13,7 +13,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
+        android:background="#F8F8F8"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -40,29 +40,33 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/header_view_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.6"
-                        android:text="@{viewModel.toolbarTitle}"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:typeface="sans"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/header_view_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="start"
+                            android:text="@{viewModel.toolbarTitle}"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/size_21sp"
+                             />
 
-                    <!-- Subtitle -->
-                    <TextView
-                        android:id="@+id/header_view_sub_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".4"
-                        android:gravity="center"
-                        android:onClick="@{() -> viewModel.onSkip()}"
-                        android:text="@string/howtoskip"
-                        android:textColor="@color/skip_text"
-                        android:textSize="@dimen/size_14sp" />
+                        <!-- Subtitle -->
+                        <TextView
+                            android:id="@+id/header_view_sub_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:layout_gravity="end"
+                            android:onClick="@{() -> viewModel.onSkip()}"
+                            android:text="@string/howtoskip"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:textSize="@dimen/size_14sp"
+                            android:drawablePadding="16dp"
+                            android:paddingEnd="16dp"
+                            app:drawableEndCompat="@drawable/right_arrow" />
 
                 </LinearLayout>
 
@@ -72,19 +76,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+
             >
 
-            <ProgressBar
-                android:id="@+id/determinateBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isShowindicator()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar"
@@ -96,23 +90,36 @@
 
             <com.ditto.howto.utils.CustomTabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="12dp"
-                app:tabRippleColor="@android:color/transparent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topbar"
-                app:tabIndicator="@drawable/tab_item_selector"
-                app:tabIndicatorGravity="center"
+                app:tabIndicatorColor="#A4211F"
+                app:tabIndicatorGravity="bottom"
                 app:tabMode="auto"
-                app:tabPaddingStart="@dimen/size_15sp"
-                app:tabPaddingEnd="@dimen/size_15sp"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-                app:tabTextColor="@color/tab_text_color">
+                app:tabPaddingEnd="@dimen/size_14px"
+                android:layout_marginStart="-105dp"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/MineCustomTabText"
+                app:tabTextColor="#A8A7A8">
 
 
             </com.ditto.howto.utils.CustomTabLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="-100dp"
+                android:background="#A8A7A8"
+                app:layout_constraintBottom_toTopOf="@id/view_pager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tabLayout"
+                app:layout_constraintVertical_bias="0.49" />
 
             <core.ui.common.NonSwipeableViewPager
                 android:id="@+id/view_pager"

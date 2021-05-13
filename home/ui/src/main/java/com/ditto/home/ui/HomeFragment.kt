@@ -14,6 +14,8 @@ import com.example.home_ui.databinding.HomeFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
+import com.example.home_ui.databinding.HomeFragmentBinding
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -54,7 +56,12 @@ class HomeFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
-        (activity as BottomNavigationActivity)?.setMenuItem(bottomNavViewModel.isGuestBase.get())
+        (activity as BottomNavigationActivity)?.refreshMenuItem()
+        if (AppState.getIsLogged()) {
+             bottomNavViewModel.isGuestBase.set(false)
+        } else {
+             bottomNavViewModel.isGuestBase.set(true)
+        }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         setHomeAdapter()

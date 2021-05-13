@@ -38,32 +38,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="2">
+                    >
 
                     <TextView
                         android:id="@+id/header_view_title"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1.6"
-                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="start"
                         android:text="@{viewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/size_21sp"
                         android:visibility="@{viewModel.isFromOnboardinScreen()}" />
 
                     <!-- Subtitle -->
                     <TextView
                         android:id="@+id/header_view_sub_title"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".4"
-                        android:gravity="center"
+                        android:gravity="end"
+                        android:layout_gravity="end"
                         android:onClick="@{() -> viewModel.onSkip()}"
                         android:text="@string/skip"
-                        android:textColor="@color/skip_text"
-                        android:textSize="@dimen/size_14sp"
-                        android:visibility="@{viewModel.isFromOnboardinScreen()}" />
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:textSize="@dimen/size_16sp"
+                        android:drawablePadding="16dp"
+                        android:paddingEnd="16dp"
+                        android:visibility="@{viewModel.isFromOnboardinScreen()}"
+                        android:drawableRight="@drawable/right_arrow" />
 
                 </LinearLayout>
 
@@ -73,18 +77,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+           >
 
-            <ProgressBar
-                android:id="@+id/determinateBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isShowindicator()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar"
@@ -96,23 +90,35 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topbar"
-                app:tabIndicator="@drawable/tab_item_selector"
-                app:tabIndicatorGravity="center"
+                app:tabIndicatorGravity="bottom"
+                app:tabIndicatorColor="#A4211F"
                 app:tabMode="auto"
-                app:tabPaddingEnd="@dimen/size_15sp"
-                app:tabPaddingStart="@dimen/size_15sp"
+                android:layout_marginStart="16dp"
+                app:tabPaddingEnd="@dimen/size_14px"
                 app:tabRippleColor="@android:color/transparent"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-                app:tabTextColor="@color/tab_text_color">
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/MineCustomTabText"
+                app:tabTextColor="#A8A7A8">
 
 
             </com.google.android.material.tabs.TabLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="-100dp"
+                android:background="#A8A7A8"
+                app:layout_constraintBottom_toTopOf="@id/view_pager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tabLayout"
+                app:layout_constraintVertical_bias="0.49" />
+
 
             <core.ui.common.NonSwipeableViewPager
                 android:id="@+id/view_pager"
