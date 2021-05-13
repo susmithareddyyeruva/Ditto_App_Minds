@@ -23,6 +23,7 @@ import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.howto_fragment.*
 import javax.inject.Inject
 
 
@@ -140,6 +141,7 @@ class HowtoFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
+            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()
