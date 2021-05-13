@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
     fun setHomeHeader() {
         if (storageManager.getStringValue(USER_FIRST_NAME) == null) {
             isGuest.set(true)
-            header.set("Hi There,")
+            header.set("Hi there,")
         } else {
             isGuest.set(false)
             header.set(storageManager.getStringValue(USER_FIRST_NAME).toString())
