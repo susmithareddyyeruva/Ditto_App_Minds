@@ -10,6 +10,7 @@
       <module name="ditto-android.core-lib" target="1.8" />
       <module name="ditto-android.dittoprojectorapp" target="1.8" />
       <module name="ditto-android.dittoProjectorApp" target="1.8" />
+      <module name="ditto-android.home-domain" target="1.8" />
       <module name="ditto-android.home-ui" target="1.8" />
       <module name="ditto-android.howto-data" target="1.8" />
       <module name="ditto-android.howto-domain" target="1.8" />

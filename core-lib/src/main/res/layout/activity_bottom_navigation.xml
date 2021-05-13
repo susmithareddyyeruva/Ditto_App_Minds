@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/holo_blue_bright"
-                    android:visibility="@{bottomNavViewModel.visibility}"
+                    android:visibility="gone"
                     app:itemBackground="@drawable/nav_item_selector"
                     app:itemIconTint="@drawable/nav_selector"
                     app:itemTextColor="@drawable/nav_selector"
