@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,11 +10,8 @@
             name="viewmodel"
             type="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppViewModel" />
     </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".aboutapp.fragment.AboutAppFragment">
@@ -29,25 +28,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".05" />
+            app:layout_constraintGuide_percent=".07" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".95" />
-
+            app:layout_constraintGuide_percent=".93" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:gravity="left"
+            android:gravity="start"
             android:text="@string/about_app"
             android:textColor="@color/black"
-            android:textSize="@dimen/str_quest"
+            app:layout_constraintEnd_toEndOf="@id/guide_end"
             app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/guide_top" />
+            app:layout_constraintTop_toTopOf="@id/guide_top"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>
