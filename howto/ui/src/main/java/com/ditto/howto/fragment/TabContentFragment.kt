@@ -16,6 +16,7 @@ import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.tabcontent_fragment.*
 import javax.inject.Inject
 
 //to show the content inside the tabs
@@ -67,6 +68,13 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
                 adapter?.setListData(it)
             }
         }
+        if(pos==3){
+            howto_viewpager.visibility=View.VISIBLE
+
+        }else{
+            howto_viewpager.visibility=View.INVISIBLE
+
+        }
         binding.tablay.setupWithViewPager(binding.instructionViewPager)
         binding.instructionViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -93,6 +101,7 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
                     } else {
                         vm.isFinalPage.set(false)
                         vm.isStartingPage.set(false)
+
                     }
                 }
             }

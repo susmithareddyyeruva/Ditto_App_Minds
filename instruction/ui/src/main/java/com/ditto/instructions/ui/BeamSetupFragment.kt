@@ -1,5 +1,8 @@
 package com.ditto.instructions.ui
 
+import android.graphics.Typeface
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +22,9 @@ import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.fragment_beam_setup.*
+import kotlinx.android.synthetic.main.fragment_beam_setup.toolbar
+import kotlinx.android.synthetic.main.instruction_fragment.*
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -88,7 +94,9 @@ class BeamSetupFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
+            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
             viewModel.toolbarTitle.set("Beam Setup & Takedown")
+
             viewModel.isFromOnboardinScreen.set(true)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)

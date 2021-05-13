@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="skip"><u>Skip Tutorial</u></string>
-    <string name="gotocalib"><u>Go To Calibration</u></string>
-    <string name="gotohowto"><u>Go To How To</u></string>
+    <string name="skip">SKIP TUTORIAL</string>
+    <string name="gotocalib"><u>GO TO CALIBRATE</u></string>
+    <string name="gotohowto"><u>GO TO HOW TO</u></string>
     <string name="Beamsetupheader">Beam Setup &amp; Takedown</string>
     <string name="Calibrationheader">Calibration</string>
     <string name="watchvideo">Watch Video</string>
     <string name="Completionmessage">You completed the Beam Setup Tutorial!</string>
-    <string name="Calibrate">Calibrate</string>
+    <string name="Calibrate">CALIBRATE</string>
     <string name="logintext">Explore a hassle free way of cutting and sewing..</string>
     <string name="Welcome">Welcome</string>
     <string name="Username">Username</string>

@@ -177,7 +177,10 @@ class InstructionFragment constructor(
             adapter.setListData(viewModel.data.value?.instructions!!)
             viewModel.isFinalPage.set(false)
             viewModel.isStartingPage.set(true)
+            binding.bottomViewpager.visibility=View.VISIBLE
         } else {
+            binding.bottomViewpager.visibility=View.INVISIBLE
+
             val adapter =
                 InstructionAdapter(position)
             instruction_view_pager.adapter = adapter
@@ -513,6 +516,8 @@ class InstructionFragment constructor(
     override fun onResume() {
         super.onResume()
         viewModel.isWatchVideoClicked.set(false)
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

@@ -4,4 +4,7 @@
     <dimen name="size_16px">24sp</dimen>
     <dimen name="size_14px">18sp</dimen>
     <dimen name="size_12px">16sp</dimen>
+    <dimen name="size_21sp">32sp</dimen>
+    <dimen name="size_21dp">30dp</dimen>
+
 </resources>
