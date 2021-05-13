@@ -218,19 +218,3 @@ dependencies {
     implementation project(path: ':menuitems-domain')
     implementation project(path: ':menuitems-data')
 }
-//sonarqube {
-//    properties {
-//        property "sonar.projectName", "Ditto"
-//        property "sonar.projectKey", "Ditto"
-//        property "sonar.host.url", "http://localhost:9000"
-//        property "sonar.language", "kotlin"
-//        property "sonar.sources", "src/main/java"
-//        property "sonar.projectKey", "88736342995a348e01549dbdf0026970a5006e27"
-//        property "sonar.exclusions", '**/*Test*/**,' +
-//                '*.json,' +
-//                '**/*test*/**,' +
-//                '**/.gradle/**,' +
-//                '**/R.class'
-//    }
-//}
-

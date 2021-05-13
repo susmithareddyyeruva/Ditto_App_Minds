@@ -5,12 +5,10 @@
     android:id="@+id/nav_graph_customercare"
     app:startDestination="@id/destination_customercare"
     tools:ignore="UnusedNavigation">
+
     <fragment
         android:id="@+id/destination_customercare"
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
         android:label="Customer Support"
-        tools:layout="@layout/customer_care_fragment">
-
-
-    </fragment>
+        tools:layout="@layout/customer_care_fragment"/>
 </navigation>

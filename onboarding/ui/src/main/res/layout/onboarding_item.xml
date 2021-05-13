@@ -24,7 +24,7 @@
         app:contentPaddingBottom="@dimen/margin_text"
         android:elevation="@dimen/elevation_card"
         android:onClick="@{() -> viewModel.onItemClick(onboardingValue.id)}"
-        app:cardBackgroundColor="@color/white">
+        app:cardBackgroundColor="@android:color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                 android:textSize="@dimen/size_18sp"
                 android:text="@{onboardingValue.title}"
                 android:fontFamily="@font/avenir_next_it_pro_bold"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView"

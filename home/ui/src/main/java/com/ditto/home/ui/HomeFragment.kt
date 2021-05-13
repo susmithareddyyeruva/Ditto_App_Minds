@@ -14,7 +14,6 @@ import com.example.home_ui.databinding.HomeFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
-import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity

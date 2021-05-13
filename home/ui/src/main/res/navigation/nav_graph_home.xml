@@ -44,6 +44,13 @@
             android:id="@+id/action_home_to_tutorial"
             app:destination="@id/nav_graph_tutorial" />
 
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
+        <action
+            android:id="@+id/action_destination_to_FQAfragment"
+            app:destination="@id/FQAfragment" />
+
     </fragment>
 
     <fragment
@@ -59,4 +66,13 @@
         android:label="Shop Joann"
         tools:layout="@layout/shop_fragment" />
 
+    <fragment
+        android:id="@+id/customerCareFragment"
+        android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
+        android:label="Customer Support"
+        tools:layout="@layout/customer_care_fragment"/>
+    <fragment
+        android:id="@+id/FQAfragment"
+        android:name="com.ditto.menuitems_ui.faq.ui.FQAfragment"
+        android:label="Frequently Asked Questions" />
 </navigation>
