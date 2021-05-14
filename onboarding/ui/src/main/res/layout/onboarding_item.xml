@@ -16,64 +16,75 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="@dimen/onboarding_card"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_card"
-        android:layout_marginTop="@dimen/margin_onboardcard_top"
-        android:layout_marginEnd="@dimen/margin_card"
-        app:contentPaddingBottom="@dimen/margin_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_card_item"
         android:elevation="@dimen/elevation_card"
         android:onClick="@{() -> viewModel.onItemClick(onboardingValue.id)}"
         app:cardBackgroundColor="@android:color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/reference_view"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                app:layout_constraintDimensionRatio="269:217"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:tag="image_tag"
-                android:layout_margin="6dp"
-                app:layout_constraintDimensionRatio="294:220"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="4dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="261:135"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="@+id/reference_view"
+                app:layout_constraintEnd_toEndOf="@+id/reference_view"
+                app:layout_constraintStart_toStartOf="@+id/reference_view"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/text_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_text"
-                android:text="@{onboardingValue.title}"
-                android:textAppearance="@style/text_desc"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+<!--            <TextView-->
+<!--                android:id="@+id/text_header"-->
+<!--                android:layout_width="@dimen/size_0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="@dimen/margin_text"-->
+<!--                android:text="@{onboardingValue.title}"-->
+<!--                android:textAppearance="@style/text_desc"-->
+<!--                android:textStyle="bold"-->
+<!--                android:visibility="invisible"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/reference_view"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/reference_view"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/imageView" />-->
 
             <TextView
                 android:id="@+id/text_desc"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/size_0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_text"
-                android:layout_marginEnd="@dimen/margin_text"
+                android:layout_margin="@dimen/margin_text"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{onboardingValue.description}"
                 android:textAppearance="@style/text_desc"
-                app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_header" />
+                app:layout_constraintBottom_toBottomOf="@+id/reference_view"
+                app:layout_constraintEnd_toEndOf="@+id/reference_view"
+                app:layout_constraintStart_toStartOf="@+id/reference_view"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintTop_toBottomOf="@+id/count" />
 
             <TextView
                 android:id="@+id/count"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
-                android:layout_marginEnd="@dimen/margin_text"
                 android:background="@drawable/meroon_count_bg"
                 android:textAppearance="@style/text_count"
                 android:gravity="center"
@@ -81,12 +92,15 @@
                 android:textSize="@dimen/circle_value_dimen"
                 android:text="@{Integer.toString(onboardingValue.id)}"
                 app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView"
-                app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintVertical_bias="0.74"
-                app:layout_constraintWidth_default="percent"
-                app:layout_constraintWidth_percent="0.23" />
+                app:layout_constraintEnd_toEndOf="@+id/reference_view"
+                app:layout_constraintStart_toStartOf="@+id/reference_view"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/reference_view"
+                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintHorizontal_bias=".90"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.2" />
+
             <TextView
                 android:id="@+id/theme_header"
                 android:layout_width="wrap_content"
@@ -99,18 +113,10 @@
                 android:text="@{onboardingValue.title}"
                 android:fontFamily="@font/avenir_next_it_pro_bold"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintStart_toStartOf="@id/imageView"
+                app:layout_constraintBottom_toBottomOf="@+id/reference_view"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView"
-                app:layout_constraintVertical_bias="0.166" />
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.30"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintVertical_bias="0.10" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

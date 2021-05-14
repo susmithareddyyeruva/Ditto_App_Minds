@@ -86,6 +86,8 @@
             app:data="@{viewModel.data}"
             android:orientation="horizontal"
             android:layout_marginStart="@dimen/list_margin"
+            app:layout_constraintHeight_percent=".5"
+            app:layout_constraintVertical_bias=".3"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
             app:layout_constraintEnd_toEndOf="parent"

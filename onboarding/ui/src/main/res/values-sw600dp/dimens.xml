@@ -26,6 +26,7 @@
     <dimen name="margin_onboardcard_top">70dp</dimen>
     <dimen name="onboarding_card">450dp</dimen>
     <dimen name="title_margin">50dp</dimen>
+    <dimen name="list_margin">40dp</dimen>
     <dimen name="title_margin_top">18dp</dimen>
     <dimen name="circle_value_dimen">24sp</dimen>
     <dimen name="padding_header_desc">15dp</dimen>
