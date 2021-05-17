@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -338,6 +339,10 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             toolbarViewModel.isShowTransparentActionBar.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(false)
+        if (viewModel.isFromHome_Observable.get()){
+            (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+            (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
 //        }
     }
 
