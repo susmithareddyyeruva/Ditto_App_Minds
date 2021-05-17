@@ -460,7 +460,7 @@ class InstructionFragment constructor(
             } else {
                 (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.Calibrationheader))
             }
-            (activity as BottomNavigationActivity).showmenu()
+            (activity as BottomNavigationActivity).hidemenu()
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)

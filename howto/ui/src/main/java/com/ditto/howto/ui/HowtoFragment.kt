@@ -166,8 +166,8 @@ class HowtoFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(true)
             toolbarViewModel.isShowActionBar.set(true)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            (activity as BottomNavigationActivity).setToolbarTitle("How to")
-            (activity as BottomNavigationActivity).showmenu()
+            (activity as BottomNavigationActivity).setToolbarTitle("How To")
+            (activity as BottomNavigationActivity).hidemenu()
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
