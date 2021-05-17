@@ -4,5 +4,6 @@
     <dimen name="size_21sp">28sp</dimen>
     <dimen name="size_16px">20sp</dimen>
     <dimen name="size_16sp">18sp</dimen>
+    <dimen name="size_12px">12sp</dimen>
 
 </resources>

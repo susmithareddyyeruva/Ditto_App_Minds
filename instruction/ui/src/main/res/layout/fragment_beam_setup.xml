@@ -63,11 +63,11 @@
                         android:text="@string/skip"
                         android:textColor="@color/black"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
-                        android:textSize="@dimen/size_16sp"
+                        android:textSize="@dimen/size_12px"
                         android:drawablePadding="16dp"
                         android:paddingEnd="16dp"
                         android:visibility="@{viewModel.isFromOnboardinScreen()}"
-                        android:drawableRight="@drawable/right_arrow" />
+                        android:drawableRight="@drawable/ic_right_arrow" />
 
                 </LinearLayout>
 
