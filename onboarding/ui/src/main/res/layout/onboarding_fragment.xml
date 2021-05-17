@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_header_desc"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text="@{viewModel.onBoardingSubTitle}"
             android:textSize="@dimen/size_16px"
             android:textColor="@android:color/black"
