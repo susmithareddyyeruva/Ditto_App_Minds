@@ -12,4 +12,5 @@
     <string name="tutorialheader">Welcome back,</string>
     <string name="tutorial_sub_header">What would you like to do today?</string>
     <string name="tutorial_sub_header_for_guest">Let\'s get started !</string>
+    <string name="hi_text">Hi </string>
 </resources>
