@@ -459,9 +459,10 @@ class InstructionFragment constructor(
                 viewModel.toolbarTitle.set("Beam Setup & Takedown")
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.Beamsetupheader))
             } else {
-                (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.Calibrationheader))
+                viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
+                (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+                (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
             (activity as BottomNavigationActivity).hidemenu()
         } else {
