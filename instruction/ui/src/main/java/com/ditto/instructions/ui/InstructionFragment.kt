@@ -452,10 +452,13 @@ class InstructionFragment constructor(
     private fun setupToolbar() {
         arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
         if (isFromHome) {
-            bottomNavViewModel.visibility.set(true)
-            toolbarViewModel.isShowActionBar.set(true)
+            bottomNavViewModel.visibility.set(false)
+            toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             if (viewModel.instructionID.get() == 1) {
+                viewModel.toolbarTitle.set("Beam Setup & Takedown")
+                (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+                (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.Beamsetupheader))
             } else {
                 (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.Calibrationheader))
