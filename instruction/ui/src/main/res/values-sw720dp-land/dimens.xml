@@ -6,5 +6,6 @@
     <dimen name="size_12px">16sp</dimen>
     <dimen name="size_21sp">32sp</dimen>
     <dimen name="size_21dp">30dp</dimen>
+    <dimen name="end_margin_calib_btn">14dp</dimen>
 
 </resources>
