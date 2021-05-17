@@ -4,6 +4,7 @@
     <dimen name="padding_header_desc">15dp</dimen>
     <dimen name="text_header">34sp</dimen>
     <dimen name="text_desc">22sp</dimen>
+    <dimen name="list_left_margin">10dp</dimen>
 
     <dimen name="text_pattern_header">26sp</dimen>
     <dimen name="text_pattern_desc">16sp</dimen>
