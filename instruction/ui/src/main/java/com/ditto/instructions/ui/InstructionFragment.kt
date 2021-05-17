@@ -457,10 +457,12 @@ class InstructionFragment constructor(
             toolbarViewModel.isShowTransparentActionBar.set(false)
             if (viewModel.instructionID.get() == 1) {
                 viewModel.toolbarTitle.set("Beam Setup & Takedown")
+                toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             } else {
                 viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
+                toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
@@ -469,6 +471,7 @@ class InstructionFragment constructor(
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
+            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()

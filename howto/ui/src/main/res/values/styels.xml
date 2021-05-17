@@ -6,6 +6,7 @@
 
     <style name="ToolBarStyle"  parent="AppTheme">
         <item name="android:textColorSecondary">#000</item>
+        <item name="navigationIcon">@drawable/ic_baseline_arrow_back_ios_24</item>
 
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

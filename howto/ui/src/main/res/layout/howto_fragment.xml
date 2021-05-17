@@ -56,7 +56,7 @@
                         android:id="@+id/header_view_sub_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center_vertical"
                         android:drawablePadding="16dp"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="end"
@@ -64,7 +64,7 @@
                         android:paddingEnd="16dp"
                         android:text="@string/howtoskip"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/size_14sp"
+                        android:textSize="@dimen/size_12px"
                         app:drawableEndCompat="@drawable/right_arrow" />
 
                 </LinearLayout>
@@ -74,9 +74,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            >
+            android:layout_height="match_parent">
 
 
             <androidx.constraintlayout.widget.Guideline
