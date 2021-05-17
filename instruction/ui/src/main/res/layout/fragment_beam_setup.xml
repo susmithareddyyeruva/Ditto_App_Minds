@@ -67,7 +67,7 @@
                         android:drawablePadding="16dp"
                         android:paddingEnd="16dp"
                         android:visibility="@{viewModel.isFromOnboardinScreen()}"
-                        android:drawableRight="@drawable/ic_right_arrow" />
+                        android:drawableRight="@drawable/right_arrow" />
 
                 </LinearLayout>
 
