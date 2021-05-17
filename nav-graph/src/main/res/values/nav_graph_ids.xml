@@ -16,6 +16,8 @@
     <item name="instruction_navigation" type="id" />
     <item name="nav_graph_workspace" type="id" />
     <item name="destination_customercare" type="id" />
+    <item name="nav_graph_customercare" type="id" />
+    <item name="nav_graph_faq" type="id" />
 
     <!--action items-->
     <item name="action_splashActivity_to_LoginFragment" type="id" />

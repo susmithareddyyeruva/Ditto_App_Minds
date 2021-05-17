@@ -114,6 +114,7 @@ class InstructionFragment constructor(
         viewModel.tabPosition.set(position)
         viewModel.isShowindicator.set(true)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -176,7 +177,10 @@ class InstructionFragment constructor(
             adapter.setListData(viewModel.data.value?.instructions!!)
             viewModel.isFinalPage.set(false)
             viewModel.isStartingPage.set(true)
+            binding.bottomViewpager.visibility=View.VISIBLE
         } else {
+            binding.bottomViewpager.visibility=View.INVISIBLE
+
             val adapter =
                 InstructionAdapter(position)
             instruction_view_pager.adapter = adapter
@@ -232,6 +236,10 @@ class InstructionFragment constructor(
             is InstructionViewModel.Event.OnSkipTutorial -> {
                 clickSkipTutorial()
             }
+            is InstructionViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(
+                false
+            )
+            is InstructionViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
         }
 
     /**
@@ -452,7 +460,7 @@ class InstructionFragment constructor(
             } else {
                 (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.Calibrationheader))
             }
-            (activity as BottomNavigationActivity).showmenu()
+            (activity as BottomNavigationActivity).hidemenu()
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
@@ -508,6 +516,8 @@ class InstructionFragment constructor(
     override fun onResume() {
         super.onResume()
         viewModel.isWatchVideoClicked.set(false)
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

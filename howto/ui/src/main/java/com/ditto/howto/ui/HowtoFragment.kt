@@ -27,6 +27,7 @@ import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.howto_fragment.*
 import javax.inject.Inject
 
 
@@ -76,6 +77,7 @@ class HowtoFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         Common.currentSelectedTab.set(0)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +111,8 @@ class HowtoFragment : BaseFragment() {
                 }
                 Unit
             }
+            is HowtoViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            is HowtoViewModel.Event.OnShowProgress ->bottomNavViewModel.showProgress.set(true)
             is HowtoViewModel.Event.OnSpinchAndZoom -> {
                 showPinchZoomPopup(viewModel.imagePath)
             }
@@ -162,12 +166,13 @@ class HowtoFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(true)
             toolbarViewModel.isShowActionBar.set(true)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            (activity as BottomNavigationActivity).setToolbarTitle("How to")
-            (activity as BottomNavigationActivity).showmenu()
+            (activity as BottomNavigationActivity).setToolbarTitle("How To")
+            (activity as BottomNavigationActivity).hidemenu()
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
+            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()

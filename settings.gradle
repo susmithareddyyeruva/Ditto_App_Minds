@@ -41,6 +41,8 @@ project(':instructions-data').projectDir = new File('instruction/data')
 
 include ':home-ui'
 project(':home-ui').projectDir = new File('home/ui')
+include ':home-domain'
+project(':home-domain').projectDir = new File('home/domain')
 
 include ':mylibrary-ui'
 project(':mylibrary-ui').projectDir = new File('mylibrary/ui')

@@ -26,4 +26,8 @@
         <item name="colorAccent">#FFFFFF</item>
     </style>
 
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/size_14sp</item>
+        <item name="fontFamily">@font/avenir_next_lt_pro_demi</item>
+    </style>
 </resources>

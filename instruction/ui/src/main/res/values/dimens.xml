@@ -5,4 +5,8 @@
     <dimen name="size_14px">14sp</dimen>
     <dimen name="size_12px">12sp</dimen>
     <dimen name="size_24px">24dp</dimen>
+    <dimen name="size_21sp">21sp</dimen>
+    <dimen name="size_21dp">21dp</dimen>
+    <dimen name="width_percent">0.50</dimen>
+    <dimen name="size_34sp">24sp</dimen>
 </resources>

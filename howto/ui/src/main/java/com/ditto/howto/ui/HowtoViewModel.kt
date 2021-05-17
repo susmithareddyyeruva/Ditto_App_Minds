@@ -85,6 +85,7 @@ class HowtoViewModel @Inject constructor(
      *[Function] Handling response after DB call
      */
     private fun handleFetchResult(result: Result<HowToData>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
@@ -123,6 +124,8 @@ class HowtoViewModel @Inject constructor(
         object OnNextButtonClicked : Event()
         object OnPreviousButtonClicked : Event()
         object OnPlayVideoClicked : Event()
+        object OnHideProgress : Event()
+        object OnShowProgress : Event()
         object OnItemClick : Event()
         object OnSpinchAndZoom : Event()
     }

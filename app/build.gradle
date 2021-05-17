@@ -32,7 +32,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "2.03(2)"
+        versionName "2.04"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,8 +42,8 @@ android {
     buildTypes {
         release {
             debuggable false
-            minifyEnabled true
-            shrinkResources true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
             buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
@@ -218,19 +218,3 @@ dependencies {
     implementation project(path: ':menuitems-domain')
     implementation project(path: ':menuitems-data')
 }
-//sonarqube {
-//    properties {
-//        property "sonar.projectName", "Ditto"
-//        property "sonar.projectKey", "Ditto"
-//        property "sonar.host.url", "http://localhost:9000"
-//        property "sonar.language", "kotlin"
-//        property "sonar.sources", "src/main/java"
-//        property "sonar.projectKey", "88736342995a348e01549dbdf0026970a5006e27"
-//        property "sonar.exclusions", '**/*Test*/**,' +
-//                '*.json,' +
-//                '**/*test*/**,' +
-//                '**/.gradle/**,' +
-//                '**/R.class'
-//    }
-//}
-
