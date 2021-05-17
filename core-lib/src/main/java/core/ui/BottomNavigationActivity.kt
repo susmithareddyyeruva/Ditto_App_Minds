@@ -11,9 +11,12 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
 import android.widget.ExpandableListView.OnChildClickListener
 import android.widget.ExpandableListView.OnGroupClickListener
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -29,14 +32,11 @@ import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
 import core.ui.adapter.ExpandableMenuListAdapter
-import core.ui.common.MenuModel
 import core.ui.common.NoScrollExListView
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import kotlinx.android.synthetic.main.nav_drawer_header.*
-import java.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
@@ -344,7 +344,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             logoutUser(true)
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
             logoutUser(false)
-        }  else {
+        }
+        else  if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))){
+            navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+        }
+        else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG)
                 .show()
         }

@@ -63,13 +63,14 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        if (core.network.Utility.isNetworkAvailable(requireContext())) {
+       /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnBoardingDataFromApi()
 
         } else {
             viewModel.fetchOnBoardingData()
-        }
+        }*/
+        viewModel.fetchOnBoardingData()
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()

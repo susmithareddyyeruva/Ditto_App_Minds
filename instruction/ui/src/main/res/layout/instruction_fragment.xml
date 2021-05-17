@@ -227,7 +227,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/size_14sp"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            android:visibility="@{(viewModel.instructionID == 1 &amp;&amp; viewModel.isFromOnboardinScreen()) ? View.VISIBLE : View.GONE}" />
+                            android:visibility="@{(viewModel.instructionID == 1)}" />
 
                     </RelativeLayout>
 
