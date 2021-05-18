@@ -9,7 +9,12 @@ fun User.toUserDomain(): LoginUser {
         isLoggedIn = this.isLoggedIn,
         dndOnboarding = this.dndOnboarding,
         bleDialogVisible = this.bleDialogVisible,
-        wifiDialogVisible = this.wifiDialogVisible
+        wifiDialogVisible = this.wifiDialogVisible,
+        cMirrorReminder = this.cMirrorReminder,
+        cReceiveEmail = this.cReceiveEmail,
+        cSpliceCutCompleteReminder = this.cSpliceCutCompleteReminder,
+        cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
+        cSpliceReminder = this.cSpliceReminder
 
     )
 }
@@ -20,6 +25,11 @@ fun LoginUser.toDomain(): User {
         isLoggedIn = this.isLoggedIn,
         dndOnboarding = this.dndOnboarding,
         bleDialogVisible = this.bleDialogVisible,
-        wifiDialogVisible = this.wifiDialogVisible
+        wifiDialogVisible = this.wifiDialogVisible,
+        cMirrorReminder = this.cMirrorReminder,
+        cReceiveEmail = this.cReceiveEmail,
+        cSpliceCutCompleteReminder = this.cSpliceCutCompleteReminder,
+        cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
+        cSpliceReminder = this.cSpliceReminder
     )
 }

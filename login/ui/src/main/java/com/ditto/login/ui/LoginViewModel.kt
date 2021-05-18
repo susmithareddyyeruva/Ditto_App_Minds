@@ -128,7 +128,12 @@ class LoginViewModel @Inject constructor(
                             previous_login_time = result.data.previous_login_time,
                             previous_visit_time = result.data.previous_visit_time,
                             salutation = result.data.salutation,
-                            isLoggedIn = true
+                            isLoggedIn = true,
+                            cMirrorReminder = result.data.cMirrorReminder,
+                            cReceiveEmail = result.data.cReceiveEmail,
+                            cSpliceCutCompleteReminder = result.data.cSpliceCutCompleteReminder,
+                            cSpliceMultiplePieceReminder = result.data.cSpliceMultiplePieceReminder,
+                            cSpliceReminder = result.data.cSpliceReminder
                         )
                     )
                         .subscribeOn(Schedulers.io())
