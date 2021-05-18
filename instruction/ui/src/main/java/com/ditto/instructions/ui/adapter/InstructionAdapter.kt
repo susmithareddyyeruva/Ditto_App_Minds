@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.ditto.howto.adapter.DoubleClickListener
@@ -59,7 +60,7 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
                 "drawable",
                 parent.context.packageName
             )
-            val drawable: Drawable? = resID?.let { res.getDrawable(it) }
+            val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
             binding.imageStep.setImageBitmap(bitmap)
           /*  Glide.with(parent.context)

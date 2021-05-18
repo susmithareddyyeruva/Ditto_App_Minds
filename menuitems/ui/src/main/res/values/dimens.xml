@@ -7,4 +7,5 @@
     <dimen name="str_about">16sp</dimen>
     <dimen name="str_email__phone_text">14sp</dimen>
     <dimen name="str_phone_call">24sp</dimen>
+    <dimen name="about_app_desc">14sp</dimen>
 </resources>
