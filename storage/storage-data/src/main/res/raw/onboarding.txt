@@ -72,7 +72,7 @@
     },
     {
       "id": 3,
-      "title": "How to",
+      "title": "How To",
       "description": "Use Ditto to trace and sew without hassle",
       "imagePath": "beamsetupstepone",
       "instructions": [
