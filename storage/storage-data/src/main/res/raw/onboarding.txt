@@ -63,8 +63,7 @@
         {
           "id": 2,
           "title": "Necessary to make sure pattern pieces project in the accurate size and shape, please watch the video instruction",
-          "description": "Uses this device to take a photo of the calibration printout and calibration lighted projection.
-           <br><br>When all calibration setup steps are completed, press the Calibration button below to launch the camera and project the calibration lighted projection.",
+          "description": "Uses this device to take a photo of the calibration printout and calibration lighted projection.",
           "imagePath": "calib2",
           "videoPath": "vid_calib2"
         }

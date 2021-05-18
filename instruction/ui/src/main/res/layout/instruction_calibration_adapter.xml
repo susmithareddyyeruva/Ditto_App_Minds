@@ -232,7 +232,7 @@
                     android:background="@drawable/ic_button_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:textColor="@color/White"
-                    android:visibility="@{viewModel.isFinalPage() &amp;&amp; viewModel.instructionID == 2 &amp;&amp; !viewModel.isFromCameraScreen()}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHeight_default="percent"

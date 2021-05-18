@@ -77,7 +77,7 @@ class ExpandableMenuListAdapter(
         }
         val headerMenuTitle = convertView?.findViewById<TextView>(R.id.ic_menu_text)
         headerMenuTitle?.text = headerTitle
-        if(headerTitle == "Logout"){
+        if(headerTitle == "Log Out"){
             headerMenuTitle?.setTextColor(context.getColor(R.color.logout_red))
         }else if(headerTitle == "Sign in"){
             headerMenuTitle?.setTextColor(context.getColor(R.color.sign_in_blue))
