@@ -353,9 +353,9 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         viewModel.onBoardingUserName.set(getString(R.string.Welcomeheader))
         viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
     }else{
-        viewModel.onBoardingTitle.set(getString(R.string.hi_text))
+        viewModel.onBoardingTitle.set("")
         viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
-        viewModel.onBoardingUserName.set(" "+bottomNavViewModel.userFirstNameBase.get() + ",")
+        viewModel.onBoardingUserName.set("Hi "+bottomNavViewModel.userFirstNameBase.get() + ",")
 
     }
 
