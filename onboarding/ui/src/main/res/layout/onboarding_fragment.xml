@@ -119,7 +119,7 @@
             android:layout_marginTop="@dimen/padding_header_desc"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text="@{viewModel.onBoardingSubTitle}"
-            android:visibility="@{ viewModel.isFromHome_Observable() ? View.INVISIBLE : View.VISIBLE}"
+            android:visibility="@{ viewModel.isFromHome_Observable() ? View.GONE : View.VISIBLE}"
             android:textSize="@dimen/size_16px"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
