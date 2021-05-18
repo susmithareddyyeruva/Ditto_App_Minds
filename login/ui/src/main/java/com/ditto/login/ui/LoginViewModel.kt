@@ -14,10 +14,7 @@ import com.ditto.login.domain.LoginResultDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.storage.domain.StorageManager
-import core.USER_EMAIL
-import core.USER_FIRST_NAME
-import core.USER_LAST_NAME
-import core.USER_PHONE
+import core.*
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -95,6 +92,18 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(USER_PHONE, result.data.phone_home ?: "")
                     storageManager.savePrefs(USER_FIRST_NAME, result.data.first_name ?: "")
                     storageManager.savePrefs(USER_LAST_NAME, result.data.last_name ?: "")
+                    storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
+                    storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
+                    storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
+                    storageManager.savePrefs(
+                        SPLICE_CUT_COMPLETE_REMINDER,
+                        result.data.cSpliceCutCompleteReminder
+                    )
+                    storageManager.savePrefs(
+                        MULTIPLE_PIECE_REMINDER,
+                        result.data.cSpliceMultiplePieceReminder
+                    )
+
                     userEmail = result.data.email ?: ""
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
