@@ -26,4 +26,21 @@
     <dimen name="size_24px">44dp</dimen>
     <dimen name="size_34sp">34sp</dimen>
     <dimen name="size_14sp">18sp</dimen>
+    <dimen name="size_search">25sp</dimen>
+    <dimen name="size_21sp">28sp</dimen>
+    <dimen name="size_pattern_lib_text">30sp</dimen>
+    <dimen name="maergin_start_search">35dp</dimen>
+    <dimen name="margin_start_vertical_view">35dp</dimen>
+    <dimen name="sync_height">41.36dp</dimen>
+    <dimen name="sync_width">30.08dp</dimen>
+    <dimen name="filter_height">29.18dp</dimen>
+    <dimen name="filter_width">31.66dp</dimen>
+    <dimen name="margin_end_search">91.15dp</dimen>
+    <dimen name="txt_size_new">13sp</dimen>
+    <dimen name="txt_clear_filter">22sp</dimen>
+    <dimen name="blue_filter_dot">15dp</dimen>
+    <dimen name="txt_filter_result">22sp</dimen>
+    <dimen name="search_width">17.94dp</dimen>
+    <dimen name="search_height">17.94dp</dimen>
+
 </resources>
