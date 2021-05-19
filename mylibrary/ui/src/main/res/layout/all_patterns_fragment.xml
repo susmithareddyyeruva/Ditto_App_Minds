@@ -28,15 +28,15 @@
             android:id="@+id/guide_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent=".02"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".02" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent=".98"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".98" />
 
 
         <com.google.android.material.appbar.AppBarLayout
@@ -62,19 +62,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:foregroundGravity="center">
+
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guide_startn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintGuide_percent=".05"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".05" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guide_endn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintGuide_percent=".98"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".98" />
+
                     <TextView
                         android:id="@+id/header_view_title"
                         android:layout_width="wrap_content"
@@ -107,8 +109,8 @@
                         android:drawablePadding="@dimen/dimen_5"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
-                        android:text="@string/text_sync"
                         android:onClick="@{() -> viewModel.onSyncClick()}"
+                        android:text="@string/text_sync"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
                         app:layout_constraintBottom_toBottomOf="@id/header_view_title"
@@ -125,8 +127,8 @@
                         android:drawablePadding="@dimen/dimen_5"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
-                        android:text="@string/text_search"
                         android:onClick="@{() -> viewModel.onSearchClick()}"
+                        android:text="@string/text_search"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
                         app:layout_constraintBottom_toBottomOf="@id/header_view_title"
@@ -139,23 +141,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_5"
                         android:background="@drawable/blue_filter_circle"
-                        app:layout_constraintTop_toTopOf="@id/tv_filter"
-                        app:layout_constraintStart_toStartOf="@id/tv_filter"/>
+                        app:layout_constraintStart_toStartOf="@id/tv_filter"
+                        app:layout_constraintTop_toTopOf="@id/tv_filter" />
 
                     <TextView
                         android:id="@+id/tv_filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="@dimen/margin_card_end"
                         android:drawableStart="@drawable/ic_filter"
                         android:drawablePadding="@dimen/dimen_5"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
-                        android:text="@string/text_filter"
                         android:onClick="@{() -> viewModel.onFilterClick()}"
+                        android:text="@string/text_filter"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
-                        android:layout_marginEnd="@dimen/margin_card_end"
                         app:layout_constraintBottom_toBottomOf="@id/header_view_title"
                         app:layout_constraintEnd_toStartOf="@id/guide_endn"
                         app:layout_constraintTop_toTopOf="@id/header_view_title" />
@@ -169,8 +171,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@id/guide_start"
-            app:layout_constraintEnd_toStartOf="@id/guide_end">
+            app:layout_constraintEnd_toStartOf="@id/guide_end"
+            app:layout_constraintStart_toEndOf="@id/guide_start">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar"
@@ -208,5 +210,32 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="false">
+
+
+            <include
+                layout="@layout/app_bar_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:fitsSystemWindows="true"
+                app:headerLayout="@layout/nav_drawer_header_filter" />
+
+
+        </androidx.drawerlayout.widget.DrawerLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

@@ -2,15 +2,13 @@ package com.ditto.mylibrary.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -28,7 +26,7 @@ import javax.inject.Inject
 import kotlin.Comparator
 
 
-class AllPatternsFragment : BaseFragment() {//todo
+class AllPatternsFragment : BaseFragment() {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -39,6 +37,7 @@ class AllPatternsFragment : BaseFragment() {//todo
     private val viewModel: AllPatternsViewModel by ViewModelDelegate()
     lateinit var binding: AllPatternsFragmentBinding
     private var patternId: Int = 0
+    private var isOpen = true
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -58,6 +57,7 @@ class AllPatternsFragment : BaseFragment() {//todo
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
         setUpToolbar()
+        setUpNavigationDrawer()
         viewModel.fetchOnPatternData()
     }
 
@@ -77,12 +77,29 @@ class AllPatternsFragment : BaseFragment() {//todo
             }
     }
 
+    private fun toggleDrawer() {
+        if (isOpen) {
+            binding.drawerLayout.openDrawer(Gravity.RIGHT)
+            isOpen = false
+        } else {
+            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            isOpen = true
+
+        }
+    }
+
     private fun setPatternAdapter() {
         val adapter = PatternAdapter()
         val spanCount = 3// 3 columns
         val spacing = 50 // 50px
         val includeEdge = false
-        binding.recyclerViewPatterns.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+        binding.recyclerViewPatterns.addItemDecoration(
+            GridSpacingItemDecoration(
+                spanCount,
+                spacing,
+                includeEdge
+            )
+        )
         binding.recyclerViewPatterns.adapter = adapter
         adapter.viewModel = viewModel
         val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
@@ -97,7 +114,7 @@ class AllPatternsFragment : BaseFragment() {//todo
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment ||findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
@@ -117,22 +134,33 @@ class AllPatternsFragment : BaseFragment() {//todo
         }
 
         is AllPatternsViewModel.Event.OnFilterClick -> {
+            toggleDrawer()
             //setPatternAdapter()
-            Log.d("pattern","onFilterClick : AllPatternsFragment")
+            Log.d("pattern", "onFilterClick : AllPatternsFragment")
+            // setDrawerList()
             // open dialog
-        }is AllPatternsViewModel.Event.OnSearchClick -> {
+        }
+        is AllPatternsViewModel.Event.OnSearchClick -> {
             //setPatternAdapter()
-            Log.d("pattern","OnSearchClick : AllPatternsFragment")
+            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             // open dialog
-        }is AllPatternsViewModel.Event.OnSyncClick -> {
+        }
+        is AllPatternsViewModel.Event.OnSyncClick -> {
             //setPatternAdapter()
-            Log.d("pattern","OnSyncClick : AllPatternsFragment")
+            Log.d("pattern", "OnSyncClick : AllPatternsFragment")
             // open dialog
         }
         else -> {
             logger.d("OnClickPattern")
         }
     }
+
+    private fun setDrawerList() {
+        isOpen = true
+        toggleDrawer()
+        binding.drawerLayout.openDrawer(Gravity.RIGHT)
+    }
+
 
     private fun showPopupMenu(view: View, patternId: Int) {
         this.patternId = patternId
@@ -141,4 +169,25 @@ class AllPatternsFragment : BaseFragment() {//todo
         inflater.inflate(R.menu.actions, popup.menu)
         popup.show()
     }
+
+    private fun setUpNavigationDrawer() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+        })
+
+    }
+
 }
