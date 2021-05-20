@@ -66,7 +66,7 @@
                         android:id="@+id/guide_startn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintGuide_percent=".05"
+                        app:layout_constraintGuide_percent=".07"
                         android:orientation="vertical"/>
 
                     <androidx.constraintlayout.widget.Guideline
@@ -86,7 +86,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/size_pattern_lib_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/guide_startn" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <View
                         android:id="@+id/view_vertical"
@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginStart="@dimen/maergin_start_search"
+                        android:layout_marginStart="@dimen/margin_start_search"
                         android:drawableStart="@drawable/ic_sync"
                         android:drawablePadding="@dimen/dimen_5"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -177,7 +177,51 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".10" />
+                app:layout_constraintGuide_percent="@dimen/guidline_top" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_start_clear_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintGuide_percent="@dimen/guidline_clear_text"
+                android:orientation="vertical"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:visibility="@{viewModel.isFilterResult()}"
+                app:constraint_referenced_ids="tv_filter_result,textview_clear" />
+
+            <TextView
+                android:id="@+id/tv_filter_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_filter_result"
+                android:textColor="@color/search_text_code"
+                android:textSize="@dimen/txt_filter_result"
+                android:padding="@dimen/dimen_5"
+                android:layout_marginTop="@dimen/clear_text_margin_top"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                app:layout_constraintTop_toBottomOf="@id/topbar"
+                app:layout_constraintStart_toStartOf="@id/guide_start_clear_text"/>
+
+            <TextView
+                android:id="@+id/textview_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_clear_filter"
+                android:textColor="@color/color_clear_filter"
+                android:textSize="@dimen/txt_clear_filter"
+                android:layout_marginStart="@dimen/dimen_10"
+                android:layout_marginTop="@dimen/clear_text_margin_top"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                app:layout_constraintTop_toBottomOf="@id/topbar"
+                android:padding="@dimen/dimen_5"
+                app:layout_constraintStart_toEndOf="@id/tv_filter_result"
+               android:drawableStart="@drawable/ic_clear_result"
+                android:drawablePadding="@dimen/dimen_5"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_patterns"
@@ -185,6 +229,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="@dimen/margin_text"
+                android:layout_marginTop="@dimen/recy_margin_top"
                 android:clickable="true"
                 android:overScrollMode="never"
                 android:scrollbars="none"
@@ -193,7 +238,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topbar"
+                app:layout_constraintTop_toBottomOf="@id/textview_clear"
                 app:spanCount="4"
                 tools:listitem="@layout/my_library_patterns_item" />
 
