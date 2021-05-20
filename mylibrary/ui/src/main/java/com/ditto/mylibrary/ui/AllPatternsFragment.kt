@@ -65,7 +65,7 @@ class AllPatternsFragment : BaseFragment() {//todo
         (activity as BottomNavigationActivity).hidemenu()
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
