@@ -15,6 +15,7 @@
   -->
 
 <resources>
+    <dimen name="drawer_width">281dp</dimen>
     <dimen name="text_heading">20sp</dimen>
     <dimen name="text_add_project">12sp</dimen>
     <dimen name="text_desc">14sp</dimen>
@@ -37,6 +38,7 @@
     <dimen name="margin_text">10dp</dimen>
     <dimen name="sync_height">16.5dp</dimen>
     <dimen name="sync_width">12dp</dimen>
+    <dimen name="toolbar_height">24dp</dimen>
     <dimen name="filter_height">12.51dp</dimen>
     <dimen name="filter_width">13.57dp</dimen>
     <dimen name="margin_end_search">26.68dp</dimen>
@@ -54,8 +56,22 @@
     <dimen name="size_16px">16sp</dimen>
     <dimen name="size_14px">14sp</dimen>
     <dimen name="size_12px">12sp</dimen>
+    <dimen name="item_action_text_size">12sp</dimen>
+    <dimen name="apply_button_size">14sp</dimen>
+    <dimen name="padding_start">12dp</dimen>
+    <dimen name="menu_text_start">11dp</dimen>
+    <dimen name="padding_start_content">13dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="clear_text_start">9dp</dimen>
+    <dimen name="size_13px">13sp</dimen>
+    <dimen name="size_19px">19sp</dimen>
+    <dimen name="start_margin">13dp</dimen>
+    <dimen name="margin_start">35dp</dimen>
     <dimen name="size_search">12sp</dimen>
+    <dimen name="item_cell_margin_top">10dp</dimen>
+    <dimen name="item_cell_margin_bottom">8dp</dimen>
     <dimen name="size_21sp">21sp</dimen>
     <dimen name="size_pattern_lib_text">21sp</dimen>
-
+    <dimen name="toolbar_head_size">16sp</dimen>
+    <dimen name="padding_end">6dp</dimen>
 </resources>

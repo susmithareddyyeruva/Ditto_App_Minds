@@ -10,12 +10,19 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.FilterMenuData
+import com.ditto.mylibrary.domain.model.FilterResultData
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
+import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.adapter.GridSpacingItemDecoration
 import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
+import com.ditto.mylibrary.ui.util.ClickListener
+import com.ditto.mylibrary.ui.util.RecyclerTouchListener
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -38,6 +45,23 @@ class AllPatternsFragment : BaseFragment() {
     lateinit var binding: AllPatternsFragmentBinding
     private var patternId: Int = 0
     private var isOpen = true
+    private lateinit var adapter: FilterRvAdapter
+    var items = arrayListOf(
+        FilterMenuData("Category"),
+        FilterMenuData("Gender"),
+        FilterMenuData("Brand"),
+        FilterMenuData("Size"),
+        FilterMenuData("Type"),
+        FilterMenuData("Season"),
+        FilterMenuData("Occasion"),
+        FilterMenuData("Age Group"),
+        FilterMenuData("Customization")
+    )
+    var filterList = arrayListOf(
+        FilterResultData("SubScribed"),
+        FilterResultData("Purchased"),
+        FilterResultData("Trials"),
+    )
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -58,7 +82,42 @@ class AllPatternsFragment : BaseFragment() {
         setUIEvents()
         setUpToolbar()
         setUpNavigationDrawer()
+        setFilterMenuAdapter(0)
         viewModel.fetchOnPatternData()
+
+        // Add Item Touch Listener
+        binding.rvCategory.addOnItemTouchListener(RecyclerTouchListener(requireContext(), object :
+            ClickListener {
+            override fun onClick(view: View, position: Int) {
+                setFilterMenuAdapter(position)
+                when (position) {
+                    0 -> {
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(filterList)
+
+                    }
+                    1 -> {
+                        var filterList = arrayListOf(
+                            FilterResultData("Male"),
+                            FilterResultData("Female")
+                        )
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(filterList)
+                    }
+                }
+
+
+            }
+        }))
+    }
+
+    private fun setFilterActionAdapter() {
+        binding.rvActions.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvActions.adapter = FilterActionsAdapter(filterList)
+    }
+
+    private fun setFilterMenuAdapter(position: Int) {
+        binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCategory.adapter = FilterRvAdapter(items, position)
+        setFilterActionAdapter()
     }
 
     private fun setUpToolbar() {

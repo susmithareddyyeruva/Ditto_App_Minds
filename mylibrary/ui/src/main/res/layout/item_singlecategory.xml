@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/itemCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-       />
+        android:layout_marginTop="@dimen/item_cell_margin_top"
+        android:text="Category"
+        android:paddingStart="@dimen/menu_text_start"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:textColor="@color/black"
+        android:textSize="@dimen/item_action_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/padding_end"
+        android:baselineAlignBottom="true"
+        android:src="@drawable/ic_right_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/itemCategoryName"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_2"
+        android:layout_marginTop="@dimen/item_cell_margin_bottom"
+        android:background="@drawable/ic_devider_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemCategoryName">
+
+    </View>
 </androidx.constraintlayout.widget.ConstraintLayout>
