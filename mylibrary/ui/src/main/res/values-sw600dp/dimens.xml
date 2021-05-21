@@ -55,5 +55,5 @@
     <dimen name="btn_height">50dp</dimen>
     <integer name="btn_height">55</integer>
     <integer name="btn_width">114</integer>
-
+    <dimen name="action_text_start">15dp</dimen>
 </resources>
