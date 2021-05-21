@@ -31,9 +31,10 @@ import io.reactivex.rxkotlin.plusAssign
 import java.util.*
 import javax.inject.Inject
 import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment : BaseFragment() {
+class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -45,6 +46,7 @@ class AllPatternsFragment : BaseFragment() {
     lateinit var binding: AllPatternsFragmentBinding
     private var patternId: Int = 0
     private var isOpen = true
+    private var selectedItemsList = ArrayList<String>()
     private lateinit var adapter: FilterRvAdapter
     var items = arrayListOf(
         FilterMenuData("Category"),
@@ -91,11 +93,11 @@ class AllPatternsFragment : BaseFragment() {
             override fun onClick(view: View, position: Int) {
                 setFilterMenuAdapter(position)
                 when (position) {
-                    0 -> {
+                    0 -> {//category
                         (binding.rvActions.adapter as FilterActionsAdapter).updateList(filterList)
 
                     }
-                    1 -> {
+                    1 -> {//Gender
                         var filterList = arrayListOf(
                             FilterResultData("Male"),
                             FilterResultData("Female")
@@ -107,11 +109,19 @@ class AllPatternsFragment : BaseFragment() {
 
             }
         }))
+        binding.closeFilter.setOnClickListener {
+            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        }
+        binding.apply.setOnClickListener {
+            selectedItemsList.forEach {
+                println(it)
+            }
+        }
     }
 
     private fun setFilterActionAdapter() {
         binding.rvActions.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvActions.adapter = FilterActionsAdapter(filterList)
+        binding.rvActions.adapter = FilterActionsAdapter(filterList, this)
     }
 
     private fun setFilterMenuAdapter(position: Int) {
@@ -136,16 +146,6 @@ class AllPatternsFragment : BaseFragment() {
             }
     }
 
-    private fun toggleDrawer() {
-        if (isOpen) {
-            binding.drawerLayout.openDrawer(Gravity.RIGHT)
-            isOpen = false
-        } else {
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-            isOpen = true
-
-        }
-    }
 
     private fun setPatternAdapter() {
         val adapter = PatternAdapter()
@@ -193,7 +193,7 @@ class AllPatternsFragment : BaseFragment() {
         }
 
         is AllPatternsViewModel.Event.OnFilterClick -> {
-            toggleDrawer()
+            binding.drawerLayout.openDrawer(Gravity.RIGHT)
             //setPatternAdapter()
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // setDrawerList()
@@ -212,12 +212,6 @@ class AllPatternsFragment : BaseFragment() {
         else -> {
             logger.d("OnClickPattern")
         }
-    }
-
-    private fun setDrawerList() {
-        isOpen = true
-        toggleDrawer()
-        binding.drawerLayout.openDrawer(Gravity.RIGHT)
     }
 
 
@@ -247,6 +241,21 @@ class AllPatternsFragment : BaseFragment() {
             }
         })
 
+    }
+
+    override fun onItemsSelected(title: String, isSelected: Boolean) {
+        Log.d("Items", title)
+        if (isSelected) {
+            if (!selectedItemsList.contains(title)) {
+                selectedItemsList.add(title)
+            }
+
+        } else {
+            if (selectedItemsList.contains(title)) {
+                selectedItemsList.remove(title)
+            }
+
+        }
     }
 
 }

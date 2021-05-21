@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.ditto.mylibrary.domain.model.FilterResultData
 import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_filter.view.*
 
-class FilterActionsAdapter(private var items: ArrayList<FilterResultData>) :RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
+class FilterActionsAdapter(private var items: ArrayList<FilterResultData>,private var ItemsListener:SelectedItemsListener) :RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
 
     private lateinit var context: Context
 
@@ -27,6 +28,18 @@ class FilterActionsAdapter(private var items: ArrayList<FilterResultData>) :Recy
 
     override fun onBindViewHolder(holder: NavigationItemViewHolder, position: Int) {
         holder.itemView.itemAction.text = items[position].title
+        holder.itemView.checkItem.setOnCheckedChangeListener { compoundButton, b ->
+            if (compoundButton.isChecked) {
+              Log.d("Checked true",items[position].title)
+                items[position].isSelected=true
+                ItemsListener.onItemsSelected(items[position].title,true)
+            } else {
+                items[position].isSelected=false
+                compoundButton.isChecked = false
+                Log.d("Checked false",items[position].title)
+                ItemsListener.onItemsSelected(items[position].title,false)
+            }
+        }
 
 
     }
@@ -34,5 +47,8 @@ class FilterActionsAdapter(private var items: ArrayList<FilterResultData>) :Recy
         this.items=filterList
         notifyDataSetChanged()
 
+    }
+    interface SelectedItemsListener{
+        fun onItemsSelected(title: String, isSelected: Boolean)
     }
 }

@@ -29,4 +29,8 @@
 
     <style name="Theme.NavigtaionDrawer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.NavigtaionDrawer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/logout_red</item>
+        <item name="android:textColorSecondary">@color/light_grey</item>
+    </style>
 </resources>

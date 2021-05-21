@@ -51,5 +51,9 @@
     <dimen name="clear_text_start">10dp</dimen>
     <dimen name="menu_text_start">19dp</dimen>
     <dimen name="padding_end">10dp</dimen>
+    <dimen name="btn_width">16dp</dimen>
+    <dimen name="btn_height">50dp</dimen>
+    <integer name="btn_height">55</integer>
+    <integer name="btn_width">114</integer>
 
 </resources>
