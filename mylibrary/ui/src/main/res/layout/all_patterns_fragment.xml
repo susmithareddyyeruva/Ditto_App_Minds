@@ -121,7 +121,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginEnd="@dimen/margin_end_search"
                         android:layout_toLeftOf="@+id/tv_filter"
-                        android:drawableStart="@drawable/ic_search_button"
+                        android:drawableStart="@drawable/ic_search_bt"
                         android:drawablePadding="@dimen/dimen_5"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
@@ -183,8 +183,8 @@
                 android:id="@+id/guide_start_clear_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="@dimen/guidline_clear_text"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.0" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group"
