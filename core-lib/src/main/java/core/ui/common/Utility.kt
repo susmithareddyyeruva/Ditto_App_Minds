@@ -12,11 +12,14 @@ import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
@@ -25,7 +28,9 @@ import core.network.Utility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
+import java.net.HttpURLConnection
 import java.net.Socket
+import java.net.URL
 import java.util.*
 import kotlin.jvm.Throws
 import kotlin.math.PI
@@ -342,6 +347,21 @@ class Utility {
             intent.data = Uri.parse(url)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
+        }
+
+        fun isFileAvailable(filename : String) : Uri? {
+            val pdfFile = File(
+                Environment.getExternalStorageDirectory()
+                    .toString() + "/Ditto/" + filename
+            )
+            var path : Uri? = null
+            if (pdfFile.exists()){
+                path = Uri.fromFile(pdfFile)
+            } else {
+                path = null
+            }
+
+            return path
         }
     }
 

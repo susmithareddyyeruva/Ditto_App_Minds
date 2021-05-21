@@ -847,6 +847,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.updateProgressCount -> {
                 onUpdateProgressCount()
             }
+            WorkspaceViewModel.Event.OnDownloadComplete -> TODO()
         }
 
     private fun onUpdateProgressCount() {
