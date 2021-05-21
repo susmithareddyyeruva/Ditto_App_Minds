@@ -16,4 +16,5 @@
     <color name="color_new_background">#CEA10B</color>
     <color name="color_clear_filter">#A4211F</color>
     <color name="instruction_content_text">#4A4A4A</color>
+    <color name="item_devider">#1F707070</color>
 </resources>

@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ditto.mylibrary.domain.model.FilterResultData
+import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_filter.view.*
 
-class FilterActionsAdapter(private var items: ArrayList<FilterResultData>,private var ItemsListener:SelectedItemsListener) :RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
+class FilterActionsAdapter(private var items: ArrayList<FilterItems>, private var ItemsListener:SelectedItemsListener) :RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
 
     private lateinit var context: Context
+    private var menuItem:String=""
 
     class NavigationItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -32,23 +33,27 @@ class FilterActionsAdapter(private var items: ArrayList<FilterResultData>,privat
             if (compoundButton.isChecked) {
               Log.d("Checked true",items[position].title)
                 items[position].isSelected=true
-                ItemsListener.onItemsSelected(items[position].title,true)
+                ItemsListener.onItemsSelected(items[position].title,true,menuItem)
             } else {
                 items[position].isSelected=false
                 compoundButton.isChecked = false
                 Log.d("Checked false",items[position].title)
-                ItemsListener.onItemsSelected(items[position].title,false)
+                ItemsListener.onItemsSelected(items[position].title,false,menuItem)
             }
         }
 
 
     }
-    fun updateList(filterList: ArrayList<FilterResultData>) {
+    fun updateList(
+        filterList: ArrayList<FilterItems>,
+        menu: String
+    ) {
         this.items=filterList
+        this.menuItem=menu
         notifyDataSetChanged()
 
     }
     interface SelectedItemsListener{
-        fun onItemsSelected(title: String, isSelected: Boolean)
+        fun onItemsSelected(title: String, isSelected: Boolean,menu: String)
     }
 }

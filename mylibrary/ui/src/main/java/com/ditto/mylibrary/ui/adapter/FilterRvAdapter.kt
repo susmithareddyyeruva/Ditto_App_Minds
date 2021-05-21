@@ -43,6 +43,6 @@ class FilterRvAdapter(private var items: ArrayList<FilterMenuData>, private var 
             holder.itemView.imgNext.visibility=View.GONE
         }
 
-        holder.itemView.itemCategoryName.text = items[position].title
+        holder.itemView.itemCategoryName.text = items[position].menuItem
     }
 }

@@ -56,4 +56,5 @@
     <integer name="btn_height">55</integer>
     <integer name="btn_width">114</integer>
     <dimen name="action_text_start">15dp</dimen>
+    <dimen name="toolbar_bottom_margin">21dp</dimen>
 </resources>

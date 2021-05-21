@@ -79,4 +79,5 @@
     <integer name="btn_height">41</integer>
     <integer name="btn_width">89</integer>
     <dimen name="action_text_start">10dp</dimen>
+    <dimen name="toolbar_bottom_margin">13dp</dimen>
 </resources>

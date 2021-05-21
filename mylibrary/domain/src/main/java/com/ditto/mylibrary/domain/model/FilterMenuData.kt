@@ -1,3 +1,3 @@
 package com.ditto.mylibrary.domain.model
 
-data class FilterMenuData(var title: String)
+data class FilterMenuData(var menuItem: String, var id: Int)

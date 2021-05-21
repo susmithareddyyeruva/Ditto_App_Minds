@@ -13,8 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.domain.model.FilterMenuData
-import com.ditto.mylibrary.domain.model.FilterResultData
+import com.ditto.mylibrary.domain.model.FilterResultCalss
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
@@ -47,22 +48,23 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private var patternId: Int = 0
     private var isOpen = true
     private var selectedItemsList = ArrayList<String>()
+    private var filterResultList = ArrayList<FilterMenuData>()
     private lateinit var adapter: FilterRvAdapter
-    var items = arrayListOf(
-        FilterMenuData("Category"),
-        FilterMenuData("Gender"),
-        FilterMenuData("Brand"),
-        FilterMenuData("Size"),
-        FilterMenuData("Type"),
-        FilterMenuData("Season"),
-        FilterMenuData("Occasion"),
-        FilterMenuData("Age Group"),
-        FilterMenuData("Customization")
+    var menuItems = arrayListOf(
+        FilterMenuData("Category", 1),
+        FilterMenuData("Gender", 2),
+        FilterMenuData("Brand", 3),
+        FilterMenuData("Size", 3),
+        FilterMenuData("Type", 4),
+        FilterMenuData("Season", 4),
+        FilterMenuData("Occasion", 5),
+        FilterMenuData("Age Group", 6),
+        FilterMenuData("Customization", 6)
     )
     var filterList = arrayListOf(
-        FilterResultData("SubScribed"),
-        FilterResultData("Purchased"),
-        FilterResultData("Trials"),
+        FilterItems("SubScribed"),
+        FilterItems("Purchased"),
+        FilterItems("Trials"),
     )
 
     override fun onCreateView(
@@ -94,15 +96,37 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
                 setFilterMenuAdapter(position)
                 when (position) {
                     0 -> {//category
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(filterList)
+                        val categoryList = arrayListOf(
+                            FilterItems("SubScribed"),
+                            FilterItems("Purchased"),
+                            FilterItems("Trials"),
+                        )
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            categoryList,
+                            menuItems[position].menuItem
+                        )
 
                     }
                     1 -> {//Gender
-                        var filterList = arrayListOf(
-                            FilterResultData("Male"),
-                            FilterResultData("Female")
+                        val genderList = arrayListOf(
+                            FilterItems("Male"),
+                            FilterItems("Female")
                         )
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(filterList)
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            genderList,
+                            menuItems[position].menuItem
+                        )
+                    }
+                    2->{
+                        val brandList = arrayListOf(
+                            FilterItems("Lee"),
+                            FilterItems("Addidas")
+                        )
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            brandList,
+                            menuItems[position].menuItem
+                        )
+
                     }
                 }
 
@@ -113,9 +137,8 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
         }
         binding.apply.setOnClickListener {
-            selectedItemsList.forEach {
-                println(it)
-            }
+            println(FilterResultCalss.categoryList)
+            println(FilterResultCalss.genderList)
         }
     }
 
@@ -125,8 +148,9 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     }
 
     private fun setFilterMenuAdapter(position: Int) {
+        filterResultList.add(FilterMenuData("Category", 1))
         binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCategory.adapter = FilterRvAdapter(items, position)
+        binding.rvCategory.adapter = FilterRvAdapter(menuItems, position)
         setFilterActionAdapter()
     }
 
@@ -243,19 +267,51 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
 
     }
 
-    override fun onItemsSelected(title: String, isSelected: Boolean) {
-        Log.d("Items", title)
+    override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
         if (isSelected) {
-            if (!selectedItemsList.contains(title)) {
-                selectedItemsList.add(title)
+            if (menu.equals("Category")) {
+                FilterResultCalss.categoryList?.add(title)
+            } else if (menu.equals("Gender")) {
+                FilterResultCalss.genderList?.add(title)
+            }
+        } else {
+            if (menu.equals("Category")) {
+                if (!FilterResultCalss.categoryList?.isNullOrEmpty()) {
+                    FilterResultCalss.categoryList?.forEach {
+                        if (it.equals(title)) {
+                            FilterResultCalss.categoryList?.remove(title)
+                        }
+
+                    }
+                }
+            } else if (menu.equals("Gender")) {
+                if ( !FilterResultCalss.genderList?.isNullOrEmpty()) {
+                    FilterResultCalss.genderList?.forEach {
+                        if (it.equals(title)) {
+                            FilterResultCalss.genderList?.remove(title)
+                        }
+
+                    }
+                }
             }
 
-        } else {
-            if (selectedItemsList.contains(title)) {
-                selectedItemsList.remove(title)
-            }
 
         }
+
     }
+    /*      if (FilterResultCalss.categoryList?.contains(title)) {
+        selectedItemsList.add(title)
+        Log.d("category", menu)
+        Log.d("Items", title)
+
+    }
+
+} else {
+    if (selectedItemsList.contains(title)) {
+        selectedItemsList.remove(title)
+    }
+
+}*/
+
 
 }

@@ -245,7 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent=".065" />
+                    app:layout_constraintGuide_percent=".10" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_center"
@@ -262,46 +262,40 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent=".95" />
 
-                <RelativeLayout
-                    android:id="@+id/toolbarFilter"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/toolbar_height"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                <TextView
+                    android:id="@+id/textFilterHeader1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_it_pro_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_filter"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/toolbar_head_size"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/guideline_top">
+                    app:layout_constraintBottom_toBottomOf="@+id/guideline_top" />
 
-                    <TextView
-                        android:id="@+id/textFilterHeader1"
-                        android:layout_width="match_parent"
-                        android:fontFamily="@font/avenir_next_it_pro_bold"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/text_filter"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/toolbar_head_size"
-                        />
+                <ImageView
+                    android:id="@+id/closeFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                    app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
+                    android:src="@drawable/ic_filterclose">
 
-                    <ImageView
-                        android:id="@+id/closeFilter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_filterclose">
-
-                    </ImageView>
-
-                </RelativeLayout>
+                </ImageView>
 
                 <View
                     android:id="@+id/topDevider"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/line_size"
-                    android:layout_marginTop="@dimen/item_cell_margin_bottom"
-                    android:background="@color/line_divider_color"
+                    android:background="@color/item_devider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/toolbarFilter">
+                    app:layout_constraintTop_toBottomOf="@+id/guideline_top">
 
                 </View>
 
@@ -326,12 +320,12 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/clear_text_start"
                     android:baselineAligned="false"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     android:weightSum="2"
-                    android:layout_marginStart="@dimen/clear_text_start"
                     app:layout_constraintBottom_toTopOf="@+id/guidlineBottom"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@+id/guideline_center">

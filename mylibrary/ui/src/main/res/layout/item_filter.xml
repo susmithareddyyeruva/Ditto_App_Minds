@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/start_margin">
+    android:layout_marginStart="@dimen/start_margin"
+    >
 
     <CheckBox
         android:id="@+id/checkItem"
-        android:button="@drawable/checkbox_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:button="@drawable/checkbox_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,11 +23,22 @@
         android:id="@+id/itemAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/action_text_start"
+        android:paddingTop="@dimen/item_cell_margin_top"
+        android:paddingBottom="@dimen/item_cell_margin_top"
         android:textColor="@color/black"
         android:textSize="@dimen/item_action_text_size"
-        android:paddingStart="@dimen/action_text_start"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkItem"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/checkItem"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Subscribed" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_1"
+        android:visibility="visible"
+        android:background="@color/item_devider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
