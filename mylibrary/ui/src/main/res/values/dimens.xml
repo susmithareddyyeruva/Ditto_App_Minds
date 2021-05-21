@@ -64,5 +64,6 @@
     <dimen name="size_search">12sp</dimen>
     <dimen name="size_21sp">21sp</dimen>
     <dimen name="size_pattern_lib_text">21sp</dimen>
+    <dimen name="guide_start_clear_text_per">0.039</dimen>
 
 </resources>
