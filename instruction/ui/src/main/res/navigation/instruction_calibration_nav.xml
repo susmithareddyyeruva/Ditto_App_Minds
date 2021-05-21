@@ -5,6 +5,7 @@
     android:id="@+id/destination_instruction_calibration"
     app:startDestination="@+id/destination_instruction_calibration_fragment">
     <include app:graph="@navigation/calibration_nav_graph"/>
+    <include app:graph="@navigation/nav_graph_video" />
     <fragment
         android:id="@+id/destination_instruction_calibration_fragment"
         android:name="com.ditto.instructions.ui.InstructionFragment"
@@ -36,6 +37,15 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_destination_instruction_calibration_fragment_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
 
     </fragment>
 </navigation>

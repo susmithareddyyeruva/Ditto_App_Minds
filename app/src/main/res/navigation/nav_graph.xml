@@ -11,6 +11,7 @@
     <include app:graph="@navigation/nav_graph_workspace"/>
     <include app:graph="@navigation/nav_graph_tutorial"/>
     <include app:graph="@navigation/instruction_navigation"/>
+    <include app:graph="@navigation/nav_graph_customercare"/>
 
     <fragment
         android:id="@+id/destination_splash"
@@ -22,6 +23,12 @@
             android:id="@+id/action_splashActivity_to_LoginFragment"
             app:destination="@id/nav_graph_id_login"
             app:popUpTo="@+id/destination_login"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_splashActivity_to_customercare"
+            app:destination="@id/nav_graph_customercare"
+            app:popUpTo="@+id/destination_customercare"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="25dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginBottom="10dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/answ_image"
+        android:layout_width="166dp"
+        android:layout_height="100dp"
+        android:background="@drawable/sampleimage"/>
+
+    <TextView
+        android:id="@+id/text_sub_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calibration"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/answ_image"/>
+
+    <TextView
+        android:id="@+id/text_sub_answ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/text_sub_head"
+        android:layout_toRightOf="@+id/answ_image"/>
+
+</RelativeLayout>

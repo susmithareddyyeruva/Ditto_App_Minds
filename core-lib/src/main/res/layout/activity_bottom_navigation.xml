@@ -49,7 +49,6 @@
                         android:id="@+id/header_view_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:text="@{toolbarViewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
@@ -97,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/holo_blue_bright"
-                    android:visibility="@{bottomNavViewModel.visibility}"
+                    android:visibility="gone"
                     app:itemBackground="@drawable/nav_item_selector"
                     app:itemIconTint="@drawable/nav_selector"
                     app:itemTextColor="@drawable/nav_selector"
@@ -133,12 +132,8 @@
             android:theme="@style/text_menu"
             app:headerLayout="@layout/nav_drawer_header"
             app:insetForeground="@android:color/transparent"
-            app:itemTextAppearance="@style/text_menu"
-            app:menu="@menu/side_nav_menu">
+            app:itemTextAppearance="@style/text_menu">
 
-<!--            <include-->
-<!--                android:id="@+id/navigation_header"-->
-<!--                layout="@layout/nav_drawer_header" />-->
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>

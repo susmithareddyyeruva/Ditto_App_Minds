@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_head">Choose one of the methods to contact us.</string>
+    <string name="str_email">EMAIL</string>
+    <string name="str_waittime">Wait Time : 24 hours</string>
+    <string name="str_quest">Questions or Comments?</string>
+    <string name="str_email_text">Email <u>joannsupports@joann.com</u> to our customer care representatives and we will get back soon.</string>
+    <string name="str_phone">PHONE</string>
+    <string name="str_phn_waittime">Wait Time: Less than 30 sec</string>
+    <string name="str_ustoll">US Toll Free:</string>
+    <string name="str_mob_no">1800 000 2345</string>
+    <string name="str_get_email">joannsupports@joann.com</string>
+    <string name="str_phn_timings">Weekdays: 8AM - 6PM | Weekends: 9AM - 1PM</string>
+    <string name="str_support">Support</string>
+    <string name="str_patterns_url">https://www.joann.com/sewing/patterns/</string>
+    <string name="about_app">At JOANN, your trust and satisfaction is a priority. We know that your privacy is important, and that is why we take care to safeguard the confidentiality and security of your information. This Privacy Policy is intended to inform you of our policies and practices regarding our use and disclosure of the information that you submit to us, and the information that we collect from you through our web site, our mobile applications, and in our retail stores. \n\nWhenever we use the words “we” or “us” or “JOANN,” we are referring to Jo-Ann Stores LLC, (doing business as JOANN), and to the affiliates and parent companies of Jo-Ann Stores, LLC, including Joann.com, LLC, which is a wholly owned subsidiary of Jo-Ann Stores, LLC. Whenever we use the words “our web site,” we are referring to https://www.joann.com and to our mobile application(s) (“app”). \n\nThis Privacy Policy is divided into the following sections: \n\nDefinitions\nConsent \nHow We Collect Personal Information \nHow We Use Personal Information \nOur Disclosure of Your Personal Information \nAdvertising \nSocial Network Widgets; External Ad Blocking \nMobile Applications \nHow You Can Stop Receiving Communications \nInformation From Children Under 13 \nLinks to Other Web Sites \nSecurity \nYour California Privacy Rights \nQuestions about this Privacy Policy \nHow to Access or Correct Personal Information or Opt Out of Marketing and Advertising Revisions to the Privacy Policy</string>
+</resources>

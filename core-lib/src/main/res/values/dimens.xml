@@ -3,13 +3,24 @@
     <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
 
+    <dimen name="card_margin">30dp</dimen>
+    <dimen name="menu_image">50dp</dimen>
+
     <dimen name="small_padding">5dp</dimen>
+    <dimen name="small_paddingx">8dp</dimen>
     <dimen name="medium_padding">10dp</dimen>
     <dimen name="large_padding">15dp</dimen>
-
+    <dimen name="bottom_common">40dp</dimen>
+    <dimen name="x_large_padding">30dp</dimen>
     <dimen name="text_header">20sp</dimen>
     <dimen name="text_desc">12sp</dimen>
     <dimen name="text_menu">14sp</dimen>
+
+    <dimen name="size_16px">16sp</dimen>
+    <dimen name="size_14px">14sp</dimen>
+
+
     <dimen name="toolbar">21sp</dimen>
     <dimen name="desc">16sp</dimen>
+
 </resources>

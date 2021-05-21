@@ -3,10 +3,20 @@ package com.ditto.splash.ui
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.ditto.splash.domain.GetDbDataUseCase
 import com.ditto.login.domain.LoginUser
+import com.ditto.splash.domain.GetDbDataUseCase
 import com.ditto.splash.domain.UpdateDbUseCase
+import com.ditto.storage.data.database.TraceDataDatabase
+import com.ditto.storage.domain.StorageManager
+import core.USER_EMAIL
+import core.USER_FIRST_NAME
+import core.USER_LAST_NAME
+import core.USER_PHONE
+import core.appstate.AppState
+import core.event.UiEvents
+import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
@@ -15,22 +25,13 @@ import kotlinx.coroutines.launch
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import com.ditto.storage.data.database.TraceDataDatabase
-import com.ditto.storage.domain.StorageManager
-import core.USER_EMAIL
-import core.USER_FIRST_NAME
-import core.USER_LAST_NAME
-import core.USER_PHONE
-import core.event.UiEvents
-import core.ui.BaseViewModel
-import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 
 class SplashViewModel @Inject constructor(
     private val getDbUseCase: GetDbDataUseCase,
     private val updateDbUseCase: UpdateDbUseCase,
-    val storageManager: StorageManager
+    private val storageManager: StorageManager
 ) : BaseViewModel() {
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
@@ -41,7 +42,12 @@ class SplashViewModel @Inject constructor(
         getUserDetails()
         GlobalScope.launch {
             delay(3000)
-            fetchDbUser()
+            if (AppState.getIsLogged()) {
+                fetchDbUser()
+            } else { //Guest User
+                dbLoadError.set(false)
+                uiEvents.post(Event.NavigateToLogin)
+            }
         }
         updateDb()
     }
@@ -54,10 +60,10 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun getUserDetails() {
-        userEmail = storageManager.getStringValue(USER_EMAIL).toString()
-        userPhone = storageManager.getStringValue(USER_PHONE).toString()
-        userFirstName = storageManager.getStringValue(USER_FIRST_NAME).toString()
-        userLastName = storageManager.getStringValue(USER_LAST_NAME).toString()
+        userEmail = storageManager.getStringValue(USER_EMAIL)
+        userPhone = storageManager.getStringValue(USER_PHONE)
+        userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
+        userLastName = storageManager.getStringValue(USER_LAST_NAME)
     }
 
     private fun fetchDbUser() {
@@ -65,7 +71,9 @@ class SplashViewModel @Inject constructor(
         disposable += getDbUseCase.getUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResult(it) }
+            .subscribeBy {
+                handleFetchResult(it)
+            }
     }
 
     private fun handleFetchResult(result: Result<LoginUser>) {
@@ -83,10 +91,12 @@ class SplashViewModel @Inject constructor(
                     !result.data.dndOnboarding!!
                 ) {
                     uiEvents.post(Event.NavigateToOnBoarding)
+
                 }
             }
             is Result.OnError<LoginUser> -> handleError(result.error)
         }
+
     }
 
     private fun handleError(error: Error) {

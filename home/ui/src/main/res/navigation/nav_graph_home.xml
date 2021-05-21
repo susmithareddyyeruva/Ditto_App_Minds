@@ -11,7 +11,22 @@
         android:name="com.ditto.home.ui.HomeFragment"
         android:label="Home"
         tools:layout="@layout/home_fragment" >
-
+       <!-- <action
+            android:id="@+id/action_global_loginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:launchSingleTop="false"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />-->
+        <action
+            android:id="@+id/action_splashActivity_to_LoginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:launchSingleTop="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_home_to_buy_pattern"
             app:destination="@id/buyPatternFragment"/>
@@ -22,10 +37,36 @@
             android:id="@+id/action_home_to_workspace"
             app:destination="@id/workspaceFragment"/>
         <action
-            android:id="@+id/action_home_to_pattern_details"
-            app:destination="@id/patternDescriptionFragmentFromHome" />
+            android:id="@+id/action_home_to_my_library"
+            app:destination="@id/nav_graph_mylibrary"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_graph_mylibrary"
+            app:popUpToInclusive="true"  />
+
+        <action
+            android:id="@+id/action_home_to_tutorial"
+            app:destination="@id/nav_graph_id_onboarding"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"  />
+
+        <action
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
+        <action
+            android:id="@+id/action_destination_to_FQAfragment"
+            app:destination="@id/FQAfragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
 
     </fragment>
+
     <fragment
         android:id="@+id/buyPatternFragment"
         android:name="com.ditto.home.ui.BuyPatternFragment"
@@ -40,36 +81,17 @@
         tools:layout="@layout/shop_fragment" />
 
     <fragment
-        android:id="@+id/patternDescriptionFragmentFromHome"
-        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
-        android:label="PatternDescriptionFragment" >
-
-        <action
-            android:id="@+id/action_patternDescriptionFragment_to_WorkspaceFragment"
-            app:destination="@id/nav_graph_workspace"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
-            app:destination="@id/patternInstructionsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_pattern_description_to_calibration"
-            app:destination="@id/calibration_nav_graph"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
+        android:id="@+id/customerCareFragment"
+        android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
+        android:label="Customer Support"
+        tools:layout="@layout/customer_care_fragment"/>
+    <fragment
+        android:id="@+id/FQAfragment"
+        android:name="com.ditto.menuitems_ui.faq.ui.FQAfragment"
+        android:label="Frequently Asked Questions" />
 
     <fragment
-        android:id="@+id/patternInstructionsFragment"
-        android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
-        android:label="Pattern Instructions">
-    </fragment>
+        android:id="@+id/aboutAppFragment"
+        android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
+        android:label="AboutAppFragment" />
 </navigation>

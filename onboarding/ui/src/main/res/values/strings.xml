@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">on-boarding-ui</string>
-    <string name="Welcomeheader">Hi there, let\'s get started!</string>
+    <string name="Welcomeheader">Hi There,</string>
     <string name="skip_contin"><u>Skip &amp; Continue</u></string>
     <string name="dont_show_t">Don\'t show this screen again</string>
     <string name="connectivity">Connectivity</string>
@@ -9,5 +9,8 @@
     <string name="later">LATER</string>
     <string name="turnon">TURN ON</string>
     <string name="settings">Setting</string>
-    <string name="tutorialheader">Tutorial</string>
+    <string name="tutorialheader">Welcome back,</string>
+    <string name="tutorial_sub_header">What would you like to do today?</string>
+    <string name="tutorial_sub_header_for_guest">Let\'s get started !</string>
+    <string name="hi_text">Hi </string>
 </resources>

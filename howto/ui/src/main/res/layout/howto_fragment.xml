@@ -13,8 +13,8 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#F8F8F8">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
@@ -27,11 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/headerbar"
-                app:theme="@style/ToolBarStyle"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
-                app:menu="@null"
                 app:contentInsetStartWithNavigation="0dp"
+                app:menu="@null"
+                app:theme="@style/ToolBarStyle"
                 app:titleTextColor="@color/black">
 
                 <LinearLayout
@@ -42,27 +42,30 @@
 
                     <TextView
                         android:id="@+id/header_view_title"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.6"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="start"
                         android:text="@{viewModel.toolbarTitle}"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:typeface="sans"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/size_21sp" />
 
                     <!-- Subtitle -->
                     <TextView
                         android:id="@+id/header_view_sub_title"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".4"
-                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:drawablePadding="16dp"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="end"
                         android:onClick="@{() -> viewModel.onSkip()}"
+                        android:paddingEnd="16dp"
                         android:text="@string/howtoskip"
-                        android:textColor="@color/skip_text"
-                        android:textSize="@dimen/size_14sp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_12px"
+                        app:drawableEndCompat="@drawable/right_arrow" />
 
                 </LinearLayout>
 
@@ -71,20 +74,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            >
+            android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/determinateBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isShowindicator()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar"
@@ -96,44 +87,57 @@
 
             <com.ditto.howto.utils.CustomTabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="12dp"
-                app:tabRippleColor="@android:color/transparent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="-105dp"
+                android:layout_marginTop="12dp"
+                android:background="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topbar"
-                app:tabIndicator="@drawable/tab_item_selector"
-                app:tabIndicatorGravity="center"
+                app:tabIndicatorColor="#A4211F"
+                app:tabIndicatorGravity="bottom"
                 app:tabMode="auto"
-                app:tabPaddingStart="@dimen/size_15sp"
-                app:tabPaddingEnd="@dimen/size_15sp"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-                app:tabTextColor="@color/tab_text_color">
+                app:tabPaddingEnd="@dimen/size_14px"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/MineCustomTabText"
+                app:tabTextColor="#A8A7A8">
 
 
             </com.ditto.howto.utils.CustomTabLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="-100dp"
+                android:background="#A8A7A8"
+                app:layout_constraintBottom_toTopOf="@id/view_pager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tabLayout"
+                app:layout_constraintVertical_bias="0.49" />
 
             <core.ui.common.NonSwipeableViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="@dimen/size_0dp"
                 android:layout_height="@dimen/size_0dp"
                 android:visibility="@{!viewModel.isShowPlaceholder()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/placeholder"
                 android:layout_width="@dimen/size_0dp"
                 android:layout_height="@dimen/size_0dp"
+                android:background="@android:color/white"
                 android:visibility="@{viewModel.isShowPlaceholder()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-                android:background="@android:color/white">
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
 
                 <ImageView

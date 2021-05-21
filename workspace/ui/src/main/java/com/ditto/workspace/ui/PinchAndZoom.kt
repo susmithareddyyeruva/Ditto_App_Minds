@@ -20,7 +20,7 @@ class PinchAndZoom : AppCompatActivity() {
             DataBindingUtil.setContentView(this,
                 R.layout.pinchzoom_activity
             )
-        val imagepath = intent.extras?.getString("ImageURL").toString()
+        val imagepath = intent.extras?.getString("ImageURL")
         val scaleFactor = intent.extras?.getInt("scaleFactor")
         /*window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -46,6 +46,11 @@ class PinchAndZoom : AppCompatActivity() {
                 //myZoomageView?.maxHeight = drawable?.intrinsicHeight?.div(scaleFactor!!) ?: 1
                 //myZoomageView?.scaleType = ImageView.ScaleType.FIT_XY
                 myZoomageView?.setImageDrawable(drawable)
+/*
+                Glide.with(this)
+                    .load(imagepath)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(myZoomageView)*/
             } catch (e: Exception) {
                 Log.d("Exception","image path")
             }

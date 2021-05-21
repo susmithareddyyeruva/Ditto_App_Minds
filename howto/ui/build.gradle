@@ -75,10 +75,13 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(path: ':howto-domain')
     implementation project(path: ':workspace-ui')
+    implementation project(path: ':videoplayer')
 
 /*    implementation project(path: ':instruction-ui')
     implementation project(path: ':instructions-domain')

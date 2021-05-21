@@ -10,6 +10,7 @@
       <module name="ditto-android.core-lib" target="1.8" />
       <module name="ditto-android.dittoprojectorapp" target="1.8" />
       <module name="ditto-android.dittoProjectorApp" target="1.8" />
+      <module name="ditto-android.home-domain" target="1.8" />
       <module name="ditto-android.home-ui" target="1.8" />
       <module name="ditto-android.howto-data" target="1.8" />
       <module name="ditto-android.howto-domain" target="1.8" />
@@ -22,6 +23,9 @@
       <module name="ditto-android.login-data" target="1.8" />
       <module name="ditto-android.login-domain" target="1.8" />
       <module name="ditto-android.login-ui" target="1.8" />
+      <module name="ditto-android.menuitems-data" target="1.8" />
+      <module name="ditto-android.menuitems-domain" target="1.8" />
+      <module name="ditto-android.menuitems-ui" target="1.8" />
       <module name="ditto-android.mylibrary-data" target="1.8" />
       <module name="ditto-android.mylibrary-domain" target="1.8" />
       <module name="ditto-android.mylibrary-ui" target="1.8" />

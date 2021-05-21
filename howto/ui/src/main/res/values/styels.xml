@@ -6,6 +6,7 @@
 
     <style name="ToolBarStyle"  parent="AppTheme">
         <item name="android:textColorSecondary">#000</item>
+        <item name="navigationIcon">@drawable/ic_baseline_arrow_back_ios_24</item>
 
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,4 +27,8 @@
         <item name="colorAccent">#FFFFFF</item>
     </style>
 
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/size_14sp</item>
+        <item name="fontFamily">@font/avenir_next_lt_pro_demi</item>
+    </style>
 </resources>
