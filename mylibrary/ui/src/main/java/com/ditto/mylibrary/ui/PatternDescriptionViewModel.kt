@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -19,7 +20,8 @@ import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
-class PatternDescriptionViewModel @Inject constructor(private val getPattern: GetMylibraryData) :
+class PatternDescriptionViewModel @Inject constructor(private val context: Context,
+                                                      private val getPattern: GetMylibraryData) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -32,6 +34,9 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
+    val isActive: ObservableBoolean = ObservableBoolean(true)
+    val resumeOrSubscription : ObservableField<String> =ObservableField("")
+    val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
 
 
     init {
@@ -79,8 +84,15 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
      * [Function] ViewPager Previous Button Click
      */
     fun onClickWorkSpace() {
-        uiEvents.post(Event.OnWorkspaceButtonClicked)
+        if(resumeOrSubscription.get().toString() == "RESUME"){
+            uiEvents.post(Event.OnWorkspaceButtonClicked)
+        }else{
+            uiEvents.post(Event.onSubscriptionClicked)
+
+        }
     }
+
+
 
     fun onClickInstructions() {
         uiEvents.post(Event.OnInstructionsButtonClicked)
@@ -92,6 +104,9 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
     sealed class Event {
 
         object OnWorkspaceButtonClicked : Event()
+
+        object onSubscriptionClicked : Event()
+
 
         object OnInstructionsButtonClicked : Event()
 

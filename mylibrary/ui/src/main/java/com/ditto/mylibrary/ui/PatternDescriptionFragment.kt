@@ -87,7 +87,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         toolbarViewModel.isShowActionBar.set(true)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Description")
+        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Details")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(true)
         baseViewModel.activeSocketConnection.set(false)
@@ -373,6 +373,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
                 setData()
             }
+
+            is PatternDescriptionViewModel.Event.onSubscriptionClicked ->{
+                logger.d("onSubscriptionClicked")
+                Utility.redirectToExternalBrowser(requireContext(),"http://www.dittopatterns.com")
+
+            }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
@@ -403,6 +409,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         viewModel.patternName.set(viewModel.data.value?.patternName)
         viewModel.patternDescription.set(viewModel.data.value?.description)
         viewModel.patternStatus.set(viewModel.data.value?.status)
+        if(viewModel.clickedID.get()==2){
+            viewModel.isSubscriptionExpired.set(false)
+            viewModel.resumeOrSubscription.set("RESUME")
+        }else{
+            viewModel.isSubscriptionExpired.set(true)
+            text_watchvideo2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            viewModel.resumeOrSubscription.set("RENEW SUBSCRIPTION")
+        }
         setPatternImage()
     }
 

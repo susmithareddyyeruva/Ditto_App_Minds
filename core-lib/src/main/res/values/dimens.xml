@@ -10,4 +10,6 @@
     <dimen name="text_header">20sp</dimen>
     <dimen name="text_desc">12sp</dimen>
     <dimen name="text_menu">14sp</dimen>
+    <dimen name="toolbar">21sp</dimen>
+    <dimen name="desc">16sp</dimen>
 </resources>
