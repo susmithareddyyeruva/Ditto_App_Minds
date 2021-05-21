@@ -60,12 +60,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center_vertical"
                         android:onClick="@{() -> viewModel.onSkip()}"
                         android:text="@string/skip"
                         android:textColor="@color/black"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
-                        android:textSize="@dimen/size_16sp"
+                        android:textSize="@dimen/size_12px"
                         android:drawablePadding="16dp"
                         android:paddingEnd="16dp"
                         android:visibility="@{viewModel.isFromOnboardinScreen()}"
@@ -212,7 +212,7 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickCalibrationStepsButton()}"
-                        android:visibility="@{(viewModel.isFinalPage() &amp;&amp; viewModel.tabPosition == 1)? View.GONE : View.VISIBLE}"
+                        android:visibility="@{ viewModel.tabPosition == 0 || viewModel.tabPosition == 1}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
@@ -227,7 +227,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/size_14sp"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            android:visibility="@{(viewModel.instructionID == 1 &amp;&amp; viewModel.isFromOnboardinScreen()) ? View.VISIBLE : View.GONE}" />
+                            android:visibility="@{(viewModel.instructionID == 1)}" />
 
                     </RelativeLayout>
 

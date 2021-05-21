@@ -5,6 +5,7 @@ import com.ditto.home.domain.model.HomeData
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.USER_FIRST_NAME
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
     }
 
     fun setHomeHeader() {
-        if (storageManager.getStringValue(USER_FIRST_NAME) == null) {
+        if (!AppState.getIsLogged()) {
             isGuest.set(true)
             header.set("Hi there,")
         } else {

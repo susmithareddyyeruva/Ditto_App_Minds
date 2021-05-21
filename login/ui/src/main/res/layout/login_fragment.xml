@@ -337,7 +337,7 @@
                                 android:onClick="@{()-> viewModel.signUpRedirection()}"
                                 android:selectAllOnFocus="false"
                                 android:text="@string/sign_up"
-                                android:textColor="@color/blue"
+                                android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_forgot_psw" />
 
 
@@ -366,7 +366,7 @@
                             android:onClick="@{()-> viewModel.guestLogin()}"
                             android:selectAllOnFocus="false"
                             android:text="@string/see_more"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/text_size_forgot_psw" />
 
 

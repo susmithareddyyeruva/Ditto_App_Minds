@@ -4,8 +4,6 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.fonts.Font
-import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -15,10 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
@@ -65,13 +63,14 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        if (core.network.Utility.isNetworkAvailable(requireContext())) {
+       /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnBoardingDataFromApi()
 
         } else {
             viewModel.fetchOnBoardingData()
-        }
+        }*/
+        viewModel.fetchOnBoardingData()
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
@@ -341,6 +340,10 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             toolbarViewModel.isShowTransparentActionBar.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             bottomNavViewModel.visibility.set(false)
+        if (viewModel.isFromHome_Observable.get()){
+            (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+            (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
 //        }
     }
 
@@ -350,9 +353,9 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         viewModel.onBoardingUserName.set(getString(R.string.Welcomeheader))
         viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
     }else{
-        viewModel.onBoardingTitle.set(getString(R.string.tutorialheader))
-        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header))
-        viewModel.onBoardingUserName.set(bottomNavViewModel.userFirstNameBase.get())
+        viewModel.onBoardingTitle.set("")
+        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
+        viewModel.onBoardingUserName.set("Hi "+bottomNavViewModel.userFirstNameBase.get() + ",")
 
     }
 

@@ -53,7 +53,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/nav_graph_id_login"
             app:popUpToInclusive="true"  />
 
         <action
@@ -62,6 +61,9 @@
         <action
             android:id="@+id/action_destination_to_FQAfragment"
             app:destination="@id/FQAfragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
 
     </fragment>
 
@@ -87,4 +89,9 @@
         android:id="@+id/FQAfragment"
         android:name="com.ditto.menuitems_ui.faq.ui.FQAfragment"
         android:label="Frequently Asked Questions" />
+
+    <fragment
+        android:id="@+id/aboutAppFragment"
+        android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
+        android:label="AboutAppFragment" />
 </navigation>

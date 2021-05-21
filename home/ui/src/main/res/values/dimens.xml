@@ -12,6 +12,7 @@
     <dimen name="medium_padding">10dp</dimen>
     <dimen name="large_padding">15dp</dimen>
     <dimen name="x_large_padding">30dp</dimen>
+    <dimen name="list_left_margin">10dp</dimen>
 
     <dimen name="padding_header_desc">5dp</dimen>
     <dimen name="text_header">24sp</dimen>
