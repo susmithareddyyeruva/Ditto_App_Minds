@@ -1,8 +1,12 @@
 package com.ditto.workspace.ui
 
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
@@ -13,16 +17,25 @@ import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.util.Utility
+import core.PDF_PASSWORD
+import core.PDF_USERNAME
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
+import java.io.File
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.*
 import javax.inject.Inject
 
 class WorkspaceViewModel @Inject constructor(
@@ -63,7 +76,7 @@ class WorkspaceViewModel @Inject constructor(
     val isSpliceTopVisible: ObservableBoolean = ObservableBoolean(false)
     val isSpliceBottomVisible: ObservableBoolean = ObservableBoolean(false)
     val isWorkspaceSocketConnection: ObservableBoolean = ObservableBoolean(false)
-
+    val patternpdfuri: ObservableField<String> = ObservableField("")
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
 
@@ -219,8 +232,7 @@ class WorkspaceViewModel @Inject constructor(
         cutType = core.ui.common.Utility.AlertType.CUT_BIN_ALL
         for (workspaceItem in workspaceItems.distinctBy { it.parentPatternId }) {
             if (!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted
-                    ?: false)
-            ) {
+                    ?: false)) {
                 cutCount += workspaceItem?.cutQuantity?.get(4)
                     ?.let { Character.getNumericValue(it) }
             }
@@ -274,7 +286,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun cutCheckBoxClicked(count : Int?) {
+    fun cutCheckBoxClicked(count: Int?) {
 
     }
 
@@ -373,6 +385,10 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.OnClickPatternInstructions)
     }
 
+    fun onClickTutorial() {
+        uiEvents.post(Event.OnClickTutorial)
+    }
+
     fun onClickSpliceRight() {
         uiEvents.post(Event.OnClickSpliceRight)
         isSpliceLeftVisible.set(true)
@@ -397,6 +413,10 @@ class WorkspaceViewModel @Inject constructor(
         isSpliceBottomVisible.set(false)
     }
 
+    fun onFinished() {
+        uiEvents.post(Event.OnDownloadComplete)
+    }
+
     sealed class Event {
         /**
          * Event emitted by [events] when the data received successfully
@@ -417,6 +437,7 @@ class WorkspaceViewModel @Inject constructor(
          * Event emitted by [events] when instructions clicked
          */
         object OnClickPatternInstructions : Event()
+        object OnClickTutorial : Event()
 
         object CalculateScrollButtonVisibility : Event()
         object OnDataUpdated : Event()
@@ -441,6 +462,65 @@ class WorkspaceViewModel @Inject constructor(
         object ShowCutBinDialog : Event()
         object RemoveAllPatternPieces : Event()
         object updateProgressCount : Event()
+        object OnDownloadComplete : Event()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun downloadPDF(url: String, filename: String) {
+        performtask(url, filename)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun performtask(url: String, filename: String) {
+
+        withContext(Dispatchers.IO) {
+
+            val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
+            val inputStream: InputStream
+            var result: File? = null
+            val url: URL = URL(url)
+            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+            val basicAuth =
+                "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
+            conn.setRequestProperty("Authorization", basicAuth)
+            conn.requestMethod = "GET"
+            conn.connect()
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                patternpdfuri.set("")
+                onFinished()
+                return@withContext
+            }
+            inputStream = conn.inputStream
+            if (inputStream != null)
+                result = convertInputStreamToFile(inputStream, filename)
+            val path = Uri.fromFile(result)
+            patternpdfuri.set(path.toString())
+            onFinished()
+        }
+    }
+
+    private fun convertInputStreamToFile(inputStream: InputStream, filename: String): File? {
+        var result: File? = null
+        val outputFile: File? = null
+        var dittofolder: File? = null
+        dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+        )
+        if (!dittofolder.exists()) {
+            dittofolder.mkdir()
+        }
+        result = File(dittofolder, filename)
+        if (!result.exists()) {
+            result.createNewFile()
+        }
+        result.copyInputStreamToFile(inputStream)
+        return result
+    }
+
+    private fun File.copyInputStreamToFile(inputStream: InputStream) {
+        this.outputStream().use { fileOut ->
+            inputStream.copyTo(fileOut)
+        }
     }
 }
 

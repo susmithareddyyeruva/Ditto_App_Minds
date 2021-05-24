@@ -25,7 +25,7 @@
             android:drawablePadding="@dimen/small_padding"
             android:elevation="@dimen/elevation_small"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:onClick="@{() -> viewModel.onClickInstructions()}"
+            android:onClick="@{() -> viewModel.onClickTutorial()}"
             android:paddingStart="@dimen/medium_padding"
             android:paddingTop="@dimen/small_padding"
             android:paddingEnd="@dimen/medium_padding"

@@ -873,6 +873,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                 }
             }
+            is WorkspaceViewModel.Event.OnDownloadComplete -> {
+
+            }
+            is WorkspaceViewModel.Event.OnClickTutorial -> {
+                navigateToTutorial()
+            }
         }
 
     private fun onUpdateProgressCount() {
@@ -1722,6 +1728,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 "isRecalibrate" to true
             )
         )
+    }
+
+    private fun navigateToTutorial() {
+        val bundle = bundleOf("isFromHome" to true)
+        findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

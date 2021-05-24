@@ -30,7 +30,7 @@ android {
     defaultConfig {
         applicationId "com.ditto"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
         versionName "0.04"
         multiDexEnabled true

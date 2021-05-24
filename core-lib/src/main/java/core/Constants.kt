@@ -9,6 +9,9 @@ const val GUEST_SIGNED_IN = "GUEST"
 const val GITHUB_SIGNED_IN = "LOGGED IN : GITHUB"
 const val GOOGLE_SIGNED_IN = "LOGGED IN : GOOGLE"
 const val CLIENT_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+const val PDF_USERNAME = "amrita.pattanaik@infosys.com"
+const val PDF_PASSWORD = "A@Mala3204"
+const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
 
 //Shared Preference Keys
 const val USER_EMAIL = "USER_EMAIL"

@@ -23,6 +23,7 @@ import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,6 +64,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
+        (activity as BottomNavigationActivity).hidemenu()
        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnBoardingDataFromApi()
