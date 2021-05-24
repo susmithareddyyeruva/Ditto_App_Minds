@@ -13,6 +13,7 @@
         android:button="@drawable/checkbox_selector"
         android:checked="false"
         android:visibility="visible"
+        android:buttonTint="@color/cell_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
