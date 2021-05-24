@@ -144,10 +144,29 @@ class AllPatternsViewModel @Inject constructor(
             Filter.brandList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val categoryAsString =
             Filter.categoryList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val sizeAsString =
+            Filter.sizeList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val typeAsString =
+            Filter.typeList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val seasonAsString =
+            Filter.seasonList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val occasionAsString =
+            Filter.occasionList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val suitableAsString =
+            Filter.suitableList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val customizationAsString =
+            Filter.customizationList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val filterCriteria = FilterCriteria()
         filterCriteria.category = categoryAsString
         filterCriteria.brand = brandAsString
         filterCriteria.gender = genderAsString
+        filterCriteria.size = sizeAsString
+        filterCriteria.type = typeAsString
+        filterCriteria.season = seasonAsString
+        filterCriteria.occasion = occasionAsString
+        filterCriteria.suitable = suitableAsString
+        filterCriteria.customization = customizationAsString
+
         val json = Gson().toJson(filterCriteria)
         Log.d("JSON===", json)
     }

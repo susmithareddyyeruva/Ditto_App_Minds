@@ -73,6 +73,36 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterItems("Lee"),
         FilterItems("Addidas")
     )
+    val sizeList = arrayListOf(
+        FilterItems("32"),
+        FilterItems("34"),
+        FilterItems("36"),
+        FilterItems("38")
+    )
+    val typeList = arrayListOf(
+        FilterItems("Dress"),
+        FilterItems("Skirt"),
+        FilterItems("Blouse")
+    )
+    val occasionList = arrayListOf(
+        FilterItems("Sleepwear"),
+        FilterItems("Lounge"),
+        FilterItems("Formal"),
+        FilterItems("Sport")
+    )
+    val suitableList = arrayListOf(
+        FilterItems("Children"),
+        FilterItems("Men"),
+        FilterItems("Women"),
+    )
+    val customizationList = arrayListOf(
+        FilterItems("Yes"),
+        FilterItems("No")
+    )
+    val seasonList = arrayListOf(
+        FilterItems("Winter"),
+        FilterItems("Summer")
+    )
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -98,6 +128,12 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         Filter.genderList.addAll(genderList)
         Filter.brandList.addAll(brandList)
         Filter.categoryList.addAll(categoryFilterList)
+        Filter.sizeList.addAll(sizeList)
+        Filter.typeList.addAll(typeList)
+        Filter.occasionList.addAll(occasionList)
+        Filter.seasonList.addAll(seasonList)
+        Filter.suitableList.addAll(suitableList)
+        Filter.customizationList.addAll(customizationList)
 
 
         // Add Item Touch Listener
@@ -122,6 +158,48 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
                     2 -> {//Brand
                         (binding.rvActions.adapter as FilterActionsAdapter).updateList(
                             brandList,
+                            menuItems[position].menuItem
+                        )
+
+                    }
+                    3 -> {//Size
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            sizeList,
+                            menuItems[position].menuItem
+                        )
+
+                    }
+                    4 -> {//Type
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            typeList,
+                            menuItems[position].menuItem
+                        )
+
+                    }
+                    5 -> {//Season
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            seasonList,
+                            menuItems[position].menuItem
+                        )
+
+                    }
+                    6 -> {//Occasion
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            occasionList,
+                            menuItems[position].menuItem
+                        )
+
+                    }
+                    7 -> {//Suitable
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            suitableList,
+                            menuItems[position].menuItem
+                        )
+
+                    }
+                    8-> {//Customization
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            customizationList,
                             menuItems[position].menuItem
                         )
 
