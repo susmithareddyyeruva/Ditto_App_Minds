@@ -125,15 +125,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setUpNavigationDrawer()
         setFilterMenuAdapter(0)
         viewModel.fetchOnPatternData()
-        Filter.genderList.addAll(genderList)
-        Filter.brandList.addAll(brandList)
-        Filter.categoryList.addAll(categoryFilterList)
-        Filter.sizeList.addAll(sizeList)
-        Filter.typeList.addAll(typeList)
-        Filter.occasionList.addAll(occasionList)
-        Filter.seasonList.addAll(seasonList)
-        Filter.suitableList.addAll(suitableList)
-        Filter.customizationList.addAll(customizationList)
+        setList()
 
 
         // Add Item Touch Listener
@@ -197,7 +189,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
                         )
 
                     }
-                    8-> {//Customization
+                    8 -> {//Customization
                         (binding.rvActions.adapter as FilterActionsAdapter).updateList(
                             customizationList,
                             menuItems[position].menuItem
@@ -216,6 +208,67 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             val genderAsString = Filter.genderList
             viewModel.createJson()
         }
+        binding.clearFilter.setOnClickListener {
+            Filter.clearAll()
+            setAsDefault()
+            (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
+
+        }
+    }
+
+    private fun setAsDefault() {
+        categoryFilterList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        brandList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        genderList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        seasonList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        suitableList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        typeList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        customizationList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        sizeList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+    }
+
+    private fun setList() {
+        Filter.genderList.addAll(genderList)
+        Filter.brandList.addAll(brandList)
+        Filter.categoryList.addAll(categoryFilterList)
+        Filter.sizeList.addAll(sizeList)
+        Filter.typeList.addAll(typeList)
+        Filter.occasionList.addAll(occasionList)
+        Filter.seasonList.addAll(seasonList)
+        Filter.suitableList.addAll(suitableList)
+        Filter.customizationList.addAll(customizationList)
     }
 
     private fun setFilterActionAdapter() {
@@ -343,56 +396,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     }
 
     override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
-        /*  if (isSelected) {
-              if (menu.equals("Category")) {
-
-              }
-
-          }*/
-        /*        if (isSelected) {
-                    if (menu.equals("Category")) {
-                     Filter.categoryList=
-                    } else if (menu.equals("Gender")) {
-                        //FilterResultCalss.genderList?.add(title)
-                    }
-                } else {
-                    if (menu.equals("Category")) {
-                        if (!Filter.categoryList?.isNullOrEmpty()) {
-                            Filter.categoryList?.forEach {
-                                if (it.equals(title)) {
-                                  //  FilterResultCalss.categoryList?.remove(title)
-                                }
-
-                            }
-                        }
-                    } else if (menu.equals("Gender")) {
-                        if ( !Filter.genderList?.isNullOrEmpty()) {
-                            Filter.genderList?.forEach {
-                                if (it.equals(title)) {
-                                  //  FilterResultCalss.genderList?.remove(title)
-                                }
-
-                            }
-                        }
-                    }
-
-
-                }
-  */
     }
-    /*      if (FilterResultCalss.categoryList?.contains(title)) {
-        selectedItemsList.add(title)
-        Log.d("category", menu)
-        Log.d("Items", title)
-
-    }
-
-} else {
-    if (selectedItemsList.contains(title)) {
-        selectedItemsList.remove(title)
-    }
-
-}*/
 
 
 }
