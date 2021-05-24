@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <dimen name="drawer_width">281dp</dimen>
+    <dimen name="drawer_width">300dp</dimen>
     <dimen name="text_heading">20sp</dimen>
     <dimen name="text_add_project">12sp</dimen>
     <dimen name="text_desc">14sp</dimen>
