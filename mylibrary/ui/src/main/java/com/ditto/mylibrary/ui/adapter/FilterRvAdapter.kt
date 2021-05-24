@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.ditto.mylibrary.domain.model.FilterMenuData
+import com.ditto.mylibrary.domain.model.FilterMenuItem
 import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_singlecategory.view.*
 
-class FilterRvAdapter(private var items: ArrayList<FilterMenuData>, private var currentPos: Int) :RecyclerView.Adapter<FilterRvAdapter.NavigationItemViewHolder>() {
+class FilterRvAdapter(private var items: ArrayList<FilterMenuItem>, private var currentPos: Int) :RecyclerView.Adapter<FilterRvAdapter.NavigationItemViewHolder>() {
 
     private lateinit var context: Context
 

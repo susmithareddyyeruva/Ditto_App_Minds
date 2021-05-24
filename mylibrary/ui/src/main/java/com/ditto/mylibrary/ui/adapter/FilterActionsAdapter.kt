@@ -29,6 +29,7 @@ class FilterActionsAdapter(private var items: ArrayList<FilterItems>, private va
 
     override fun onBindViewHolder(holder: NavigationItemViewHolder, position: Int) {
         holder.itemView.itemAction.text = items[position].title
+        holder.itemView.checkItem.isChecked=items[position].isSelected
         holder.itemView.checkItem.setOnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isChecked) {
               Log.d("Checked true",items[position].title)

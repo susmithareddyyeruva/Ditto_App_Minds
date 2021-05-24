@@ -6,7 +6,10 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.Filter
+import com.ditto.mylibrary.domain.model.FilterCriteria
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.google.gson.Gson
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -40,7 +43,7 @@ class AllPatternsViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("AllPatternsViewModel","handleError")
+                Log.d("AllPatternsViewModel", "handleError")
             }
         }
     }
@@ -92,22 +95,22 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun removePattern(patternId: Int) {
-        Log.d("pattern","Removed")
+        Log.d("pattern", "Removed")
 
     }
 
     fun onFilterClick() {
-        Log.d("pattern","onFilterClick : viewModel")
+        Log.d("pattern", "onFilterClick : viewModel")
         uiEvents.post(Event.OnFilterClick)
     }
 
     fun onSyncClick() {
-        Log.d("pattern","onSyncClick : viewModel")
+        Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.OnSyncClick)
     }
 
     fun onSearchClick() {
-        Log.d("pattern","onSearchClick : viewModel")
+        Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnSearchClick)
     }
 
@@ -124,12 +127,29 @@ class AllPatternsViewModel @Inject constructor(
 
         object OnAddProjectClick : Event()
 
-        class OnOptionsClicked(val view: View,
-                               val patternId: Int) : Event()
+        class OnOptionsClicked(
+            val view: View,
+            val patternId: Int
+        ) : Event()
 
         object OnFilterClick : Event()
         object OnSyncClick : Event()
         object OnSearchClick : Event()
+    }
+
+    fun createJson() {
+        val genderAsString =
+            Filter.genderList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val brandAsString =
+            Filter.brandList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val categoryAsString =
+            Filter.categoryList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val filterCriteria = FilterCriteria()
+        filterCriteria.category = categoryAsString
+        filterCriteria.brand = brandAsString
+        filterCriteria.gender = genderAsString
+        val json = Gson().toJson(filterCriteria)
+        Log.d("JSON===", json)
     }
 
 }
