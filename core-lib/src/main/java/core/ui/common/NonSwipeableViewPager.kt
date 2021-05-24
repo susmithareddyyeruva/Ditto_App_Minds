@@ -44,6 +44,14 @@ class NonSwipeableViewPager : ViewPager {
 
     }
 
+    override fun setCurrentItem(item: Int, smoothScroll: Boolean) {
+        super.setCurrentItem(item, false)
+    }
+
+    override fun setCurrentItem(item: Int) {
+        super.setCurrentItem(item, false)
+    }
+
     inner class MyScroller(context: Context) : Scroller(context, DecelerateInterpolator()) {
 
         override fun startScroll(startX: Int, startY: Int, dx: Int, dy: Int, duration: Int) {

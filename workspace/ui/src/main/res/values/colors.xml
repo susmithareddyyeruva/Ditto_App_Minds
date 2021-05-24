@@ -5,12 +5,16 @@
     <color name="colorAccent">#000000</color>
     <color name="cardColor">#EEEEEE</color>
     <color name="line_divider_color">#C0C0C0</color>
-    <color name="tab_divider_color">#63666B</color>
+    <color name="button_stroke_color">#BFBFBF</color>
+    <color name="tab_divider_color">#DDDEDE</color>
     <color name="tab_text_color">#63666B</color>
     <color name="text_underline">#63666B</color>
-    <color name="default_text_color">#4A4A4A</color>
+    <color name="default_text_color">#707070</color>
+    <color name="default_cut_color">#797979</color>
+    <color name="bg_project_exit_color">#EDEDED</color>
+    <color name="bg_complete_piece_color">#DDDEDE</color>
+    <color name="projector_disable_color">#656565</color>
     <color name="text_move">#494949</color>
-    <color name="progress_green">#73BD00</color>
     <color name="seek_bar_background">#F4F4F4</color>
     <color name="seek_bar_secondary_progress">#F4F4F4</color>
 

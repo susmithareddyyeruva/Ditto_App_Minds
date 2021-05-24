@@ -17,12 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto.adapter.DoubleClickListener
 import com.ditto.instructions.domain.model.InstructionsData
 import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.instructions.ui.databinding.InstructionAdapterBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
+import core.ui.common.DoubleClickListener
 
 class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
     BindableAdapter<List<InstructionsData>> {

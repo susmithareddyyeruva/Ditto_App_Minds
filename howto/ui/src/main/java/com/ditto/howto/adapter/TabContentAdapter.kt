@@ -18,6 +18,7 @@ import com.ditto.howto.ui.PopUpWindow
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
+import core.ui.common.DoubleClickListener
 
 /**
  * Created by Sesha on  15/08/2020.
@@ -120,23 +121,3 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
     }
 
 }
-
-abstract class DoubleClickListener : View.OnClickListener {
-    private var lastClickTime: Long = 0
-    override fun onClick(v: View) {
-        val clickTime = System.currentTimeMillis()
-        if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            onDoubleClick(v)
-            lastClickTime = 0
-        }
-        lastClickTime = clickTime
-    }
-
-    abstract fun onDoubleClick(v: View)
-
-    companion object {
-        private const val DOUBLE_CLICK_TIME_DELTA: Long = 300 //milliseconds
-    }
-}
-
-

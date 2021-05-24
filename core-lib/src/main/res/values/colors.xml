@@ -9,7 +9,7 @@
     <color name="disable">#C0C0C0</color>
     <color name="disable1">#7C7272</color>
     <color name="subscription_yellow">#FAC20C</color>
-    <color name="logout_red">#E33B19</color>
+    <color name="app_red">#AD201A</color>
     <color name="sign_in_blue">#136BC1</color>
     <color name="menu_grey">#F4F5F7</color>
 </resources>

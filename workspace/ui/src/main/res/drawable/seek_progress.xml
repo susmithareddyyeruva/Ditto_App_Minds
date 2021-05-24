@@ -18,7 +18,7 @@
             <shape android:shape="rectangle">
                 <solid
                     android:width="@dimen/seek_bar_thickness"
-                    android:color="@color/progress_green" />
+                    android:color="@color/app_red" />
                 <!--                                <stroke-->
                 <!--                                    android:color="@color/progress_green"-->
                 <!--                                    android:width="@dimen/seek_bar_thickness"/>-->

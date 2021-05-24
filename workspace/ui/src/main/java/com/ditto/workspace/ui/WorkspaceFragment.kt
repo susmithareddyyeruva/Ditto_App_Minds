@@ -221,20 +221,20 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         var position = 0
         if (viewModel.data.value?.selectedTab.equals("0")) {
             position = 0
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("1")) {
             position = 1
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("2")) {
             position = 2
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         } else {
             Log.d("updateTab", "undefined")
             position = 0
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         }
 
