@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -52,7 +53,7 @@ class PatternAdapter : RecyclerView.Adapter<PatternAdapter.PatternHolder>(),
         }
 
         if (AppState.getIsLogged()) {
-            if (position == 0) {
+            if (position == 0 ) {
                 holder.patternsItemBinding.textviewPatternType.text = "NEW"
                 holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
                     (ContextCompat.getColor(
@@ -60,7 +61,7 @@ class PatternAdapter : RecyclerView.Adapter<PatternAdapter.PatternHolder>(),
                         R.color.text_new
                     ))
                 )
-            } else if (position == 1) {
+            } else if (position == 1 ) {
                 holder.patternsItemBinding.textviewPatternType.text = "OWNED"
                 holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
                     (ContextCompat.getColor(
@@ -76,6 +77,8 @@ class PatternAdapter : RecyclerView.Adapter<PatternAdapter.PatternHolder>(),
                         R.color.text_expired
                     ))
                 )
+            }else if (position == 3 ) {
+                holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
             }else{
                 holder.patternsItemBinding.textviewPatternType.text = "NEW"
                 holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
