@@ -396,6 +396,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     }
 
     override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
+      logger.d("Items=="+title)
     }
 
 

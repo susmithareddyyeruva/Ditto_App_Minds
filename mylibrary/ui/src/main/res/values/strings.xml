@@ -46,7 +46,7 @@
     <string name="menu_details">Details</string>
     <string name="text_sync">Sync</string>
     <string name="text_search">Search</string>
-    <string name="text_filter">Filter</string>
+    <string name="text_filter">Filters</string>
     <string name="text_clear_filter">clear filters</string>
     <string name="text_filter_result">Showing filtered results (09)</string>
     <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
