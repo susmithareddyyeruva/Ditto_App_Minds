@@ -65,6 +65,7 @@ class HowtoFragment : BaseFragment() {
                 arguments?.getBoolean("isFromOnBoarding")
                     ?.let { viewModel.isFromOnboardinScreen.set(it) }
                 arguments?.getBoolean("isFromHome")?.let { viewModel.isFromOnboardinScreen.set(it) }
+                arguments?.getBoolean("isFromWorkspace")?.let { viewModel.isFromWorkspaceScreen.set(it) }
             }
         }
         return binding.root

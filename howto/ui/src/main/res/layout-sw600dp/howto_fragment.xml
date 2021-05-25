@@ -67,6 +67,7 @@
                         android:textSize="@dimen/skip_text_size"
                         android:drawablePadding="16dp"
                         android:paddingEnd="16dp"
+                        android:visibility="@{!viewModel.isFromWorkspaceScreen()}"
                         app:drawableEndCompat="@drawable/right_arrow" />
 
                 </LinearLayout>
