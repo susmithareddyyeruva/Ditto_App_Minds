@@ -147,6 +147,9 @@ class WorkspaceViewModel @Inject constructor(
     fun projectWorkspace() {
         uiEvents.post(Event.onProject)
     }
+    fun setSpliceDefaultColor(){
+
+    }
 
     fun clickSize(isSize45: Boolean) {
         clickedSize45.set(isSize45)

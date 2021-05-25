@@ -195,8 +195,10 @@
             android:onClick="@{() -> viewModel.clickSplice()}"
             android:padding="@dimen/margin_v_small"
             android:text="@string/splice"
+            android:paddingHorizontal="@dimen/padding_horizontal_splice"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textColor="@{viewModel.clickedSplice?@android:color/white :@android:color/black}"
-            android:textSize="@dimen/text_size_cloth"
+            android:textSize="@dimen/text_splice"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
 
@@ -212,8 +214,9 @@
             android:onClick="@{() -> viewModel.clickSize(true)}"
             android:padding="@dimen/margin_v_small"
             android:text="@string/_45"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
-            android:textSize="@dimen/text_size_cloth"
+            android:textSize="@dimen/text_45"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_60"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
@@ -229,6 +232,7 @@
             android:onClick="@{() -> viewModel.clickSize(false)}"
             android:padding="@dimen/margin_v_small"
             android:text="@string/_60"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
             android:textSize="@dimen/text_size_cloth"
             app:layout_constraintDimensionRatio="1:1"

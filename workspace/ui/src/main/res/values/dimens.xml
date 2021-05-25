@@ -36,4 +36,6 @@
     <dimen name="seek_height">5dp</dimen>
     <dimen name="image_max_width">150dp</dimen>
     <dimen name="save_dialog_margin">20dp</dimen>
+    <dimen name="text_splice">10sp</dimen>
+    <dimen name="text_45">10sp</dimen>
 </resources>
