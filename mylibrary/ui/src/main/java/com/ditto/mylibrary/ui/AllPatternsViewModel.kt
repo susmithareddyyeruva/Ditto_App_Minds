@@ -31,7 +31,7 @@ class AllPatternsViewModel @Inject constructor(
     val events = uiEvents.stream()
     var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
-    val isFilterResult : ObservableBoolean = ObservableBoolean(true)
+    val isFilterResult : ObservableBoolean = ObservableBoolean(false)
 
     init {
     }
