@@ -28,6 +28,7 @@ import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -176,6 +177,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         adapter = PatternPiecesAdapter()
         binding.recyclerViewPieces.adapter = adapter
         adapter?.viewModel = viewModel
+    }
+
+    private fun refreshPatternPiecesAdapter() {
+        binding.recyclerViewPieces.adapter?.notifyDataSetChanged()
     }
 
     private fun startProjecting() {
@@ -860,17 +865,21 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 onUpdateProgressCount()
             }
             is WorkspaceViewModel.Event.OnClickClear -> {
-                if (viewModel.selectAllText.get() == (getString(R.string.de_select_all))) {
-                    viewModel.selectAllText.set(getString(R.string.select_all))
-                    clearWorkspace()
-                } else {
-                    mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
-                    if (mWorkspaceEditor?.views?.size!! > 0) {
-                        viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
-                    } else {
-                        viewModel.workspacedata = null
+                if (mWorkspaceEditor?.views?.any() ?: false) {
+                    if (viewModel.selectAllText.get() == (getString(R.string.de_select_all))) {
+                        viewModel.selectAllText.set(getString(R.string.select_all))
                         clearWorkspace()
+                    } else {
+                        mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
+                        if (mWorkspaceEditor?.views?.size!! > 0) {
+                            viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
+                        } else {
+                            viewModel.workspacedata = null
+                            clearWorkspace()
+                        }
                     }
+                } else {
+
                 }
             }
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
@@ -879,7 +888,28 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnClickTutorial -> {
                 navigateToTutorial()
             }
+            is WorkspaceViewModel.Event.OnResetClicked -> {
+                refreshPatternPiecesAdapter()
+            }
+            is WorkspaceViewModel.Event.OnClickPatternOrReference -> {
+                onUpdateFont()
+            }
         }
+
+    private fun onUpdateFont() {
+        binding.txtPatternPieces.setTypeface(
+            ResourcesCompat.getFont(
+                requireContext(),
+                if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_demi else R.font.avenir_next_lt_pro_regular
+            )
+        )
+        binding.txtReeferanceLayout.setTypeface(
+            ResourcesCompat.getFont(
+                requireContext(),
+                if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_regular else R.font.avenir_next_lt_pro_demi
+            )
+        )
+    }
 
     private fun onUpdateProgressCount() {
         binding.seekbarStatus.progress = 0

@@ -164,6 +164,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun clickPatternReference(isPattern: Boolean) {
         clickedPattenPieces.set(isPattern)
+        uiEvents.post(Event.OnClickPatternOrReference)
     }
 
     fun setImageModel(view: View, dragEvent: DragEvent, dragData: DragData, id: Int) {
@@ -232,7 +233,8 @@ class WorkspaceViewModel @Inject constructor(
         cutType = core.ui.common.Utility.AlertType.CUT_BIN_ALL
         for (workspaceItem in workspaceItems.distinctBy { it.parentPatternId }) {
             if (!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted
-                    ?: false)) {
+                    ?: false)
+            ) {
                 cutCount += workspaceItem?.cutQuantity?.get(4)
                     ?.let { Character.getNumericValue(it) }
             }
@@ -288,6 +290,19 @@ class WorkspaceViewModel @Inject constructor(
 
     fun cutCheckBoxClicked(count: Int?) {
 
+    }
+
+    fun clickReset() {
+        data?.value?.patternPieces?.forEach { workspaceItem ->
+            if (workspaceItem?.isCompleted) {
+                workspaceItem?.isCompleted = false
+            } else {
+//                data.value?.patternPieces?.find { it.id == workspaceItem.parentPatternId }
+//                    ?.isCompleted = true
+//                Utility.mPatternPieceList.add(workspaceItem.parentPatternId)
+            }
+        }
+        uiEvents.post(Event.OnResetClicked)
     }
 
     fun saveProject(projectName: String, isCompleted: Boolean?) {
@@ -438,6 +453,8 @@ class WorkspaceViewModel @Inject constructor(
          */
         object OnClickPatternInstructions : Event()
         object OnClickTutorial : Event()
+        object OnResetClicked : Event()
+        object OnClickPatternOrReference : Event()
 
         object CalculateScrollButtonVisibility : Event()
         object OnDataUpdated : Event()

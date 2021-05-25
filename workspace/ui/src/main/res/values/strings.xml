@@ -34,7 +34,7 @@
     <string name="empty_string"></string>
     <string name="ok">OK</string>
     <string name="reference_layout">Reference Layout</string>
-    <string name="pattern_pieces">Pattern pieces</string>
+    <string name="pattern_pieces">Pattern Pieces</string>
     <string name="recalibrate">Recalibrate</string>
     <string name="connect">Connect</string>
     <string name="seek_text"> <font color="red"> %1$d</font>/%2$d </string>
