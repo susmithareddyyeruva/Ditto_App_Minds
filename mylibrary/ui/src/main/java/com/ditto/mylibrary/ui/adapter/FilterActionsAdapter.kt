@@ -10,16 +10,20 @@ import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_filter.view.*
 
-class FilterActionsAdapter(private var items: ArrayList<FilterItems>, private var ItemsListener:SelectedItemsListener) :RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
+class FilterActionsAdapter(
+    private var items: ArrayList<FilterItems>,
+    private var ItemsListener: SelectedItemsListener
+) : RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
 
     private lateinit var context: Context
-    private var menuItem:String=""
+    private var menuItem: String = ""
 
     class NavigationItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NavigationItemViewHolder {
         context = parent.context
-        val navItem = LayoutInflater.from(parent.context).inflate(R.layout.item_filter, parent, false)
+        val navItem =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_filter, parent, false)
         return NavigationItemViewHolder(navItem)
     }
 
@@ -29,32 +33,37 @@ class FilterActionsAdapter(private var items: ArrayList<FilterItems>, private va
 
     override fun onBindViewHolder(holder: NavigationItemViewHolder, position: Int) {
         holder.itemView.itemAction.text = items[position].title
-        holder.itemView.checkItem.isChecked=items[position].isSelected
+        holder.itemView.checkItem.isChecked = items[position].isSelected
+        holder.itemView.setOnClickListener {
+            holder.itemView.checkItem.performClick()
+        }
         holder.itemView.checkItem.setOnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isChecked) {
-              Log.d("Checked true",items[position].title)
-                items[position].isSelected=true
-                ItemsListener.onItemsSelected(items[position].title,true,menuItem)
+                Log.d("Checked true", items[position].title)
+                items[position].isSelected = true
+                ItemsListener.onItemsSelected(items[position].title, true, menuItem)
             } else {
-                items[position].isSelected=false
+                items[position].isSelected = false
                 compoundButton.isChecked = false
-                Log.d("Checked false",items[position].title)
-                ItemsListener.onItemsSelected(items[position].title,false,menuItem)
+                Log.d("Checked false", items[position].title)
+                ItemsListener.onItemsSelected(items[position].title, false, menuItem)
             }
         }
 
 
     }
+
     fun updateList(
         filterList: ArrayList<FilterItems>,
         menu: String
     ) {
-        this.items=filterList
-        this.menuItem=menu
+        this.items = filterList
+        this.menuItem = menu
         notifyDataSetChanged()
 
     }
-    interface SelectedItemsListener{
-        fun onItemsSelected(title: String, isSelected: Boolean,menu: String)
+
+    interface SelectedItemsListener {
+        fun onItemsSelected(title: String, isSelected: Boolean, menu: String)
     }
 }
