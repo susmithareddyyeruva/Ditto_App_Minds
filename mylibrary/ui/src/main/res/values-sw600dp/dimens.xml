@@ -49,5 +49,6 @@
     <dimen name="guidline_clear_text">.025</dimen>
     <dimen name="guidline_top">.09</dimen>
     <dimen name="guide_start_clear_text_per">0.030</dimen>
+    <dimen name="distance_after_icon_sync">15dp</dimen>
 
 </resources>

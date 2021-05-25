@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
@@ -28,7 +30,7 @@ import javax.inject.Inject
 import kotlin.Comparator
 
 
-class AllPatternsFragment : BaseFragment() {//todo
+class AllPatternsFragment : BaseFragment() {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory

@@ -56,6 +56,8 @@
     <dimen name="recy_margin_top">15dp</dimen>
     <dimen name="guidline_clear_text">.039</dimen>
     <dimen name="guidline_top">.09</dimen>
+    <dimen name="distance_after_icon_sync">5dp</dimen>
+    <dimen name="size_34sp">34sp</dimen>
 
     <dimen name="size_0dp">0dp</dimen>
     <dimen name="size_16px">16sp</dimen>
