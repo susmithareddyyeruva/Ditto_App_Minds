@@ -23,28 +23,32 @@
             android:background="@android:color/white">
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.10" />
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".03" />
+                app:layout_constraintGuide_percent=".07" />
 
             <TextView
                 android:id="@+id/text_view_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
-                android:paddingStart="@dimen/medium_padding"
                 android:text="@string/welcome_back"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_header"
                 android:visibility="@{viewModel.isGuest() ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@+id/guide_left"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.20"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
@@ -52,16 +56,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_it_pro_bold"
-                android:paddingStart="@dimen/medium_padding"
                 android:text="@{viewModel.header}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_header"
-                app:layout_constraintBottom_toTopOf="@+id/recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintVertical_bias="0.20"
                 app:layout_constraintStart_toEndOf="@+id/text_view_header"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top" />
 
 
             <TextView
@@ -69,8 +70,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
-                android:paddingStart="@dimen/medium_padding"
-                android:paddingTop="@dimen/small_padding"
                 android:text="@string/welcome_message"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_desc"
@@ -89,6 +88,13 @@
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="textView_Description" />
 
+            <Space
+                android:id="@+id/margin_spacer"
+                android:layout_width="@dimen/list_left_margin"
+                android:layout_height="@dimen/dimen_0"
+                app:layout_constraintEnd_toStartOf="@+id/guide_left"
+                app:layout_constraintTop_toBottomOf="@+id/textView_Description"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="@dimen/dimen_0"
@@ -103,7 +109,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent=".45"
                 app:layout_constraintVertical_bias=".20"
-                app:layout_constraintStart_toStartOf="@+id/guide_left"
+                app:layout_constraintStart_toStartOf="@+id/margin_spacer"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_vertical"
                 tools:listitem="@layout/home_item" />
 

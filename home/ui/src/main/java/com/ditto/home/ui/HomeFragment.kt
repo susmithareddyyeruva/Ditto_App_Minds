@@ -10,10 +10,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.home.ui.adapter.HomeAdapter
-import com.example.home_ui.databinding.HomeFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
+import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
@@ -96,6 +96,7 @@ class HomeFragment : BaseFragment() {
                 }
             }
             HomeViewModel.Event.OnClickTutorial -> {
+               (activity as BottomNavigationActivity).hidemenu()
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf("isFromHome" to true)
                     findNavController().navigate(R.id.action_home_to_tutorial,bundle)
