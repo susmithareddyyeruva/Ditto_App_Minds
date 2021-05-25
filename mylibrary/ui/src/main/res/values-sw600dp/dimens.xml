@@ -58,4 +58,5 @@
     <dimen name="action_text_start">15dp</dimen>
     <dimen name="toolbar_bottom_margin">21dp</dimen>
     <dimen name="close_image">25dp</dimen>
+    <dimen name="close_filter">11dp</dimen>
 </resources>

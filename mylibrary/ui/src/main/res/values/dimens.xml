@@ -82,4 +82,6 @@
     <dimen name="action_text_start">10dp</dimen>
     <dimen name="toolbar_bottom_margin">13dp</dimen>
     <dimen name="close_image">20dp</dimen>
+    <dimen name="close_filter">8dp</dimen>
+    <dimen name="padding_start_closebtn">2dp</dimen>
 </resources>

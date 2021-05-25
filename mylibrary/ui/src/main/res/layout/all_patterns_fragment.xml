@@ -271,19 +271,19 @@
                     android:text="@string/text_filter"
                     android:textColor="@color/black"
                     android:textSize="@dimen/toolbar_head_size"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
                     app:layout_constraintStart_toEndOf="@+id/guideline_start"
-                    app:layout_constraintBottom_toBottomOf="@+id/guideline_top" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/closeFilter"
                     android:layout_width="@dimen/close_image"
                     android:layout_height="@dimen/close_image"
                     android:padding="@dimen/padding_round"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                    android:src="@drawable/ic_filterclose"
                     app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
-                    android:src="@drawable/ic_filterclose">
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                    app:layout_constraintTop_toTopOf="parent">
 
                 </ImageView>
 
@@ -329,14 +329,19 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@+id/guideline_center">
 
+                    <ImageView
+                        android:id="@+id/imageClearAll"
+                        android:layout_width="@dimen/close_filter"
+                        android:layout_height="@dimen/close_image"
+                        android:src="@drawable/ic_closebtn_new">
+
+                    </ImageView>
 
                     <TextView
                         android:id="@+id/clearFilter"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_blue_close"
-                        android:drawablePadding="@dimen/padding_small"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center_vertical"
                         android:paddingStart="@dimen/padding_small"

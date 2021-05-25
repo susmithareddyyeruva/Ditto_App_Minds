@@ -215,6 +215,9 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
 
         }
+        binding.imageClearAll.setOnClickListener {
+            binding.clearFilter.performClick()
+        }
     }
 
     private fun setAsDefault() {
@@ -397,7 +400,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     }
 
     override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
-      logger.d("Items=="+title)
+        logger.d("Items==" + title)
     }
 
 
