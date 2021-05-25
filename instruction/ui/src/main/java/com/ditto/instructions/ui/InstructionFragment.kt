@@ -297,7 +297,8 @@ class InstructionFragment constructor(
             val bundle = bundleOf(
                 "isFromHome" to isFromHome,
                 "isFromOnBoarding" to isFromOnboardinScreen,
-                "InstructionId" to 3
+                "InstructionId" to 3,
+                "isFromWorkspace" to viewModel.isFromWorkspaceScreen.get()
             )
             findNavController().navigate(
                 R.id.action_destination_instruction_to_howto_nav_graph,

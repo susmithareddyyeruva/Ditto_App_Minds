@@ -1731,7 +1731,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToTutorial() {
-        val bundle = bundleOf("isFromHome" to true)
+        val bundle = bundleOf("isFromHome" to true,"isFromWorkspace" to true)
         findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
 
     }
