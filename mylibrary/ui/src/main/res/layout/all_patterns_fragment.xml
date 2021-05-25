@@ -332,6 +332,7 @@
                     <ImageView
                         android:id="@+id/imageClearAll"
                         android:layout_width="@dimen/close_filter"
+                        android:visibility="visible"
                         android:layout_height="@dimen/close_image"
                         android:src="@drawable/ic_closebtn_new">
 
@@ -342,6 +343,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:paddingBottom="@dimen/padding_small"
+                        android:drawablePadding="@dimen/padding_small"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center_vertical"
                         android:paddingStart="@dimen/padding_small"

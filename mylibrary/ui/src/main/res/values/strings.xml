@@ -52,6 +52,6 @@
     <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
     <string name="filters">Filters</string>
     <string name="apply">APPLY</string>
-    <string name="clear_all">clear all</string>
+    <string name="clear_all"><u>clear all</u></string>
 
 </resources>
