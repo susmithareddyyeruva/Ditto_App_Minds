@@ -878,9 +878,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             clearWorkspace()
                         }
                     }
-                } else {
-
-                }
+                } else Utility.showSnackBar(
+                    getString(R.string.no_item_in_workspace), binding.topBorder
+                )
             }
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
 
