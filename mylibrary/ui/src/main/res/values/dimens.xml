@@ -74,10 +74,12 @@
     <dimen name="size_pattern_lib_text">21sp</dimen>
     <dimen name="toolbar_head_size">16sp</dimen>
     <dimen name="padding_end">6dp</dimen>
+    <dimen name="padding_round">5dp</dimen>
     <dimen name="btn_width">8dp</dimen>
     <dimen name="btn_height">30dp</dimen>
     <integer name="btn_height">41</integer>
     <integer name="btn_width">89</integer>
     <dimen name="action_text_start">10dp</dimen>
     <dimen name="toolbar_bottom_margin">13dp</dimen>
+    <dimen name="close_image">20dp</dimen>
 </resources>

@@ -277,10 +277,9 @@
 
                 <ImageView
                     android:id="@+id/closeFilter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/close_image"
+                    android:layout_height="@dimen/close_image"
+                    android:padding="@dimen/padding_round"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                     app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
