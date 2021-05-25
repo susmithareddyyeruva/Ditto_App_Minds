@@ -115,7 +115,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_pieces_reference"
+            android:drawableLeft="@drawable/ic_reset"
+            android:drawablePadding="@dimen/medium_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:onClick="@{() -> viewModel.clickReset()}"
             android:padding="@dimen/medium_padding"
             android:text="@string/reset"
             android:textColor="@android:color/black"
@@ -290,14 +293,16 @@
             android:background="@color/bg_project_exit_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_selvages_horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/guideline_selvages_horizontal"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/button_send_to_projector"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@drawable/button_rounded_red_bg"
+            android:background="@{viewModel.isWorkspaceSocketConnection?@drawable/button_rounded_red_bg:@drawable/button_rounded_grey_bg}"
             android:elevation="@dimen/elevation_pieces_reference"
             android:enabled="true"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
