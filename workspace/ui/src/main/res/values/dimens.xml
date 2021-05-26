@@ -40,6 +40,6 @@
     <dimen name="text_splice">10sp</dimen>
     <dimen name="text_45">10sp</dimen>
     <dimen name="text_60">10sp</dimen>
-    <dimen name="padding_horizontal_splice">23dp</dimen>
-    <dimen name="padding_vertical_splice">6.5dp</dimen>
+    <dimen name="padding_horizontal_splice">15dp</dimen>
+    <dimen name="padding_vertical_splice">7dp</dimen>
 </resources>

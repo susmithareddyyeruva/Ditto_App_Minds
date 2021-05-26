@@ -262,16 +262,29 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             disableInchTabs(binding.txtSize45)
             disableInchTabs(binding.txtSize60)
             disableInchTabs(binding.txtSizeSplice)
+            disablenap(binding.txtSize45Nap)
+            disablenap(binding.txtSize60Nap)
         }
+    }
+
+    private fun disablenap(view: TextView) {
+        view.isEnabled = false
+        view.setBackgroundResource(R.drawable.rounded_light_bg)
+        view.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.default_splice
+            )
+        )
     }
 
     private fun disableInchTabs(view: TextView) {
         view.isEnabled = false
-        view.setBackgroundResource(R.drawable.rounded_grey_bg)
+        view.setBackgroundResource(R.drawable.rounded_light_bg)
         view.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.disable
+                R.color.default_splice
             )
         )
     }
@@ -465,19 +478,25 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
             } else {
                 if (garments?.get(0)!!.fabricLength == "45") {
-                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_light_bg)
+                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_black_bg)
                     binding.txtSize45.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                         R.color.default_splice
+                            android.R.color.white
                         )
                     )
                     binding.txtSize60.isEnabled = false
-                    binding.txtSize60.setBackgroundResource(R.drawable.rounded_grey_bg)
+                    binding.txtSize60.setBackgroundResource(R.drawable.rounded_light_bg)
                     binding.txtSize60.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            R.color.disable
+                            R.color.default_splice
+                        )
+                    )
+                    binding.txtSize60Nap.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.default_splice
                         )
                     )
                     binding.txtSize45.isClickable = false
@@ -489,9 +508,21 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             android.R.color.white
                         )
                     )
+                    binding.txtSize60Nap.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            android.R.color.white
+                        )
+                    )
                     binding.txtSize45.isEnabled = false
-                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_grey_bg)
+                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_light_bg)
                     binding.txtSize45.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.disable
+                        )
+                    )
+                    binding.txtSize45Nap.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.disable
@@ -1764,7 +1795,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToTutorial() {
-        val bundle = bundleOf("isFromHome" to true,"isFromWorkspace" to true)
+        val bundle = bundleOf("isFromHome" to true, "isFromWorkspace" to true)
         findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
 
     }
