@@ -44,4 +44,14 @@ data class LoginResult(
     val v: String,
     @SerializedName("fault")
     val fault: Fault?,
+    @SerializedName("c_mirrorReminder")
+    val cMirrorReminder: Boolean,
+    @SerializedName("c_receiveEmail")
+    val cReceiveEmail: Boolean,
+    @SerializedName("c_spliceCutCompleteReminder")
+    val cSpliceCutCompleteReminder: Boolean,
+    @SerializedName("c_spliceMultiplePieceReminder")
+    val cSpliceMultiplePieceReminder: Boolean,
+    @SerializedName("c_spliceReminder")
+    val cSpliceReminder: Boolean
 )
