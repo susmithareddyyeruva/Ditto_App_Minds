@@ -61,7 +61,10 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -462,11 +465,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
             } else {
                 if (garments?.get(0)!!.fabricLength == "45") {
-                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_black_bg)
+                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_light_bg)
                     binding.txtSize45.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            android.R.color.white
+                         R.color.default_splice
                         )
                     )
                     binding.txtSize60.isEnabled = false

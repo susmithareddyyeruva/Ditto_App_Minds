@@ -39,4 +39,6 @@
     <dimen name="save_dialog_margin">20dp</dimen>
     <dimen name="text_splice">10sp</dimen>
     <dimen name="text_45">10sp</dimen>
+    <dimen name="text_60">10sp</dimen>
+    <dimen name="padding_horizontal_splice">23dp</dimen>
 </resources>

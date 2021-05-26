@@ -36,6 +36,8 @@
     <dimen name="tab_height">42dp</dimen>
     <dimen name="image_max_width">300dp</dimen>
     <dimen name="text_45">16sp</dimen>
+    <dimen name="text_60">16sp</dimen>
     <dimen name="padding_horizontal_splice">23dp</dimen>
+    <dimen name="text_size_nap">9sp</dimen>
 
 </resources>
