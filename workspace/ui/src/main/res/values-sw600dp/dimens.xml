@@ -12,6 +12,7 @@
     <dimen name="text_size_cloth">16sp</dimen>
     <dimen name="dimen_cut_checkbox">25dp</dimen>
     <dimen name="text_size_desc">14sp</dimen>
+    <dimen name="text_size_nap">9sp</dimen>
     <dimen name="text_select_all">14sp</dimen>
     <dimen name="text_seek_complete">22sp</dimen>
     <dimen name="text_move_to_drag">15sp</dimen>
