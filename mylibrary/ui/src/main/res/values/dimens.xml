@@ -36,7 +36,6 @@
     <dimen name="margin_recyc_top">35dp</dimen>
     <dimen name="margin_recyc_end">15dp</dimen>
     <dimen name="margin_start_vertical_view">10dp</dimen>
-    <dimen name="margin_start_search">10dp</dimen>
     <dimen name="margin_text">10dp</dimen>
     <dimen name="sync_height">16.5dp</dimen>
     <dimen name="sync_width">12dp</dimen>
