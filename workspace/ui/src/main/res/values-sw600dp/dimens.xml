@@ -38,8 +38,10 @@
     <dimen name="text_45">16sp</dimen>
     <dimen name="text_60">16sp</dimen>
     <dimen name="padding_horizontal_splice">23dp</dimen>
-    <dimen name="padding_vertical_splice">7dp</dimen>
+    <dimen name="padding_vertical_splice">8dp</dimen>
     <dimen name="text_size_nap">9sp</dimen>
     <dimen name="small_paddingx">7dp</dimen>
+    <dimen name="bottom_nap">1dp</dimen>
+    <dimen name="splice_end_margin">9dp</dimen>
 
 </resources>
