@@ -93,6 +93,7 @@
     <dimen name="close_image">20dp</dimen>
     <dimen name="close_filter">8dp</dimen>
     <dimen name="padding_start_closebtn">2dp</dimen>
-  <dimen name="guide_start_clear_text_per">0.039</dimen>
+    <dimen name="guide_start_clear_text_per">0.039</dimen>
+    <dimen name="margin_start_search">10dp</dimen>
 
 </resources>

@@ -3,16 +3,10 @@ package com.ditto.mylibrary.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
@@ -25,7 +19,6 @@ import com.ditto.mylibrary.domain.model.FilterMenuItem
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
-import com.ditto.mylibrary.ui.adapter.GridSpacingItemDecoration
 import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.ClickListener
@@ -292,14 +285,6 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCategory.adapter = FilterRvAdapter(menuItems, position)
         setFilterActionAdapter()
-    }
-
-    private fun setUpToolbar() {
-        (activity as BottomNavigationActivity).hidemenu()
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(false)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setUpToolbar() {
