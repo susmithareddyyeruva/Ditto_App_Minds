@@ -15,6 +15,7 @@
   -->
 
 <resources>
+    <dimen name="drawer_width">450dp</dimen>
     <dimen name="text_add_project">16sp</dimen>
     <dimen name="text_count">20sp</dimen>
 
@@ -42,6 +43,23 @@
     <dimen name="blue_filter_dot">15dp</dimen>
     <dimen name="txt_filter_result">22sp</dimen>
     <dimen name="search_width">17.94dp</dimen>
+    <dimen name="search_height">17.94dp</dimen>
+    <dimen name="item_action_text_size">18sp</dimen>
+    <dimen name="apply_button_size">20sp</dimen>
+    <dimen name="toolbar_head_size">24sp</dimen>
+    <dimen name="padding_start_content">20dp</dimen>
+    <dimen name="start_margin">20dp</dimen>
+    <dimen name="clear_text_start">10dp</dimen>
+    <dimen name="menu_text_start">19dp</dimen>
+    <dimen name="padding_end">10dp</dimen>
+    <dimen name="btn_width">16dp</dimen>
+    <dimen name="btn_height">50dp</dimen>
+    <integer name="btn_height">55</integer>
+    <integer name="btn_width">114</integer>
+    <dimen name="action_text_start">15dp</dimen>
+    <dimen name="toolbar_bottom_margin">21dp</dimen>
+    <dimen name="close_image">25dp</dimen>
+    <dimen name="close_filter">11dp</dimen>
     <dimen name="search_width1">17.94</dimen>
     <dimen name="search_height">17.94dp</dimen>
     <dimen name="clear_text_margin_top">10dp</dimen>
