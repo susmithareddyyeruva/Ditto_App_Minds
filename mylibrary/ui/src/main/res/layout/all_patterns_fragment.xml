@@ -49,6 +49,7 @@
                 android:id="@+id/pattern_library_appBar"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dimen_5"
                 android:theme="@style/AppTheme.AppBarOverlay"
                 app:layout_constraintTop_toBottomOf="@id/topbar1">
 
@@ -74,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent=".05" />
+                            app:layout_constraintGuide_percent=".07" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guide_endn"
@@ -94,7 +95,7 @@
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/size_pattern_lib_text"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/guide_startn" />
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <View
                             android:id="@+id/view_vertical"
@@ -130,7 +131,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginEnd="@dimen/margin_end_search"
                             android:layout_toLeftOf="@+id/tv_filter"
-                            android:drawableStart="@drawable/ic_search"
+                            android:drawableStart="@drawable/ic_search_bt"
                             android:drawablePadding="@dimen/distance_after_icon_sync"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
@@ -186,7 +187,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent=".10" />
+                    app:layout_constraintGuide_percent="@dimen/guidline_top" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_start_clear_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="@dimen/guide_start_clear_text_per" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue"
+                    android:visibility="@{viewModel.isFilterResult()}"
+                    app:constraint_referenced_ids="tv_filter_result,textview_clear" />
+
+                <TextView
+                    android:id="@+id/tv_filter_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_filter_result"
+                    android:textColor="@color/search_text_code"
+                    android:textSize="@dimen/txt_filter_result"
+                    android:padding="@dimen/dimen_5"
+                    android:layout_marginTop="@dimen/clear_text_margin_top"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    app:layout_constraintTop_toBottomOf="@id/topbar"
+                    app:layout_constraintStart_toStartOf="@id/guide_start_clear_text"/>
+
+                <TextView
+                    android:id="@+id/textview_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_clear_filter"
+                    android:textColor="@color/color_clear_filter"
+                    android:textSize="@dimen/txt_clear_filter"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_marginTop="@dimen/clear_text_margin_top"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    app:layout_constraintTop_toBottomOf="@id/topbar"
+                    android:padding="@dimen/dimen_5"
+                    app:layout_constraintStart_toEndOf="@id/tv_filter_result"
+                    android:drawableStart="@drawable/ic_clear_result"
+                    android:drawablePadding="@dimen/dimen_5"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_patterns"
@@ -202,7 +247,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/topbar"
+                    app:layout_constraintTop_toBottomOf="@id/textview_clear"
                     app:spanCount="4"
                     tools:listitem="@layout/my_library_patterns_item" />
 

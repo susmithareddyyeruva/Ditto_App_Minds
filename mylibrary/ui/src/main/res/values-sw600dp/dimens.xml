@@ -61,7 +61,6 @@
     <dimen name="close_image">25dp</dimen>
     <dimen name="close_filter">11dp</dimen>
     <dimen name="search_width1">17.94</dimen>
-    <dimen name="search_height">17.94dp</dimen>
     <dimen name="clear_text_margin_top">10dp</dimen>
     <dimen name="recy_margin_top">15dp</dimen>
     <dimen name="guidline_clear_text">.025</dimen>
