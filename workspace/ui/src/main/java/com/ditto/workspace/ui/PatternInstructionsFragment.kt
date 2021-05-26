@@ -30,7 +30,7 @@ class PatternInstructionsFragment : BaseFragment() {
 
     private val viewModel: WorkspaceViewModel by ViewModelDelegate()
     lateinit var binding: FragmentWsPatternInstructionsBinding
-    var downloadFileName : String? = null
+    var downloadFileName: String? = null
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -52,18 +52,22 @@ class PatternInstructionsFragment : BaseFragment() {
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
+        (activity as BottomNavigationActivity).hidemenu()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
         setUIEvents()
         loadPdf()
     }
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 20
         private val REQUIRED_PERMISSIONS =
             arrayOf(
-                Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.MANAGE_EXTERNAL_STORAGE
+            )
 
     }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         context?.let { it1 ->
             ContextCompat.checkSelfPermission(
@@ -71,6 +75,7 @@ class PatternInstructionsFragment : BaseFragment() {
             )
         } == PackageManager.PERMISSION_GRANTED
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
@@ -80,11 +85,13 @@ class PatternInstructionsFragment : BaseFragment() {
             checkavailablefile()
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private  fun checkavailablefile() {
-        downloadFileName = PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
+    private fun checkavailablefile() {
+        downloadFileName =
+            PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
         val availableUri = downloadFileName?.let { Utility.isFileAvailable(it) }
-        if (availableUri != null){
+        if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {
 
@@ -95,8 +102,9 @@ class PatternInstructionsFragment : BaseFragment() {
         }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadPdf(){
+    private fun loadPdf() {
         if (allPermissionsGranted()) {
             checkavailablefile()
         } else {
@@ -106,6 +114,7 @@ class PatternInstructionsFragment : BaseFragment() {
             )
         }
     }
+
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -113,15 +122,17 @@ class PatternInstructionsFragment : BaseFragment() {
                 handleEvent(it)
             }
     }
+
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
                 showPdfFromUri(
                     Uri.parse(
-                    viewModel.patternpdfuri.get()
-                ))
+                        viewModel.patternpdfuri.get()
+                    )
+                )
             }
-            else -> Log.d("Error","Invaid Event")
+            else -> Log.d("Error", "Invaid Event")
         }
 
     private fun showPdfFromUri(pdfName: Uri) {

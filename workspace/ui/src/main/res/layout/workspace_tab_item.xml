@@ -88,7 +88,7 @@
             android:layout_height="@dimen/dimen_0"
             android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
             android:elevation="@dimen/elevation_small"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:gravity="center"
             android:onClick="@{() -> viewModel.clickPatternReference(false)}"
             android:text="@string/reference_layout"
@@ -222,6 +222,19 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
 
         <TextView
+            android:id="@+id/txt_size_45_nap"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:text="@string/w_Nap"
+            android:gravity="center_horizontal"
+            android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
+            android:textSize="@dimen/text_size_nap"
+            app:layout_constraintStart_toStartOf="@+id/txt_size_45"
+            app:layout_constraintEnd_toEndOf="@+id/txt_size_45"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_size_45" />
+
+        <TextView
             android:id="@+id/txt_size_60"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_0"
@@ -238,6 +251,19 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@+id/txt_select_layout"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
+
+        <TextView
+            android:id="@+id/txt_size_60_nap"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:text="@string/w_Nap"
+            android:gravity="center_horizontal"
+            android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
+            android:textSize="@dimen/text_size_nap"
+            app:layout_constraintStart_toStartOf="@+id/txt_size_60"
+            app:layout_constraintEnd_toEndOf="@+id/txt_size_60"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_size_60" />
 
         <ImageView
             android:id="@+id/image_selvage_horizontal"
@@ -259,7 +285,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{!viewModel.clickedPattenPieces}"
-            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
+            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,
+            txt_size_45_nap,txt_size_60,txt_size_60_nap,image_selvage_horizontal" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_pattern_pieces"
@@ -317,7 +344,7 @@
             android:textSize="@dimen/send_to_projector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_save_and_exit"
-            app:layout_constraintHeight_percent=".08"
+            app:layout_constraintHeight_percent=".09"
             app:layout_constraintStart_toEndOf="@+id/guideline_workspace_divider"
             app:layout_constraintTop_toTopOf="@+id/lineview"
             app:layout_constraintWidth_percent=".25" />
@@ -337,7 +364,7 @@
             android:textSize="@dimen/send_to_projector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent=".08"
+            app:layout_constraintHeight_percent=".09"
             app:layout_constraintStart_toEndOf="@+id/button_send_to_projector"
             app:layout_constraintTop_toTopOf="@+id/lineview"
             app:layout_constraintWidth_percent=".09" />

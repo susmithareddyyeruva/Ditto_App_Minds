@@ -36,6 +36,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var isFromHomeScreen: Boolean = false
+    var isFromWorkspaceScreen: Boolean = false
     var isFromOnBoardingScreen: Boolean = true
     var isWifiAlert: Boolean = false
     val logger: Logger by lazy {
@@ -63,6 +64,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
+        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
         (activity as BottomNavigationActivity).hidemenu()
        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
@@ -168,7 +170,8 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 val bundle = bundleOf(
                     "InstructionId" to viewModel.clickedId.get(),
                     "isFromOnBoarding" to isFromOnBoardingScreen,
-                    "isFromHome" to isFromHomeScreen
+                    "isFromWorkspace" to isFromWorkspaceScreen,
+
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 

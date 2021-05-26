@@ -9,6 +9,7 @@
     <dimen name="text_instruction">14sp</dimen>
     <dimen name="text_recalibrate">12sp</dimen>
     <dimen name="text_size_cloth">12sp</dimen>
+    <dimen name="text_size_nap">6sp</dimen>
     <dimen name="text_size_select_layout">12sp</dimen>
     <dimen name="text_double_tap_zoom">12sp</dimen>
     <dimen name="text_size_desc">10sp</dimen>
