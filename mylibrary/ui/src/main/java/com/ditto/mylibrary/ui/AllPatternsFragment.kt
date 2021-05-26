@@ -3,10 +3,16 @@ package com.ditto.mylibrary.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
@@ -36,6 +42,7 @@ import kotlin.collections.ArrayList
 
 
 class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener {
+
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -103,7 +110,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterItems("Winter"),
         FilterItems("Summer")
     )
-
+    
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -295,6 +302,15 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun setUpToolbar() {
+        (activity as BottomNavigationActivity).hidemenu()
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(false)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -306,16 +322,6 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
 
     private fun setPatternAdapter() {
         val adapter = PatternAdapter()
-        val spanCount = 3// 3 columns
-        val spacing = 50 // 50px
-        val includeEdge = false
-        binding.recyclerViewPatterns.addItemDecoration(
-            GridSpacingItemDecoration(
-                spanCount,
-                spacing,
-                includeEdge
-            )
-        )
         binding.recyclerViewPatterns.adapter = adapter
         adapter.viewModel = viewModel
         val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
@@ -330,7 +336,9 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
+ 
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+ 
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
@@ -350,6 +358,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }
 
         is AllPatternsViewModel.Event.OnFilterClick -> {
+
             binding.drawerLayout.openDrawer(Gravity.RIGHT)
             //setPatternAdapter()
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
@@ -364,13 +373,23 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         is AllPatternsViewModel.Event.OnSyncClick -> {
             //setPatternAdapter()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
+
+            //setPatternAdapter()
+            Log.d("pattern","onFilterClick : AllPatternsFragment")
+            // open dialog
+        }is AllPatternsViewModel.Event.OnSearchClick -> {
+            //setPatternAdapter()
+            Log.d("pattern","OnSearchClick : AllPatternsFragment")
+            // open dialog
+        }is AllPatternsViewModel.Event.OnSyncClick -> {
+            //setPatternAdapter()
+            Log.d("pattern","OnSyncClick : AllPatternsFragment")
             // open dialog
         }
         else -> {
             logger.d("OnClickPattern")
         }
     }
-
 
     private fun showPopupMenu(view: View, patternId: Int) {
         this.patternId = patternId
@@ -379,6 +398,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         inflater.inflate(R.menu.actions, popup.menu)
         popup.show()
     }
+
 
     private fun setUpNavigationDrawer() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -403,6 +423,5 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
         logger.d("Items==" + title)
     }
-
 
 }

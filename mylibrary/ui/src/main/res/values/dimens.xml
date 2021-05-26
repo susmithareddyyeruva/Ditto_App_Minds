@@ -22,13 +22,15 @@
     <dimen name="text_count">16sp</dimen>
 
     <dimen name="dimen_0">0dp</dimen>
+    <dimen name="dimen_10">10dp</dimen>
     <dimen name="dimen_5">5dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
     <dimen name="dimen_3">3dp</dimen>
     <dimen name="tab_height">28dp</dimen>
     <dimen name="elevation_card">15dp</dimen>
     <dimen name="margin_card">30dp</dimen>
     <dimen name="margin_card_start">10dp</dimen>
-    <dimen name="margin_card_top">35dp</dimen>
+    <dimen name="margin_card_top">15dp</dimen>
     <dimen name="margin_card_end">10dp</dimen>
     <dimen name="margin_recyc_start">15dp</dimen>
     <dimen name="margin_recyc_top">35dp</dimen>
@@ -50,7 +52,14 @@
     <dimen name="txt_filter_result">14sp</dimen>
     <dimen name="blue_filter_dot">7dp</dimen>
     <dimen name="search_width">9.63dp</dimen>
+    <dimen name="search_width1">9.63</dimen>
     <dimen name="search_height">9.63dp</dimen>
+    <dimen name="clear_text_margin_top">20dp</dimen>
+    <dimen name="recy_margin_top">15dp</dimen>
+    <dimen name="guidline_clear_text">.039</dimen>
+    <dimen name="guidline_top">.09</dimen>
+    <dimen name="distance_after_icon_sync">5dp</dimen>
+    <dimen name="size_34sp">34sp</dimen>
 
     <dimen name="size_0dp">0dp</dimen>
     <dimen name="size_16px">16sp</dimen>
@@ -84,4 +93,6 @@
     <dimen name="close_image">20dp</dimen>
     <dimen name="close_filter">8dp</dimen>
     <dimen name="padding_start_closebtn">2dp</dimen>
+  <dimen name="guide_start_clear_text_per">0.039</dimen>
+
 </resources>

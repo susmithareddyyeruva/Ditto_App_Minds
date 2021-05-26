@@ -34,6 +34,7 @@ class AllPatternsViewModel @Inject constructor(
     val events = uiEvents.stream()
     var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
+    val isFilterResult : ObservableBoolean = ObservableBoolean(false)
 
     init {
     }
@@ -100,6 +101,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onFilterClick() {
+
         Log.d("pattern", "onFilterClick : viewModel")
         uiEvents.post(Event.OnFilterClick)
     }
@@ -110,6 +112,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onSearchClick() {
+
         Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnSearchClick)
     }
@@ -169,6 +172,7 @@ class AllPatternsViewModel @Inject constructor(
 
         val json = Gson().toJson(filterCriteria)
         Log.d("JSON===", json)
+
     }
 
 }

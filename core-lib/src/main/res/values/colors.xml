@@ -12,4 +12,6 @@
     <color name="logout_red">#E33B19</color>
     <color name="sign_in_blue">#136BC1</color>
     <color name="menu_grey">#F4F5F7</color>
+    <color name="text_new">#CEA10B</color>
+    <color name="text_expired">#777777</color>
 </resources>

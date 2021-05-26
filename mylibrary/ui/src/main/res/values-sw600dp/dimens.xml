@@ -30,11 +30,12 @@
     <dimen name="size_search">25sp</dimen>
     <dimen name="size_21sp">28sp</dimen>
     <dimen name="size_pattern_lib_text">30sp</dimen>
-    <dimen name="maergin_start_search">35dp</dimen>
-    <dimen name="margin_start_vertical_view">35dp</dimen>
+    <dimen name="margin_start_search">25dp</dimen>
+    <dimen name="margin_start_vertical_view">25dp</dimen>
     <dimen name="sync_height">41.36dp</dimen>
     <dimen name="sync_width">30.08dp</dimen>
     <dimen name="filter_height">29.18dp</dimen>
+    <dimen name="margin_card_top">35dp</dimen>
     <dimen name="filter_width">31.66dp</dimen>
     <dimen name="margin_end_search">91.15dp</dimen>
     <dimen name="txt_size_new">13sp</dimen>
@@ -59,4 +60,13 @@
     <dimen name="toolbar_bottom_margin">21dp</dimen>
     <dimen name="close_image">25dp</dimen>
     <dimen name="close_filter">11dp</dimen>
+    <dimen name="search_width1">17.94</dimen>
+    <dimen name="search_height">17.94dp</dimen>
+    <dimen name="clear_text_margin_top">10dp</dimen>
+    <dimen name="recy_margin_top">15dp</dimen>
+    <dimen name="guidline_clear_text">.025</dimen>
+    <dimen name="guidline_top">.09</dimen>
+    <dimen name="guide_start_clear_text_per">0.030</dimen>
+    <dimen name="distance_after_icon_sync">15dp</dimen>
+
 </resources>
