@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_mylibrary"
-    app:startDestination="@id/myLibraryFragment"
+    app:startDestination="@id/allPatternsFragment"
     tools:ignore="UnusedNavigation">
 
     <!--    <include app:graph="@navigation/instruction_navigation" />-->
@@ -30,9 +30,10 @@
         android:id="@+id/allPatternsFragment"
         android:name="com.ditto.mylibrary.ui.AllPatternsFragment"
         android:label="All Patterns">
-        <!--<action
+        <action
             android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
-            app:destination="@id/patternDescriptionFragment" />-->
+            app:destination="@id/patternDescriptionFragment" />
+
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />

@@ -31,6 +31,7 @@ class AllPatternsViewModel @Inject constructor(
     val events = uiEvents.stream()
     var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
+    val isFilterResult : ObservableBoolean = ObservableBoolean(false)
 
     init {
     }
@@ -96,6 +97,21 @@ class AllPatternsViewModel @Inject constructor(
 
     }
 
+    fun onFilterClick() {
+        Log.d("pattern","onFilterClick : viewModel")
+        uiEvents.post(Event.OnFilterClick)
+    }
+
+    fun onSyncClick() {
+        Log.d("pattern","onSyncClick : viewModel")
+        uiEvents.post(Event.OnSyncClick)
+    }
+
+    fun onSearchClick() {
+        Log.d("pattern","onSearchClick : viewModel")
+        uiEvents.post(Event.OnSearchClick)
+    }
+
     /**
      * Events for this view model
      */
@@ -112,6 +128,9 @@ class AllPatternsViewModel @Inject constructor(
         class OnOptionsClicked(val view: View,
                                val patternId: Int) : Event()
 
+        object OnFilterClick : Event()
+        object OnSyncClick : Event()
+        object OnSearchClick : Event()
     }
 
 }
