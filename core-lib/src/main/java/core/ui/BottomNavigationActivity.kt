@@ -303,6 +303,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 navController.navigate(R.id.action_destination_to_FQAfragment)
                 true
             }
+            R.id.nav_graph_mainFaq -> {
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                navController.navigate(R.id.action_destination_to_FAQGlossaryfragment)
+                true
+            }
             R.id.nav_graph_logout -> {
                 logoutUser(true)
                 true
@@ -339,7 +344,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
             navController.navigate(R.id.action_fragments_to_customerCareFragment)
         } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
-            navController.navigate(R.id.action_destination_to_FQAfragment)
+            navController.navigate(R.id.action_destination_to_FAQGlossaryfragment)
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
             logoutUser(true)
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){

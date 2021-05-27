@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/FQAfragment"
-        android:name="com.ditto.menuitems_ui.faq.ui.FQAfragment"
+        android:name="com.ditto.menuitems_ui.faq.ui.FAQFragment"
         tools:layout="@layout/faqfragment_layout"
         android:label="Frequently Asked Questions" />
 </navigation>

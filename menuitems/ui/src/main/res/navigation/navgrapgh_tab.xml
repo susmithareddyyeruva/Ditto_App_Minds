@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_mainFaq"
+    tools:ignore="UnusedNavigation"
+    app:startDestination="@id/faqMainFragment">
+
+    <fragment
+        android:id="@+id/faqMainFragment"
+        android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
+        tools:layout="@layout/faq_glossary_mainfragment"
+        android:label="FAQ and Glossary" />
+</navigation>

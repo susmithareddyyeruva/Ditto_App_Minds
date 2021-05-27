@@ -75,8 +75,8 @@
             app:destination="@id/nav_graph_customercare" />
 
         <action
-            android:id="@+id/action_destination_to_FQAfragment"
-            app:destination="@id/nav_graph_faq" />
+            android:id="@+id/action_destination_to_FAQGlossaryfragment"
+            app:destination="@id/nav_graph_mainFaq" />
     </fragment>
 
 </navigation>
