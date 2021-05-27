@@ -26,6 +26,14 @@
         <item name="android:textSize">@dimen/text_desc</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
-    
 
+    <style name="Theme.NavigtaionDrawer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.NavigtaionDrawer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@android:color/transparent</item>
+        <item name="colorControlNormal">@color/cell_color</item>   <!-- normal border color change as you wish -->
+        <item name="colorControlActivated">@color/logout_red</item> <!-- activated color change as you wish -->
+    </style>
 </resources>
