@@ -12,13 +12,13 @@
     <dimen name="text_size_cloth">16sp</dimen>
     <dimen name="dimen_cut_checkbox">25dp</dimen>
     <dimen name="text_size_desc">14sp</dimen>
+    <dimen name="text_size_nap">9sp</dimen>
     <dimen name="text_select_all">14sp</dimen>
     <dimen name="text_seek_complete">22sp</dimen>
     <dimen name="text_move_to_drag">15sp</dimen>
     <dimen name="send_to_projector">18sp</dimen>
     <dimen name="small_padding_x">10dp</dimen>
     <dimen name="text_splice">16sp</dimen>
-
     <dimen name="margin_v_small">5dp</dimen>
     <dimen name="splice_button">50dp</dimen>
     <dimen name="seek_bar_thickness">10dp</dimen>

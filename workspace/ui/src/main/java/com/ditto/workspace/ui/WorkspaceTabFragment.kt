@@ -117,6 +117,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
+            if(mWorkspaceEditor?.views?.any() ?: true){
+                enableSelectAll(false)
+                enableClear(false)
+            }
         }
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         setupWorkspace()
@@ -585,6 +589,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableMirror(false)
+        enableSelectAll(false)
+        enableClear(false)
         mWorkspaceEditor?.clearAllViews()
         viewModel.workspacedata = null
         viewModel.spliced_pices_visibility.set(false)
@@ -731,6 +737,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 1
                 viewModel.spliced_pices.set(2)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -754,6 +761,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 0
                 viewModel.spliced_pices.set(1)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -777,6 +785,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 0
                 viewModel.spliced_pices.set(1)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -800,6 +809,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 1
                 viewModel.spliced_pices.set(2)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -906,6 +916,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
                         if (mWorkspaceEditor?.views?.size!! > 0) {
                             viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
+                            enableClear(false)
+                            enableMirror(false)
+                            enableSelectAll(true)
                         } else {
                             viewModel.workspacedata = null
                             clearWorkspace()
@@ -927,6 +940,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnClickPatternOrReference -> {
                 onUpdateFont()
             }
+            is WorkspaceViewModel.Event.DisableClear -> { enableClear(false)}
+            is WorkspaceViewModel.Event.EnableClear -> { enableClear(true)}
+            is WorkspaceViewModel.Event.DisableSelectAll -> { enableSelectAll(false)}
+            is WorkspaceViewModel.Event.EnableSelectAll -> { enableSelectAll(true)}
         }
 
     private fun onUpdateFont() {
@@ -1023,6 +1040,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         com.ditto.workspace.ui.util.Utility.workspaceItemId.set(0)
                     }
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
+                        enableSelectAll(true)
+                        enableClear(false)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
                                 getAlertDialogue(
@@ -1071,6 +1090,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             }
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
+                            enableClear(false)
                             com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get() + 1
                             )
@@ -1140,6 +1160,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
+        enableClear(true)
         viewModel.workspacedata = workspaceItem
         viewModel.showDoubleTouchToZoom.set(false)
         viewModel.checkMirroring()
@@ -1368,6 +1389,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.includeWorkspacearea?.txtMirrorH?.alpha = if (status) 1F else 0.5F
         binding.includeWorkspacearea?.txtMirrorV?.isEnabled = status
         binding.includeWorkspacearea?.txtMirrorH?.isEnabled = status
+    }
+
+    private fun enableClear(status: Boolean) {
+        binding.includeWorkspacearea?.txtClear?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtClear?.isEnabled = status
+    }
+
+    private fun enableSelectAll(status: Boolean) {
+        binding.includeWorkspacearea?.txtSelectAll?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtSelectAll?.isEnabled = status
+
     }
 
     private fun showSaveAndExitPopup() {
@@ -1794,7 +1826,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToTutorial() {
-        val bundle = bundleOf("isFromHome" to true, "isFromWorkspace" to true)
+        val bundle = bundleOf("isFromHome" to true,"isFromWorkspace" to true)
         findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
 
     }

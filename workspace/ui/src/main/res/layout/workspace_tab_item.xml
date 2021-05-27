@@ -140,7 +140,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txt_reset" />
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_pieces"
             android:layout_width="@dimen/dimen_0"
@@ -197,7 +196,7 @@
             android:paddingHorizontal="@dimen/padding_horizontal_splice"
             android:paddingVertical="@dimen/padding_vertical_splice"
             android:text="@string/splice"
-            android:textColor="@{viewModel.clickedSplice?@android:color/black :@color/default_splice}"
+            android:textColor="@{viewModel.clickedSplice?@android:color/white :@color/default_splice}"
             android:textSize="@dimen/text_splice"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />

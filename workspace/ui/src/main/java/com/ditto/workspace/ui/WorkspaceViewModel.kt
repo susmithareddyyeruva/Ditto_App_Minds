@@ -226,8 +226,10 @@ class WorkspaceViewModel @Inject constructor(
         if (selectAllText.get().equals("Select All")) {
             uiEvents.post(Event.OnClickSelectAll)
             uiEvents.post(Event.DisableMirror)
+            uiEvents.post(Event.EnableClear)
         } else {
             uiEvents.post(Event.OnClickDeSelectAll)
+            uiEvents.post(Event.DisableClear)
         }
     }
 
@@ -466,6 +468,10 @@ class WorkspaceViewModel @Inject constructor(
         object OnClickDeSelectAll : Event()
         object EnableMirror : Event()
         object DisableMirror : Event()
+        object DisableClear : Event()
+        object EnableClear : Event()
+        object DisableSelectAll : Event()
+        object EnableSelectAll : Event()
         object OnClickMirrorHorizontal : Event()
         object OnClickMirrorVertical : Event()
         object OnClickClear : Event()

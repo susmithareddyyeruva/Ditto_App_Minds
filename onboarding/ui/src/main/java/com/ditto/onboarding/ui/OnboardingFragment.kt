@@ -61,7 +61,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
        arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
          arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
@@ -70,8 +69,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
              bottomNavViewModel.showProgress.set(true)
              viewModel.fetchOnBoardingDataFromApi()
-
-
          } else {
              viewModel.fetchOnBoardingData()
          }*/
@@ -173,7 +170,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
-
                  INSTRUCTIONID to viewModel.clickedId.get(),
                     ISFROMONBOARDING to isFromOnBoardingScreen,
                     ISFROMHOME to isFromHomeScreen

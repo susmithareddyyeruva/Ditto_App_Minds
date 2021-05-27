@@ -189,7 +189,7 @@
             android:id="@+id/txt_size_splice"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="@dimen/margin_text"
+            android:layout_marginTop="@dimen/margin_text
             android:layout_marginEnd="@dimen/splice_end_margin"
             android:layout_marginBottom="@dimen/margin_text"
             android:background="@{viewModel.clickedSplice?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
@@ -198,7 +198,7 @@
             android:paddingHorizontal="@dimen/padding_horizontal_splice"
             android:paddingVertical="@dimen/padding_vertical_splice"
             android:text="@string/splice"
-            android:textColor="@{viewModel.clickedSplice?@android:color/black :@color/default_splice}"
+            android:textColor="@{viewModel.clickedSplice?@android:color/white :@color/default_splice}"
             android:textSize="@dimen/text_splice"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
