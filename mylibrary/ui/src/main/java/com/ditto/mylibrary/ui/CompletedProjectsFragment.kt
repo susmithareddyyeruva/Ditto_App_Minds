@@ -105,8 +105,9 @@ class CompletedProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnOptionsClicked -> {
                 Log.d("error","instruction error")
             }
-
-
+            is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
+            is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
+            is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
         }
 
 }

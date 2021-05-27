@@ -47,12 +47,8 @@ class BeamSetupFragment : BaseFragment() {
             binding = FragmentBeamSetupBinding.inflate(inflater)
                 .also {
                     arguments?.getInt("InstructionId")?.let { viewModel.instructionID.set(it) }
-                    arguments?.getBoolean("isFromOnBoarding")
-                        ?.let { viewModel.isFromOnboardinScreen.set(it) }
                     arguments?.getBoolean("isFromHome")
-                        ?.let { viewModel.isFromOnboardinScreen.set(it) }
-                    arguments?.getBoolean("isFromWorkspace")
-                        ?.let { viewModel?.isFromWorkspaceScreen?.set(it) }
+                        ?.let { viewModel.isFromHome?.set(it) }
                 }
         }
         return binding.root
@@ -96,8 +92,6 @@ class BeamSetupFragment : BaseFragment() {
             toolbarViewModel.isShowTransparentActionBar.set(false)
             toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
             viewModel.toolbarTitle.set("Beam Setup & Takedown")
-
-            viewModel.isFromOnboardinScreen.set(true)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()
@@ -147,8 +141,7 @@ class BeamSetupFragment : BaseFragment() {
         val fragmentAdapter = activity?.supportFragmentManager?.let {
             TabsAdapter(
                 it,
-                arguments?.getBoolean("isFromHome")!!,
-                arguments?.getBoolean("isFromOnBoarding")!!
+                arguments?.getBoolean("isFromHome")!!
             )
         }
         binding.viewPager.adapter = fragmentAdapter

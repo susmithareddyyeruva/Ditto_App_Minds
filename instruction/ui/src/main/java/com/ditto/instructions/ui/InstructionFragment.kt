@@ -60,8 +60,7 @@ import javax.inject.Inject
 
 class InstructionFragment constructor(
     val position: Int = 0,
-    var isFromHome: Boolean = false,
-    var isFromOnboardinScreen: Boolean = false
+    val isFromHome: Boolean = false,
 ) : BaseFragment(), Utility.CallbackDialogListener {
 
     @Inject
@@ -90,16 +89,9 @@ class InstructionFragment constructor(
             }.apply {
                 if (arguments != null) {
                     arguments?.getInt("InstructionId")?.let { viewModel?.instructionID?.set(it) }
-                    arguments?.getBoolean("isFromHome")?.let { isFromHome = it }
-                    arguments?.getBoolean("isFromOnBoarding")
-                        ?.let {
-                            viewModel?.isFromOnboardinScreen?.set(it)
-                            isFromOnboardinScreen = it
-                        }
+                    arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
                     arguments?.getBoolean("isFromCamera")
                         ?.let { viewModel?.isFromCameraScreen?.set(it) }
-                } else {
-                    viewModel?.isFromOnboardinScreen?.set(isFromOnboardinScreen)
                 }
             }
         }
@@ -111,6 +103,7 @@ class InstructionFragment constructor(
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel.isFromHome.set(isFromHome)
         viewModel.tabPosition.set(position)
         viewModel.isShowindicator.set(true)
         if (viewModel.data.value == null) {
@@ -278,8 +271,7 @@ class InstructionFragment constructor(
                 R.id.action_destination_instruction_self,
                 bundleOf(
                     "InstructionId" to 2,
-                    "isFromOnBoarding" to isFromOnboardinScreen,
-                    "isFromHome" to isFromHome
+                    "isFromHome" to viewModel?.isFromHome.get()
                 )
             )
 
@@ -295,10 +287,8 @@ class InstructionFragment constructor(
             findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
         ) {
             val bundle = bundleOf(
-                "isFromHome" to isFromHome,
-                "isFromOnBoarding" to isFromOnboardinScreen,
-                "InstructionId" to 3,
-                "isFromWorkspace" to viewModel.isFromWorkspaceScreen.get()
+                "isFromHome" to viewModel?.isFromHome?.get(),
+                "InstructionId" to 3
             )
             findNavController().navigate(
                 R.id.action_destination_instruction_to_howto_nav_graph,
@@ -314,7 +304,7 @@ class InstructionFragment constructor(
         if (findNavController().currentDestination?.id == R.id.destination_instruction ||
             findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
         ) {
-            val bundle = bundleOf("isFromHome" to isFromHome, "InstructionId" to 3)
+            val bundle = bundleOf("isFromHome" to viewModel?.isFromHome?.get(), "InstructionId" to 3)
             findNavController().navigate(
                 R.id.action_destination_instruction_to_howto_nav_graph,
                 bundle
@@ -451,8 +441,8 @@ class InstructionFragment constructor(
      * [Function] Setting up the toolbar by checking the previous screen
      */
     private fun setupToolbar() {
-        arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
-        if (isFromHome) {
+        arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
+        if (viewModel?.isFromHome?.get()) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -610,8 +600,7 @@ class InstructionFragment constructor(
         findNavController().navigate(
             R.id.action_destination_instruction_to_calibration_nav_graph,
             bundleOf(
-                "isFromOnBoarding" to isFromOnboardinScreen,
-                "isFromHome" to isFromHome,
+                "isFromHome" to viewModel?.isFromHome?.get(),
                 "isFromPatternDescription" to false
             )
         )

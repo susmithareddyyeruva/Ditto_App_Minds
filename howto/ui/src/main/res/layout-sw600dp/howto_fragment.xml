@@ -13,8 +13,8 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/howto_appBar"
@@ -27,11 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/headerbar"
-                app:theme="@style/ToolBarStyle"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
-                app:menu="@null"
                 app:contentInsetStartWithNavigation="0dp"
+                app:menu="@null"
+                app:theme="@style/ToolBarStyle"
                 app:titleTextColor="@color/black">
 
                 <LinearLayout
@@ -50,24 +50,23 @@
                         android:gravity="start"
                         android:text="@{viewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/size_21sp"
-                        />
+                        android:textSize="@dimen/size_21sp" />
 
                     <!-- Subtitle -->
                     <TextView
                         android:id="@+id/header_view_sub_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
                         android:layout_gravity="center_vertical"
+                        android:drawablePadding="16dp"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="end"
                         android:onClick="@{() -> viewModel.onSkip()}"
+                        android:paddingEnd="16dp"
                         android:text="@string/howtoskip"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:textSize="@dimen/skip_text_size"
-                        android:drawablePadding="16dp"
-                        android:paddingEnd="16dp"
-                        android:visibility="@{!viewModel.isFromWorkspaceScreen()}"
+                        android:visibility="@{!viewModel.isFromHome()}"
                         app:drawableEndCompat="@drawable/right_arrow" />
 
                 </LinearLayout>
@@ -93,18 +92,18 @@
             <com.ditto.howto.utils.CustomTabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="12dp"
                 android:background="@android:color/white"
-                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topbar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:tabIndicatorGravity="bottom"
-                app:tabIndicatorColor="#A4211F"
-                app:tabMode="fixed"
-                app:tabInlineLabel="true"
                 app:tabGravity="fill"
-                android:layout_marginStart="30dp"
+                app:tabIndicatorColor="#A4211F"
+                app:tabIndicatorGravity="bottom"
+                app:tabInlineLabel="true"
+                app:tabMode="fixed"
                 app:tabPaddingEnd="@dimen/size_14px"
                 app:tabPaddingStart="@dimen/size_14px"
                 app:tabRippleColor="@android:color/transparent"
@@ -114,6 +113,7 @@
 
 
             </com.ditto.howto.utils.CustomTabLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -130,21 +130,21 @@
                 android:layout_width="@dimen/size_0dp"
                 android:layout_height="@dimen/size_0dp"
                 android:visibility="@{!viewModel.isShowPlaceholder()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/placeholder"
                 android:layout_width="@dimen/size_0dp"
                 android:layout_height="@dimen/size_0dp"
+                android:background="@android:color/white"
                 android:visibility="@{viewModel.isShowPlaceholder()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-                android:background="@android:color/white">
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
 
                 <ImageView

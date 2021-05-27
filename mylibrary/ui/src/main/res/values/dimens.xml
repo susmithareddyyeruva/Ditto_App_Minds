@@ -15,26 +15,84 @@
   -->
 
 <resources>
+    <dimen name="drawer_width">300dp</dimen>
     <dimen name="text_heading">20sp</dimen>
     <dimen name="text_add_project">12sp</dimen>
     <dimen name="text_desc">14sp</dimen>
     <dimen name="text_count">16sp</dimen>
 
     <dimen name="dimen_0">0dp</dimen>
+    <dimen name="dimen_10">10dp</dimen>
+    <dimen name="dimen_5">5dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_3">3dp</dimen>
     <dimen name="tab_height">28dp</dimen>
     <dimen name="elevation_card">15dp</dimen>
     <dimen name="margin_card">30dp</dimen>
-    <dimen name="margin_card_start">25dp</dimen>
-    <dimen name="margin_card_top">20dp</dimen>
-    <dimen name="margin_card_end">25dp</dimen>
+    <dimen name="margin_card_start">10dp</dimen>
+    <dimen name="margin_card_top">15dp</dimen>
+    <dimen name="margin_card_end">10dp</dimen>
+    <dimen name="margin_recyc_start">15dp</dimen>
+    <dimen name="margin_recyc_top">35dp</dimen>
+    <dimen name="margin_recyc_end">15dp</dimen>
+    <dimen name="margin_start_vertical_view">10dp</dimen>
     <dimen name="margin_text">10dp</dimen>
+    <dimen name="sync_height">16.5dp</dimen>
+    <dimen name="sync_width">12dp</dimen>
+    <dimen name="toolbar_height">24dp</dimen>
+    <dimen name="filter_height">12.51dp</dimen>
+    <dimen name="filter_width">13.57dp</dimen>
+    <dimen name="margin_end_search">26.68dp</dimen>
     <dimen name="size_24px">24dp</dimen>
     <dimen name="size_14sp">14sp</dimen>
     <dimen name="size_15sp">15sp</dimen>
-
+    <dimen name="txt_size_new">8sp</dimen>
+    <dimen name="txt_clear_filter">12sp</dimen>
+    <dimen name="txt_filter_result">14sp</dimen>
+    <dimen name="blue_filter_dot">7dp</dimen>
+    <dimen name="search_width">9.63dp</dimen>
+    <dimen name="search_width1">9.63</dimen>
+    <dimen name="search_height">9.63dp</dimen>
+    <dimen name="clear_text_margin_top">20dp</dimen>
+    <dimen name="recy_margin_top">15dp</dimen>
+    <dimen name="guidline_clear_text">.039</dimen>
+    <dimen name="guidline_top">.09</dimen>
+    <dimen name="distance_after_icon_sync">5dp</dimen>
+    <dimen name="size_34sp">34sp</dimen>
 
     <dimen name="size_0dp">0dp</dimen>
     <dimen name="size_16px">16sp</dimen>
     <dimen name="size_14px">14sp</dimen>
     <dimen name="size_12px">12sp</dimen>
+    <dimen name="item_action_text_size">12sp</dimen>
+    <dimen name="apply_button_size">14sp</dimen>
+    <dimen name="padding_start">12dp</dimen>
+    <dimen name="menu_text_start">11dp</dimen>
+    <dimen name="padding_start_content">13dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="clear_text_start">9dp</dimen>
+    <dimen name="size_13px">13sp</dimen>
+    <dimen name="size_19px">19sp</dimen>
+    <dimen name="start_margin">13dp</dimen>
+    <dimen name="margin_start">35dp</dimen>
+    <dimen name="size_search">12sp</dimen>
+    <dimen name="item_cell_margin_top">10dp</dimen>
+    <dimen name="item_cell_margin_bottom">8dp</dimen>
+    <dimen name="size_21sp">21sp</dimen>
+    <dimen name="size_pattern_lib_text">21sp</dimen>
+    <dimen name="toolbar_head_size">16sp</dimen>
+    <dimen name="padding_end">6dp</dimen>
+    <dimen name="padding_round">5dp</dimen>
+    <dimen name="btn_width">8dp</dimen>
+    <dimen name="btn_height">30dp</dimen>
+    <integer name="btn_height">41</integer>
+    <integer name="btn_width">89</integer>
+    <dimen name="action_text_start">10dp</dimen>
+    <dimen name="toolbar_bottom_margin">13dp</dimen>
+    <dimen name="close_image">20dp</dimen>
+    <dimen name="close_filter">8dp</dimen>
+    <dimen name="padding_start_closebtn">2dp</dimen>
+    <dimen name="guide_start_clear_text_per">0.039</dimen>
+    <dimen name="margin_start_search">10dp</dimen>
+
 </resources>

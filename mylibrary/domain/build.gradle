@@ -55,6 +55,10 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
+
+    //Gson Dependencies
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
     implementation project(':non-core-lib')
     implementation project(':login-domain')
     implementation project(':storage-data')

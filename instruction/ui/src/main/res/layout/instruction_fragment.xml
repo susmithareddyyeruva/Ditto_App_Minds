@@ -41,8 +41,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/header_view_title"
@@ -59,17 +58,17 @@
                         android:id="@+id/header_view_sub_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
                         android:layout_gravity="center_vertical"
+                        android:drawableRight="@drawable/right_arrow"
+                        android:drawablePadding="16dp"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="end"
                         android:onClick="@{() -> viewModel.onSkip()}"
+                        android:paddingEnd="16dp"
                         android:text="@string/skip"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:textSize="@dimen/size_12px"
-                        android:drawablePadding="16dp"
-                        android:paddingEnd="16dp"
-                        android:visibility="@{viewModel.isFromOnboardinScreen()}"
-                        android:drawableRight="@drawable/right_arrow" />
+                        android:visibility="@{!viewModel.isFromHome()}" />
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
@@ -124,12 +123,19 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent=".81" />
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_container_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".98" />
+
                     <LinearLayout
+                        android:id="@+id/bottom_viewpager"
                         android:layout_width="@dimen/size_0dp"
                         android:layout_height="@dimen/size_0dp"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:id="@+id/bottom_viewpager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -140,9 +146,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:onClick="@{() ->viewModel.onClickPreviousButton()}"
                             android:text="@string/previous"
-                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:textColor="@{viewModel.isStartingPage()?@color/disable:@color/colorPrimary}"
                             android:textSize="@dimen/text_instruction" />
 
@@ -198,9 +204,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:onClick="@{() ->viewModel.onClickNextButton()}"
                             android:text="@string/next"
-                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:textColor="@{viewModel.isFinalPage()?@color/disable:@color/colorPrimary}"
                             android:textSize="@dimen/text_instruction" />
 
@@ -212,9 +218,9 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickCalibrationStepsButton()}"
-                        android:visibility="@{ viewModel.tabPosition == 0 || viewModel.tabPosition == 1}"
+                        android:visibility="@{!viewModel.isFromHome()}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -223,10 +229,10 @@
                             android:id="@+id/text_goto_calib"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotocalib"
                             android:textColor="@color/black"
                             android:textSize="@dimen/size_14sp"
-                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:visibility="@{(viewModel.instructionID == 1)}" />
 
                     </RelativeLayout>
@@ -236,9 +242,9 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickHowToButton()}"
-                        android:visibility="@{viewModel.instructionID == 1 ? false : true &amp;&amp; viewModel.isFromOnboardinScreen()}"
+                        android:visibility="@{!viewModel.isFromHome()}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -247,11 +253,11 @@
                             android:id="@+id/text_gotohowto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotohowto"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/size_14sp"
-                            android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            />
+                            android:visibility="@{(viewModel.instructionID == 1 ? false : true )}"
+                            android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>
 

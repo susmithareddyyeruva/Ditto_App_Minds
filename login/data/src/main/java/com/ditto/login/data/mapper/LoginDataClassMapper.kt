@@ -28,7 +28,13 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         previous_login_time = this.previousLoginTime,
         previous_visit_time = this.previousVisitTime,
         salutation = this.salutation,
-        faultDomain = this.fault?.toDomain()
+        faultDomain = this.fault?.toDomain(),
+        cMirrorReminder = this.cMirrorReminder,
+        cReceiveEmail = this.cReceiveEmail,
+        cSpliceCutCompleteReminder = this.cSpliceCutCompleteReminder,
+        cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
+        cSpliceReminder = this.cSpliceReminder
+
 
     )
 
