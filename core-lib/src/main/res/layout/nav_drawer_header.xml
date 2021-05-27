@@ -15,8 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/logout_red">
+        android:layout_height="match_parent">
 
         <View
             android:id="@+id/header_background_view"

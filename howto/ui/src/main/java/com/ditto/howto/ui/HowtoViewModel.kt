@@ -33,6 +33,7 @@ class HowtoViewModel @Inject constructor(
     val isShowPlaceholder: ObservableBoolean = ObservableBoolean(false)
     val instructionID: ObservableInt = ObservableInt(3)
     val isFromOnboardinScreen: ObservableBoolean = ObservableBoolean(true)
+    val isFromWorkspaceScreen: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)

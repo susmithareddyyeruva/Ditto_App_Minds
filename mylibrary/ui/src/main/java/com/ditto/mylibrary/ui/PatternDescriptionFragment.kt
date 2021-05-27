@@ -386,6 +386,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 } else
                     Unit
             }
+            PatternDescriptionViewModel.Event.OnDownloadComplete -> TODO()
         }
 
 

@@ -10,6 +10,10 @@
     <string name="interfacing">Interfacing</string>
 
     <string name="instruction"><u>Instructions</u></string>
+    <string name="sewing_instructions">Sewing Instructions</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="splice">Splice</string>
+    <string name="w_Nap">w/NAP</string>
     <string name="_45">45\"</string>
     <string name="_60">60\"</string>
     <string name="move_pieces_to_bin_when_done">Move pieces to bin when done</string>
@@ -19,6 +23,7 @@
     <string name="de_select_all">De-\nSelect All</string>
     <string name="mirror_v">Mirror V</string>
     <string name="mirror_h">Mirror H</string>
+    <string name="clear">Clear</string>
     <string name="spliced_piece">Spliced Pieces</string>
     <string name="spliced_piece_message">Additional pieces cannot be in the workspace at the same time as a spliced piece.</string>
     <string name="splicing_required">Splicing Required</string>
@@ -30,10 +35,14 @@
     <string name="empty_string"></string>
     <string name="ok">OK</string>
     <string name="reference_layout">Reference Layout</string>
+    <string name="pattern_pieces">Pattern Pieces</string>
     <string name="recalibrate">Recalibrate</string>
     <string name="connect">Connect</string>
-    <string name="seek_text"> %1$d/%2$d pc</string>
+    <string name="seek_text"> <font color="red"> %1$d</font>/%2$d </string>
     <string name="splice_text"> Spliced screen %1$d of %2$d</string>
+    <string name="tap_to_enlarge">Tap to enlarge</string>
+    <string name="select_a_layout">Select a layout</string>
+    <string name="reset">Reset</string>
     <string name="size_36_nwith_or_without_nap">Size 36 \nWith or Without Nap</string>
     <string name="switching">Switching</string>
     <string name="switching_message">Current work in workspace will be lost if you switch to different types.</string>
@@ -47,6 +56,7 @@
     <string name="save_and_exit_dialog_message">Type your project name.</string>
     <string name="save">Save</string>
     <string name="exit">Exit</string>
+    <string name="double_tap_to_zoom">Double tap to zoom in / zoom out</string>
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
     <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
@@ -58,4 +68,5 @@
     <string name="projection_area_progress">Projection area is in process..Please wait!!</string>
     <string name="projecting_messsage">Projecting Please wait!!</string>
     <string name="projection_progress">Projection area is in process..Please wait!!</string>
+    <string name="image_selvage_horizontal">Image Selvage Horizontal</string>
 </resources>

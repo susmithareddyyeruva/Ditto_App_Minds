@@ -10,5 +10,5 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_home" />
+        android:src="@drawable/ic_tutorial" />
 </FrameLayout>

@@ -22,6 +22,7 @@ import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,6 +35,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var isFromHomeScreen: Boolean = false
+    var isFromWorkspaceScreen: Boolean = false
     var isFromOnBoardingScreen: Boolean = true
     var isWifiAlert: Boolean = false
     val logger: Logger by lazy {
@@ -59,13 +61,14 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
-        arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
+        arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
+        arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
+        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
-             bottomNavViewModel.showProgress.set(true)
-             viewModel.fetchOnBoardingDataFromApi()
-
+        (activity as BottomNavigationActivity).hidemenu()
+       /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnBoardingDataFromApi()
          } else {
              viewModel.fetchOnBoardingData()
          }*/
@@ -167,9 +170,9 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
-                    INSTRUCTIONID to viewModel.clickedId.get(),
-                    ISFROMONBOARDING to isFromOnBoardingScreen,
-                    ISFROMHOME to isFromHomeScreen
+                    "InstructionId" to viewModel.clickedId.get(),
+                    "isFromOnBoarding" to isFromOnBoardingScreen,
+                    "isFromWorkspace" to isFromWorkspaceScreen,
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
