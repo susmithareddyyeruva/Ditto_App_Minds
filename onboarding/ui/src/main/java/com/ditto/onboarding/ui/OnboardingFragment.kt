@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,31 +61,37 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
-        arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
-        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
-        viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        (activity as BottomNavigationActivity).hidemenu()
-       /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnBoardingDataFromApi()
 
-        } else {
-            viewModel.fetchOnBoardingData()
-        }*/
+       arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
+        arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
+         arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
+        viewModel.isFromHome_Observable.set(isFromHomeScreen)
+          (activity as BottomNavigationActivity).hidemenu()
+        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
+             bottomNavViewModel.showProgress.set(true)
+             viewModel.fetchOnBoardingDataFromApi()
+
+
+         } else {
+             viewModel.fetchOnBoardingData()
+         }*/
         viewModel.fetchOnBoardingData()
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
         setHeadingTitle()
         checkBluetoothWifiPermission()
-        Log.d("Nameee","userFirstName"+bottomNavViewModel.userFirstNameBase.get())
+        logger.d(bottomNavViewModel.userFirstNameBase.get().toString())
     }
 
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private const val ISFROMHOME = "isFromHome"
+        private const val USERID = "UserId"
+        private const val ISFROMONBOARDING = "isFromOnBoarding"
+        private const val INSTRUCTIONID = "InstructionId"
     }
 
     private fun checkBluetoothWifiPermission() {
@@ -99,7 +104,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             } else if (!Utility.getWifistatus(requireContext())) {
                 isWifiAlert = true
                 showWifiDialogue()
-                Log.d("wifiefi222", viewModel.isWifiLaterClicked.get().toString())
+                logger.d("wifiefi222" + viewModel.isWifiLaterClicked.get().toString())
             }
         } else {
             requestPermissions(
@@ -120,7 +125,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 logger.d("Permission Denied by the user")
                 Toast.makeText(
                     requireContext(),
-                    "App will not work properly without this permission. Please turn on the permission from settings",
+                    getString(R.string.turnon_permission),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -163,15 +168,16 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             }
 
             is OnboardingViewModel.Event.OnShowBleDialogue -> {
-                Log.d("dialog", "Show bluetooth dialog")
+                logger.d("dialog Show bluetooth dialog")
             }
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
-                    "InstructionId" to viewModel.clickedId.get(),
-                    "isFromOnBoarding" to isFromOnBoardingScreen,
-                    "isFromWorkspace" to isFromWorkspaceScreen,
 
+                 INSTRUCTIONID to viewModel.clickedId.get(),
+                    ISFROMONBOARDING to isFromOnBoardingScreen,
+                    ISFROMHOME to isFromHomeScreen
+                     "isFromWorkspace" to isFromWorkspaceScreen
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
@@ -342,10 +348,10 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 //            toolbarViewModel.isShowActionBar.set(false)
 //            bottomNavViewModel.visibility.set(true)
 //        } else {
-            toolbarViewModel.isShowTransparentActionBar.set(false)
-            toolbarViewModel.isShowActionBar.set(false)
-            bottomNavViewModel.visibility.set(false)
-        if (viewModel.isFromHome_Observable.get()){
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(false)
+        bottomNavViewModel.visibility.set(false)
+        if (viewModel.isFromHome_Observable.get()) {
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
@@ -353,17 +359,23 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     private fun setHeadingTitle() {
-    if(bottomNavViewModel.isGuestBase.get()){
-        viewModel.onBoardingTitle.set("")
-        viewModel.onBoardingUserName.set(getString(R.string.Welcomeheader))
-        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
-    }else{
-        viewModel.onBoardingTitle.set("")
-        viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
-        viewModel.onBoardingUserName.set("Hi "+bottomNavViewModel.userFirstNameBase.get() + ",")
+        if (bottomNavViewModel.isGuestBase.get()) {
+            viewModel.onBoardingTitle.set("")
+            viewModel.onBoardingUserName.set(getString(R.string.Welcomeheader))
+            viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
+        } else {
+            viewModel.onBoardingTitle.set("")
+            viewModel.onBoardingSubTitle.set(getString(R.string.tutorial_sub_header_for_guest))
+            viewModel.onBoardingUserName.set(
+                getString(
+                    R.string.hi_text,
+                    bottomNavViewModel.userFirstNameBase.get()
+                )
+            )
+
+        }
 
     }
 
-    }
 
 }
