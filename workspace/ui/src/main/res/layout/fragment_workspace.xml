@@ -58,13 +58,14 @@
 
         <TextView
             android:id="@+id/txt_workspace_header"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/size_0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.data.patternName}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/tab_heading"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toStartOf="@+id/tabLayout_workspace"
             app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
 

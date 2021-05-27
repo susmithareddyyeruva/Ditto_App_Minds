@@ -71,6 +71,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
+        (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
