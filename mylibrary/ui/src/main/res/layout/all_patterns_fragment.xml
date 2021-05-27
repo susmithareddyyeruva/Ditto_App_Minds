@@ -240,6 +240,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="@dimen/margin_text"
                     android:clickable="true"
+                    android:layout_marginTop="@dimen/recy_margin_top"
                     android:overScrollMode="never"
                     android:scrollbars="none"
                     android:visibility="@{!viewModel.isLoading()}"
