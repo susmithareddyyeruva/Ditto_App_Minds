@@ -9,4 +9,5 @@
     <dimen name="str_phone_call">24sp</dimen>
     <dimen name="about_app_desc">14sp</dimen>
     <dimen name="header_size">21sp</dimen>
+    <dimen name="top_margin">5dp</dimen>
 </resources>
