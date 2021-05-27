@@ -87,7 +87,7 @@
             android:layout_width="@dimen/dimen_cut_checkbox"
             android:layout_height="@dimen/dimen_cut_checkbox"
             android:layout_marginEnd="@dimen/x_large_padding"
-            android:src="@drawable/checkbox_unchecked"
+            android:src="@drawable/checkbox_unchecked_ws"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView" />

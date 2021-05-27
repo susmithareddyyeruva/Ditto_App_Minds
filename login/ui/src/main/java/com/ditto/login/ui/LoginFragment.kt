@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(),Utility.CallbackDialogListener  {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -157,7 +157,7 @@ class LoginFragment : BaseFragment() {
                 }
             }
             is LoginViewModel.Event.OnLoginFailed -> {
-                showSnackBar()
+                showAlert()
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
@@ -198,5 +198,22 @@ class LoginFragment : BaseFragment() {
             errorMessage,
             binding.rootLayout
         )
+    }
+
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(requireContext(),errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK)
+    }
+
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onNeutralButtonClicked() {
+        //TODO("Not yet implemented")
     }
 }

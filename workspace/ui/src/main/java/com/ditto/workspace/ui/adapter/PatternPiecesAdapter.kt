@@ -103,7 +103,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         }
         holder.patternsPiecesBinding.cutComplete.setImageResource(
             if (patternPieces[position].isCompleted)
-                R.drawable.checkbox_checked else R.drawable.checkbox_unchecked
+                R.drawable.checkbox_checked_ws else R.drawable.checkbox_unchecked_ws
         )
         holder.patternsPiecesBinding.cutComplete.setOnClickListener {
             patternPieces[position].isCompleted = !patternPieces[position].isCompleted
