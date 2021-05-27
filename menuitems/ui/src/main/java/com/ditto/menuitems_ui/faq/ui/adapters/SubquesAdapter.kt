@@ -35,5 +35,6 @@ class SubquesAdapter (context: Context, data: List<SubAnswModel>?) :
     class SubquesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvTitle: TextView = itemView.findViewById(R.id.text_sub_head)
         var tvDescription: TextView = itemView.findViewById(R.id.text_sub_answ)
+
     }
 }

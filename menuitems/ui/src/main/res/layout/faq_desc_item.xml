@@ -1,61 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parentlay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_layout"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginBottom="10dp"
     android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <TextView
-            android:id="@+id/tv_ques"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:text="Where do I buy new patterns?"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="visible" />
-
-    </LinearLayout>
-
     <RelativeLayout
-        android:id="@+id/rel_desc"
+        android:id="@+id/parentlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header">
+        android:background="@drawable/border_layout">
 
-        <TextView
-            android:id="@+id/tv_desc"
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:id="@+id/tv_ques"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="Where do I buy new patterns?"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            android:textColor="@android:color/black"
+            android:layout_below="@+id/header">
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+                android:textColor="@android:color/black"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@drawable/boarder_watch"
+            android:gravity="center_vertical"
+            android:id="@+id/relWatch"
+            android:visibility="gone"
+           android:layout_marginStart="10dp"
+            android:layout_below="@+id/rel_desc"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="9dp"
+            android:layout_marginTop="21dp"
+            android:layout_width="133dp">
+
+            <ImageView
+                android:id="@+id/watchVideo"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_height="40dp"
+                android:layout_marginEnd="11dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="9dp"
+                android:src="@drawable/ic_watch">
+
+            </ImageView>
+
+            <TextView
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/watchVideo"
+                android:layout_width="wrap_content"
+                android:text="@string/watch"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/size_14px">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@drawable/boarder_visit"
+            android:gravity="center_vertical"
+            android:id="@+id/relVisit"
+            android:visibility="gone"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/rel_desc"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_toEndOf="@+id/relWatch"
+            android:layout_width="133dp">
+
+            <ImageView
+                android:id="@+id/visit"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_height="40dp"
+                android:layout_marginEnd="11dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="9dp"
+                android:src="@drawable/ic_visit">
+
+            </ImageView>
+
+            <TextView
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/visit"
+                android:layout_width="wrap_content"
+                android:text="@string/visit"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_14px">
+
+            </TextView>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_subdesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relWatch"
             android:visibility="gone" />
-
-
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_subdesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rel_desc"
-        android:visibility="gone" />
+
+
 
 </RelativeLayout>
+
