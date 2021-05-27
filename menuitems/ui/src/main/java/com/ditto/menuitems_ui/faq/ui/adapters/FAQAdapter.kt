@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems_ui.R
@@ -44,6 +43,7 @@ class FAQAdapter (context: Context, data: List<FAQModel>?) :
         holder.linheader.setOnClickListener { onItemClicked(item,position) }
         if (item?.isExpanded!!) {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout_white)
+            holder.relparent.elevation=15f
             holder.tvAnsw.visibility = View.VISIBLE
             holder.rvsubques.visibility = View.VISIBLE
             holder.ivArrow.setImageResource(R.drawable.ic_uparrow)
