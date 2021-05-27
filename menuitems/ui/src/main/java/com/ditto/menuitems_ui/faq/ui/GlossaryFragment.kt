@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.menuitems_ui.databinding.GlossaryFragmentBinding
+import com.ditto.menuitems_ui.faq.ui.adapters.GlossaryAdapter
+import com.ditto.menuitems_ui.faq.ui.json.JsonHelper
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 
 class GlossaryFragment :BaseFragment(){
@@ -28,15 +30,16 @@ class GlossaryFragment :BaseFragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setuptoolbar()
+        val glossaryAdapter = context?.let {
+            GlossaryAdapter(
+                it,
+                context?.let { JsonHelper(it).getFAQData() })
+        }
+        binding.recyclerGlossary.adapter = glossaryAdapter
+        binding.recyclerGlossary.layoutManager = LinearLayoutManager(context)
+
 
 
     }
-    private fun setuptoolbar(){
-        bottomNavViewModel.visibility.set(false)
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(true)
-        toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
-    }
+
 }

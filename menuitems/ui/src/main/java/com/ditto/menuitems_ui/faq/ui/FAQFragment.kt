@@ -10,7 +10,6 @@ import com.ditto.menuitems_ui.databinding.FaqfragmentLayoutBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.FAQAdapter
 import com.ditto.menuitems_ui.faq.ui.json.JsonHelper
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 
 class FAQFragment() : BaseFragment() {
@@ -33,7 +32,6 @@ class FAQFragment() : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setuptoolbar()
         val faqadapter = context?.let {
             FAQAdapter(
                 it,
@@ -42,11 +40,5 @@ class FAQFragment() : BaseFragment() {
         binding.recyclerParent.adapter = faqadapter
         binding.recyclerParent.layoutManager = LinearLayoutManager(context)
     }
-    private fun setuptoolbar(){
-        bottomNavViewModel.visibility.set(false)
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(true)
-        toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
-    }
+
 }
