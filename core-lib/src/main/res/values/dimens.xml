@@ -24,4 +24,11 @@
     <dimen name="top_padding">12dp</dimen>
     <dimen name="endPadding">16dp</dimen>
 
+    <dimen name="alert_options_Text">14sp</dimen>
+    <dimen name="alert_message_Text">16sp</dimen>
+    <dimen name="alert_padding">11dp</dimen>
+    <dimen name="alert_oprion_padding">28dp</dimen>
+    <dimen name="alert_image_top">30dp</dimen>
+    <dimen name="alert_otpions_bottom">22dp</dimen>
+    <dimen name="alert_otpions_top">20dp</dimen>
 </resources>

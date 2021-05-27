@@ -189,7 +189,7 @@
             android:id="@+id/txt_size_splice"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="@dimen/margin_text
+            android:layout_marginTop="@dimen/margin_text"
             android:layout_marginEnd="@dimen/splice_end_margin"
             android:layout_marginBottom="@dimen/margin_text"
             android:background="@{viewModel.clickedSplice?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"

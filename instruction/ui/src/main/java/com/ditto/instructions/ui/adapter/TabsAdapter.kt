@@ -13,8 +13,7 @@ import com.ditto.instructions.ui.InstructionViewModel
  */
 class TabsAdapter(
     fm: FragmentManager,
-    val isFromHome: Boolean,
-    val isFromOnboardinScreen: Boolean
+    val isFromHome: Boolean
 ) : FragmentStatePagerAdapter(
     fm,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
@@ -36,8 +35,7 @@ class TabsAdapter(
     override fun getItem(position: Int): Fragment {
         return InstructionFragment(
             position,
-            isFromHome,
-            isFromOnboardinScreen
+            isFromHome
         )
     }
 

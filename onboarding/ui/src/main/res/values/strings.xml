@@ -12,6 +12,6 @@
     <string name="tutorialheader">Welcome back,</string>
     <string name="tutorial_sub_header">What would you like to do today?</string>
     <string name="tutorial_sub_header_for_guest">Let\'s get started !</string>
+    <string name="turn_on_permission">App will not work properly without this permission. Please turn on the permission from settings</string>
     <string name="hi_text">Hi %1$s,</string>
-    <string name="turnon_permission">App will not work properly without this permission. Please turn on the permission from settings</string>
 </resources>

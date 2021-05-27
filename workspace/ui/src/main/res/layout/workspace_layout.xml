@@ -44,14 +44,14 @@
             android:layout_height="@dimen/dimen_0"
             android:layout_marginTop="@dimen/small_padding_x"
             android:layout_marginEnd="@dimen/small_padding_x"
-            android:background="@drawable/ic_workspace"
+            android:background="@drawable/ic_workspace_new"
             app:layout_constraintDimensionRatio="14:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/workspce_spacer"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0" />
 
-        <RelativeLayout
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/splice_right"
             android:layout_width="@dimen/splice_button"
             android:layout_height="@dimen/splice_button"
@@ -59,29 +59,41 @@
             android:visibility="@{viewModel.isSpliceRightVisible() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
+            android:rotation="270"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/arrow" />
 
-        <RelativeLayout
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/splice_left"
             android:layout_width="@dimen/splice_button"
             android:layout_height="@dimen/splice_button"
             android:onClick="@{() -> viewModel.onClickSpliceLeft()}"
+            android:rotation="90"
             android:visibility="@{viewModel.isSpliceLeftVisible() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/arrow" />
 
-        <RelativeLayout
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/splice_top"
             android:layout_width="@dimen/splice_button"
             android:layout_height="@dimen/splice_button"
             android:onClick="@{() -> viewModel.onClickSpliceTop()}"
+            android:rotation="180"
             android:visibility="@{viewModel.isSpliceTopVisible() ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
             app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/arrow" />
 
-        <RelativeLayout
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/splice_bottom"
             android:layout_width="@dimen/splice_button"
             android:layout_height="@dimen/splice_button"
@@ -89,7 +101,10 @@
             android:visibility="@{viewModel.isSpliceBottomVisible() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
-            app:layout_constraintStart_toStartOf="@+id/layout_workspace" />
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/arrow" />
 
         <com.ditto.workspace.ui.util.WorkspaceEditorView
             android:id="@+id/layout_workspace"
@@ -111,8 +126,8 @@
             android:textColor="@color/default_text_color"
             android:textSize="@dimen/text_select_all"
             android:visibility="@{viewModel.spliced_pices_visibility ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/layout_workspace"
-            app:layout_constraintEnd_toEndOf="@+id/layout_workspace" />
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
 
         <TextView
             android:id="@+id/txt_double_tap_to_zoom"
@@ -120,10 +135,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:visibility="@{viewModel.showDoubleTouchToZoom}"
             android:text="@string/double_tap_to_zoom"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_double_tap_zoom"
+            android:visibility="@{viewModel.showDoubleTouchToZoom}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace" />
 
@@ -250,19 +265,19 @@
             app:layout_constraintVertical_bias="1" />
 
 
-<!--        <com.airbnb.lottie.LottieAnimationView-->
-<!--            android:id="@+id/animationView"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:elevation="@dimen/elevation_card"-->
-<!--            android:visibility="@{!viewModel.isWorkspaceSocketConnection()}"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/txt_recalibrate"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/txt_recalibrate"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/txt_recalibrate"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/txt_recalibrate"-->
-<!--            app:lottie_autoPlay="true"-->
-<!--            app:lottie_loop="true"-->
-<!--            app:lottie_rawRes="@raw/connect_animation" />-->
+        <!--        <com.airbnb.lottie.LottieAnimationView-->
+        <!--            android:id="@+id/animationView"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:elevation="@dimen/elevation_card"-->
+        <!--            android:visibility="@{!viewModel.isWorkspaceSocketConnection()}"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/txt_recalibrate"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/txt_recalibrate"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/txt_recalibrate"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/txt_recalibrate"-->
+        <!--            app:lottie_autoPlay="true"-->
+        <!--            app:lottie_loop="true"-->
+        <!--            app:lottie_rawRes="@raw/connect_animation" />-->
 
         <TextView
             android:id="@+id/txt_tutorial"

@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
+import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import core.PDF_PASSWORD
 import core.PDF_SAMPLE_URL
@@ -36,7 +37,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-class PatternInstructionsFragment : BaseFragment() {
+class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
 
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPatternInstructionsBinding
@@ -70,6 +71,7 @@ class PatternInstructionsFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
+        (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
@@ -109,11 +111,15 @@ class PatternInstructionsFragment : BaseFragment() {
         if (availableUri != null){
             showPdfFromUri(availableUri)
         } else {
-
-            bottomNavViewModel.showProgress.set(true)
-            GlobalScope.launch {
-                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+            if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+                bottomNavViewModel.showProgress.set(true)
+                GlobalScope.launch {
+                    downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+                }
+            } else {
+                showNeworkError()
             }
+
         }
 
     }
@@ -168,7 +174,32 @@ class PatternInstructionsFragment : BaseFragment() {
         }
     }
 
+    private fun showNeworkError(){
 
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            getString(R.string.str_no_internet),
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+        )
+    }
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        when (alertType) {
+            Utility.AlertType.NETWORK -> {
+                findNavController().popBackStack(R.id.patternInstructionsFragment,true)
+            }
+        }
 
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onNeutralButtonClicked() {
+        TODO("Not yet implemented")
+    }
 }
 

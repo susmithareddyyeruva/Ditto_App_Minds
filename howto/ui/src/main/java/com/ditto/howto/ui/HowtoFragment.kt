@@ -39,8 +39,6 @@ class HowtoFragment : BaseFragment() {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
-    var isFromHome: Boolean = false
-
     val logger: Logger by lazy {
         loggerFactory.create(HowtoFragment::class.java.simpleName)
     }
@@ -62,10 +60,7 @@ class HowtoFragment : BaseFragment() {
                 inflater
             ).also {
                 arguments?.getInt("InstructionId")?.let { viewModel.instructionID.set(it) }
-                arguments?.getBoolean("isFromOnBoarding")
-                    ?.let { viewModel.isFromOnboardinScreen.set(it) }
-                arguments?.getBoolean("isFromHome")?.let { viewModel.isFromOnboardinScreen.set(it) }
-                arguments?.getBoolean("isFromWorkspace")?.let { viewModel.isFromWorkspaceScreen.set(it) }
+                arguments?.getBoolean("isFromHome")?.let { viewModel.isFromHome.set(it) }
             }
         }
         return binding.root
@@ -163,8 +158,8 @@ class HowtoFragment : BaseFragment() {
      * [Function] Setting the tool bar
      */
     private fun setupToolbar() {
-        arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
-        if (isFromHome) {
+        arguments?.getBoolean("isFromHome")?.let { viewModel.isFromHome.set(it) }
+        if (viewModel.isFromHome.get()) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)

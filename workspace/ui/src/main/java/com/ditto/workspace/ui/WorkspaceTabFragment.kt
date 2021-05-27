@@ -584,7 +584,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun clearWorkspace() {
         binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-            R.drawable.ic_workspace
+            R.drawable.ic_workspace_new
         )
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
@@ -720,7 +720,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickSpliceRight -> {
                 binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-                    R.drawable.ic_workspace_splice_left
+                    R.drawable.ic_workspace_splice_left_new
                 )
                 binding.includeWorkspacearea?.spliceLeft?.bringToFront()
                 mWorkspaceEditor?.clearAllViews()
@@ -744,7 +744,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickSpliceLeft -> {
                 binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-                    R.drawable.ic_workspace_splice_right
+                    R.drawable.ic_workspace_splice_right_new
                 )
                 binding.includeWorkspacearea?.spliceRight?.bringToFront()
                 mWorkspaceEditor?.clearAllViews()
@@ -768,7 +768,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickSpliceBottom -> {
                 binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-                    R.drawable.ic_workspace_splice_top
+                    R.drawable.ic_workspace_splice_top_new
                 )
                 binding.includeWorkspacearea?.spliceTop?.bringToFront()
                 mWorkspaceEditor?.clearAllViews()
@@ -792,7 +792,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickSpliceTop -> {
                 binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-                    R.drawable.ic_workspace_splice_bottom
+                    R.drawable.ic_workspace_splice_bottom_new
                 )
                 binding.includeWorkspacearea?.spliceBottom?.bringToFront()
                 mWorkspaceEditor?.clearAllViews()
@@ -1470,12 +1470,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         var imagename = viewModel.workspacedata?.imagePath
         if (viewModel.workspacedata?.spliceDirection == SPLICE_LEFT_TO_RIGHT) {
             if (viewModel.workspacedata?.currentSplicedPieceNo == 0) {
-                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_right)
+                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_right_new)
                 splice_right.bringToFront()
                 viewModel.isSpliceRightVisible.set(true)
                 viewModel.spliced_pices.set(1)
             } else {
-                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_left)
+                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_left_new)
                 splice_left.bringToFront()
                 viewModel.isSpliceLeftVisible.set(true)
                 viewModel.spliced_pices.set(2)
@@ -1483,12 +1483,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         } else if (viewModel.workspacedata?.spliceDirection == SPLICE_TOP_TO_BOTTOM) {
             if (viewModel.workspacedata?.currentSplicedPieceNo == 0) {
-                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_top)
+                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_top_new)
                 splice_top.bringToFront()
                 viewModel.isSpliceTopVisible.set(true)
                 viewModel.spliced_pices.set(1)
             } else {
-                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_bottom)
+                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_bottom_new)
                 splice_bottom.bringToFront()
                 viewModel.isSpliceBottomVisible.set(true)
                 viewModel.spliced_pices.set(2)
@@ -1826,7 +1826,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToTutorial() {
-        val bundle = bundleOf("isFromHome" to true,"isFromWorkspace" to true)
+        val bundle = bundleOf("isFromHome" to true)
         findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
 
     }

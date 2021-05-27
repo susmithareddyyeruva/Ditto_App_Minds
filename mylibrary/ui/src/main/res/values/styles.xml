@@ -34,6 +34,6 @@
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">@android:color/transparent</item>
         <item name="colorControlNormal">@color/cell_color</item>   <!-- normal border color change as you wish -->
-        <item name="colorControlActivated">@color/logout_red</item> <!-- activated color change as you wish -->
+        <item name="colorControlActivated">@color/app_red</item> <!-- activated color change as you wish -->
     </style>
 </resources>

@@ -63,7 +63,7 @@
                         android:onClick="@{() -> viewModel.onSkip()}"
                         android:paddingEnd="16dp"
                         android:text="@string/howtoskip"
-                        android:visibility="@{!viewModel.isFromWorkspaceScreen()}"
+                        android:visibility="@{!viewModel.isFromHome()}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_12px"
                         app:drawableEndCompat="@drawable/right_arrow" />
@@ -90,7 +90,6 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="-105dp"
                 android:layout_marginTop="12dp"
                 android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"

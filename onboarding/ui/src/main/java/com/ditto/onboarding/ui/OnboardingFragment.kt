@@ -35,8 +35,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var isFromHomeScreen: Boolean = false
-    var isFromWorkspaceScreen: Boolean = false
-    var isFromOnBoardingScreen: Boolean = true
     var isWifiAlert: Boolean = false
     val logger: Logger by lazy {
         loggerFactory.create(OnboardingFragment::class.java.simpleName)
@@ -61,17 +59,18 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-       arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
+        arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
-         arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
+//        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-          (activity as BottomNavigationActivity).hidemenu()
+        (activity as BottomNavigationActivity).hidemenu()
         /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
-             bottomNavViewModel.showProgress.set(true)
-             viewModel.fetchOnBoardingDataFromApi()
-         } else {
-             viewModel.fetchOnBoardingData()
-         }*/
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnBoardingDataFromApi()
+
+        } else {
+            viewModel.fetchOnBoardingData()
+        }*/
         viewModel.fetchOnBoardingData()
         setOnBoardingAdapter()
         setUIEvents()
@@ -87,7 +86,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
         private const val ISFROMHOME = "isFromHome"
         private const val USERID = "UserId"
-        private const val ISFROMONBOARDING = "isFromOnBoarding"
         private const val INSTRUCTIONID = "InstructionId"
     }
 
@@ -122,7 +120,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 logger.d("Permission Denied by the user")
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.turnon_permission),
+                    getString(R.string.turn_on_permission),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -168,12 +166,9 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 logger.d("dialog Show bluetooth dialog")
             }
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
-                isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
-                 INSTRUCTIONID to viewModel.clickedId.get(),
-                    ISFROMONBOARDING to isFromOnBoardingScreen,
-                    ISFROMHOME to isFromHomeScreen
-                     "isFromWorkspace" to isFromWorkspaceScreen
+                    INSTRUCTIONID to viewModel.clickedId.get(),
+                    ISFROMHOME to isFromHomeScreen,
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
