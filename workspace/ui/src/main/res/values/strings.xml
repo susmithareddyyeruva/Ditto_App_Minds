@@ -40,7 +40,7 @@
     <string name="connect">Connect</string>
     <string name="seek_text"> <font color="red"> %1$d</font>/%2$d </string>
     <string name="splice_text"> Spliced screen %1$d of %2$d</string>
-    <string name="tap_to_enlarge">Tap to enlarge</string>
+    <string name="tap_to_enlarge">Tap To Enlarge</string>
     <string name="select_a_layout">Select a layout</string>
     <string name="reset">Reset</string>
     <string name="size_36_nwith_or_without_nap">Size 36 \nWith or Without Nap</string>

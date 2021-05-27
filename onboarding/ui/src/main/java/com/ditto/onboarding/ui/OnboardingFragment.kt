@@ -61,14 +61,14 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
-        arguments?.getBoolean("isFromHome")?.let { isFromHomeScreen = (it) }
-        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
+       arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
+        arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
+         arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        (activity as BottomNavigationActivity).hidemenu()
-       /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnBoardingDataFromApi()
+          (activity as BottomNavigationActivity).hidemenu()
+        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
+             bottomNavViewModel.showProgress.set(true)
+             viewModel.fetchOnBoardingDataFromApi()
          } else {
              viewModel.fetchOnBoardingData()
          }*/
@@ -170,9 +170,10 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
                 isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
-                    "InstructionId" to viewModel.clickedId.get(),
-                    "isFromOnBoarding" to isFromOnBoardingScreen,
-                    "isFromWorkspace" to isFromWorkspaceScreen,
+                 INSTRUCTIONID to viewModel.clickedId.get(),
+                    ISFROMONBOARDING to isFromOnBoardingScreen,
+                    ISFROMHOME to isFromHomeScreen
+                     "isFromWorkspace" to isFromWorkspaceScreen
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 

@@ -17,11 +17,16 @@ class PinchAndZoom : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: PinchzoomActivityBinding =
-            DataBindingUtil.setContentView(this,
+            DataBindingUtil.setContentView(
+                this,
                 R.layout.pinchzoom_activity
             )
         val imagepath = intent.extras?.getString("ImageURL")
         val scaleFactor = intent.extras?.getInt("scaleFactor")
+        val which = intent.extras?.get("isFrom") ?: ""
+        if (which.equals("Reference")) {
+            binding.zoomTittle.text = getString(R.string.reference_layout)
+        }
         /*window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
@@ -39,9 +44,9 @@ class PinchAndZoom : AppCompatActivity() {
                 actionBar.hide()
             }
         }
-         if (imagepath != null) {
+        if (imagepath != null) {
             try {
-                val drawable =core.ui.common.Utility.getDrawableFromString(this, imagepath)
+                val drawable = core.ui.common.Utility.getDrawableFromString(this, imagepath)
                 //myZoomageView?.maxWidth = drawable?.intrinsicWidth?.div(scaleFactor!!) ?: 1
                 //myZoomageView?.maxHeight = drawable?.intrinsicHeight?.div(scaleFactor!!) ?: 1
                 //myZoomageView?.scaleType = ImageView.ScaleType.FIT_XY
@@ -52,7 +57,7 @@ class PinchAndZoom : AppCompatActivity() {
                     .placeholder(R.drawable.ic_placeholder)
                     .into(myZoomageView)*/
             } catch (e: Exception) {
-                Log.d("Exception","image path")
+                Log.d("Exception", "image path")
             }
         }
         binding.icCloseButton.setOnClickListener(View.OnClickListener {
