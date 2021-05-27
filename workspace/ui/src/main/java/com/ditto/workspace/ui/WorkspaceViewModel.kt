@@ -226,6 +226,7 @@ class WorkspaceViewModel @Inject constructor(
             uiEvents.post(Event.EnableClear)
         } else {
             uiEvents.post(Event.OnClickDeSelectAll)
+            uiEvents.post(Event.DisableClear)
         }
     }
 
