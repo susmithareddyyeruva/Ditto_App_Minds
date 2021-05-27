@@ -41,6 +41,7 @@
     <item name="calibration_nav_graph" type="id" />
     <item name="instruction_calibration_nav" type="id" />
     <item name="patternDescriptionFragment" type="id" />
+    <item name="patternInstructionsFragment" type="id" />
     <item name="action_instructionFragment_to_homefragment" type="id" />
     <!--
         <item name="action_destination_instruction_to_calibration_nav_graph" type="id"/>
