@@ -1,7 +1,9 @@
 package core.ui.common
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
@@ -17,7 +19,10 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -51,7 +56,8 @@ class Utility {
         MIRROR,
         CUT_BIN,
         CUT_BIN_ALL,
-        PATTERN_RENAME
+        PATTERN_RENAME,
+        NETWORK
     }
 
     companion object {
@@ -363,6 +369,41 @@ class Utility {
 
             return path
         }
+
+
+
+        @SuppressLint("ResourceType")
+        fun getCommonAlertDialogue(
+            context: Context,
+            alertmessage: String,
+            negativeButton: String,
+            positiveButton: String,
+            callbackDialogListener: CallbackDialogListener,
+            alertType:AlertType
+        ) {
+
+            val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
+            val mBuilder = AlertDialog.Builder(context)
+                .setView(mDialogView)
+                .setCancelable(false)
+                .show()
+            val message = mDialogView.findViewById(R.id.alert_message) as TextView
+            message.text = alertmessage
+            val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+            negative.text = negativeButton
+            val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+            positive.text = positiveButton
+            negative.setOnClickListener {
+                mBuilder.dismiss()
+                callbackDialogListener.onNegativeButtonClicked(alertType)
+            }
+            positive.setOnClickListener {
+                mBuilder.dismiss()
+                callbackDialogListener.onPositiveButtonClicked(alertType)
+            }
+
+        }
+
     }
 
     interface CallbackDialogListener {
