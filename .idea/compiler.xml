@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.7">
+      <module name="ditto-android.app" target="1.8" />
+      <module name="ditto-android.calibration-data" target="1.8" />
+      <module name="ditto-android.calibration-domain" target="1.8" />
+      <module name="ditto-android.calibration-ui" target="1.8" />
+      <module name="ditto-android.connectivity-ui" target="1.8" />
+      <module name="ditto-android.core-lib" target="1.8" />
+      <module name="ditto-android.dittoProjectorApp" target="1.8" />
+      <module name="ditto-android.home-domain" target="1.8" />
+      <module name="ditto-android.home-ui" target="1.8" />
+      <module name="ditto-android.howto-data" target="1.8" />
+      <module name="ditto-android.howto-domain" target="1.8" />
+      <module name="ditto-android.howto-ui" target="1.8" />
+      <module name="ditto-android.instructions-data" target="1.8" />
+      <module name="ditto-android.instructions-domain" target="1.8" />
+      <module name="ditto-android.instructions-ui" target="1.8" />
+      <module name="ditto-android.logger" target="1.8" />
+      <module name="ditto-android.login-data" target="1.8" />
+      <module name="ditto-android.login-domain" target="1.8" />
+      <module name="ditto-android.login-ui" target="1.8" />
+      <module name="ditto-android.menuitems-data" target="1.8" />
+      <module name="ditto-android.menuitems-domain" target="1.8" />
+      <module name="ditto-android.menuitems-ui" target="1.8" />
+      <module name="ditto-android.mylibrary-data" target="1.8" />
+      <module name="ditto-android.mylibrary-domain" target="1.8" />
+      <module name="ditto-android.mylibrary-ui" target="1.8" />
+      <module name="ditto-android.nav-graph" target="1.8" />
+      <module name="ditto-android.onboarding-data" target="1.8" />
+      <module name="ditto-android.onboarding-domain" target="1.8" />
+      <module name="ditto-android.onboarding-ui" target="1.8" />
+      <module name="ditto-android.splash-data" target="1.8" />
+      <module name="ditto-android.splash-domain" target="1.8" />
+      <module name="ditto-android.splash-ui" target="1.8" />
+      <module name="ditto-android.storage-data" target="1.8" />
+      <module name="ditto-android.tutorial-ui" target="1.8" />
+      <module name="ditto-android.videoplayer" target="1.8" />
+      <module name="ditto-android.workspace-data" target="1.8" />
+      <module name="ditto-android.workspace-domain" target="1.8" />
+      <module name="ditto-android.workspace-ui" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
