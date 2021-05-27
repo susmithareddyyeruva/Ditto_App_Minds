@@ -17,7 +17,7 @@
     <dimen name="text_move_to_drag">15sp</dimen>
     <dimen name="send_to_projector">18sp</dimen>
     <dimen name="small_padding_x">10dp</dimen>
-
+    <dimen name="text_splice">16sp</dimen>
     <dimen name="margin_v_small">5dp</dimen>
     <dimen name="splice_button">50dp</dimen>
     <dimen name="seek_bar_thickness">10dp</dimen>
@@ -34,5 +34,16 @@
     <dimen name="seek_height">8dp</dimen>
     <dimen name="tab_height">42dp</dimen>
     <dimen name="image_max_width">300dp</dimen>
-
+    <dimen name="text_45">16sp</dimen>
+    <dimen name="text_60">16sp</dimen>
+    <dimen name="padding_horizontal_splice">23dp</dimen>
+    <dimen name="padding_vertical_splice">8dp</dimen>
+    <dimen name="text_size_nap">9sp</dimen>
+    <dimen name="small_paddingx">7dp</dimen>
+    <dimen name="bottom_nap">1dp</dimen>
+    <dimen name="splice_end_margin">9dp</dimen>
+    <dimen name="tittle_size">26sp</dimen>
+    <dimen name="padding_horizontal_start">55dp</dimen>
+    <dimen name="top_padding">41dp</dimen>
+    <dimen name="endPadding">50dp</dimen>
 </resources>

@@ -35,8 +35,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var isFromHomeScreen: Boolean = false
-//    var isFromWorkspaceScreen: Boolean = false
-//    var isFromOnBoardingScreen: Boolean = true
     var isWifiAlert: Boolean = false
     val logger: Logger by lazy {
         loggerFactory.create(OnboardingFragment::class.java.simpleName)

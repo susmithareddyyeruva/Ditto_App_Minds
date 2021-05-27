@@ -17,5 +17,6 @@
     <color name="text_move">#494949</color>
     <color name="seek_bar_background">#F4F4F4</color>
     <color name="seek_bar_secondary_progress">#F4F4F4</color>
+    <color name="default_splice">#B5B5B5</color>
 
 </resources>

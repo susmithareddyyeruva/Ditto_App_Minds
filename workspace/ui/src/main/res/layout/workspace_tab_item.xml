@@ -114,9 +114,9 @@
             android:id="@+id/txt_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/elevation_pieces_reference"
             android:drawableLeft="@drawable/ic_reset"
             android:drawablePadding="@dimen/medium_padding"
+            android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:onClick="@{() -> viewModel.clickReset()}"
             android:padding="@dimen/medium_padding"
@@ -139,7 +139,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/txt_reset"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txt_reset" />
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_pieces"
@@ -188,15 +187,17 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_0"
             android:layout_marginTop="@dimen/margin_text"
-            android:layout_marginEnd="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/splice_end_margin"
             android:layout_marginBottom="@dimen/margin_text"
             android:background="@{viewModel.clickedSplice?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
             android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.clickSplice()}"
-            android:padding="@dimen/margin_v_small"
+            android:paddingHorizontal="@dimen/padding_horizontal_splice"
+            android:paddingVertical="@dimen/padding_vertical_splice"
             android:text="@string/splice"
-            android:textColor="@{viewModel.clickedSplice?@android:color/white :@android:color/black}"
-            android:textSize="@dimen/text_size_cloth"
+            android:textColor="@{viewModel.clickedSplice?@android:color/white :@color/default_splice}"
+            android:textSize="@dimen/text_splice"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
 
@@ -205,15 +206,16 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_0"
             android:layout_marginTop="@dimen/margin_text"
-            android:layout_marginEnd="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/splice_end_margin"
             android:layout_marginBottom="@dimen/margin_text"
             android:background="@{viewModel.clickedSize45?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
             android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.clickSize(true)}"
-            android:padding="@dimen/margin_v_small"
             android:text="@string/_45"
+            android:padding="@dimen/small_paddingx"
             android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
-            android:textSize="@dimen/text_size_cloth"
+            android:textSize="@dimen/text_45"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_60"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
@@ -223,13 +225,14 @@
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_pieces_reference"
-            android:text="@string/w_Nap"
             android:gravity="center_horizontal"
+            android:text="@string/w_Nap"
+            android:paddingBottom="@dimen/bottom_nap"
             android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
             android:textSize="@dimen/text_size_nap"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_45"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_size_45"
             app:layout_constraintEnd_toEndOf="@+id/txt_size_45"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_size_45" />
+            app:layout_constraintStart_toStartOf="@+id/txt_size_45" />
 
         <TextView
             android:id="@+id/txt_size_60"
@@ -239,11 +242,12 @@
             android:layout_marginBottom="@dimen/margin_text"
             android:background="@{viewModel.clickedSize60?@drawable/rounded_black_bg:@drawable/rounded_light_bg}"
             android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.clickSize(false)}"
-            android:padding="@dimen/margin_v_small"
             android:text="@string/_60"
+            android:padding="@dimen/small_paddingx"
             android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
-            android:textSize="@dimen/text_size_cloth"
+            android:textSize="@dimen/text_60"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@+id/txt_select_layout"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
@@ -253,13 +257,14 @@
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_pieces_reference"
-            android:text="@string/w_Nap"
             android:gravity="center_horizontal"
+            android:text="@string/w_Nap"
+            android:paddingBottom="@dimen/bottom_nap"
             android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
             android:textSize="@dimen/text_size_nap"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_60"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_size_60"
             app:layout_constraintEnd_toEndOf="@+id/txt_size_60"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_size_60" />
+            app:layout_constraintStart_toStartOf="@+id/txt_size_60" />
 
         <ImageView
             android:id="@+id/image_selvage_horizontal"

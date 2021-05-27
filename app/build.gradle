@@ -30,9 +30,9 @@ android {
     defaultConfig {
         applicationId "com.ditto"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
-        versionName "2.05(534)"
+        versionName "2.05"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

@@ -96,6 +96,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
         intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
+        intent.putExtra("isFrom", "Caliberation")
         ContextCompat.startActivity(context, intent, null)
     }
 
