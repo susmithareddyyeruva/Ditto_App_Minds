@@ -86,6 +86,7 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
         intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
+        intent.putExtra("isFrom", "Instruction")
         ContextCompat.startActivity(context, intent, null)
     }
 

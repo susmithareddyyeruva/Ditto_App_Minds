@@ -5,6 +5,7 @@
 
     <dimen name="card_margin">30dp</dimen>
     <dimen name="menu_image">50dp</dimen>
+    <dimen name="close_image">30dp</dimen>
 
     <dimen name="small_padding">5dp</dimen>
     <dimen name="small_paddingx">5dp</dimen>
@@ -19,5 +20,8 @@
     <dimen name="size_16px">16sp</dimen>
     <dimen name="size_14px">14sp</dimen>
     <dimen name="bottom_nap">1dp</dimen>
+    <dimen name="header_container_height">40dp</dimen>
+    <dimen name="top_padding">12dp</dimen>
+    <dimen name="endPadding">16dp</dimen>
 
 </resources>

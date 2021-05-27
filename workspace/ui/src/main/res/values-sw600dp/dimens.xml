@@ -43,5 +43,8 @@
     <dimen name="small_paddingx">7dp</dimen>
     <dimen name="bottom_nap">1dp</dimen>
     <dimen name="splice_end_margin">9dp</dimen>
-
+    <dimen name="tittle_size">26sp</dimen>
+    <dimen name="padding_horizontal_start">55dp</dimen>
+    <dimen name="top_padding">41dp</dimen>
+    <dimen name="endPadding">50dp</dimen>
 </resources>

@@ -43,4 +43,5 @@
     <dimen name="padding_horizontal_splice">15dp</dimen>
     <dimen name="padding_vertical_splice">8dp</dimen>
     <dimen name="splice_end_margin">5dp</dimen>
+    <dimen name="padding_horizontal_start">16dp</dimen>
 </resources>

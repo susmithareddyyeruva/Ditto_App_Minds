@@ -269,7 +269,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun disablenap(view: TextView) {
         view.isEnabled = false
-        view.setBackgroundResource(R.drawable.rounded_light_bg)
         view.setTextColor(
             ContextCompat.getColor(
                 requireContext(),

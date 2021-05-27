@@ -142,6 +142,7 @@ class HowtoFragment : BaseFragment() {
         intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
+        intent.putExtra("isFrom", "Howto")
         context?.let { ContextCompat.startActivity(it, intent, null) }
     }
     /**
