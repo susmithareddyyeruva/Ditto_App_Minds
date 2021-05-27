@@ -707,6 +707,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 1
                 viewModel.spliced_pices.set(2)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -730,6 +731,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 0
                 viewModel.spliced_pices.set(1)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -753,6 +755,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 0
                 viewModel.spliced_pices.set(1)
                 viewModel.clicked_spliced_second_pieces.set(true)
@@ -776,6 +779,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     this
                 )
                 mWorkspaceEditor?.highlightSplicePiece()
+                enableClear(true)
                 viewModel.workspacedata?.currentSplicedPieceNo = 1
                 viewModel.spliced_pices.set(2)
                 viewModel.clicked_spliced_second_pieces.set(true)
