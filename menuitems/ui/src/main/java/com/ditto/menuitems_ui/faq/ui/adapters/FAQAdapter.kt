@@ -16,10 +16,17 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems_ui.R
+import com.ditto.menuitems_ui.faq.ui.VisitSiteListener
+import com.ditto.menuitems_ui.faq.ui.WatchVideoClickListener
 import com.ditto.menuitems_ui.faq.ui.models.FAQModel
 
 
-class FAQAdapter(context: Context, data: List<FAQModel>?) :
+class FAQAdapter(
+    context: Context,
+    data: List<FAQModel>?,
+    val watchVideoClickListener: WatchVideoClickListener,
+    val visitSiteListener: VisitSiteListener
+) :
     RecyclerView.Adapter<FAQAdapter.FAQViewHolder>() {
     private var mContext: Context = context
     private var items: List<FAQModel>? = data
@@ -64,6 +71,12 @@ class FAQAdapter(context: Context, data: List<FAQModel>?) :
             if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
                 holder.visit.visibility = View.GONE
                 holder.visit.visibility = View.GONE
+            }
+            holder.visit.setOnClickListener {
+                visitSiteListener.onVisitClick(item?.web_url?:"")
+            }
+            holder.watch.setOnClickListener {
+                watchVideoClickListener.onVideoClick(item?.video_url?:"")
             }
         } else {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)

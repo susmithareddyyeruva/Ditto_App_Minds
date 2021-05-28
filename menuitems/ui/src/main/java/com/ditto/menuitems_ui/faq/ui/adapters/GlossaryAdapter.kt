@@ -45,6 +45,20 @@ class GlossaryAdapter (context: Context, data: List<FAQModel>?) :
             holder.tvAnsw.visibility = View.VISIBLE
             holder.rvsubques.visibility = View.VISIBLE
             holder.ivArrow.setImageResource(R.drawable.ic_uparrow)
+            if (!item?.web_url.isNullOrEmpty()) {
+                holder.visit.visibility = View.VISIBLE
+            } else {
+                holder.visit.visibility = View.GONE
+            }
+            if (!item?.video_url.isNullOrEmpty()) {
+                holder.watch.visibility = View.VISIBLE
+            } else {
+                holder.visit.visibility = View.GONE
+            }
+            if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
+                holder.visit.visibility = View.GONE
+                holder.visit.visibility = View.GONE
+            }
         } else {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
@@ -82,5 +96,7 @@ class GlossaryAdapter (context: Context, data: List<FAQModel>?) :
         var ivArrow: ImageView = itemView.findViewById(R.id.iv_icon)
         var linheader: LinearLayout = itemView.findViewById(R.id.header)
         var relparent: RelativeLayout = itemView.findViewById(R.id.parentlay)
+        var watch: RelativeLayout = itemView.findViewById(R.id.relWatch)
+        var visit: RelativeLayout = itemView.findViewById(R.id.relVisit)
     }
 }
