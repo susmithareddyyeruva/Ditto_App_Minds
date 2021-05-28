@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.menuitems_ui.databinding.GlossaryFragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.GlossaryAdapter
-import com.ditto.menuitems_ui.faq.ui.json.JsonHelper
+import com.ditto.menuitems_ui.faq.ui.models.FAQModel
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 
-class GlossaryFragment :BaseFragment(){
+class GlossaryFragment(var list: List<FAQModel>) :BaseFragment(){
     private val viewModel: GlossaryViewModel by ViewModelDelegate()
     lateinit var binding: GlossaryFragmentBinding
 
@@ -32,8 +32,8 @@ class GlossaryFragment :BaseFragment(){
         super.onActivityCreated(savedInstanceState)
         val glossaryAdapter = context?.let {
             GlossaryAdapter(
-                it,
-                context?.let { JsonHelper(it).getFAQData() })
+                it,list
+                )
         }
         binding.recyclerGlossary.adapter = glossaryAdapter
         binding.recyclerGlossary.layoutManager = LinearLayoutManager(context)

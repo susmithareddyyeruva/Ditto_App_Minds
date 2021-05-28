@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.ditto.menuitems_ui.databinding.FaqGlossaryMainfragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
+import com.ditto.menuitems_ui.faq.ui.json.JsonHelper
+import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -35,8 +37,12 @@ class FaqGlossaryMainFragment : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val data = context?.let {
+            JsonHelper(it).getFAQDataMain()
+
+        }
         setuptoolbar()
-        setTabsAdapter()
+        setTabsAdapter(data)
 
     }
 
@@ -48,10 +54,10 @@ class FaqGlossaryMainFragment : BaseFragment() {
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setTabsAdapter() {
+    private fun setTabsAdapter(data: FAQGlossaryResponse?) {
         val fragmentAdapter = activity?.supportFragmentManager?.let {
             TabFaqAdapter(
-                it
+                it,data
             )
         }
         binding.viewPager.adapter = fragmentAdapter

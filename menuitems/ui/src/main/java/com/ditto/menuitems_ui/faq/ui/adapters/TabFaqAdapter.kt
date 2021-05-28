@@ -5,13 +5,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ditto.menuitems_ui.faq.ui.FAQFragment
 import com.ditto.menuitems_ui.faq.ui.GlossaryFragment
+import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
 
 /**
  * Created by Sesha on  15/08/2020.
  * Adapter class is to form the tabs dynamically
  */
 class TabFaqAdapter(
-    fm: FragmentManager
+    fm: FragmentManager,
+    val data: FAQGlossaryResponse?
 ) : FragmentStatePagerAdapter(
     fm,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
@@ -22,10 +24,10 @@ class TabFaqAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                FAQFragment()
+                FAQFragment(data?.fAQ?: emptyList())
             }
             1 -> {
-                GlossaryFragment()
+                GlossaryFragment(data?.glossary?: emptyList())
             }
             else -> getItem(position)
         }

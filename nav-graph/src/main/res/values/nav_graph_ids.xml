@@ -61,4 +61,6 @@
     <item name="action_destination_howto_to_nav_graph_id_video" type="id" />
     <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
     <item name="action_destination_to_FAQGlossaryfragment" type="id" />
+    <item name="action_destination_faq_to_nav_graph_id_video" type="id" />
+
 </resources>

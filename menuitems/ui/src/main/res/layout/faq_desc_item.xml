@@ -62,6 +62,7 @@
             android:layout_below="@+id/rel_desc"
             android:layout_marginStart="@dimen/margin_bottom"
             android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginBottom="@dimen/margin_top"
             android:layout_marginEnd="@dimen/button_end_margin"
             android:background="@drawable/boarder_watch"
             android:gravity="center_vertical"
@@ -99,6 +100,7 @@
             android:layout_below="@+id/rel_desc"
             android:layout_marginStart="@dimen/margin_bottom"
             android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginBottom="@dimen/margin_top"
             android:layout_toEndOf="@+id/relWatch"
             android:background="@drawable/boarder_visit"
             android:gravity="center_vertical"
@@ -132,6 +134,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_subdesc"
             android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_top"
             android:layout_height="wrap_content"
             android:layout_below="@id/relWatch"
             android:visibility="gone" />

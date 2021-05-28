@@ -5,17 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FaqfragmentLayoutBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.FAQAdapter
-import com.ditto.menuitems_ui.faq.ui.json.JsonHelper
+import com.ditto.menuitems_ui.faq.ui.models.FAQModel
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import javax.inject.Inject
 
-class FAQFragment() : BaseFragment() {
+class FAQFragment(var fAQ: List<FAQModel>) : BaseFragment() {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     private val viewModel: FQAfragmentViewModel by ViewModelDelegate()
@@ -43,9 +46,16 @@ class FAQFragment() : BaseFragment() {
         val faqadapter = context?.let {
             FAQAdapter(
                 it,
-                context?.let { JsonHelper(it).getFAQData() }, object : WatchVideoClickListener {
+                fAQ, object : WatchVideoClickListener {
                     override fun onVideoClick(path: String) {
                         logger.d("path== " + path,)
+                        val bundle =
+                            bundleOf("videoPath" to path, "title" to "FAQ", "from" to "tutorial")
+
+                        findNavController().navigate(
+                            R.id.action_destination_faq_to_nav_graph_id_video,
+                            bundle
+                        )
                     }
                 }, object : VisitSiteListener {
                     override fun onVisitClick(url: String) {

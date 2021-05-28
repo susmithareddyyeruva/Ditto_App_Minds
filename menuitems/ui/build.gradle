@@ -74,6 +74,7 @@ dependencies {
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(':logger')
+    implementation project(path: ':videoplayer')
 
     implementation 'com.google.code.gson:gson:2.8.5'
 }

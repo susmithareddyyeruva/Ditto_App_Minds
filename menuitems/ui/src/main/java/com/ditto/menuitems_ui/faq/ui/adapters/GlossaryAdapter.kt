@@ -64,6 +64,8 @@ class GlossaryAdapter (context: Context, data: List<FAQModel>?) :
             holder.tvAnsw.visibility = View.GONE
             holder.rvsubques.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_down_arrow)
+            holder.watch.visibility = View.GONE
+            holder.visit.visibility = View.GONE
         }
         holder.tvAnsw.setOnClickListener {
             if (position == 0){

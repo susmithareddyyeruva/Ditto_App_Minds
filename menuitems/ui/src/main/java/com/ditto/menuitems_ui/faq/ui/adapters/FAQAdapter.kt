@@ -41,7 +41,7 @@ class FAQAdapter(
         val htmlAsSpanned = Html.fromHtml(item?.Answ)
         holder.tvAnsw.text = htmlAsSpanned
 
-        if (item?.SubAnsw?.size!! > 0) {
+       /* if (item?.SubAnsw?.size!! > 0) {
             holder.rvsubques.visibility = View.VISIBLE
             subquesAdapter = SubquesAdapter(mContext, item?.SubAnsw)
             holder.rvsubques.adapter = subquesAdapter
@@ -50,13 +50,22 @@ class FAQAdapter(
         } else {
 
             holder.rvsubques.visibility = View.GONE
-        }
+        }*/
         holder.linheader.setOnClickListener { onItemClicked(item, position) }
         if (item?.isExpanded!!) {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout_white)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
-            holder.rvsubques.visibility = View.VISIBLE
+            if (item?.SubAnsw?.size!! > 0) {
+                holder.rvsubques.visibility = View.VISIBLE
+                subquesAdapter = SubquesAdapter(mContext, item?.SubAnsw)
+                holder.rvsubques.adapter = subquesAdapter
+                holder.rvsubques.layoutManager = LinearLayoutManager(mContext)
+
+            } else {
+
+                holder.rvsubques.visibility = View.GONE
+            }
             holder.ivArrow.setImageResource(R.drawable.ic_uparrow)
             if (!item?.web_url.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
@@ -73,10 +82,10 @@ class FAQAdapter(
                 holder.visit.visibility = View.GONE
             }
             holder.visit.setOnClickListener {
-                visitSiteListener.onVisitClick(item?.web_url?:"")
+                visitSiteListener.onVisitClick(item?.web_url ?: "")
             }
             holder.watch.setOnClickListener {
-                watchVideoClickListener.onVideoClick(item?.video_url?:"")
+                watchVideoClickListener.onVideoClick(item?.video_url ?: "")
             }
         } else {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
