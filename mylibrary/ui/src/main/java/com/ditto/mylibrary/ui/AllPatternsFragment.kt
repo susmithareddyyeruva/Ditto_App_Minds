@@ -247,6 +247,11 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
                 it.isSelected = false
             }
         }
+        occasionList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
         suitableList.forEach {
             if (it.isSelected) {
                 it.isSelected = false

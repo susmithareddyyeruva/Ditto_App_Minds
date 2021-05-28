@@ -596,6 +596,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(viewModel.spliced_pices.get() == 2) // setting true only when screen 2 else false by default
         onUpdateProgressCount()
+        viewModel.isSpliceBottomVisible.set(false)
+        viewModel.isSpliceTopVisible.set(false)
+        viewModel.isSpliceLeftVisible.set(false)
+        viewModel.isSpliceRightVisible.set(false)
     }
 
     private fun calculateScrollButtonVisibility() {

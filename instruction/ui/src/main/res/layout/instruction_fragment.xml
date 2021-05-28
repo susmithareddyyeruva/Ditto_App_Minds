@@ -218,7 +218,7 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickCalibrationStepsButton()}"
-                        android:visibility="@{!viewModel.isFromHome()}"
+                        android:visibility="@{!viewModel.isFromHome() &amp;&amp; (viewModel.instructionID == 1)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
@@ -232,8 +232,7 @@
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotocalib"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/size_14sp"
-                            android:visibility="@{(viewModel.instructionID == 1)}" />
+                            android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>
 
@@ -242,7 +241,7 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickHowToButton()}"
-                        android:visibility="@{!viewModel.isFromHome()}"
+                        android:visibility="@{!viewModel.isFromHome() &amp;&amp; viewModel.instructionID == 2}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
@@ -256,7 +255,6 @@
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotohowto"
                             android:textColor="@color/black"
-                            android:visibility="@{(viewModel.instructionID == 1 ? false : true )}"
                             android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>

@@ -107,7 +107,6 @@ class InstructionViewModel @Inject constructor(
      * [Function] HOW TO text  Click
      */
     fun onClickHowToButton() {
-
         uiEvents.post(Event.OnHowToButtonClicked)
     }
 
