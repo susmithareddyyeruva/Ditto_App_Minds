@@ -390,7 +390,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:paddingBottom="@dimen/padding_small"
+                        android:paddingBottom="@dimen/dimen_2"
                         android:drawablePadding="@dimen/padding_small"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center_vertical"
