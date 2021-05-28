@@ -33,7 +33,7 @@
     <dimen name="size_15sp">15sp</dimen>
     <dimen name="size_12sp">12sp</dimen>
     <dimen name="size_8dp">-8dp</dimen>
-    <fraction name="image_desc_guideline">0.27</fraction>
+    <fraction name="image_desc_guideline">0.66</fraction>
 
     <dimen name="size_0dp">0dp</dimen>
     <dimen name="size_16px">16sp</dimen>
@@ -46,4 +46,8 @@
     <dimen name="scissor_width">22dp</dimen>
     <dimen name="cart_height">13dp</dimen>
     <dimen name="scissor_height">13dp</dimen>
+
+    <dimen name="size_21dp">21dp</dimen>
+    <dimen name="subscription">34dp</dimen>
+
 </resources>

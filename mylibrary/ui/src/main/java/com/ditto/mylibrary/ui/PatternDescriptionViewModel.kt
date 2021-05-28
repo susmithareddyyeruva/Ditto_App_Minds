@@ -34,9 +34,16 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
-    val isActive: ObservableBoolean = ObservableBoolean(true)
-    val resumeOrSubscription : ObservableField<String> =ObservableField("")
+    val resumeOrSubscription : ObservableField<String> =ObservableField("RESUME")
     val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
+    val isStatusLayoutVisible: ObservableBoolean= ObservableBoolean(false)
+    val showActive: ObservableBoolean = ObservableBoolean(false)
+    val showPurchased: ObservableBoolean = ObservableBoolean(false)
+    val showLine: ObservableBoolean = ObservableBoolean(false)
+    val showResumButton: ObservableBoolean = ObservableBoolean(false)
+    val showWorkspaceOrRenewSubscriptionButton: ObservableBoolean = ObservableBoolean(false)
+
+
 
 
     init {
@@ -84,11 +91,12 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
      * [Function] ViewPager Previous Button Click
      */
     fun onClickWorkSpace() {
-        if(resumeOrSubscription.get().toString() == "RESUME"){
+        if(resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION"){
+            uiEvents.post(Event.onSubscriptionClicked)
+        }else if(resumeOrSubscription.get().toString()=="WORKSPACE"){
             uiEvents.post(Event.OnWorkspaceButtonClicked)
         }else{
-            uiEvents.post(Event.onSubscriptionClicked)
-
+            uiEvents.post(Event.OnWorkspaceButtonClicked)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +78,7 @@ class AllPatternsFragment : BaseFragment() {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
+                Log.d("Check Check ","--"+viewModel.clickedId.get())
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
