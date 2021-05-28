@@ -205,7 +205,6 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
         }
         binding.apply.setOnClickListener {
-            val genderAsString = Filter.genderList
             viewModel.createJson()
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
@@ -213,6 +212,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         binding.clearFilter.setOnClickListener {
             Filter.clearAll()
             setAsDefault()
+            setList()
             (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
 
         }
