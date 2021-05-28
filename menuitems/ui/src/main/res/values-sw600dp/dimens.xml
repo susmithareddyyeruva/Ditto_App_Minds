@@ -7,4 +7,6 @@
     <dimen name="str_email__phone_text">18sp</dimen>
     <dimen name="about_app_desc">18sp</dimen>
     <dimen name="top_margin">12dp</dimen>
+    <dimen name="button_width">220dp</dimen>
+    <dimen name="button_end_margin">22dp</dimen>
 </resources>

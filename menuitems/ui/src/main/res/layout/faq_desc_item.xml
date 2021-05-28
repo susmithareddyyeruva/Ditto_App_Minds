@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="@dimen/padding_common_start"
+    android:layout_marginRight="@dimen/padding_common_start"
+    android:layout_marginBottom="@dimen/margin_bottom"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -16,17 +16,17 @@
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="@dimen/item_container_height">
 
             <TextView
                 android:id="@+id/tv_ques"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="10dp"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:padding="@dimen/margin_bottom"
                 android:text="Where do I buy new patterns?"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
+                android:textColor="@android:color/black" />
 
             <ImageView
                 android:id="@+id/iv_icon"
@@ -47,7 +47,7 @@
                 android:id="@+id/tv_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="@dimen/margin_bottom"
                 android:text="The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
                 android:textColor="@android:color/black"
                 android:visibility="gone" />
@@ -56,35 +56,35 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relWatch"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rel_desc"
+            android:layout_marginStart="@dimen/margin_bottom"
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginEnd="@dimen/button_end_margin"
             android:background="@drawable/boarder_watch"
             android:gravity="center_vertical"
-            android:id="@+id/relWatch"
-            android:visibility="gone"
-           android:layout_marginStart="10dp"
-            android:layout_below="@+id/rel_desc"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="9dp"
-            android:layout_marginTop="21dp"
-            android:layout_width="133dp">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/watchVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_container_height"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_height="40dp"
-                android:layout_marginEnd="11dp"
-                android:layout_width="wrap_content"
-                android:paddingStart="9dp"
+                android:layout_marginEnd="@dimen/padding_11"
+                android:paddingStart="@dimen/padding_9"
                 android:src="@drawable/ic_watch">
 
             </ImageView>
 
             <TextView
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/watchVideo"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/watchVideo"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:text="@string/watch"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/size_14px">
@@ -93,35 +93,35 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relVisit"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rel_desc"
+            android:layout_marginStart="@dimen/margin_bottom"
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_toEndOf="@+id/relWatch"
             android:background="@drawable/boarder_visit"
             android:gravity="center_vertical"
-            android:id="@+id/relVisit"
-            android:visibility="gone"
-            android:layout_marginStart="10dp"
-            android:layout_below="@+id/rel_desc"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
-            android:layout_toEndOf="@+id/relWatch"
-            android:layout_width="133dp">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/visit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_container_height"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_height="40dp"
-                android:layout_marginEnd="11dp"
-                android:layout_width="wrap_content"
-                android:paddingStart="9dp"
+                android:layout_marginEnd="@dimen/padding_11"
+                android:paddingStart="@dimen/padding_9"
                 android:src="@drawable/ic_visit">
 
             </ImageView>
 
             <TextView
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/visit"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/visit"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:text="@string/visit"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/size_14px">
@@ -136,8 +136,6 @@
             android:layout_below="@id/relWatch"
             android:visibility="gone" />
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

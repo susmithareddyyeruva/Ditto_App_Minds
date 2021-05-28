@@ -10,4 +10,12 @@
     <dimen name="about_app_desc">14sp</dimen>
     <dimen name="header_size">21sp</dimen>
     <dimen name="top_margin">5dp</dimen>
+    <dimen name="padding_common_start">20dp</dimen>
+    <dimen name="margin_bottom">10dp</dimen>
+    <dimen name="margin_top">21dp</dimen>
+    <dimen name="item_container_height">40dp</dimen>
+    <dimen name="button_width">133dp</dimen>
+    <dimen name="padding_9">9dp</dimen>
+    <dimen name="padding_11">11dp</dimen>
+    <dimen name="button_end_margin">9dp</dimen>
 </resources>
