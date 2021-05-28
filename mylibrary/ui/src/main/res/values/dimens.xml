@@ -59,11 +59,25 @@
     <dimen name="guidline_top">.09</dimen>
     <dimen name="distance_after_icon_sync">5dp</dimen>
     <dimen name="size_34sp">34sp</dimen>
+    <dimen name="size_12sp">12sp</dimen>
+    <dimen name="size_8dp">-8dp</dimen>
+    <fraction name="image_desc_guideline">0.76</fraction>
 
     <dimen name="size_0dp">0dp</dimen>
     <dimen name="size_16px">16sp</dimen>
     <dimen name="size_14px">14sp</dimen>
     <dimen name="size_12px">12sp</dimen>
+    <dimen name="size_18sp">12sp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_16sp">16sp</dimen>
+    <dimen name="cart_width">15dp</dimen>
+    <dimen name="scissor_width">22dp</dimen>
+    <dimen name="cart_height">13dp</dimen>
+    <dimen name="scissor_height">13dp</dimen>
+
+    <dimen name="size_21dp">21dp</dimen>
+    <dimen name="subscription">34dp</dimen>
+
     <dimen name="item_action_text_size">12sp</dimen>
     <dimen name="apply_button_size">14sp</dimen>
     <dimen name="padding_start">12dp</dimen>

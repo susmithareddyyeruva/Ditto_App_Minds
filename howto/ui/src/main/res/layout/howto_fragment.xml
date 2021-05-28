@@ -14,7 +14,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F8F8F8">
+        android:background="@android:color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
@@ -85,19 +85,26 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent=".11" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".05" />
+
 
             <com.ditto.howto.utils.CustomTabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/size_0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guide_start"
                 app:layout_constraintTop_toBottomOf="@+id/topbar"
                 app:tabIndicatorColor="#A4211F"
                 app:tabIndicatorGravity="bottom"
-                app:tabMode="auto"
+                app:tabMode="scrollable"
                 app:tabPaddingEnd="@dimen/size_14px"
                 app:tabRippleColor="@android:color/transparent"
                 app:tabSelectedTextColor="@color/black"

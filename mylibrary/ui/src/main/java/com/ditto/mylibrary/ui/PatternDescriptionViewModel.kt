@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -32,7 +33,8 @@ import java.net.URL
 import java.util.*
 import javax.inject.Inject
 
-class PatternDescriptionViewModel @Inject constructor(private val getPattern: GetMylibraryData) :
+class PatternDescriptionViewModel @Inject constructor(private val context: Context,
+                                                      private val getPattern: GetMylibraryData) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -46,6 +48,16 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
+    val resumeOrSubscription : ObservableField<String> =ObservableField("RESUME")
+    val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
+    val isStatusLayoutVisible: ObservableBoolean= ObservableBoolean(false)
+    val showActive: ObservableBoolean = ObservableBoolean(false)
+    val showPurchased: ObservableBoolean = ObservableBoolean(false)
+    val showLine: ObservableBoolean = ObservableBoolean(false)
+    val showResumButton: ObservableBoolean = ObservableBoolean(false)
+    val showWorkspaceOrRenewSubscriptionButton: ObservableBoolean = ObservableBoolean(false)
+
+
 
 
     init {
@@ -93,8 +105,16 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
      * [Function] ViewPager Previous Button Click
      */
     fun onClickWorkSpace() {
-        uiEvents.post(Event.OnWorkspaceButtonClicked)
+        if(resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION"){
+            uiEvents.post(Event.onSubscriptionClicked)
+        }else if(resumeOrSubscription.get().toString()=="WORKSPACE"){
+            uiEvents.post(Event.OnWorkspaceButtonClicked)
+        }else{
+            uiEvents.post(Event.OnWorkspaceButtonClicked)
+        }
     }
+
+
 
     fun onClickInstructions() {
         uiEvents.post(Event.OnInstructionsButtonClicked)
@@ -110,6 +130,9 @@ class PatternDescriptionViewModel @Inject constructor(private val getPattern: Ge
     sealed class Event {
 
         object OnWorkspaceButtonClicked : Event()
+
+        object onSubscriptionClicked : Event()
+
 
         object OnInstructionsButtonClicked : Event()
 

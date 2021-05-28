@@ -69,8 +69,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        bottomNavViewModel.visibility.set(false)
+        toolbarViewModel.isShowActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()
@@ -103,6 +105,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
                 viewModel.patternpdfuri.get()
             ))
+            PatternDescriptionViewModel.Event.onSubscriptionClicked -> TODO()
         }
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun checkavailablefile() {

@@ -39,7 +39,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:gravity="center"
+                    android:gravity="start"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
                     app:contentInsetStartWithNavigation="0dp"
@@ -49,9 +49,10 @@
                         android:id="@+id/header_view_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:text="@{toolbarViewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/toolbar" />
 
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>
