@@ -22,9 +22,8 @@ class PinchAndZoom : AppCompatActivity() {
                 R.layout.pinchzoom_activity
             )
         val imagepath = intent.extras?.getString("ImageURL")
-        val scaleFactor = intent.extras?.getInt("scaleFactor")
-        val which = intent.extras?.get("isFrom") ?: ""
-        if (which.equals("Reference")) {
+        val isReference = intent.extras?.getBoolean("isReference") ?: false
+        if (isReference) {
             binding.zoomTittle.text = getString(R.string.reference_layout)
         }
         /*window.setFlags(
