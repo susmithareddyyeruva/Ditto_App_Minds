@@ -114,19 +114,22 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
         if (availableUri != null){
             showPdfFromUri(availableUri)
         } else {
-            if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
-                bottomNavViewModel.showProgress.set(true)
-                GlobalScope.launch {
-                    downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
-                }
-            } else {
-                showNeworkError()
-            }
-
+            pdfdownload()
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun pdfdownload(){
 
+        if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+            bottomNavViewModel.showProgress.set(true)
+            GlobalScope.launch {
+                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+            }
+        } else {
+            showNeworkError()
+        }
+    }
     private fun showPdfFromAssets(pdfName: String) {
         binding.pdfView.fromAsset(pdfName)
             .defaultPage(0) // set the default page to open
@@ -145,11 +148,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
+            .onError {
+                showRedownload()
+            }
             .onPageError { page, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading pdf", Toast.LENGTH_LONG
-                ).show()
+                showRedownload()
             }
             .load()
     }
@@ -188,17 +191,35 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
             Utility.AlertType.NETWORK
         )
     }
+
+    private fun showRedownload(){
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            getString(R.string.str_unable_to_load),
+            getString(R.string.str_retry),
+            getString(R.string.str_cancel),
+            this,
+            Utility.AlertType.PDF
+        )
+    }
+
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
-            Utility.AlertType.NETWORK -> {
+            Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        TODO("Not yet implemented")
+        when (alertType) {
+            Utility.AlertType.PDF -> {
+                pdfdownload()
+            }
+        }
     }
 
     override fun onNeutralButtonClicked() {
