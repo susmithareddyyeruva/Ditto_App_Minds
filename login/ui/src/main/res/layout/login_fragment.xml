@@ -344,9 +344,9 @@
                         </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:text="@string/you_will_be_redirected_to_ditto"
                             android:textColor="@color/texthint"
