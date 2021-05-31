@@ -101,9 +101,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         mBluetoothAdapter = bluetoothManager.adapter
         Log.d(ConnectivityUtils.TAG, "BLE Adapter Initialized")
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mHandler = Handler()
         getWIFIname()
         wifiname.setText(connSSID)
@@ -320,22 +317,29 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 }
 
             } else {
-
-                viewModel.isProgressBar.set(false)
-                viewModel.isProjectorLayout.set(false)
-                mServiceListAdapter = ServiceListAdapter(serviceList)
-                runOnUiThread {
-                    deviceList_proj.adapter = mServiceListAdapter
-                }
                 if (serviceList.isEmpty()){
-                    viewModel.isNoServiceFound.set(true)
+                    startBLESearch()
                 } else {
-                    viewModel.isNoServiceFound.set(false)
-                }
-                viewModel.isShowServiceList.set(true)
-            }
+                    if (serviceList.size == 1){
+                        mClickedService = serviceList[0]
+                        isServiceFound = true
+                        Utility.isServiceConnected = isServiceFound
+                        Utility.nsdSericeHostName = mClickedService!!.nsdSericeHostAddress
+                        Utility.nsdSericePortName = mClickedService!!.nsdServicePort
+                        serviceConnectionWaitingJob?.cancel()
+                        checkSocketConnection()
+                    } else {
+                        viewModel.isProgressBar.set(false)
+                        viewModel.isProjectorLayout.set(false)
+                        mServiceListAdapter = ServiceListAdapter(serviceList)
+                        runOnUiThread {
+                            deviceList_proj.adapter = mServiceListAdapter
+                        }
+                        viewModel.isShowServiceList.set(true)
+                    }
 
-            //startBLESearch()
+                }
+            }
 
         }
     }
