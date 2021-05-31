@@ -97,11 +97,9 @@ class AllPatternsViewModel @Inject constructor(
 
     fun removePattern(patternId: Int) {
         Log.d("pattern", "Removed")
-
     }
 
     fun onFilterClick() {
-
         Log.d("pattern", "onFilterClick : viewModel")
         uiEvents.post(Event.OnFilterClick)
     }
@@ -112,7 +110,6 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onSearchClick() {
-
         Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnSearchClick)
     }
