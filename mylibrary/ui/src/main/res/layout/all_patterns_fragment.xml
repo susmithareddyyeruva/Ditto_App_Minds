@@ -162,7 +162,7 @@
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
                             android:onClick="@{() -> viewModel.onFilterClick()}"
-                            android:text="@string/text_filter"
+                            android:text="@string/filter"
                             android:textColor="@color/search_text_code"
                             android:textSize="@dimen/size_search"
                             app:layout_constraintBottom_toBottomOf="@id/header_view_title"
