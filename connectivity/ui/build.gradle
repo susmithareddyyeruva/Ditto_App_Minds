@@ -60,7 +60,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_extensions_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "androidx.activity:activity-ktx:$androidx_activity"
-
+    implementation "com.airbnb.android:lottie:$lottieVersion"
     /**
      * RX JAVA
      */

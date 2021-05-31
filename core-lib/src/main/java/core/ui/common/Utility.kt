@@ -9,6 +9,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -19,6 +20,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -51,7 +53,14 @@ class Utility {
         CUT_BIN,
         CUT_BIN_ALL,
         PATTERN_RENAME,
-        NETWORK
+        NETWORK,
+        CONNECTIVITY
+    }
+
+
+    enum class Iconype {
+        SUCCESS,
+        FAILED
     }
 
     companion object {
@@ -372,8 +381,9 @@ class Utility {
             alertmessage: String,
             negativeButton: String,
             positiveButton: String,
-            callbackDialogListener: CallbackDialogListener,
-            alertType:AlertType
+            customcallbackDialogListener: CustomCallbackDialogListener,
+            alertType:AlertType,
+            imgtyp : Iconype
         ) {
             val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
             val dialogBuilder =  AlertDialog.Builder(context)
@@ -388,13 +398,21 @@ class Utility {
             negative.text = negativeButton
             val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
             positive.text = positiveButton
+            val icon = mDialogView.findViewById(R.id.img_icon) as ImageView
+            if (imgtyp.equals(Iconype.SUCCESS)){
+                icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
+            } else  if (imgtyp.equals(Iconype.FAILED)){
+                icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+            } else {
+                icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+            }
             negative.setOnClickListener {
                 alert.dismiss()
-                callbackDialogListener.onNegativeButtonClicked(alertType)
+                customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
             }
             positive.setOnClickListener {
                 alert.dismiss()
-                callbackDialogListener.onPositiveButtonClicked(alertType)
+                customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
             }
 
         }
@@ -405,6 +423,11 @@ class Utility {
         fun onPositiveButtonClicked(alertType: AlertType)
         fun onNegativeButtonClicked(alertType: AlertType)
         fun onNeutralButtonClicked()
+    }
+
+    interface CustomCallbackDialogListener {
+        fun onCustomPositiveButtonClicked(iconype: Iconype,alertType: AlertType)
+        fun onCustomNegativeButtonClicked(iconype: Iconype,alertType: AlertType)
     }
 
 }

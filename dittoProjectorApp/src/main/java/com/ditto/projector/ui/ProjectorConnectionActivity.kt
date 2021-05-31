@@ -32,7 +32,9 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_projector_connection.*
 import kotlinx.coroutines.*
 import java.io.DataInputStream
+import java.lang.reflect.Field
 import java.net.InetSocketAddress
+import java.net.NetworkInterface
 import java.net.ServerSocket
 import java.net.Socket
 import java.util.*
@@ -300,7 +302,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         initializeRegistrationListener()
         val serviceInfo = NsdServiceInfo()
         serviceInfo.port = port
-        serviceInfo.serviceName = viewModel.mServiceName
+        viewModel.mServiceName.set("DITTO_"+viewModel.mBluetoothManager!!.adapter.address)
+        serviceInfo.serviceName = viewModel.mServiceName.get()
         serviceInfo.serviceType = viewModel.SERVICE_TYPE
         Log.d("CONNECTIVITY_PROJECTOR", "register Service- $serviceInfo")
         viewModel.mNsdManager = (this.getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
@@ -310,15 +313,17 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 viewModel.mRegistrationListener
             )
         }
+
     }
+
 
     private fun initializeRegistrationListener() {
         viewModel.mRegistrationListener = object : NsdManager.RegistrationListener {
 
             override fun onServiceRegistered(nsdServiceInfo: NsdServiceInfo) {
                 Log.d("CONNECTIVITY_PROJECTOR", "onServiceRegistered- $nsdServiceInfo")
-                viewModel.mServiceName = nsdServiceInfo.serviceName
-                onNsdServiceRegistered(viewModel.mServiceName)
+                viewModel.mServiceName.set(nsdServiceInfo.serviceName)
+                onNsdServiceRegistered(viewModel.mServiceName.get()!!)
             }
 
             override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {

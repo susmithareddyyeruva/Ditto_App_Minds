@@ -37,7 +37,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
+class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPatternInstructionsBinding
@@ -182,24 +182,28 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
         )
     }
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         when (alertType) {
             Utility.AlertType.NETWORK -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
-
     }
 
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onNeutralButtonClicked() {
-        TODO("Not yet implemented")
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
     }
 }
 

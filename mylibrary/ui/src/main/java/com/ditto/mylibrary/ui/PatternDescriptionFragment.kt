@@ -90,7 +90,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Description")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(true)
-        baseViewModel.activeSocketConnection.set(false)
+        //baseViewModel.activeSocketConnection.set(false)
         if (viewModel.data.value == null) {
             arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
             viewModel.fetchPattern()
@@ -144,7 +144,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         core.network.Utility.nsdSericePortName
                     )
                 ) {
-                    baseViewModel.activeSocketConnection.set(true)
+                    //baseViewModel.activeSocketConnection.set(true)
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
@@ -365,7 +365,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                 ) {
-                    checkBluetoothWifiPermission()
+                    //checkBluetoothWifiPermission()
+                    forwardtoWorkspace()
                 } else {
                     logger.d("OnClick Workspace failed")
                 }
@@ -433,20 +434,24 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "Connected to Ditto Projector!!",
                     Toast.LENGTH_SHORT
                 ).show()
-                baseViewModel.activeSocketConnection.set(true)
+                //baseViewModel.activeSocketConnection.set(true)
                 showCalibrationDialog()
             } else if (data?.data.toString().equals("skip")) {
-                baseViewModel.activeSocketConnection.set(false)
-                if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-                    val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
-                    findNavController().navigate(
-                        R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
-                        bundle
-                    )
-                } else {
-                    logger.d("")
-                }
+               forwardtoWorkspace()
             }
+        }
+    }
+
+    private fun forwardtoWorkspace(){
+
+        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+            val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
+            findNavController().navigate(
+                R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
+                bundle
+            )
+        } else {
+            logger.d("")
         }
     }
 

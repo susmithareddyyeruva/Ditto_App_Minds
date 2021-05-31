@@ -30,6 +30,7 @@ class ProjectorConnectionViewModel : ViewModel() {
     var serviceconnectionstatus: ObservableField<String> = ObservableField("N/A")
     var wifiName: ObservableField<String> = ObservableField("N/A")
     var liveconnectionstatus: ObservableField<String> = ObservableField("N/A")
+    var mServiceName: ObservableField<String> = ObservableField("N/A")
     var isCallfromBle: ObservableBoolean = ObservableBoolean(false)
     var isBleConnected: ObservableBoolean = ObservableBoolean(false)
     var isConnectionFromiOS: ObservableBoolean = ObservableBoolean(false)
@@ -48,7 +49,7 @@ class ProjectorConnectionViewModel : ViewModel() {
     val events = uiEvents.stream()
     var mNsdManager: NsdManager? = null
     val SERVICE_TYPE = "_http._tcp."
-    var mServiceName = "PROJECTOR_SERVICE"
+    //var mServiceName = "PROJECTOR_SERVICE"
     var mRegistrationListener: NsdManager.RegistrationListener? = null
 
     /**

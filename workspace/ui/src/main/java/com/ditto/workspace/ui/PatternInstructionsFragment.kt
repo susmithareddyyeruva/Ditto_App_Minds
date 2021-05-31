@@ -29,7 +29,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
+class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
     private val viewModel: WorkspaceViewModel by ViewModelDelegate()
     lateinit var binding: FragmentWsPatternInstructionsBinding
@@ -177,24 +177,26 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
         )
     }
 
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         when (alertType) {
             Utility.AlertType.NETWORK -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
-
     }
 
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onNeutralButtonClicked() {
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         TODO("Not yet implemented")
     }
 
