@@ -50,9 +50,9 @@
     <dimen name="txt_clear_filter">12sp</dimen>
     <dimen name="txt_filter_result">14sp</dimen>
     <dimen name="blue_filter_dot">7dp</dimen>
-    <dimen name="search_width">9.63dp</dimen>
+    <dimen name="search_width">12dp</dimen>
     <dimen name="search_width1">9.63</dimen>
-    <dimen name="search_height">9.63dp</dimen>
+    <dimen name="search_height">12dp</dimen>
     <dimen name="clear_text_margin_top">20dp</dimen>
     <dimen name="recy_margin_top">15dp</dimen>
     <dimen name="guidline_clear_text">.039</dimen>

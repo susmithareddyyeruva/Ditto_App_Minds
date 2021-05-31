@@ -42,8 +42,8 @@
     <dimen name="txt_clear_filter">22sp</dimen>
     <dimen name="blue_filter_dot">15dp</dimen>
     <dimen name="txt_filter_result">22sp</dimen>
-    <dimen name="search_width">17.94dp</dimen>
-    <dimen name="search_height">17.94dp</dimen>
+    <dimen name="search_width">22dp</dimen>
+    <dimen name="search_height">22dp</dimen>
     <dimen name="item_action_text_size">18sp</dimen>
     <dimen name="apply_button_size">20sp</dimen>
     <dimen name="toolbar_head_size">24sp</dimen>
