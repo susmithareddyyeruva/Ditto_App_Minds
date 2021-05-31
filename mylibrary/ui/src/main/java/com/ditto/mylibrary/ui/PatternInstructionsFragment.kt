@@ -7,6 +7,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,13 +100,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
     }
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
-            is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked ->   TODO()
-            is PatternDescriptionViewModel.Event.OnDataUpdated ->  TODO()
-            is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked ->  TODO()
             PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
                 viewModel.patternpdfuri.get()
             ))
-            PatternDescriptionViewModel.Event.onSubscriptionClicked -> TODO()
+            else -> Log.d("Error", "Invaid Event")
         }
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun checkavailablefile() {

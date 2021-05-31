@@ -243,11 +243,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    fun isTablet(context: Context): Boolean {
-        val xlarge = context.getResources()
-            .getConfiguration().screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === 4
-        val large = context.getResources()
-            .getConfiguration().screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_LARGE
+    fun isTablet(context: Context?): Boolean {
+        val xlarge = context?.getResources()
+            ?.getConfiguration()?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == 4
+        val large = context?.getResources()
+            ?.getConfiguration()?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == Configuration.SCREENLAYOUT_SIZE_LARGE
         return xlarge || large
     }
 
@@ -838,8 +838,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
                     )
-                } else
-                    Unit
+                } else{
+                    Log.d("Error", "Invalid currentDestination?.id")
+                }
             }
             is WorkspaceViewModel.Event.ClearWorkspace -> {
                 clearWorkspace()

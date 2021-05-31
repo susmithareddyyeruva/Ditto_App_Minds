@@ -138,11 +138,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
-                showPdfFromUri(
-                    Uri.parse(
-                        viewModel.patternpdfuri.get()
-                    )
-                )
+                showPdfFromUri(Uri.parse(viewModel.patternpdfuri.get()))
             }
             else -> Log.d("Error", "Invaid Event")
         }
