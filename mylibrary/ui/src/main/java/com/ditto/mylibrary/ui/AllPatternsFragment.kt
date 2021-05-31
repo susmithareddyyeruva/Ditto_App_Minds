@@ -206,6 +206,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }))
         binding.closeFilter.setOnClickListener {
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            setFilterMenuAdapter(0)
         }
         binding.apply.setOnClickListener {
             viewModel.createJson()
