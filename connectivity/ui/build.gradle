@@ -89,7 +89,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$play_services_location"
 
     implementation project(':logger')
-
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
 }
 
 repositories {

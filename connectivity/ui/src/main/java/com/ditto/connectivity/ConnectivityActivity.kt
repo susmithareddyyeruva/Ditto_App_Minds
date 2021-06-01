@@ -37,12 +37,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.ditto.connectivity.databinding.ConnectivityActivityBinding
-import com.ditto.connectivity.model.Nsdservicedata
+import core.models.Nsdservicedata
 import com.ditto.connectivity.service.BluetoothLeService
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnSuccessListener
+import core.appstate.AppState
 import core.network.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -58,6 +59,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var mServiceListAdapter: ServiceListAdapter? = null
     private var mHandler: Handler? = null
     private var mScanning: Boolean = false
+    private var mPreviousServiceAvailable: Boolean = false
     private val SCAN_PERIOD: Long = 10000
     private var mDeviceAddress: String? = null
     private var mDeviceName: String? = null
@@ -65,7 +67,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var networkType: String = ""
     private var mBluetoothAdapter: BluetoothAdapter? = null
     private val GPS_REQUEST = 1001
-    lateinit var mClickedService  :Nsdservicedata
+    lateinit var mClickedService  : Nsdservicedata
     val serviceList = ArrayList<Nsdservicedata>()
     //BLE SERVICE
     private var mBluetoothLeService: BluetoothLeService? = null
@@ -74,7 +76,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
     val viewModel: ConnectivityViewModel by viewModels()
     lateinit var binding: ConnectivityActivityBinding
-
     var nsdManager: NsdManager? = null
     private var discoveryListener: NsdManager.DiscoveryListener? = null
     private var resolveListener: NsdManager.ResolveListener? = null
@@ -187,7 +188,11 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             Log.d(ConnectivityUtils.TAG, "Resolve Succeeded. $serviceInfo")
 
             mService = serviceInfo
-            val nsdData = Nsdservicedata(mService!!.serviceName,mService?.host?.hostAddress.toString(),mService?.port!!.toInt())
+            val nsdData = Nsdservicedata(
+                mService!!.serviceName,
+                mService?.host?.hostAddress.toString(),
+                mService?.port!!.toInt()
+            )
             serviceList.add(nsdData)
         }
     }
@@ -285,35 +290,38 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         checkSocketConnection()
     }
 
-    private fun startServiceTimer(){
+    private fun startServiceTimer() {
 
         serviceConnectionWaitingJob = GlobalScope.launch {
             delay(6000)
             stopDiscovery()
-            if (viewModel.isServiceFoundAfterWifi.get()){
-
-                if (serviceList.isEmpty()){
-
+            if (viewModel.isServiceFoundAfterWifi.get()) {
+                /* Search completed after successfully sharing the wifi ceredentials*/
+                if (serviceList.isEmpty()) {
                     viewModel.isServiceError.set(true)
-                    showLayouts(false,false,false,true,false)
-
+                    showLayouts(false, false, false, true, false)
                 } else {
                     mClickedService = serviceList[0]
                     nsdServiceAutoConnect(mClickedService)
                 }
 
             } else {
-                if (serviceList.isEmpty()){
+                if (serviceList.isEmpty()) {   /* Showing BLE list if no serivce is found  */
                     startBLESearch()
                 } else {
-                    if (serviceList.size == 1){
-                        mClickedService = serviceList[0]
-                        nsdServiceAutoConnect(mClickedService)
-                    } else {
-                        populateServiceList()
-                        showLayouts(true,false,false,false,false)
+                    for (item in serviceList) { /* Loop to identify whether last connected service available */
+                        if (item.nsdServiceName == AppState.getLastSavedServiceName()){
+                            mPreviousServiceAvailable = true
+                            mClickedService = item
+                            nsdServiceAutoConnect(mClickedService)
+                            break
+                        }
                     }
-
+                    if (!mPreviousServiceAvailable) { /* Check whether the last connected service found or not */
+                        mPreviousServiceAvailable = false
+                        populateServiceList()
+                        showLayouts(true, false, false, false, false)
+                    }
                 }
             }
 
@@ -344,6 +352,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             try {
                 soc = Socket(host, mClickedService.nsdServicePort)
                 if (soc.isConnected) {
+                    AppState.clearSavedService()
+                    AppState.saveCurrentService(mClickedService)
                     viewModel.isServiceError.set(false)
                     showLayouts(false, false, false, true, false)
 

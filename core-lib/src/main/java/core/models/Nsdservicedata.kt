@@ -1,4 +1,4 @@
-package com.ditto.connectivity.model
+package core.models
 
 data class Nsdservicedata(
     val nsdServiceName: String,

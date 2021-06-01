@@ -4,7 +4,6 @@ package com.ditto.connectivity
 import android.os.StrictMode
 import android.util.Log
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import core.event.UiEvents
