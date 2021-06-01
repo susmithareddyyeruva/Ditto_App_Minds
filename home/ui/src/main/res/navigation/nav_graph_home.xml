@@ -10,32 +10,32 @@
         android:id="@+id/homeFragment"
         android:name="com.ditto.home.ui.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/home_fragment" >
-       <!-- <action
-            android:id="@+id/action_global_loginFragment"
-            app:destination="@id/nav_graph_id_login"
-            app:launchSingleTop="false"
-            app:popUpTo="@+id/nav_graph"
-            app:popUpToInclusive="true" />-->
+        tools:layout="@layout/home_fragment">
+        <!-- <action
+             android:id="@+id/action_global_loginFragment"
+             app:destination="@id/nav_graph_id_login"
+             app:launchSingleTop="false"
+             app:popUpTo="@+id/nav_graph"
+             app:popUpToInclusive="true" />-->
         <action
             android:id="@+id/action_splashActivity_to_LoginFragment"
             app:destination="@id/nav_graph_id_login"
-            app:launchSingleTop="true"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_graph"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_home_to_buy_pattern"
-            app:destination="@id/buyPatternFragment"/>
+            app:destination="@id/buyPatternFragment" />
         <action
             android:id="@+id/action_homeFragment_to_ShopFragment"
             app:destination="@id/ShopFragment" />
         <action
             android:id="@+id/action_home_to_workspace"
-            app:destination="@id/workspaceFragment"/>
+            app:destination="@id/workspaceFragment" />
         <action
             android:id="@+id/action_home_to_my_library"
             app:destination="@id/nav_graph_mylibrary"
@@ -44,7 +44,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_graph_mylibrary"
-            app:popUpToInclusive="true"  />
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_home_to_tutorial"
@@ -53,14 +53,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpToInclusive="true"  />
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
         <action
-            android:id="@+id/action_destination_to_FAQGlossaryfragment"
-            app:destination="@id/nav_graph_faq" />
+            android:id="@+id/action_fragment_to_FAQGlossaryfragment"
+            app:destination="@id/nav_graph_mainFaq" />
         <action
             android:id="@+id/action_homeFragment_to_aboutAppFragment"
             app:destination="@id/aboutAppFragment" />
@@ -84,13 +84,21 @@
         android:id="@+id/customerCareFragment"
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
         android:label="Customer Support"
-        tools:layout="@layout/customer_care_fragment"/>
-    <fragment
-        android:id="@+id/nav_graph_faq"
-        tools:layout="@layout/faq_glossary_mainfragment"
-        android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
-        android:label="FAQ and Glossary" />
+        tools:layout="@layout/customer_care_fragment" />
 
+    <fragment
+        android:id="@+id/nav_graph_mainFaq"
+        android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
+        android:label="FAQ and Glossary"
+        tools:layout="@layout/faq_glossary_mainfragment" >
+        <action
+            android:id="@+id/action_destination_faq_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
     <fragment
         android:id="@+id/aboutAppFragment"
         android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"

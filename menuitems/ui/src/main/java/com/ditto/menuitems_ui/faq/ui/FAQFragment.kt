@@ -49,13 +49,19 @@ class FAQFragment(var fAQ: List<FAQModel>) : BaseFragment() {
                 fAQ, object : WatchVideoClickListener {
                     override fun onVideoClick(path: String) {
                         logger.d("path== " + path,)
-                        val bundle =
-                            bundleOf("videoPath" to path, "title" to "FAQ", "from" to "tutorial")
+                        if (findNavController().currentDestination?.id == R.id.nav_graph_mainFaq  ){
+                            val bundle =
+                                bundleOf(
+                                    "videoPath" to path,
+                                    "title" to "FAQ",
+                                    "from" to "tutorial"
+                                )
 
-                        findNavController().navigate(
-                            R.id.action_destination_faq_to_nav_graph_id_video,
-                            bundle
-                        )
+                            findNavController().navigate(
+                                R.id.action_destination_faq_to_nav_graph_id_video,
+                                bundle
+                            )
+                        }
                     }
                 }, object : VisitSiteListener {
                     override fun onVisitClick(url: String) {

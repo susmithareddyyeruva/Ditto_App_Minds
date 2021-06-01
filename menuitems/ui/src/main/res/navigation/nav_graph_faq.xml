@@ -2,22 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_faq"
+    android:id="@+id/faq_navigation"
     tools:ignore="UnusedNavigation"
-    app:startDestination="@id/FQAfragment">
+    app:startDestination="@id/faqFragment">
     <include app:graph="@navigation/nav_graph_video" />
     <fragment
-        android:id="@+id/FQAfragment"
+        android:id="@+id/faqFragment"
         android:name="com.ditto.menuitems_ui.faq.ui.FAQFragment"
         tools:layout="@layout/faqfragment_layout"
         android:label="Frequently Asked Questions">
-    <action
-        android:id="@+id/action_destination_faq_to_nav_graph_id_video"
-        app:destination="@id/nav_graph_id_video"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        />
+        <action
+            android:id="@+id/action_destination_faq_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popUpTo="@+id/destinationFaq"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
+
 </navigation>

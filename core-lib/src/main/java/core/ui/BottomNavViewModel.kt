@@ -7,8 +7,7 @@ import core.appstate.AppState
 import core.event.UiEvents
 import core.lib.R
 import core.ui.common.MenuModel
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 import javax.inject.Inject
 
 class BottomNavViewModel @Inject constructor() : BaseViewModel() {
@@ -98,7 +97,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         childList.put(menuModel, childModelsList)
 
         menuModel = MenuModel(
-            "FAQ'S",
+            "FAQ & Glossary",
             "ic_menu_faq",
             null
         )

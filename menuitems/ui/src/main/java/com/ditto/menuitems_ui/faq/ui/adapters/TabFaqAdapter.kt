@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ditto.menuitems_ui.faq.ui.FAQFragment
+import com.ditto.menuitems_ui.faq.ui.FAQGlossaryfragmentViewModel
 import com.ditto.menuitems_ui.faq.ui.GlossaryFragment
 import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
 
@@ -13,13 +14,14 @@ import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
  */
 class TabFaqAdapter(
     fm: FragmentManager,
-    val data: FAQGlossaryResponse?
+    var data: FAQGlossaryResponse?
 ) : FragmentStatePagerAdapter(
     fm,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) {
 
     private var tabdata = arrayListOf<String>("FAQ", "Glossary")
+    private lateinit var vm1: FAQGlossaryfragmentViewModel
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
@@ -37,7 +39,14 @@ class TabFaqAdapter(
         return tabdata.size
     }
 
+
     override fun getPageTitle(position: Int): CharSequence {
         return tabdata[position]
     }
+    fun setMainData(data: FAQGlossaryResponse?){
+        this.data=data
+        notifyDataSetChanged()
+    }
+
+
 }

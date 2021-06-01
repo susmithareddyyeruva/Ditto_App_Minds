@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.ditto.menuitems_ui.databinding.FaqGlossaryMainfragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
-import com.ditto.menuitems_ui.faq.ui.json.JsonHelper
 import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
@@ -25,26 +24,31 @@ class FaqGlossaryMainFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FaqGlossaryMainfragmentBinding.inflate(
-            inflater
-        ).also {
-            it.viewModel = viewModel
-            it.lifecycleOwner = viewLifecycleOwner
+        if (!::binding.isInitialized) {
+            binding = FaqGlossaryMainfragmentBinding.inflate(
+                inflater
+            ).also {
+                it.viewModel = viewModel
+                it.lifecycleOwner = viewLifecycleOwner
+
+            }
         }
+
         return binding.mainContainer
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val data = context?.let {
-            JsonHelper(it).getFAQDataMain()
-
-        }
         setuptoolbar()
-        setTabsAdapter(data)
+        if (viewModel.data.value == null){
+            viewModel.fetchData()
+            setTabsAdapter(viewModel.data.value)
+        }
+
 
     }
+
 
     private fun setuptoolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -57,7 +61,7 @@ class FaqGlossaryMainFragment : BaseFragment() {
     private fun setTabsAdapter(data: FAQGlossaryResponse?) {
         val fragmentAdapter = activity?.supportFragmentManager?.let {
             TabFaqAdapter(
-                it,data
+                it, data
             )
         }
         binding.viewPager.adapter = fragmentAdapter
@@ -84,10 +88,12 @@ class FaqGlossaryMainFragment : BaseFragment() {
         binding.tabLayoutFaq.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 Log.d("onTabSelection", "onTabSelected")
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 Log.d("onTabSelection", "onTabUnselected")
+
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
