@@ -15,6 +15,7 @@ import android.net.nsd.NsdServiceInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelUuid
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -52,6 +53,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     var wifiConnectionWaitingJob: Job? = null
     private lateinit var imageBitMap: Bitmap
     private var wifiReceiver: WifiConnectionListener? = null
+    var deviceid : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +71,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
             }
         startBLE()
         initapp()
+        deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+        title_proj.text = "Ditto Projector "+"( ID : DITTO_"+deviceid+" )"
     }
 
     /**
@@ -302,7 +306,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         initializeRegistrationListener()
         val serviceInfo = NsdServiceInfo()
         serviceInfo.port = port
-        viewModel.mServiceName.set("DITTO_"+viewModel.mBluetoothManager!!.adapter.address)
+        //viewModel.mServiceName.set("DITTO_"+viewModel.mBluetoothManager!!.adapter.address)
+        viewModel.mServiceName.set("DITTO_"+deviceid)
         serviceInfo.serviceName = viewModel.mServiceName.get()
         serviceInfo.serviceType = viewModel.SERVICE_TYPE
         Log.d("CONNECTIVITY_PROJECTOR", "register Service- $serviceInfo")

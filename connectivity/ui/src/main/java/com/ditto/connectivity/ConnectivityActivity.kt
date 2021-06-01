@@ -22,7 +22,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.BaseAdapter
 import android.widget.TextView
@@ -104,12 +107,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         mHandler = Handler()
         getWIFIname()
         wifiname.setText(connSSID)
-        viewModel.isProjectorLayout.set(true)
-        viewModel.isErrorLayout.set(false)
-        viewModel.isWifiCredLayout.set(false)
-
-       /* window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)*/
+        showLayouts(false,false,false,false,true)
         if (Build.VERSION.SDK_INT < 16) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -148,9 +146,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             mDeviceName = device.name
             Log.d(ConnectivityUtils.TAG, "Clicked device name" + mDeviceName)
             Log.d(ConnectivityUtils.TAG, "Clicked device address" + mDeviceAddress)
-
-            viewModel.isDeviceListLayout.set(false)
-            viewModel.isProjectorLayout.set(true)
             val gattServiceIntent = Intent(this, BluetoothLeService::class.java)
             GlobalScope.launch {
                 delay(2000)
@@ -158,14 +153,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 Log.d(ConnectivityUtils.TAG, "Bind BluetoothLeService")
             }
             startBleWaiting()
-
+            showLayouts(false,false,false,false,true)
         }
 
 
         deviceList_proj!!.setOnItemClickListener { parent, view, position, id ->
 
-            viewModel.isShowServiceList.set(false)
-            viewModel.isProjectorLayout.set(true)
+            showLayouts(false,false,false,false,true)
             viewModel.isServiceFoundAfterWifi.set(false)
             mClickedService = mServiceListAdapter!!.getDevice(position)!!
             isServiceFound = true
@@ -195,9 +189,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             mService = serviceInfo
             val nsdData = Nsdservicedata(mService!!.serviceName,mService?.host?.hostAddress.toString(),mService?.port!!.toInt())
             serviceList.add(nsdData)
-             //onServiceFound(serviceInfo.serviceName)
-
-
         }
     }
 
@@ -222,13 +213,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
-                Log.d(ConnectivityUtils.TAG, "Service discovery success $service")
-                Log.d(ConnectivityUtils.TAG, "trying to resolve $service")
-               /* if (service.serviceName == "PROJECTOR_SERVICE"){
-                    stopDiscovery()
-                    nsdManager?.resolveService(service, MyResolveListener())
-                }*/
-                if (service.serviceName.startsWith("DITTO")){
+               if (service.serviceName.startsWith("DITTO")){
                     nsdManager?.resolveService(service, MyResolveListener())
                 }
             }
@@ -291,6 +276,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         viewModel.isProgressBar.set(true)
     }
 
+    private fun nsdServiceAutoConnect(services : Nsdservicedata){
+        isServiceFound = true
+        Utility.isServiceConnected = isServiceFound
+        Utility.nsdSericeHostName = services!!.nsdSericeHostAddress
+        Utility.nsdSericePortName = services!!.nsdServicePort
+        serviceConnectionWaitingJob?.cancel()
+        checkSocketConnection()
+    }
+
     private fun startServiceTimer(){
 
         serviceConnectionWaitingJob = GlobalScope.launch {
@@ -301,19 +295,11 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 if (serviceList.isEmpty()){
 
                     viewModel.isServiceError.set(true)
-                    viewModel.isDeviceListLayout.set(false)
-                    viewModel.isWifiCredLayout.set(false)
-                    viewModel.isProjectorLayout.set(false)
-                    viewModel.isErrorLayout.set(true)
+                    showLayouts(false,false,false,true,false)
 
                 } else {
                     mClickedService = serviceList[0]
-                    isServiceFound = true
-                    Utility.isServiceConnected = isServiceFound
-                    Utility.nsdSericeHostName = mClickedService!!.nsdSericeHostAddress
-                    Utility.nsdSericePortName = mClickedService!!.nsdServicePort
-                    serviceConnectionWaitingJob?.cancel()
-                    checkSocketConnection()
+                    nsdServiceAutoConnect(mClickedService)
                 }
 
             } else {
@@ -322,20 +308,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 } else {
                     if (serviceList.size == 1){
                         mClickedService = serviceList[0]
-                        isServiceFound = true
-                        Utility.isServiceConnected = isServiceFound
-                        Utility.nsdSericeHostName = mClickedService!!.nsdSericeHostAddress
-                        Utility.nsdSericePortName = mClickedService!!.nsdServicePort
-                        serviceConnectionWaitingJob?.cancel()
-                        checkSocketConnection()
+                        nsdServiceAutoConnect(mClickedService)
                     } else {
-                        viewModel.isProgressBar.set(false)
-                        viewModel.isProjectorLayout.set(false)
-                        mServiceListAdapter = ServiceListAdapter(serviceList)
-                        runOnUiThread {
-                            deviceList_proj.adapter = mServiceListAdapter
-                        }
-                        viewModel.isShowServiceList.set(true)
+                        populateServiceList()
+                        showLayouts(true,false,false,false,false)
                     }
 
                 }
@@ -344,16 +320,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         }
     }
 
-    fun checkService() {
-        Log.d(ConnectivityUtils.TAG, "checkService()")
-        GlobalScope.launch {
-            delay(6000)
-            if (isServiceFound) {
-                isServiceFound = false
-                checkSocketConnection()
-            } else {
-                stopDiscovery()
-            }
+    private fun populateServiceList(){
+        mServiceListAdapter = ServiceListAdapter(serviceList)
+        runOnUiThread {
+            deviceList_proj.adapter = mServiceListAdapter
         }
     }
 
@@ -364,64 +334,29 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    fun onServiceFound(serviceName: String) {
-        Log.d(ConnectivityUtils.TAG, "OnServiceFound()")
-        nsdservice = getChosenServiceInfo()
-        isServiceFound = true
-        Utility.isServiceConnected = isServiceFound
-        Utility.nsdSericeHostName = nsdservice?.host?.hostAddress.toString()
-        Utility.nsdSericePortName = nsdservice?.port!!.toInt()
-        serviceConnectionWaitingJob?.cancel()
-        checkSocketConnection()
-
-    }
-
 
     private suspend fun startSocketConnection() {
         Log.d(ConnectivityUtils.TAG, "startSocketConnection()")
         //runBlocking {
         withContext(Dispatchers.IO) {
-        //val host: InetAddress = nsdservice?.host!!
-         val host = InetAddress.getByName(mClickedService.nsdSericeHostAddress)
+            val host = InetAddress.getByName(mClickedService.nsdSericeHostAddress)
             var soc: Socket? = null
             try {
-                //soc = Socket(host, nsdservice?.port!!.toInt())
                 soc = Socket(host, mClickedService.nsdServicePort)
-                if (soc.isConnected){
-                     viewModel.isProjectorLayout.set(false)
-                     viewModel.isServiceError.set(false)
-                    viewModel.isErrorLayout.set(true)
-                    //returnFromActivity("success")
+                if (soc.isConnected) {
+                    viewModel.isServiceError.set(false)
+                    showLayouts(false, false, false, true, false)
+
                 } else {
                     viewModel.isServiceError.set(true)
-                    viewModel.isDeviceListLayout.set(false)
-                    viewModel.isWifiCredLayout.set(false)
-                    viewModel.isProjectorLayout.set(false)
-                    viewModel.isErrorLayout.set(true)
-
+                    showLayouts(false, false, false, true, false)
                 }
-            }
-            catch (e: ConnectException) {
-                Log.d(ConnectivityUtils.TAG, "Socket connection failure" +e)
+            } catch (e: ConnectException) {
                 viewModel.isServiceError.set(true)
-                viewModel.isErrorLayout.set(true)
-
-                viewModel.isDeviceListLayout.set(false)
-                viewModel.isWifiCredLayout.set(false)
-                viewModel.isProjectorLayout.set(false)
-
-                //startBLESearch()
-            }
-            catch (e: Exception) {
+                showLayouts(false, false, false, true, false)
+            } catch (e: Exception) {
                 viewModel.isServiceError.set(true)
-                viewModel.isErrorLayout.set(true)
-
-                viewModel.isDeviceListLayout.set(false)
-                viewModel.isWifiCredLayout.set(false)
-                viewModel.isProjectorLayout.set(false)
-
-                Log.d(ConnectivityUtils.TAG, "Exception " + e.message)
+                showLayouts(false, false, false, true, false)
             } finally {
                 soc?.close()
             }
@@ -429,8 +364,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     }
 
 
-    //BLE SERVICES
-    // Code to manage Service lifecycle.
     private val mServiceConnection = object : ServiceConnection {
 
         @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -478,12 +411,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         mLeDeviceListAdapter = LeDeviceListAdapter()
         runOnUiThread {
             deviceList!!.adapter = mLeDeviceListAdapter
-            viewModel.isProjectorLayout.set(false)
-            viewModel.isWifiCredLayout.set(false)
-            viewModel.isErrorLayout.set(false)
-            viewModel.isShowServiceList.set(false)
-            viewModel.isDeviceListLayout.set(true)
-            //refresh.isClickable = false
+            showLayouts(false, true, false, false, false)
+
         }
         scanLeDevice(true)
     }
@@ -742,24 +671,19 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             val action = intent.action
             if (BluetoothLeService.ACTION_GATT_CONNECTED == action) {
                 viewModel.isBLEConnected = true
-                viewModel.isProjectorLayout.set(true)
+                showLayouts(false, false, false, false, true)
+
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED == action) {
                 viewModel.isBLEConnected = false
-                viewModel.isProjectorLayout.set(false)
-                viewModel.isDeviceListLayout.set(false)
-                viewModel.isWifiCredLayout.set(false)
-                viewModel.isErrorLayout.set(true)
+                showLayouts(false, false, false, true, false)
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED == action) {
 
                 if (mBluetoothLeService?.supportedGattServices == null) {
-                    viewModel.isProjectorLayout.set(false)
-                    viewModel.isDeviceListLayout.set(false)
-                    viewModel.isWifiCredLayout.set(false)
-                    viewModel.isErrorLayout.set(true)
+                    showLayouts(false, false, false, true, false)
                     stopWaiting()
                 } else {
-                    viewModel.isProjectorLayout.set(true)
+                    showLayouts(false, false, false, false, true)
                     getGattServices(mBluetoothLeService!!.supportedGattServices)
                 }
             } else if (BluetoothLeService.ACTION_GATT_HANDSHAKE_SUCCESS == action) {
@@ -771,29 +695,20 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     mBluetoothLeService?.connectWIFI(ssidpwd)!!
                     startWifiWaiting()
                 } else {*/
-                    viewModel.isProjectorLayout.set(false)
-                    viewModel.isErrorLayout.set(false)
-                    viewModel.isDeviceListLayout.set(false)
-                    viewModel.isWifiCredLayout.set(true)
-                    stopWaiting()
+                showLayouts(false, false, true, false, false)
+                stopWaiting()
                // }
             } else if (BluetoothLeService.ACTION_GATT_SERVER_SUCCESS == action) {
-                viewModel.isProjectorLayout.set(true)
+                showLayouts(false, false, false, false, true)
                 viewModel.isServiceFoundAfterWifi.set(true)
                 searchNSDservice()
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVER_FAILURE == action) {
-                viewModel.isProjectorLayout.set(true)
-                viewModel.isDeviceListLayout.set(false)
-                viewModel.isWifiCredLayout.set(false)
-                viewModel.isErrorLayout.set(true)
+                showLayouts(false, false, false, true, false)
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_WIFI_FAILURE == action) {
                 viewModel.isWifiError.set(true)
-                viewModel.isProjectorLayout.set(true)
-                viewModel.isDeviceListLayout.set(false)
-                viewModel.isWifiCredLayout.set(false)
-                viewModel.isErrorLayout.set(true)
+                showLayouts(false, false, false, true, false)
                 stopWaiting()
             } else {
                 Log.d("BroadcastReceiver","Action Gatt server undefined")
@@ -804,15 +719,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun startWifiWaiting(){
         wifiConnectionWaitingJob = GlobalScope.launch {
             delay(25000)
-            viewModel.isProjectorLayout.set(true)
-            viewModel.isErrorLayout.set(true)
+            showLayouts(false, false, false, true, false)
         }
     }
     private fun startBleWaiting(){
         bleConnectionWaitingJob = GlobalScope.launch {
             delay(25000)
-            viewModel.isProjectorLayout.set(true)
-            viewModel.isErrorLayout.set(true)
+            showLayouts(false, false, false, true, false)
         }
     }
 
@@ -874,15 +787,14 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     } else {
                         encryptedcred = wifiname.text.toString() + "," + wifipwd.text.toString()+ ","+"ANDROID"
                     }
-                    viewModel.isWifiCredLayout.set(false)
-                    viewModel.isProjectorLayout.set(true)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         viewModel.isWifiError.set(false)
                         mBluetoothLeService?.connectWIFI(encryptedcred)!!
                         startWifiWaiting()
                     } else {
-                        TODO("VERSION.SDK_INT < LOLLIPOP")
+                       // TODO("VERSION.SDK_INT < LOLLIPOP")
                     }
+                    showLayouts(false, false, false, false, true)
                 } else {
                     Log.d("error","instruction error")
                 }
@@ -890,8 +802,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
             is ConnectivityViewModel.Event.OnRetryClicked -> {
                 if (viewModel.isServiceError.get()){
-                    viewModel.isErrorLayout.set(false)
-                    viewModel.isProjectorLayout.set(true)
+                    showLayouts(false, false, false, false, true)
                     searchNSDservice()
                 } else {
                     returnFromActivity("success")
@@ -1075,7 +986,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
         }else{
             Log.d(ConnectivityUtils.TAG, "User Disabled GPS")
-            viewModel.isProjectorLayout.set(false)
+            showLayouts(false, false, false, false, false)
             viewModel.isLocationEnabled.set(false)
             finish()
         }
@@ -1172,7 +1083,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     ) {
 
     }
-
+    private fun showLayouts(isShowServiceListLayout : Boolean, isShowBleListLayout : Boolean, isShowWifiCredLayout : Boolean,isShowErrorLayout : Boolean ,isShowLootie : Boolean ){
+        viewModel.isProjectorLayout.set(isShowLootie)
+        viewModel.isWifiCredLayout.set(isShowWifiCredLayout)
+        viewModel.isErrorLayout.set(isShowErrorLayout)
+        viewModel.isShowServiceList.set(isShowServiceListLayout)
+        viewModel.isDeviceListLayout.set(isShowBleListLayout)
+    }
 }
 
 
