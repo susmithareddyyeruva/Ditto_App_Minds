@@ -32,4 +32,5 @@
     <dimen name="alert_image_top">30dp</dimen>
     <dimen name="alert_otpions_bottom">22dp</dimen>
     <dimen name="alert_otpions_top">20dp</dimen>
+    <dimen name="available_projector_text_size">14sp</dimen>
 </resources>

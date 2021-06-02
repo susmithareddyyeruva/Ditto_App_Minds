@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".aboutapp.fragment.AboutAppFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".07" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".93" />
+
+        <TextView
+            android:id="@+id/textAvailable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:text="@string/available"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/available_projector_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/guide_end"
+            app:layout_constraintStart_toEndOf="@+id/guide_start"
+            app:layout_constraintTop_toBottomOf="@+id/guide_top">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:text="0 projectors found"
+            android:textColor="@color/text_disable2"
+            android:textSize="@dimen/available_projector_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/guide_end"
+            app:layout_constraintStart_toEndOf="@+id/guide_start"
+            app:layout_constraintTop_toBottomOf="@+id/textAvailable">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/btnScan"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_scandevice"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/padding_start"
+            android:text="@string/scan"
+            android:textColor="@android:color/white"
+            android:drawableLeft="@drawable/ic_bluetooth"
+            app:layout_constraintEnd_toStartOf="@+id/guide_end"
+            app:layout_constraintHeight_percent="0.094"
+            app:layout_constraintTop_toBottomOf="@id/guide_top"
+            app:layout_constraintWidth_percent="0.17">
+
+        </TextView>
+
+        <View
+            android:id="@+id/topDevider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_top_devider"
+            android:background="@color/devider_color"
+            app:layout_constraintEnd_toStartOf="@id/guide_end"
+            app:layout_constraintStart_toEndOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/btnScan">
+
+        </View>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            app:layout_constraintEnd_toStartOf="@+id/guide_end"
+            app:layout_constraintStart_toEndOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/topDevider">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
