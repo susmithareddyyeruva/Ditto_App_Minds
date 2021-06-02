@@ -149,8 +149,8 @@ class ProjectorConnectionViewModel : ViewModel() {
             )
             liveconnectionstatus.set("Response sent to Client..")
         }
-        if (messagetoclient == context?.getString(R.string.successmessage)) {
+        /*if (messagetoclient == context?.getString(R.string.successmessage)) {
             startConnection()
-        }
+        }*/
     }
 }

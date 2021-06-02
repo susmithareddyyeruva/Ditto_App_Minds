@@ -37,13 +37,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.ditto.connectivity.databinding.ConnectivityActivityBinding
-import core.models.Nsdservicedata
 import com.ditto.connectivity.service.BluetoothLeService
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnSuccessListener
 import core.appstate.AppState
+import core.models.Nsdservicedata
 import core.network.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -60,6 +60,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var mHandler: Handler? = null
     private var mScanning: Boolean = false
     private var mPreviousServiceAvailable: Boolean = false
+    private var mWifiServiceAvailable: Boolean = false
     private val SCAN_PERIOD: Long = 10000
     private var mDeviceAddress: String? = null
     private var mDeviceName: String? = null
@@ -270,7 +271,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         startServiceTimer()
     }
 
-    fun searchNSDserviceFromPopup() {
+    private fun searchNSDserviceFromPopup() {
         Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
         serviceList.clear()
         mServiceListAdapter?.notifyDataSetChanged()
@@ -296,35 +297,62 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             delay(6000)
             stopDiscovery()
             if (viewModel.isServiceFoundAfterWifi.get()) {
-                /* Search completed after successfully sharing the wifi ceredentials*/
-                if (serviceList.isEmpty()) {
-                    viewModel.isServiceError.set(true)
-                    showLayouts(false, false, false, true, false)
-                } else {
-                    mClickedService = serviceList[0]
-                    nsdServiceAutoConnect(mClickedService)
-                }
-
+                connectServiceAfterWifi()
             } else {
-                if (serviceList.isEmpty()) {   /* Showing BLE list if no serivce is found  */
-                    startBLESearch()
-                } else {
-                    for (item in serviceList) { /* Loop to identify whether last connected service available */
-                        if (item.nsdServiceName == AppState.getLastSavedServiceName()){
-                            mPreviousServiceAvailable = true
-                            mClickedService = item
-                            nsdServiceAutoConnect(mClickedService)
-                            break
-                        }
-                    }
-                    if (!mPreviousServiceAvailable) { /* Check whether the last connected service found or not */
-                        mPreviousServiceAvailable = false
-                        populateServiceList()
-                        showLayouts(true, false, false, false, false)
-                    }
-                }
+                connectService()
             }
 
+        }
+    }
+    /* Search completed after successfully sharing the wifi ceredentials*/
+    private fun connectServiceAfterWifi() {
+        viewModel.isServiceFoundAfterWifi.set(false)
+        if (serviceList.isEmpty()) { /* If the service list is empty, we are showing the error popup*/
+            viewModel.isServiceError.set(true)
+            showLayouts(
+                false, false,
+                false, true, false
+            )
+        } else {
+            runOnUiThread {
+                Toast.makeText(this, "Received Service "+ ConnectivityUtils.nsdSericeNameAfterWifi,Toast.LENGTH_SHORT).show()
+            }
+            for (item in serviceList) { /* Loop to identify whether we are connecting to the service received after sending wifi cred */
+                if (item.nsdServiceName == ConnectivityUtils.nsdSericeNameAfterWifi) {
+                    mWifiServiceAvailable = true
+                    mClickedService = item
+                    nsdServiceAutoConnect(mClickedService)
+                    break
+                }
+            }
+            if (!mWifiServiceAvailable) {
+                mWifiServiceAvailable = false
+                viewModel.isServiceError.set(true)
+                showLayouts(
+                    false, false,
+                    false, true, false
+                )
+            }
+        }
+    }
+
+    private fun connectService() {
+        if (serviceList.isEmpty()) {   /* Showing BLE list if no serivce is found  */
+            startBLESearch()
+        } else {
+            for (item in serviceList) { /* Loop to identify whether last connected service available */
+                if (item.nsdServiceName == AppState.getLastSavedServiceName()) {
+                    mPreviousServiceAvailable = true
+                    mClickedService = item
+                    nsdServiceAutoConnect(mClickedService)
+                    break
+                }
+            }
+            if (!mPreviousServiceAvailable) { /* Check whether the last connected service found or not */
+                mPreviousServiceAvailable = false
+                populateServiceList()
+                showLayouts(true, false, false, false, false)
+            }
         }
     }
 

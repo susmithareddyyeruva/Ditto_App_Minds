@@ -372,9 +372,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun showToast() {
-        this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
+        /*this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
             Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_LONG).show()
-        })
+        })*/
     }
 
     /**
@@ -406,7 +406,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         Log.d("CONNECTIVITY_PROJECTOR", "onNsdServiceRegistered- $mservicename")
         viewModel.isNsdRegistered.set(true)
         viewModel.serviceconnectionstatus.set(mservicename + " Registered Successfully")
-        viewModel.sendResponseToClient(this, getString(R.string.successmessage))
+        viewModel.sendResponseToClient(this, getString(R.string.successmessage)+","+mservicename)
+        viewModel.startConnection()
         /*if (viewModel.isCallfromBle.get()) {
             viewModel.sendResponseToClient(this,getString(R.string.successmessage))
         } else {
@@ -437,7 +438,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                     mConnectionServerSocket.reuseAddress = true;
                     mConnectionServerSocket.bind(InetSocketAddress(mServerPort));
                     //mConnectionSocket = mConnectionServerSocket.accept()
-                    viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
+                    //viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
                     startImageReceivingConnection()
                 } catch (e: Exception) {
                     Log.d("CONNECTIVITY_PROJECTOR", "startServerConnection - $e")
@@ -462,7 +463,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             DataInputStream(mConnectionSocket.getInputStream())
                         if (datainput != null) {
                             val imageBytes: ByteArray = datainput.readBytes()
-                            viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
+                            //viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
+                            viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
                             withContext(Dispatchers.Main) {
                                 showToast()
                                 if (imageBytes.isNotEmpty()) {
