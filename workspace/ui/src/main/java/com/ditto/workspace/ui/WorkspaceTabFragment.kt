@@ -1708,7 +1708,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             )
         dialogBuilder
             .setCancelable(false)
-            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 sendCalibrationPattern()
             })
@@ -1716,17 +1719,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-        val displayWidth: Int = displayMetrics.widthPixels
-        val displayHeight: Int = displayMetrics.heightPixels
-        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCalibration.window?.attributes)
-        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-        layoutParams.width = dialogWindowWidth
-        layoutParams.height = dialogWindowHeight
-        alertCalibration.window?.attributes = layoutParams
+//        val displayMetrics = DisplayMetrics()
+//        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
+//        val displayWidth: Int = displayMetrics.widthPixels
+//        val displayHeight: Int = displayMetrics.heightPixels
+//        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
+//        layoutParams.copyFrom(alertCalibration.window?.attributes)
+//        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
+//        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
+//        layoutParams.width = dialogWindowWidth
+//        layoutParams.height = dialogWindowHeight
+//        alertCalibration.window?.attributes = layoutParams
     }
 
     private fun sendCalibrationPattern() {

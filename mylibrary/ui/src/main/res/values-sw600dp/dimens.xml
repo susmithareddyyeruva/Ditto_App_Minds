@@ -27,6 +27,7 @@
     <dimen name="size_24px">44dp</dimen>
     <dimen name="size_34sp">34sp</dimen>
     <dimen name="size_14sp">18sp</dimen>
+    <dimen name="camera_alert">26sp</dimen>
     <dimen name="size_search">25sp</dimen>
     <dimen name="size_21sp">28sp</dimen>
     <dimen name="size_pattern_lib_text">30sp</dimen>
