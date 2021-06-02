@@ -17,4 +17,5 @@
     <string name="manage_devices">Manage Device</string>
     <string name="available">Available projectors in the network</string>
     <string name="scan">Scan for devices</string>
+    <string name="disconnect">Disconnect</string>
 </resources>

@@ -14,4 +14,8 @@
     <dimen name="button_padding_end">26dp</dimen>
     <dimen name="button_text_size">22sp</dimen>
     <dimen name="top_margin">10dp</dimen>
+    <dimen name="padding_start_item">50dp</dimen>
+    <dimen name="text_status_margin_start">116dp</dimen>
+    <dimen name="top_margin_items">12dp</dimen>
+    <dimen name="drawable_padding">26dp</dimen>
 </resources>

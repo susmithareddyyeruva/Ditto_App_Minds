@@ -47,21 +47,27 @@
             android:text="@string/available"
             android:textColor="@android:color/black"
             android:textSize="@dimen/available_projector_text_size"
-            app:layout_constraintEnd_toEndOf="@+id/guide_end"
+            app:layout_constraintBottom_toTopOf="@+id/textCount"
+            app:layout_constraintEnd_toStartOf="@+id/btnScan"
             app:layout_constraintStart_toEndOf="@+id/guide_start"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@+id/guide_top">
 
         </TextView>
 
         <TextView
+            android:id="@+id/textCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_between"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:text="0 projectors found"
+            android:layout_marginTop="@dimen/margin_between"
+            android:layout_marginBottom="@dimen/top_margin"
             android:textColor="@color/text_disable2"
             android:textSize="@dimen/available_projector_text_size"
-            app:layout_constraintEnd_toEndOf="@+id/guide_end"
+            app:layout_constraintBottom_toTopOf="@+id/topDevider"
+            app:layout_constraintEnd_toStartOf="@+id/btnScan"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/guide_start"
             app:layout_constraintTop_toBottomOf="@+id/textAvailable">
 
@@ -71,20 +77,22 @@
             android:id="@+id/btnScan"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/top_margin"
-            android:minWidth="@dimen/button_width"
+            android:layout_marginTop="@dimen/margin_top_devider"
+            android:layout_marginRight="@dimen/common_margin_end"
             android:background="@drawable/bg_scandevice"
             android:drawableLeft="@drawable/ic_bluetooth"
             android:drawablePadding="5dp"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:gravity="center"
-            android:textAllCaps="false"
             android:paddingLeft="@dimen/button_padding_start"
             android:paddingRight="@dimen/button_padding_end"
             android:text="@string/scan"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/button_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/topDevider"
             app:layout_constraintEnd_toStartOf="@+id/guide_end"
+            app:layout_constraintStart_toEndOf="@+id/textAvailable"
             app:layout_constraintTop_toBottomOf="@id/guide_top">
 
         </Button>
@@ -93,8 +101,8 @@
             android:id="@+id/topDevider"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginTop="@dimen/margin_top_devider"
             android:background="@color/devider_color"
+            android:layout_marginTop="@dimen/margin_top_devider"
             app:layout_constraintEnd_toStartOf="@id/guide_end"
             app:layout_constraintStart_toEndOf="@id/guide_start"
             app:layout_constraintTop_toBottomOf="@id/btnScan">
@@ -104,10 +112,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="@dimen/common_margin"
             app:layout_constraintEnd_toStartOf="@+id/guide_end"
             app:layout_constraintStart_toEndOf="@id/guide_start"
-            app:layout_constraintTop_toBottomOf="@id/topDevider">
+            app:layout_constraintTop_toBottomOf="@id/topDevider"
+            tools:listitem="@layout/item_single_projector">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.constraintlayout.widget.ConstraintLayout>
