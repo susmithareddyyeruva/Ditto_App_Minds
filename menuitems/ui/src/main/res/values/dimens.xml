@@ -11,4 +11,10 @@
     <dimen name="margin_between">5dp</dimen>
     <dimen name="margin_top_devider">18dp</dimen>
     <dimen name="padding_start">9dp</dimen>
+    <dimen name="button_width">137dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="button_padding_start">9dp</dimen>
+    <dimen name="button_padding_end">9dp</dimen>
+    <dimen name="button_text_size">14sp</dimen>
+    <dimen name="top_margin">10dp</dimen>
 </resources>

@@ -7,5 +7,11 @@
     <dimen name="str_email__phone_text">18sp</dimen>
     <dimen name="about_app_desc">18sp</dimen>
     <dimen name="available_projector_text_size">22sp</dimen>
-    <dimen name="margin_between">23dp</dimen>
+    <dimen name="margin_between">22dp</dimen>
+    <dimen name="button_width">237dp</dimen>
+    <dimen name="button_height">67dp</dimen>
+    <dimen name="button_padding_start">16dp</dimen>
+    <dimen name="button_padding_end">26dp</dimen>
+    <dimen name="button_text_size">22sp</dimen>
+    <dimen name="top_margin">10dp</dimen>
 </resources>

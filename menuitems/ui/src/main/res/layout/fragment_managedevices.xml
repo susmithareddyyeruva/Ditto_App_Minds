@@ -42,6 +42,7 @@
             android:id="@+id/textAvailable"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/top_margin"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:text="@string/available"
             android:textColor="@android:color/black"
@@ -66,29 +67,32 @@
 
         </TextView>
 
-        <TextView
+        <Button
             android:id="@+id/btnScan"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/top_margin"
+            android:minWidth="@dimen/button_width"
             android:background="@drawable/bg_scandevice"
-            android:drawablePadding="6dp"
+            android:drawableLeft="@drawable/ic_bluetooth"
+            android:drawablePadding="5dp"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/padding_start"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:paddingLeft="@dimen/button_padding_start"
+            android:paddingRight="@dimen/button_padding_end"
             android:text="@string/scan"
             android:textColor="@android:color/white"
-            android:drawableLeft="@drawable/ic_bluetooth"
+            android:textSize="@dimen/button_text_size"
             app:layout_constraintEnd_toStartOf="@+id/guide_end"
-            app:layout_constraintHeight_percent="0.094"
-            app:layout_constraintTop_toBottomOf="@id/guide_top"
-            app:layout_constraintWidth_percent="0.17">
+            app:layout_constraintTop_toBottomOf="@id/guide_top">
 
-        </TextView>
+        </Button>
 
         <View
             android:id="@+id/topDevider"
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:layout_marginTop="@dimen/margin_top_devider"
             android:background="@color/devider_color"
             app:layout_constraintEnd_toStartOf="@id/guide_end"
