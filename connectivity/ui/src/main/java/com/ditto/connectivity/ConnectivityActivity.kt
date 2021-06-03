@@ -187,14 +187,19 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
         override fun onServiceResolved(serviceInfo:NsdServiceInfo) {
             Log.d(ConnectivityUtils.TAG, "Resolve Succeeded. $serviceInfo")
-
+            stopDiscovery()
             mService = serviceInfo
             val nsdData = Nsdservicedata(
                 mService!!.serviceName,
                 mService?.host?.hostAddress.toString(),
                 mService?.port!!.toInt()
             )
-            serviceList.add(nsdData)
+            if (viewModel.isServiceFoundAfterWifi.get()){
+                connectServiceAfterWifi(nsdData)
+            } else {
+                serviceList.add(nsdData)
+            }
+
         }
     }
 
@@ -219,9 +224,17 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
-               if (service.serviceName.startsWith("DITTO")){
-                    nsdManager?.resolveService(service, MyResolveListener())
+                if (viewModel.isServiceFoundAfterWifi.get()){
+                    if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
+                        nsdManager?.resolveService(service, MyResolveListener())
+                    }
+                 } else {
+
+                    if (service.serviceName.startsWith("DITTO")){
+                        nsdManager?.resolveService(service, MyResolveListener())
+                    }
                 }
+
             }
 
             override fun onServiceLost(service: NsdServiceInfo) {
@@ -270,6 +283,12 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         discoverServices()
         startServiceTimer()
     }
+    fun searchWifiNSDservice() {
+        Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
+        serviceList.clear()
+        Utility.isServiceConnected = false
+        discoverServices()
+    }
 
     private fun searchNSDserviceFromPopup() {
         Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
@@ -288,6 +307,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         Utility.nsdSericeHostName = services!!.nsdSericeHostAddress
         Utility.nsdSericePortName = services!!.nsdServicePort
         serviceConnectionWaitingJob?.cancel()
+        mClickedService = services
         checkSocketConnection()
     }
 
@@ -296,44 +316,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         serviceConnectionWaitingJob = GlobalScope.launch {
             delay(6000)
             stopDiscovery()
-            if (viewModel.isServiceFoundAfterWifi.get()) {
-                connectServiceAfterWifi()
-            } else {
-                connectService()
-            }
-
+            connectService()
         }
     }
     /* Search completed after successfully sharing the wifi ceredentials*/
-    private fun connectServiceAfterWifi() {
+    private fun connectServiceAfterWifi(mServiceData : Nsdservicedata) {
         viewModel.isServiceFoundAfterWifi.set(false)
-        if (serviceList.isEmpty()) { /* If the service list is empty, we are showing the error popup*/
-            viewModel.isServiceError.set(true)
-            showLayouts(
-                false, false,
-                false, true, false
-            )
-        } else {
-            runOnUiThread {
-                Toast.makeText(this, "Received Service "+ ConnectivityUtils.nsdSericeNameAfterWifi,Toast.LENGTH_SHORT).show()
-            }
-            for (item in serviceList) { /* Loop to identify whether we are connecting to the service received after sending wifi cred */
-                if (item.nsdServiceName == ConnectivityUtils.nsdSericeNameAfterWifi) {
-                    mWifiServiceAvailable = true
-                    mClickedService = item
-                    nsdServiceAutoConnect(mClickedService)
-                    break
-                }
-            }
-            if (!mWifiServiceAvailable) {
-                mWifiServiceAvailable = false
-                viewModel.isServiceError.set(true)
-                showLayouts(
-                    false, false,
-                    false, true, false
-                )
-            }
-        }
+        nsdServiceAutoConnect(mServiceData)
     }
 
     private fun connectService() {
@@ -739,7 +728,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             } else if (BluetoothLeService.ACTION_GATT_SERVER_SUCCESS == action) {
                 showLayouts(false, false, false, false, true)
                 viewModel.isServiceFoundAfterWifi.set(true)
-                searchNSDservice()
+                searchWifiNSDservice()
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVER_FAILURE == action) {
                 showLayouts(false, false, false, true, false)
