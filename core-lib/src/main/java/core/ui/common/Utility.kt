@@ -19,6 +19,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -397,7 +398,41 @@ class Utility {
                 alert.dismiss()
                 callbackDialogListener.onPositiveButtonClicked(alertType)
             }
+        }
 
+        @SuppressLint("ResourceType")
+        fun showAlertDialogue(
+            context: Context,
+            resourceDrawable : Int,
+            alertmessage: String,
+            negativeButton: String,
+            positiveButton: String,
+            callbackDialogListener: CallbackDialogListener,
+            alertType:AlertType
+        ) {
+            val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert_calibration, null)
+            val dialogBuilder =  AlertDialog.Builder(context)
+            dialogBuilder.setView(mDialogView)
+            val alert = dialogBuilder.create()
+            alert.setCancelable(false)
+            alert.show()
+            alert.window?.setBackgroundDrawable(null)
+            val image = mDialogView.findViewById(R.id.img_icon) as ImageView
+            image.setImageResource(resourceDrawable)
+            val message = mDialogView.findViewById(R.id.alert_message) as TextView
+            message.text = alertmessage
+            val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+            negative.text = negativeButton
+            val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+            positive.text = positiveButton
+            negative.setOnClickListener {
+                alert.dismiss()
+                callbackDialogListener.onNegativeButtonClicked(alertType)
+            }
+            positive.setOnClickListener {
+                alert.dismiss()
+                callbackDialogListener.onPositiveButtonClicked(alertType)
+            }
         }
 
     }

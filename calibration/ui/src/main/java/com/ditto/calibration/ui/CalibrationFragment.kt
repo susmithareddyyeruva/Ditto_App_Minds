@@ -340,19 +340,20 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun showProgress(toShow: Boolean) {
-        if (toShow) {
-            val layout =
-                activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
-
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-            dialogBuilder
-                .setCancelable(false)
-            alert = dialogBuilder.create()
-            alert.setView(layout)
-            alert.show()
-        } else {
-            alert.dismiss()
-        }
+        viewModel.isProgressLoading.set(toShow)
+//        if (toShow) {
+//            val layout =
+//                activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
+//
+//            val dialogBuilder = AlertDialog.Builder(requireContext())
+//            dialogBuilder
+//                .setCancelable(false)
+//            alert = dialogBuilder.create()
+//            alert.setView(layout)
+//            alert.show()
+//        } else {
+//            alert.dismiss()
+//        }
     }
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isRecalibration: Boolean) {
@@ -431,15 +432,25 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     private fun showTransformSuccessPopup() {
         showProgress(false)
-        Utility.getAlertDialogue(
+        Utility.showAlertDialogue(
             requireContext(),
-            "Calibration Completed",
-            "Does projected image line up with the features on  calibration pattern?",
-            "NO",
-            "YES",
+            R.drawable.ic_calibration_success,
+            getString(R.string.calibration_success),
+            "",
+            "OK",
             this,
             Utility.AlertType.CALIBRATION
         )
+
+//        Utility.getAlertDialogue(
+//            requireContext(),
+//            "Calibration Completed",
+//            "Does projected image line up with the features on  calibration pattern?",
+//            "NO",
+//            "YES",
+//            this,
+//            Utility.AlertType.CALIBRATION
+//        )
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
@@ -577,6 +588,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 Utility.sendDittoImage(requireContext(), "ditto_project")
             }*/
         }
+        binding.headerViewTitle.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
@@ -677,15 +691,24 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun showAlert(message: String) {
-        Utility.getAlertDialogue(
+        Utility.showAlertDialogue(
             requireContext(),
-            "Calibration Failed",
-            message,
-            "TRY AGAIN",
-            "SKIP",
+            R.drawable.ic_calibration_failure,
+            String.format(getString(R.string.calibration_success),message),
+            "",
+            "OK",
             this,
-            Utility.AlertType.DEFAULT
+            Utility.AlertType.CALIBRATION
         )
+//        Utility.getAlertDialogue(
+//            requireContext(),
+//            "Calibration Failed",
+//            message,
+//            "TRY AGAIN",
+//            "SKIP",
+//            this,
+//            Utility.AlertType.DEFAULT
+//        )
     }
 
 }

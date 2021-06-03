@@ -5,4 +5,10 @@
     <dimen name="size_14px">14sp</dimen>
     <dimen name="size_12px">12sp</dimen>
     <dimen name="size_24px">24dp</dimen>
+    <dimen name="camera_button">52sp</dimen>
+    <dimen name="camera_alert">16sp</dimen>
+    <dimen name="camera_back">16sp</dimen>
+    <dimen name="size_15sp">15sp</dimen>
+    <dimen name="progress_loading">50dp</dimen>
+    <dimen name="progress_text">16dp</dimen>
 </resources>

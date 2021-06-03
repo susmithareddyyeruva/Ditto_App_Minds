@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="camera_button">92dp</dimen>
+    <dimen name="camera_alert">26sp</dimen>
+    <dimen name="camera_back">22sp</dimen>
+    <dimen name="progress_loading">150dp</dimen>
+    <dimen name="progress_text">56dp</dimen>
+</resources>
