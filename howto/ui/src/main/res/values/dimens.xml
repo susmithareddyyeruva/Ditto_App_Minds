@@ -32,4 +32,6 @@
     <dimen name="size_12px">12sp</dimen>
     <dimen name="size_24px">24dp</dimen>
     <dimen name="size_21sp">21sp</dimen>
+    <dimen name="size_skip">12sp</dimen>
+
 </resources>

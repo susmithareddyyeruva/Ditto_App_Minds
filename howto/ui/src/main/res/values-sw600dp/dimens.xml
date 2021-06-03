@@ -5,5 +5,5 @@
     <dimen name="size_16px">20sp</dimen>
     <dimen name="size_16sp">16sp</dimen>
     <dimen name="size_12px">12sp</dimen>
-    <dimen name="skip_text_size">18sp</dimen>
+    <dimen name="size_skip">18sp</dimen>
 </resources>

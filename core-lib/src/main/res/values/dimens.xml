@@ -23,7 +23,7 @@
     <dimen name="header_container_height">40dp</dimen>
     <dimen name="top_padding">12dp</dimen>
     <dimen name="endPadding">16dp</dimen>
-    <dimen name="toolbar">21sp</dimen>
+    <dimen name="toolbar_title">21sp</dimen>
     <dimen name="desc">16sp</dimen>
     <dimen name="alert_options_Text">14sp</dimen>
     <dimen name="alert_message_Text">16sp</dimen>

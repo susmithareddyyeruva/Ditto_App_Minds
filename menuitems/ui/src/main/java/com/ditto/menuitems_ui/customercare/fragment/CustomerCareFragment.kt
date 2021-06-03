@@ -1,7 +1,6 @@
 package com.ditto.menuitems_ui.customercare.fragment
 
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -82,6 +81,7 @@ class CustomerCareFragment : BaseFragment() {
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
+        (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Customer Support")
     }
 

@@ -14,8 +14,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import com.ditto.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
@@ -52,9 +50,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         toolbarViewModel.isShowActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
+        toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
         setUIEvents()

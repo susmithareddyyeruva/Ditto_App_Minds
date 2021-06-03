@@ -263,6 +263,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         binding.toolbarViewModel?.toolbarTitle?.set(title)
     }
 
+    fun setToolbarIcon() {
+        binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
