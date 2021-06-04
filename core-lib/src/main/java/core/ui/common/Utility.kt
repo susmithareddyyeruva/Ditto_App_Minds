@@ -32,7 +32,6 @@ import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
 import java.util.*
-import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -117,7 +116,31 @@ class Utility {
             alert.setTitle(title)
             alert.show()
         }
+        fun getAlertDialogueForCaliberate(
+            context: Context,
+            title: String,
+            message: String,
+            negativeButton: String,
+            positiveButton: String,
+            callbackDialogListener: CallbackDialogListener,
+            alertType: AlertType
+        ) {
+            val dialogBuilder = AlertDialog.Builder(context)
+            dialogBuilder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                    callbackDialogListener.onPositiveButtonClicked(alertType)
+                })
+                .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                    callbackDialogListener.onNegativeButtonClicked(alertType)
+                })
 
+            val alert = dialogBuilder.create()
+            alert.setTitle(title)
+            alert.show()
+        }
         fun showSnackBar(message: String, view: View) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }

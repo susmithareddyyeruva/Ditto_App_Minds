@@ -14,7 +14,6 @@ import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -53,6 +52,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
 import core.ui.common.Utility
 import core.ui.common.Utility.Companion.getAlertDialogue
+import core.ui.common.Utility.Companion.getAlertDialogueForCaliberate
 import core.ui.common.Utility.Companion.getBitmap
 import core.ui.common.Utility.Companion.getDrawableFromString
 import io.reactivex.Observable
@@ -1668,13 +1668,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCalibrationDialog() {
-        getAlertDialogue(
+        getAlertDialogueForCaliberate(
             requireContext(),
-            resources.getString(R.string.setup_calibration_title),
-            resources.getString(R.string.setup_calibration_message),
-            resources.getString(R.string.setup_calibration_quickcheck),
-            resources.getString(R.string.setup_calibration_calibrate),
-            resources.getString(R.string.skips),
+            resources.getString(R.string.caliberate_tittle),
+            resources.getString(R.string.do_you_want_caliberate),
+            resources.getString(R.string.yes_string),
+            resources.getString(R.string.no_string),
             this,
             Utility.AlertType.CALIBRATION
         )
