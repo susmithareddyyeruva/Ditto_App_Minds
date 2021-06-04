@@ -9,6 +9,9 @@
     <dimen name="size_21dp">21dp</dimen>
     <dimen name="width_percent">0.50</dimen>
     <dimen name="size_34sp">24sp</dimen>
+    <dimen name="tab_title_text_size">14sp</dimen>
+    <dimen name="content_header_text_size">16sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
     <dimen name="end_margin_calib_btn">14dp</dimen>
 
 </resources>
