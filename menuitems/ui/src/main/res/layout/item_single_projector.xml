@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_marginBottom="@dimen/padding_bottom"
+    android:layout_height="@dimen/item_container_height">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:cardCornerRadius="5dp"
         app:cardElevation="3dp"
         app:cardPreventCornerOverlap="false"
@@ -17,7 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -77,19 +78,19 @@
 
             <Button
                 android:id="@+id/btnConnect"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/common_margin_end"
                 android:layout_marginTop="@dimen/item_single_bottom_margin"
                 android:layout_marginEnd="@dimen/common_margin_end"
                 android:layout_marginBottom="@dimen/item_single_bottom_margin"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
+                android:background="@drawable/bg_disconnect"
                 android:minWidth="@dimen/button_width"
                 android:paddingLeft="@dimen/button_padding_start"
-                android:paddingRight="@dimen/button_padding_end"
+                android:paddingRight="@dimen/button_padding_start"
                 android:text="@string/disconnect"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

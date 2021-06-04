@@ -18,4 +18,6 @@
     <dimen name="text_status_margin_start">116dp</dimen>
     <dimen name="top_margin_items">12dp</dimen>
     <dimen name="drawable_padding">26dp</dimen>
+    <dimen name="padding_bottom">8dp</dimen>
+    <dimen name="item_container_height">122dp</dimen>
 </resources>

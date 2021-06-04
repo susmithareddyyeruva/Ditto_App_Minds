@@ -35,4 +35,5 @@
     <dimen name="alert_otpions_top">20dp</dimen>
     <dimen name="available_projector_text_size">14sp</dimen>
     <dimen name="common_margin">18dp</dimen>
+    <dimen name="padding_bottom">5dp</dimen>
 </resources>
