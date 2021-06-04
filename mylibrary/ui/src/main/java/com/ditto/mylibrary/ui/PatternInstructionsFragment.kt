@@ -199,7 +199,8 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
             getString(R.string.str_retry),
             getString(R.string.str_cancel),
             this,
-            Utility.AlertType.PDF
+            Utility.AlertType.PDF,
+            Utility.Iconype.FAILED
         )
     } 
     
@@ -214,6 +215,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
