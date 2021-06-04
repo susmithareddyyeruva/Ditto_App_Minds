@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentManagedevicesBinding
+import com.ditto.menuitems_ui.managedevices.adapter.ManageDeviceAdapter
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
+
 
 class ManageDeviceFragment : BaseFragment() {
 
@@ -33,6 +35,8 @@ class ManageDeviceFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
+        val adapter = ManageDeviceAdapter(requireContext())
+        binding.rvManageDevice.adapter = adapter
     }
 
     private fun setuptoolbar() {
