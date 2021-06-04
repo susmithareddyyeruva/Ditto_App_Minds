@@ -38,7 +38,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
+class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPatternInstructionsBinding
@@ -186,7 +186,8 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
         )
     }
 
@@ -200,28 +201,29 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
             this,
             Utility.AlertType.PDF
         )
-    }
-
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+    } 
+    
+      override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         when (alertType) {
             Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
-
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        when (alertType) {
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+       when (alertType) {
             Utility.AlertType.PDF -> {
                 pdfdownload()
             }
         }
     }
-
-    override fun onNeutralButtonClicked() {
-        TODO("Not yet implemented")
-    }
+ 
 }
 

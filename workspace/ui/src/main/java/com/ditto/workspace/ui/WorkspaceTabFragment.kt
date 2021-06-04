@@ -73,7 +73,8 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListener,
-    Utility.CallbackDialogListener, com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
+    Utility.CallbackDialogListener, com.ditto.workspace.ui.util.Utility.CallbackDialogListener,
+    Utility.CustomCallbackDialogListener{
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -425,11 +426,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     withContext(Dispatchers.Main) {
                         logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar.getInstance().timeInMillis)
                         showProgress(false)
-                        Toast.makeText(
+                        /*Toast.makeText(
                             requireContext(),
                             resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
-                        ).show()
+                        ).show()*/
+                        showFailurePopup()
                     }
                 }
             } catch (e: Exception) {
@@ -440,11 +442,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 withContext(Dispatchers.Main) {
                     logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar.getInstance().timeInMillis)
                     showProgress(false)
-                    Toast.makeText(
+                    /*Toast.makeText(
                         requireContext(),
                         resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
-                    ).show()
+                    ).show()*/
+                    showFailurePopup()
                 }
             } finally {
                 clientSocket?.close()
@@ -1790,28 +1793,30 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     baseViewModel.activeSocketConnection.set(false)
                     baseViewModel.isProjecting.set(false)
                     viewModel.isProjectionRequest.set(false)
-                    withContext(Dispatchers.Main) {
+                    showFailurePopup()
+                    /*withContext(Dispatchers.Main) {
                         showProgress(toShow = false)
                         Toast.makeText(
                             requireContext(),
                             resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
                         ).show()
-                    }
+                    }*/
                 }
             } catch (e: Exception) {
                 baseViewModel.activeSocketConnection.set(false)
                 baseViewModel.isProjecting.set(false)
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
-                withContext(Dispatchers.Main) {
+                showFailurePopup()
+               /* withContext(Dispatchers.Main) {
                     showProgress(toShow = false)
                     Toast.makeText(
                         requireContext(),
                         resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+                }*/
             } finally {
                 soc?.close()
             }
@@ -1861,6 +1866,31 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
     }
+    private fun showFailurePopup(){
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connection Failed!",
+            "CANCEL",
+            "RETRY",
+            this,
+            Utility.AlertType.CONNECTIVITY,
+            Utility.Iconype.FAILED
+        )
 
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        checkBluetoothWifiPermission()
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
+    }
 
 }

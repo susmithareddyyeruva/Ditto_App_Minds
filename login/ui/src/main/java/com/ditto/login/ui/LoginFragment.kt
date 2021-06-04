@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
-class LoginFragment : BaseFragment(),Utility.CallbackDialogListener  {
+class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -202,18 +202,22 @@ class LoginFragment : BaseFragment(),Utility.CallbackDialogListener  {
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
-        Utility.getCommonAlertDialogue(requireContext(),errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK)
+        Utility.getCommonAlertDialogue(requireContext(),errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
+        ,Utility.Iconype.FAILED)
     }
 
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         //TODO("Not yet implemented")
     }
 
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onNeutralButtonClicked() {
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         //TODO("Not yet implemented")
     }
 }
