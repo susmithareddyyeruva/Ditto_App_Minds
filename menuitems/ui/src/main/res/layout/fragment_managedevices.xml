@@ -63,7 +63,7 @@
             android:layout_marginTop="@dimen/margin_between"
             android:layout_marginBottom="@dimen/top_margin"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:text="0 projectors found"
+            android:text="3 projectors found"
             android:textColor="@color/text_disable2"
             android:textSize="@dimen/available_projector_text_size"
             app:layout_constraintBottom_toTopOf="@+id/topDevider"
