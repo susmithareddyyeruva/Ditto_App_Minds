@@ -97,17 +97,22 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {
-            if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
-                bottomNavViewModel.showProgress.set(true)
-                GlobalScope.launch {
-                    downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
-                }
-            } else {
-                showNeworkError()
-            }
-
+              pdfdownload()
         }
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun pdfdownload(){
+
+        if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+            bottomNavViewModel.showProgress.set(true)
+            GlobalScope.launch {
+                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+            }
+        } else {
+            showNeworkError()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -133,11 +138,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
-                showPdfFromUri(
-                    Uri.parse(
-                        viewModel.patternpdfuri.get()
-                    )
-                )
+                showPdfFromUri(Uri.parse(viewModel.patternpdfuri.get()))
             }
             else -> Log.d("Error", "Invaid Event")
         }
@@ -147,11 +148,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
+            .onError {
+                showRedownload()
+            }
             .onPageError { page, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading pdf", Toast.LENGTH_LONG
-                ).show()
+                showRedownload()
             }
             .load()
     }
@@ -182,12 +183,25 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         )
     }
 
-    override fun onCustomPositiveButtonClicked(
+
+    private fun showRedownload(){
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            getString(R.string.str_unable_to_load),
+            getString(R.string.str_retry),
+            getString(R.string.str_cancel),
+            this,
+            Utility.AlertType.PDF
+        )
+    }
+
+   override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
         when (alertType) {
-            Utility.AlertType.NETWORK -> {
+            Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
@@ -197,7 +211,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        TODO("Not yet implemented")
+       when (alertType) {
+            Utility.AlertType.PDF -> {
+                pdfdownload()
+            }
+        }
     }
 
 }

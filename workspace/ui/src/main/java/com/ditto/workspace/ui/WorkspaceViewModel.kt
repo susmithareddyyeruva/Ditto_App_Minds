@@ -395,10 +395,6 @@ class WorkspaceViewModel @Inject constructor(
 
     fun clickClear() {
         uiEvents.post(Event.OnClickClear)
-        isSpliceBottomVisible.set(false)
-        isSpliceTopVisible.set(false)
-        isSpliceLeftVisible.set(false)
-        isSpliceRightVisible.set(false)
     }
 
     fun clickSaveAndExit() {

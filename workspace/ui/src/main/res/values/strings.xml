@@ -69,4 +69,7 @@
     <string name="projecting_messsage">Projecting Please wait!!</string>
     <string name="projection_progress">Projection area is in process..Please wait!!</string>
     <string name="image_selvage_horizontal">Image Selvage Horizontal</string>
+    <string name="str_unable_to_load">Unable to load the file. Please try again!</string>
+    <string name="str_retry">RETRY</string>
+    <string name="str_cancel">CANCEL</string>
 </resources>

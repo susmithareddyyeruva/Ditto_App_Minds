@@ -2,6 +2,9 @@ package com.ditto.mylibrary.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -103,7 +106,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterItems("Winter"),
         FilterItems("Summer")
     )
-    
+
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -203,19 +206,22 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }))
         binding.closeFilter.setOnClickListener {
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            setFilterMenuAdapter(0)
         }
         binding.apply.setOnClickListener {
-            val genderAsString = Filter.genderList
             viewModel.createJson()
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
         }
+
         binding.clearFilter.setOnClickListener {
             Filter.clearAll()
             setAsDefault()
+            setList()
             (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
 
         }
+
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
@@ -238,6 +244,11 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             }
         }
         seasonList.forEach {
+            if (it.isSelected) {
+                it.isSelected = false
+            }
+        }
+        occasionList.forEach {
             if (it.isSelected) {
                 it.isSelected = false
             }
@@ -321,9 +332,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
- 
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
- 
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment ||findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,

@@ -42,8 +42,8 @@
     <dimen name="txt_clear_filter">22sp</dimen>
     <dimen name="blue_filter_dot">15dp</dimen>
     <dimen name="txt_filter_result">22sp</dimen>
-    <dimen name="search_width">17.94dp</dimen>
-    <dimen name="search_height">17.94dp</dimen>
+    <dimen name="search_width">22dp</dimen>
+    <dimen name="search_height">22dp</dimen>
     <dimen name="item_action_text_size">18sp</dimen>
     <dimen name="apply_button_size">20sp</dimen>
     <dimen name="toolbar_head_size">24sp</dimen>
@@ -67,5 +67,23 @@
     <dimen name="guidline_top">.09</dimen>
     <dimen name="guide_start_clear_text_per">0.030</dimen>
     <dimen name="distance_after_icon_sync">15dp</dimen>
+
+    <dimen name="toolbar">28sp</dimen>
+    <dimen name="desc">18sp</dimen>
+    <dimen name="size_18sp">18sp</dimen>
+    <dimen name="size_16dp">24dp</dimen>
+    <dimen name="size_12sp">16sp</dimen>
+    <dimen name="size_16sp">24sp</dimen>
+    <dimen name="size_8dp">1dp</dimen>
+    <fraction name="image_desc_guideline">0.62</fraction>
+
+    <dimen name="cart_width">25dp</dimen>
+    <dimen name="scissor_width">32dp</dimen>
+    <dimen name="cart_height">21dp</dimen>
+    <dimen name="scissor_height">18dp</dimen>
+
+    <dimen name="size_21dp">28dp</dimen>
+    <dimen name="subscription">48dp</dimen>
+
 
 </resources>

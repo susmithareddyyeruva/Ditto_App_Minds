@@ -54,6 +54,7 @@ class Utility {
         CUT_BIN_ALL,
         PATTERN_RENAME,
         NETWORK,
+        PDF,
         CONNECTIVITY
     }
 

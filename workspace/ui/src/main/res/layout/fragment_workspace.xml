@@ -60,6 +60,7 @@
             android:id="@+id/txt_workspace_header"
             android:layout_width="@dimen/size_0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text="@{viewModel.data.patternName}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/tab_heading"

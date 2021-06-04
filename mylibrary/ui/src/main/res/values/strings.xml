@@ -46,6 +46,7 @@
     <string name="menu_details">Details</string>
     <string name="text_sync">Sync</string>
     <string name="text_search">Search</string>
+    <string name="filter">Filter</string>
     <string name="text_filter">Filters</string>
     <string name="text_new">New</string>
     <string name="text_clear_filter"><u>clear filters</u></string>

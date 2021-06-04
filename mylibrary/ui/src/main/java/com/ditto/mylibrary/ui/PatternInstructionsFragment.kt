@@ -7,6 +7,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,8 +70,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        bottomNavViewModel.visibility.set(false)
+        toolbarViewModel.isShowActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()
@@ -97,12 +100,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     }
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
-            is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked ->   TODO()
-            is PatternDescriptionViewModel.Event.OnDataUpdated ->  TODO()
-            is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked ->  TODO()
             PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
                 viewModel.patternpdfuri.get()
             ))
+            else -> Log.d("Error", "Invaid Event")
         }
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun checkavailablefile() {
@@ -111,19 +112,22 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         if (availableUri != null){
             showPdfFromUri(availableUri)
         } else {
-            if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
-                bottomNavViewModel.showProgress.set(true)
-                GlobalScope.launch {
-                    downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
-                }
-            } else {
-                showNeworkError()
-            }
-
+            pdfdownload()
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun pdfdownload(){
 
+        if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+            bottomNavViewModel.showProgress.set(true)
+            GlobalScope.launch {
+                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+            }
+        } else {
+            showNeworkError()
+        }
+    }
     private fun showPdfFromAssets(pdfName: String) {
         binding.pdfView.fromAsset(pdfName)
             .defaultPage(0) // set the default page to open
@@ -142,11 +146,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
+            .onError {
+                showRedownload()
+            }
             .onPageError { page, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading pdf", Toast.LENGTH_LONG
-                ).show()
+                showRedownload()
             }
             .load()
     }
@@ -187,13 +191,24 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         )
     }
 
+    private fun showRedownload(){
 
-    override fun onCustomPositiveButtonClicked(
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            getString(R.string.str_unable_to_load),
+            getString(R.string.str_retry),
+            getString(R.string.str_cancel),
+            this,
+            Utility.AlertType.PDF
+        )
+    } 
+    
+      override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
         when (alertType) {
-            Utility.AlertType.NETWORK -> {
+            Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
@@ -203,7 +218,12 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+       when (alertType) {
+            Utility.AlertType.PDF -> {
+                pdfdownload()
+            }
+        }
     }
+ 
 }
 
