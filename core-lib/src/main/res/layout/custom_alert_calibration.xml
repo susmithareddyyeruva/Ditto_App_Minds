@@ -23,6 +23,9 @@
         android:fontFamily="@font/avenir_next_lt_pro_regular"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/alert_message_Text"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_icon" />

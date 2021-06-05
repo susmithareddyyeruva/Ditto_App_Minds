@@ -18,6 +18,7 @@
         android:id="@+id/alertImage"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_0dp"
+        android:padding="20dp"
         android:contentDescription="@string/camera_alert"
         android:src="@drawable/calibration_camera"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,6 +37,7 @@
         android:text="@string/camera_alert"
         android:textColor="@android:color/black"
         android:textSize="@dimen/camera_alert"
+
         app:layout_constraintBottom_toBottomOf="@+id/alertImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline_center"

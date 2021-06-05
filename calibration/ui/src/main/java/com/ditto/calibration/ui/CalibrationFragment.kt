@@ -432,6 +432,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     private fun showTransformSuccessPopup() {
         showProgress(false)
+        viewModel.isShowDialog.set(true)
         Utility.showAlertDialogue(
             requireContext(),
             R.drawable.ic_calibration_success,
@@ -691,10 +692,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun showAlert(message: String) {
+        viewModel.isShowDialog.set(true)
         Utility.showAlertDialogue(
             requireContext(),
             R.drawable.ic_calibration_failure,
-            String.format(getString(R.string.calibration_success),message),
+            String.format(getString(R.string.calibration_failure),message),
             "",
             "OK",
             this,

@@ -43,6 +43,7 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isShowCameraView()}"
             android:background="@android:color/transparent"
             android:translationZ="0.1dp"
             app:elevation="0.1dp">
@@ -89,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
-                android:visibility="@{viewModel.isShowFinalImage()}">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/captured_image"
@@ -153,28 +154,36 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/loading_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="@{viewModel.isShowFinalImage()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/loading_background"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:visibility="@{viewModel.isShowCameraButton()}"
-                    app:layout_constraintStart_toStartOf="parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    android:visibility="@{!viewModel.isShowDialog()}"
+                    android:gravity="center">
 
-                    <ImageView
-                        android:id="@+id/loadingImage"
-                        android:layout_width="@dimen/progress_loading"
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animationView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_progress_loading"
-                        app:layout_constraintBottom_toTopOf="@+id/loadingText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/ditto_loader" />
 
                     <TextView
                         android:id="@+id/loadingText"
@@ -182,15 +191,39 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_lt_pro_regular"
                         android:text="@string/processing"
+                        android:layout_marginTop="@dimen/alert_message_Text"
                         android:textColor="@color/White"
                         android:textSize="@dimen/size_12px"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/loadingImage" />
+                        app:layout_constraintTop_toBottomOf="@+id/animationView" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
+                <!--<com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationView"
+                    android:layout_width="@dimen/size_0dp"
+                    android:layout_height="@dimen/size_0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/loadingText"
+                    app:layout_constraintEnd_toEndOf="@+id/loadingText"
+                    app:layout_constraintStart_toStartOf="@+id/loadingText"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/ditto_loader" />
+
+                <TextView
+                    android:id="@+id/loadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:text="@string/processing"
+                    android:layout_marginTop="@dimen/alert_message_Text"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/size_12px"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/animationView" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

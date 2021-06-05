@@ -40,6 +40,8 @@
       <module name="ditto-android.workspace-data" target="1.8" />
       <module name="ditto-android.workspace-domain" target="1.8" />
       <module name="ditto-android.workspace-ui" target="1.8" />
+      <module name="non-core-lib" target="1.7" />
+      <module name="storage-domain" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

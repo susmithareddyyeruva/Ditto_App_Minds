@@ -326,7 +326,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showProgress(toShow: Boolean) {
-        if (toShow) {
+        bottomNavViewModel.showProgress.set(toShow)
+        /*if (toShow) {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
 
@@ -340,7 +341,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             if (::alert.isInitialized) {
                 alert.dismiss()
             }
-        }
+        }*/
     }
 
     private fun handleResult(
@@ -1668,7 +1669,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCalibrationDialog() {
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_calibration_title),
             resources.getString(R.string.setup_calibration_message),
@@ -1677,7 +1678,38 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.skips),
             this,
             Utility.AlertType.CALIBRATION
-        )
+        )*/
+
+        val layout =
+            activity?.layoutInflater?.inflate(R.layout.alert_calibration_confirmation, null)
+
+        val dialogBuilder =
+            AlertDialog.Builder(
+                ContextThemeWrapper(
+                    requireContext(),
+                    R.style.AlertDialogCustom
+                )
+            )
+        dialogBuilder
+            .setCancelable(false)
+            .setNegativeButton("NO",DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+            .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+                 sendBorderImage()
+            })
+
+        val alertCalibration = dialogBuilder.create()
+        alertCalibration.setView(layout)
+        alertCalibration.show()
+    }
+
+    private fun sendBorderImage(){
+        if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+            showProgress(toShow = true)
+            GlobalScope.launch { projectBorderImage() }
+        }
     }
 
     private fun showQuickCheckDialog() {
