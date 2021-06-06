@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -379,6 +380,7 @@ class Utility {
         @SuppressLint("ResourceType")
         fun getCommonAlertDialogue(
             context: Context,
+            title: String,
             alertmessage: String,
             negativeButton: String,
             positiveButton: String,
@@ -393,28 +395,58 @@ class Utility {
             alert.setCancelable(false)
             alert.show()
             alert.window?.setBackgroundDrawable(null)
-            val message = mDialogView.findViewById(R.id.alert_message) as TextView
-            message.text = alertmessage
-            val negative = mDialogView.findViewById(R.id.neg_text) as TextView
-            negative.text = negativeButton
-            val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
-            positive.text = positiveButton
-            val icon = mDialogView.findViewById(R.id.img_icon) as ImageView
-            if (imgtyp.equals(Iconype.SUCCESS)){
-                icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
-            } else  if (imgtyp.equals(Iconype.FAILED)){
-                icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+            val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
+            val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
+            if (alertType == AlertType.BLE || alertType == AlertType.WIFI){
+                lay_withimage.visibility = View.GONE
+                lay_withoutimage.visibility = View.VISIBLE
+
+                val title_common = mDialogView.findViewById(R.id.common_title) as TextView
+                title_common.text = title
+                val message_common = mDialogView.findViewById(R.id.common_message) as TextView
+                message_common.text = alertmessage
+                val neg_text_common = mDialogView.findViewById(R.id.neg_text_common) as TextView
+                neg_text_common.text = negativeButton
+                val pos_text_common = mDialogView.findViewById(R.id.pos_txt_common) as TextView
+                pos_text_common.text = positiveButton
+                neg_text_common.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
+                }
+                pos_text_common.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
+                }
+
             } else {
-                icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                lay_withimage.visibility = View.VISIBLE
+                lay_withoutimage.visibility = View.GONE
+
+                val message = mDialogView.findViewById(R.id.alert_message) as TextView
+                message.text = alertmessage
+                val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+                negative.text = negativeButton
+                val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+                positive.text = positiveButton
+                val icon = mDialogView.findViewById(R.id.img_icon) as ImageView
+                if (imgtyp.equals(Iconype.SUCCESS)){
+                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
+                } else  if (imgtyp.equals(Iconype.FAILED)){
+                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                } else {
+                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                }
+                negative.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
+                }
+                positive.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
+                }
             }
-            negative.setOnClickListener {
-                alert.dismiss()
-                customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
-            }
-            positive.setOnClickListener {
-                alert.dismiss()
-                customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
-            }
+
+
 
         }
 

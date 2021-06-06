@@ -8,13 +8,11 @@
 
 
     <RelativeLayout
+        android:id="@+id/layout_withImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         >
-
-
-
-
     <RelativeLayout
         android:id="@+id/image_lay"
         android:layout_width="match_parent"
@@ -75,6 +73,77 @@
             android:textSize="@dimen/alert_options_Text"
             android:textColor="#000"/>
     </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_withoutImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/common_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Connectivity"
+            android:layout_marginLeft="@dimen/x_large_padding"
+            android:layout_marginTop="@dimen/x_large_padding"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:textSize="@dimen/alert_message_Text"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/common_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="This app needs Bluetooth connectivity"
+            android:layout_below="@+id/common_title"
+            android:layout_marginLeft="@dimen/x_large_padding"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:textSize="@dimen/alert_message_Text"
+            android:textColor="#000"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="@dimen/large_padding"
+            android:layout_below="@+id/common_message">
+
+
+            <TextView
+                android:id="@+id/neg_text_common"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:gravity="center"
+                android:text="LATER"
+                android:padding="@dimen/large_padding"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:textSize="@dimen/alert_options_Text"
+                android:textColor="#000"/>
+
+
+            <TextView
+                android:id="@+id/pos_txt_common"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:gravity="center"
+                android:text="SETTINGS"
+                android:padding="@dimen/large_padding"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:textSize="@dimen/alert_options_Text"
+                android:textColor="#000"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

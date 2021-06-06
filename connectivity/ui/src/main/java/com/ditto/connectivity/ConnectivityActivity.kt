@@ -1069,6 +1069,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
         core.ui.common.Utility.getCommonAlertDialogue(
             this,
+            "",
             "Successfully connected!",
             "",
             "OK",
@@ -1083,6 +1084,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun showFailurePopup(){
         core.ui.common.Utility.getCommonAlertDialogue(
             this,
+            "",
             "Connection Failed!",
             "CANCEL",
             "RETRY",

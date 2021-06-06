@@ -182,6 +182,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             getString(R.string.str_no_internet),
             "",
             getString(R.string.str_ok),
@@ -195,6 +196,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             getString(R.string.str_unable_to_load),
             getString(R.string.str_retry),
             getString(R.string.str_cancel),

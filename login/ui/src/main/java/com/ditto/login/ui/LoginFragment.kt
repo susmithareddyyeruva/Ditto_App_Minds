@@ -202,7 +202,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
-        Utility.getCommonAlertDialogue(requireContext(),errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
+        Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
         ,Utility.Iconype.FAILED)
     }
 

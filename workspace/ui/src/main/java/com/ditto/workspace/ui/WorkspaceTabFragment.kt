@@ -1611,7 +1611,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showBluetoothDialogue() {
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.ble_connectivity),
@@ -1619,12 +1619,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.turnon),
             this,
             Utility.AlertType.BLE
+        )*/
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs Bluetooth connectivity",
+            "LATER",
+            resources.getString(R.string.turnon),
+            this,
+            Utility.AlertType.BLE,
+            Utility.Iconype.SUCCESS
         )
     }
 
     private fun showWifiDialogue() {
 
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.wifi_connectivity),
@@ -1632,6 +1643,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.settings),
             this,
             Utility.AlertType.WIFI
+        )*/
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs WiFi connectivity",
+            "LATER",
+            "SETTINGS",
+            this,
+            Utility.AlertType.WIFI,
+            Utility.Iconype.SUCCESS
         )
 
     }
@@ -1869,6 +1891,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun showFailurePopup(){
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             "Connection Failed!",
             "CANCEL",
             "RETRY",
@@ -1883,14 +1906,38 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        checkBluetoothWifiPermission()
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                val mBluetoothAdapter =
+                    BluetoothAdapter.getDefaultAdapter()
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
+            Utility.AlertType.WIFI -> {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+            }
+        }
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                logger.d("Later clicked")
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isBleLaterClicked.set(true)
+            }
+            Utility.AlertType.WIFI -> {
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isWifiLaterClicked.set(true)
+            }
+        }
     }
 
 }
