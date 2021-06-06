@@ -81,7 +81,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                     })
                 } else {
                     bindingWS.imageStep.setOnClickListener {
-                        viewModel.onItemClick(tabdata[position].videopath1,"How To")
+                        viewModel.onItemClick(tabdata[position].videopath1)
                     }
                 }
             }

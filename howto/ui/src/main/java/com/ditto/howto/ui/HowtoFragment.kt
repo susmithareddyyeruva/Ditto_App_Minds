@@ -116,7 +116,9 @@ class HowtoFragment : BaseFragment() {
 
                 if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 3)) {
 
-                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to "How To","from" to "tutorial")
+                    var title = viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
+
+                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to title,"from" to "tutorial")
 
                     findNavController().navigate(
                         com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,

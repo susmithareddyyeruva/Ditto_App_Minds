@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">on-boarding-ui</string>
     <string name="Welcomeheader">Hi There,</string>
-    <string name="skip_contin"><u>Skip &amp; Continue</u></string>
+    <string name="skip_contin"><u>Skip and Continue</u></string>
     <string name="dont_show_t">Don\'t show this screen again</string>
     <string name="connectivity">Connectivity</string>
     <string name="ble_connectivity_onboarding" tools:ignore="ExtraTranslation">This app needs Bluetooth Connectivity.</string>
