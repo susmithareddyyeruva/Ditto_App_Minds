@@ -315,7 +315,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun calibrateImage() {
-        logger.d("TRACE_ Projection : performCalibration  Start" + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : performCalibration  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
         viewModel.disposable += Observable.fromCallable {
             performCalibration(imageArray.toTypedArray(), context?.applicationContext)
@@ -326,7 +326,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun transform() {
-        logger.d("TRACE_ Projection : performTransform  Start" + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : performTransform  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
 
@@ -358,7 +358,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isRecalibration: Boolean) {
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
-        logger.d("TRACE_ Projection : transformation " + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : transformation " + Calendar.getInstance().timeInMillis)
         when (result.first) {
             TransformErrorCode.Success -> GlobalScope.launch {
                 sendTransformedImage(
@@ -380,12 +380,12 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private suspend fun sendTransformedImage(result: Bitmap, isRecalibration: Boolean) {
-        logger.d("TRACE_ Projection : send Image Start" + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : send Image Start" + Calendar.getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
             var soc: Socket? = null
             try {
                 soc = Socket(
-                  core.network.Utility.nsdSericeHostName,
+                    core.network.Utility.nsdSericeHostName,
                     core.network.Utility.nsdSericePortName
                 )
                 if (soc.isConnected) {
@@ -399,7 +399,6 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                     dataOutputStream.close()
                     withContext(Dispatchers.Main) {
                         if (isRecalibration) {
-                            showProgress(false)
                             restartCamera()
                         } else {
                             showTransformSuccessPopup()
@@ -425,7 +424,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 }
             } finally {
                 soc?.close()
-                logger.d("TRACE_ Projection : send Image Finish" + Calendar. getInstance().timeInMillis)
+                logger.d("TRACE_ Projection : send Image Finish" + Calendar.getInstance().timeInMillis)
             }
         }
     }
@@ -528,11 +527,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
 
         override fun onDisplayAdded(displayId: Int) {
-            Log.d("displayListener","onDisplayAdded")
+            Log.d("displayListener", "onDisplayAdded")
         }
 
         override fun onDisplayRemoved(displayId: Int) {
-            Log.d("displayListener","onDisplayRemoved")
+            Log.d("displayListener", "onDisplayRemoved")
         }
     }
 
@@ -624,19 +623,22 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
-            Utility.AlertType.CALIBRATION -> sendCalibrationPattern()
+            Utility.AlertType.CALIBRATION -> {
+                sendCalibrationPattern()
+            }
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
-                Log.d("event","undefined")
+                Log.d("event", "undefined")
             }
         }
     }
 
     override fun onNeutralButtonClicked() {
-        Log.d("event","onNeutralButtonClicked")
+        Log.d("event", "onNeutralButtonClicked")
     }
 
     private fun restartCamera() {
+        viewModel.isShowCameraButton.set(true)
         viewModel.isShowCameraView.set(true)
         viewModel.isShowFinalImage.set(false)
         setToolbar()
@@ -645,7 +647,6 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun sendCalibrationPattern() {
-        showProgress(true)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
             performTransform(
@@ -662,7 +663,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
 
     override fun OnCalibrationReponse(calibrationResponse: Util.CalibrationType) {
-        logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar.getInstance().timeInMillis)
         showProgress(false)
         when (calibrationResponse) {
             Util.CalibrationType.Success -> {
@@ -696,21 +697,12 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         Utility.showAlertDialogue(
             requireContext(),
             R.drawable.ic_calibration_failure,
-            String.format(getString(R.string.calibration_failure),message),
-            "",
-            "OK",
+            String.format(getString(R.string.calibration_failure), message),
+            "RETRY",
+            "SKIP CALIBRATION",
             this,
             Utility.AlertType.CALIBRATION
         )
-//        Utility.getAlertDialogue(
-//            requireContext(),
-//            "Calibration Failed",
-//            message,
-//            "TRY AGAIN",
-//            "SKIP",
-//            this,
-//            Utility.AlertType.DEFAULT
-//        )
     }
 
 }
