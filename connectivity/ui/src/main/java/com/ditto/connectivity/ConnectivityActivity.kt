@@ -314,7 +314,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun startServiceTimer() {
 
         serviceConnectionWaitingJob = GlobalScope.launch {
-            delay(6000)
+            delay(5000)
             stopDiscovery()
             connectService()
         }
