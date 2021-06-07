@@ -285,6 +285,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                         MediaStore.Images.Media.getBitmap(activity?.contentResolver, savedUri)
                     viewModel.isShowCameraView.set(false)
                     viewModel.isShowFinalImage.set(true)
+                    viewModel.isShowDialog.set(false) //Lottie dismissed
                     hidetoolbar()
                     Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
                     if (count == 1) {
@@ -466,7 +467,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
      * [Function] Starting camera API
      */
     private fun startCamera() {
-        viewModel.isShowCameraButton.set(true)
+        viewModel.isShowCameraButton.set(true) //Lottie will Dismiss
         cameraviewFinder?.rotation = 0F
         val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
         val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
@@ -624,7 +625,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
             Utility.AlertType.CALIBRATION -> {
-                sendCalibrationPattern()
+                sendCalibrationPattern() //Sent Pattern Image
             }
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
@@ -638,6 +639,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun restartCamera() {
+        viewModel.isShowDialog.set(true) //Lottie Dismissed
         viewModel.isShowCameraButton.set(true)
         viewModel.isShowCameraView.set(true)
         viewModel.isShowFinalImage.set(false)
@@ -647,6 +649,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun sendCalibrationPattern() {
+        viewModel.isShowDialog.set(false)    //Lottie Displayed.....
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
             performTransform(
