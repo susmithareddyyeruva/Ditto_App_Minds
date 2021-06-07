@@ -38,4 +38,10 @@
     </style>
 
 
+    <style name="Smaller_Drawable">
+        <item name="android:textSize">@dimen/size_skip</item>
+        <item name="android:scaleX">0.15</item>
+        <item name="android:scaleY">0.15</item>
+    </style>
+
 </resources>

@@ -10,6 +10,8 @@
     <dimen name="width_percent">0.50</dimen>
     <dimen name="size_34sp">24sp</dimen>
     <dimen name="size_skip">12sp</dimen>
+    <dimen name="size_skip_button_width">10dp</dimen>
+    <dimen name="size_skip_button_height">9.94dp</dimen>
     <dimen name="end_margin_calib_btn">14dp</dimen>
 
 </resources>
