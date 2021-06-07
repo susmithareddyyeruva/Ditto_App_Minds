@@ -221,8 +221,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    private fun setupKeyboardListener(view: View) {
-        view.viewTreeObserver.addOnGlobalLayoutListener {
+    private fun setupKeyboardListener(view: View?) {
+        view?.viewTreeObserver?.addOnGlobalLayoutListener {
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...

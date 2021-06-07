@@ -109,7 +109,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         mHandler = Handler()
         getWIFIname()
         wifiname.setText(connSSID)
-        showLayouts(false,false,false,false,true)
+        showLayouts(false,false,false,false,true,"")
         if (Build.VERSION.SDK_INT < 16) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -155,13 +155,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 Log.d(ConnectivityUtils.TAG, "Bind BluetoothLeService")
             }
             startBleWaiting()
-            showLayouts(false,false,false,false,true)
+            showLayouts(false,false,false,false,true,"")
         }
 
 
         deviceList_proj!!.setOnItemClickListener { parent, view, position, id ->
 
-            showLayouts(false,false,false,false,true)
+            showLayouts(false,false,false,false,true,"")
             viewModel.isServiceFoundAfterWifi.set(false)
             mClickedService = mServiceListAdapter!!.getDevice(position)!!
             isServiceFound = true
@@ -340,7 +340,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             if (!mPreviousServiceAvailable) { /* Check whether the last connected service found or not */
                 mPreviousServiceAvailable = false
                 populateServiceList()
-                showLayouts(true, false, false, false, false)
+                showLayouts(true, false, false, false, false,"")
             }
         }
     }
@@ -372,18 +372,19 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     AppState.clearSavedService()
                     AppState.saveCurrentService(mClickedService)
                     viewModel.isServiceError.set(false)
-                    showLayouts(false, false, false, true, false)
+                    viewModel.isWifiError.set(false)
+                    showLayouts(false, false, false, true, false,"Successfully connected!")
 
                 } else {
                     viewModel.isServiceError.set(true)
-                    showLayouts(false, false, false, true, false)
+                    showLayouts(false, false, false, true, false,"Connection Failed!")
                 }
             } catch (e: ConnectException) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false)
+                showLayouts(false, false, false, true, false,"Connection Failed!")
             } catch (e: Exception) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false)
+                showLayouts(false, false, false, true, false,"Connection Failed!")
             } finally {
                 soc?.close()
             }
@@ -438,7 +439,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         mLeDeviceListAdapter = LeDeviceListAdapter()
         runOnUiThread {
             deviceList!!.adapter = mLeDeviceListAdapter
-            showLayouts(false, true, false, false, false)
+            showLayouts(false, true, false, false, false,"")
 
         }
         scanLeDevice(true)
@@ -698,19 +699,21 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             val action = intent.action
             if (BluetoothLeService.ACTION_GATT_CONNECTED == action) {
                 viewModel.isBLEConnected = true
-                showLayouts(false, false, false, false, true)
+                showLayouts(false, false, false, false, true,"")
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED == action) {
                 viewModel.isBLEConnected = false
-                showLayouts(false, false, false, true, false)
+                viewModel.isServiceError.set(true)
+                showLayouts(false, false, false, true, false,"Bluetooth Connection Failed!")
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED == action) {
 
                 if (mBluetoothLeService?.supportedGattServices == null) {
-                    showLayouts(false, false, false, true, false)
+                    viewModel.isServiceError.set(true)
+                    showLayouts(false, false, false, true, false,"Connection failed!")
                     stopWaiting()
                 } else {
-                    showLayouts(false, false, false, false, true)
+                    showLayouts(false, false, false, false, true,"")
                     getGattServices(mBluetoothLeService!!.supportedGattServices)
                 }
             } else if (BluetoothLeService.ACTION_GATT_HANDSHAKE_SUCCESS == action) {
@@ -722,20 +725,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     mBluetoothLeService?.connectWIFI(ssidpwd)!!
                     startWifiWaiting()
                 } else {*/
-                showLayouts(false, false, true, false, false)
+                showLayouts(false, false, true, false, false,"")
                 stopWaiting()
                // }
             } else if (BluetoothLeService.ACTION_GATT_SERVER_SUCCESS == action) {
-                showLayouts(false, false, false, false, true)
+                showLayouts(false, false, false, false, true,"")
                 viewModel.isServiceFoundAfterWifi.set(true)
                 searchWifiNSDservice()
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVER_FAILURE == action) {
-                showLayouts(false, false, false, true, false)
+                viewModel.isServiceError.set(true)
+                showLayouts(false, false, false, true, false,"Connection failed!")
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_WIFI_FAILURE == action) {
                 viewModel.isWifiError.set(true)
-                showLayouts(false, false, false, true, false)
+                viewModel.isServiceError.set(true)
+                showLayouts(false, false, false, true, false,"WiFi Connection failed")
                 stopWaiting()
             } else {
                 Log.d("BroadcastReceiver","Action Gatt server undefined")
@@ -746,13 +751,17 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun startWifiWaiting(){
         wifiConnectionWaitingJob = GlobalScope.launch {
             delay(25000)
-            showLayouts(false, false, false, true, false)
+            viewModel.isWifiError.set(true)
+            viewModel.isServiceError.set(true)
+            showLayouts(false, false, false, true, false,"WiFi Connection failed")
         }
     }
     private fun startBleWaiting(){
         bleConnectionWaitingJob = GlobalScope.launch {
             delay(25000)
-            showLayouts(false, false, false, true, false)
+            viewModel.isBLEConnected  = false
+            viewModel.isServiceError.set(true)
+            showLayouts(false, false, false, true, false,"Bluetooth connection failed")
         }
     }
 
@@ -821,16 +830,21 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     } else {
                        // TODO("VERSION.SDK_INT < LOLLIPOP")
                     }
-                    showLayouts(false, false, false, false, true)
+                    showLayouts(false, false, false, false, true,"")
                 } else {
                     Log.d("error","instruction error")
                 }
                 Unit
             }
             is ConnectivityViewModel.Event.OnRetryClicked -> {
-                if (viewModel.isServiceError.get()){
-                    showLayouts(false, false, false, false, true)
-                    searchNSDservice()
+                if (viewModel.isServiceError.get()) {
+                    if (viewModel.isWifiError.get()){
+                        showLayouts(false, false, true, false, false,"")
+                    } else {
+                        showLayouts(false, false, false, false, true,"")
+                        searchNSDservice()
+                    }
+
                 } else {
                     returnFromActivity("success")
                 }
@@ -1013,7 +1027,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
         }else{
             Log.d(ConnectivityUtils.TAG, "User Disabled GPS")
-            showLayouts(false, false, false, false, false)
+            showLayouts(false, false, false, false, false,"")
             viewModel.isLocationEnabled.set(false)
             finish()
         }
@@ -1112,12 +1126,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     ) {
 
     }
-    private fun showLayouts(isShowServiceListLayout : Boolean, isShowBleListLayout : Boolean, isShowWifiCredLayout : Boolean,isShowErrorLayout : Boolean ,isShowLootie : Boolean ){
+    private fun showLayouts(isShowServiceListLayout : Boolean, isShowBleListLayout : Boolean, isShowWifiCredLayout : Boolean,isShowErrorLayout : Boolean ,isShowLootie : Boolean, alertMessage : String ){
         viewModel.isProjectorLayout.set(isShowLootie)
         viewModel.isWifiCredLayout.set(isShowWifiCredLayout)
         viewModel.isErrorLayout.set(isShowErrorLayout)
         viewModel.isShowServiceList.set(isShowServiceListLayout)
         viewModel.isDeviceListLayout.set(isShowBleListLayout)
+        viewModel.alerMessage.set(alertMessage)
     }
 }
 

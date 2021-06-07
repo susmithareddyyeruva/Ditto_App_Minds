@@ -8,11 +8,11 @@
     <string name="skips">Skip</string>
     <string name="ditto_connect">Ditto projector is not connected</string>
     <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>
-    <string name="select_bluetooth_device">Select Bluetooth device</string>
+    <string name="select_bluetooth_device">Select bluetooth device</string>
     <string name="connecting">Connecting to Ditto projector...</string>
     <string name="wifi_connect">Ditto projector found!</string>
     <string name="enter_credentials">Enter your Wi-Fi Credentials</string>
-    <string name="network_name">Network Name</string>
+    <string name="network_name">Network name</string>
     <string name="password">Password</string>
     <string name="connect">CONNECT</string>
     <string name="retry">RETRY</string>
@@ -33,6 +33,6 @@
     <string name="calibrate">NO, CALIBRATE</string>
     <string name="yes_string">YES</string>
     <string name="str_scan">SCAN VIA BLUETOOTH</string>
-    <string name="str_conn_success">Successfully Connected!</string>
+    <string name="str_conn_success">Successfully connected!</string>
     <string name="str_conn_failed">Connection Failed!</string>
 </resources>

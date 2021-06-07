@@ -9,6 +9,8 @@
             name="viewmodel"
             type="com.ditto.connectivity.ConnectivityViewModel" />
 
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -96,6 +98,13 @@
                 app:layout_constraintGuide_percent=".70" />
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottom_guidelines_popups"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".80" />
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/left_guidelines"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,8 +174,9 @@
                                 android:layout_alignParentLeft="true"
                                 android:background="@android:color/white"
                                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                                android:gravity="center"
+                                android:gravity="bottom"
                                 android:paddingLeft="20dp"
+                                android:layout_marginLeft="20dp"
                                 android:text="Select Projector"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/size_14sp"
@@ -177,7 +187,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
+                                android:layout_alignParentBottom="true"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginRight="20dp"
                                 android:background="@android:color/transparent"
@@ -381,6 +391,7 @@
                             android:layout_height="@dimen/size_0dp"
                             android:background="@android:color/white"
                             android:orientation="horizontal"
+                            android:gravity="end"
                             app:layout_constraintHeight_default="percent"
                             app:layout_constraintHeight_percent=".15"
                             app:layout_constraintTop_toBottomOf="@+id/bottomlistbar">
@@ -389,17 +400,16 @@
                                 android:id="@+id/skip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
+                                android:paddingRight="@dimen/xx_large_padding"
                                 android:background="@android:color/white"
-                                android:gravity="center"
                                 android:onClick="@{() ->viewmodel.onClickSkip()}"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
                                 android:text="@string/skips"
                                 android:textAllCaps="true"
+                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/size_12px"
+                                android:textSize="@dimen/size_14px"
                                 android:textStyle="bold" />
+
 
                         </RelativeLayout>
 
@@ -570,7 +580,7 @@
                                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                                     android:layout_gravity="start"
                                     android:background="@android:color/white"
-                                    android:text="Enter Wifi Password" />
+                                    android:text="Enter Wifi password" />
 
                                 <EditText
                                     android:id="@+id/wifipwd"
@@ -583,7 +593,6 @@
                                     android:layout_marginRight="5dp"
                                     android:textCursorDrawable="@drawable/cursor"
                                     android:imeOptions="flagNoExtractUi"
-                                    android:hint="password"
                                     android:layout_marginBottom="10dp"
                                     android:inputType="textVisiblePassword|textNoSuggestions"
                                     android:textSize="@dimen/size_14px"
@@ -727,34 +736,61 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:background="@android:color/white"
                             android:paddingLeft="20dp"
-                            android:text="@{viewmodel.isServiceError() ? @string/str_conn_failed : @string/str_conn_success}"
+                            android:text="@{viewmodel.alerMessage}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/size_14sp"
                             tools:ignore="MissingConstraints,NotSibling" />
 
                     </RelativeLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:id="@+id/bottom_view"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_0dp"
+                        android:weightSum="3"
                         android:background="@android:color/white"
                         android:orientation="horizontal"
-                        android:gravity="right|center"
                         app:layout_constraintHeight_default="percent"
                         app:layout_constraintHeight_percent=".30"
                         app:layout_constraintTop_toBottomOf="@+id/messagelay">
 
+
+                        <Space
+                            android:layout_width="@dimen/dimen_0"
+                            android:layout_height="wrap_content"
+                            android:visibility="invisible"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/cancelUnsucess"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.2"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/retry"
+                            android:background="@android:color/white"
+                            android:gravity="end|center"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:visibility="@{viewmodel.isServiceError() ? View.VISIBLE : View.INVISIBLE}"
+                            android:onClick="@{() ->viewmodel.onClickCancelError()}"
+                            android:text="@string/cancel"
+                            android:paddingTop="@dimen/medium_padding"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/size_12px"
+                            android:textStyle="bold" />
+
+
                         <TextView
                             android:id="@+id/retry"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight=".8"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:background="@android:color/white"
                             android:gravity="center"
+                            android:paddingTop="@dimen/medium_padding"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:onClick="@{() ->viewmodel.onClickRetry()}"
                             android:paddingLeft="20dp"
@@ -764,26 +800,8 @@
                             android:textSize="@dimen/size_12px"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/cancelUnsucess"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_toLeftOf="@+id/retry"
-                            android:background="@android:color/white"
-                            android:gravity="center"
-                            android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            android:visibility="@{viewmodel.isServiceError()}"
-                            android:onClick="@{() ->viewmodel.onClickCancelError()}"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:text="@string/cancel"
-                            android:textAllCaps="true"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="@dimen/size_12px"
-                            android:textStyle="bold" />
 
-
-                    </RelativeLayout>
+                    </LinearLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

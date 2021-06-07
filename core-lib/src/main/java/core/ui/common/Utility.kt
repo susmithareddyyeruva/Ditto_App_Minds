@@ -317,23 +317,23 @@ class Utility {
                         dataOutputStream.close()
                     } else {
                         println("Socket Connection Failed")
-                        withContext(Dispatchers.Main) {
+                        /*withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
                                 "Socket Connection failed. Try again!!",
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }
+                        }*/
                     }
                 } catch (e: Exception) {
                     println("Socket Connection Failed")
-                    withContext(Dispatchers.Main) {
+                   /* withContext(Dispatchers.Main) {
                         Toast.makeText(
                             context,
                             "Socket Connection failed. Try again!!",
                             Toast.LENGTH_SHORT
                         ).show()
-                    }
+                    }*/
                 } finally {
                     soc?.close()
                     Log .d("TRACE_ Projection :","Send Ditto Finish " + Calendar. getInstance().timeInMillis)

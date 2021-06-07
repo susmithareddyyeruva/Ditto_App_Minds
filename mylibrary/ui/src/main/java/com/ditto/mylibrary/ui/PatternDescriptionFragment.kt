@@ -316,7 +316,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun showProgress(toShow: Boolean) {
-        if (toShow) {
+        bottomNavViewModel.showProgress.set(toShow)
+        /*if (toShow) {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
 
@@ -328,7 +329,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alert.show()
         } else {
             alert.dismiss()
-        }
+        }*/
     }
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isQuickCheck: Boolean) {
@@ -422,7 +423,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                 ) {
                     //checkBluetoothWifiPermission()
-                    forwardtoWorkspace()
+                    //forwardtoWorkspace()
+                    checkSocketConnectionBeforeWorkspace()
                 } else {
                     logger.d("OnClick Workspace failed")
                 }
@@ -493,24 +495,41 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 //baseViewModel.activeSocketConnection.set(true)
                 showCalibrationDialog()
             } else if (data?.data.toString().equals("skip")) {
-               forwardtoWorkspace()
+               enterWorkspace()
             }
         }
     }
 
-    private fun forwardtoWorkspace(){
+    private fun checkSocketConnectionBeforeWorkspace() {
+        GlobalScope.launch {
+            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+                withContext(Dispatchers.Main) {
+                    baseViewModel.activeSocketConnection.set(false)
+                    enterWorkspace()
+                }
+            } else {
+                withContext(Dispatchers.Main) { showProgress(true) }
+                if (startSocketConnection(
+                        core.network.Utility.nsdSericeHostName,
+                        core.network.Utility.nsdSericePortName
+                    )
+                ) {
 
-        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-            val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
-            findNavController().navigate(
-                R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
-                bundle
-            )
-        } else {
-            logger.d("")
+                    withContext(Dispatchers.Main) {
+                        showProgress(false)
+                        baseViewModel.activeSocketConnection.set(true)
+                        enterWorkspace()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        showProgress(false)
+                        baseViewModel.activeSocketConnection.set(false)
+                        enterWorkspace()
+                    }
+                }
+            }
         }
     }
-
     override fun onResume() {
         super.onResume()
         binding.textWatchvideo2.isEnabled = true

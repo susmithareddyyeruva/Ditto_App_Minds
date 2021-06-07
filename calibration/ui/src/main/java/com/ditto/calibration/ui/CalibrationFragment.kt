@@ -580,6 +580,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        baseViewModel.isCalibrated.set(true)
         if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
             if (arguments?.getBoolean("isFromPatternDescription")!!) {
                 if (arguments?.getBoolean("isRecalibrate") != null && arguments?.getBoolean("isRecalibrate")!!) {
