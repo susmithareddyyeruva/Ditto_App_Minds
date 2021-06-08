@@ -34,4 +34,5 @@
     <string name="do_you_want_caliberate">Do you need to calibrate?</string>
     <string name="caliberate_tittle">Calibrate</string>
     <string name="no_string">NO</string>
+    <string name="tittle_calibrate">Calibrate</string>
 </resources>
