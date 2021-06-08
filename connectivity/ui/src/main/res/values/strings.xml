@@ -34,5 +34,5 @@
     <string name="yes_string">YES</string>
     <string name="str_scan">SCAN VIA BLUETOOTH</string>
     <string name="str_conn_success">Successfully connected!</string>
-    <string name="str_conn_failed">Connection Failed!</string>
+    <string name="str_conn_failed">Projector connection failed</string>
 </resources>

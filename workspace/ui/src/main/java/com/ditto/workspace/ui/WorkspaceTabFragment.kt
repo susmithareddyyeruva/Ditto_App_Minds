@@ -1892,7 +1892,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
-            "Connection Failed!",
+            "Projector connection failed",
             "CANCEL",
             "RETRY",
             this,
@@ -1940,6 +1940,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.WIFI -> {
                 baseViewModel.activeSocketConnection.set(false)
                 viewModel.isWifiLaterClicked.set(true)
+            }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
             }
         }
     }
