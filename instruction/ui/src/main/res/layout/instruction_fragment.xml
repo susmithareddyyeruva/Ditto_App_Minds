@@ -17,7 +17,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@android:color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
@@ -41,33 +41,35 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/header_view_title"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1.6"
-                        android:gravity="center"
+                        android:layout_gravity="start"
+                        android:gravity="start"
+                        android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:text="@{viewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/size_21sp" />
 
                     <!-- Subtitle -->
                     <TextView
                         android:id="@+id/header_view_sub_title"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".4"
-                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:drawableRight="@drawable/right_arrow"
+                        android:drawablePadding="16dp"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="end"
                         android:onClick="@{() -> viewModel.onSkip()}"
+                        android:paddingEnd="16dp"
                         android:text="@string/skip"
-                        android:textColor="@color/skip_text"
-                        android:textSize="@dimen/size_14sp"
-                        android:visibility="@{viewModel.isFromOnboardinScreen()}" />
-
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_12px"
+                        android:visibility="@{!viewModel.isFromHome()}" />
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
@@ -85,15 +87,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent=".05" />
 
-            <ProgressBar
-                android:id="@+id/determinateBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isShowindicator()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/instruction_view_pager"
@@ -131,7 +124,15 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent=".81" />
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_container_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".98" />
+
                     <LinearLayout
+                        android:id="@+id/bottom_viewpager"
                         android:layout_width="@dimen/size_0dp"
                         android:layout_height="@dimen/size_0dp"
                         android:gravity="center"
@@ -146,6 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:onClick="@{() ->viewModel.onClickPreviousButton()}"
                             android:text="@string/previous"
                             android:textColor="@{viewModel.isStartingPage()?@color/disable:@color/colorPrimary}"
@@ -203,6 +205,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:onClick="@{() ->viewModel.onClickNextButton()}"
                             android:text="@string/next"
                             android:textColor="@{viewModel.isFinalPage()?@color/disable:@color/colorPrimary}"
@@ -216,9 +219,9 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickCalibrationStepsButton()}"
-                        android:visibility="@{(viewModel.isFinalPage() &amp;&amp; viewModel.tabPosition == 1)? View.GONE : View.VISIBLE}"
+                        android:visibility="@{!viewModel.isFromHome() &amp;&amp; (viewModel.instructionID == 1)}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -227,10 +230,10 @@
                             android:id="@+id/text_goto_calib"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotocalib"
-                            android:textColor="@color/texthint"
-                            android:textSize="@dimen/size_12px"
-                            android:visibility="@{(viewModel.instructionID == 1 &amp;&amp; viewModel.isFromOnboardinScreen()) ? View.VISIBLE : View.GONE}" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>
 
@@ -239,9 +242,9 @@
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:onClick="@{() ->viewModel.onClickHowToButton()}"
-                        android:visibility="@{viewModel.instructionID == 1 ? false : true &amp;&amp; viewModel.isFromOnboardinScreen()}"
+                        android:visibility="@{!viewModel.isFromHome() &amp;&amp; viewModel.instructionID == 2}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/guide_container_end"
                         app:layout_constraintStart_toStartOf="@+id/guide_start"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -250,9 +253,10 @@
                             android:id="@+id/text_gotohowto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotohowto"
-                            android:textColor="@color/texthint"
-                            android:textSize="@dimen/size_12px" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>
 

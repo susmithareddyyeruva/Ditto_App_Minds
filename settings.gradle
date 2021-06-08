@@ -41,6 +41,8 @@ project(':instructions-data').projectDir = new File('instruction/data')
 
 include ':home-ui'
 project(':home-ui').projectDir = new File('home/ui')
+include ':home-domain'
+project(':home-domain').projectDir = new File('home/domain')
 
 include ':mylibrary-ui'
 project(':mylibrary-ui').projectDir = new File('mylibrary/ui')
@@ -77,4 +79,9 @@ project(':calibration-data').projectDir = new File('calibration/data')
 include ':connectivity-ui'
 project(':connectivity-ui').projectDir = new File('connectivity/ui')
 
-
+include ':menuitems-domain'
+project(':menuitems-domain').projectDir = new File('menuitems/domain')
+include ':menuitems-data'
+project(':menuitems-data').projectDir = new File('menuitems/data')
+include ':menuitems-ui'
+project(':menuitems-ui').projectDir = new File('menuitems/ui')

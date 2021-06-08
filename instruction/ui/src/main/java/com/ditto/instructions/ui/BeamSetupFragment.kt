@@ -19,6 +19,7 @@ import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.fragment_beam_setup.*
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -46,10 +47,8 @@ class BeamSetupFragment : BaseFragment() {
             binding = FragmentBeamSetupBinding.inflate(inflater)
                 .also {
                     arguments?.getInt("InstructionId")?.let { viewModel.instructionID.set(it) }
-                    arguments?.getBoolean("isFromOnBoarding")
-                        ?.let { viewModel.isFromOnboardinScreen.set(it) }
                     arguments?.getBoolean("isFromHome")
-                        ?.let { viewModel.isFromOnboardinScreen.set(it) }
+                        ?.let { viewModel.isFromHome?.set(it) }
                 }
         }
         return binding.root
@@ -61,6 +60,7 @@ class BeamSetupFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (viewModel.data.value == null) {
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -78,17 +78,20 @@ class BeamSetupFragment : BaseFragment() {
      */
     private fun setupToolbar() {
         if (arguments?.getBoolean("isFromHome")!!) {
-            bottomNavViewModel.visibility.set(true)
-            toolbarViewModel.isShowActionBar.set(true)
-            toolbarViewModel.isShowTransparentActionBar.set(false)
-            (activity as BottomNavigationActivity).setToolbarTitle("Beam Setup & Takedown")
-            (activity as BottomNavigationActivity).showmenu()
-        } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             viewModel.toolbarTitle.set("Beam Setup & Takedown")
-            viewModel.isFromOnboardinScreen.set(true)
+            (activity as BottomNavigationActivity).hidemenu()
+            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+            (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        } else {
+            bottomNavViewModel.visibility.set(false)
+            toolbarViewModel.isShowActionBar.set(false)
+            toolbarViewModel.isShowTransparentActionBar.set(false)
+            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            viewModel.toolbarTitle.set("Beam Setup & Takedown")
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()
@@ -138,8 +141,7 @@ class BeamSetupFragment : BaseFragment() {
         val fragmentAdapter = activity?.supportFragmentManager?.let {
             TabsAdapter(
                 it,
-                arguments?.getBoolean("isFromHome")!!,
-                arguments?.getBoolean("isFromOnBoarding")!!
+                arguments?.getBoolean("isFromHome")!!
             )
         }
         binding.viewPager.adapter = fragmentAdapter

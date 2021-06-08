@@ -44,6 +44,16 @@
     <string name="menu_complete">Mark Complete</string>
     <string name="menu_rename">Rename</string>
     <string name="menu_details">Details</string>
+    <string name="text_sync">Sync</string>
+    <string name="text_search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="text_filter">Filters</string>
+    <string name="text_new">New</string>
+    <string name="text_clear_filter"><u>clear filters</u></string>
+    <string name="text_filter_result">Showing filtered results (09)</string>
     <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
+    <string name="filters">Filters</string>
+    <string name="apply">APPLY</string>
+    <string name="clear_all"><u>clear all</u></string>
 
 </resources>

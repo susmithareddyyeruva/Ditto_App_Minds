@@ -454,7 +454,7 @@ fun handleSplicedImageDragBack(
 /*
 Show pinch and zoom pop up
  */
-fun showPinchZoomPopup(context: Context, imagePath: String?) {
+fun showPinchZoomPopup(context: Context, imagePath: String?, isReference: Boolean) {
     Utility.isPopupShowing.set(true)
     val intent = Intent(context, PinchAndZoom::class.java)
     //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -462,6 +462,7 @@ fun showPinchZoomPopup(context: Context, imagePath: String?) {
     intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
     intent.putExtra("ImageURL", imagePath)
+    intent.putExtra("isReference", isReference)
     ContextCompat.startActivity(context, intent, null)
 }
 
@@ -553,7 +554,8 @@ private class MyGestureListener(context: Context, path: String?) :
         if (!Utility.isPopupShowing.get()) {
             showPinchZoomPopup(
                 popUpContext,
-                imagePath
+                imagePath,
+                false
             )
         }
         return super.onDoubleTap(e)

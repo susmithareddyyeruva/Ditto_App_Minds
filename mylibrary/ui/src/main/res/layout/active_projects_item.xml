@@ -76,7 +76,7 @@
                 android:layout_height="@dimen/size_12px"
                 android:maxHeight="@dimen/seek_height"
                  android:progressDrawable="@drawable/seek_progress"
-                android:progressTint="@color/progress_green"
+                android:progressTint="@color/app_red"
                 android:foregroundGravity="center"
                 android:splitTrack="false"
                 android:padding="@dimen/size_0dp"

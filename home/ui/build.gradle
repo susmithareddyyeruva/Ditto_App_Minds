@@ -32,7 +32,7 @@ android {
             minifyEnabled false
         }
     }
-    buildFeatures{
+    buildFeatures {
         dataBinding = true // for data binding
         viewBinding = true // for view binding
     }
@@ -88,5 +88,12 @@ dependencies {
     implementation project(path: ':logger')
 
     implementation project(path: ':nav-graph')
+    implementation project(path: ':home-domain')
+
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
+
+    implementation project(path: ':menuitems-ui')
 
 }

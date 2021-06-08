@@ -14,14 +14,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto.adapter.DoubleClickListener
 import com.ditto.instructions.domain.model.InstructionModel
 import com.ditto.instructions.ui.InstructionViewModel
 import com.ditto.instructions.ui.databinding.InstructionCalibrationAdapterBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
+import core.ui.common.DoubleClickListener
 
 class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<InstructionModel>> {
 
@@ -58,9 +59,13 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
                 "drawable",
                 parent.context.packageName
             )
-            val drawable: Drawable? = resID?.let { res.getDrawable(it) }
+            val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
             binding.imageStep.setImageBitmap(bitmap)
+          /*  Glide.with(parent.context)
+                .load(instructiondata[position].imagePath)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(binding.imageStep)*/
             binding.imageStep.setOnClickListener(object : DoubleClickListener() {
                 override fun onDoubleClick(v: View) {
                     viewModel.onClickPlayVideo()
@@ -91,6 +96,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
         intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
+        intent.putExtra("isFrom", "Caliberation")
         ContextCompat.startActivity(context, intent, null)
     }
 

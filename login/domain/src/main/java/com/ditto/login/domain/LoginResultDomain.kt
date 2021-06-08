@@ -22,5 +22,10 @@ data class LoginResultDomain(
     val previous_login_time: String?,
     val previous_visit_time: String?,
     val salutation: String?,
-    val faultDomain: FaultDomain?
+    val faultDomain: FaultDomain?,
+    val cMirrorReminder: Boolean,
+    val cReceiveEmail: Boolean,
+    val cSpliceCutCompleteReminder: Boolean,
+    val cSpliceMultiplePieceReminder: Boolean,
+    val cSpliceReminder: Boolean
 )

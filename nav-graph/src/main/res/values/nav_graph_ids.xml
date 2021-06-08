@@ -15,7 +15,9 @@
     <item name="destination_howto" type="id" />
     <item name="instruction_navigation" type="id" />
     <item name="nav_graph_workspace" type="id" />
-
+    <item name="destination_customercare" type="id" />
+    <item name="nav_graph_customercare" type="id" />
+    <item name="nav_graph_faq" type="id" />
 
     <!--action items-->
     <item name="action_splashActivity_to_LoginFragment" type="id" />
@@ -39,6 +41,7 @@
     <item name="calibration_nav_graph" type="id" />
     <item name="instruction_calibration_nav" type="id" />
     <item name="patternDescriptionFragment" type="id" />
+    <item name="patternInstructionsFragment" type="id" />
     <item name="action_instructionFragment_to_homefragment" type="id" />
     <!--
         <item name="action_destination_instruction_to_calibration_nav_graph" type="id"/>
@@ -52,4 +55,9 @@
     <item name="action_home_to_pattern_details" type="id" />
     <item name="patternDescriptionFragmentFromHome" type="id" />
     <item name="action_loginFragment_to_VideoFragment" type="id" />
+    <item name="action_fragments_to_customerCareFragment" type="id" />
+    <item name="action_destination_to_FQAfragment" type="id" />
+    <item name="action_homeFragment_to_aboutAppFragment" type="id" />
+    <item name="action_destination_howto_to_nav_graph_id_video" type="id" />
+    <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
 </resources>

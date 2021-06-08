@@ -1,6 +1,7 @@
 package core.ui.common
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -13,9 +14,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -57,7 +61,9 @@ class Utility @Inject constructor(
         MIRROR,
         CUT_BIN,
         CUT_BIN_ALL,
-        PATTERN_RENAME
+        PATTERN_RENAME,
+        NETWORK,
+        PDF
     }
 
     companion object {
@@ -364,6 +370,57 @@ class Utility @Inject constructor(
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
+
+        fun isFileAvailable(filename : String) : Uri? {
+            val pdfFile = File(
+                Environment.getExternalStorageDirectory()
+                    .toString() + "/Ditto/" + filename
+            )
+            var path : Uri? = null
+            if (pdfFile.exists()){
+                path = Uri.fromFile(pdfFile)
+            } else {
+                path = null
+            }
+
+            return path
+        }
+
+
+
+        @SuppressLint("ResourceType")
+        fun getCommonAlertDialogue(
+            context: Context,
+            alertmessage: String,
+            negativeButton: String,
+            positiveButton: String,
+            callbackDialogListener: CallbackDialogListener,
+            alertType:AlertType
+        ) {
+            val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
+            val dialogBuilder =  AlertDialog.Builder(context)
+            dialogBuilder.setView(mDialogView)
+            val alert = dialogBuilder.create()
+            alert.setCancelable(false)
+            alert.show()
+            alert.window?.setBackgroundDrawable(null)
+            val message = mDialogView.findViewById(R.id.alert_message) as TextView
+            message.text = alertmessage
+            val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+            negative.text = negativeButton
+            val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+            positive.text = positiveButton
+            negative.setOnClickListener {
+                alert.dismiss()
+                callbackDialogListener.onNegativeButtonClicked(alertType)
+            }
+            positive.setOnClickListener {
+                alert.dismiss()
+                callbackDialogListener.onPositiveButtonClicked(alertType)
+            }
+
+        }
+
     }
 
     interface CallbackDialogListener {

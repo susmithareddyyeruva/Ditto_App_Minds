@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(),Utility.CallbackDialogListener  {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -140,7 +140,7 @@ class LoginFragment : BaseFragment() {
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
             is LoginViewModel.Event.OnLoginClicked -> {
-                getUserDetails()
+                getUserDetails(false)
                 //Re directing to On_boarding screen
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
@@ -150,17 +150,16 @@ class LoginFragment : BaseFragment() {
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                bottomNavViewModel.isGuestBase.set(true)
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    getUserDetails()
+                    getUserDetails(true)
                     findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                 } else {
 
                 }
             }
             is LoginViewModel.Event.OnLoginFailed -> {
-                showSnackBar()
+                showAlert()
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
@@ -176,7 +175,8 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun getUserDetails() {
+    private fun getUserDetails(isGuest : Boolean) {
+        bottomNavViewModel.isGuestBase.set(isGuest)
         bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
         bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)
@@ -210,5 +210,22 @@ class LoginFragment : BaseFragment() {
             errorMessage,
             binding.rootLayout
         )
+    }
+
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(requireContext(),errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK)
+    }
+
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onNeutralButtonClicked() {
+        //TODO("Not yet implemented")
     }
 }

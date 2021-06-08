@@ -32,12 +32,15 @@ class HowtoViewModel @Inject constructor(
     val isWatchVideoClicked: ObservableBoolean = ObservableBoolean(false)
     val isShowPlaceholder: ObservableBoolean = ObservableBoolean(false)
     val instructionID: ObservableInt = ObservableInt(3)
-    val isFromOnboardinScreen: ObservableBoolean = ObservableBoolean(true)
+    val isFromHome: ObservableBoolean = ObservableBoolean(true)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
     var toolbarTitle: ObservableField<String> = ObservableField("")
+    var videoUrl: String=""
+    var title: String=""
+    var imagePath: String=""
     /**
      *[Function] ViewPager Next Button Click
      */
@@ -82,6 +85,7 @@ class HowtoViewModel @Inject constructor(
      *[Function] Handling response after DB call
      */
     private fun handleFetchResult(result: Result<HowToData>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
@@ -100,6 +104,16 @@ class HowtoViewModel @Inject constructor(
         uiEvents.post(Event.OnShowError)
     }
 
+    fun onItemClick(videourl:String,titlem:String) {
+        videoUrl = videourl
+        title = titlem
+        uiEvents.post(Event.OnItemClick)
+    }
+
+    fun onDoubleClick(imagePathm:String) {
+        imagePath = imagePathm
+        uiEvents.post(Event.OnSpinchAndZoom)
+    }
     /**
      * Events for this view model
      */
@@ -110,6 +124,10 @@ class HowtoViewModel @Inject constructor(
         object OnNextButtonClicked : Event()
         object OnPreviousButtonClicked : Event()
         object OnPlayVideoClicked : Event()
+        object OnHideProgress : Event()
+        object OnShowProgress : Event()
+        object OnItemClick : Event()
+        object OnSpinchAndZoom : Event()
     }
 
 }

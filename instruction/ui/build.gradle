@@ -78,6 +78,10 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
     /**
      * OTHER MODULES
      */
@@ -91,6 +95,7 @@ dependencies {
     implementation project(path: ':howto-ui')
     implementation project(path: ':workspace-ui')
     implementation project(path: ':connectivity-ui')
+    implementation project(path: ':videoplayer')
     implementation project(path: ':FabricTraceTransform-debug')
 }
 

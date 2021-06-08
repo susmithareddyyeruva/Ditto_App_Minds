@@ -38,47 +38,8 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-
-
-    </fragment>
-    <fragment
-        android:id="@+id/destination_instruction"
-        android:name="com.ditto.instructions.ui.InstructionFragment"
-        android:label="InstructionFragment">
-
         <action
-            android:id="@+id/action_destination_instruction_self"
-            app:destination="@id/destination_instruction_calibration"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_destination_instruction_to_calibration_nav_graph"
-            app:destination="@id/calibration_nav_graph"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_destination_instruction_to_howto_nav_graph"
-            app:destination="@id/howto_navigation"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-
+            android:id="@+id/action_fragments_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/howtoFragment"
-        android:name="com.ditto.howto.ui.HowtoFragment"
-        android:label="How To">
-
-
-    </fragment>
-
 </navigation>

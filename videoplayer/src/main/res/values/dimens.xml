@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="header_size">16sp</dimen>
+    <dimen name="skip_video_size">14sp</dimen>
     <dimen name="small_padding">5dp</dimen>
     <dimen name="medium_padding">8dp</dimen>
     <dimen name="exo_progress_height">6dp</dimen>
+    <dimen name="exo_time">15dp</dimen>
     <dimen name="dimen_0">0dp</dimen>
-    <dimen name="padding_skip">25dp</dimen>
+    <dimen name="exo_progress_margin_end">10dp</dimen>
+    <dimen name="skip_margin_end">18dp</dimen>
+    <dimen name="margin_bottom_skip">10dp</dimen>
+    <dimen name="margin_end_skip">5dp</dimen>
+    <dimen name="padding_skip">30dp</dimen>
     <dimen name="padding_header">20dp</dimen>
+    <dimen name="margin_top_exo_progress">10dp</dimen>
+    <dimen name="margin_top_exo_play_button">5dp</dimen>
+    <dimen name="dimen_per_guidline">.91</dimen>
+    <dimen name="dimen_padding_bottom_exo_progress">10dp</dimen>
+
 </resources>

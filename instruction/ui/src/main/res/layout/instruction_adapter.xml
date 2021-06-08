@@ -33,16 +33,15 @@
             app:layout_constraintStart_toEndOf="@+id/textLayout"
             app:layout_constraintTop_toTopOf="@+id/guideline_imagetop_top"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent=".60">
+            app:layout_constraintWidth_percent=".50">
 
             <ImageView
                 android:id="@+id/image_step"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="@{!viewModel.isWatchVideoClicked()}"
                 android:onClick="@{() -> viewModel.onClickPlayVideo()}"
                 android:src="@drawable/video_thumbnail" />
-
+            <!--android:clickable="@{!viewModel.isWatchVideoClicked()}"-->
         </LinearLayout>
 
         <ImageView
@@ -71,7 +70,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/textLayout"
-            app:layout_constraintGuide_percent=".05"
+            app:layout_constraintGuide_percent=".03"
             app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
@@ -91,6 +90,7 @@
                     android:id="@+id/text_content_header"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:paddingEnd="@dimen/margin_text"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_16px"
@@ -104,13 +104,14 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/instruction_margin"
-                    android:fadeScrollbars="false"
-                    android:paddingEnd="@dimen/margin_text"
                     android:layout_marginBottom="@dimen/margin_text"
-                    android:scrollbars="vertical"
+                    android:fadeScrollbars="false"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:paddingEnd="@dimen/margin_text"
                     android:scrollbarStyle="outsideOverlay"
-                    android:textColor="@color/instruction_content_text"
-                    android:textSize="@dimen/size_14px"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_16px"
                     app:layout_constraintBottom_toTopOf="@+id/linear_last_beam_step"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -141,11 +142,14 @@
                     android:layout_height="@dimen/size_0dp"
                     android:layout_gravity="right"
                     android:layout_marginTop="@dimen/instruction_button_margin"
-                    android:background="@drawable/ic_button_border"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
                     android:onClick="@{() ->viewModel.onCalibrationButtonClicked()}"
                     android:text="@string/Calibrate"
-                    android:textColor="@color/White"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14sp"
+                    android:textStyle="bold"
                     android:visibility="@{viewModel.isFinalPage() &amp;&amp; viewModel.instructionID == 2 &amp;&amp; !viewModel.isFromCameraScreen()}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -169,52 +173,19 @@
                     android:id="@+id/linear_last_beam_step"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_0dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/ic_linear_border"
                     android:orientation="horizontal"
-                    android:visibility="@{viewModel.isFinalPage  &amp;&amp; viewModel.instructionID == 1 &amp;&amp; viewModel.tabPosition != 0}"
+                    android:visibility="gone"
                     android:weightSum="2"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHeight_default="percent"
                     app:layout_constraintHeight_percent=".20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <LinearLayout
-                        android:layout_width="@dimen/size_0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.2"
-                        android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text_completed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_12px"
-                            android:text="@string/Completionmessage"
-                            android:textSize="@dimen/size_12px" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linear_goto_calib"
-                        android:layout_width="@dimen/size_0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight=".8"
-                        android:gravity="center"
-                        android:onClick="@{() -> viewModel.onClickCalibrationStepsButton()}">
-
-                        <TextView
-                            android:id="@+id/text_final_goto_calib"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/gotocalib"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/size_12px"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

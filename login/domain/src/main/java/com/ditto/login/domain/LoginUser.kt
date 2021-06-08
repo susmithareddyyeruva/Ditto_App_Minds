@@ -21,6 +21,11 @@ data class LoginUser(
     val isLoggedIn: Boolean? = false,
     val dndOnboarding: Boolean? = false,
     val bleDialogVisible: Boolean? = false,
-    val wifiDialogVisible: Boolean? = false
+    val wifiDialogVisible: Boolean? = false,
+    val cMirrorReminder: Boolean? = false,
+    val cReceiveEmail:Boolean? = false,
+    val cSpliceCutCompleteReminder: Boolean? = false,
+    val cSpliceMultiplePieceReminder: Boolean? = false,
+    val cSpliceReminder: Boolean? = false,
 
 )

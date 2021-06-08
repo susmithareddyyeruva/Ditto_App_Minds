@@ -9,6 +9,7 @@ import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.ditto.home.ui.adapter.HomeAdapter
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
@@ -20,6 +21,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
 
 
@@ -51,17 +53,17 @@ class HomeFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        bottomNavViewModel.visibility.set(true)
+        bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
+        (activity as BottomNavigationActivity)?.refreshMenuItem()
         if (AppState.getIsLogged()) {
-            (activity as BottomNavigationActivity)?.setMenuItem(false)
-            bottomNavViewModel.isGuestBase.set(false)
+             bottomNavViewModel.isGuestBase.set(false)
         } else {
-            (activity as BottomNavigationActivity)?.setMenuItem(true)
-            bottomNavViewModel.isGuestBase.set(true)
+             bottomNavViewModel.isGuestBase.set(true)
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        setHomeAdapter()
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -71,7 +73,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleEvent(event: HomeViewModel.Event) =
         when (event) {
-            is HomeViewModel.Event.OnClickBuyPattern -> {
+            is HomeViewModel.Event.OnClickDitto -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     findNavController().navigate(R.id.action_home_to_buy_pattern)
                 } else {
@@ -85,21 +87,29 @@ class HomeFragment : BaseFragment() {
                     logger.d("OnClickJoann failed")
                 }
             }
-            is HomeViewModel.Event.OnClickResumeRecent -> {
+            is HomeViewModel.Event.OnClickMyPatterns -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                    if (context?.let { Utility.getSharedPref(it) } != 0) {
-                        val bundle = bundleOf(
-                            "clickedID" to context?.let { Utility.getSharedPref(it) },
-                            "isFrom" to "RESUME_RECENT"
-                        )
-                        findNavController().navigate(R.id.action_home_to_pattern_details, bundle)
-                    } else {
-                        logger.d("OnClickResumeRecent - No Recent Resume Items")
-                    }
+                        val bundle = bundleOf("clickedID" to context?.let { Utility.getSharedPref(it) },"isFrom" to "RESUME_RECENT")
+                        findNavController().navigate(R.id.action_home_to_my_library,bundle)
                 } else {
                     logger.d("OnClickResumeRecent failed")
                 }
             }
+            HomeViewModel.Event.OnClickTutorial -> {
+               (activity as BottomNavigationActivity).hidemenu()
+                if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                    val bundle = bundleOf("isFromHome" to true)
+                    findNavController().navigate(R.id.action_home_to_tutorial,bundle)
+                } else {
+                    logger.d("OnClickJoann failed")
+                }
+            }
         }
+
+    private fun setHomeAdapter() {
+        val adapter = HomeAdapter()
+        recycler_view.adapter = adapter
+        adapter.viewModel = homeViewModel
+    }
 
 }

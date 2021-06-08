@@ -1,0 +1,74 @@
+{
+  "FAQ": [
+    {
+      "Ques": "Where do I buy new patterns?",
+      "Answ" : "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.<br><br>More patterns available at ditto.com",
+      "SubAnsw": [
+
+      ]
+    },
+    {
+      "Ques": "How to connect the projector?",
+      "Answ" : "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+      "SubAnsw": [
+        {
+          "title": "Calibration",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        },
+        {
+          "title": "Tutorial",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        },
+        {
+          "title": "How To",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        }
+      ]
+    },
+    {
+      "Ques": "Can I share the patterns to my customer?",
+      "Answ" : "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+      "SubAnsw": [
+        {
+          "title": "Calibration",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        },
+        {
+          "title": "Tutorial",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        },
+        {
+          "title": "How To",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        }
+      ]
+    },
+    {
+      "Ques": "How do i project the patterns?",
+      "Answ" : "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+      "SubAnsw": [
+        {
+          "title": "Calibration",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        },
+        {
+          "title": "Tutorial",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        },
+        {
+          "title": "How To",
+          "short_description": "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book.",
+          "image_path": ""
+        }
+      ]
+    }
+  ]
+}
