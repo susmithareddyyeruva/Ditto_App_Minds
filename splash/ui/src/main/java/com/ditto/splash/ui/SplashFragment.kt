@@ -12,8 +12,11 @@ import core.USER_EMAIL
 import core.USER_FIRST_NAME
 import core.USER_LAST_NAME
 import core.USER_PHONE
+import core.appstate.AppState
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject

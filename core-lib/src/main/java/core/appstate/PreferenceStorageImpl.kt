@@ -27,6 +27,16 @@ class PreferenceStorageImpl(private val context: Context) : PreferenceStorage {
         pref.edit().putBoolean(key, value).commit()
     }
 
+    override fun saveLong(key: String, value: Long) {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        pref.edit().putLong(key, value).commit()
+    }
+
+    override fun getLong(key: String): Long? {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return pref.getLong(key, 0)
+    }
+
     override fun clear() {
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val clear = pref.edit().clear().apply()

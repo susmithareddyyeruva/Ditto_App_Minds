@@ -3,9 +3,20 @@ package core.ui
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import core.OCAPI_PASSWORD
+import core.OCAPI_USERNAME
 import core.appstate.AppState
+import core.data.TokenRequest
+import core.data.TokenResultDomain
+import core.domain.GetTokenUseCase
 import core.event.UiEvents
 import core.lib.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
+import java.util.*
 import core.ui.common.MenuModel
 import java.util.ArrayList
 import java.util.HashMap
@@ -138,4 +149,6 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     sealed class Event {
         object NavigateToLogin : Event()
     }
+
+
 }

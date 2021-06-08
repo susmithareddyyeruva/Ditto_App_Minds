@@ -29,7 +29,9 @@ import com.ditto.tutorial.ui.di.TutorialFragmentModule
 import com.ditto.videoplayer.di.VideoPlayerFragmentModule
 import com.ditto.workspace.data.di.WorkspaceDataModule
 import com.ditto.workspace.ui.di.WorkspaceFragmentModule
+import core.data.di.TokenUsecaseModule
 import core.di.RetrofitModule
+import core.di.TokenApiModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -46,7 +48,7 @@ import javax.inject.Singleton
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
         WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,LoginApiModule::class,
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class,
-        CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class]
+        CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class]
 )
 @Singleton
 interface AppComponent : AndroidInjector<DittoApplication> {

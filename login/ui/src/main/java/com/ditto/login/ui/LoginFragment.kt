@@ -16,6 +16,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -70,6 +71,7 @@ class LoginFragment : BaseFragment(),Utility.CallbackDialogListener  {
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
         setViewpagerImageAdapter()
         setUIEvents()
+        sample()
         //setupKeyboardListener(binding.root) // call in OnCreate or similar
 
     }
@@ -190,6 +192,16 @@ class LoginFragment : BaseFragment(),Utility.CallbackDialogListener  {
         val bottom = lastChild.bottom + paddingBottom
         val delta = bottom - (scrollY + height)
         smoothScrollBy(0, delta) //***/2 *****3/2
+    }
+
+    private fun sample(){
+        if (Utility.isTokenExpired()){
+            viewModel.errorString.set("Token Expired ")
+            showSnackBar()
+        } else {
+            viewModel.errorString.set("Valid Token "+ AppState.getToken())
+            showSnackBar()
+        }
     }
 
     private fun showSnackBar() {
