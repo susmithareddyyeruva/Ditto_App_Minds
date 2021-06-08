@@ -377,7 +377,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             TransformErrorCode.FailToSetTransformParms, TransformErrorCode.MissingTransformParmsFile -> {
                 // what to do?
             }
+
         }
+
     }
 
     private suspend fun sendTransformedImage(result: Bitmap, isRecalibration: Boolean) {
@@ -578,12 +580,13 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarCalibration)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity?)?.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         (activity as BottomNavigationActivity).hidemenu()
-        toolbar.setNavigationOnClickListener {
+        binding.toolbarCalibration.setNavigationOnClickListener {
             activity?.onBackPressed()
             /*if(baseViewModel.activeSocketConnection.get()) {
                 Utility.sendDittoImage(requireContext(), "ditto_project")
