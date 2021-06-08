@@ -536,6 +536,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
+        if (baseViewModel.activeSocketConnection.get()) {
+            GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+        }
         val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(

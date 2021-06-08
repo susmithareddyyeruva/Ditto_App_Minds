@@ -326,6 +326,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     }
 
     private fun connectService() {
+        mPreviousServiceAvailable = false ;
         if (serviceList.isEmpty()) {   /* Showing BLE list if no serivce is found  */
             startBLESearch()
         } else {
@@ -377,14 +378,14 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
                 } else {
                     viewModel.isServiceError.set(true)
-                    showLayouts(false, false, false, true, false,"Connection Failed!")
+                    showLayouts(false, false, false, true, false,"Projector connection failed")
                 }
             } catch (e: ConnectException) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Connection Failed!")
+                showLayouts(false, false, false, true, false,"Projector connection failed!")
             } catch (e: Exception) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Connection Failed!")
+                showLayouts(false, false, false, true, false,"Projector connection failed!")
             } finally {
                 soc?.close()
             }
@@ -710,7 +711,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
                 if (mBluetoothLeService?.supportedGattServices == null) {
                     viewModel.isServiceError.set(true)
-                    showLayouts(false, false, false, true, false,"Connection failed!")
+                    showLayouts(false, false, false, true, false,"Projector connection failed!")
                     stopWaiting()
                 } else {
                     showLayouts(false, false, false, false, true,"")
@@ -735,7 +736,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVER_FAILURE == action) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Connection failed!")
+                showLayouts(false, false, false, true, false,"Projector connection failed!")
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_WIFI_FAILURE == action) {
                 viewModel.isWifiError.set(true)
@@ -1099,7 +1100,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         core.ui.common.Utility.getCommonAlertDialogue(
             this,
             "",
-            "Connection Failed!",
+            "Projector connection failed!",
             "CANCEL",
             "RETRY",
             this,

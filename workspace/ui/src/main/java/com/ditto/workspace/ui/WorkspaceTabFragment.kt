@@ -1920,6 +1920,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.WIFI -> {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
             }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+                showConnectivityPopup()
+            }
         }
     }
 

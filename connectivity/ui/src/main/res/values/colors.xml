@@ -8,6 +8,7 @@
     <color name="light_grey">#EEEEEE</color>
 
     <color name="black">#000000</color>
+    <color name="white">#FFF</color>
     <color name="error_text_code">#63666B</color>
     <color name="instruction_content_text">#4A4A4A</color>
 </resources>

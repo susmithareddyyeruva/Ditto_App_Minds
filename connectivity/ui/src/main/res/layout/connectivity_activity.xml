@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:layout_constraintGuide_percent=".15" />
+                            app:layout_constraintGuide_percent=".20" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/bottomlistbar_proj"
@@ -165,7 +165,7 @@
                             android:background="@android:color/white"
                             android:orientation="horizontal"
                             app:layout_constraintHeight_default="percent"
-                            app:layout_constraintHeight_percent=".15"
+                            app:layout_constraintHeight_percent=".20"
                             tools:ignore="MissingConstraints">
 
                             <TextView
@@ -173,23 +173,23 @@
                                 android:layout_height="match_parent"
                                 android:layout_alignParentLeft="true"
                                 android:background="@android:color/white"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/x_large_padding"
+                                android:paddingTop="@dimen/medium_padding"
                                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                                android:gravity="bottom"
-                                android:paddingLeft="20dp"
-                                android:layout_marginLeft="20dp"
                                 android:text="Select Projector"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/size_14sp"
+                                android:textSize="@dimen/size_16px"
                                 android:textStyle="bold" />
 
                             <ImageView
                                 android:id="@+id/refresh_proj"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
                                 android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="@dimen/x_large_padding"
+                                android:layout_centerInParent="true"
+                                android:layout_marginRight="@dimen/x_large_padding"
                                 android:background="@android:color/transparent"
                                 android:onClick="@{() ->viewmodel.onClickProjRefresh()}"
                                 android:src="@drawable/ic_refresh_proj" />
@@ -200,6 +200,7 @@
                             android:id="@+id/deviceList_proj"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:paddingLeft="@dimen/x_large_padding"
                             android:background="@android:color/white"
                             android:divider="@android:color/transparent"
                             android:nestedScrollingEnabled="true"
@@ -314,7 +315,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -325,7 +327,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:layout_constraintGuide_percent=".15" />
+                            app:layout_constraintGuide_percent=".20" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/bottomlistbar"
@@ -341,7 +343,7 @@
                             android:background="@android:color/white"
                             android:orientation="horizontal"
                             app:layout_constraintHeight_default="percent"
-                            app:layout_constraintHeight_percent=".15"
+                            app:layout_constraintHeight_percent=".20"
                             tools:ignore="MissingConstraints">
 
                             <TextView
@@ -350,21 +352,22 @@
                                 android:layout_alignParentLeft="true"
                                 android:background="@android:color/white"
                                 android:gravity="center"
-                                android:paddingLeft="20dp"
+                                android:paddingLeft="@dimen/x_large_padding"
+                                android:paddingTop="@dimen/medium_padding"
                                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:text="@string/select_bluetooth_device"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/size_14sp"
+                                android:textSize="@dimen/size_16px"
                                 android:textStyle="bold" />
 
                             <ImageView
                                 android:id="@+id/refresh"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="@dimen/x_large_padding"
+                                android:layout_centerInParent="true"
+                                android:layout_marginRight="@dimen/x_large_padding"
                                 android:background="@android:color/transparent"
                                 android:onClick="@{() ->viewmodel.onClickRefresh()}"
                                 android:src="@drawable/ic_refresh_proj" />
@@ -375,6 +378,7 @@
                             android:id="@+id/deviceList"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:paddingLeft="@dimen/x_large_padding"
                             android:background="@android:color/white"
                             android:divider="@android:color/transparent"
                             android:nestedScrollingEnabled="true"
@@ -400,7 +404,7 @@
                                 android:id="@+id/skip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:paddingRight="@dimen/xx_large_padding"
+                                android:paddingRight="@dimen/x_large_padding"
                                 android:background="@android:color/white"
                                 android:onClick="@{() ->viewmodel.onClickSkip()}"
                                 android:text="@string/skips"
