@@ -23,6 +23,7 @@
         app:layout_constraintGuide_percent=".17"/>
 
     <LinearLayout
+        android:id="@+id/linMain"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/start_text"
@@ -54,4 +55,35 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/textNegative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/large_padding"
+        android:text="NO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textPositive"
+        app:layout_constraintTop_toBottomOf="@+id/linMain"
+        android:fontFamily="@font/avenir_next_lt_pro_demi"
+        android:textColor="@android:color/black"
+        android:layout_marginEnd="52dp"
+        android:textSize="@dimen/alert_options_Text" />
+
+
+    <TextView
+        android:id="@+id/textPositive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YES"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linMain"
+        android:padding="@dimen/large_padding"
+        android:layout_marginEnd="@dimen/x_large_padding"
+        android:fontFamily="@font/avenir_next_lt_pro_demi"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/alert_options_Text"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

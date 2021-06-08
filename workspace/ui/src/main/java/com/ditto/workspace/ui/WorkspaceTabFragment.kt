@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -14,7 +13,6 @@ import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -117,7 +115,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
-            if(mWorkspaceEditor?.views?.any() ?: true){
+            if (mWorkspaceEditor?.views?.any() ?: true) {
                 enableSelectAll(false)
                 enableClear(false)
             }
@@ -154,7 +152,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(),true)
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true)
             }
         })
     }
@@ -839,7 +837,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
                     )
-                } else{
+                } else {
                     Log.d("Error", "Invalid currentDestination?.id")
                 }
             }
@@ -946,10 +944,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnClickPatternOrReference -> {
                 onUpdateFont()
             }
-            is WorkspaceViewModel.Event.DisableClear -> { enableClear(false)}
-            is WorkspaceViewModel.Event.EnableClear -> { enableClear(true)}
-            is WorkspaceViewModel.Event.DisableSelectAll -> { enableSelectAll(false)}
-            is WorkspaceViewModel.Event.EnableSelectAll -> { enableSelectAll(true)}
+            is WorkspaceViewModel.Event.DisableClear -> {
+                enableClear(false)
+            }
+            is WorkspaceViewModel.Event.EnableClear -> {
+                enableClear(true)
+            }
+            is WorkspaceViewModel.Event.DisableSelectAll -> {
+                enableSelectAll(false)
+            }
+            is WorkspaceViewModel.Event.EnableSelectAll -> {
+                enableSelectAll(true)
+            }
         }
 
     private fun onUpdateFont() {
@@ -1682,30 +1688,44 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         val layout =
             activity?.layoutInflater?.inflate(R.layout.alert_calibration_confirmation, null)
-
         val dialogBuilder =
-            AlertDialog.Builder(
-                ContextThemeWrapper(
-                    requireContext(),
-                    R.style.AlertDialogCustom
-                )
-            )
-        dialogBuilder
-            .setCancelable(false)
-            .setNegativeButton("NO",DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-            })
-            .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-                 sendBorderImage()
-            })
+            AlertDialog.Builder(requireContext())
+        dialogBuilder.setCancelable(false)
+        /*   val dialogBuilder =
+               AlertDialog.Builder(
+                   ContextThemeWrapper(
+                       requireContext(),
+                       R.style.AlertDialogCustom
+                   )
+               )*/
+
+        /*  dialogBuilder
+              .setCancelable(false)
+              .setNegativeButton("NO",DialogInterface.OnClickListener { dialog, id ->
+                  dialog.dismiss()
+              })
+              .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, id ->
+                  dialog.dismiss()
+                   sendBorderImage()
+              })*/
 
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
+        val negative = layout?.findViewById(R.id.textNegative) as TextView
+        val positive = layout.findViewById(R.id.textPositive) as TextView
+        positive.setOnClickListener {
+            sendBorderImage()
+        }
+        negative.setOnClickListener {
+            if (baseViewModel.activeSocketConnection.get()) {
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+            }
+            alert.dismiss()
+        }
     }
 
-    private fun sendBorderImage(){
+    private fun sendBorderImage() {
         if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
             showProgress(toShow = true)
             GlobalScope.launch { projectBorderImage() }
@@ -1731,26 +1751,43 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val layout =
             activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
 
-        val dialogBuilder =
-            AlertDialog.Builder(
-                ContextThemeWrapper(
-                    requireContext(),
-                    R.style.AlertDialogCustom
-                )
-            )
-        dialogBuilder
-            .setCancelable(false)
-            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
+        /* val dialogBuilder =
+             AlertDialog.Builder(
+                 ContextThemeWrapper(
+                     requireContext(),
+                     R.style.AlertDialogCustom
+                 )
+             )*/
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setCancelable(false)
+        /*.setNegativeButton(
+            getString(R.string.cancel),
+            DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
             })
-            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
+        .setPositiveButton(
+            getString(R.string.launch_camera),
+            DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 sendCalibrationPattern()
-            })
+            })*/
 
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
+        val negative = layout?.findViewById(R.id.textCancel) as TextView
+        val positive = layout.findViewById(R.id.textLaunch) as TextView
+        positive.setOnClickListener {
+            alert.dismiss()
+            sendCalibrationPattern()
+        }
+        negative.setOnClickListener {
+            if (baseViewModel.activeSocketConnection.get()) {
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+            }
+            alert.dismiss()
+
+        }
 //        val displayMetrics = DisplayMetrics()
 //        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
 //        val displayWidth: Int = displayMetrics.widthPixels
