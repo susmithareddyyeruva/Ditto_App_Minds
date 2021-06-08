@@ -13,6 +13,7 @@ import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -1691,37 +1692,21 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val dialogBuilder =
             AlertDialog.Builder(requireContext())
         dialogBuilder.setCancelable(false)
-        /*   val dialogBuilder =
-               AlertDialog.Builder(
-                   ContextThemeWrapper(
-                       requireContext(),
-                       R.style.AlertDialogCustom
-                   )
-               )*/
-
-        /*  dialogBuilder
-              .setCancelable(false)
-              .setNegativeButton("NO",DialogInterface.OnClickListener { dialog, id ->
-                  dialog.dismiss()
-              })
-              .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, id ->
-                  dialog.dismiss()
-                   sendBorderImage()
-              })*/
-
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
         val negative = layout?.findViewById(R.id.textNegative) as TextView
-        val positive = layout.findViewById(R.id.textPositive) as TextView
+        val positive = layout.findViewById(R.id.textYes) as TextView
         positive.setOnClickListener {
-            sendBorderImage()
+            alertCalibration.dismiss()
+           sendBorderImage()
         }
         negative.setOnClickListener {
+            alertCalibration.dismiss()
             if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
-            alert.dismiss()
+
         }
     }
 
@@ -1749,7 +1734,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
      */
     private fun showcalibrationbuttonclicked() {
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         /* val dialogBuilder =
              AlertDialog.Builder(
@@ -1772,33 +1757,35 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 sendCalibrationPattern()
             })*/
 
-        val alertCalibration = dialogBuilder.create()
-        alertCalibration.setView(layout)
-        alertCalibration.show()
-        val negative = layout?.findViewById(R.id.textCancel) as TextView
-        val positive = layout.findViewById(R.id.textLaunch) as TextView
-        positive.setOnClickListener {
-            alert.dismiss()
+        val alertCamera = dialogBuilder.create()
+        alertCamera.setView(layout)
+       // alertCamera.window?.setLayout(535,201)
+        alertCamera.show()
+        val cancel = layout?.findViewById(R.id.textCancel) as TextView
+        val launch = layout.findViewById(R.id.textLaunch) as TextView
+        launch.setOnClickListener {
+            alertCamera.dismiss()
             sendCalibrationPattern()
         }
-        negative.setOnClickListener {
+        cancel.setOnClickListener {
+            alertCamera.dismiss()
             if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
-            alert.dismiss()
+
 
         }
-//        val displayMetrics = DisplayMetrics()
-//        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-//        val displayWidth: Int = displayMetrics.widthPixels
-//        val displayHeight: Int = displayMetrics.heightPixels
-//        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-//        layoutParams.copyFrom(alertCalibration.window?.attributes)
-//        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-//        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-//        layoutParams.width = dialogWindowWidth
-//        layoutParams.height = dialogWindowHeight
-//        alertCalibration.window?.attributes = layoutParams
+       val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
+       val displayWidth: Int = displayMetrics.widthPixels
+       val displayHeight: Int = displayMetrics.heightPixels
+       val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(alertCamera.window?.attributes)
+      val dialogWindowWidth = (displayWidth * 0.8f).toInt()
+       val dialogWindowHeight = (displayHeight * 0.6f).toInt()
+       layoutParams.width = dialogWindowWidth
+      layoutParams.height = dialogWindowHeight
+        alertCamera.window?.attributes = layoutParams
     }
 
     private fun sendCalibrationPattern() {

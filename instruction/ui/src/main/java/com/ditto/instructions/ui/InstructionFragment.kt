@@ -12,12 +12,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -399,7 +397,7 @@ class InstructionFragment constructor(
     private fun showcalibrationbuttonclicked() {
         Log.d("Transform", "showcalibrationbuttonclicked")
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         val dialogBuilder =
             AlertDialog.Builder(

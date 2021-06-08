@@ -11,9 +11,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -606,7 +607,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
      */
     private fun showcalibrationbuttonclicked() {
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         val dialogBuilder =
             AlertDialog.Builder(
