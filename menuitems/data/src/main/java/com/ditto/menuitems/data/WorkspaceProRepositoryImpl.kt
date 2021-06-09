@@ -108,7 +108,7 @@ class WorkspaceProRepositoryImpl @Inject constructor(
                 //ContentApiFetchError(errorMessage, it)
             }*/
 
-        return ws_settings.postSettingRequest( CLIENT_ID,
+        return ws_settings.postSettingRequest( CLIENT_ID,"PATCH",
             data,
             AppState.getToken()!!)
             .subscribeOn(Schedulers.io())

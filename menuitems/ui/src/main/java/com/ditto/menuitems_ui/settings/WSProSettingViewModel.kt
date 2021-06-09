@@ -61,7 +61,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     private fun handleFetchResult(result: Result<LoginUser>?) {
         when (result) {
             is Result.OnSuccess<LoginUser> -> {
-                Log.d("WSProSettingViewModel", result.toString())
+                Log.d("WSProl12345", result.toString())
             }
 
             is Result.OnError -> {
