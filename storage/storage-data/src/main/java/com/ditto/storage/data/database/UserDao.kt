@@ -32,9 +32,8 @@ abstract class UserDao {
         isWifiLaterClicked: Boolean
     )
 
-    @Query("UPDATE user_data SET c_mirrorReminder=:cMirrorReminder , c_cuttingReminder=:cCuttingReminder,c_spliceReminder=:cSpliceReminder,c_spliceMultiplePieceReminder=:cSpliceMultiplePieceReminder WHERE id = :id")
+    @Query("UPDATE user_data SET c_mirrorReminder=:cMirrorReminder , c_cuttingReminder=:cCuttingReminder,c_spliceReminder=:cSpliceReminder,c_spliceMultiplePieceReminder=:cSpliceMultiplePieceReminder ")
     abstract fun updateWSSettingUser(
-        id: Int,
         cMirrorReminder: Boolean,
         cCuttingReminder: Boolean,
         cSpliceReminder: Boolean,

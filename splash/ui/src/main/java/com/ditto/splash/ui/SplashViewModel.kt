@@ -41,9 +41,10 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        if (Utility.isTokenExpired()){
+        /*if (Utility.isTokenExpired()){
             utility.refreshToken()
-        }
+        }*/
+        utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
             delay(3000)

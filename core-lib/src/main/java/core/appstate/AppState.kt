@@ -1,6 +1,7 @@
 package core.appstate
 
 import android.content.Context
+import core.CUST_ID
 
 object AppState {
     private var pref: PreferenceStorage? = null
@@ -38,5 +39,14 @@ object AppState {
     fun getExpiryTime() : Long? {
         val expTime = pref?.getLong(KEY_TOKEN_EXPIRY)
         return expTime
+    }
+
+    fun setCustID(customerID: String) {
+        pref?.saveString(CUST_ID, customerID)
+    }
+
+    fun getCustID(): String? {
+        val custid = pref?.getString(CUST_ID)
+        return custid
     }
 }

@@ -5,5 +5,5 @@ data class WSSettingsInputData(
     var c_spliceCutCompleteReminder: Boolean,
     var c_spliceReminder: Boolean,
     var c_spliceMultiplePieceReminder: Boolean,
-    var zoomNotification: Boolean
+    var c_receiveEmail: Boolean
 )

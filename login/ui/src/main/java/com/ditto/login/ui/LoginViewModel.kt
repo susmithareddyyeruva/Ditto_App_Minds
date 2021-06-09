@@ -95,6 +95,7 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
+                    AppState.setCustID(result.data.customer_id!!)
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
                         result.data.cSpliceCutCompleteReminder

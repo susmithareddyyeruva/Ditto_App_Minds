@@ -5,11 +5,14 @@ import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
+import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.LoginUser
 import com.ditto.menuitems.data.api.WsSettingsService
 import com.ditto.menuitems.domain.WorkspaceProRepository
+import com.ditto.menuitems.domain.model.LoginResult
 import com.ditto.menuitems.domain.model.WSSettingsInputData
+import com.ditto.menuitems.domain.model.WsSettingsPostError
 import com.ditto.storage.data.database.UserDao
 import core.CLIENT_ID
 import core.appstate.AppState
@@ -51,7 +54,6 @@ class WorkspaceProRepositoryImpl @Inject constructor(
     ): Single<Any> {
         return Single.fromCallable {
             dbDataDao.updateWSSettingUser(
-                id,
                 cMirrorReminder,
                 cCuttingReminder,
                 cSpliceReminder,
@@ -60,58 +62,20 @@ class WorkspaceProRepositoryImpl @Inject constructor(
         }
     }
 
-    /*override fun postSwitchData(data: WSSettingsInputData): Single<Boolean> {
-        if (!Utility.isNetworkAvailable(context)) {
-            return Single.just(Result.OnError(NoNetworkError()))
-        }
-        return ws_settings.postSettingRequest(
-            CLIENT_ID,
-            data
-        ).doOnSuccess(
+    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {
 
-            Log.d("Post", "*****Setting Post Success**")
-        ) .onErrorReturn {
-            var errorMessage = "Error Fetching data"
-            try {
-                logger.d("try block")
-                val error = it as HttpException
-                if (error != null) {
-                    logger.d("Error Onboarding")
-                }
-            } catch (e: Exception) {
-                Log.d("Catch", e.localizedMessage)
-                errorMessage = e.message.toString()
-            }
-            Result.withError(
-                WsSettingsPostError(errorMessage, it)
-            )
-        }
-    }*/
-
-    override fun postSwitchData(data: WSSettingsInputData): Single<Boolean> {
-        /* if (!Utility.isNetworkAvailable(context)) {
-             return Single.just(Result.OnError(NoNetworkError()))
-         }*/
-
-        /*return ws_settings.postSettingRequest(
-            CLIENT_ID,
+        return ws_settings.postSettingRequest( AppState.getCustID(),CLIENT_ID,
             data,
-            AppState.getToken()!!
-        ).doOnSuccess {
-
-            Log.d("Post", "*****Setting Post Success**")
-            Result.withValue(true)
-
-        }
-            .onErrorReturn {
-                            Result.withValue(false)
-                //ContentApiFetchError(errorMessage, it)
-            }*/
-
-        return ws_settings.postSettingRequest( CLIENT_ID,"PATCH",
-            data,
-            AppState.getToken()!!)
+            "Bearer "+AppState.getToken()!!)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread()).doOnSuccess {
+                /*dbDataDao.updateWSSettingUser(data.c_mirrorReminder,data.c_spliceCutCompleteReminder,
+                data.c_spliceReminder,data.c_spliceMultiplePieceReminder)*/
+                Result.withValue(it)
+            }.onErrorReturn {
+                Result.withError(
+                    WsSettingsPostError(it.cause!!.localizedMessage, it)
+                )
+            }
     }
 }

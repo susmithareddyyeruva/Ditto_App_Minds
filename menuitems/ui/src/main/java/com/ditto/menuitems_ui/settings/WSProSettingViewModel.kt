@@ -4,14 +4,18 @@ import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.menuitems.domain.GetWorkspaceProData
+import com.ditto.menuitems.domain.model.LoginResult
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -31,15 +35,16 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
 
-    private val isMirroringReminderChecked: ObservableBoolean = ObservableBoolean(false)
-    private val isCutNumberChecked: ObservableBoolean = ObservableBoolean(false)
-    private val isSplicingNotificationChecked: ObservableBoolean = ObservableBoolean(false)
-    private val isSplicingWithMultiplePieceChecked: ObservableBoolean = ObservableBoolean(false)
-    private val isClickToZoomNotification: ObservableBoolean = ObservableBoolean(false)
+     val isMirroringReminderChecked: ObservableBoolean = ObservableBoolean(false)
+     val isCutNumberChecked: ObservableBoolean = ObservableBoolean(false)
+     val isSplicingNotificationChecked: ObservableBoolean = ObservableBoolean(false)
+     val isSplicingWithMultiplePieceChecked: ObservableBoolean = ObservableBoolean(false)
+     val isClickToZoomNotification: ObservableBoolean = ObservableBoolean(false)
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
+    var userData: MutableLiveData<LoginUser> = MutableLiveData()
 
     init {
         if (Utility.isTokenExpired()) {
@@ -61,9 +66,9 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     private fun handleFetchResult(result: Result<LoginUser>?) {
         when (result) {
             is Result.OnSuccess<LoginUser> -> {
-                Log.d("WSProl12345", result.toString())
+                userData.value = result.data
+                resetData()
             }
-
             is Result.OnError -> {
                 Log.d("WSProSettingViewModel", "Failed")
             }
@@ -73,8 +78,11 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     // need to call on switch change
     private fun updateWSProSetting(){
         disposable += getWorkspaceProData.updateWSProSetting(
-            id = 1, cMirrorReminder = true, cCuttingReminder = true,
-            cSpliceMultiplePieceReminder = true, cSpliceReminder = true
+            id = 1, cMirrorReminder =  isMirroringReminderChecked.get(),
+            cCuttingReminder =  isCutNumberChecked.get(),
+            cSpliceReminder =  isSplicingNotificationChecked.get(),
+            cSpliceMultiplePieceReminder =  isSplicingWithMultiplePieceChecked.get()
+
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { it }
@@ -120,11 +128,13 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     }
 
 
-    private fun handleFetchResultSecond(result: Boolean) {
+    private fun handleFetchResultSecond(result: Result<LoginResult>) {
         uiEvents.post(Event.OnHideProgress)
-        when (result) {
-            else ->""
-        }
+        updateWSProSetting()
+    }
+
+    private fun onFetchComplete(){
+        uiEvents.post(Event.OnFetchComplete)
     }
 
     private fun handleError(error: Error) {
@@ -141,18 +151,24 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
      * Events for this view model
      */
     sealed class Event {
-        object isMirrorChecked : Event()
+   /*     object isMirrorChecked : Event()
         object isCutNumberChecked : Event()
         object isSplicingNotificationChecked : Event()
         object isSplicingMultipleChecked : Event()
-        object isZoomNotificationChecked : Event()
+        object isZoomNotificationChecked : Event()*/
 
         object OnShowProgress : Event()
         object OnHideProgress : Event()
-        /**
-         * Event emitted by [events] when the data updated successfully
-         */
-        object onResponseFailed : Event()
+        object OnFetchComplete : Event()
 
+
+    }
+
+    private fun resetData(){
+        isMirroringReminderChecked.set(userData.value?.cMirrorReminder!!)
+        isCutNumberChecked.set(userData.value?.cCuttingReminder!!)
+         isSplicingNotificationChecked.set(userData.value?.cSpliceCutCompleteReminder!!)
+         isSplicingWithMultiplePieceChecked.set(userData.value?.cSpliceMultiplePieceReminder!!)
+        onFetchComplete()
     }
 }

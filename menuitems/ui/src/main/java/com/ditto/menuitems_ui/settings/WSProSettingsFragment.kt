@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.ditto.menuitems_ui.databinding.WorkspaceSettingsFragmentBinding
 import core.appstate.AppState
 import core.ui.BaseFragment
@@ -37,33 +39,39 @@ class WSProSettingsFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
         viewModel.fetchUserData()
-        handleSwitchListener()
-//        if (savedInstanceState == null) {
-//            viewModel.disposable += viewModel.events
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe {
-//                    handleEvent(it)   //Observing UI event
-//                }
-//
-//        }
+        if (savedInstanceState == null) {
+            viewModel.disposable += viewModel.events
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    handleEvent(it)
+                }
+
+        }
     }
 
-    fun handleSwitchListener(){
+    private fun handleEvent(event: WSProSettingViewModel.Event) =
+        when (event) {
+            WSProSettingViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
+            WSProSettingViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
+            WSProSettingViewModel.Event.OnFetchComplete -> handleSwitchListener()
+        }
+
+    private fun handleSwitchListener(){
         switch_mirroringreminder.setOnCheckedChangeListener { buttonView, isChecked ->
-                viewModel.setMirrorReminderData(isChecked)
-            viewModel.postBooleanDataForSettings()
+            viewModel.setMirrorReminderData(isChecked)
+            //viewModel.postBooleanDataForSettings()
         }
         switch_splicing.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setSplicingNotification(isChecked)
-            viewModel.postBooleanDataForSettings()
+            //viewModel.postBooleanDataForSettings()
         }
         switch_multiple_piece.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setSplicingWithMultiple(isChecked)
-            viewModel.postBooleanDataForSettings()
+            //viewModel.postBooleanDataForSettings()
         }
         switch_cutnumber.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setCutNumberSplicing(isChecked)
-            viewModel.postBooleanDataForSettings()
+            //viewModel.postBooleanDataForSettings()
         }
 
     }

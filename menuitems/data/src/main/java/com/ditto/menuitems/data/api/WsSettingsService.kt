@@ -1,15 +1,18 @@
 package com.ditto.menuitems.data.api
 
+import com.ditto.menuitems.domain.model.LoginResult
 import com.ditto.menuitems.domain.model.WSSettingsInputData
+import core.appstate.AppState
 import io.reactivex.Single
+import okhttp3.Response
 import retrofit2.http.*
-
+import non_core.lib.Result
 
 interface WsSettingsService {
     @Headers("Content-Type: application/json")
-    @POST("customers/abMatN21nYy5GCJAcnrdNOof5p?")
+    @POST("customers/{Customer_ID}?method=PATCH")
     fun postSettingRequest(
+        @Path("Customer_ID") custid : String?,
         @Query("client_id") client_id: String?,
-        @Query("method") method: String,
-        @Body settingsData: WSSettingsInputData, @Header("Authorization") header:String): Single<Boolean>
+        @Body settingsData: WSSettingsInputData, @Header("Authorization") header:String): Single<Result<LoginResult>>
 }
