@@ -27,30 +27,30 @@ class WsSettingsRepositoryImpl @Inject constructor(
         loggerFactory.create(WsSettingsRepositoryImpl::class.java.simpleName)
     }
 
-    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {
-        if (!Utility.isNetworkAvailable(context)) {
-            return Single.just(Result.OnError(NoNetworkError()))
-        }
-        return ws_settings.postSettingRequest(
-            CLIENT_ID,
-            data
-        ).doOnSuccess(
-            Log.d("Post", "*****Setting Post Success**")
-        ) .onErrorReturn {
-            var errorMessage = "Error Fetching data"
-            try {
-                logger.d("try block")
-                val error = it as HttpException
-                if (error != null) {
-                    logger.d("Error Onboarding")
-                }
-            } catch (e: Exception) {
-                Log.d("Catch", e.localizedMessage)
-                errorMessage = e.message.toString()
-            }
-            Result.withError(
-                WsSettingsPostError(errorMessage, it)
-            )
-        }
-    }
+//    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {
+//        if (!Utility.isNetworkAvailable(context)) {
+//            return Single.just(Result.OnError(NoNetworkError()))
+//        }
+//        return ws_settings.postSettingRequest(
+//            CLIENT_ID,
+//            data
+//        ).doOnSuccess(
+//            Log.d("Post", "*****Setting Post Success**")
+//        ) .onErrorReturn {
+//            var errorMessage = "Error Fetching data"
+//            try {
+//                logger.d("try block")
+//                val error = it as HttpException
+//                if (error != null) {
+//                    logger.d("Error Onboarding")
+//                }
+//            } catch (e: Exception) {
+//                Log.d("Catch", e.localizedMessage)
+//                errorMessage = e.message.toString()
+//            }
+//            Result.withError(
+//                WsSettingsPostError(errorMessage, it)
+//            )
+//        }
+//    }
 }

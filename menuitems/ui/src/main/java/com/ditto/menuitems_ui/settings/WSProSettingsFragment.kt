@@ -35,6 +35,7 @@ class WSProSettingsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
+        viewModel.fetchUserData()
         handleSwitchListener()
 //        if (savedInstanceState == null) {
 //            viewModel.disposable += viewModel.events

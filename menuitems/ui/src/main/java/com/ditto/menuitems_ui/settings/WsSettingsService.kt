@@ -6,6 +6,7 @@ import com.ditto.menuitems_ui.settings.model.WSSettingsInputData
 import io.reactivex.Single
 import retrofit2.http.*
 
+
 interface WsSettingsService {
     @Headers("Content-Type: application/json")
     @POST("customers/auth?")

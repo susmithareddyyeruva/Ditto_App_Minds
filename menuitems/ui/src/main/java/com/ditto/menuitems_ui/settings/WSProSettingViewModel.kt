@@ -1,10 +1,13 @@
 package com.ditto.menuitems_ui.settings
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.domain.LoginUser
+import com.ditto.menuitems.domain.GetWorkspaceProData
 import com.ditto.menuitems_ui.settings.data.LoginResult
 import com.ditto.menuitems_ui.settings.model.WSSettingsInputData
 import core.event.UiEvents
@@ -23,6 +26,7 @@ import javax.inject.Inject
 class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                                                 private val context: Context,
                                                 val useCase:UseCases,
+                                                private val getWorkspaceProData: GetWorkspaceProData,
                                                 val loggerFactory: LoggerFactory
 ) : BaseViewModel() {
     // TODO: Implement the ViewModel
@@ -48,6 +52,37 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     val logger: Logger by lazy {
         loggerFactory.create(WSProSettingViewModel::class.java.simpleName)
     }
+
+    fun fetchUserData() {
+        disposable += getWorkspaceProData.getUserDetails()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }
+    }
+
+    private fun handleFetchResult(result: Result<LoginUser>?) {
+        when (result) {
+            is Result.OnSuccess<LoginUser> -> {
+                Log.d("WSProSettingViewModel", result.toString())
+            }
+
+            is Result.OnError -> {
+                Log.d("WSProSettingViewModel", "Failed")
+            }
+        }
+    }
+
+    // need to call on switch change
+    private fun updateWSProSetting(){
+        disposable += getWorkspaceProData.updateWSProSetting(
+            id = 1, cMirrorReminder = true, cCuttingReminder = true,
+            cSpliceMultiplePieceReminder = true, cSpliceReminder = true
+        ).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { it }
+    }
+
+
 
     fun setMirrorReminderData(value:Boolean){
         isMirroringReminderChecked.set(value)
@@ -83,11 +118,11 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResult(it) }
+            .subscribeBy { handleFetchResultSecond(it) }
     }
 
 
-    private fun handleFetchResult(result: Result<LoginResult>) {
+    private fun handleFetchResultSecond(result: Result<LoginResult>) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             else ->""
