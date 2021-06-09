@@ -106,11 +106,16 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 R.drawable.checkbox_checked_ws else R.drawable.checkbox_unchecked_ws
         )
         holder.patternsPiecesBinding.cutComplete.setOnClickListener {
-            patternPieces[position].isCompleted = !patternPieces[position].isCompleted
-            notifyDataSetChanged()
             val count = patternPieces[position].cutQuantity.get(4)
                 ?.let { Character.getNumericValue(it) }
-            viewModel.cutCheckBoxClicked(count)
+            patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+            notifyDataSetChanged()
+            if (patternPieces[position].isCompleted){
+                viewModel.cutCheckBoxClicked(count,true)
+            } else {
+                viewModel.cutCheckBoxClicked(count,false)
+            }
+
         }
         holder.patternsPiecesBinding.imageView.setOnLongClickListener {
             val state = DragData(

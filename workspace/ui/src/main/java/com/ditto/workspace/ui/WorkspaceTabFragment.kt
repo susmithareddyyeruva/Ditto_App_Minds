@@ -144,7 +144,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         activity?.onBackPressed()
                         baseViewModel.isSaveExitButtonClicked.set(false)
                     } else {
-                        showSaveAndExitPopup()
+                        //showSaveAndExitPopup()
+                        moveToLibrary()
                     }
                 }
             }
@@ -186,7 +187,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         adapter?.viewModel = viewModel
     }
 
-    private fun refreshPatternPiecesAdapter() {
+     private  fun refreshPatternPiecesAdapter() {
+        com.ditto.workspace.ui.util.Utility.progressCount.set(0)
         binding.recyclerViewPieces.adapter?.notifyDataSetChanged()
     }
 
@@ -583,6 +585,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     fun clearWorkspace() {
+
+        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0){
+            viewModel.clickReset()
+        }
         binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
             R.drawable.ic_workspace_new
         )
@@ -669,7 +675,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnClickSaveAndExit -> {
                 if (!baseViewModel.isProjecting.get()) {
                     binding.buttonSaveAndExit.isEnabled = false
-                    showSaveAndExitPopup()
+                    //showSaveAndExitPopup()
+                    moveToLibrary()
                 } else {
                     showWaitingMessage("Projection is under process.. Please wait")
                 }
@@ -1376,6 +1383,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     override fun onExitButtonClicked() {
+        moveToLibrary()
+    }
+
+    private fun moveToLibrary(){
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch {
                 Utility.sendDittoImage(

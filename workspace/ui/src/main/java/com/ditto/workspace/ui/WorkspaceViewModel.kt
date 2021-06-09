@@ -293,8 +293,12 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun cutCheckBoxClicked(count: Int?) {
-
+    fun cutCheckBoxClicked(count: Int?, isChecked : Boolean) {
+        if (isChecked){
+            Utility.progressCount.set(Utility.progressCount.get() + count!!)
+        } else {
+            Utility.progressCount.set(Utility.progressCount.get() - count!!)
+        }
     }
 
     fun clickReset() {
