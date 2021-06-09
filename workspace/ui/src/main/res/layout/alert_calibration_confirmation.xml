@@ -46,7 +46,7 @@
             android:text="@string/tittle_calibrate"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/size_16px" />
+            android:textSize="@dimen/calibrate_alert_textsize" />
 
         <TextView
             android:id="@+id/message"
@@ -56,7 +56,7 @@
             android:layout_marginTop="@dimen/size_16px"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/size_16px" />
+            android:textSize="@dimen/calibrate_alert_textsize" />
 
 
     </LinearLayout>

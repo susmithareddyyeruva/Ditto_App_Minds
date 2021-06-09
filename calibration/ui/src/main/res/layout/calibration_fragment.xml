@@ -190,9 +190,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_lt_pro_regular"
                         android:text="@string/processing"
-                        android:layout_marginTop="@dimen/process_text"
+                        android:layout_marginTop="@dimen/process_text_top"
                         android:textColor="@color/White"
-                        android:textSize="@dimen/size_12px"
+                        android:textSize="@dimen/process_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/animationView" />
