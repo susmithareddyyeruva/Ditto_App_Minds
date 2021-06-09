@@ -37,7 +37,7 @@
     <string name="ok">OK</string>
     <string name="reference_layout">Reference Layout</string>
     <string name="pattern_pieces">Pattern Pieces</string>
-    <string name="recalibrate">Recalibrate</string>
+    <string name="recalibrate">Calibrate</string>
     <string name="connect">Connect</string>
     <string name="seek_text"> <font color="red"> %1$d</font>/%2$d </string>
     <string name="splice_text"> Spliced screen %1$d of %2$d</string>
@@ -75,4 +75,7 @@
     <string name="str_cancel">CANCEL</string>
     <string name="alert_no">NO</string>
     <string name="alert_yes">YES</string>
+    <string name="str_recalib">Re-Calibrate</string>
+    <string name="str_calib">Calibrate</string>
+    <string name="str_connect">Connect</string>
 </resources>

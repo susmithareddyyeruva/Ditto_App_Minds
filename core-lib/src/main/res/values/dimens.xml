@@ -14,6 +14,7 @@
     <dimen name="large_padding">15dp</dimen>
     <dimen name="bottom_common">40dp</dimen>
     <dimen name="x_large_padding">30dp</dimen>
+    <dimen name="xx_large_padding">51dp</dimen>
     <dimen name="text_header">20sp</dimen>
     <dimen name="text_desc">12sp</dimen>
     <dimen name="text_menu">14sp</dimen>
@@ -29,7 +30,7 @@
     <dimen name="alert_message_Text">16sp</dimen>
     <dimen name="alert_padding">11dp</dimen>
     <dimen name="alert_oprion_padding">28dp</dimen>
-    <dimen name="alert_image_top">30dp</dimen>
+    <dimen name="alert_image_top">43dp</dimen>
     <dimen name="alert_otpions_bottom">22dp</dimen>
     <dimen name="alert_otpions_top">20dp</dimen>
 

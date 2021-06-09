@@ -9,6 +9,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -20,6 +21,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -52,7 +54,14 @@ class Utility {
         CUT_BIN_ALL,
         PATTERN_RENAME,
         NETWORK,
-        PDF
+        PDF,
+        CONNECTIVITY
+    }
+
+
+    enum class Iconype {
+        SUCCESS,
+        FAILED
     }
 
     companion object {
@@ -331,23 +340,23 @@ class Utility {
                         dataOutputStream.close()
                     } else {
                         println("Socket Connection Failed")
-                        withContext(Dispatchers.Main) {
+                        /*withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
                                 "Socket Connection failed. Try again!!",
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }
+                        }*/
                     }
                 } catch (e: Exception) {
                     println("Socket Connection Failed")
-                    withContext(Dispatchers.Main) {
+                   /* withContext(Dispatchers.Main) {
                         Toast.makeText(
                             context,
                             "Socket Connection failed. Try again!!",
                             Toast.LENGTH_SHORT
                         ).show()
-                    }
+                    }*/
                 } finally {
                     soc?.close()
                     Log .d("TRACE_ Projection :","Send Ditto Finish " + Calendar. getInstance().timeInMillis)
@@ -394,11 +403,13 @@ class Utility {
         @SuppressLint("ResourceType")
         fun getCommonAlertDialogue(
             context: Context,
+            title: String,
             alertmessage: String,
             negativeButton: String,
             positiveButton: String,
-            callbackDialogListener: CallbackDialogListener,
-            alertType:AlertType
+            customcallbackDialogListener: CustomCallbackDialogListener,
+            alertType:AlertType,
+            imgtyp : Iconype
         ) {
             val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
             val dialogBuilder =  AlertDialog.Builder(context)
@@ -407,19 +418,55 @@ class Utility {
             alert.setCancelable(false)
             alert.show()
             alert.window?.setBackgroundDrawable(null)
-            val message = mDialogView.findViewById(R.id.alert_message) as TextView
-            message.text = alertmessage
-            val negative = mDialogView.findViewById(R.id.neg_text) as TextView
-            negative.text = negativeButton
-            val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
-            positive.text = positiveButton
-            negative.setOnClickListener {
-                alert.dismiss()
-                callbackDialogListener.onNegativeButtonClicked(alertType)
-            }
-            positive.setOnClickListener {
-                alert.dismiss()
-                callbackDialogListener.onPositiveButtonClicked(alertType)
+            val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
+            val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
+            if (alertType == AlertType.BLE || alertType == AlertType.WIFI){
+                lay_withimage.visibility = View.GONE
+                lay_withoutimage.visibility = View.VISIBLE
+
+                val title_common = mDialogView.findViewById(R.id.common_title) as TextView
+                title_common.text = title
+                val message_common = mDialogView.findViewById(R.id.common_message) as TextView
+                message_common.text = alertmessage
+                val neg_text_common = mDialogView.findViewById(R.id.neg_text_common) as TextView
+                neg_text_common.text = negativeButton
+                val pos_text_common = mDialogView.findViewById(R.id.pos_txt_common) as TextView
+                pos_text_common.text = positiveButton
+                neg_text_common.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
+                }
+                pos_text_common.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
+                }
+
+            } else {
+                lay_withimage.visibility = View.VISIBLE
+                lay_withoutimage.visibility = View.GONE
+
+                val message = mDialogView.findViewById(R.id.alert_message) as TextView
+                message.text = alertmessage
+                val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+                negative.text = negativeButton
+                val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+                positive.text = positiveButton
+                val icon = mDialogView.findViewById(R.id.img_icon) as ImageView
+                if (imgtyp.equals(Iconype.SUCCESS)){
+                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
+                } else  if (imgtyp.equals(Iconype.FAILED)){
+                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                } else {
+                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                }
+                negative.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
+                }
+                positive.setOnClickListener {
+                    alert.dismiss()
+                    customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
+                }
             }
         }
 
@@ -456,6 +503,7 @@ class Utility {
                 alert.dismiss()
                 callbackDialogListener.onPositiveButtonClicked(alertType)
             }
+
         }
 
     }
@@ -464,6 +512,11 @@ class Utility {
         fun onPositiveButtonClicked(alertType: AlertType)
         fun onNegativeButtonClicked(alertType: AlertType)
         fun onNeutralButtonClicked()
+    }
+
+    interface CustomCallbackDialogListener {
+        fun onCustomPositiveButtonClicked(iconype: Iconype,alertType: AlertType)
+        fun onCustomNegativeButtonClicked(iconype: Iconype,alertType: AlertType)
     }
 
 }

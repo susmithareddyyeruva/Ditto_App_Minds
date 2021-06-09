@@ -70,6 +70,7 @@ class WorkspaceViewModel @Inject constructor(
 
     val showDoubleTouchToZoom: ObservableBoolean = ObservableBoolean(true)
     var referenceImage: ObservableField<String> = ObservableField("")
+    var calibrationText: ObservableField<String> = ObservableField("")
     var selectAllText: ObservableField<String> = ObservableField("Select All")
     val isSpliceRightVisible: ObservableBoolean = ObservableBoolean(false)
     val isSpliceLeftVisible: ObservableBoolean = ObservableBoolean(false)

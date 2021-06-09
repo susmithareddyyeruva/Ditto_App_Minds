@@ -72,7 +72,8 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListener,
-    Utility.CallbackDialogListener, com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
+    Utility.CallbackDialogListener, com.ditto.workspace.ui.util.Utility.CallbackDialogListener,
+    Utility.CustomCallbackDialogListener{
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -219,8 +220,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    private fun setupKeyboardListener(view: View) {
-        view.viewTreeObserver.addOnGlobalLayoutListener {
+    private fun setupKeyboardListener(view: View?) {
+        view?.viewTreeObserver?.addOnGlobalLayoutListener {
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
@@ -425,11 +426,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     withContext(Dispatchers.Main) {
                         logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar.getInstance().timeInMillis)
                         showProgress(false)
-                        Toast.makeText(
+                        /*Toast.makeText(
                             requireContext(),
                             resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
-                        ).show()
+                        ).show()*/
+                        showFailurePopup()
                     }
                 }
             } catch (e: Exception) {
@@ -440,11 +442,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 withContext(Dispatchers.Main) {
                     logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar.getInstance().timeInMillis)
                     showProgress(false)
-                    Toast.makeText(
+                    /*Toast.makeText(
                         requireContext(),
                         resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
-                    ).show()
+                    ).show()*/
+                    showFailurePopup()
                 }
             } finally {
                 clientSocket?.close()
@@ -1616,7 +1619,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showBluetoothDialogue() {
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.ble_connectivity),
@@ -1624,12 +1627,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.turnon),
             this,
             Utility.AlertType.BLE
+        )*/
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs Bluetooth connectivity",
+            "LATER",
+            resources.getString(R.string.turnon),
+            this,
+            Utility.AlertType.BLE,
+            Utility.Iconype.SUCCESS
         )
     }
 
     private fun showWifiDialogue() {
 
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.wifi_connectivity),
@@ -1637,6 +1651,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.settings),
             this,
             Utility.AlertType.WIFI
+        )*/
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs WiFi connectivity",
+            "LATER",
+            "SETTINGS",
+            this,
+            Utility.AlertType.WIFI,
+            Utility.Iconype.SUCCESS
         )
 
     }
@@ -1849,28 +1874,30 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     baseViewModel.activeSocketConnection.set(false)
                     baseViewModel.isProjecting.set(false)
                     viewModel.isProjectionRequest.set(false)
-                    withContext(Dispatchers.Main) {
+                    showFailurePopup()
+                    /*withContext(Dispatchers.Main) {
                         showProgress(toShow = false)
                         Toast.makeText(
                             requireContext(),
                             resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
                         ).show()
-                    }
+                    }*/
                 }
             } catch (e: Exception) {
                 baseViewModel.activeSocketConnection.set(false)
                 baseViewModel.isProjecting.set(false)
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
-                withContext(Dispatchers.Main) {
+                showFailurePopup()
+               /* withContext(Dispatchers.Main) {
                     showProgress(toShow = false)
                     Toast.makeText(
                         requireContext(),
                         resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+                }*/
             } finally {
                 soc?.close()
             }
@@ -1920,6 +1947,63 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
     }
+    private fun showFailurePopup(){
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            "Projector connection failed",
+            "CANCEL",
+            "RETRY",
+            this,
+            Utility.AlertType.CONNECTIVITY,
+            Utility.Iconype.FAILED
+        )
 
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                val mBluetoothAdapter =
+                    BluetoothAdapter.getDefaultAdapter()
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
+            Utility.AlertType.WIFI -> {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+            }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+                showConnectivityPopup()
+            }
+        }
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                logger.d("Later clicked")
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isBleLaterClicked.set(true)
+            }
+            Utility.AlertType.WIFI -> {
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isWifiLaterClicked.set(true)
+            }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+            }
+        }
+    }
 
 }

@@ -15,6 +15,7 @@ import android.net.nsd.NsdServiceInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelUuid
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -32,7 +33,9 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_projector_connection.*
 import kotlinx.coroutines.*
 import java.io.DataInputStream
+import java.lang.reflect.Field
 import java.net.InetSocketAddress
+import java.net.NetworkInterface
 import java.net.ServerSocket
 import java.net.Socket
 import java.util.*
@@ -50,6 +53,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     var wifiConnectionWaitingJob: Job? = null
     private lateinit var imageBitMap: Bitmap
     private var wifiReceiver: WifiConnectionListener? = null
+    var deviceid : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +71,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
             }
         startBLE()
         initapp()
+        deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+        title_proj.text = "Ditto Projector "+"( ID : DITTO_"+deviceid+" )"
     }
 
     /**
@@ -300,7 +306,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         initializeRegistrationListener()
         val serviceInfo = NsdServiceInfo()
         serviceInfo.port = port
-        serviceInfo.serviceName = viewModel.mServiceName
+        //viewModel.mServiceName.set("DITTO_"+viewModel.mBluetoothManager!!.adapter.address)
+        viewModel.mServiceName.set("DITTO_"+deviceid)
+        serviceInfo.serviceName = viewModel.mServiceName.get()
         serviceInfo.serviceType = viewModel.SERVICE_TYPE
         Log.d("CONNECTIVITY_PROJECTOR", "register Service- $serviceInfo")
         viewModel.mNsdManager = (this.getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
@@ -310,15 +318,17 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 viewModel.mRegistrationListener
             )
         }
+
     }
+
 
     private fun initializeRegistrationListener() {
         viewModel.mRegistrationListener = object : NsdManager.RegistrationListener {
 
             override fun onServiceRegistered(nsdServiceInfo: NsdServiceInfo) {
                 Log.d("CONNECTIVITY_PROJECTOR", "onServiceRegistered- $nsdServiceInfo")
-                viewModel.mServiceName = nsdServiceInfo.serviceName
-                onNsdServiceRegistered(viewModel.mServiceName)
+                viewModel.mServiceName.set(nsdServiceInfo.serviceName)
+                onNsdServiceRegistered(viewModel.mServiceName.get()!!)
             }
 
             override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
@@ -362,9 +372,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun showToast() {
-        this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
+        /*this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
             Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_LONG).show()
-        })
+        })*/
     }
 
     /**
@@ -396,7 +406,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         Log.d("CONNECTIVITY_PROJECTOR", "onNsdServiceRegistered- $mservicename")
         viewModel.isNsdRegistered.set(true)
         viewModel.serviceconnectionstatus.set(mservicename + " Registered Successfully")
-        viewModel.sendResponseToClient(this, getString(R.string.successmessage))
+        viewModel.sendResponseToClient(this, getString(R.string.successmessage)+","+mservicename)
+        viewModel.startConnection()
         /*if (viewModel.isCallfromBle.get()) {
             viewModel.sendResponseToClient(this,getString(R.string.successmessage))
         } else {
@@ -427,7 +438,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                     mConnectionServerSocket.reuseAddress = true;
                     mConnectionServerSocket.bind(InetSocketAddress(mServerPort));
                     //mConnectionSocket = mConnectionServerSocket.accept()
-                    viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
+                    //viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
                     startImageReceivingConnection()
                 } catch (e: Exception) {
                     Log.d("CONNECTIVITY_PROJECTOR", "startServerConnection - $e")
@@ -452,7 +463,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             DataInputStream(mConnectionSocket.getInputStream())
                         if (datainput != null) {
                             val imageBytes: ByteArray = datainput.readBytes()
-                            viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
+                            //viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
+                            viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
                             withContext(Dispatchers.Main) {
                                 showToast()
                                 if (imageBytes.isNotEmpty()) {

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="40dp"
     android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
         android:background="@android:color/white"
         android:orientation="vertical">
 
@@ -17,17 +16,18 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:text="address"
-            android:textSize="@dimen/size_12px"
+            android:textSize="5dp"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/device_name"
+            android:id="@+id/service_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
             android:paddingTop="3dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:background="@android:color/white"
-            android:textSize="@dimen/size_24px" />
+            android:textSize="@dimen/size_16px" />
 
 
     </LinearLayout>
