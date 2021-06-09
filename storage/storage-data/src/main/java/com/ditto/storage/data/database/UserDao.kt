@@ -32,6 +32,15 @@ abstract class UserDao {
         isWifiLaterClicked: Boolean
     )
 
+    @Query("UPDATE user_data SET c_mirrorReminder=:cMirrorReminder , c_cuttingReminder=:cCuttingReminder,c_spliceReminder=:cSpliceReminder,c_spliceMultiplePieceReminder=:cSpliceMultiplePieceReminder WHERE id = :id")
+    abstract fun updateWSSettingUser(
+        id: Int,
+        cMirrorReminder: Boolean,
+        cCuttingReminder: Boolean,
+        cSpliceReminder: Boolean,
+        cSpliceMultiplePieceReminder: Boolean
+    )
+
 
     /**
      * Sets the [User]. This method guarantees that only one

@@ -31,6 +31,7 @@ class WSProSettingsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
+        viewModel.fetchUserData()
     }
     private fun setuptoolbar(){
         bottomNavViewModel.visibility.set(false)
