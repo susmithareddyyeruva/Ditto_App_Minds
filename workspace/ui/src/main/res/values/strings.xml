@@ -31,6 +31,7 @@
     <string name="splicing_required_message">This is a large piece which required splicing. This piece can\'t be projected at the same time as other pieces.</string>
     <string name="mirror">Mirror</string>
     <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string>
+    <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="cancel">CANCEL</string>
     <string name="empty_string"></string>
     <string name="ok">OK</string>
@@ -59,7 +60,7 @@
     <string name="double_tap_to_zoom">Double tap to zoom in / zoom out</string>
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
-    <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
+    <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
     <string name="socketfailed">Socket Connection failed. Try again!!</string>
     <string name="renameproject">Rename Project</string>
     <string name="rename">RENAME</string>
@@ -72,6 +73,8 @@
     <string name="str_unable_to_load">Unable to load the file. Please try again!</string>
     <string name="str_retry">RETRY</string>
     <string name="str_cancel">CANCEL</string>
+    <string name="alert_no">NO</string>
+    <string name="alert_yes">YES</string>
     <string name="str_recalib">Re-Calibrate</string>
     <string name="str_calib">Calibrate</string>
     <string name="str_connect">Connect</string>

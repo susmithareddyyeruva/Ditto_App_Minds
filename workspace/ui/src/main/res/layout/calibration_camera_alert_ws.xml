@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@drawable/alert_bg"
     android:layout_height="wrap_content"
     android:paddingStart="@dimen/large_padding"
     android:paddingTop="@dimen/large_padding"
@@ -12,16 +13,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.42" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".45" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/alertImage"
-        android:layout_width="@dimen/size_0dp"
-        android:layout_height="@dimen/size_0dp"
+        android:layout_width="201dp"
+        android:layout_height="136dp"
+        android:layout_marginTop="@dimen/large_padding"
+        android:layout_marginBottom="@dimen/x_large_padding"
         android:contentDescription="@string/camera_alert"
         android:src="@drawable/calibration_camera"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="201:136"
         app:layout_constraintEnd_toEndOf="@+id/guideline_center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,10 +44,37 @@
         android:text="@string/camera_alert"
         android:textColor="@android:color/black"
         android:textSize="@dimen/camera_alert"
+
         app:layout_constraintBottom_toBottomOf="@+id/alertImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline_center"
         app:layout_constraintTop_toTopOf="@+id/alertImage"
         app:layout_constraintVertical_bias=".3" />
+
+    <TextView
+        android:id="@+id/textCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_lt_pro_demi"
+        android:padding="@dimen/large_padding"
+        android:text="@string/cancel"
+        app:layout_constraintStart_toStartOf="@+id/guide_button"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/alert_options_Text"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textLaunch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x_large_padding"
+        android:fontFamily="@font/avenir_next_lt_pro_demi"
+        android:padding="@dimen/large_padding"
+        android:text="@string/launch_camera"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/alert_options_Text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

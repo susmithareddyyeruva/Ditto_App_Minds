@@ -11,9 +11,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -632,7 +633,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
      */
     private fun showcalibrationbuttonclicked() {
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         val dialogBuilder =
             AlertDialog.Builder(
@@ -643,7 +644,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         dialogBuilder
             .setCancelable(false)
-            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 sendCalibrationPattern()
             })
@@ -651,17 +655,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-        val displayWidth: Int = displayMetrics.widthPixels
-        val displayHeight: Int = displayMetrics.heightPixels
-        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCalibration.window?.attributes)
-        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-        layoutParams.width = dialogWindowWidth
-        layoutParams.height = dialogWindowHeight
-        alertCalibration.window?.attributes = layoutParams
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {

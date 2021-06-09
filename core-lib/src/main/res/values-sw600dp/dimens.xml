@@ -8,4 +8,9 @@
     <dimen name="alert_image_top">78dp</dimen>
     <dimen name="alert_otpions_bottom">43dp</dimen>
     <dimen name="alert_otpions_top">74dp</dimen>
+
+    <dimen name="progress_width">175dp</dimen>
+    <dimen name="progress_heigth">42dp</dimen>
+    <dimen name="process_text">56sp</dimen>
+    <dimen name="process_text_top">70dp</dimen>
 </resources>

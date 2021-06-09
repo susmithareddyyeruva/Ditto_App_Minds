@@ -33,4 +33,12 @@
     <dimen name="alert_image_top">43dp</dimen>
     <dimen name="alert_otpions_bottom">22dp</dimen>
     <dimen name="alert_otpions_top">20dp</dimen>
+
+
+    <dimen name="progress_width">60dp</dimen>
+    <dimen name="progress_heigth">30dp</dimen>
+    <dimen name="process_text">16sp</dimen>
+    <dimen name="process_text_top">30dp</dimen>
+
+
 </resources>

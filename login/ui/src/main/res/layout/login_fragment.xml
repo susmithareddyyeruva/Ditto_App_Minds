@@ -402,11 +402,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/site"
+                        android:layout_marginTop="@dimen/dimen_10"
                         android:layout_marginBottom="@dimen/default_padding"
                         android:text="@={viewModel.versionName}"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/size_12px"
-                        android:layout_below="@+id/site" />
+                        android:textColor="@color/textview_diito_site"
+                        android:textSize="@dimen/size_16px"
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 
