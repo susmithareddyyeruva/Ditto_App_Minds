@@ -18,7 +18,7 @@
     <item name="destination_customercare" type="id" />
     <item name="nav_graph_customercare" type="id" />
     <item name="nav_graph_faq" type="id" />
-
+    <item name="action_homeFragment_to_wssettings_fragment" type="id"/>
     <!--action items-->
     <item name="action_splashActivity_to_LoginFragment" type="id" />
     <item name="action_loginFragment_to_OnboardingFragment" type="id" />
