@@ -38,7 +38,7 @@
         <!--            </androidx.appcompat.widget.Toolbar>-->
         <!--        </com.google.android.material.appbar.AppBarLayout>-->
 
-        <com.google.android.material.appbar.AppBarLayout
+        <!--<com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,16 +56,18 @@
                 app:navigationContentDescription="@string/back"
                 app:titleTextColor="@color/White">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="-200dp"
+                    android:background="@color/app_red"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/header_view_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_gravity="center_horizontal"
                         android:fontFamily="@font/avenir_next_lt_pro_regular"
                         android:gravity="start"
@@ -74,12 +76,49 @@
                         android:textSize="@dimen/camera_back" />
 
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>-->
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isShowCameraView()}"
+            android:background="@android:color/transparent"
+            android:theme="@style/AppTheme.AppBarOverlay">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_calibration"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:navigationIcon="@drawable/ic_back"
+                app:contentInsetStartWithNavigation="0dp"
+                app:menu="@null">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/header_view_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:gravity="start"
+                        android:text="@string/back"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/camera_back" />
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
