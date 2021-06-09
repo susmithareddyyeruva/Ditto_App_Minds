@@ -148,7 +148,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:text="@string/overlaytext"
                     android:textColor="@color/White"
-                    android:textSize="@dimen/size_12px"
+                    android:textSize="@dimen/bottom_camera_text_size"
                     app:layout_constraintBottom_toTopOf="@+id/guide_cam_bottom"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -190,7 +190,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_lt_pro_regular"
                         android:text="@string/processing"
-                        android:layout_marginTop="@dimen/alert_message_Text"
+                        android:layout_marginTop="@dimen/process_text"
                         android:textColor="@color/White"
                         android:textSize="@dimen/size_12px"
                         app:layout_constraintEnd_toEndOf="parent"

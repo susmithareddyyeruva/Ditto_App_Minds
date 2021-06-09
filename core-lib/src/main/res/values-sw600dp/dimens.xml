@@ -11,4 +11,5 @@
 
     <dimen name="progress_width">175dp</dimen>
     <dimen name="progress_heigth">42dp</dimen>
+    <dimen name="process_text">56sp</dimen>
 </resources>
