@@ -1,4 +1,4 @@
-package com.ditto.menuitems_ui.settings.data
+package com.ditto.menuitems.domain.model
 
 import non_core.lib.error.FeatureError
 

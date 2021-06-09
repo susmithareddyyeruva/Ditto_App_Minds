@@ -8,8 +8,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.LoginUser
 import com.ditto.menuitems.domain.GetWorkspaceProData
-import com.ditto.menuitems_ui.settings.data.LoginResult
-import com.ditto.menuitems_ui.settings.model.WSSettingsInputData
+import com.ditto.menuitems.domain.model.WSSettingsInputData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
@@ -25,7 +24,6 @@ import javax.inject.Inject
 
 class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                                                 private val context: Context,
-                                                val useCase:UseCases,
                                                 private val getWorkspaceProData: GetWorkspaceProData,
                                                 val loggerFactory: LoggerFactory
 ) : BaseViewModel() {
@@ -108,7 +106,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
 
         //Making api call for settings
         uiEvents.post(Event.OnShowProgress)
-        disposable += useCase.postSwitchData(
+        disposable += getWorkspaceProData.postSwitchData(
             WSSettingsInputData(
                 isMirroringReminderChecked.get(),
                 isCutNumberChecked.get(),
@@ -122,7 +120,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     }
 
 
-    private fun handleFetchResultSecond(result: Result<LoginResult>) {
+    private fun handleFetchResultSecond(result: Boolean) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             else ->""

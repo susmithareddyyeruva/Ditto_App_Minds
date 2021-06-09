@@ -19,7 +19,7 @@ interface WSProSettingViewModelModule {
 }
 
 @Module
-interface WSProSettingsModule {
+interface WSProSettingsFragmentModule {
     @ContributesAndroidInjector(modules = [WSProSettingViewModelModule::class])
     fun WSProSettingsFragment(): WSProSettingsFragment
 }

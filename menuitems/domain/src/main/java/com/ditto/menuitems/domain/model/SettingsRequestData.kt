@@ -1,3 +1,3 @@
-package com.ditto.menuitems_ui.settings.data
+package com.ditto.menuitems.domain.model
 
 data class SettingsRequestData(val type:String)

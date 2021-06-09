@@ -1,6 +1,6 @@
-package com.ditto.menuitems_ui.settings.domain
+package com.ditto.menuitems.data.di
 
-import com.ditto.menuitems_ui.settings.WsSettingsService
+import com.ditto.menuitems.data.api.WsSettingsService
 import core.di.scope.WbApiRetrofit
 import dagger.Module
 import dagger.Provides
