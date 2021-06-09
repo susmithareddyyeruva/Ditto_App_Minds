@@ -160,11 +160,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         })
         expandableListView.setOnChildClickListener(OnChildClickListener { parent, v, groupPosition, childPosition, id ->
             if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
-                Toast.makeText(
-                    this,
-                    binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName,
-                    Toast.LENGTH_LONG
-                ).show()
+                if(binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
+                        ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+                    navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
+                }
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
             false
