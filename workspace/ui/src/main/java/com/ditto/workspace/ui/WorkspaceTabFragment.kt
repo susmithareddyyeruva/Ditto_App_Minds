@@ -1288,6 +1288,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
                 viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
             }
+            Utility.AlertType.CUT_COMPLETE -> {
+                adapter?.updatePositionAdapter()
+                viewModel.cutCheckBoxClicked(viewModel.cutCount,true)
+            }
             else -> {
                 Log.d("WorkspaceTabfragment", "onPositiveButtonClicked")
             }

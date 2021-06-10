@@ -84,6 +84,7 @@ class WorkspaceViewModel @Inject constructor(
     val events = uiEvents.stream()
     var isHorizontalMirror: Boolean = false
     var cutCount: Int = 0
+    var cutPiecePosition: Int = 0
     var isSingleDelete: Boolean = false
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
@@ -263,6 +264,11 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
+    fun onPaternItemCheckboxClicked(){
+        cutType = core.ui.common.Utility.AlertType.CUT_COMPLETE
+        uiEvents.post(Event.ShowCutBinDialog)
+    }
+
 
     fun cutIndividualPiecesConfirmed(workspaceItems: WorkspaceItems, cutCount: Int) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
@@ -301,16 +307,16 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun clickReset() {
+    fun clearPatternsSelected() {
         data?.value?.patternPieces?.forEach { workspaceItem ->
             if (workspaceItem?.isCompleted) {
                 workspaceItem?.isCompleted = false
-            } else {
-//                data.value?.patternPieces?.find { it.id == workspaceItem.parentPatternId }
-//                    ?.isCompleted = true
-//                Utility.mPatternPieceList.add(workspaceItem.parentPatternId)
             }
         }
+    }
+
+    fun clickReset() {
+        clearPatternsSelected()
         uiEvents.post(Event.OnResetClicked)
     }
 
