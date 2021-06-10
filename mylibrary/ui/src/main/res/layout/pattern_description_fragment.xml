@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.022" />
+                app:layout_constraintGuide_percent="0.03" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/end_guideline"
@@ -167,6 +167,8 @@
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="@dimen/size_16dp"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
                 app:layout_constraintEnd_toStartOf="@id/image_vertical"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
