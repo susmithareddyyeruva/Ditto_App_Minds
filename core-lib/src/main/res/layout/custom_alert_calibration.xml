@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/large_paddingx"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/alert_bg">
 
@@ -21,13 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/alert_image_top"
+        android:lineSpacingExtra="3dp"
         android:fontFamily="@font/avenir_next_lt_pro_regular"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/alert_message_Text"
         android:gravity="center"
         tools:text="Calibration failed. Error: room too bright"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="@dimen/large_paddingxx"
+        android:paddingRight="@dimen/large_paddingxx"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_icon" />
@@ -37,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".40" />
+        app:layout_constraintGuide_percent=".45" />
 
     <TextView
         android:id="@+id/neg_text"
@@ -45,11 +47,11 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/large_padding"
         android:text="no"
+        android:layout_marginTop="34dp"
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
         app:layout_constraintStart_toStartOf="@+id/guide_button"
-        app:layout_constraintEnd_toStartOf="@+id/pos_txt"
         app:layout_constraintTop_toBottomOf="@+id/alert_message" />
 
 
@@ -58,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="yes"
+        android:layout_marginTop="34dp"
         android:padding="@dimen/large_padding"
         android:layout_marginEnd="@dimen/x_large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_demi"

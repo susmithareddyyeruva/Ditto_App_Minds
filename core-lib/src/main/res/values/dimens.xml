@@ -12,6 +12,8 @@
     <dimen name="small_padding_x">8dp</dimen>
     <dimen name="medium_padding">10dp</dimen>
     <dimen name="large_padding">15dp</dimen>
+    <dimen name="large_paddingx">17dp</dimen>
+    <dimen name="large_paddingxx">20dp</dimen>
     <dimen name="bottom_common">40dp</dimen>
     <dimen name="x_large_padding">30dp</dimen>
     <dimen name="xx_large_padding">51dp</dimen>
