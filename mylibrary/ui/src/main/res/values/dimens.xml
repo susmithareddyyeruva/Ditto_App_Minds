@@ -108,5 +108,6 @@
     <dimen name="padding_start_closebtn">2dp</dimen>
     <dimen name="guide_start_clear_text_per">0.039</dimen>
     <dimen name="margin_start_search">10dp</dimen>
+    <dimen name="margin_left_button">12dp</dimen>
 
 </resources>

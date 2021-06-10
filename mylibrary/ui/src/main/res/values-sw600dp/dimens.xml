@@ -84,6 +84,7 @@
 
     <dimen name="size_21dp">28dp</dimen>
     <dimen name="subscription">48dp</dimen>
+    <dimen name="margin_left_button">27dp</dimen>
 
 
 </resources>
