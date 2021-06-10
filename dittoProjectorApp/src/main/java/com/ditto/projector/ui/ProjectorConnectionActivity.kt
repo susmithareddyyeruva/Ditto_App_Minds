@@ -12,6 +12,10 @@ import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
+import android.net.wifi.ScanResult
+import android.net.wifi.SupplicantState
+import android.net.wifi.WifiInfo
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelUuid
@@ -147,6 +151,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                     viewModel.mConnectedBLEdevice = device
                     viewModel.isBleConnected.set(true)
                     viewModel.bleconnectionstatus.set("Waiting for handshake!!")
+                    viewModel.isAfterBleConnection.set(false)
                     registerListener()
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     viewModel.isBleConnected.set(false)
@@ -168,7 +173,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 offset: Int,
                 value: ByteArray
             ) {
-                viewModel.samplestring.set("onCharacteristicWriteRequest")
+                viewModel.samplestring.set("BLE request received")
+                viewModel.isAfterBleConnection.set(true)
                 showToast()
                 viewModel.wificredentials = String(value)
                 if (viewModel.wificredentials!!.startsWith(getString(R.string.BLEconnectionrequest))) {
@@ -192,7 +198,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                     try {
                         viewModel.liveconnectionstatus.set(getString(R.string.cred_received))
                         viewModel.splitwificredentials = viewModel.wificredentials!!.split(",")
-                        viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials)
+                        //viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials)
+                        viewModel.samplestring.set("Received Wifi Credentials ")
                         //------ For testing Pupose (showing the decrypted value)----------//
                         /*viewModel.samplestring.set("Received Credentials " + viewModel.splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
                         + ", "+viewModel.splitwificredentials?.get(1)?.let { Utility.decrypt(it) }+ ", "
@@ -276,8 +283,10 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         if (Utility.isWifiConnected(this)) {
             viewModel.wificonnectionstatus.set(getString(R.string.connected))
             viewModel.isCallfromBle.set(false)
-            startNSD()
-            viewModel.wifiName.set(Utility.getSharedPref(this))
+            //startNSD()
+            getWIFIname()
+            viewModel.alreadConnectedWifiName.set(viewModel.wifiName.get())
+            //viewModel.wifiName.set(Utility.getSharedPref(this))
         } else {
             viewModel.wificonnectionstatus.set(getString(R.string.NotConnected))
         }
@@ -302,7 +311,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun registerService(port: Int) {
-        tearDown()
+        tearDown("FROM REGISTERING SERVICE")
         initializeRegistrationListener()
         val serviceInfo = NsdServiceInfo()
         serviceInfo.port = port
@@ -372,8 +381,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun showToast() {
-        /*this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
-            Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_LONG).show()
+       /* this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
+            Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_SHORT).show()
         })*/
     }
 
@@ -391,7 +400,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean, wifiName: String?) {
-        if (isConnected && !viewModel.isWifiReceiverfound.get()) {
+        if (isConnected && !viewModel.isWifiReceiverfound.get() && viewModel.isAfterBleConnection.get()) {
             wifiConnectionWaitingJob?.cancel()
             viewModel.isWifiReceiverfound.set(true)
             viewModel.wificonnectionstatus.set(getString(R.string.connected))
@@ -404,16 +413,28 @@ class ProjectorConnectionActivity : AppCompatActivity(),
 
     fun onNsdServiceRegistered(mservicename: String) {
         Log.d("CONNECTIVITY_PROJECTOR", "onNsdServiceRegistered- $mservicename")
+        viewModel.mServiceName.set(mservicename)
         viewModel.isNsdRegistered.set(true)
         viewModel.serviceconnectionstatus.set(mservicename + " Registered Successfully")
-        viewModel.sendResponseToClient(this, getString(R.string.successmessage)+","+mservicename)
         viewModel.startConnection()
+        GlobalScope.launch {
+            delay(3000)
+            sendSuccessToClient()
+        }
+
         /*if (viewModel.isCallfromBle.get()) {
             viewModel.sendResponseToClient(this,getString(R.string.successmessage))
         } else {
             startConnectionServer()
         }*/
     }
+
+    private fun sendSuccessToClient() {
+        viewModel.samplestring.set("Sending Response to client")
+        showToast()
+        viewModel.sendResponseToClient(this, getString(R.string.successmessage)+","+viewModel.mServiceName.get())
+    }
+
 
     /**
      *  [Function] To make a connection using sockets
@@ -466,6 +487,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             //viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
                             viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
                             withContext(Dispatchers.Main) {
+                                viewModel.samplestring.set("Receving Request from Socket")
                                 showToast()
                                 if (imageBytes.isNotEmpty()) {
                                     showImage(imageBytes)
@@ -597,11 +619,11 @@ class ProjectorConnectionActivity : AppCompatActivity(),
 
     //---------------------------------------------------------------------------------------------//
 
-    private fun tearDown() {
+    private fun tearDown(place : String) {
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
             this@ProjectorConnectionActivity.runOnUiThread {
-                Toast.makeText(this, resources.getString(R.string.teardown), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.teardown) + " "+place, Toast.LENGTH_SHORT).show()
             }
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
@@ -642,7 +664,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     override fun onPause() {
-        tearDown()
+        tearDown("FROM ONPAUSE")
         unRegisterWifiListener()
         super.onPause()
     }
@@ -654,7 +676,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     override fun onDestroy() {
-        tearDown()
+        tearDown("FROM ONDESTROY")
         unRegisterWifiListener()
         super.onDestroy()
     }
@@ -663,5 +685,32 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         super.onBackPressed()
         moveTaskToBack(true)
         exitProcess(-1)
+    }
+
+    fun getWIFIname() {
+        try {
+            val wifiManager =
+                applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val wifiInfo: WifiInfo
+            wifiInfo = wifiManager.connectionInfo
+            if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
+                viewModel.wifiName.set(wifiInfo.ssid.replace("\"", ""))
+                if (viewModel.wifiName.get()!!.toLowerCase()!!.contains("unknown")){
+                    viewModel.wifiName.set("N/A")
+                }
+            }
+            val wifi: WifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val networkList: List<ScanResult> = wifi.scanResults
+            if (networkList != null) {
+                for (network in networkList) {
+                    if (viewModel.wifiName.get().equals(network.SSID)) {
+
+                    }
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.d("exception","wifi")
+        }
     }
 }

@@ -18,6 +18,9 @@ import com.ditto.projector.R
 import com.ditto.projector.ble.WifiProfile
 import com.ditto.projector.common.Utility
 import com.ditto.projector.common.Utility.Companion.connectToWifi
+import com.ditto.projector.common.Utility.Companion.disConnectToWifi
+import com.ditto.projector.common.Utility.Companion.getSharedPref
+import com.ditto.projector.common.Utility.Companion.getWificred
 import com.ditto.projector.core.UiEvents
 import io.reactivex.disposables.CompositeDisposable
 
@@ -29,6 +32,8 @@ class ProjectorConnectionViewModel : ViewModel() {
     var bleconnectionstatus: ObservableField<String> = ObservableField("N/A")
     var serviceconnectionstatus: ObservableField<String> = ObservableField("N/A")
     var wifiName: ObservableField<String> = ObservableField("N/A")
+    var recievedWifiName: ObservableField<String> = ObservableField("N/A")
+    var alreadConnectedWifiName: ObservableField<String> = ObservableField("N/A")
     var liveconnectionstatus: ObservableField<String> = ObservableField("N/A")
     var mServiceName: ObservableField<String> = ObservableField("N/A")
     var isCallfromBle: ObservableBoolean = ObservableBoolean(false)
@@ -36,6 +41,8 @@ class ProjectorConnectionViewModel : ViewModel() {
     var isConnectionFromiOS: ObservableBoolean = ObservableBoolean(false)
     var isNsdRegistered: ObservableBoolean = ObservableBoolean(false)
     var isWifiReceiverfound: ObservableBoolean = ObservableBoolean(false)
+    var isWifiAlreadyConnected: ObservableBoolean = ObservableBoolean(false)
+    var isAfterBleConnection: ObservableBoolean = ObservableBoolean(true)
     var mServiceRegisterPort: ObservableInt = ObservableInt(0)
     var mWifiProfile: WifiProfile? = null
       var wificredentials: String? = ""
@@ -89,6 +96,10 @@ class ProjectorConnectionViewModel : ViewModel() {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     fun checkCurrentWifiConnection(context: Context) {
+        if (Utility.isWifiConnected(context)){
+            isWifiAlreadyConnected.set(true)
+            getSharedPref(context)?.let { getWificred(context)?.let { it1 -> disConnectToWifi(it, it1,context) } }
+        }
             wificonnectionstatus.set(context?.getString(R.string.checking))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
@@ -99,6 +110,7 @@ class ProjectorConnectionViewModel : ViewModel() {
                 }
 
             } else {
+
                 decryptedssid = splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
                 decryptedpwd = splitwificredentials?.get(1)?.let { Utility.decrypt(it) }
                 if (decryptedssid.equals("") || decryptedpwd.equals("")){
@@ -112,6 +124,13 @@ class ProjectorConnectionViewModel : ViewModel() {
                         it
                     )
                 }
+                decryptedpwd?.let {
+                    Utility.setWificred(
+                        context,
+                        it
+                    )
+                }
+                recievedWifiName.set(decryptedssid)
                 decryptedssid?.let {
                     connectToWifi(
                         it,
