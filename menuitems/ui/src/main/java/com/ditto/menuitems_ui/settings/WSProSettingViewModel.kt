@@ -8,14 +8,12 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.LoginUser
-import com.ditto.login.domain.model.LoginViewPagerData
 import com.ditto.menuitems.domain.GetWorkspaceProData
-import com.ditto.menuitems.domain.model.LoginResult
+import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -128,9 +126,9 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     }
 
 
-    private fun handleFetchResultSecond(result: Result<LoginResult>) {
+    private fun handleFetchResultSecond(result: Result<WSProSettingDomain>) {
         uiEvents.post(Event.OnHideProgress)
-        updateWSProSetting()
+        //updateWSProSetting()
     }
 
     private fun onFetchComplete(){
@@ -167,7 +165,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     private fun resetData(){
         isMirroringReminderChecked.set(userData.value?.cMirrorReminder!!)
         isCutNumberChecked.set(userData.value?.cCuttingReminder!!)
-         isSplicingNotificationChecked.set(userData.value?.cSpliceCutCompleteReminder!!)
+         isSplicingNotificationChecked.set(userData.value?.cSpliceReminder!!)
          isSplicingWithMultiplePieceChecked.set(userData.value?.cSpliceMultiplePieceReminder!!)
         onFetchComplete()
     }

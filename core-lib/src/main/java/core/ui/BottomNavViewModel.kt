@@ -91,7 +91,9 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             "ic_menu_settings",
             null
         )
-        childModelsList.add(childModel)
+        if(AppState.getIsLogged()){
+            childModelsList.add(childModel)
+        }
 
         childModel = MenuModel(
             "Privacy and settings",

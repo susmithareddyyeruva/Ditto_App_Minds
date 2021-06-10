@@ -162,7 +162,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
                 if(binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
                         ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
-                    navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
+                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                        navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
+                    }
                 }
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
