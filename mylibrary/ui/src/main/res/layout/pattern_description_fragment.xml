@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <data>
 
         <variable
@@ -19,13 +18,12 @@
     </data>
 
 
-
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
             android:layout_width="match_parent"
@@ -47,8 +45,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/header_view_title"
@@ -59,283 +56,290 @@
                         android:gravity="start"
                         android:text="Pattern details"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/size_21dp"
-                        />
+                        android:textSize="@dimen/size_21dp" />
 
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/pattern_constraint"
-        >
-
-        <androidx.constraintlayout.widget.Guideline
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar_guide"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.14"/>
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/start_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.022"
-            />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/end_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".94"
-            />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottom_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="@fraction/image_desc_guideline"
-            />
-
-
-        <TextView
-            android:id="@+id/subscription"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/subscription"
-            android:background="@drawable/subscription_error_bg"
-            android:drawableLeft="@drawable/exclamation"
-            android:drawablePadding="12dp"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:gravity="center_vertical"
-            android:paddingLeft="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="Your subscription for this pattern has expired. Please renew the subscription to continue working on it."
-            android:textColor="@color/White"
-            android:textSize="@dimen/size_12sp"
-            android:visibility="@{viewModel.isSubscriptionExpired()?View.VISIBLE:View.INVISIBLE}"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            app:layout_constraintStart_toStartOf="@+id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_guide"
-             />
-
-        <androidx.constraintlayout.widget.Guideline
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pattern_constraint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/subscription_guide"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.23"/>
+            android:layout_height="match_parent">
 
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/image_desc"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="@fraction/image_desc_guideline"/>
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/middle_guideline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".50"
-            />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/image_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".46"
-            />
-
-
-        <ImageView
-            android:id="@+id/image_pattern_desc"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="@dimen/size_16dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
-            app:layout_constraintEnd_toStartOf="@id/image_vertical"
-            app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/subscription" />
-
-
-        <TextView
-            android:id="@+id/content_header"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.patternName}"
-            android:textColor="@color/black"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:textSize="@dimen/size_16sp"
-            android:layout_marginTop="@dimen/size_16dp"
-            app:layout_constraintBottom_toTopOf="@id/status_layout"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            app:layout_constraintStart_toStartOf="@id/middle_guideline"
-            app:layout_constraintTop_toBottomOf="@id/subscription"
-             />
-
-        <LinearLayout
-            android:id="@+id/status_layout"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp"
-            app:layout_constraintTop_toBottomOf="@id/content_header"
-            app:layout_constraintWidth_percent="0.4"
-            app:layout_constraintStart_toStartOf="@id/middle_guideline"
-            app:layout_constraintHeight_percent="0.04"
-            android:weightSum="100"
-            android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
-            >
-
-            <TextView
-                android:id="@+id/active_pattern"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Active"
-                android:layout_weight="30"
-                android:textSize="@dimen/size_14sp"
-                android:textColor="#AD201A"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}"
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line" />
-
-            <View
-                android:layout_width="0.9dp"
-                android:layout_height="match_parent"
-                android:id="@+id/line"
-                android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}"
-                android:layout_marginLeft="@dimen/size_8dp"
-                android:background="#707070"/>
-
-            <TextView
-                android:id="@+id/purchased_pattern"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="80"
-                android:text="Owned"
-                android:gravity="center|start"
-                android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_cart"
-                android:drawablePadding="8dp"
-                android:paddingLeft="12dp"
-                android:textColor="#CEA10B"
-                android:textSize="@dimen/size_14sp"
-                android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}"
-                android:fontFamily="@font/avenir_next_lt_pro_demi"/>
-
-
-        </LinearLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/middle_guideline"
-            app:layout_constraintTop_toBottomOf="@id/status_layout"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            android:layout_marginTop="12dp">
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_height="match_parent"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/toolbar_guide"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.14" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/start_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.022" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/end_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".94" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottom_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="@fraction/image_desc_guideline" />
+
+
+            <TextView
+                android:id="@+id/subscription"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/subscription"
+                android:background="@drawable/subscription_error_bg"
+                android:drawableLeft="@drawable/exclamation"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Your subscription for this pattern has expired. Please renew the subscription to continue working on it."
+                android:textColor="@color/White"
+                android:textSize="@dimen/size_12sp"
+                android:visibility="@{viewModel.isSubscriptionExpired()?View.VISIBLE:View.INVISIBLE}"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_guide" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/subscription_guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.23" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/image_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="@fraction/image_desc_guideline" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/middle_guideline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".50" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/image_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".46" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuideline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".85" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/buttonTopGuideLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".75" />
+
+
+            <ImageView
+                android:id="@+id/image_pattern_desc"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_marginTop="@dimen/size_16dp"
+                app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
+                app:layout_constraintEnd_toStartOf="@id/image_vertical"
+                app:layout_constraintStart_toStartOf="@id/start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/subscription" />
+
+
+            <TextView
+                android:id="@+id/content_header"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:text="@{viewModel.patternName}"
                 android:textColor="@color/black"
+                android:textSize="@dimen/size_16sp"
+                app:layout_constraintBottom_toTopOf="@id/status_layout"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintTop_toBottomOf="@id/subscription"
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc" />
+
+            <LinearLayout
+                android:id="@+id/status_layout"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="4dp"
-                android:text="@{viewModel.patternDescription}"                android:fontFamily="@font/avenir_next_lt_pro_regular"
-                android:textSize="@dimen/size_16sp"/>
-        </androidx.core.widget.NestedScrollView>
+                android:orientation="horizontal"
+                android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
+                android:weightSum="100"
+                app:layout_constraintHeight_percent="0.04"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintTop_toBottomOf="@id/content_header"
+                app:layout_constraintWidth_percent="0.4">
+
+                <TextView
+                    android:id="@+id/active_pattern"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="30"
+                    android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center"
+                    android:text="Active"
+                    android:textColor="#AD201A"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="0.9dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_8dp"
+                    android:background="#707070"
+                    android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}" />
+
+                <TextView
+                    android:id="@+id/purchased_pattern"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="80"
+                    android:drawableLeft="@drawable/ic_cart"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center|start"
+                    android:paddingLeft="12dp"
+                    android:text="Owned"
+                    android:textColor="#CEA10B"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}" />
 
 
-        <TextView
-            android:id="@+id/text_instructions"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/instruction_border"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.onClickInstructions()}"
-            android:text="INSTRUCTIONS"
-            android:textColor="@color/black"
-            android:textSize="@dimen/size_14px"
-            android:textStyle="bold"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent="0.075"
-            app:layout_constraintStart_toStartOf="@id/middle_guideline"
-            app:layout_constraintTop_toBottomOf="@id/nested_scroll"
-            app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.15" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_watchvideo2"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_0"
-            android:background="@drawable/workspace_border"
-            android:drawableLeft="@drawable/ic_resume"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:gravity="center"
-            android:layout_marginTop="48dp"
-            android:onClick="@{() -> viewModel.onClickWorkSpace()}"
-            android:paddingLeft="@dimen/size_16dp"
-            android:text="@{viewModel.resumeOrSubscription}"
-            android:drawablePadding="14dp"
-            android:visibility="@{viewModel.showResumButton?View.VISIBLE:View.INVISIBLE}"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/size_14sp"
-            android:layout_marginLeft="12dp"
-            android:textStyle="bold"
-            app:layout_constraintHorizontal_bias="0"
-            android:paddingRight="30dp"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent="0.075"
-            app:layout_constraintStart_toEndOf="@id/text_instructions"
-            app:layout_constraintTop_toBottomOf="@id/nested_scroll" />
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonTopGuideLine"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintTop_toBottomOf="@id/status_layout">
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:text="@{viewModel.patternDescription}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_16sp"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum pellentesque eget sapien volutpat mollis. Odio ac sit purus tempor lacus consequat, cursus a. Mattis hendrerit nisl, eleifend vitae tempor. Faucibus pellentesque malesuada proin nulla orci enim ornare. Gravida euismod viverra potenti id." />
+            </androidx.core.widget.NestedScrollView>
 
 
-        <TextView
-            android:id="@+id/dynamic_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/workspace_border"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.onClickWorkSpace()}"
-            android:text="@{viewModel.resumeOrSubscription}"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/size_14sp"
-            android:textStyle="bold"
-            android:paddingLeft="20dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="@{viewModel.showWorkspaceOrRenewSubscriptionButton?View.VISIBLE:View.INVISIBLE}"
-            app:layout_constraintHorizontal_bias="0"
-            android:layout_marginLeft="12dp"
-            android:paddingRight="20dp"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent="0.075"
-            app:layout_constraintStart_toEndOf="@id/text_instructions"
-            app:layout_constraintTop_toBottomOf="@id/nested_scroll"
-             />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_instructions"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/instruction_border"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.onClickInstructions()}"
+                android:text="INSTRUCTIONS"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_14px"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.075"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.15" />
+
+            <TextView
+                android:id="@+id/text_watchvideo2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/workspace_border"
+                android:drawableLeft="@drawable/ic_resume"
+                android:drawablePadding="14dp"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.onClickWorkSpace()}"
+                android:paddingLeft="@dimen/size_16dp"
+                android:paddingRight="30dp"
+                android:text="@{viewModel.resumeOrSubscription}"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/size_14sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.showResumButton?View.VISIBLE:View.INVISIBLE}"
+                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.075"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/text_instructions" />
+
+
+            <TextView
+                android:id="@+id/dynamic_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/workspace_border"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.onClickWorkSpace()}"
+                android:paddingLeft="20dp"
+                android:paddingTop="4dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="4dp"
+                android:text="@{viewModel.resumeOrSubscription}"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/size_14sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.showWorkspaceOrRenewSubscriptionButton?View.VISIBLE:View.INVISIBLE}"
+                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.075"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/text_instructions"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
