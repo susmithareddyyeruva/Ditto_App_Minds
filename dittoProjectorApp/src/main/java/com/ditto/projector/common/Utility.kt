@@ -23,6 +23,7 @@ class Utility  {
 
         const val TRACE_PROJECTOR = "TRACE_PROJECTOR"
         const val KEY_WIFI = "WIFI"
+        const val KEY_WIFI_CRED = "KEY_WIFI_CRED"
 
         private val CHARSET_NAME = "UTF-8"
         private val AES_NAME = "AES"
@@ -95,6 +96,28 @@ class Utility  {
             }
         }
 
+        fun disConnectToWifi(ssid: String, pwd: String, context: Context) {
+            try {
+                val conf = WifiConfiguration()
+                conf.SSID = "\"" + ssid + "\""
+                //--------------------------OPEN NETWORK CHANGES-------------------//
+                if (pwd.length > 1) {
+                    conf.preSharedKey = "\"" + pwd + "\""
+                }else{
+                    conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                }
+                //conf.preSharedKey = "\"" + pwd + "\""
+                val wifiManager =
+                    context.getApplicationContext()
+                        .getSystemService(Context.WIFI_SERVICE) as WifiManager
+                val wifiID = wifiManager.addNetwork(conf)
+                wifiManager.removeNetwork(wifiID)
+            }catch (msg : Exception){
+
+                Log.d("exception","Connected to wifi")
+            }
+        }
+
         fun getIpaddress(context: Context) : String {
 
             val wifiMgr: WifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -148,6 +171,20 @@ class Utility  {
             val sharedPreference =
                 context.getSharedPreferences(TRACE_PROJECTOR, Context.MODE_PRIVATE)
             return sharedPreference.getString(KEY_WIFI, "N/A")
+        }
+
+        fun setWificred(context: Context, id: String) {
+            val sharedPreference =
+                context.getSharedPreferences(TRACE_PROJECTOR, Context.MODE_PRIVATE)
+            val editor = sharedPreference.edit()
+            editor.putString(KEY_WIFI_CRED, id)
+            editor.apply()
+        }
+
+        fun getWificred(context: Context): String? {
+            val sharedPreference =
+                context.getSharedPreferences(TRACE_PROJECTOR, Context.MODE_PRIVATE)
+            return sharedPreference.getString(KEY_WIFI_CRED, "N/A")
         }
     }
 

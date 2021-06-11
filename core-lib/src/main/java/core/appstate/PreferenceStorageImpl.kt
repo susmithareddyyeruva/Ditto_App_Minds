@@ -14,7 +14,12 @@ class PreferenceStorageImpl(private val context: Context) : PreferenceStorage {
 
     override fun getString(key: String): String? {
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return pref.getString(key, null)
+        return pref.getString(key, "")
+    }
+
+    override fun getInt(key: String): Int? {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return pref.getInt(key, 0)
     }
 
     override fun getBoolean(key: String): Boolean? {
@@ -25,6 +30,21 @@ class PreferenceStorageImpl(private val context: Context) : PreferenceStorage {
     override fun saveBoolean(key: String, value: Boolean) {
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         pref.edit().putBoolean(key, value).commit()
+    }
+
+    override fun saveLong(key: String, value: Long) {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        pref.edit().putLong(key, value).commit()
+    }
+
+    override fun getLong(key: String): Long? {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return pref.getLong(key, 0)
+    }
+    override fun saveInt(key: String, value: Int) {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        pref.edit().putInt(key, value).commit()
+
     }
 
     override fun clear() {

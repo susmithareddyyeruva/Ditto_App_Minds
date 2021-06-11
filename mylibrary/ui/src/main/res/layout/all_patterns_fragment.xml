@@ -91,11 +91,26 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/avenir_next_it_pro_bold"
                             android:gravity="center"
-                            android:text="Pattern Library (10)"
+                            android:text="@string/pattern_library"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/size_pattern_lib_text"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/header_view_title_pattern_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/avenir_next_it_pro_bold"
+                            android:gravity="center"
+                            android:text="(10)"
+                            android:layout_marginStart="20dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/size_pattern_lib_text"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title"
+                            app:layout_constraintLeft_toRightOf="@id/header_view_title"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title"/>
 
                         <View
                             android:id="@+id/view_vertical"
@@ -104,7 +119,7 @@
                             android:layout_marginStart="@dimen/margin_start_vertical_view"
                             android:background="@color/search_text_code"
                             app:layout_constraintBottom_toBottomOf="@id/header_view_title"
-                            app:layout_constraintLeft_toRightOf="@id/header_view_title"
+                            app:layout_constraintLeft_toRightOf="@id/header_view_title_pattern_count"
                             app:layout_constraintTop_toTopOf="@id/header_view_title" />
 
                         <TextView
@@ -121,9 +136,9 @@
                         android:onClick="@{() -> viewModel.onSyncClick()}"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
-                        app:layout_constraintBottom_toBottomOf="@id/header_view_title"
+                        app:layout_constraintBottom_toBottomOf="@id/header_view_title_pattern_count"
                         app:layout_constraintLeft_toRightOf="@id/view_vertical"
-                        app:layout_constraintTop_toTopOf="@id/header_view_title" />
+                        app:layout_constraintTop_toTopOf="@id/header_view_title_pattern_count" />
 
                         <TextView
                             android:layout_width="wrap_content"

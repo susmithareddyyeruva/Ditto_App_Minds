@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.ditto.menuitems_ui.settings.WSProSettingViewModel" />
+
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/instruction_appBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/headerbar"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:menu="@null"
+                app:theme="@style/ToolBarStyle"
+                app:titleTextColor="@color/black">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/header_view_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/avenir_next_lt_pro_medium"
+                        android:gravity="start"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/size_21sp" />
+
+
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".07" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_start_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".11" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_top_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".15" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".92" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:paddingStart="8dp"
+                android:paddingTop="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp"
+                android:id="@+id/linear1"
+                app:layout_constraintTop_toBottomOf="@id/guide_top_text"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:text="Mirroring reminder"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:textSize="@dimen/size_14sp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_mirroringreminder"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:checked="@{viewmodel.isMirroringReminderChecked()}"
+                    app:showText="false"
+                    app:track="@drawable/custom_track"
+                    android:thumb="@drawable/custom_thumb"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@id/linear1"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                android:background="@color/light_grey" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:paddingStart="8dp"
+                android:paddingTop="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp"
+                android:id="@+id/linear2"
+                app:layout_constraintTop_toBottomOf="@id/linear1"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:text="Cut number reminder"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:textSize="@dimen/size_14sp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_cutnumber"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:checked="@{viewmodel.isCutNumberChecked()}"
+                    app:showText="false"
+                    app:track="@drawable/custom_track"
+                    android:thumb="@drawable/custom_thumb"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@id/linear2"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                android:background="@color/light_grey" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:paddingStart="8dp"
+                android:paddingTop="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp"                  android:id="@+id/linear3"
+                app:layout_constraintTop_toBottomOf="@id/linear2"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:text="Splicing notification"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:textSize="@dimen/size_14sp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_splicing"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:checked="@{viewmodel.isSplicingNotificationChecked()}"
+                    app:showText="false"
+                    app:track="@drawable/custom_track"
+                    android:thumb="@drawable/custom_thumb"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@id/linear3"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                android:background="@color/light_grey" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:paddingStart="8dp"
+                android:paddingTop="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp"                 android:id="@+id/linear4"
+                app:layout_constraintTop_toBottomOf="@id/linear3"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:text="Splicing with multiple piece warning"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:textSize="@dimen/size_14sp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_multiple_piece"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:checked="@{viewmodel.isSplicingWithMultiplePieceChecked}"
+                    app:showText="false"
+                    app:track="@drawable/custom_track"
+                    android:thumb="@drawable/custom_thumb"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@id/linear4"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                android:background="@color/light_grey" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:paddingStart="8dp"
+                android:paddingTop="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp"
+                android:visibility="gone"
+                android:id="@+id/linear5"
+                app:layout_constraintTop_toBottomOf="@id/linear4"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:text="Click to zoom notification"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:textSize="@dimen/size_14sp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_zoomnotification"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:checked="false"
+                    app:showText="false"
+                    app:track="@drawable/custom_track"
+                    android:thumb="@drawable/custom_thumb"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

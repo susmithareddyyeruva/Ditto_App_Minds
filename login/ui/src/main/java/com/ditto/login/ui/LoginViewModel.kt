@@ -42,6 +42,7 @@ class LoginViewModel @Inject constructor(
     var versionName: ObservableField<String> = ObservableField<String>("")
     val isEmailValidated: ObservableBoolean = ObservableBoolean(true)
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
+    val isLoginButtonFocusable: ObservableBoolean = ObservableBoolean(true)
     var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -73,6 +74,8 @@ class LoginViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy { handleFetchResult(it) }
+            isLoginButtonFocusable.set(false)
+
         }
     }
 
@@ -87,6 +90,8 @@ class LoginViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.faultDomain == null) {
+                    isLoginButtonFocusable.set(true)
+
                     //User login successfull
                     storageManager.savePrefs(USER_EMAIL, result.data.email ?: "")
                     storageManager.savePrefs(USER_PHONE, result.data.phone_home ?: "")
@@ -95,6 +100,7 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
+                    AppState.setCustID(result.data.customer_id!!)
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
                         result.data.cSpliceCutCompleteReminder
@@ -133,19 +139,51 @@ class LoginViewModel @Inject constructor(
                             cReceiveEmail = result.data.cReceiveEmail,
                             cSpliceCutCompleteReminder = result.data.cSpliceCutCompleteReminder,
                             cSpliceMultiplePieceReminder = result.data.cSpliceMultiplePieceReminder,
-                            cSpliceReminder = result.data.cSpliceReminder
+                            cSpliceReminder = result.data.cSpliceReminder,
+                            cCuttingReminder = result.data.cCuttingReminder,
+                            cInterestArt = result.data.cInterestArt,
+                            cInterestBridalSpecialOccasionProjects = result.data.cInterestBridalSpecialOccasionProjects,
+                            cInterestClassroomCraftsDecor = result.data.cInterestClassroomCraftsDecor,
+                            cInterestFloral = result.data.cInterestFloral,
+                            cInterestFoodCrafts = result.data.cInterestFoodCrafts,
+                            cInterestHolidayPartyDecorating = result.data.cInterestHolidayPartyDecorating,
+                            cInterestHomeDecor = result.data.cInterestHomeDecor,
+                            cInterestJewelry = result.data.cInterestJewelry,
+                            cInterestKidsCrafts = result.data.cInterestKidsCrafts,
+                            cInterestKnittingCrochet = result.data.cInterestKnittingCrochet,
+                            cInterestPaperCrafts = result.data.cInterestPaperCrafts,
+                            cInterestQuiltingSewingFabric = result.data.cInterestQuiltingSewingFabric,
+                            cIsCostumeGuildEnrolled = result.data.cIsCostumeGuildEnrolled,
+                            cIsFourHEnrolled = result.data.cIsFourHEnrolled,
+                            cIsGirlScoutsEnrolled = result.data.cIsGirlScoutsEnrolled,
+                            cIsJoannPlusCustomer = result.data.cIsJoannPlusCustomer,
+                            cIsMilitaryEnrolled = result.data.cIsMilitaryEnrolled,
+                            cIsTaxExempt = result.data.cIsTaxExempt,
+                            cIsTeacherEnrolled = result.data.cIsTeacherEnrolled,
+                            cLearnBrowseSocialMedia = result.data.cLearnBrowseSocialMedia,
+                            cLearnLookOnline = result.data.cLearnLookOnline,
+                            cLearnTakeAClass = result.data.cLearnTakeAClass,
+                            cLearnVisitJoannStore = result.data.cLearnVisitJoannStore,
+                            cReceiveDirectMail = result.data.cReceiveDirectMail,
+                            cReceiveTextMessage = result.data.cReceiveTextMessage,
+                            cRegisteredWithNarvar = result.data.cRegisteredWithNarvar,
+                            cTaxExempt = result.data.cTaxExempt,
+                            cInitialisationVector = result.data.cInitialisationVector,
+                            cVectorKey = result.data.cVectorKey
                         )
                     )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy { handleFetchResult(it) }
                 } else { //http status code is 200  also have error
+                    isLoginButtonFocusable.set(true)
                     errorString.set(result.data.faultDomain?.message ?: "")
                     uiEvents.post(Event.OnLoginFailed)
                 }
 
             }
             is Result.OnError -> {
+                isLoginButtonFocusable.set(true)
                 handleError(result.error)
                 uiEvents.post(Event.OnHideProgress)
             }
@@ -195,7 +233,6 @@ class LoginViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
-
     }
 
     /**

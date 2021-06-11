@@ -45,6 +45,7 @@
     <dimen name="margin_end_search">26.68dp</dimen>
     <dimen name="size_24px">24dp</dimen>
     <dimen name="size_14sp">14sp</dimen>
+    <dimen name="camera_alert">16sp</dimen>
     <dimen name="size_15sp">15sp</dimen>
     <dimen name="txt_size_new">8sp</dimen>
     <dimen name="txt_clear_filter">12sp</dimen>

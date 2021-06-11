@@ -45,4 +45,6 @@
     <dimen name="splice_end_margin">5dp</dimen>
     <dimen name="padding_horizontal_start">16dp</dimen>
     <dimen name="top_margin_enlarge_text">22dp</dimen>
+    <dimen name="size_21sp">21sp</dimen>
+    <dimen name="calibrate_alert_textsize">16sp</dimen>
 </resources>

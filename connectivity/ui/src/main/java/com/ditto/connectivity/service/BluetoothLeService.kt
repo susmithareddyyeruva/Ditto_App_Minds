@@ -100,7 +100,7 @@ class BluetoothLeService : Service() {
                 )
                 intentAction =
                     ACTION_GATT_HANDSHAKE_SUCCESS
-            } else if (String(characteristic.value).equals(ConnectivityUtils.SERVER_SUCCESS_RESPONSE) || String(
+            } else if (String(characteristic.value).startsWith(ConnectivityUtils.SERVER_SUCCESS_RESPONSE!!) || String(
                     characteristic.value
                 ).equals(
                     ConnectivityUtils.SERVice_ALREADY_REGISTERED
@@ -110,7 +110,8 @@ class BluetoothLeService : Service() {
                     ConnectivityUtils.TAG,
                     "onCharacteristicChanged():SERVER RESPONSE - $ACTION_GATT_SERVER_SUCCESS"
                 )
-
+                val splitstring = String(characteristic.value).split(",")
+                ConnectivityUtils.nsdSericeNameAfterWifi = splitstring[1]
                 intentAction =
                     ACTION_GATT_SERVER_SUCCESS
             } else if (String(characteristic.value).equals(ConnectivityUtils.WIFIFAILS)) {

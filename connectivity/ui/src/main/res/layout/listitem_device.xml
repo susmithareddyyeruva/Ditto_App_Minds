@@ -7,7 +7,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
         android:background="@android:color/white"
         android:orientation="vertical">
 
@@ -25,8 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:background="@android:color/white"
-            android:textSize="@dimen/size_15sp" />
+            android:textSize="@dimen/size_16px" />
 
 
     </LinearLayout>

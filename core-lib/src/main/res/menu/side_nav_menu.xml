@@ -17,7 +17,7 @@
 
         <item
             android:id="@+id/nav_graph_settings"
-            android:icon="@drawable/ic_menu_settings"
+            android:icon="@drawable/ic_ws_settings_icon"
             android:title="@string/str_menu_settings" />
 
         <item
