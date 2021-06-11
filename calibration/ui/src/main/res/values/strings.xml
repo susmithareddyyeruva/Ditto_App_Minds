@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="instruction"><u>Instructions</u></string>
-    <string name="overlaytext">Take a picture covering the four corners of the projection</string>
+    <string name="overlaytext">Be sure to capture all four corners of the projection in your photo</string>
     <string name="calibrationsuccess">Calibration Successful</string>
     <string name="calibrationsuccess_sub">You are all set to go!!</string>
     <string name="calibrationerror_invalid_image">Invalid Image Format. Please try again.</string>
@@ -9,4 +9,8 @@
     <string name="calibrationerror_fail_calibration">Fail Calibration. Please try again.</string>
     <string name="calibrationerror_toomany_images">Too Many Images. Please try again.</string>
     <string name="calibrationerror_fail_save">Fail Saving Calibration Result. Please try again.</string>
+    <string name="back">Back</string>
+    <string name="processing">Processing….</string>
+    <string name="calibration_success">Calibration success!</string>
+    <string name="calibration_failure">Calibration failed. Error:  %1$s</string>
 </resources>

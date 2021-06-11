@@ -166,6 +166,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
                     }
                 }
+
+                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName.equals("Manage Projector")){
+                    navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
+                }
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
             false
@@ -262,6 +267,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     fun setToolbarTitle(title: String) {
         binding.toolbarViewModel?.toolbarTitle?.set(title)
+    }
+
+    fun setToolbarIcon() {
+        binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

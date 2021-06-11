@@ -7,7 +7,7 @@
     <color name="green">#000</color>
     <color name="app_grey">#63666B</color>
     <color name="instruction_content_text">#4A4A4A</color>
-    <color name="headerbar">#F4F4F4</color>
+    <color name="headerbar">#FFFFFF</color>
     <color name="edittext_fill">#C0C0C0</color>
     <color name="texthint">#63666B</color>
     <color name="light_green">#73BD00</color>
@@ -15,5 +15,6 @@
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#FFF</color>
-
+    <color name="camera_button_border">#707070</color>
+    <color name="loading_background">#060606</color>
 </resources>

@@ -2,6 +2,10 @@ package core.appstate
 
 import android.content.Context
 import core.CUST_ID
+import core.CONNECTED_SERVICE_HOST
+import core.CONNECTED_SERVICE_NAME
+import core.CONNECTED_SERVICE_PORT
+import core.models.Nsdservicedata
 
 object AppState {
     private var pref: PreferenceStorage? = null
@@ -48,5 +52,27 @@ object AppState {
     fun getCustID(): String? {
         val custid = pref?.getString(CUST_ID)
         return custid
+    }
+    fun saveCurrentService(service : Nsdservicedata){
+        pref?.saveString(CONNECTED_SERVICE_NAME,service.nsdServiceName)
+        pref?.saveString(CONNECTED_SERVICE_HOST,service.nsdSericeHostAddress)
+        pref?.saveInt(CONNECTED_SERVICE_PORT, service.nsdServicePort)
+    }
+
+    fun clearSavedService(){
+        pref?.saveString(CONNECTED_SERVICE_NAME,"")
+        pref?.saveString(CONNECTED_SERVICE_HOST,"")
+        pref?.saveInt(CONNECTED_SERVICE_PORT, 0)
+    }
+
+    fun getLastSavedServiceName() : String?{
+        return pref?.getString(CONNECTED_SERVICE_NAME)
+    }
+
+    fun getLastSavedServicePort() : Int?{
+        return pref?.getInt(CONNECTED_SERVICE_PORT)
+    }
+    fun getLastSavedServiceHost() : String?{
+        return pref?.getString(CONNECTED_SERVICE_HOST)
     }
 }

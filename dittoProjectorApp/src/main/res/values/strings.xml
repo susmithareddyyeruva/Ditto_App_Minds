@@ -17,6 +17,6 @@
     <string name="successregister">Registered Succesfully!!</string>
     <string name="waiting">Waiting for the client!!</string>
     <string name="failedrequest">TRACEFailed</string>
-    <string name="teardown">tearDown - socket close</string>
+    <string name="teardown">socket Disconnected</string>
 
 </resources>

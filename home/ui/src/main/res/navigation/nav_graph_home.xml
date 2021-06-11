@@ -65,9 +65,14 @@
             android:id="@+id/action_homeFragment_to_aboutAppFragment"
             app:destination="@id/aboutAppFragment" />
 
+
         <action
             android:id="@+id/action_homeFragment_to_wssettings_fragment"
             app:destination="@id/nav_graph_settings_destination" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_nav_graph_manage"
+            app:destination="@id/manageDeviceFragment" />
 
     </fragment>
 
@@ -99,8 +104,15 @@
         android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
         android:label="AboutAppFragment" />
 
+
     <fragment
         android:id="@+id/nav_graph_settings_destination"
         android:name="com.ditto.menuitems_ui.settings.WSProSettingsFragment"
         android:label="WsSettings"/>
+
+    <fragment
+        android:id="@+id/manageDeviceFragment"
+        android:name="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment"
+        android:label="ManageDeviceFragment" />
+
 </navigation>

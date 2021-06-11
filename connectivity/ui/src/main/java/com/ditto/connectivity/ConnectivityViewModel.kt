@@ -4,6 +4,7 @@ package com.ditto.connectivity
 import android.os.StrictMode
 import android.util.Log
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import core.event.UiEvents
@@ -18,11 +19,15 @@ class ConnectivityViewModel @Inject constructor() : BaseViewModel() {
     val isProjectorLayout : ObservableBoolean = ObservableBoolean(false)
     val isWifiError : ObservableBoolean = ObservableBoolean(false)
     val isServiceError : ObservableBoolean = ObservableBoolean(false)
+    val alerMessage: ObservableField<String> = ObservableField("")
     val isErrorLayout : ObservableBoolean = ObservableBoolean(false)
     val isWifiCredLayout : ObservableBoolean = ObservableBoolean(false)
     val isDeviceListLayout : ObservableBoolean = ObservableBoolean(false)
     val isProgressBar : ObservableBoolean = ObservableBoolean(false)
     val isLocationEnabled : ObservableBoolean = ObservableBoolean(false)
+    val isNoServiceFound : ObservableBoolean = ObservableBoolean(false)
+    val isShowServiceList : ObservableBoolean = ObservableBoolean(false)
+    val isServiceFoundAfterWifi : ObservableBoolean = ObservableBoolean(false)
     var isBLEConnected:Boolean = false
 
 
@@ -64,6 +69,12 @@ class ConnectivityViewModel @Inject constructor() : BaseViewModel() {
     fun onClickRefresh() {
         uiEvents.post(Event.OnRefreshClicked)
     }
+    fun onClickProjRefresh() {
+        uiEvents.post(Event.OnProjRefreshClicked)
+    }
+    fun onClickProjscanViaBle() {
+        uiEvents.post(Event.OnProjScanViaBleClicked)
+    }
 
     /**
      * Events for this view model
@@ -77,6 +88,8 @@ class ConnectivityViewModel @Inject constructor() : BaseViewModel() {
         object OnConnectClicked : Event()
         object OnRetryClicked : Event()
         object OnRefreshClicked : Event()
+        object OnProjRefreshClicked : Event()
+        object OnProjScanViaBleClicked : Event()
     }
 
      fun setThreadPolicy(){

@@ -13,6 +13,8 @@ class CalibrationViewModel @Inject constructor()  : BaseViewModel() {
     val isShowFinalImage: ObservableBoolean = ObservableBoolean(false)
     val isShowCameraView: ObservableBoolean = ObservableBoolean(true)
     val isShowCameraButton: ObservableBoolean = ObservableBoolean(true)
+    val isProgressLoading: ObservableBoolean = ObservableBoolean(true)
+    val isShowDialog: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
