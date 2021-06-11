@@ -13,7 +13,7 @@
     <string name="str_menu_softwareupdate">Software Updates</string>
     <string name="str_menu_logout">Log Out</string>
     <string name="str_menu_signin">Sign in</string>
-    <string name="str_menu_ws_pro_settings">Workspace Pro Settings</string>
+    <string name="str_menu_ws_pro_settings">Workspace settings</string>
     <string name="str_no_internet">No Network Available. Please check your internet connection.</string>
     <string name="str_ok">OK</string>
     <string name="pattern_library">Pattern Library</string>
