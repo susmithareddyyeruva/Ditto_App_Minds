@@ -93,7 +93,7 @@ class HowtoFragment : BaseFragment() {
     private fun handleEvent(event: HowtoViewModel.Event) =
         when (event) {
             is HowtoViewModel.Event.OnDataUpdated -> {
-                viewModel.toolbarTitle.set("How To")
+                viewModel.toolbarTitle.set("How to")
                 setTabsAdapter()
             }
 
@@ -116,7 +116,9 @@ class HowtoFragment : BaseFragment() {
 
                 if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 3)) {
 
-                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to "How To","from" to "tutorial")
+                    var title = viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
+
+                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to title,"from" to "tutorial")
 
                     findNavController().navigate(
                         com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
@@ -163,16 +165,16 @@ class HowtoFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            viewModel.toolbarTitle.set("How To")
+            viewModel.toolbarTitle.set("How to")
             (activity as BottomNavigationActivity).hidemenu()
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()

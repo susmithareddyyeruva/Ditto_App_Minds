@@ -30,7 +30,7 @@
     </style>
 
     <style name="ActionbarStyle" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:backgroundTint">@color/headerbar</item>
+        <item name="android:backgroundTint">@android:color/white</item>
         <item name="android:textColorSecondary">@color/colorPrimary</item>
         <item name="titleTextColor">@color/colorPrimary</item>
 

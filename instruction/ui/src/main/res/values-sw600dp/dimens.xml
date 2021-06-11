@@ -8,5 +8,8 @@
     <dimen name="size_21dp">28dp</dimen>
     <dimen name="width_percent">0.70</dimen>
     <dimen name="end_margin_calib_btn">14dp</dimen>
-
+    <dimen name="size_skip">18sp</dimen>
+    <dimen name="size_skip_button_width">12.98dp</dimen>
+    <dimen name="size_skip_button_height">12.91dp</dimen>
+    <dimen name="start_margin_skip_icon">23dp</dimen>
 </resources>

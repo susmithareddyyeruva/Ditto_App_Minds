@@ -3,6 +3,7 @@ package com.ditto.onboarding.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.onboarding.ui.OnboardingViewModel
 import com.ditto.onboarding.ui.R
@@ -37,11 +38,11 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
     override fun onBindViewHolder(holder: OnBoardingHolder, position: Int) {
         holder.rowonboardingBinding.onboardingValue = onBoarding[position]
         holder.rowonboardingBinding.viewModel = viewModel
-        holder.rowonboardingBinding.imageView.setBackgroundResource(images[position])
-       /* Glide.with(holder.rowonboardingBinding.cardView.context)
+        //holder.rowonboardingBinding.imageView.setBackgroundResource(images[position])
+        Glide.with(holder.rowonboardingBinding.cardView.context)
             .load(onBoarding[position].image)
-            .placeholder(com.ditto.howto_ui.R.drawable.ic_placeholder)
-            .into(holder.rowonboardingBinding.imageView)*/
+            .placeholder(R.drawable.ic_placeholder)
+            .into(holder.rowonboardingBinding.imageView)
     }
 
     inner class OnBoardingHolder(val rowonboardingBinding: OnboardingItemBinding,viewType: Int) :

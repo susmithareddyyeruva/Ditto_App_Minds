@@ -32,4 +32,8 @@
     <dimen name="size_12px">12sp</dimen>
     <dimen name="size_24px">24dp</dimen>
     <dimen name="size_21sp">21sp</dimen>
+    <dimen name="size_skip">12sp</dimen>
+    <dimen name="size_skip_button_width">10dp</dimen>
+    <dimen name="size_skip_button_height">9.94dp</dimen>
+    <dimen name="start_margin_skip_icon">5dp</dimen>
 </resources>

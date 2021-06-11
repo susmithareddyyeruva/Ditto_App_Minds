@@ -90,6 +90,7 @@
                 android:gravity="center"
                 android:padding="@dimen/padding_small"
                 android:textSize="@dimen/circle_value_dimen"
+                android:visibility="gone"
                 android:text="@{Integer.toString(onboardingValue.id)}"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="@+id/reference_view"
