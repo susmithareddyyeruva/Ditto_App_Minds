@@ -32,9 +32,9 @@
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/ActionbarStyle"
+                android:theme="@style/TransparentActionbarStyle"
                 android:visibility="@{toolbarViewModel.isShowActionBar}">
-
+                <!--android:theme="@style/ActionbarStyle"-->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
@@ -42,6 +42,7 @@
                     android:gravity="start"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
+                    android:background="@color/white"
                     app:contentInsetStartWithNavigation="0dp"
                     app:menu="@menu/toolbar_menu">
 
@@ -52,7 +53,8 @@
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:text="@{toolbarViewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/toolbar" />
+                        android:layout_marginStart="-10dp"
+                        android:textSize="@dimen/toolbar_title" />
 
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>

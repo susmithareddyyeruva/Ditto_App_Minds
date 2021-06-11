@@ -64,14 +64,14 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 //        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
         (activity as BottomNavigationActivity).hidemenu()
-        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
+         if (core.network.Utility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnBoardingDataFromApi()
 
         } else {
             viewModel.fetchOnBoardingData()
-        }*/
-        viewModel.fetchOnBoardingData()
+        }
+        //viewModel.fetchOnBoardingData()
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()

@@ -3,10 +3,8 @@ package com.ditto.mylibrary.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,27 +14,19 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import core.PDF_PASSWORD
 import core.PDF_SAMPLE_URL
-import core.PDF_USERNAME
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
-import java.util.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
 
@@ -74,6 +64,8 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
+        (activity as BottomNavigationActivity).setToolbarIcon()
+        toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()

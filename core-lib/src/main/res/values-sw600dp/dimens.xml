@@ -8,4 +8,5 @@
     <dimen name="alert_image_top">45dp</dimen>
     <dimen name="alert_otpions_bottom">43dp</dimen>
     <dimen name="alert_otpions_top">74dp</dimen>
+    <dimen name="toolbar_title">28sp</dimen>
 </resources>

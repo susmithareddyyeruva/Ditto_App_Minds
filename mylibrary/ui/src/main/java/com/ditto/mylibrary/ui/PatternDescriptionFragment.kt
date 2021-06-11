@@ -13,7 +13,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -93,7 +96,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         (activity as BottomNavigationActivity).hidemenu()
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar_patterndesc.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+        toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         baseViewModel.activeSocketConnection.set(false)
 
         if (viewModel.data.value == null) {
