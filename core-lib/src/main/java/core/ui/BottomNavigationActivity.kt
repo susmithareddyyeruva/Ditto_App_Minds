@@ -159,13 +159,18 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             false
         })
         expandableListView.setOnChildClickListener(OnChildClickListener { parent, v, groupPosition, childPosition, id ->
+//            if(binding.bottomNavViewModel!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+//                navController.navigate(R.id.action_fragments_to_wssettings)
+//            }
             if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
                 if(binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
                         ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+
                     if(navController.currentDestination?.label?.equals("Home")!!) {
                         navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
                     }
                 }
+
 
                 if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName.equals("Manage Projector")){
                     navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
@@ -292,7 +297,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_settings, R.id.nav_graph_software_updates -> {
+            R.id.nav_graph_settings_menu, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
@@ -303,7 +308,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 true
             }
 
-            R.id.nav_graph_about, -> {
+            R.id.nav_graph_about -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
                 true
@@ -358,9 +363,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         else  if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))){
             navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
         }
-        else {
-            Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG)
-                .show()
+        else{
+            Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -15,6 +15,7 @@
     <color name="menu_grey">#F4F5F7</color>
     <color name="text_new">#CEA10B</color>
     <color name="text_expired">#777777</color>
+    <color name="light_grey">#EEEEEE</color>
     <color name="white">#FFFFFF</color>
     <color name="text_disable2">#707070</color>
 </resources>

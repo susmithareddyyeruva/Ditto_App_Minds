@@ -6,6 +6,9 @@
     <dimen name="str_quest">18sp</dimen>
     <dimen name="str_email__phone_text">18sp</dimen>
     <dimen name="about_app_desc">18sp</dimen>
+    <dimen name="size_14sp">22sp</dimen>
+    <dimen name="size_21sp">21sp</dimen>
+    <dimen name="size_16dp">24dp</dimen>
     <dimen name="available_projector_text_size">22sp</dimen>
     <dimen name="margin_between">22dp</dimen>
     <dimen name="button_width">237dp</dimen>
