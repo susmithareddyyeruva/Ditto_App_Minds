@@ -281,8 +281,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
-                        android:text="No Service Found!!"
-                        android:textAllCaps="true"
+                        android:text="@string/no_projector"
                         android:visibility="@{viewmodel.isNoServiceFound()}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/size_12px"
@@ -428,6 +427,22 @@
                         app:lottie_loop="true"
                         android:visibility="@{viewmodel.isProgressBar()}"
                         app:lottie_rawRes="@raw/ditto_loader" />
+
+                    <TextView
+                        android:id="@+id/nobleservice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="@string/no_projector"
+                        android:visibility="@{viewmodel.isNoBleFound()}"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/size_12px"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 

@@ -40,4 +40,5 @@
     <string name="str_conn_success">Successfully connected!</string>
     <string name="str_conn_failed">Projector connection failed</string>
     <string name="select_projector">Select projector</string>
+    <string name="no_projector">No projectors found!!</string>
 </resources>

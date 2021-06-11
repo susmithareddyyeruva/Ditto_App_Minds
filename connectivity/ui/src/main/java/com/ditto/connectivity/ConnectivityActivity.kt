@@ -446,13 +446,21 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         scanLeDevice(true)
     }
 
+    private fun checkBleList(){
+         if (mLeDeviceListAdapter!!.count == 0){
+             viewModel.isNoBleFound.set(true)
+         }
+    }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun scanLeDevice(enable: Boolean) {
+        viewModel.isNoBleFound.set(false)
         if (enable) {
             this.mHandler!!.postDelayed({
                 mScanning = false
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mBluetoothAdapter!!.stopLeScan(mLeScanCallback)
+                    checkBleList()
                     enableRefreshButton(true)
                 }
             }, SCAN_PERIOD)
