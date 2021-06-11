@@ -12,8 +12,11 @@
     <dimen name="small_padding_x">8dp</dimen>
     <dimen name="medium_padding">10dp</dimen>
     <dimen name="large_padding">15dp</dimen>
+    <dimen name="large_paddingx">17dp</dimen>
+    <dimen name="large_paddingxx">20dp</dimen>
     <dimen name="bottom_common">40dp</dimen>
     <dimen name="x_large_padding">30dp</dimen>
+    <dimen name="xx_large_padding">51dp</dimen>
     <dimen name="text_header">20sp</dimen>
     <dimen name="text_desc">12sp</dimen>
     <dimen name="text_menu">14sp</dimen>
@@ -30,10 +33,18 @@
     <dimen name="alert_message_Text">16sp</dimen>
     <dimen name="alert_padding">11dp</dimen>
     <dimen name="alert_oprion_padding">28dp</dimen>
-    <dimen name="alert_image_top">30dp</dimen>
+    <dimen name="alert_image_top">43dp</dimen>
     <dimen name="alert_otpions_bottom">22dp</dimen>
     <dimen name="alert_otpions_top">20dp</dimen>
     <dimen name="available_projector_text_size">14sp</dimen>
     <dimen name="common_margin">18dp</dimen>
     <dimen name="padding_bottom">5dp</dimen>
+
+
+    <dimen name="progress_width">60dp</dimen>
+    <dimen name="progress_heigth">30dp</dimen>
+    <dimen name="process_text">16sp</dimen>
+    <dimen name="process_text_top">30dp</dimen>
+
+
 </resources>

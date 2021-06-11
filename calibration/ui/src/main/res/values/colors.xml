@@ -15,5 +15,6 @@
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#FFF</color>
-
+    <color name="camera_button_border">#707070</color>
+    <color name="loading_background">#060606</color>
 </resources>

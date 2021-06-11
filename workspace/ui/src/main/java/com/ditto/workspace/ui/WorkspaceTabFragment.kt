@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -73,7 +72,8 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListener,
-    Utility.CallbackDialogListener, com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
+    Utility.CallbackDialogListener, com.ditto.workspace.ui.util.Utility.CallbackDialogListener,
+    Utility.CustomCallbackDialogListener{
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -117,7 +117,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
-            if(mWorkspaceEditor?.views?.any() ?: true){
+            if (mWorkspaceEditor?.views?.any() ?: true) {
                 enableSelectAll(false)
                 enableClear(false)
             }
@@ -155,7 +155,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(),true)
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true)
             }
         })
     }
@@ -222,8 +222,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    private fun setupKeyboardListener(view: View) {
-        view.viewTreeObserver.addOnGlobalLayoutListener {
+    private fun setupKeyboardListener(view: View?) {
+        view?.viewTreeObserver?.addOnGlobalLayoutListener {
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
@@ -328,7 +328,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showProgress(toShow: Boolean) {
-        if (toShow) {
+        bottomNavViewModel.showProgress.set(toShow)
+        /*if (toShow) {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
 
@@ -342,7 +343,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             if (::alert.isInitialized) {
                 alert.dismiss()
             }
-        }
+        }*/
     }
 
     private fun handleResult(
@@ -427,11 +428,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     withContext(Dispatchers.Main) {
                         logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar.getInstance().timeInMillis)
                         showProgress(false)
-                        Toast.makeText(
+                        /*Toast.makeText(
                             requireContext(),
                             resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
-                        ).show()
+                        ).show()*/
+                        showFailurePopup()
                     }
                 }
             } catch (e: Exception) {
@@ -442,11 +444,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 withContext(Dispatchers.Main) {
                     logger.d("TRACE_ Projection :projectWorkspaceImage Finish " + Calendar.getInstance().timeInMillis)
                     showProgress(false)
-                    Toast.makeText(
+                    /*Toast.makeText(
                         requireContext(),
                         resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
-                    ).show()
+                    ).show()*/
+                    showFailurePopup()
                 }
             } finally {
                 clientSocket?.close()
@@ -845,7 +848,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
                     )
-                } else{
+                } else {
                     Log.d("Error", "Invalid currentDestination?.id")
                 }
             }
@@ -952,10 +955,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnClickPatternOrReference -> {
                 onUpdateFont()
             }
-            is WorkspaceViewModel.Event.DisableClear -> { enableClear(false)}
-            is WorkspaceViewModel.Event.EnableClear -> { enableClear(true)}
-            is WorkspaceViewModel.Event.DisableSelectAll -> { enableSelectAll(false)}
-            is WorkspaceViewModel.Event.EnableSelectAll -> { enableSelectAll(true)}
+            is WorkspaceViewModel.Event.DisableClear -> {
+                enableClear(false)
+            }
+            is WorkspaceViewModel.Event.EnableClear -> {
+                enableClear(true)
+            }
+            is WorkspaceViewModel.Event.DisableSelectAll -> {
+                enableSelectAll(false)
+            }
+            is WorkspaceViewModel.Event.EnableSelectAll -> {
+                enableSelectAll(true)
+            }
         }
 
     private fun onUpdateFont() {
@@ -1623,7 +1634,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showBluetoothDialogue() {
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.ble_connectivity),
@@ -1631,12 +1642,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.turnon),
             this,
             Utility.AlertType.BLE
+        )*/
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs Bluetooth connectivity",
+            "LATER",
+            resources.getString(R.string.turnon),
+            this,
+            Utility.AlertType.BLE,
+            Utility.Iconype.SUCCESS
         )
     }
 
     private fun showWifiDialogue() {
 
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.wifi_connectivity),
@@ -1644,6 +1666,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.settings),
             this,
             Utility.AlertType.WIFI
+        )*/
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs WiFi connectivity",
+            "LATER",
+            "SETTINGS",
+            this,
+            Utility.AlertType.WIFI,
+            Utility.Iconype.SUCCESS
         )
 
     }
@@ -1683,7 +1716,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCalibrationDialog() {
-        getAlertDialogue(
+        /*getAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_calibration_title),
             resources.getString(R.string.setup_calibration_message),
@@ -1692,7 +1725,36 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             resources.getString(R.string.skips),
             this,
             Utility.AlertType.CALIBRATION
-        )
+        )*/
+
+        val layout =
+            activity?.layoutInflater?.inflate(R.layout.alert_calibration_confirmation, null)
+        val dialogBuilder =
+            AlertDialog.Builder(requireContext())
+        dialogBuilder.setCancelable(false)
+        val alertCalibration = dialogBuilder.create()
+        alertCalibration.setView(layout)
+        alertCalibration.show()
+        val negative = layout?.findViewById(R.id.textNegative) as TextView
+        val positive = layout.findViewById(R.id.textYes) as TextView
+        positive.setOnClickListener {
+            alertCalibration.dismiss()
+           sendBorderImage()
+        }
+        negative.setOnClickListener {
+            alertCalibration.dismiss()
+            if (baseViewModel.activeSocketConnection.get()) {
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+            }
+
+        }
+    }
+
+    private fun sendBorderImage() {
+        if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+            showProgress(toShow = true)
+            GlobalScope.launch { projectBorderImage() }
+        }
     }
 
     private fun showQuickCheckDialog() {
@@ -1712,36 +1774,58 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
      */
     private fun showcalibrationbuttonclicked() {
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
-        val dialogBuilder =
-            AlertDialog.Builder(
-                ContextThemeWrapper(
-                    requireContext(),
-                    R.style.AlertDialogCustom
-                )
-            )
-        dialogBuilder
-            .setCancelable(false)
-            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+        /* val dialogBuilder =
+             AlertDialog.Builder(
+                 ContextThemeWrapper(
+                     requireContext(),
+                     R.style.AlertDialogCustom
+                 )
+             )*/
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setCancelable(false)
+        /*.setNegativeButton(
+            getString(R.string.cancel),
+            DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+        .setPositiveButton(
+            getString(R.string.launch_camera),
+            DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 sendCalibrationPattern()
-            })
+            })*/
 
-        val alertCalibration = dialogBuilder.create()
-        alertCalibration.setView(layout)
-        alertCalibration.show()
-        val displayMetrics = DisplayMetrics()
+        val alertCamera = dialogBuilder.create()
+        alertCamera.setView(layout)
+       // alertCamera.window?.setLayout(535,201)
+        alertCamera.show()
+        val cancel = layout?.findViewById(R.id.textCancel) as TextView
+        val launch = layout.findViewById(R.id.textLaunch) as TextView
+        launch.setOnClickListener {
+            alertCamera.dismiss()
+            sendCalibrationPattern()
+        }
+        cancel.setOnClickListener {
+            alertCamera.dismiss()
+            if (baseViewModel.activeSocketConnection.get()) {
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+            }
+
+
+        }
+       val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-        val displayWidth: Int = displayMetrics.widthPixels
-        val displayHeight: Int = displayMetrics.heightPixels
-        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCalibration.window?.attributes)
-        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-        layoutParams.width = dialogWindowWidth
-        layoutParams.height = dialogWindowHeight
-        alertCalibration.window?.attributes = layoutParams
+       val displayWidth: Int = displayMetrics.widthPixels
+       val displayHeight: Int = displayMetrics.heightPixels
+       val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(alertCamera.window?.attributes)
+      val dialogWindowWidth = (displayWidth * 0.8f).toInt()
+       val dialogWindowHeight = (displayHeight * 0.6f).toInt()
+       layoutParams.width = dialogWindowWidth
+      layoutParams.height = dialogWindowHeight
+        alertCamera.window?.attributes = layoutParams
     }
 
     private fun sendCalibrationPattern() {
@@ -1805,28 +1889,30 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     baseViewModel.activeSocketConnection.set(false)
                     baseViewModel.isProjecting.set(false)
                     viewModel.isProjectionRequest.set(false)
-                    withContext(Dispatchers.Main) {
+                    showFailurePopup()
+                    /*withContext(Dispatchers.Main) {
                         showProgress(toShow = false)
                         Toast.makeText(
                             requireContext(),
                             resources.getString(R.string.socketfailed),
                             Toast.LENGTH_SHORT
                         ).show()
-                    }
+                    }*/
                 }
             } catch (e: Exception) {
                 baseViewModel.activeSocketConnection.set(false)
                 baseViewModel.isProjecting.set(false)
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
-                withContext(Dispatchers.Main) {
+                showFailurePopup()
+               /* withContext(Dispatchers.Main) {
                     showProgress(toShow = false)
                     Toast.makeText(
                         requireContext(),
                         resources.getString(R.string.socketfailed),
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+                }*/
             } finally {
                 soc?.close()
             }
@@ -1876,6 +1962,63 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
     }
+    private fun showFailurePopup(){
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            "Projector connection failed",
+            "CANCEL",
+            "RETRY",
+            this,
+            Utility.AlertType.CONNECTIVITY,
+            Utility.Iconype.FAILED
+        )
 
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                val mBluetoothAdapter =
+                    BluetoothAdapter.getDefaultAdapter()
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
+            Utility.AlertType.WIFI -> {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+            }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+                showConnectivityPopup()
+            }
+        }
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                logger.d("Later clicked")
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isBleLaterClicked.set(true)
+            }
+            Utility.AlertType.WIFI -> {
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isWifiLaterClicked.set(true)
+            }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+            }
+        }
+    }
 
 }
