@@ -64,6 +64,7 @@ class AboutAppFragment : BaseFragment() {
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarTitle("About The App & Policies")
+
     }
 
 
