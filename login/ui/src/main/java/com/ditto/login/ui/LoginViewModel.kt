@@ -42,6 +42,7 @@ class LoginViewModel @Inject constructor(
     var versionName: ObservableField<String> = ObservableField<String>("")
     val isEmailValidated: ObservableBoolean = ObservableBoolean(true)
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
+    val isLoginButtonFocusable: ObservableBoolean = ObservableBoolean(true)
     var errorString: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -73,6 +74,8 @@ class LoginViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy { handleFetchResult(it) }
+            isLoginButtonFocusable.set(false)
+
         }
     }
 
@@ -87,6 +90,8 @@ class LoginViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.faultDomain == null) {
+                    isLoginButtonFocusable.set(true)
+
                     //User login successfull
                     storageManager.savePrefs(USER_EMAIL, result.data.email ?: "")
                     storageManager.savePrefs(USER_PHONE, result.data.phone_home ?: "")
@@ -140,12 +145,14 @@ class LoginViewModel @Inject constructor(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy { handleFetchResult(it) }
                 } else { //http status code is 200  also have error
+                    isLoginButtonFocusable.set(true)
                     errorString.set(result.data.faultDomain?.message ?: "")
                     uiEvents.post(Event.OnLoginFailed)
                 }
 
             }
             is Result.OnError -> {
+                isLoginButtonFocusable.set(true)
                 handleError(result.error)
                 uiEvents.post(Event.OnHideProgress)
             }

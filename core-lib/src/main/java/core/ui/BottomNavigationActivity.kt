@@ -337,16 +337,26 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     private fun handlemenuClick (selectedmenu : String){
         if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
-            navController.navigate(R.id.action_fragments_to_customerCareFragment)
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                navController.navigate(R.id.action_fragments_to_customerCareFragment)
+            }
         } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
-            navController.navigate(R.id.action_destination_to_FQAfragment)
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                navController.navigate(R.id.action_destination_to_FQAfragment)
+            }
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
-            logoutUser(true)
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                logoutUser(true)
+            }
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
-            logoutUser(false)
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                logoutUser(false)
+            }
         }
         else  if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))){
-            navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+            }
         }
         else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG)
