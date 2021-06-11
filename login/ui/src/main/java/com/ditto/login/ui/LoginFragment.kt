@@ -71,7 +71,6 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
         setViewpagerImageAdapter()
         setUIEvents()
-        sample()
         //setupKeyboardListener(binding.root) // call in OnCreate or similar
 
     }
@@ -192,16 +191,6 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         val bottom = lastChild.bottom + paddingBottom
         val delta = bottom - (scrollY + height)
         smoothScrollBy(0, delta) //***/2 *****3/2
-    }
-
-    private fun sample(){
-        if (Utility.isTokenExpired()){
-            viewModel.errorString.set("Token Expired ")
-            showSnackBar()
-        } else {
-            viewModel.errorString.set("Valid Token "+ AppState.getToken())
-            showSnackBar()
-        }
     }
 
     private fun showSnackBar() {

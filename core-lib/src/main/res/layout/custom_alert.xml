@@ -82,7 +82,7 @@
         android:id="@+id/layout_withoutImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/common_title"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Connectivity"
-            android:layout_marginLeft="@dimen/x_large_padding"
+            android:layout_marginLeft="@dimen/xx_large_padding"
             android:layout_marginTop="@dimen/x_large_padding"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textSize="@dimen/alert_message_Text"
@@ -103,7 +103,7 @@
             android:gravity="center"
             android:text="This app needs Bluetooth connectivity"
             android:layout_below="@+id/common_title"
-            android:layout_marginLeft="@dimen/x_large_padding"
+            android:layout_marginLeft="@dimen/xx_large_padding"
             android:layout_marginTop="@dimen/medium_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:textSize="@dimen/alert_message_Text"
@@ -114,6 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/large_padding"
             android:gravity="end"
             android:layout_marginTop="@dimen/large_padding"
             android:layout_below="@+id/common_message">
@@ -125,6 +126,7 @@
                 android:layout_height="wrap_content"
                  android:gravity="center"
                 android:text="LATER"
+                android:layout_marginRight="@dimen/x_large_padding"
                 android:padding="@dimen/large_padding"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:textSize="@dimen/alert_options_Text"
@@ -137,6 +139,7 @@
                 android:layout_height="wrap_content"
                  android:gravity="center"
                 android:text="SETTINGS"
+                android:layout_marginRight="@dimen/x_large_padding"
                 android:padding="@dimen/large_padding"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:textSize="@dimen/alert_options_Text"

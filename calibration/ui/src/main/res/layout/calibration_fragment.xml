@@ -217,9 +217,10 @@
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animationView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/progress_width"
+                        android:layout_height="@dimen/progress_heigth"
                         app:lottie_autoPlay="true"
+                        android:layout_gravity="center"
                         app:lottie_loop="true"
                         app:lottie_rawRes="@raw/ditto_loader" />
 
@@ -232,6 +233,7 @@
                         android:layout_marginTop="@dimen/process_text_top"
                         android:textColor="@color/White"
                         android:textSize="@dimen/process_text"
+                        android:gravity="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/animationView" />

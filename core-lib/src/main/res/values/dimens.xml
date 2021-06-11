@@ -44,7 +44,7 @@
     <dimen name="progress_width">60dp</dimen>
     <dimen name="progress_heigth">30dp</dimen>
     <dimen name="process_text">16sp</dimen>
-    <dimen name="process_text_top">30dp</dimen>
+    <dimen name="process_text_top">20dp</dimen>
 
 
 </resources>
