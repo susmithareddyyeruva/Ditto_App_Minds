@@ -297,6 +297,7 @@
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:onClick="@{() -> viewModel.validateCredentials()}"
                             android:paddingTop="5dp"
+                            android:clickable="@{viewModel.isLoginButtonFocusable()}"
                             android:paddingBottom="5dp"
                             android:text="@string/Login"
                             android:textColor="@color/White"
