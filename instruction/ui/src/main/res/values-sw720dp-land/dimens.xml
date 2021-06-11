@@ -7,6 +7,10 @@
     <dimen name="size_21sp">32sp</dimen>
     <dimen name="size_21dp">30dp</dimen>
     <dimen name="end_margin_calib_btn">14dp</dimen>
+    <dimen name="tab_title_text_size">20sp</dimen>
+    <dimen name="content_header_text_size">20sp</dimen>
+    <dimen name="content_text_size">18sp</dimen>
+
     <dimen name="size_skip">18sp</dimen>
     <dimen name="size_skip_button_width">12.98dp</dimen>
     <dimen name="size_skip_button_height">12.91dp</dimen>

@@ -93,8 +93,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:paddingEnd="@dimen/margin_text"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/size_16px"
-                    android:textStyle="bold"
+                    android:textSize="@dimen/content_header_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -111,7 +110,7 @@
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/size_16px"
+                    android:textSize="@dimen/content_text_size"
                     app:layout_constraintBottom_toTopOf="@+id/linear_last_beam_step"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
