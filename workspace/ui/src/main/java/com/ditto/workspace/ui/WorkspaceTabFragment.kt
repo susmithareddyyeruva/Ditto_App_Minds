@@ -20,7 +20,6 @@ import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -644,14 +643,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCutBinDialog(count: Int, alertType: Utility.AlertType) {
-        getAlertDialogue(
+        Utility.getCommonAlertDialogue(
             requireContext(),
-            resources.getString(R.string.complete_cutbin),
+            "",
             resources.getString(R.string.complete_piece, count),
             resources.getString(R.string.no),
             resources.getString(R.string.yes),
             this,
-            alertType
+            alertType,
+            Utility.Iconype.NONE
         )
     }
 
@@ -1975,7 +1975,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
 
     }
-
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -1998,9 +1997,34 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
                 showConnectivityPopup()
             }
+            Utility.AlertType.CUT_BIN -> {
+                if (!viewModel.workspacedata?.isCompleted!!) {
+                    viewModel.setCompletedCount(cutCount)
+                    viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
+                        ?.isCompleted =
+                        true
+                    com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
+                    adapter?.notifyDataSetChanged()
+                }
+                mWorkspaceEditor?.removePattern(viewModel.workspacedata, false)
+                if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
+                    viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
+                } else {
+                    viewModel.workspacedata = null
+                    clearWorkspace()
+                }
+                onDragCompleted()
+            }
+            Utility.AlertType.CUT_BIN_ALL -> {
+                viewModel.isSingleDelete = false
+                viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
+            }
+            Utility.AlertType.CUT_COMPLETE -> {
+                adapter?.updatePositionAdapter()
+                viewModel.cutCheckBoxClicked(viewModel.cutCount,true)
+            }
         }
     }
-
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -2018,6 +2042,21 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.CONNECTIVITY -> {
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
             }
+            Utility.AlertType.CUT_BIN -> {
+                mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
+                if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
+                    viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
+                } else {
+                    viewModel.workspacedata = null
+                    clearWorkspace()
+                }
+                onDragCompleted()
+            }
+            Utility.AlertType.CUT_BIN_ALL -> {
+                viewModel.cutType = Utility.AlertType.CUT_BIN
+
+            }
+
         }
     }
 

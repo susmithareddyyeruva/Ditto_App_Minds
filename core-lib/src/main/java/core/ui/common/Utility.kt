@@ -9,7 +9,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.Icon
 import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -23,7 +22,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
@@ -37,7 +35,6 @@ import java.io.*
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
-import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -73,7 +70,8 @@ class Utility @Inject constructor(
 
     enum class Iconype {
         SUCCESS,
-        FAILED
+        FAILED,
+        NONE
     }
 
     companion object {
@@ -442,7 +440,7 @@ class Utility @Inject constructor(
             alert.window?.setBackgroundDrawable(null)
             val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
             val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
-            if (alertType == AlertType.BLE || alertType == AlertType.WIFI){
+            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE){
                 lay_withimage.visibility = View.GONE
                 lay_withoutimage.visibility = View.VISIBLE
 
