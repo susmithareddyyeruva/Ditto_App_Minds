@@ -194,8 +194,12 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     private fun File.copyInputStreamToFile(inputStream: InputStream) {
-        this.outputStream().use { fileOut ->
-            inputStream.copyTo(fileOut)
+        try {
+            this.outputStream().use { fileOut ->
+                inputStream.copyTo(fileOut)
+            }
+        } catch (e: Exception) {
+            Log.d("Error","",e)
         }
     }
 }
