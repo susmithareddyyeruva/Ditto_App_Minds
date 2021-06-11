@@ -177,7 +177,7 @@
                                 android:paddingLeft="@dimen/x_large_padding"
                                 android:paddingTop="@dimen/medium_padding"
                                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                                android:text="Select Projector"
+                                android:text="@string/select_projector"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/size_16px"
                                 android:textStyle="bold" />
