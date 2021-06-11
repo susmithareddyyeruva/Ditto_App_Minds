@@ -297,7 +297,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
-            R.id.nav_graph_settings_menu, R.id.nav_graph_software_updates -> {
+            R.id.nav_graph_settings, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
