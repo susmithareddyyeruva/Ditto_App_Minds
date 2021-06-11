@@ -52,7 +52,8 @@ class Utility {
         CUT_BIN_ALL,
         PATTERN_RENAME,
         NETWORK,
-        PDF
+        PDF,
+        CUT_COMPLETE
     }
 
     companion object {
