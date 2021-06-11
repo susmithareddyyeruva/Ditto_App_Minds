@@ -64,7 +64,9 @@
         <action
             android:id="@+id/action_homeFragment_to_aboutAppFragment"
             app:destination="@id/aboutAppFragment" />
-
+        <action
+            android:id="@+id/action_homeFragment_to_nav_graph_manage"
+            app:destination="@id/manageDeviceFragment" />
     </fragment>
 
     <fragment
@@ -94,4 +96,8 @@
         android:id="@+id/aboutAppFragment"
         android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
         android:label="AboutAppFragment" />
+    <fragment
+        android:id="@+id/manageDeviceFragment"
+        android:name="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment"
+        android:label="ManageDeviceFragment" />
 </navigation>

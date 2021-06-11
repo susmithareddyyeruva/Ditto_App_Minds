@@ -16,4 +16,5 @@
     <color name="text_new">#CEA10B</color>
     <color name="text_expired">#777777</color>
     <color name="white">#FFFFFF</color>
+    <color name="text_disable2">#707070</color>
 </resources>
