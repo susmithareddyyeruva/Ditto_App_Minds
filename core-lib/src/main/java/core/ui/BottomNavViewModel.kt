@@ -87,7 +87,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         childModel = MenuModel(
             "Workspace settings",
-            "ic_menu_settings",
+            "ic_ws_settings_icon",
             null
         )
         if(AppState.getIsLogged()){
