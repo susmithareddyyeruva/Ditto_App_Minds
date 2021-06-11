@@ -3,7 +3,7 @@
     <string name="about_the_app_amp_policies">About The App &amp; Policies</string>
     <string name="image_slide_menu">Image Slide Menu</string>
     <string name="skip">Skip</string>
-    <string name="hi_there">Hi There</string>
+    <string name="hi_there">Hi there</string>
     <string name="sign_in_to_explore_more">Sign in to explore more</string>
     <string name="subscription">Subscription</string>
     <string name="no_internet_available">No Internet connection available !</string>
@@ -16,4 +16,6 @@
     <string name="str_menu_ws_pro_settings">Workspace Pro Settings</string>
     <string name="str_no_internet">No Network Available. Please check your internet connection.</string>
     <string name="str_ok">OK</string>
+    <string name="pattern_library">Pattern Library</string>
+    <string name="pattern_library_count">Pattern Library \u0020 (10)</string>
 </resources>

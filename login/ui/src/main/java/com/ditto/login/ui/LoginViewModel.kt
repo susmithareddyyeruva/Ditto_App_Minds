@@ -95,6 +95,7 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
+                    AppState.setCustID(result.data.customer_id!!)
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
                         result.data.cSpliceCutCompleteReminder
@@ -133,7 +134,37 @@ class LoginViewModel @Inject constructor(
                             cReceiveEmail = result.data.cReceiveEmail,
                             cSpliceCutCompleteReminder = result.data.cSpliceCutCompleteReminder,
                             cSpliceMultiplePieceReminder = result.data.cSpliceMultiplePieceReminder,
-                            cSpliceReminder = result.data.cSpliceReminder
+                            cSpliceReminder = result.data.cSpliceReminder,
+                            cCuttingReminder = result.data.cCuttingReminder,
+                            cInterestArt = result.data.cInterestArt,
+                            cInterestBridalSpecialOccasionProjects = result.data.cInterestBridalSpecialOccasionProjects,
+                            cInterestClassroomCraftsDecor = result.data.cInterestClassroomCraftsDecor,
+                            cInterestFloral = result.data.cInterestFloral,
+                            cInterestFoodCrafts = result.data.cInterestFoodCrafts,
+                            cInterestHolidayPartyDecorating = result.data.cInterestHolidayPartyDecorating,
+                            cInterestHomeDecor = result.data.cInterestHomeDecor,
+                            cInterestJewelry = result.data.cInterestJewelry,
+                            cInterestKidsCrafts = result.data.cInterestKidsCrafts,
+                            cInterestKnittingCrochet = result.data.cInterestKnittingCrochet,
+                            cInterestPaperCrafts = result.data.cInterestPaperCrafts,
+                            cInterestQuiltingSewingFabric = result.data.cInterestQuiltingSewingFabric,
+                            cIsCostumeGuildEnrolled = result.data.cIsCostumeGuildEnrolled,
+                            cIsFourHEnrolled = result.data.cIsFourHEnrolled,
+                            cIsGirlScoutsEnrolled = result.data.cIsGirlScoutsEnrolled,
+                            cIsJoannPlusCustomer = result.data.cIsJoannPlusCustomer,
+                            cIsMilitaryEnrolled = result.data.cIsMilitaryEnrolled,
+                            cIsTaxExempt = result.data.cIsTaxExempt,
+                            cIsTeacherEnrolled = result.data.cIsTeacherEnrolled,
+                            cLearnBrowseSocialMedia = result.data.cLearnBrowseSocialMedia,
+                            cLearnLookOnline = result.data.cLearnLookOnline,
+                            cLearnTakeAClass = result.data.cLearnTakeAClass,
+                            cLearnVisitJoannStore = result.data.cLearnVisitJoannStore,
+                            cReceiveDirectMail = result.data.cReceiveDirectMail,
+                            cReceiveTextMessage = result.data.cReceiveTextMessage,
+                            cRegisteredWithNarvar = result.data.cRegisteredWithNarvar,
+                            cTaxExempt = result.data.cTaxExempt,
+                            cInitialisationVector = result.data.cInitialisationVector,
+                            cVectorKey = result.data.cVectorKey
                         )
                     )
                         .subscribeOn(Schedulers.io())
@@ -195,7 +226,6 @@ class LoginViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
-
     }
 
     /**

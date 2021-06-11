@@ -8,14 +8,15 @@
     <string name="skips">Skip</string>
     <string name="ditto_connect">Ditto projector is not connected</string>
     <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>
-    <string name="select_bluetooth_device">Select Bluetooth device</string>
+    <string name="select_bluetooth_device">Select bluetooth device</string>
     <string name="connecting">Connecting to Ditto projector...</string>
-    <string name="wifi_connect">Wi-Fi Connectivity</string>
+    <string name="wifi_connect">Ditto projector found!</string>
     <string name="enter_credentials">Enter your Wi-Fi Credentials</string>
-    <string name="network_name">Network Name</string>
+    <string name="network_name">Network name</string>
     <string name="password">Password</string>
     <string name="connect">CONNECT</string>
     <string name="retry">RETRY</string>
+    <string name="str_ok">OK</string>
     <string name="connectivity_unsuccess">Connectivity Unsuccessful</string>
     <string name="error_text">Please try again connecting your device \nagain to ditto projector.</string>
     <string name="ble_connectivity">Turn on your bluetooth</string>
@@ -31,4 +32,11 @@
     <string name="setup_quickcheck_message">Place a sheet of letter sized paper on the projection and check if the lines are coinciding</string>
     <string name="calibrate">NO, CALIBRATE</string>
     <string name="yes_string">YES</string>
+    <string name="do_you_want_caliberate">Do you need to calibrate?</string>
+    <string name="caliberate_tittle">Calibrate</string>
+    <string name="no_string">NO</string>
+    <string name="tittle_calibrate">Calibrate</string>
+    <string name="str_scan">SCAN VIA BLUETOOTH</string>
+    <string name="str_conn_success">Successfully connected!</string>
+    <string name="str_conn_failed">Projector connection failed</string>
 </resources>

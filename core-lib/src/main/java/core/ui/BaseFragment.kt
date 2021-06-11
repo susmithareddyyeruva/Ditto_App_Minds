@@ -24,6 +24,7 @@ abstract class BaseFragment : DaggerFragment(), HasAndroidInjector {
 
     val toolbarViewModel: ToolbarViewModel by ViewModelDelegate(ViewModelScope.ACTIVITY)
     val baseViewModel: BaseViewModel by ViewModelDelegate(ViewModelScope.ACTIVITY)
+    //val tokenViewModel: TokenViewModel by ViewModelDelegate(ViewModelScope.ACTIVITY)
 
     override fun androidInjector(): AndroidInjector<Any> = childFragmentInjector
 

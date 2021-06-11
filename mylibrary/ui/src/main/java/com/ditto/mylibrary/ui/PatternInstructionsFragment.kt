@@ -3,10 +3,8 @@ package com.ditto.mylibrary.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,29 +14,21 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import core.PDF_PASSWORD
 import core.PDF_SAMPLE_URL
-import core.PDF_USERNAME
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
-import java.util.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
+class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPatternInstructionsBinding
@@ -74,6 +64,8 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
+        (activity as BottomNavigationActivity).setToolbarIcon()
+        toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()
@@ -182,11 +174,13 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
 
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             getString(R.string.str_no_internet),
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
         )
     }
 
@@ -194,34 +188,38 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
 
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             getString(R.string.str_unable_to_load),
             getString(R.string.str_retry),
             getString(R.string.str_cancel),
             this,
-            Utility.AlertType.PDF
+            Utility.AlertType.PDF,
+            Utility.Iconype.FAILED
         )
-    }
-
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+    } 
+    
+      override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         when (alertType) {
             Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        when (alertType) {
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+       when (alertType) {
             Utility.AlertType.PDF -> {
                 pdfdownload()
             }
         }
     }
-
-    override fun onNeutralButtonClicked() {
-        TODO("Not yet implemented")
-    }
+ 
 }
 

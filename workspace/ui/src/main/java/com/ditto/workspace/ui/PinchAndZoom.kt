@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.ditto.workspace.ui.databinding.PinchzoomActivityBinding
 import com.ditto.workspace.ui.util.Utility
 import kotlinx.android.synthetic.main.pinchzoom_activity.*
@@ -45,16 +46,15 @@ class PinchAndZoom : AppCompatActivity() {
         }
         if (imagepath != null) {
             try {
-                val drawable = core.ui.common.Utility.getDrawableFromString(this, imagepath)
+                //val drawable = core.ui.common.Utility.getDrawableFromString(this, imagepath)
                 //myZoomageView?.maxWidth = drawable?.intrinsicWidth?.div(scaleFactor!!) ?: 1
                 //myZoomageView?.maxHeight = drawable?.intrinsicHeight?.div(scaleFactor!!) ?: 1
                 //myZoomageView?.scaleType = ImageView.ScaleType.FIT_XY
-                myZoomageView?.setImageDrawable(drawable)
-/*
+                //myZoomageView?.setImageDrawable(drawable)
                 Glide.with(this)
                     .load(imagepath)
                     .placeholder(R.drawable.ic_placeholder)
-                    .into(myZoomageView)*/
+                    .into(myZoomageView)
             } catch (e: Exception) {
                 Log.d("Exception", "image path")
             }

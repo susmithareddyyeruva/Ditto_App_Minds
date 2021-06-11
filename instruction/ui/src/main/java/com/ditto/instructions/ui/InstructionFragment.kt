@@ -12,12 +12,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -399,7 +397,7 @@ class InstructionFragment constructor(
     private fun showcalibrationbuttonclicked() {
         Log.d("Transform", "showcalibrationbuttonclicked")
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         val dialogBuilder =
             AlertDialog.Builder(
@@ -410,7 +408,10 @@ class InstructionFragment constructor(
             )
         dialogBuilder
             .setCancelable(false)
-            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 enableCalibrateButton(true)
                 if (findNavController().currentDestination?.id == R.id.destination_instruction
@@ -423,17 +424,6 @@ class InstructionFragment constructor(
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-        val displayWidth: Int = displayMetrics.widthPixels
-        val displayHeight: Int = displayMetrics.heightPixels
-        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCalibration.window?.attributes)
-        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-        layoutParams.width = dialogWindowWidth
-        layoutParams.height = dialogWindowHeight
-        alertCalibration.window?.attributes = layoutParams
     }
 
     /**
@@ -447,12 +437,12 @@ class InstructionFragment constructor(
             toolbarViewModel.isShowTransparentActionBar.set(false)
             if (viewModel.instructionID.get() == 1) {
                 viewModel.toolbarTitle.set("Beam Setup & Takedown")
-                toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+                toolbar.setNavigationIcon(R.drawable.ic_back_button)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             } else {
                 viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
-                toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+                toolbar.setNavigationIcon(R.drawable.ic_back_button)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
@@ -461,7 +451,7 @@ class InstructionFragment constructor(
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()
@@ -513,7 +503,7 @@ class InstructionFragment constructor(
     override fun onResume() {
         super.onResume()
         viewModel.isWatchVideoClicked.set(false)
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+        toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
     }
 

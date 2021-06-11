@@ -23,6 +23,7 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -156,9 +157,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun clearWorkspace() {
-        fragmentGarment.clearWorkspace()
-        fragmentLining.clearWorkspace()
-        fragmentInterface.clearWorkspace()
+        if (viewModel.selectedTab.get() == 0){
+            fragmentGarment.clearWorkspace()
+        } else if (viewModel.selectedTab.get() == 1){
+            fragmentLining.clearWorkspace()
+        } else {
+            fragmentInterface.clearWorkspace()
+        }
         viewModel.spliced_pices_visibility.set(false)
     }
 
@@ -277,8 +282,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                     )
                 }
             }
-            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+
             clearWorkspace()
+            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+
         }
 
     }

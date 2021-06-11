@@ -14,8 +14,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import com.ditto.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
@@ -29,7 +27,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListener {
+class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
     private val viewModel: WorkspaceViewModel by ViewModelDelegate()
     lateinit var binding: FragmentWsPatternInstructionsBinding
@@ -52,9 +50,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         toolbarViewModel.isShowActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
+        toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
         setUIEvents()
@@ -174,46 +174,52 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CallbackDialogListene
 
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             getString(R.string.str_no_internet),
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
         )
     }
+
 
     private fun showRedownload(){
 
         Utility.getCommonAlertDialogue(
             requireContext(),
+            "",
             getString(R.string.str_unable_to_load),
             getString(R.string.str_retry),
             getString(R.string.str_cancel),
             this,
-            Utility.AlertType.PDF
+            Utility.AlertType.PDF,
+            Utility.Iconype.FAILED
         )
     }
 
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+   override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
         when (alertType) {
             Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment,true)
             }
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
-        when (alertType) {
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+       when (alertType) {
             Utility.AlertType.PDF -> {
                 pdfdownload()
             }
         }
-    }
-
-    override fun onNeutralButtonClicked() {
-        TODO("Not yet implemented")
     }
 
 }

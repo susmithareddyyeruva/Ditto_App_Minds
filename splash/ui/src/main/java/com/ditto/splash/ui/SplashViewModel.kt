@@ -15,6 +15,7 @@ import core.USER_PHONE
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -31,7 +32,8 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val getDbUseCase: GetDbDataUseCase,
     private val updateDbUseCase: UpdateDbUseCase,
-    private val storageManager: StorageManager
+    private val storageManager: StorageManager,
+    private val utility: Utility
 ) : BaseViewModel() {
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
@@ -39,6 +41,10 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
+        /*if (Utility.isTokenExpired()){
+            utility.refreshToken()
+        }*/
+        utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
             delay(3000)
@@ -52,6 +58,10 @@ class SplashViewModel @Inject constructor(
         updateDb()
     }
 
+    fun callToken(){
+        utility.refreshToken()
+
+    }
     private fun updateDb() {
         disposable += updateDbUseCase.invoke()
             .subscribeOn(Schedulers.io())

@@ -373,6 +373,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/site"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/linear_login_credentials"
@@ -394,6 +395,18 @@
                             android:textColor="@color/textview_diito_site"
                             android:textSize="@dimen/text_size_ditto_size" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/site"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@={viewModel.versionName}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_14px" />
+
                 </RelativeLayout>
 
 
@@ -402,16 +415,5 @@
         </androidx.core.widget.NestedScrollView>
 
 
-        <TextView
-            android:id="@+id/text_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/default_padding"
-            android:text="@={viewModel.versionName}"
-            android:textColor="@color/black"
-            android:textSize="@dimen/size_16px"
-            android:visibility="gone" />
     </RelativeLayout>
 </layout>

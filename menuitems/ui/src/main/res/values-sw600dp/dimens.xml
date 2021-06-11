@@ -9,4 +9,18 @@
     <dimen name="size_14sp">22sp</dimen>
     <dimen name="size_21sp">21sp</dimen>
     <dimen name="size_16dp">24dp</dimen>
+    <dimen name="available_projector_text_size">22sp</dimen>
+    <dimen name="margin_between">22dp</dimen>
+    <dimen name="button_width">237dp</dimen>
+    <dimen name="button_height">67dp</dimen>
+    <dimen name="button_padding_start">16dp</dimen>
+    <dimen name="button_padding_end">26dp</dimen>
+    <dimen name="button_text_size">22sp</dimen>
+    <dimen name="top_margin">10dp</dimen>
+    <dimen name="padding_start_item">50dp</dimen>
+    <dimen name="text_status_margin_start">116dp</dimen>
+    <dimen name="top_margin_items">12dp</dimen>
+    <dimen name="drawable_padding">26dp</dimen>
+    <dimen name="padding_bottom">8dp</dimen>
+    <dimen name="item_container_height">122dp</dimen>
 </resources>
