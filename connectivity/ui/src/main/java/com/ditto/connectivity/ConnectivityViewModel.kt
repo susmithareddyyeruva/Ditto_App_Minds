@@ -26,6 +26,7 @@ class ConnectivityViewModel @Inject constructor() : BaseViewModel() {
     val isProgressBar : ObservableBoolean = ObservableBoolean(false)
     val isLocationEnabled : ObservableBoolean = ObservableBoolean(false)
     val isNoServiceFound : ObservableBoolean = ObservableBoolean(false)
+    val isNoBleFound : ObservableBoolean = ObservableBoolean(false)
     val isShowServiceList : ObservableBoolean = ObservableBoolean(false)
     val isServiceFoundAfterWifi : ObservableBoolean = ObservableBoolean(false)
     var isBLEConnected:Boolean = false
