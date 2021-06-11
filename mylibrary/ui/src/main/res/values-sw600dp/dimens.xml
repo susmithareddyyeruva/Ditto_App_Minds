@@ -32,7 +32,7 @@
     <dimen name="size_21sp">28sp</dimen>
     <dimen name="size_pattern_lib_text">30sp</dimen>
     <dimen name="margin_start_search">25dp</dimen>
-    <dimen name="margin_start_vertical_view">25dp</dimen>
+    <dimen name="margin_start_vertical_view">18dp</dimen>
     <dimen name="sync_height">41.36dp</dimen>
     <dimen name="sync_width">30.08dp</dimen>
     <dimen name="filter_height">29.18dp</dimen>
@@ -86,6 +86,7 @@
     <dimen name="size_21dp">28dp</dimen>
     <dimen name="subscription">48dp</dimen>
     <dimen name="margin_left_button">27dp</dimen>
+    <dimen name="margin_start_pattern_liabry_count">18dp</dimen>
 
 
 </resources>

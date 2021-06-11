@@ -4,15 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import com.ditto.menuitems_ui.databinding.WorkspaceSettingsFragmentBinding
-import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.workspace_settings_fragment.*
@@ -83,5 +78,6 @@ class WSProSettingsFragment : BaseFragment() {
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarTitle("Workspace settings")
+        (activity as BottomNavigationActivity).setToolbarIcon()
     }
 }

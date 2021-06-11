@@ -105,7 +105,7 @@
                             android:fontFamily="@font/avenir_next_it_pro_bold"
                             android:gravity="center"
                             android:text="(10)"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="@dimen/margin_start_pattern_liabry_count"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/size_pattern_lib_text"
                             app:layout_constraintBottom_toBottomOf="@id/header_view_title"

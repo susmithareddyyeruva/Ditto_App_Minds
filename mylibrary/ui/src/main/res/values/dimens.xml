@@ -94,7 +94,7 @@
     <dimen name="item_cell_margin_top">10dp</dimen>
     <dimen name="item_cell_margin_bottom">8dp</dimen>
     <dimen name="size_21sp">21sp</dimen>
-    <dimen name="size_pattern_lib_text">21sp</dimen>
+    <dimen name="size_pattern_lib_text">20sp</dimen>
     <dimen name="toolbar_head_size">16sp</dimen>
     <dimen name="padding_end">6dp</dimen>
     <dimen name="padding_round">5dp</dimen>
@@ -110,5 +110,6 @@
     <dimen name="guide_start_clear_text_per">0.039</dimen>
     <dimen name="margin_start_search">10dp</dimen>
     <dimen name="margin_left_button">12dp</dimen>
+    <dimen name="margin_start_pattern_liabry_count">10dp</dimen>
 
 </resources>
