@@ -501,12 +501,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             R.color.default_splice
                         )
                     )
-                    binding.txtSize60Nap.setTextColor(
+                 /*   binding.txtSize60Nap.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.default_splice
                         )
-                    )
+                    )*/
                     binding.txtSize45.isClickable = false
                 } else if (garments[0].fabricLength == "60") {
                     binding.txtSize60.setBackgroundResource(R.drawable.rounded_black_bg)
@@ -516,12 +516,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             android.R.color.white
                         )
                     )
-                    binding.txtSize60Nap.setTextColor(
+                 /*   binding.txtSize60Nap.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             android.R.color.white
                         )
-                    )
+                    )*/
                     binding.txtSize45.isEnabled = false
                     binding.txtSize45.setBackgroundResource(R.drawable.rounded_light_bg)
                     binding.txtSize45.setTextColor(
@@ -530,12 +530,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             R.color.disable
                         )
                     )
-                    binding.txtSize45Nap.setTextColor(
+               /*     binding.txtSize45Nap.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.disable
                         )
-                    )
+                    )*/
 
                     binding.txtSize60.isClickable = false
                 }
