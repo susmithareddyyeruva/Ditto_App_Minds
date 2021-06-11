@@ -1,19 +1,24 @@
 package core.di
 
 import android.content.Context
+import core.*
 import core.BASE_URL
 import core.MOCK_API_CERT
+import core.TOKEN_BASE_URL
 import core.di.scope.WbApiRetrofit
 import core.di.scope.WbBaseUrl
+import core.di.scope.WbTokenApiRetrofit
+import core.di.scope.WbTokenBaseUrl
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
@@ -23,12 +28,14 @@ import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
+import kotlin.jvm.Throws
 
 
 @Module(
     includes = [
         WbBaseUrlModule::class,
-        WbSocketCertificateModule::class
+        WbSocketCertificateModule::class,
+        WbTokenBaseUrlModule :: class
     ]
 )
 class RetrofitModule {
@@ -54,6 +61,31 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
+
+    @Provides
+    @WbTokenApiRetrofit
+    fun provideTokenRetrofit(
+        @WbTokenBaseUrl baseUrl: String
+    ): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        val head_auth = BasicAuthInterceptor(OCAPI_USERNAME, OCAPI_PASSWORD)
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(head_auth)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+        // add logging interceptor only for DEBUG builds
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(logging)
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
+            .client(httpClient.build())
+            .build()
+    }
 }
 
 @Module
@@ -62,6 +94,15 @@ class WbBaseUrlModule {
     @WbBaseUrl
     fun providesBaseUrl(): String {
         return BASE_URL
+    }
+}
+
+@Module
+class WbTokenBaseUrlModule {
+    @Provides
+    @WbTokenBaseUrl
+    fun providesTokenBaseUrl(): String {
+        return TOKEN_BASE_URL
     }
 }
 
@@ -126,7 +167,7 @@ class WbSocketCertificateModule {
 
 }
 
-/*class BasicAuthInterceptor(user: String?, password: String?) :
+class BasicAuthInterceptor(user: String?, password: String?) :
     Interceptor {
     private val credentials: String
 
@@ -141,4 +182,4 @@ class WbSocketCertificateModule {
     init {
         credentials = Credentials.basic(user!!, password!!)
     }
-}*/
+}

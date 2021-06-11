@@ -160,6 +160,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         })
         expandableListView.setOnChildClickListener(OnChildClickListener { parent, v, groupPosition, childPosition, id ->
             if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
+                if(binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
+                        ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                        navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
+                    }
+                }
 
                 if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName.equals("Manage Projector")){
                     navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)

@@ -3,6 +3,7 @@ package core
 import core.lib.BuildConfig
 
 internal const val BASE_URL = BuildConfig.BASEURL
+internal const val TOKEN_BASE_URL = BuildConfig.TOKEN_BASEURL
 const val NO_NETWORK = "Network connection required !"
 internal const val MOCK_API_CERT = "mockapicert.crt"
 const val GUEST_SIGNED_IN = "GUEST"
@@ -26,6 +27,8 @@ const val RECIEVER_EMAIL = "RECIEVER_EMAIL"
 const val SPLICE_CUT_COMPLETE_REMINDER = "SPLICE_CUT_COMPLETE_REMINDER"
 const val MULTIPLE_PIECE_REMINDER = "MULTIPLE_PIECE_REMINDER"
 const val SPLICE_REMINDER = "SPLICE_REMINDER"
+const val CUST_ID = "CUST_ID"
 const val CONNECTED_SERVICE_NAME = "CONNECTED_SERVICE_NAME"
 const val CONNECTED_SERVICE_HOST = "CONNECTED_SERVICE_HOST"
 const val CONNECTED_SERVICE_PORT = "CONNECTED_SERVICE_PORT"
+
