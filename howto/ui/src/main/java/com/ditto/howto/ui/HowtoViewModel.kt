@@ -39,7 +39,6 @@ class HowtoViewModel @Inject constructor(
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
     var toolbarTitle: ObservableField<String> = ObservableField("")
     var videoUrl: String=""
-    var title: String=""
     var imagePath: String=""
     /**
      *[Function] ViewPager Next Button Click
@@ -104,9 +103,8 @@ class HowtoViewModel @Inject constructor(
         uiEvents.post(Event.OnShowError)
     }
 
-    fun onItemClick(videourl:String,titlem:String) {
+    fun onItemClick(videourl:String) {
         videoUrl = videourl
-        title = titlem
         uiEvents.post(Event.OnItemClick)
     }
 

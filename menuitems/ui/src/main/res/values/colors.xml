@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#000000</color>
     <color name="emailblue">#136BC1</color>
+    <color name="light_grey">#EEEEEE</color>
+    <color name="devider_color">#21707070</color>
+
 </resources>

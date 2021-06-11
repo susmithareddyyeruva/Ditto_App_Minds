@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context=".aboutapp.fragment.AboutAppFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".07" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".93" />
+
+        <TextView
+            android:id="@+id/textAvailable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/top_margin"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:text="@string/available"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/available_projector_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/textCount"
+            app:layout_constraintEnd_toStartOf="@+id/btnScan"
+            app:layout_constraintStart_toEndOf="@+id/guide_start"
+            app:layout_constraintTop_toBottomOf="@+id/guide_top"
+            app:layout_constraintVertical_chainStyle="packed">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/textCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between"
+            android:layout_marginBottom="@dimen/top_margin"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:text="3 projectors found"
+            android:textColor="@color/text_disable2"
+            android:textSize="@dimen/available_projector_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/topDevider"
+            app:layout_constraintEnd_toStartOf="@+id/btnScan"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/guide_start"
+            app:layout_constraintTop_toBottomOf="@+id/textAvailable">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/margin_top_devider"
+            android:layout_marginRight="44dp"
+            android:background="@drawable/bg_scandevice"
+            android:drawableLeft="@drawable/ic_bluetooth"
+            android:drawablePadding="3dp"
+            android:singleLine="true"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:gravity="center"
+            android:minWidth="@dimen/button_width"
+            android:paddingLeft="@dimen/button_padding_start"
+            android:paddingRight="@dimen/button_padding_end"
+            android:text="@string/scan"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/topDevider"
+            app:layout_constraintEnd_toStartOf="@+id/guide_end"
+            app:layout_constraintStart_toEndOf="@+id/textAvailable"
+            app:layout_constraintTop_toBottomOf="@id/guide_top">
+
+        </Button>
+
+        <View
+            android:id="@+id/topDevider"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/margin_top_devider"
+            android:background="@color/devider_color"
+            app:layout_constraintEnd_toStartOf="@id/guide_end"
+            app:layout_constraintStart_toEndOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/btnScan">
+
+        </View>
+
+        <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/rvManageDevice"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/common_margin"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guide_end"
+            app:layout_constraintStart_toEndOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/topDevider"
+            tools:listitem="@layout/item_single_projector">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

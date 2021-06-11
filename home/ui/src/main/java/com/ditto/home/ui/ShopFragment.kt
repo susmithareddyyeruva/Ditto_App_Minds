@@ -34,6 +34,7 @@ class ShopFragment : BaseFragment() {
         }
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Shop Joann.com")
         return binding.shoproot
     }

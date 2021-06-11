@@ -15,6 +15,8 @@ import com.ditto.workspace.ui.databinding.PatternsPiecesItemBinding
 import com.ditto.workspace.ui.util.Draggable
 import core.binding.BindableAdapter
 import core.ui.common.Utility
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 /**
@@ -105,12 +107,25 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             if (patternPieces[position].isCompleted)
                 R.drawable.checkbox_checked_ws else R.drawable.checkbox_unchecked_ws
         )
-        holder.patternsPiecesBinding.cutComplete.setOnClickListener {
-            patternPieces[position].isCompleted = !patternPieces[position].isCompleted
-            notifyDataSetChanged()
+        holder.patternsPiecesBinding.cutCompleteLay.setOnClickListener {
             val count = patternPieces[position].cutQuantity.get(4)
                 ?.let { Character.getNumericValue(it) }
-            viewModel.cutCheckBoxClicked(count)
+            viewModel.cutCount = count
+            viewModel.cutPiecePosition = position
+            if (patternPieces[position].isCompleted){
+                patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+                notifyDataSetChanged()
+                viewModel.cutCheckBoxClicked(count,false)
+            } else {
+                if (count > 1){
+                    viewModel.onPaternItemCheckboxClicked()
+                } else {
+                    patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+                    notifyDataSetChanged()
+                    viewModel.cutCheckBoxClicked(count,true)
+                }
+            }
+
         }
         holder.patternsPiecesBinding.imageView.setOnLongClickListener {
             val state = DragData(
@@ -127,6 +142,10 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
     }
 
+    fun updatePositionAdapter(){
+        patternPieces[viewModel.cutPiecePosition].isCompleted = !patternPieces[viewModel.cutPiecePosition].isCompleted
+        notifyDataSetChanged()
+    }
 
     inner class PatternPieceHolder(
         val patternsPiecesBinding: PatternsPiecesItemBinding,

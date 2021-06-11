@@ -46,4 +46,6 @@
     <dimen name="padding_horizontal_start">55dp</dimen>
     <dimen name="top_padding">41dp</dimen>
     <dimen name="endPadding">50dp</dimen>
+    <dimen name="size_21sp">28sp</dimen>
+    <dimen name="calibrate_alert_textsize">26sp</dimen>
 </resources>

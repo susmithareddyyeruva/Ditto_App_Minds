@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">on-boarding-ui</string>
-    <string name="Welcomeheader">Hi There,</string>
-    <string name="skip_contin"><u>Skip &amp; Continue</u></string>
-    <string name="dont_show_t">Don\'t show this screen again</string>
+    <string name="Welcomeheader">Hi there,</string>
+    <string name="skip_contin"><u>Skip and Continue</u></string>
+    <string name="dont_show_t">Don\'t see this screen again</string>
     <string name="connectivity">Connectivity</string>
     <string name="ble_connectivity_onboarding" tools:ignore="ExtraTranslation">This app needs Bluetooth Connectivity.</string>
     <string name="wifi_connectivity_onboarding" tools:ignore="ExtraTranslation">This app needs WiFi Connectivity.</string>
@@ -11,7 +11,7 @@
     <string name="settings">Setting</string>
     <string name="tutorialheader">Welcome back,</string>
     <string name="tutorial_sub_header">What would you like to do today?</string>
-    <string name="tutorial_sub_header_for_guest">Let\'s get started !</string>
+    <string name="tutorial_sub_header_for_guest">Let\'s get started!</string>
     <string name="turn_on_permission">App will not work properly without this permission. Please turn on the permission from settings</string>
     <string name="hi_text">Hi %1$s,</string>
 </resources>
