@@ -17,5 +17,5 @@
     <string name="str_no_internet">No Network Available. Please check your internet connection.</string>
     <string name="str_ok">OK</string>
     <string name="pattern_library">Pattern Library</string>
-    <string name="pattern_library_count">Pattern Library\u0020 (10)</string>
+    <string name="pattern_library_count">Pattern Library\u0020(10)</string>
 </resources>
