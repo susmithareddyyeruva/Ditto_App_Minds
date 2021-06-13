@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
@@ -25,6 +26,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.fragment_pattern_instructions.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -60,9 +62,17 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        toolbarViewModel.isShowActionBar.set(true)
+        toolbarViewModel.isShowActionBar.set(false)
+        bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
+        (activity as BottomNavigationActivity).hidemenu()
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarInstrctions)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar_instrctions.setNavigationIcon(com.ditto.mylibrary.ui.R.drawable.ic_back_button)
+     /*   toolbarViewModel.isShowActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
+        toolbarViewModel.isShowTransparentActionBar.set(false)*/
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
         toolbarViewModel.isShowActionMenu.set(false)
