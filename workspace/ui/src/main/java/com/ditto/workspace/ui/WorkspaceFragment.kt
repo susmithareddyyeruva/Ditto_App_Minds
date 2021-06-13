@@ -290,6 +290,20 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
     }
 
+    private fun switchTab(){
+        if (baseViewModel.activeSocketConnection.get()) {
+            GlobalScope.launch {
+                core.ui.common.Utility.sendDittoImage(
+                    requireActivity(),
+                    "solid_black"
+                )
+            }
+        }
+
+        clearWorkspace()
+        binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+    }
+
     override fun onNegativeButtonClicked(alertType: core.ui.common.Utility.AlertType) {
         viewModel.selectedTab.set(binding.viewPager.currentItem)
         return
@@ -306,7 +320,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             if (!baseViewModel.isProjecting.get()) {
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
                     viewModel.selectedTab.set(view?.tag as Int)
-                    onTabSwitchAlert()
+                    //onTabSwitchAlert()
+                    switchTab()
                     return true
                 }
                 return false

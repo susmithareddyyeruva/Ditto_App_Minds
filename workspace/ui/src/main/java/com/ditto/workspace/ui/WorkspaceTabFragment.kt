@@ -898,7 +898,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (baseViewModel.activeSocketConnection.get()) {
                     startProjecting()
                 } else {
-                    checkBluetoothWifiPermission()
+                    //checkBluetoothWifiPermission()
                 }
             }
             is WorkspaceViewModel.Event.ShowCutBinDialog -> {

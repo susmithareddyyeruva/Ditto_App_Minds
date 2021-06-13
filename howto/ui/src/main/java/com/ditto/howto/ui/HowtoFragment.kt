@@ -71,8 +71,9 @@ class HowtoFragment : BaseFragment() {
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Common.currentSelectedTab.set(0)
+
         if (viewModel.data.value == null) {
+            Common.currentSelectedTab.set(0)
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
