@@ -87,6 +87,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         private const val ISFROMHOME = "isFromHome"
         private const val USERID = "UserId"
         private const val INSTRUCTIONID = "InstructionId"
+        private const val ISDNDCHECKED = "ISDNDCHECKED"
     }
 
     private fun checkBluetoothWifiPermission() {
@@ -169,6 +170,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 val bundle = bundleOf(
                     INSTRUCTIONID to viewModel.clickedId.get(),
                     ISFROMHOME to isFromHomeScreen,
+                    ISDNDCHECKED to viewModel.dontShowThisScreen.get()
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
@@ -257,6 +259,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     private fun navigateWithDontShows(bundle: Bundle) {
         if (viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
             if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                //findNavController().popBackStack(R.id.destination_onboarding, false)
                 findNavController().navigate(
                     R.id.action_onboardingFragment_to_instructionsfragment_checkedbox_clicked,
                     bundle

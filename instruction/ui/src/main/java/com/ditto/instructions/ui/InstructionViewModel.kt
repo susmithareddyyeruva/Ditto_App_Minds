@@ -32,6 +32,7 @@ class InstructionViewModel @Inject constructor(
     val isShowError: ObservableBoolean = ObservableBoolean(false)
     val isFromCameraScreen: ObservableBoolean = ObservableBoolean(false)
     val isFromHome: ObservableBoolean = ObservableBoolean(false)
+    val isDSSchecked: ObservableBoolean = ObservableBoolean(false)
     val instructionID: ObservableInt = ObservableInt(1)
     val tabPosition: ObservableInt = ObservableInt(0)
     var data: MutableLiveData<InstructionsData> = MutableLiveData()

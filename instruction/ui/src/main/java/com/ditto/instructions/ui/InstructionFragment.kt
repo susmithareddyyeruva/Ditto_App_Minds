@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -69,7 +70,7 @@ class InstructionFragment constructor(
     private val viewModel: InstructionViewModel by ViewModelDelegate()
     lateinit var binding: InstructionFragmentBinding
     private var alert: AlertDialog? = null
-
+    lateinit var backpressCall: OnBackPressedCallback
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
      */
@@ -90,6 +91,7 @@ class InstructionFragment constructor(
                     arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
                     arguments?.getBoolean("isFromCamera")
                         ?.let { viewModel?.isFromCameraScreen?.set(it) }
+                    arguments?.getBoolean("ISDNDCHECKED")?.let { viewModel?.isDSSchecked?.set(it) }
                 }
             }
         }
@@ -152,6 +154,19 @@ class InstructionFragment constructor(
                 }
             }
         })
+
+
+        backpressCall =
+            object : OnBackPressedCallback(
+                true
+            ) {
+                override fun handleOnBackPressed() {
+                    if (viewModel.isDSSchecked.get()){
+                        activity?.finish()
+                    }
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backpressCall)
 
     }
 
