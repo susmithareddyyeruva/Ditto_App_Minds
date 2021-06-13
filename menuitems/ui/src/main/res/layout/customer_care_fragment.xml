@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -146,7 +145,6 @@
                 android:text="@string/str_waittime"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
-                android:textStyle="bold"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 app:layout_constraintStart_toStartOf="@+id/email_icon"
                 app:layout_constraintBottom_toTopOf="@+id/guide_wait_time"
@@ -172,7 +170,6 @@
                 android:text="@string/str_quest"
                 android:textColor="#000"
                 android:textSize="@dimen/str_quest"
-                android:textStyle="bold"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 app:layout_constraintStart_toStartOf="@+id/email_icon"
                 app:layout_constraintTop_toBottomOf="@+id/guide_quest_time"
@@ -270,7 +267,6 @@
                 android:text="@string/str_phn_waittime"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
-                android:textStyle="bold"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 app:layout_constraintStart_toStartOf="@+id/phn_icon"
                 app:layout_constraintBottom_toTopOf="@+id/phn_guide_wait_time"
