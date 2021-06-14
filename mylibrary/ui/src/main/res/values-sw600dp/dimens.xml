@@ -69,7 +69,8 @@
     <dimen name="guide_start_clear_text_per">0.030</dimen>
     <dimen name="distance_after_icon_sync">15dp</dimen>
 
-    <dimen name="toolbar">28sp</dimen>
+
+    <dimen name="pattern_name">24sp</dimen>
     <dimen name="desc">18sp</dimen>
     <dimen name="size_18sp">18sp</dimen>
     <dimen name="size_16dp">24dp</dimen>

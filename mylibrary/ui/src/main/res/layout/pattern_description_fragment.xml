@@ -154,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent=".85" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/buttonTopGuideLine"
                 android:layout_width="match_parent"
@@ -167,8 +168,8 @@
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="@dimen/size_16dp"
-                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
+                android:scaleType="fitXY"
                 app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
                 app:layout_constraintEnd_toStartOf="@id/image_vertical"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -182,7 +183,7 @@
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:text="@{viewModel.patternName}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/size_16sp"
+                android:textSize="@dimen/pattern_name"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
@@ -193,53 +194,52 @@
                 android:id="@+id/status_layout"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
-                android:orientation="horizontal"
                 android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@id/content_header"
-                app:layout_constraintWidth_percent="0.4"
-                app:layout_constraintStart_toStartOf="@id/middle_guideline"
-                app:layout_constraintHeight_percent="0.04"
-                android:weightSum="100"
+                android:orientation="horizontal"
                 android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
-                >
+                android:weightSum="100"
+                app:layout_constraintHeight_percent="0.04"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintTop_toBottomOf="@id/content_header"
+                app:layout_constraintWidth_percent="0.4">
 
                 <TextView
                     android:id="@+id/active_pattern"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Active"
-                    android:layout_weight="25"
-                    android:textSize="@dimen/size_14sp"
-                    android:textColor="#AD201A"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}"
+                    android:layout_weight="25"
+                    android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
-                    android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line" />
+                    android:gravity="center"
+                    android:text="Active"
+                    android:textColor="#AD201A"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}" />
 
                 <View
+                    android:id="@+id/line"
                     android:layout_width="0.8dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/line"
-                    android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}"
                     android:layout_marginLeft="@dimen/size_8dp"
-                    android:background="#707070"/>
+                    android:background="#707070"
+                    android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}" />
 
                 <TextView
                     android:id="@+id/purchased_pattern"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="80"
-                    android:text="Owned"
-                    android:gravity="center|start"
                     android:layout_gravity="center_horizontal"
+                    android:layout_weight="80"
                     android:drawableLeft="@drawable/ic_cart"
                     android:drawablePadding="8dp"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center|start"
                     android:paddingLeft="12dp"
+                    android:text="Owned"
                     android:textColor="#CEA10B"
                     android:textSize="@dimen/size_14sp"
-                    android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"/>
+                    android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}" />
 
 
             </LinearLayout>
@@ -249,8 +249,8 @@
                 android:id="@+id/nested_scroll"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/buttonTopGuideLine"
                 android:layout_marginTop="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonTopGuideLine"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/status_layout">
@@ -268,18 +268,17 @@
             </androidx.core.widget.NestedScrollView>
 
 
-
             <TextView
                 android:id="@+id/text_instructions"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="48dp"
                 android:background="@drawable/instruction_border"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onClickInstructions()}"
                 android:text="INSTRUCTIONS"
                 android:textColor="@color/black"
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:textSize="@dimen/size_14px"
                 app:layout_constraintBottom_toTopOf="@+id/topGuideline"
                 app:layout_constraintHeight_default="percent"
@@ -292,14 +291,13 @@
                 android:id="@+id/text_watchvideo2"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_0"
+                android:layout_marginStart="@dimen/margin_left_button"
                 android:layout_marginTop="48dp"
                 android:background="@drawable/workspace_border"
                 android:drawableLeft="@drawable/ic_resume"
                 android:drawablePadding="14dp"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
-                tools:text="WORKSPACE"
-                android:layout_marginStart="@dimen/margin_left_button"
                 android:onClick="@{() -> viewModel.onClickWorkSpace()}"
                 android:paddingLeft="@dimen/size_16dp"
                 android:paddingRight="30dp"
@@ -312,16 +310,17 @@
                 app:layout_constraintHeight_default="percent"
                 app:layout_constraintHeight_percent="0.082"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/text_instructions" />
+                app:layout_constraintStart_toEndOf="@id/text_instructions"
+                tools:text="WORKSPACE" />
 
 
             <TextView
                 android:id="@+id/dynamic_button"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_0"
+                android:layout_marginStart="@dimen/margin_left_button"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="48dp"
-                android:layout_marginStart="@dimen/margin_left_button"
                 android:background="@drawable/workspace_border"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
