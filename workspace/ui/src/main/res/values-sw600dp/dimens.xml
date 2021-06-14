@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="tab_heading">22sp</dimen>
+    <dimen name="medium_padding_pattern_piece">30dp</dimen>
     <dimen name="tab_workspace">22sp</dimen>
     <dimen name="text_piece_name">18sp</dimen>
     <dimen name="text_piece_cut">16sp</dimen>

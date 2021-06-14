@@ -4,6 +4,7 @@
     <dimen name="tab_workspace">14sp</dimen>
     <dimen name="text_piece_name">12sp</dimen>
     <dimen name="text_piece_cut">10sp</dimen>
+    <dimen name="medium_padding_pattern_piece">10dp</dimen>
     <dimen name="text_reference_layout">12sp</dimen>
     <dimen name="text_save_and_exit">14sp</dimen>
     <dimen name="text_instruction">14sp</dimen>

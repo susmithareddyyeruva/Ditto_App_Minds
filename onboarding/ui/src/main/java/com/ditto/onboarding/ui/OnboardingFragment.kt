@@ -61,17 +61,17 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
-//        arguments?.getBoolean("isFromWorkspace")?.let { isFromWorkspaceScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
         (activity as BottomNavigationActivity).hidemenu()
-         if (core.network.Utility.isNetworkAvailable(requireContext())) {
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnBoardingDataFromApi()
+        if(viewModel.dataFromApi.value == null){
+            if (core.network.Utility.isNetworkAvailable(requireContext())) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.fetchOnBoardingDataFromApi()
 
-        } else {
-            viewModel.fetchOnBoardingData()
+            } else {
+                viewModel.fetchOnBoardingData()
+            }
         }
-        //viewModel.fetchOnBoardingData()
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()

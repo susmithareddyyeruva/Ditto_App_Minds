@@ -18,11 +18,12 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            app:layout_constraintDimensionRatio="100:75"
+            app:layout_constraintDimensionRatio="100:70"
+            app:layout_constraintWidth_default="percent"
             android:gravity="center"
             android:padding="@dimen/margin_workspace"
             android:tag="image_tag"
@@ -32,7 +33,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
-            app:layout_constraintWidth_percent=".30" />
+            app:layout_constraintWidth_percent=".35" />
 
         <ImageView
             android:id="@+id/image_arrow"
@@ -53,8 +54,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:maxLines="2"
-            android:paddingStart="@dimen/x_large_padding"
-            android:paddingEnd="@dimen/x_large_padding"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:text="@string/pattern_pieces"
             android:textColor="@android:color/black"
@@ -71,8 +72,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:maxLines="2"
-            android:paddingStart="@dimen/x_large_padding"
-            android:paddingEnd="@dimen/x_large_padding"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingEnd="@dimen/large_padding"
             android:text="@string/pattern_pieces"
             android:textColor="@color/default_cut_color"
             android:textSize="@dimen/text_piece_cut"
@@ -97,7 +98,7 @@
             android:id="@+id/cut_complete"
             android:layout_width="@dimen/dimen_cut_checkbox"
             android:layout_height="@dimen/dimen_cut_checkbox"
-            android:layout_marginEnd="@dimen/x_large_padding"
+            android:layout_marginEnd="@dimen/medium_padding_pattern_piece"
             android:src="@drawable/checkbox_unchecked_ws"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
