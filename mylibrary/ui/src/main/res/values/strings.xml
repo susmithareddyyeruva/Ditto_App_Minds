@@ -56,5 +56,7 @@
     <string name="apply">APPLY</string>
     <string name="clear_all"><u>clear all</u></string>
     <string name="launch_camera">LAUNCH CAMERA</string>
+    <string name="pattern_instructions">Pattern Instructions</string>
+    <string name="pattern_details">Pattern details</string>
 
 </resources>

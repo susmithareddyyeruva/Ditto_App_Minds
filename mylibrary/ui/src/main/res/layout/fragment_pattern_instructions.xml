@@ -42,9 +42,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
-                        android:text="Pattern Instructions"
+                        android:text="@string/pattern_instructions"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/size_21dp" />
 
@@ -56,19 +56,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidline_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.14" />
+
             <com.github.barteksc.pdfviewer.PDFView
                 android:id="@+id/pdfView"
                 android:layout_width="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/guidline_horizontal"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="?attr/actionBarSize"/>
 

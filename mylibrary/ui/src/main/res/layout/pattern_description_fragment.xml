@@ -52,9 +52,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
-                        android:text="Pattern details"
+                        android:text="@string/pattern_details"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/size_21dp" />
 

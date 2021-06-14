@@ -78,4 +78,5 @@
     <string name="str_recalib">Re-Calibrate</string>
     <string name="str_calib">Calibrate</string>
     <string name="str_connect">Connect</string>
+    <string name="pattern_instructions">Pattern Instructions</string>
 </resources>

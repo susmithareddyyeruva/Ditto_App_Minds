@@ -50,4 +50,5 @@
     <dimen name="top_margin_enlarge_text">32dp</dimen>
     <dimen name="size_21sp">28sp</dimen>
     <dimen name="calibrate_alert_textsize">26sp</dimen>
+    <dimen name="tab_title_heading">28sp</dimen>
 </resources>
