@@ -179,7 +179,12 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 } else {  //Clicked on How to
 
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                        if (viewModel.dontShowThisScreen.get()) {
+                        findNavController().navigate(
+                            R.id.action_onboardingFragment_to_howtofragment_unchecked,
+                            bundle
+                        )
+
+                        /*if (viewModel.dontShowThisScreen.get()) {
                             findNavController().navigate(
                                 R.id.action_onboardingFragment_to_howtofragment_checked,
                                 bundle
@@ -189,7 +194,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                                 R.id.action_onboardingFragment_to_howtofragment_unchecked,
                                 bundle
                             )
-                        }
+                        }*/
                     }
 
                 }
@@ -213,14 +218,16 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     private fun navigateInstructionOrCaliberation(bundle: Bundle) {
-        if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
+        navigateWithoutDontShows(bundle)
+
+        /*if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
             navigateWithDontShows(bundle)
 
 
         } else { //Clicked on Items which doesn't satisfy  Don't show this screen condition
             navigateWithoutDontShows(bundle)
 
-        }
+        }*/
     }
 
     private fun navigateHomeScreen() {

@@ -70,7 +70,6 @@ class InstructionFragment constructor(
     private val viewModel: InstructionViewModel by ViewModelDelegate()
     lateinit var binding: InstructionFragmentBinding
     private var alert: AlertDialog? = null
-    lateinit var backpressCall: OnBackPressedCallback
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
      */
@@ -154,19 +153,6 @@ class InstructionFragment constructor(
                 }
             }
         })
-
-
-        backpressCall =
-            object : OnBackPressedCallback(
-                true
-            ) {
-                override fun handleOnBackPressed() {
-                    if (viewModel.isDSSchecked.get()){
-                        activity?.finish()
-                    }
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backpressCall)
 
     }
 

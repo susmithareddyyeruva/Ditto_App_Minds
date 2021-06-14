@@ -149,13 +149,19 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                val bundle = bundleOf("UserId" to 0)
-                if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    getUserDetails(true)
-                    findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
-                } else {
+                if (Utility.getWifistatus(requireContext())){
+                    val bundle = bundleOf("UserId" to 0)
+                    if (findNavController().currentDestination?.id == R.id.destination_login) {
+                        getUserDetails(true)
+                        findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                    } else {
 
+                    }
+                } else {
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
                 }
+
             }
             is LoginViewModel.Event.OnLoginFailed -> {
                 showAlert()
