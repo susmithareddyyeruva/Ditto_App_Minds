@@ -34,7 +34,7 @@
                 app:theme="@style/ToolBarStyle"
                 app:titleTextColor="@color/black">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -50,10 +50,12 @@
                         android:gravity="start"
                         android:text="@{viewModel.toolbarTitle}"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/toolbar_title" />
+                        android:textSize="@dimen/toolbar_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_alignParentStart="true"/>
 
                     <LinearLayout
-                        android:layout_alignParentEnd="true"
                         android:id="@+id/header_view_sub_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -84,7 +86,7 @@
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/right_arrow" />
                     </LinearLayout>
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>>
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
