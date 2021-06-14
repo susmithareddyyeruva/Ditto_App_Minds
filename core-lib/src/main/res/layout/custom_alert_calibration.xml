@@ -34,12 +34,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_icon" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".45" />
 
     <TextView
         android:id="@+id/neg_text"
@@ -51,7 +45,9 @@
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
-        app:layout_constraintStart_toStartOf="@+id/guide_button"
+        android:layout_marginEnd="@dimen/end_margin_yes"
+        app:layout_constraintEnd_toStartOf="@+id/pos_txt"
+       app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alert_message" />
 
 
@@ -66,6 +62,8 @@
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alert_message" />
 

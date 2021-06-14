@@ -190,54 +190,59 @@
                 app:layout_constraintTop_toTopOf="@+id/image_pattern_desc" />
 
             <LinearLayout
-    android:id="@+id/status_layout"
-    android:layout_width="@dimen/dimen_0"
-    android:layout_height="@dimen/dimen_0"
-    android:orientation="horizontal"
-    android:layout_marginTop="4dp"
-    app:layout_constraintTop_toBottomOf="@id/content_header"
-    app:layout_constraintStart_toStartOf="@id/middle_guideline"
-    app:layout_constraintHeight_percent="0.04"
-    app:layout_constraintWidth_percent="0.28"
-    android:weightSum="100"
-    android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
-    >
-    <TextView
-        android:id="@+id/active_pattern"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Active"
-        android:layout_weight="40"
-        android:textSize="@dimen/size_14sp"
-        android:textColor="#AD201A"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}"
-        android:fontFamily="@font/avenir_next_lt_pro_demi"
-        android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line" />
-    <View
-        android:layout_width="0.9dp"
-        android:layout_height="match_parent"
-        android:id="@+id/line"
-        android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}"
-        android:background="#707070"/>
-    <TextView
-        android:id="@+id/purchased_pattern"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="50"
-        android:text="Owned"
-        android:layout_marginLeft="12dp"
-        android:gravity="center|start"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/ic_cart"
-        android:drawablePadding="8dp"
-        android:textColor="#CEA10B"
-        android:textSize="@dimen/size_14sp"
-        android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}"
-        android:fontFamily="@font/avenir_next_lt_pro_demi"/>
+                android:id="@+id/status_layout"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@id/content_header"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintHeight_percent="0.04"
+                android:weightSum="100"
+                android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
+                >
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/active_pattern"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Active"
+                    android:layout_weight="25"
+                    android:textSize="@dimen/size_14sp"
+                    android:textColor="#AD201A"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line" />
+
+                <View
+                    android:layout_width="0.8dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/line"
+                    android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}"
+                    android:layout_marginLeft="@dimen/size_8dp"
+                    android:background="#707070"/>
+
+                <TextView
+                    android:id="@+id/purchased_pattern"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80"
+                    android:text="Owned"
+                    android:gravity="center|start"
+                    android:layout_gravity="center_horizontal"
+                    android:drawableLeft="@drawable/ic_cart"
+                    android:drawablePadding="8dp"
+                    android:paddingLeft="12dp"
+                    android:textColor="#CEA10B"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"/>
+
+
+            </LinearLayout>
 
 
             <androidx.core.widget.NestedScrollView
