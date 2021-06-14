@@ -94,7 +94,7 @@ class HowtoFragment : BaseFragment() {
     private fun handleEvent(event: HowtoViewModel.Event) =
         when (event) {
             is HowtoViewModel.Event.OnDataUpdated -> {
-                viewModel.toolbarTitle.set("How to")
+                viewModel.toolbarTitle.set("How To")
                 setTabsAdapter()
             }
 
@@ -166,7 +166,7 @@ class HowtoFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            viewModel.toolbarTitle.set("How to")
+            viewModel.toolbarTitle.set("How To")
             (activity as BottomNavigationActivity).hidemenu()
             toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)

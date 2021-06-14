@@ -173,7 +173,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
 
                 if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName.equals("Manage Projector")){
-                    navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
+                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                        navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
+                    }
                 }
 
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -354,14 +356,18 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
                 navController.navigate(R.id.action_fragments_to_customerCareFragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
                 navController.navigate(R.id.action_destination_to_FQAfragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+
             }
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
                 logoutUser(true)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
@@ -371,6 +377,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         else  if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
                 navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         }
         else{
