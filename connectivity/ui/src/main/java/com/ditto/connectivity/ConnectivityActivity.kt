@@ -70,6 +70,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private val GPS_REQUEST = 1001
     lateinit var mClickedService  : Nsdservicedata
     val serviceList = ArrayList<Nsdservicedata>()
+    val serviceFoundList = ArrayList<NsdServiceInfo>()
     //BLE SERVICE
     private var mBluetoothLeService: BluetoothLeService? = null
 
@@ -182,12 +183,11 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
     inner class MyResolveListener:NsdManager.ResolveListener {
         override fun onResolveFailed(serviceInfo:NsdServiceInfo, errorCode:Int) {
-            Log.d(ConnectivityUtils.TAG, "Resolve failed$errorCode")
+            Log.d(ConnectivityUtils.TAG, "Resolve failed ${serviceInfo.serviceName}")
         }
 
         override fun onServiceResolved(serviceInfo:NsdServiceInfo) {
-            Log.d(ConnectivityUtils.TAG, "Resolve Succeeded. $serviceInfo")
-            stopDiscovery()
+            Log.d(ConnectivityUtils.TAG, "Resolve Succeeded. ${serviceInfo.serviceName}")
             mService = serviceInfo
             val nsdData = Nsdservicedata(
                 mService!!.serviceName,
@@ -195,6 +195,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 mService?.port!!.toInt()
             )
             if (viewModel.isServiceFoundAfterWifi.get()){
+                stopDiscovery()
                 connectServiceAfterWifi(nsdData)
             } else {
                 serviceList.add(nsdData)
@@ -207,12 +208,25 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun discoverServices() {
         Log.d(ConnectivityUtils.TAG, "NSD - discoverServices()")
         stopDiscovery()
+        serviceFoundList.clear()
         initializeDiscoveryListener()
         nsdManager?.discoverServices(
             NSD_SERVICE_TYPE,
             NsdManager.PROTOCOL_DNS_SD,
             discoveryListener
         )
+        startResolverTimer()
+    }
+
+    private fun startResolverTimer(){
+        GlobalScope.launch {
+            delay(3000)
+            stopDiscovery()
+           for(item in serviceFoundList){
+               nsdManager?.resolveService(item, MyResolveListener())
+               Thread.sleep(1000)
+           }
+        }
     }
 
     fun initializeDiscoveryListener() {
@@ -226,12 +240,13 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             override fun onServiceFound(service: NsdServiceInfo) {
                 if (viewModel.isServiceFoundAfterWifi.get()){
                     if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
-                        nsdManager?.resolveService(service, MyResolveListener())
+                        //nsdManager?.resolveService(service, MyResolveListener())
+                        serviceFoundList.add(service)
                     }
                  } else {
 
                     if (service.serviceName.startsWith("DITTO")){
-                        nsdManager?.resolveService(service, MyResolveListener())
+                        serviceFoundList.add(service)
                     }
                 }
 
@@ -291,7 +306,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     }
 
     private fun searchNSDserviceFromPopup() {
-        Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
+        Log.d(ConnectivityUtils.TAG, "searchNSDserviceFromPopup()")
         serviceList.clear()
         mServiceListAdapter?.notifyDataSetChanged()
         Utility.isServiceConnected = false
@@ -314,7 +329,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun startServiceTimer() {
 
         serviceConnectionWaitingJob = GlobalScope.launch {
-            delay(5000)
+            delay(10000)
+            viewModel.isProgressBar.set(false)
             stopDiscovery()
             connectService()
         }
