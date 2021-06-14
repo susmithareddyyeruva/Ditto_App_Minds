@@ -32,7 +32,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
-            app:layout_constraintWidth_percent=".35" />
+            app:layout_constraintWidth_percent=".30" />
 
         <ImageView
             android:id="@+id/image_arrow"
@@ -47,76 +47,7 @@
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <RelativeLayout
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="match_parent"
-                android:gravity="center"
-            android:layout_weight="1.3">
-
-                <TextView
-                    android:id="@+id/txt_piece_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_lt_pro_medium"
-                    android:maxLines="2"
-                    android:paddingEnd="@dimen/x_large_padding"
-                    android:layout_marginBottom="@dimen/small_padding"
-                    android:text="@string/pattern_pieces"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_piece_name"
-                    />
-
-
-                <TextView
-                    android:id="@+id/txt_piece_cut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_lt_pro_medium"
-                    android:maxLines="2"
-                    android:layout_marginTop="@dimen/medium_padding"
-                    android:paddingEnd="@dimen/x_large_padding"
-                    android:text="@string/pattern_pieces"
-                    android:textColor="@color/default_cut_color"
-                    android:textSize="@dimen/text_piece_cut"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/txt_piece_name" />
-
-
-        </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/cut_complete_lay"
-                android:layout_width="@dimen/dimen_0"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="0.7">
-
-                <ImageView
-                    android:id="@+id/cut_complete"
-                    android:layout_width="@dimen/dimen_cut_checkbox"
-                    android:layout_height="@dimen/dimen_cut_checkbox"
-                    android:layout_marginEnd="@dimen/x_large_padding"
-                    android:src="@drawable/checkbox_unchecked_ws" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-
-       <!-- <TextView
+        <TextView
             android:id="@+id/txt_piece_name"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
@@ -129,7 +60,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_piece_name"
             app:layout_constraintBottom_toTopOf="@+id/txt_piece_cut"
-            app:layout_constraintEnd_toStartOf="@+id/cut_complete"
+            app:layout_constraintEnd_toStartOf="@+id/cut_complete_lay"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -147,9 +78,20 @@
             android:textSize="@dimen/text_piece_cut"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toStartOf="@+id/cut_complete"
+            app:layout_constraintEnd_toStartOf="@+id/cut_complete_lay"
             app:layout_constraintStart_toStartOf="@+id/txt_piece_name"
             app:layout_constraintTop_toBottomOf="@+id/txt_piece_name" />
+
+
+        <View
+            android:id="@+id/cut_complete_lay"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            app:layout_constraintWidth_percent=".15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/txt_piece_cut"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView" />
 
         <ImageView
             android:id="@+id/cut_complete"
@@ -159,7 +101,7 @@
             android:src="@drawable/checkbox_unchecked_ws"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />-->
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
 
         <View
             android:id="@+id/top_border"
