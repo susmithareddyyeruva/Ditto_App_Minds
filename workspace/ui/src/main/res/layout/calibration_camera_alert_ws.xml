@@ -23,12 +23,13 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/alertImage"
-        android:layout_width="201dp"
-        android:layout_height="136dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/large_padding"
         android:layout_marginBottom="@dimen/x_large_padding"
         android:contentDescription="@string/camera_alert"
         android:src="@drawable/calibration_camera"
+        app:layout_constraintDimensionRatio="201:135"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/guideline_center"
         app:layout_constraintStart_toStartOf="parent"
