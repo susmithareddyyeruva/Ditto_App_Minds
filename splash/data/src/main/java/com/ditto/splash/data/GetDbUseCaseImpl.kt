@@ -1,6 +1,6 @@
 package com.ditto.splash.data
 
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.splash.domain.DbRepository
 import com.ditto.splash.domain.GetDbDataUseCase
 import io.reactivex.Single

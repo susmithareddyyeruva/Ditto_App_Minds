@@ -8,11 +8,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.domain.GetLoginDbUseCase
-import com.ditto.login.domain.LoginInputData
-import com.ditto.login.domain.LoginResultDomain
-import com.ditto.login.domain.LoginUser
-import com.ditto.login.domain.model.LoginViewPagerData
+import com.ditto.login.domain.model.*
 import com.ditto.storage.domain.StorageManager
 import core.*
 import core.appstate.AppState
@@ -44,6 +40,7 @@ class LoginViewModel @Inject constructor(
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
     val isLoginButtonFocusable: ObservableBoolean = ObservableBoolean(true)
     var errorString: ObservableField<String> = ObservableField("")
+    var videoUrl: String=""
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -69,7 +66,10 @@ class LoginViewModel @Inject constructor(
             //Making api call for Login
             uiEvents.post(Event.OnShowProgress)
             disposable += useCase.loginUserWithCredential(
-                LoginInputData(userName.get(), password.get())
+                LoginInputData(
+                    userName.get(),
+                    password.get()
+                )
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -298,6 +298,35 @@ class LoginViewModel @Inject constructor(
         )
 
         viewPagerData.value = languageList
+    }
+
+    fun getLandingScreenDetails() {
+        uiEvents.post(Event.OnShowProgress)
+        disposable += useCase.getLandingContentDetails().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribeBy {
+                handleLandingScreenFetchDetails(it)
+            }
+    }
+
+    private fun handleLandingScreenFetchDetails(it: Result<LandingContentDomain>?) {
+        logger.d("LandingDetails  : ${it.toString()}")
+        when (it) {
+            is Result.OnSuccess -> {
+                /**
+                 * Saving Customer Care Information's
+                 */
+                uiEvents.post(Event.OnHideProgress)
+                storageManager.savePrefs(CUSTOMERCARE_EMAIL, it.data.c_body.customerCareEmail)
+                storageManager.savePrefs(CUSTOMERCARE_PHONE, it.data.c_body.customerCareePhone)
+                storageManager.savePrefs(CUSTOMERCARE_TIMING, it.data.c_body.customerCareeTiming)
+                videoUrl=it.data.c_body.videoUrl
+                // viewPagerData.value=it.data.c_body.imageUrl
+            }
+            else -> {
+                uiEvents.post(Event.OnHideProgress)
+
+            }
+        }
     }
 }
 

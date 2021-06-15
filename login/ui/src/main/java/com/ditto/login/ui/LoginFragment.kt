@@ -16,7 +16,6 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
-import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -58,6 +57,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         val pinfo: PackageInfo = requireActivity().getPackageManager()
             .getPackageInfo(requireActivity().getPackageName(), 0)
         viewModel.versionName.set("Version " + pinfo.versionName)
+        viewModel.getLandingScreenDetails()/**Fetch Landing screen Details.....*/
         if (savedInstanceState == null) {
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -141,7 +141,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             is LoginViewModel.Event.OnLoginClicked -> {
                 getUserDetails(false)
                 //Re directing to On_boarding screen
-                val bundle = bundleOf("UserId" to 0)
+                val bundle = bundleOf("UserId" to 0 ,"videoPath" to viewModel.videoUrl)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                 } else {

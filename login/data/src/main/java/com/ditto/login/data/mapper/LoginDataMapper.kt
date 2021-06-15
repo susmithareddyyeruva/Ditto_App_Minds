@@ -2,11 +2,15 @@ package com.ditto.login.data.mapper
 
 import com.ditto.login.data.error.Arguments
 import com.ditto.login.data.error.Fault
+import com.ditto.login.data.model.CBody
+import com.ditto.login.data.model.LandingContentResult
 import com.ditto.login.data.model.LoginResult
-import com.ditto.login.domain.LoginResultDomain
-import com.ditto.login.domain.LoginUser
 import com.ditto.login.domain.error.ArgumentsDomain
 import com.ditto.login.domain.error.FaultDomain
+import com.ditto.login.domain.model.CBodyDomain
+import com.ditto.login.domain.model.LandingContentDomain
+import com.ditto.login.domain.model.LoginResultDomain
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.model.User
 
 fun User.toUserDomain(): LoginUser {
@@ -184,4 +188,15 @@ fun Arguments.toDomain(): ArgumentsDomain {
     return ArgumentsDomain(
         credentialType = this.credentialType
     )
+}
+fun LandingContentResult.toDomain():LandingContentDomain{
+    return LandingContentDomain(_type = this.type,_v = this.v,id = this.id,c_body = this.cBody.toDomain(),
+    name = this.name)
+}
+fun CBody.toDomain():CBodyDomain{
+    return CBodyDomain(customerCareEmail=this.customerCareEmail,
+    customerCareePhone = this.customerCareePhone,
+    customerCareeTiming = this.customerCareeTiming,
+    videoUrl = this.videoUrl,
+    imageUrl = this.imageUrl)
 }

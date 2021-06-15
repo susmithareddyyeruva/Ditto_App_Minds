@@ -1,4 +1,4 @@
-package com.ditto.login.domain
+package com.ditto.login.domain.model
 
 data class LoginUser(
     val userName: String?,
