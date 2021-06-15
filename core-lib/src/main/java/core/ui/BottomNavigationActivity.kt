@@ -172,7 +172,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 }
 
 
-                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)?.menuName.equals("Manage Projector")){
+                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.str_menu_manage_projector))){
                     if(navController.currentDestination?.label?.equals("Home")!!) {
                         navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
                     }
@@ -374,7 +375,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 logoutUser(false)
             }
         }
-        else  if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))){
+        else  if (selectedmenu.equals(this.getString(R.string.about_app_policies))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
                 navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
