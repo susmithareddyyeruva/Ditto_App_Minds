@@ -63,5 +63,6 @@
     <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
     <item name="action_homeFragment_to_wssettings_fragment" type="id" />
     <item name="action_homeFragment_to_nav_graph_manage" type="id" />
+    <item name="action_homeFragment_to_privacyAndSettingFragment" type="id" />
 
 </resources>

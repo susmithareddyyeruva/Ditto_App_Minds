@@ -179,6 +179,13 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     }
                 }
 
+                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.privacy_policy))){
+                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                        navController.navigate(R.id.action_homeFragment_to_privacyAndSettingFragment)
+                    }
+                }
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
             false
