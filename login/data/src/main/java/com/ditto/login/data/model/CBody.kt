@@ -11,7 +11,7 @@ data class CBody(
     @SerializedName("customerCareeTiming")
     val customerCareeTiming: String,
     @SerializedName("imageUrl")
-    val imageUrl: List<Any>,
+    val imageUrl: List<String>,
     @SerializedName("videoUrl")
     val videoUrl: String
 )

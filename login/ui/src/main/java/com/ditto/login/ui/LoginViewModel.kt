@@ -45,7 +45,7 @@ class LoginViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     var viewPagerData: MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
-
+    var viewPagerDataList: MutableLiveData<List<String>> = MutableLiveData()
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
     }
@@ -269,12 +269,12 @@ class LoginViewModel @Inject constructor(
         object OnSeeMoreClicked : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
+        object OnLandingSuccess : Event()
     }
 
     fun fetchViewPagerData() {
-        lateinit var languageList: List<LoginViewPagerData>
 
-        languageList = listOf(
+        var languageList: List<LoginViewPagerData> = listOf(
             LoginViewPagerData(
                 1,
                 "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
@@ -320,7 +320,8 @@ class LoginViewModel @Inject constructor(
                 storageManager.savePrefs(CUSTOMERCARE_PHONE, it.data.c_body.customerCareePhone)
                 storageManager.savePrefs(CUSTOMERCARE_TIMING, it.data.c_body.customerCareeTiming)
                 videoUrl=it.data.c_body.videoUrl
-                // viewPagerData.value=it.data.c_body.imageUrl
+                viewPagerDataList.value=it.data.c_body.imageUrl
+                uiEvents.post(Event.OnLandingSuccess)
             }
             else -> {
                 uiEvents.post(Event.OnHideProgress)

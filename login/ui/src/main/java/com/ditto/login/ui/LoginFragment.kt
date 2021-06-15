@@ -69,7 +69,6 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
         viewModel.fetchViewPagerData()
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
-        setViewpagerImageAdapter()
         setUIEvents()
         //setupKeyboardListener(binding.root) // call in OnCreate or similar
 
@@ -82,7 +81,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         login_view_pager.adapter?.notifyDataSetChanged()
         login_tablay.setupWithViewPager(login_view_pager)
 
-        viewModel.viewPagerData.value?.let {
+        viewModel.viewPagerDataList.value?.let {
             if (it != null) {
                 adapter.setListData(it)
             }
@@ -168,6 +167,9 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
+            LoginViewModel.Event.OnLandingSuccess ->{
+                setViewpagerImageAdapter()
+            }
         }
 
     private fun setupKeyboardListener(view: View) {
