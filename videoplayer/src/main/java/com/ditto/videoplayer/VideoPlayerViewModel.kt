@@ -10,7 +10,7 @@ class VideoPlayerViewModel @Inject constructor() : BaseViewModel() {
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
-    val isPlayButtonVisible: ObservableBoolean = ObservableBoolean(true)
+    val isPlayButtonVisible: ObservableBoolean = ObservableBoolean(false)
     var videoUrl: String = ""
     var title: String = ""
     var from: String = ""
