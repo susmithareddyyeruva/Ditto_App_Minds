@@ -1,11 +1,6 @@
 package com.ditto.login.data.mapper
 
-import com.ditto.login.data.error.Arguments
-import com.ditto.login.data.error.Fault
-import com.ditto.login.data.model.LoginResult
-import com.ditto.login.domain.LoginResultDomain
-import com.ditto.login.domain.error.ArgumentsDomain
-import com.ditto.login.domain.error.FaultDomain
+/*
 
 fun LoginResult.toUserDomain(): LoginResultDomain {
     return LoginResultDomain(
@@ -63,7 +58,9 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cRegisteredWithNarvar = this.cRegisteredWithNarvar,
         cTaxExempt = this.cTaxExempt,
         cInitialisationVector = this.cInitialisationVector,
-        cVectorKey = this.cVectorKey
+        cVectorKey = this.cVectorKey,
+        c_subscriptionType = this.c_subscriptionType,
+        c_subscriptionValid = this.c_subscriptionValid
 
 
     )
@@ -82,4 +79,4 @@ fun Arguments.toDomain(): ArgumentsDomain {
     return ArgumentsDomain(
         credentialType = this.credentialType
     )
-}
+}*/

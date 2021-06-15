@@ -109,12 +109,27 @@ class LoginViewModel @Inject constructor(
                         MULTIPLE_PIECE_REMINDER,
                         result.data.cSpliceMultiplePieceReminder
                     )
+                    /**
+                     * Storing the subscription information into Local Cache
+                     */
+
+                    storageManager.savePrefs(
+                        CSUBSCRIPTION_ENDDATE,
+                        result.data.c_subscriptionPlanEndDate
+                    )
+                    storageManager.savePrefs(
+                        CSUBSCRIPTION_VALID,
+                        result.data.c_subscriptionValid
+                    )
 
                     userEmail = result.data.email ?: ""
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
                     AppState.setIsLogged(true)
+                    /**
+                     * Storing the subscription information into DB
+                     */
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
@@ -169,7 +184,9 @@ class LoginViewModel @Inject constructor(
                             cRegisteredWithNarvar = result.data.cRegisteredWithNarvar,
                             cTaxExempt = result.data.cTaxExempt,
                             cInitialisationVector = result.data.cInitialisationVector,
-                            cVectorKey = result.data.cVectorKey
+                            cVectorKey = result.data.cVectorKey,
+                            c_subscriptionPlanEndDate = result.data.c_subscriptionPlanEndDate,
+                            c_subscriptionValid = result.data.c_subscriptionValid
                         )
                     )
                         .subscribeOn(Schedulers.io())

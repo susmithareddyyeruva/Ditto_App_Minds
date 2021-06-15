@@ -130,6 +130,12 @@ data class User(
     var cInitialisationVector: String?,
     @ColumnInfo(name = "c_vectorKey")
     @SerializedName("c_vectorKey")
-    var cVectorKey: String?
+    var cVectorKey: String?,
+    @ColumnInfo(name = "c_subscriptionPlanEndDate")
+    @SerializedName("c_subscriptionPlanEndDate")
+    val c_subscriptionPlanEndDate : String?,
+    @ColumnInfo(name = "c_subscriptionValid")
+    @SerializedName("c_subscriptionValid")
+    val c_subscriptionValid : Boolean?
 
 )

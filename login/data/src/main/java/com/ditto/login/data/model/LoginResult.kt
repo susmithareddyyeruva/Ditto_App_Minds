@@ -113,5 +113,9 @@ data class LoginResult(
     @SerializedName("c_InitialisationVector")
     val cInitialisationVector: String,
     @SerializedName("c_vectorKey")
-    val cVectorKey: String
+    val cVectorKey: String,
+    @SerializedName("c_subscriptionPlanEndDate")
+    val c_subscriptionPlanEndDate : String,
+    @SerializedName("c_subscriptionValid")
+    val c_subscriptionValid : Boolean
 )
