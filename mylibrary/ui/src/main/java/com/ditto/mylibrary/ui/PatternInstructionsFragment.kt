@@ -70,9 +70,6 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarInstrctions)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_instrctions.setNavigationIcon(com.ditto.mylibrary.ui.R.drawable.ic_back_button)
-     /*   toolbarViewModel.isShowActionBar.set(true)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
-        toolbarViewModel.isShowTransparentActionBar.set(false)*/
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
         toolbarViewModel.isShowActionMenu.set(false)
@@ -110,7 +107,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun checkavailablefile() {
         downloadFileName = PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it) }
+        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext()) }
         if (availableUri != null){
             showPdfFromUri(availableUri)
         } else {

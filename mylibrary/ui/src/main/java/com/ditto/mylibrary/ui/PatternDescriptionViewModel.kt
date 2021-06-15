@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -179,13 +180,19 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         var result : File? = null
         val outputFile : File? = null
         var dittofolder : File? = null
-        dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+
+        val contextWrapper = ContextWrapper(context)
+        dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+        val file = File(dittofolder, "/Pattern")
+        file.mkdirs()
+
+        /*dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto123"
+        )*/
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
-        result = File(dittofolder, filename)
+        result = File(file, filename)
         if (!result.exists()) {
             result.createNewFile()
         }

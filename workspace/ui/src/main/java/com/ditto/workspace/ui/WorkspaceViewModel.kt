@@ -1,5 +1,7 @@
 package com.ditto.workspace.ui
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -39,6 +41,7 @@ import java.util.*
 import javax.inject.Inject
 
 class WorkspaceViewModel @Inject constructor(
+    private val context: Context,
     private val getWorkspaceData: GetWorkspaceData
 ) : BaseViewModel() {
 
@@ -540,13 +543,20 @@ class WorkspaceViewModel @Inject constructor(
         var result: File? = null
         val outputFile: File? = null
         var dittofolder: File? = null
-        dittofolder = File(
+
+        /*dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        )*/
+
+        val contextWrapper = ContextWrapper(context)
+        dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+        val file = File(dittofolder, "/Pattern")
+        file.mkdirs()
+
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
-        result = File(dittofolder, filename)
+        result = File(file, filename)
         if (!result.exists()) {
             result.createNewFile()
         }
