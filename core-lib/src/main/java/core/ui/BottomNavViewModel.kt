@@ -63,7 +63,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         headerList.clear()
         childList.clear()
         var menuModel = MenuModel(
-            "About The App & Policies",
+            "About the app & policies",
             "ic_menu_about_app",
             null
         )
@@ -73,13 +73,13 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         val childModelsList: MutableList<MenuModel> = ArrayList<MenuModel>()
         var childModel = MenuModel(
-            "Software Update",
+            "Software updates",
             "ic_menu_update",
             null
         )
         childModelsList.add(childModel)
         childModel = MenuModel(
-            "Manage Projector",
+            "Manage projector",
             "ic_menu_projector",
             null
         )
@@ -110,7 +110,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         childList.put(menuModel, childModelsList)
 
         menuModel = MenuModel(
-            "FAQ'S",
+            "FAQ & Glossary",
             "ic_menu_faq",
             null
         )
