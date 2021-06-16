@@ -24,11 +24,25 @@
         android:id="@+id/glossaryFragment"
         android:name="com.ditto.menuitems_ui.faq.ui.GlossaryFragment"
         android:label="GlossaryFragment" >
-
+        <action
+            android:id="@+id/action_destination_faq_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/FAQFragment"
         android:name="com.ditto.menuitems_ui.faq.ui.FAQFragment"
-        android:label="FAQFragment" />
+        android:label="FAQFragment" >
+        <action
+            android:id="@+id/action_destination_faq_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
 
 </navigation>
