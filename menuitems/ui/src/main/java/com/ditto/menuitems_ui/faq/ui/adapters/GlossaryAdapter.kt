@@ -15,13 +15,18 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ditto.menuitems.domain.model.faq.GlossaryDomain
 import com.ditto.menuitems_ui.R
-import com.ditto.menuitems_ui.faq.ui.models.FAQModel
+import com.ditto.menuitems_ui.faq.ui.VisitSiteListener
+import com.ditto.menuitems_ui.faq.ui.WatchVideoClickListener
 
-class GlossaryAdapter (context: Context, data: List<FAQModel>?) :
+class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
+                       val watchVideoClickListener: WatchVideoClickListener,
+                       val visitSiteListener: VisitSiteListener
+) :
     RecyclerView.Adapter<GlossaryAdapter.GlossaryViewHolder>() {
     private var mContext: Context = context
-    private var items: List<FAQModel>? = data
+    private var items: List<GlossaryDomain>? = data
     private var inflater: LayoutInflater = LayoutInflater.from(context)
     private var subquesAdapter:SubquesAdapter? = null
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -77,7 +82,7 @@ class GlossaryAdapter (context: Context, data: List<FAQModel>?) :
         }
 
     }
-    private fun onItemClicked(faqModel: FAQModel?, pos : Int) {
+    private fun onItemClicked(faqModel: GlossaryDomain?, pos : Int) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()

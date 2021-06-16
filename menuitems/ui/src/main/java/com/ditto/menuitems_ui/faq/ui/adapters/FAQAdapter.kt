@@ -15,21 +15,21 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ditto.menuitems.domain.model.faq.FAQDomain
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.faq.ui.VisitSiteListener
 import com.ditto.menuitems_ui.faq.ui.WatchVideoClickListener
-import com.ditto.menuitems_ui.faq.ui.models.FAQModel
 
 
 class FAQAdapter(
     context: Context,
-    data: List<FAQModel>?,
+    data: List<FAQDomain>?,
     val watchVideoClickListener: WatchVideoClickListener,
     val visitSiteListener: VisitSiteListener
 ) :
     RecyclerView.Adapter<FAQAdapter.FAQViewHolder>() {
     private var mContext: Context = context
-    private var items: List<FAQModel>? = data
+    private var items: List<FAQDomain>? = data
     private var inflater: LayoutInflater = LayoutInflater.from(context)
     private var subquesAdapter: SubquesAdapter? = null
 
@@ -106,7 +106,7 @@ class FAQAdapter(
 
     }
 
-    private fun onItemClicked(faqModel: FAQModel?, pos: Int) {
+    private fun onItemClicked(faqModel: FAQDomain?, pos: Int) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()

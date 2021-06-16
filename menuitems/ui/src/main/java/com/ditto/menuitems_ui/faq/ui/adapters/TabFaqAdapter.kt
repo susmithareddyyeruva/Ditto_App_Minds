@@ -3,18 +3,14 @@ package com.ditto.menuitems_ui.faq.ui.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
 import com.ditto.menuitems_ui.faq.ui.FAQFragment
 import com.ditto.menuitems_ui.faq.ui.FAQGlossaryfragmentViewModel
 import com.ditto.menuitems_ui.faq.ui.GlossaryFragment
-import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
 
-/**
- * Created by Sesha on  15/08/2020.
- * Adapter class is to form the tabs dynamically
- */
 class TabFaqAdapter(
     fm: FragmentManager,
-    var data: FAQGlossaryResponse?
+    var data: FaqGlossaryResponseDomain?
 ) : FragmentStatePagerAdapter(
     fm,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
@@ -26,10 +22,10 @@ class TabFaqAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                FAQFragment(data?.fAQ?: emptyList())
+                FAQFragment(data?.FAQ?: emptyList())
             }
             1 -> {
-                GlossaryFragment(data?.glossary?: emptyList())
+                GlossaryFragment(data?.Glossary?: emptyList())
             }
             else -> getItem(position)
         }
@@ -43,7 +39,7 @@ class TabFaqAdapter(
     override fun getPageTitle(position: Int): CharSequence {
         return tabdata[position]
     }
-    fun setMainData(data: FAQGlossaryResponse?){
+    fun setMainData(data: FaqGlossaryResponseDomain?){
         this.data=data
         notifyDataSetChanged()
     }

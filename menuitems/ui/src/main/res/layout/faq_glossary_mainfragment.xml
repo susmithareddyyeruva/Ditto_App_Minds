@@ -34,7 +34,7 @@
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@null"
-                app:navigationIcon="@drawable/back_arrow"
+                app:navigationIcon="@drawable/ic_back_button"
                 app:theme="@style/ToolBarStyle"
                 app:titleTextColor="@color/black">
 

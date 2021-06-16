@@ -1,6 +1,8 @@
 package com.ditto.menuitems_ui.faq.ui
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +12,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.menuitems.domain.model.faq.FAQDomain
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FaqfragmentLayoutBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.FAQAdapter
-import com.ditto.menuitems_ui.faq.ui.models.FAQModel
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import javax.inject.Inject
 
-class FAQFragment(var fAQ: List<FAQModel>) : BaseFragment() {
+
+class FAQFragment(var fAQ: List<FAQDomain>) : BaseFragment() {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     private val viewModel: FQAfragmentViewModel by ViewModelDelegate()
@@ -66,6 +69,11 @@ class FAQFragment(var fAQ: List<FAQModel>) : BaseFragment() {
                 }, object : VisitSiteListener {
                     override fun onVisitClick(url: String) {
                         logger.d("URL== " + url,)
+                        val viewIntent = Intent(
+                            "android.intent.action.VIEW",
+                            Uri.parse(url)
+                        )
+                        startActivity(viewIntent)
                     }
                 })
         }

@@ -9,16 +9,18 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
 import com.ditto.menuitems_ui.databinding.FaqGlossaryMainfragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
-import com.ditto.menuitems_ui.faq.ui.models.FAQGlossaryResponse
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 
 class FaqGlossaryMainFragment : BaseFragment() {
 
-    private val viewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
+    private val faqGlossaryfragmentViewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
     lateinit var binding: FaqGlossaryMainfragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +30,7 @@ class FaqGlossaryMainFragment : BaseFragment() {
             binding = FaqGlossaryMainfragmentBinding.inflate(
                 inflater
             ).also {
-                it.viewModel = viewModel
+                it.viewModel = faqGlossaryfragmentViewModel
                 it.lifecycleOwner = viewLifecycleOwner
 
             }
@@ -40,15 +42,24 @@ class FaqGlossaryMainFragment : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        /**
+         * Api call for fetching FAQ and Glossary Details...
+         */
+        bottomNavViewModel.showProgress.set(true)
+        faqGlossaryfragmentViewModel.fetchData()
+        setUIEvents()
         setuptoolbar()
-        if (viewModel.data.value == null){
-            viewModel.fetchData()
-            setTabsAdapter(viewModel.data.value)
-        }
-
-
     }
 
+
+    private fun setUIEvents() {
+        faqGlossaryfragmentViewModel.disposable += faqGlossaryfragmentViewModel.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+
+            }
+    }
 
     private fun setuptoolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -58,7 +69,26 @@ class FaqGlossaryMainFragment : BaseFragment() {
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setTabsAdapter(data: FAQGlossaryResponse?) {
+    private fun handleEvent(event: FAQGlossaryfragmentViewModel.Event) =
+        when (event) {
+            is FAQGlossaryfragmentViewModel.Event.OnResultSuccess -> {
+                if (faqGlossaryfragmentViewModel.data.value != null)
+                    setTabsAdapter(faqGlossaryfragmentViewModel.data.value)
+
+                Unit
+            }
+            FAQGlossaryfragmentViewModel.Event.OnShowProgress -> {
+                bottomNavViewModel.showProgress.set(true)
+
+            }
+            FAQGlossaryfragmentViewModel.Event.OnHideProgress -> {
+                bottomNavViewModel.showProgress.set(false)
+
+            }
+        }
+
+
+    private fun setTabsAdapter(data: FaqGlossaryResponseDomain?) {
         val fragmentAdapter = activity?.supportFragmentManager?.let {
             TabFaqAdapter(
                 it, data
