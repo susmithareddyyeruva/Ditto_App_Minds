@@ -31,6 +31,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.util.Util
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -656,14 +657,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showSplicingForgetDialogue(alertType: Utility.AlertType) {
-        getAlertDialogue(
+        Utility.getCommonAlertDialogue(
             requireContext(),
             resources.getString(R.string.complete_cutbin),
             resources.getString(R.string.click_spliced_second_pieces),
             resources.getString(R.string.empty_string),
             resources.getString(R.string.ok),
             this,
-            alertType
+            alertType,
+            Utility.Iconype.NONE
         )
     }
 
@@ -716,14 +718,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 setSelvageImage()
             }
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
-                getAlertDialogue(
+                Utility.getCommonAlertDialogue(
                     requireActivity(),
                     resources.getString(R.string.mirror),
                     resources.getString(R.string.mirror_message),
                     resources.getString(R.string.cancel),
                     resources.getString(R.string.ok),
                     this,
-                    Utility.AlertType.MIRROR
+                    Utility.AlertType.MIRROR,
+                    Utility.Iconype.NONE
                 )
             }
             is WorkspaceViewModel.Event.DisableMirror -> {
@@ -1067,14 +1070,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         enableClear(false)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
-                                getAlertDialogue(
+                                Utility.getCommonAlertDialogue(
                                     requireActivity(),
                                     resources.getString(R.string.spliced_piece),
                                     resources.getString(R.string.spliced_piece_message),
                                     resources.getString(R.string.empty_string),
                                     resources.getString(R.string.ok),
                                     this,
-                                    Utility.AlertType.DEFAULT
+                                    Utility.AlertType.DEFAULT,
+                                    Utility.Iconype.NONE
                                 )
                                 return true
                             }
@@ -1090,25 +1094,27 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                getAlertDialogue(
+                                Utility.getCommonAlertDialogue(
                                     requireActivity(),
                                     resources.getString(R.string.splicing_required),
                                     resources.getString(R.string.splicing_required_message),
                                     resources.getString(R.string.empty_string),
                                     resources.getString(R.string.ok),
                                     this,
-                                    Utility.AlertType.DEFAULT
+                                    Utility.AlertType.CUT_BIN,
+                                    Utility.Iconype.NONE
                                 )
                                 return true
                             } else {
-                                getAlertDialogue(
+                                Utility.getCommonAlertDialogue(
                                     requireActivity(),
                                     resources.getString(R.string.splicing_required),
                                     resources.getString(R.string.splicing_required_first_message),
                                     resources.getString(R.string.empty_string),
                                     resources.getString(R.string.ok),
                                     this,
-                                    Utility.AlertType.DEFAULT
+                                    Utility.AlertType.CUT_BIN,
+                                    Utility.Iconype.NONE
                                 )
                             }
                             mWorkspaceEditor?.clearAllSelection()
@@ -1266,24 +1272,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     mWorkspaceEditor?.flipVertical()
                 }
             }
-            Utility.AlertType.CUT_BIN -> {
-                if (!viewModel.workspacedata?.isCompleted!!) {
-                    viewModel.setCompletedCount(cutCount)
-                    viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
-                        ?.isCompleted =
-                        true
-                    com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
-                    adapter?.notifyDataSetChanged()
-                }
-                mWorkspaceEditor?.removePattern(viewModel.workspacedata, false)
-                if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-                    viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
-                } else {
-                    viewModel.workspacedata = null
-                    clearWorkspace()
-                }
-                onDragCompleted()
-            }
+
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
@@ -2015,6 +2004,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
                 onDragCompleted()
             }
+
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)

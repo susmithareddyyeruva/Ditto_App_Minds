@@ -30,7 +30,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.onboarding_fragment.*
 import javax.inject.Inject
 
-class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
+class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -284,14 +284,15 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     private fun showBluetoothDialogue() {  //Displaying Dialog for Bluetooth
         if (!viewModel.isBleLaterClicked.get() && !isFromHomeScreen) {
-            Utility.getAlertDialogue(
+            Utility.getCommonAlertDialogue(
                 requireContext(),
                 resources.getString(R.string.connectivity),
                 resources.getString(R.string.ble_connectivity_onboarding),
                 resources.getString(R.string.later),
                 resources.getString(R.string.turnon),
                 this,
-                Utility.AlertType.BLE
+                Utility.AlertType.BLE,
+                Utility.Iconype.NONE
             )
         }
     }
@@ -300,48 +301,20 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         //for retrict to open again
         if (!viewModel.isWifiLaterClicked.get()) {
             isWifiAlert = true
-            Utility.getAlertDialogue(
+            Utility.getCommonAlertDialogue(
                 requireContext(),
                 resources.getString(R.string.connectivity),
                 resources.getString(R.string.wifi_connectivity_onboarding),
                 resources.getString(R.string.later),
                 resources.getString(R.string.settings),
                 this,
-                Utility.AlertType.WIFI
+                Utility.AlertType.WIFI,
+                Utility.Iconype.NONE
             )
         }
 
     }
 
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Turn on button clicked
-        if (isWifiAlert) {
-            startActivity(Intent(Settings.ACTION_SETTINGS))
-        } else {
-            val mBluetoothAdapter =
-                BluetoothAdapter.getDefaultAdapter()
-            mBluetoothAdapter.enable()
-            if (!Utility.getWifistatus(requireContext())) {
-                viewModel.isWifiLaterClicked.set(false)
-                showWifiDialogue()
-            }
-        }
-
-    }
-
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Later button clicked
-        if (!isWifiAlert) {
-            logger.d("Later clicked")
-            viewModel.isBleLaterClicked.set(true)
-            viewModel.onClickLater()
-        } else {
-            viewModel.isWifiLaterClicked.set(true)
-            viewModel.onClickLater()
-        }
-    }
-
-    override fun onNeutralButtonClicked() {
-        TODO("Not yet implemented")
-    }
 
     private fun setToolbar() {
 //        if (isFromHomeScreen) {
@@ -377,6 +350,35 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         }
 
     }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        if (isWifiAlert) {
+            startActivity(Intent(Settings.ACTION_SETTINGS))
+        } else {
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            mBluetoothAdapter.enable()
+            if (!Utility.getWifistatus(requireContext())) {
+                viewModel.isWifiLaterClicked.set(false)
+                showWifiDialogue()
+            }
+        }    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        if (!isWifiAlert) {
+            logger.d("Later clicked")
+            viewModel.isBleLaterClicked.set(true)
+            viewModel.onClickLater()
+        } else {
+            viewModel.isWifiLaterClicked.set(true)
+            viewModel.onClickLater()
+        }    }
 
 
 }
