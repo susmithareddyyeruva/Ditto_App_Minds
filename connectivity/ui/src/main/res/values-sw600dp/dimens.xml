@@ -27,4 +27,5 @@
     <dimen name="margin_text">20dp</dimen>
     <dimen name="size_24px">24dp</dimen>
     <dimen name="size_14sp">18sp</dimen>
+    <dimen name="xx_large_padding">70dp</dimen>
 </resources>

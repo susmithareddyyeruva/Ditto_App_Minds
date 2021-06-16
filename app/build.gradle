@@ -30,9 +30,9 @@ android {
     defaultConfig {
         applicationId "com.ditto"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
-        versionName "2.05(534)"
+        versionName "2.06(02)"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -53,9 +53,9 @@ android {
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
-            buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
+//            buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
 //          buildConfigField "String", "APP_CENTER_KEY", "\"d6e41159-e327-4f58-86fb-1d37d2878b77\""  //--- DEV
-//            buildConfigField "String", "APP_CENTER_KEY", "\"965a12cd-7f40-45ed-88de-6432d3d40155\""  // -- QA
+            buildConfigField "String", "APP_CENTER_KEY", "\"965a12cd-7f40-45ed-88de-6432d3d40155\""  // -- QA
             buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
     }

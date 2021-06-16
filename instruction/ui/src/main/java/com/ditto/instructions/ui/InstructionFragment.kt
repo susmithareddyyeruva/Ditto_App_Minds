@@ -12,13 +12,12 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -60,8 +59,7 @@ import javax.inject.Inject
 
 class InstructionFragment constructor(
     val position: Int = 0,
-    var isFromHome: Boolean = false,
-    var isFromOnboardinScreen: Boolean = false
+    val isFromHome: Boolean = false,
 ) : BaseFragment(), Utility.CallbackDialogListener {
 
     @Inject
@@ -72,7 +70,6 @@ class InstructionFragment constructor(
     private val viewModel: InstructionViewModel by ViewModelDelegate()
     lateinit var binding: InstructionFragmentBinding
     private var alert: AlertDialog? = null
-
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
      */
@@ -90,16 +87,10 @@ class InstructionFragment constructor(
             }.apply {
                 if (arguments != null) {
                     arguments?.getInt("InstructionId")?.let { viewModel?.instructionID?.set(it) }
-                    arguments?.getBoolean("isFromHome")?.let { isFromHome = it }
-                    arguments?.getBoolean("isFromOnBoarding")
-                        ?.let {
-                            viewModel?.isFromOnboardinScreen?.set(it)
-                            isFromOnboardinScreen = it
-                        }
+                    arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
                     arguments?.getBoolean("isFromCamera")
                         ?.let { viewModel?.isFromCameraScreen?.set(it) }
-                } else {
-                    viewModel?.isFromOnboardinScreen?.set(isFromOnboardinScreen)
+                    arguments?.getBoolean("ISDNDCHECKED")?.let { viewModel?.isDSSchecked?.set(it) }
                 }
             }
         }
@@ -111,6 +102,7 @@ class InstructionFragment constructor(
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel.isFromHome.set(isFromHome)
         viewModel.tabPosition.set(position)
         viewModel.isShowindicator.set(true)
         if (viewModel.data.value == null) {
@@ -272,14 +264,12 @@ class InstructionFragment constructor(
      * [Function] Navigating to same fragment to show calibration screen
      */
     private fun Calibrationstepsbuttonclick() {
-
         if (findNavController().currentDestination?.id == R.id.destination_instruction) {
             findNavController().navigate(
                 R.id.action_destination_instruction_self,
                 bundleOf(
                     "InstructionId" to 2,
-                    "isFromOnBoarding" to isFromOnboardinScreen,
-                    "isFromHome" to isFromHome
+                    "isFromHome" to viewModel?.isFromHome.get()
                 )
             )
 
@@ -295,8 +285,7 @@ class InstructionFragment constructor(
             findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
         ) {
             val bundle = bundleOf(
-                "isFromHome" to isFromHome,
-                "isFromOnBoarding" to isFromOnboardinScreen,
+                "isFromHome" to viewModel?.isFromHome?.get(),
                 "InstructionId" to 3
             )
             findNavController().navigate(
@@ -313,7 +302,7 @@ class InstructionFragment constructor(
         if (findNavController().currentDestination?.id == R.id.destination_instruction ||
             findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
         ) {
-            val bundle = bundleOf("isFromHome" to isFromHome, "InstructionId" to 3)
+            val bundle = bundleOf("isFromHome" to viewModel?.isFromHome?.get(), "InstructionId" to 3)
             findNavController().navigate(
                 R.id.action_destination_instruction_to_howto_nav_graph,
                 bundle
@@ -409,7 +398,7 @@ class InstructionFragment constructor(
     private fun showcalibrationbuttonclicked() {
         Log.d("Transform", "showcalibrationbuttonclicked")
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         val dialogBuilder =
             AlertDialog.Builder(
@@ -420,7 +409,10 @@ class InstructionFragment constructor(
             )
         dialogBuilder
             .setCancelable(false)
-            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 enableCalibrateButton(true)
                 if (findNavController().currentDestination?.id == R.id.destination_instruction
@@ -433,36 +425,25 @@ class InstructionFragment constructor(
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-        val displayWidth: Int = displayMetrics.widthPixels
-        val displayHeight: Int = displayMetrics.heightPixels
-        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCalibration.window?.attributes)
-        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-        layoutParams.width = dialogWindowWidth
-        layoutParams.height = dialogWindowHeight
-        alertCalibration.window?.attributes = layoutParams
     }
 
     /**
      * [Function] Setting up the toolbar by checking the previous screen
      */
     private fun setupToolbar() {
-        arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
-        if (isFromHome) {
+        arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
+        if (viewModel?.isFromHome?.get()) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             if (viewModel.instructionID.get() == 1) {
                 viewModel.toolbarTitle.set("Beam Setup & Takedown")
-                toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+                toolbar.setNavigationIcon(R.drawable.ic_back_button)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             } else {
                 viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
-                toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+                toolbar.setNavigationIcon(R.drawable.ic_back_button)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
@@ -471,7 +452,7 @@ class InstructionFragment constructor(
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()
@@ -523,7 +504,7 @@ class InstructionFragment constructor(
     override fun onResume() {
         super.onResume()
         viewModel.isWatchVideoClicked.set(false)
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+        toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
     }
 
@@ -609,8 +590,7 @@ class InstructionFragment constructor(
         findNavController().navigate(
             R.id.action_destination_instruction_to_calibration_nav_graph,
             bundleOf(
-                "isFromOnBoarding" to isFromOnboardinScreen,
-                "isFromHome" to isFromHome,
+                "isFromHome" to viewModel?.isFromHome?.get(),
                 "isFromPatternDescription" to false
             )
         )

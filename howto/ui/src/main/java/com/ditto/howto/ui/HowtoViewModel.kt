@@ -32,14 +32,13 @@ class HowtoViewModel @Inject constructor(
     val isWatchVideoClicked: ObservableBoolean = ObservableBoolean(false)
     val isShowPlaceholder: ObservableBoolean = ObservableBoolean(false)
     val instructionID: ObservableInt = ObservableInt(3)
-    val isFromOnboardinScreen: ObservableBoolean = ObservableBoolean(true)
+    val isFromHome: ObservableBoolean = ObservableBoolean(true)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
     var toolbarTitle: ObservableField<String> = ObservableField("")
     var videoUrl: String=""
-    var title: String=""
     var imagePath: String=""
     /**
      *[Function] ViewPager Next Button Click
@@ -104,9 +103,8 @@ class HowtoViewModel @Inject constructor(
         uiEvents.post(Event.OnShowError)
     }
 
-    fun onItemClick(videourl:String,titlem:String) {
+    fun onItemClick(videourl:String) {
         videoUrl = videourl
-        title = titlem
         uiEvents.post(Event.OnItemClick)
     }
 

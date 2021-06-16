@@ -130,6 +130,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     }
 
     private fun initializePlayer() {
+        bottomNavViewModel.showProgress.set(true)
         if (player == null) {
             val trackSelector = DefaultTrackSelector(requireContext())
             trackSelector.setParameters(
@@ -153,6 +154,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
         player?.seekTo(currentWindow, playbackPosition)
         player?.addListener(playbackStateListener!!)
         player?.prepare()
+        startPlayer()
     }
 
     private fun startPlayer() {
@@ -191,6 +193,9 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
 
     override fun getPlayingState(isPlaying: Boolean) {
         viewModel.isPlayButtonVisible.set(!isPlaying)
+        if(isPlaying){
+            bottomNavViewModel.showProgress.set(false)
+        }
     }
 
     override fun onPlayerError(error: String?) {

@@ -21,6 +21,7 @@ class BuyPatternFragment : BaseFragment() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbarTitle("Buy Patterns")
+        (activity as BottomNavigationActivity).setToolbarIcon()
         return inflater.inflate(R.layout.buy_pattern_fragment, container, false)
     }
 

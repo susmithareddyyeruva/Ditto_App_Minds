@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <fraction name="image_desc_guideline">0.62</fraction>
+    <dimen name="size_16sp">24sp</dimen>
+    <dimen name="size_12sp">16sp</dimen>
+    <dimen name="size_14sp">18sp</dimen>
+    <dimen name="cart_width">25dp</dimen>
+    <dimen name="scissor_width">32dp</dimen>
+    <dimen name="cart_height">21dp</dimen>
+    <dimen name="scissor_height">18dp</dimen>
+    <dimen name="size_16dp">24dp</dimen>
+
+    <dimen name="size_21dp">28dp</dimen>
+    <dimen name="subscription">48dp</dimen>
+    <dimen name="margin_start_pattern_liabry_count">18dp</dimen>
+
+</resources>

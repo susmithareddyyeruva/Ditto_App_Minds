@@ -59,7 +59,6 @@ class TutorialFragment : BaseFragment() {
             is TutorialViewModel.Event.onItemClick -> {
                 val bundle = bundleOf(
                     "InstructionId" to viewModel.clickID.get(),
-                    "isFromOnBoarding" to false,
                     "isFromHome" to true
                 )
                 if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
@@ -74,7 +73,6 @@ class TutorialFragment : BaseFragment() {
                         R.id.action_destination_tutorial_to_howto_navigation,
                         bundleOf(
                             "InstructionId" to viewModel.clickID.get(),
-                            "isFromOnBoarding" to false,
                             "isFromHome" to true
                         )
                     )

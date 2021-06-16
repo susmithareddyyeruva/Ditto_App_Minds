@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="skip">SKIP TUTORIAL</string>
+<!--    <string name="skip">SKIP TUTORIAL</string>-->
+    <string name="skip">Home</string>
     <string name="gotocalib"><u>GO TO CALIBRATE</u></string>
     <string name="gotohowto"><u>GO TO HOW TO</u></string>
     <string name="Beamsetupheader">Beam Setup &amp; Takedown</string>
@@ -17,9 +18,10 @@
     <string name="calibrationpopupmessage">Calibration will be performed and hence you need calibration tool. Please prepare the workspace accordingly.</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
-    <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
-
+    <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="launch_camera">LAUNCH CAMERA</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>

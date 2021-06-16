@@ -11,16 +11,15 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -80,17 +79,24 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
         }
+
         return binding.root
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        toolbarViewModel.isShowActionBar.set(true)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Description")
+
+        toolbarViewModel.isShowActionBar.set(false)
+        bottomNavViewModel.visibility.set(false)
+        (activity as BottomNavigationActivity).setToolbarTitle("Pattern details")
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        bottomNavViewModel.visibility.set(true)
-        baseViewModel.activeSocketConnection.set(false)
+        (activity as BottomNavigationActivity).hidemenu()
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
+        //baseViewModel.activeSocketConnection.set(false)
+
         if (viewModel.data.value == null) {
             arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
             viewModel.fetchPattern()
@@ -106,6 +112,58 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
     }
+
+    private fun setUpUiBasedOnLoggedIn() {
+        if (bottomNavViewModel.isGuestBase.get()) {
+            setUpUiForGuestUser()
+        } else {
+            setUIForLoggedInUser()
+        }
+    }
+
+    private fun setUpUiForGuestUser(){
+        setData()
+        setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
+        setPatternImage()
+
+    }
+
+    private fun setVisibilityForViews(buttonText:String,showStatusLayout:Boolean,isSubscriptionExpired:Boolean
+    ,showActiveText:Boolean,showPurchasedText:Boolean,showLine:Boolean,showResumeButton:Boolean,showWorkspaceOrRenewSubscriptionButton: Boolean){
+        viewModel.resumeOrSubscription.set(buttonText)
+        viewModel.isStatusLayoutVisible.set(showStatusLayout)
+        viewModel.isSubscriptionExpired.set(isSubscriptionExpired)
+        viewModel.showActive.set(showActiveText)
+        viewModel.showPurchased.set(showPurchasedText)
+        viewModel.showLine.set(showLine)
+        viewModel.showResumButton.set(showResumeButton)
+        viewModel.showWorkspaceOrRenewSubscriptionButton.set(showWorkspaceOrRenewSubscriptionButton)
+        if(showPurchasedText && !showActiveText){
+            binding.purchasedPattern.setPadding(0,0,0,0)
+        }
+    }
+
+    private fun setUIForLoggedInUser() {
+        setData()
+        when(viewModel.clickedID.get()){
+             1-> setVisibilityForViews("RESUME",true,false,true,false, false,true,false)
+            4-> setVisibilityForViews("WORKSPACE",true,false,false,true, false,false,true)
+            8-> setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
+            9-> setVisibilityForViews("RESUME",true,false,true,true, true,true,false)
+            10-> setVisibilityForViews("RENEW SUBSCRIPTION",false,true,false,false, false,false,true)
+            else->setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
+        }
+        setPatternImage()
+
+
+    }
+
+    private fun setData(){
+        viewModel.patternName.set(viewModel.data.value?.patternName)
+        viewModel.patternDescription.set(viewModel.data.value?.description)
+        viewModel.patternStatus.set(viewModel.data.value?.status)
+    }
+
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
@@ -144,7 +202,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         core.network.Utility.nsdSericePortName
                     )
                 ) {
-                    baseViewModel.activeSocketConnection.set(true)
+                    //baseViewModel.activeSocketConnection.set(true)
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
@@ -260,7 +318,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun showProgress(toShow: Boolean) {
-        if (toShow) {
+        bottomNavViewModel.showProgress.set(toShow)
+        /*if (toShow) {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
 
@@ -272,7 +331,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alert.show()
         } else {
             alert.dismiss()
-        }
+        }*/
     }
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isQuickCheck: Boolean) {
@@ -365,13 +424,21 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                 ) {
-                    checkBluetoothWifiPermission()
+                    //checkBluetoothWifiPermission()
+                    //forwardtoWorkspace()
+                    checkSocketConnectionBeforeWorkspace()
                 } else {
                     logger.d("OnClick Workspace failed")
                 }
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
-                setData()
+                setUpUiBasedOnLoggedIn()
+            }
+
+            is PatternDescriptionViewModel.Event.onSubscriptionClicked ->{
+                logger.d("onSubscriptionClicked")
+                Utility.redirectToExternalBrowser(requireContext(),"http://www.dittopatterns.com")
+
             }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
@@ -386,6 +453,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 } else
                     Unit
             }
+            PatternDescriptionViewModel.Event.OnDownloadComplete -> TODO()
         }
 
 
@@ -399,12 +467,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
 
-    private fun setData() {
-        viewModel.patternName.set(viewModel.data.value?.patternName)
-        viewModel.patternDescription.set(viewModel.data.value?.description)
-        viewModel.patternStatus.set(viewModel.data.value?.status)
-        setPatternImage()
-    }
 
     private fun setPatternImage() {
 
@@ -432,29 +494,53 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "Connected to Ditto Projector!!",
                     Toast.LENGTH_SHORT
                 ).show()
-                baseViewModel.activeSocketConnection.set(true)
+                //baseViewModel.activeSocketConnection.set(true)
                 showCalibrationDialog()
             } else if (data?.data.toString().equals("skip")) {
-                baseViewModel.activeSocketConnection.set(false)
-                if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-                    val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
-                    findNavController().navigate(
-                        R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
-                        bundle
-                    )
-                } else {
-                    logger.d("")
-                }
+               enterWorkspace()
             }
         }
     }
 
+    private fun checkSocketConnectionBeforeWorkspace() {
+        GlobalScope.launch {
+            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+                withContext(Dispatchers.Main) {
+                    baseViewModel.activeSocketConnection.set(false)
+                    enterWorkspace()
+                }
+            } else {
+                withContext(Dispatchers.Main) { showProgress(true) }
+                if (startSocketConnection(
+                        core.network.Utility.nsdSericeHostName,
+                        core.network.Utility.nsdSericePortName
+                    )
+                ) {
+
+                    withContext(Dispatchers.Main) {
+                        showProgress(false)
+                        baseViewModel.activeSocketConnection.set(true)
+                        enterWorkspace()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        showProgress(false)
+                        baseViewModel.activeSocketConnection.set(false)
+                        enterWorkspace()
+                    }
+                }
+            }
+        }
+    }
     override fun onResume() {
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
     }
 
     private fun enterWorkspace() {
+        if (baseViewModel.activeSocketConnection.get()) {
+            GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+        }
         val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
@@ -548,7 +634,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
      */
     private fun showcalibrationbuttonclicked() {
         val layout =
-            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert, null)
+            activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
         val dialogBuilder =
             AlertDialog.Builder(
@@ -559,7 +645,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         dialogBuilder
             .setCancelable(false)
-            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
+                dialog.dismiss()
+            })
+            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 sendCalibrationPattern()
             })
@@ -567,17 +656,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
         alertCalibration.show()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-        val displayWidth: Int = displayMetrics.widthPixels
-        val displayHeight: Int = displayMetrics.heightPixels
-        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCalibration.window?.attributes)
-        val dialogWindowWidth = (displayWidth * 0.7f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.7f).toInt()
-        layoutParams.width = dialogWindowWidth
-        layoutParams.height = dialogWindowHeight
-        alertCalibration.window?.attributes = layoutParams
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {

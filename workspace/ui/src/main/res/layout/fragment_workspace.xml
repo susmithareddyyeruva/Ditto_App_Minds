@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".04" />
+            app:layout_constraintGuide_percent=".02" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_right"
@@ -38,30 +38,13 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".96" />
 
-        <TextView
-            android:id="@+id/txt_workspace_header"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_workspace_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.data.patternName}"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/tab_heading"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".61" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout_workspace"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/tab_height"
-            android:background="@drawable/tab_background"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-            app:tabBackground="@drawable/tab_item_background"
-            app:tabIndicatorHeight="@dimen/dimen_0"
-            app:tabMode="fixed"
-            app:tabRippleColor="@android:color/transparent"
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabTextAppearance="@style/TabLayoutTextStyle"
-            app:tabTextColor="@color/tab_text_color" />
 
         <core.ui.common.NonSwipeableViewPager
             android:id="@+id/view_pager"
@@ -71,7 +54,38 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_top" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_workspace_header"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="@{viewModel.data.patternName}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/tab_heading"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toStartOf="@+id/tabLayout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout_workspace"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/tab_height"
+            android:background="@drawable/tab_background"
+            android:layout_marginEnd="@dimen/small_padding_x"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_workspace_divider"
+            app:tabBackground="@drawable/tab_item_background"
+            app:tabIndicatorHeight="@dimen/dimen_0"
+            app:tabMode="fixed"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabTextColor="@color/tab_text_color" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

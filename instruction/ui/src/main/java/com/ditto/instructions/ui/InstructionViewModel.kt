@@ -31,7 +31,8 @@ class InstructionViewModel @Inject constructor(
     val isErrorString: ObservableField<String> = ObservableField("")
     val isShowError: ObservableBoolean = ObservableBoolean(false)
     val isFromCameraScreen: ObservableBoolean = ObservableBoolean(false)
-    val isFromOnboardinScreen: ObservableBoolean = ObservableBoolean(true)
+    val isFromHome: ObservableBoolean = ObservableBoolean(false)
+    val isDSSchecked: ObservableBoolean = ObservableBoolean(false)
     val instructionID: ObservableInt = ObservableInt(1)
     val tabPosition: ObservableInt = ObservableInt(0)
     var data: MutableLiveData<InstructionsData> = MutableLiveData()
@@ -107,7 +108,6 @@ class InstructionViewModel @Inject constructor(
      * [Function] HOW TO text  Click
      */
     fun onClickHowToButton() {
-
         uiEvents.post(Event.OnHowToButtonClicked)
     }
 

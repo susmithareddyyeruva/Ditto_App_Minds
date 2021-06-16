@@ -3,8 +3,6 @@ package com.ditto.howto.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +10,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.ui.PopUpWindow
+import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
+import core.ui.common.DoubleClickListener
 
 /**
  * Created by Sesha on  15/08/2020.
@@ -64,14 +65,14 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                     "drawable",
                     parent.context.getPackageName()
                 )
-                val drawable: Drawable = res.getDrawable(resID)
+                /*val drawable: Drawable = res.getDrawable(resID)
                 val bitmap = (drawable as BitmapDrawable).bitmap
                 bindingWS.imageStep.setImageBitmap(bitmap)
-                bindingWS.imageStep.setImageDrawable(drawable)
-               /* Glide.with(parent.context)
+                bindingWS.imageStep.setImageDrawable(drawable)*/
+                Glide.with(parent.context)
                     .load(tabdata.get(position).imagePath1)
                     .placeholder(R.drawable.ic_placeholder)
-                    .into(bindingWS.imageStep)*/
+                    .into(bindingWS.imageStep)
                 if(pos==3) {
                     bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
                         override fun onDoubleClick(v: View) { 
@@ -80,7 +81,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                     })
                 } else {
                     bindingWS.imageStep.setOnClickListener {
-                        viewModel.onItemClick(tabdata[position].videopath1,"How To")
+                        viewModel.onItemClick(tabdata[position].videopath1)
                     }
                 }
             }
@@ -120,23 +121,3 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
     }
 
 }
-
-abstract class DoubleClickListener : View.OnClickListener {
-    private var lastClickTime: Long = 0
-    override fun onClick(v: View) {
-        val clickTime = System.currentTimeMillis()
-        if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            onDoubleClick(v)
-            lastClickTime = 0
-        }
-        lastClickTime = clickTime
-    }
-
-    abstract fun onDoubleClick(v: View)
-
-    companion object {
-        private const val DOUBLE_CLICK_TIME_DELTA: Long = 300 //milliseconds
-    }
-}
-
-

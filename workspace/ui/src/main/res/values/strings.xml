@@ -10,8 +10,12 @@
     <string name="interfacing">Interfacing</string>
 
     <string name="instruction"><u>Instructions</u></string>
-    <string name="_45">45\"</string>
-    <string name="_60">60\"</string>
+    <string name="sewing_instructions">Sewing Instructions</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="splice">Splice</string>
+    <string name="w_Nap">w/NAP</string>
+    <string name="_45">45” w/Nap</string>
+    <string name="_60">60” w/Nap</string>
     <string name="move_pieces_to_bin_when_done">Move pieces to bin when done</string>
     <string name="save_and_exit">Save &amp; Exit</string>
     <string name="send_to_projector">Send To Projector</string>
@@ -19,6 +23,7 @@
     <string name="de_select_all">De-\nSelect All</string>
     <string name="mirror_v">Mirror V</string>
     <string name="mirror_h">Mirror H</string>
+    <string name="clear">Clear</string>
     <string name="spliced_piece">Spliced Pieces</string>
     <string name="spliced_piece_message">Additional pieces cannot be in the workspace at the same time as a spliced piece.</string>
     <string name="splicing_required">Splicing Required</string>
@@ -26,14 +31,19 @@
     <string name="splicing_required_message">This is a large piece which required splicing. This piece can\'t be projected at the same time as other pieces.</string>
     <string name="mirror">Mirror</string>
     <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string>
+    <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="cancel">CANCEL</string>
     <string name="empty_string"></string>
     <string name="ok">OK</string>
     <string name="reference_layout">Reference Layout</string>
-    <string name="recalibrate">Recalibrate</string>
+    <string name="pattern_pieces">Pattern Pieces</string>
+    <string name="recalibrate">Calibrate</string>
     <string name="connect">Connect</string>
-    <string name="seek_text"> %1$d/%2$d pc</string>
+    <string name="seek_text"> <font color="red"> %1$d</font>/%2$d </string>
     <string name="splice_text"> Spliced screen %1$d of %2$d</string>
+    <string name="tap_to_enlarge">Double Tap to Zoom</string>
+    <string name="select_a_layout">Select a layout</string>
+    <string name="reset">Reset</string>
     <string name="size_36_nwith_or_without_nap">Size 36 \nWith or Without Nap</string>
     <string name="switching">Switching</string>
     <string name="switching_message">Current work in workspace will be lost if you switch to different types.</string>
@@ -47,9 +57,10 @@
     <string name="save_and_exit_dialog_message">Type your project name.</string>
     <string name="save">Save</string>
     <string name="exit">Exit</string>
+    <string name="double_tap_to_zoom">Double tap to zoom</string>
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
-    <string name="camera_alert">Adjust the projector height until white projected frame is completely outside of the black printed rectangle but remains entirely on the white mat</string>
+    <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
     <string name="socketfailed">Socket Connection failed. Try again!!</string>
     <string name="renameproject">Rename Project</string>
     <string name="rename">RENAME</string>
@@ -58,4 +69,14 @@
     <string name="projection_area_progress">Projection area is in process..Please wait!!</string>
     <string name="projecting_messsage">Projecting Please wait!!</string>
     <string name="projection_progress">Projection area is in process..Please wait!!</string>
+    <string name="image_selvage_horizontal">Image Selvage Horizontal</string>
+    <string name="str_unable_to_load">Unable to load the file. Please try again!</string>
+    <string name="str_retry">RETRY</string>
+    <string name="str_cancel">CANCEL</string>
+    <string name="alert_no">NO</string>
+    <string name="alert_yes">YES</string>
+    <string name="str_recalib">Re-Calibrate</string>
+    <string name="str_calib">Calibrate</string>
+    <string name="str_connect">Connect</string>
+    <string name="pattern_instructions">Pattern Instructions</string>
 </resources>

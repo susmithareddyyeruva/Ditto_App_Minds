@@ -15,6 +15,8 @@ import com.ditto.workspace.ui.databinding.PatternsPiecesItemBinding
 import com.ditto.workspace.ui.util.Draggable
 import core.binding.BindableAdapter
 import core.ui.common.Utility
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 /**
@@ -44,6 +46,9 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
     override fun onBindViewHolder(holder: PatternPieceHolder, position: Int) {
         holder.patternsPiecesBinding.viewModel = viewModel
+        holder.patternsPiecesBinding.txtPieceName.text =
+            patternPieces.get(position).pieceDescription
+        holder.patternsPiecesBinding.txtPieceCut.text = patternPieces.get(position).cutQuantity
         holder.patternsPiecesBinding.imageArrow.visibility = View.GONE
         println("ImagefromDB${patternPieces.get(position).imagePath}")
         if (!patternPieces.get(position).imagePath.equals("")) {
@@ -52,8 +57,8 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 patternPieces.get(position).imagePath
             )
             holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)
-            if(patternPieces[position].splice == "YES") {
-                if(patternPieces[position].spliceDirection == "Splice Left-to-Right") {
+            if (patternPieces[position].splice == "YES") {
+                if (patternPieces[position].spliceDirection == "Splice Left-to-Right") {
                     holder.patternsPiecesBinding.imageArrow.visibility = View.VISIBLE
                     val arrowDrawable = Utility.getDrawableFromString(
                         viewGroup!!.context,
@@ -76,24 +81,51 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                         R.color.gray
                     ), PorterDuff.Mode.SRC_ATOP
                 )
-                holder.patternsPiecesBinding.imageView?.setColorFilter(
-                    ContextCompat.getColor(
-                        viewGroup!!.context,
-                        R.color.gray
-                    ), PorterDuff.Mode.SRC_ATOP
-                )
+
                 holder.patternsPiecesBinding.imageArrow?.invalidate()
-                holder.patternsPiecesBinding.imageView?.invalidate()
-                holder.patternsPiecesBinding.imageArrow?.alpha = 0.5F
-                holder.patternsPiecesBinding.imageView.alpha = 0.5F
+                holder.patternsPiecesBinding.pieceItemRoot.setBackgroundResource(R.drawable.pattern_pieces_cut_bg)
+//                holder.patternsPiecesBinding.imageView?.setColorFilter(
+//                    ContextCompat.getColor(
+//                        viewGroup!!.context,
+//                        R.color.gray
+//                    ), PorterDuff.Mode.SRC_ATOP
+//                )
+//                holder.patternsPiecesBinding.imageView?.invalidate()
+//                holder.patternsPiecesBinding.imageArrow?.alpha = 0.5F
+//                holder.patternsPiecesBinding.imageView.alpha = 0.5F
             } else {
                 holder.patternsPiecesBinding.imageArrow?.clearColorFilter()
-                holder.patternsPiecesBinding.imageView?.clearColorFilter()
                 holder.patternsPiecesBinding.imageArrow?.invalidate()
-                holder.patternsPiecesBinding.imageView?.invalidate()
-                holder.patternsPiecesBinding.imageArrow.alpha = 1F
-                holder.patternsPiecesBinding.imageView.alpha = 1F
+                holder.patternsPiecesBinding.pieceItemRoot.setBackgroundResource(R.drawable.pattern_pieces_list_bg)
+//                holder.patternsPiecesBinding.imageView?.clearColorFilter()
+//                holder.patternsPiecesBinding.imageView?.invalidate()
+//                holder.patternsPiecesBinding.imageArrow.alpha = 1F
+//                holder.patternsPiecesBinding.imageView.alpha = 1F
             }
+        }
+        holder.patternsPiecesBinding.cutComplete.setImageResource(
+            if (patternPieces[position].isCompleted)
+                R.drawable.checkbox_checked_ws else R.drawable.checkbox_unchecked_ws
+        )
+        holder.patternsPiecesBinding.cutCompleteLay.setOnClickListener {
+            val count = patternPieces[position].cutQuantity.get(4)
+                ?.let { Character.getNumericValue(it) }
+            viewModel.cutCount = count
+            viewModel.cutPiecePosition = position
+            if (patternPieces[position].isCompleted){
+                patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+                notifyDataSetChanged()
+                viewModel.cutCheckBoxClicked(count,false)
+            } else {
+                if (count > 1){
+                    viewModel.onPaternItemCheckboxClicked()
+                } else {
+                    patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+                    notifyDataSetChanged()
+                    viewModel.cutCheckBoxClicked(count,true)
+                }
+            }
+
         }
         holder.patternsPiecesBinding.imageView.setOnLongClickListener {
             val state = DragData(
@@ -110,6 +142,10 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
     }
 
+    fun updatePositionAdapter(){
+        patternPieces[viewModel.cutPiecePosition].isCompleted = !patternPieces[viewModel.cutPiecePosition].isCompleted
+        notifyDataSetChanged()
+    }
 
     inner class PatternPieceHolder(
         val patternsPiecesBinding: PatternsPiecesItemBinding,

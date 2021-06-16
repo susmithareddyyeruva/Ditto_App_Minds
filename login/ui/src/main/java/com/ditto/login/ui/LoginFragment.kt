@@ -16,6 +16,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -148,16 +149,22 @@ class LoginFragment : BaseFragment() {
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                val bundle = bundleOf("UserId" to 0)
-                if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    getUserDetails(true)
-                    findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
-                } else {
+                if (Utility.getWifistatus(requireContext())){
+                    val bundle = bundleOf("UserId" to 0)
+                    if (findNavController().currentDestination?.id == R.id.destination_login) {
+                        getUserDetails(true)
+                        findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                    } else {
 
+                    }
+                } else {
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
                 }
+
             }
             is LoginViewModel.Event.OnLoginFailed -> {
-                showSnackBar()
+                showAlert()
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
@@ -198,5 +205,26 @@ class LoginFragment : BaseFragment() {
             errorMessage,
             binding.rootLayout
         )
+    }
+
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
+        ,Utility.Iconype.FAILED)
+    }
+
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
     }
 }

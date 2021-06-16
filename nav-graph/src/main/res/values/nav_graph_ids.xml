@@ -19,6 +19,7 @@
     <item name="nav_graph_customercare" type="id" />
     <item name="nav_graph_faq" type="id" />
     <item name="nav_graph_mainFaq" type="id" />
+    <item name="nav_graph_manage" type="id" />
 
     <!--action items-->
     <item name="action_splashActivity_to_LoginFragment" type="id" />
@@ -42,6 +43,7 @@
     <item name="calibration_nav_graph" type="id" />
     <item name="instruction_calibration_nav" type="id" />
     <item name="patternDescriptionFragment" type="id" />
+    <item name="patternInstructionsFragment" type="id" />
     <item name="action_instructionFragment_to_homefragment" type="id" />
     <!--
         <item name="action_destination_instruction_to_calibration_nav_graph" type="id"/>
@@ -62,5 +64,8 @@
     <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
     <item name="action_fragment_to_FAQGlossaryfragment" type="id" />
     <item name="action_destination_faq_to_nav_graph_id_video" type="id" />
+
+    <item name="action_homeFragment_to_wssettings_fragment" type="id" />
+    <item name="action_homeFragment_to_nav_graph_manage" type="id" />
 
 </resources>

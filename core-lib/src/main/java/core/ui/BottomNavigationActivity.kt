@@ -133,12 +133,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
 
     private fun populateExpandableList() {
-        expandableListAdapter = ExpandableMenuListAdapter(
-            this, binding.bottomNavViewModel!!.headerList,
-            binding.bottomNavViewModel!!.childList
-        )
-        expandableListView =
-            binding.navSlideView.getHeaderView(0).findViewById(R.id.expandableListView)
+        expandableListAdapter = ExpandableMenuListAdapter(this, binding.bottomNavViewModel!!.headerList,
+            binding.bottomNavViewModel!!.childList)
+        expandableListView =  binding.navSlideView.getHeaderView(0).findViewById(R.id.expandableListView)
         expandableListView.setAdapter(expandableListAdapter)
         expandableListView.setOnGroupClickListener(OnGroupClickListener { parent, v, groupPosition, id ->
             if (binding.bottomNavViewModel!!.headerList.get(groupPosition).subMenu == null) {
@@ -162,21 +159,26 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             false
         })
         expandableListView.setOnChildClickListener(OnChildClickListener { parent, v, groupPosition, childPosition, id ->
-            if (binding.bottomNavViewModel!!.childList.get(
-                    binding.bottomNavViewModel!!.headerList.get(
-                        groupPosition
-                    )
-                ) != null
-            ) {
-                Toast.makeText(
-                    this,
-                    binding.bottomNavViewModel!!.childList.get(
-                        binding.bottomNavViewModel!!.headerList.get(
-                            groupPosition
-                        )
-                    )?.get(childPosition)?.menuName,
-                    Toast.LENGTH_LONG
-                ).show()
+//            if(binding.bottomNavViewModel!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+//                navController.navigate(R.id.action_fragments_to_wssettings)
+//            }
+            if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
+                if(binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
+                        ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+
+                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                        navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
+                    }
+                }
+
+
+                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.str_menu_manage_projector))){
+                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                        navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
+                    }
+                }
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
             false
@@ -199,7 +201,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         spanString.setSpan(ForegroundColorSpan(color), 0, spanString.length, 0)
         menu.title = spanString
     }
-
+      
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -207,7 +209,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
         super.onBackPressed()
     }
-
+      
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
 
@@ -275,6 +277,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         binding.toolbarViewModel?.toolbarTitle?.set(title)
     }
 
+    fun setToolbarIcon() {
+        binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
@@ -298,14 +304,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-            R.id.nav_graph_support -> {
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+              R.id.nav_graph_support -> {
+              binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
                 navController.navigate(R.id.action_fragments_to_customerCareFragment)
                 true
             }
 
-            R.id.nav_graph_about, -> {
+            R.id.nav_graph_about -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
                 true
@@ -347,20 +353,36 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
     }
 
-    private fun handlemenuClick(selectedmenu: String) {
-        if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))) {
-            navController.navigate(R.id.action_fragments_to_customerCareFragment)
-        } else if (selectedmenu.equals(this.getString(R.string.str_menu_faq))) {
-            navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
-        } else if (selectedmenu.equals(this.getString(R.string.str_menu_logout))) {
-            logoutUser(true)
-        } else if (selectedmenu.equals(this.getString(R.string.str_menu_signin))) {
-            logoutUser(false)
-        } else if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))) {
-            navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
-        } else {
-            Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG)
-                .show()
+    private fun handlemenuClick (selectedmenu : String){
+        if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                navController.navigate(R.id.action_fragments_to_customerCareFragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
+        } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+
+            }
+        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                logoutUser(true)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
+        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                logoutUser(false)
+            }
+        }
+        else  if (selectedmenu.equals(this.getString(R.string.about_app_policies))){
+            if(navController.currentDestination?.label?.equals("Home")!!) {
+                navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
+        }
+        else{
+            Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -23,6 +23,7 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -156,9 +157,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun clearWorkspace() {
-        fragmentGarment.clearWorkspace()
-        fragmentLining.clearWorkspace()
-        fragmentInterface.clearWorkspace()
+        if (viewModel.selectedTab.get() == 0){
+            fragmentGarment.clearWorkspace()
+        } else if (viewModel.selectedTab.get() == 1){
+            fragmentLining.clearWorkspace()
+        } else {
+            fragmentInterface.clearWorkspace()
+        }
         viewModel.spliced_pices_visibility.set(false)
     }
 
@@ -221,20 +226,20 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         var position = 0
         if (viewModel.data.value?.selectedTab.equals("0")) {
             position = 0
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("1")) {
             position = 1
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("2")) {
             position = 2
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         } else {
             Log.d("updateTab", "undefined")
             position = 0
-            binding.viewPager.currentItem = position
+            binding.viewPager.setCurrentItem(position,false)
             viewModel.selectedTab.set(position)
         }
 
@@ -277,10 +282,26 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                     )
                 }
             }
-            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+
             clearWorkspace()
+            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+
         }
 
+    }
+
+    private fun switchTab(){
+        if (baseViewModel.activeSocketConnection.get()) {
+            GlobalScope.launch {
+                core.ui.common.Utility.sendDittoImage(
+                    requireActivity(),
+                    "solid_black"
+                )
+            }
+        }
+
+        clearWorkspace()
+        binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
     }
 
     override fun onNegativeButtonClicked(alertType: core.ui.common.Utility.AlertType) {
@@ -299,7 +320,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             if (!baseViewModel.isProjecting.get()) {
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
                     viewModel.selectedTab.set(view?.tag as Int)
-                    onTabSwitchAlert()
+                    //onTabSwitchAlert()
+                    switchTab()
                     return true
                 }
                 return false

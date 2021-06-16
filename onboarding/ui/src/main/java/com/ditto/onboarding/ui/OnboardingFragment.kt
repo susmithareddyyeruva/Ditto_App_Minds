@@ -22,6 +22,7 @@ import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,7 +35,6 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var isFromHomeScreen: Boolean = false
-    var isFromOnBoardingScreen: Boolean = true
     var isWifiAlert: Boolean = false
     val logger: Logger by lazy {
         loggerFactory.create(OnboardingFragment::class.java.simpleName)
@@ -62,14 +62,16 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        /* if (core.network.Utility.isNetworkAvailable(requireContext())) {
-             bottomNavViewModel.showProgress.set(true)
-             viewModel.fetchOnBoardingDataFromApi()
+        (activity as BottomNavigationActivity).hidemenu()
+        if(viewModel.dataFromApi.value == null){
+            if (core.network.Utility.isNetworkAvailable(requireContext())) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.fetchOnBoardingDataFromApi()
 
-         } else {
-             viewModel.fetchOnBoardingData()
-         }*/
-        viewModel.fetchOnBoardingData()
+            } else {
+                viewModel.fetchOnBoardingData()
+            }
+        }
         setOnBoardingAdapter()
         setUIEvents()
         setToolbar()
@@ -84,8 +86,8 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
         private const val ISFROMHOME = "isFromHome"
         private const val USERID = "UserId"
-        private const val ISFROMONBOARDING = "isFromOnBoarding"
         private const val INSTRUCTIONID = "InstructionId"
+        private const val ISDNDCHECKED = "ISDNDCHECKED"
     }
 
     private fun checkBluetoothWifiPermission() {
@@ -119,7 +121,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 logger.d("Permission Denied by the user")
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.turnon_permission),
+                    getString(R.string.turn_on_permission),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -165,11 +167,10 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 logger.d("dialog Show bluetooth dialog")
             }
             is OnboardingViewModel.Event.OnItemClick -> {  //Clicked  On_boarding items
-                isFromOnBoardingScreen = !isFromHomeScreen
                 val bundle = bundleOf(
                     INSTRUCTIONID to viewModel.clickedId.get(),
-                    ISFROMONBOARDING to isFromOnBoardingScreen,
-                    ISFROMHOME to isFromHomeScreen
+                    ISFROMHOME to isFromHomeScreen,
+                    ISDNDCHECKED to viewModel.dontShowThisScreen.get()
                 )
                 if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
@@ -178,7 +179,12 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                 } else {  //Clicked on How to
 
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
-                        if (viewModel.dontShowThisScreen.get()) {
+                        findNavController().navigate(
+                            R.id.action_onboardingFragment_to_howtofragment_unchecked,
+                            bundle
+                        )
+
+                        /*if (viewModel.dontShowThisScreen.get()) {
                             findNavController().navigate(
                                 R.id.action_onboardingFragment_to_howtofragment_checked,
                                 bundle
@@ -188,7 +194,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                                 R.id.action_onboardingFragment_to_howtofragment_unchecked,
                                 bundle
                             )
-                        }
+                        }*/
                     }
 
                 }
@@ -212,14 +218,16 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     }
 
     private fun navigateInstructionOrCaliberation(bundle: Bundle) {
-        if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
+        navigateWithoutDontShows(bundle)
+
+        /*if (viewModel.dontShowThisScreen.get()) {   //Clicked on Items which satisfy  Don't show this screen condition
             navigateWithDontShows(bundle)
 
 
         } else { //Clicked on Items which doesn't satisfy  Don't show this screen condition
             navigateWithoutDontShows(bundle)
 
-        }
+        }*/
     }
 
     private fun navigateHomeScreen() {
@@ -258,6 +266,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
     private fun navigateWithDontShows(bundle: Bundle) {
         if (viewModel.clickedId.get() == ONBOARDING.BEAMSETUP.id) {
             if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                //findNavController().popBackStack(R.id.destination_onboarding, false)
                 findNavController().navigate(
                     R.id.action_onboardingFragment_to_instructionsfragment_checkedbox_clicked,
                     bundle

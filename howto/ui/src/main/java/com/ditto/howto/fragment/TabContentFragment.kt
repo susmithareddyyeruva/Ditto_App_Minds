@@ -48,7 +48,7 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as BottomNavigationActivity).setToolbarTitle("How to")
+        (activity as BottomNavigationActivity).setToolbarTitle("How To")
         setInstructionadapter()
         vm.disposable += vm.events
             .observeOn(AndroidSchedulers.mainThread())

@@ -39,8 +39,6 @@ class HowtoFragment : BaseFragment() {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
-    var isFromHome: Boolean = false
-
     val logger: Logger by lazy {
         loggerFactory.create(HowtoFragment::class.java.simpleName)
     }
@@ -62,9 +60,7 @@ class HowtoFragment : BaseFragment() {
                 inflater
             ).also {
                 arguments?.getInt("InstructionId")?.let { viewModel.instructionID.set(it) }
-                arguments?.getBoolean("isFromOnBoarding")
-                    ?.let { viewModel.isFromOnboardinScreen.set(it) }
-                arguments?.getBoolean("isFromHome")?.let { viewModel.isFromOnboardinScreen.set(it) }
+                arguments?.getBoolean("isFromHome")?.let { viewModel.isFromHome.set(it) }
             }
         }
         return binding.root
@@ -75,8 +71,9 @@ class HowtoFragment : BaseFragment() {
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Common.currentSelectedTab.set(0)
+
         if (viewModel.data.value == null) {
+            Common.currentSelectedTab.set(0)
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchInstructionData()
             viewModel.disposable += viewModel.events
@@ -120,7 +117,9 @@ class HowtoFragment : BaseFragment() {
 
                 if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 3)) {
 
-                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to "How To","from" to "tutorial")
+                    var title = viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
+
+                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to title,"from" to "tutorial")
 
                     findNavController().navigate(
                         com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
@@ -141,6 +140,7 @@ class HowtoFragment : BaseFragment() {
         intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
+        intent.putExtra("isFrom", "Howto")
         context?.let { ContextCompat.startActivity(it, intent, null) }
     }
     /**
@@ -161,21 +161,21 @@ class HowtoFragment : BaseFragment() {
      * [Function] Setting the tool bar
      */
     private fun setupToolbar() {
-        arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
-        if (isFromHome) {
+        arguments?.getBoolean("isFromHome")?.let { viewModel.isFromHome.set(it) }
+        if (viewModel.isFromHome.get()) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             viewModel.toolbarTitle.set("How To")
             (activity as BottomNavigationActivity).hidemenu()
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as BottomNavigationActivity).hidemenu()

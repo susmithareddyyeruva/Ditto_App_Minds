@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.ditto.workspace.ui.WorkspaceViewModel" />
@@ -18,7 +20,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/workspace_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".08" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_left"
@@ -28,36 +38,336 @@
             app:layout_constraintGuide_percent=".04" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_right"
+            android:id="@+id/guideline_workspace_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".96" />
+            app:layout_constraintGuide_percent=".61" />
+
+        <View
+            android:id="@+id/top_border"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_size"
+            android:background="@color/tab_divider_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+
+
+        <include
+            android:id="@+id/include_workspacearea"
+            layout="@layout/workspace_layout"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_workspace_divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_border"
+            app:viewModel="@{viewModel}" />
+
+        <TextView
+            android:id="@+id/txt_pattern_pieces"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_selected:@drawable/pattern_button_unselected}"
+            android:elevation="@dimen/elevation_card"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.clickPatternReference(true)}"
+            android:text="@string/pattern_pieces"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_reference_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
+            app:layout_constraintEnd_toStartOf="@+id/txt_reeferance_layout"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_reeferance_layout"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
+            android:elevation="@dimen/elevation_card"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.clickPatternReference(false)}"
+            android:text="@string/reference_layout"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_reference_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_pattern_pieces"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_marginTop="@dimen/dimen_1"
+            android:background="@android:color/white"
+            android:elevation="@dimen/elevation_pieces_reference"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_selvages_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_top" />
+
+        <TextView
+            android:id="@+id/txt_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_reset"
+            android:drawablePadding="@dimen/medium_padding"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:onClick="@{() -> viewModel.clickReset()}"
+            android:padding="@dimen/medium_padding"
+            android:text="@string/reset"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_select_layout"
+            app:layout_constraintEnd_toStartOf="@+id/text_complete_pieces"
+            app:layout_constraintTop_toBottomOf="@+id/top_border" />
+
+        <TextView
+            android:id="@+id/text_complete_pieces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/large_padding"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_it_pro_bold"
+            android:text="@{String.format(@string/seek_text,utility.progressCount, viewModel.data.totalPieces)}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_seek_complete"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_reset"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txt_reset" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_pieces"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/pattern_pieces_list_bg"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:foregroundGravity="center_vertical"
+            android:orientation="vertical"
+            app:data="@{viewModel.data.patternPieces}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/lineview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toBottomOf="@+id/txt_reset"
+            tools:listitem="@layout/patterns_pieces_item" />
+
+
+        <TextView
+            android:id="@+id/txt_select_layout"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/large_padding"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:text="@string/select_a_layout"
+            android:textColor="@color/default_text_color"
+            android:textSize="@dimen/text_size_select_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_border" />
+
+        <TextView
+            android:id="@+id/txt_tap_to_enlarge"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_padding"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:layout_marginTop="@dimen/top_margin_enlarge_text"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:text="@string/tap_to_enlarge"
+            android:textColor="@color/default_text_color"
+            android:textSize="@dimen/text_size_select_layout"
+            app:layout_constraintStart_toStartOf="@+id/image_selvage_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/txt_size_splice" />
+
+        <TextView
+            android:id="@+id/txt_size_splice"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_marginTop="@dimen/margin_text"
+            android:layout_marginEnd="@dimen/splice_end_margin"
+            android:layout_marginBottom="@dimen/margin_text"
+            android:background="@{viewModel.clickedSplice?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:onClick="@{() -> viewModel.clickSplice()}"
+            android:paddingHorizontal="@dimen/padding_horizontal_splice"
+            android:paddingVertical="@dimen/padding_vertical_splice"
+            android:text="@string/splice"
+            android:textColor="@{viewModel.clickedSplice?@android:color/white :@color/default_splice}"
+            android:textSize="@dimen/text_splice"
+            app:layout_constraintEnd_toStartOf="@+id/txt_size_45"
+            app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
+
+        <TextView
+            android:id="@+id/txt_size_45"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_marginTop="@dimen/margin_text"
+            android:layout_marginEnd="@dimen/splice_end_margin"
+            android:layout_marginBottom="@dimen/margin_text"
+            android:paddingHorizontal="@dimen/elevation_small"
+            android:paddingVertical="@dimen/padding_vertical_splice"
+            android:background="@{viewModel.clickedSize45?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:onClick="@{() -> viewModel.clickSize(true)}"
+            android:text="@string/_45"
+            android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
+            android:textSize="@dimen/text_45"
+            app:layout_constraintEnd_toStartOf="@+id/txt_size_60"
+            app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
+
+        <TextView
+            android:id="@+id/txt_size_45_nap"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/bottom_nap"
+            android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
+            android:textSize="@dimen/text_size_nap"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_size_45"
+            app:layout_constraintEnd_toEndOf="@+id/txt_size_45"
+            app:layout_constraintStart_toStartOf="@+id/txt_size_45" />
+
+        <TextView
+            android:id="@+id/txt_size_60"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_marginTop="@dimen/margin_text"
+            android:layout_marginBottom="@dimen/margin_text"
+            android:paddingHorizontal="@dimen/elevation_small"
+            android:paddingVertical="@dimen/padding_vertical_splice"
+            android:background="@{viewModel.clickedSize60?@drawable/rounded_black_bg:@drawable/rounded_light_bg}"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:onClick="@{() -> viewModel.clickSize(false)}"
+            android:text="@string/_60"
+            android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
+            android:textSize="@dimen/text_60"
+            app:layout_constraintEnd_toEndOf="@+id/txt_select_layout"
+            app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
+
+        <TextView
+            android:id="@+id/txt_size_60_nap"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/bottom_nap"
+            android:visibility="gone"
+            android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
+            android:textSize="@dimen/text_size_nap"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_size_60"
+            app:layout_constraintEnd_toEndOf="@+id/txt_size_60"
+            app:layout_constraintStart_toStartOf="@+id/txt_size_60" />
+
+        <ImageView
+            android:id="@+id/image_selvage_horizontal"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_margin="@dimen/margin_text"
+            android:contentDescription="@string/image_selvage_horizontal"
+            android:elevation="@dimen/elevation_pieces_reference"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_selvages_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toBottomOf="@+id/txt_tap_to_enlarge"
+            tools:src="@drawable/demo_fabric" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_reference_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{!viewModel.clickedPattenPieces}"
+            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_pattern_pieces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.clickedPattenPieces}"
+            app:constraint_referenced_ids="recycler_view_pieces,txt_reset,text_complete_pieces" />
+
+        <!--    app:layout_constraintEnd_toStartOf="@+id/image_selvage_vertical"-->
+        <!--    <ImageView-->
+        <!--        android:id="@+id/image_selvage_vertical"-->
+        <!--        android:layout_width="@dimen/dimen_0"-->
+        <!--        android:layout_height="@dimen/dimen_0"-->
+        <!--        android:layout_marginStart="@dimen/margin_text"-->
+        <!--        android:layout_marginTop="@dimen/margin_text"-->
+        <!--        android:layout_marginBottom="@dimen/margin_text"-->
+        <!--        android:src="@drawable/demo_fabric"-->
+        <!--        app:layout_constraintBottom_toTopOf="@+id/guideline_selvages_horizontal"-->
+        <!--        app:layout_constraintEnd_toStartOf="@+id/txt_size_desc"-->
+        <!--        app:layout_constraintHorizontal_bias="1"-->
+        <!--        app:layout_constraintStart_toEndOf="@+id/image_selvage_horizontal"-->
+        <!--        app:layout_constraintTop_toBottomOf="@+id/txt_size_45" />-->
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_bottom"
+            android:id="@+id/guideline_selvages_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".96" />
+            app:layout_constraintGuide_percent=".85" />
 
-        <TextView
-            android:id="@+id/txt_recalibrate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableTop="@drawable/ic_recalibrate_icon"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.onClickRecalibrate()}"
-            android:paddingTop="@dimen/margin_text"
-            android:paddingBottom="@dimen/margin_text"
-            android:paddingEnd="@dimen/margin_text"
-            android:text="@{viewModel.isWorkspaceSocketConnection()? @string/recalibrate : @string/connect}"
-            android:textColor="@color/default_text_color"
-            android:textSize="@dimen/text_recalibrate"
-            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_pieces"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toTopOf="@+id/recycler_view_pieces" />
+        <View
+            android:id="@+id/lineview"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:background="@color/bg_project_exit_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_selvages_horizontal" />
+
+        <Button
+            android:id="@+id/button_send_to_projector"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:background="@{viewModel.isWorkspaceSocketConnection?@drawable/button_rounded_red_bg:@drawable/button_rounded_grey_bg}"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:enabled="@{viewModel.isWorkspaceSocketConnection}"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:minHeight="25dp"
+            android:onClick="@{() -> viewModel.projectWorkspace()}"
+            android:text="@string/send_to_projector"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/send_to_projector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_save_and_exit"
+            app:layout_constraintHeight_percent=".07"
+            app:layout_constraintStart_toEndOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toTopOf="@+id/lineview"
+            app:layout_constraintWidth_percent=".25" />
+
+        <Button
+            android:id="@+id/button_save_and_exit"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:background="@drawable/button_black_border_while_bg"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:enabled="true"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:minHeight="25dp"
+            android:onClick="@{() -> viewModel.clickSaveAndExit()}"
+            android:text="@string/exit"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/send_to_projector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent=".07"
+            app:layout_constraintStart_toEndOf="@+id/button_send_to_projector"
+            app:layout_constraintTop_toTopOf="@+id/lineview"
+            app:layout_constraintWidth_percent=".09" />
+
+
+        // To be deleted in V2
 
         <ImageView
             android:id="@+id/image_scroll_left"
@@ -68,7 +378,7 @@
             android:paddingStart="@dimen/margin_v_small"
             android:paddingEnd="@dimen/margin_v_small"
             android:src="@{viewModel.isFirstItemVisible ? @drawable/ic_left_scroll_arrow_disable : @drawable/ic_left_scroll_arrow}"
-            android:visibility="@{viewModel.isScrollButtonVisible ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/recycler_view_pieces"
             app:layout_constraintEnd_toStartOf="@+id/recycler_view_pieces"
             app:layout_constraintStart_toEndOf="@+id/txt_recalibrate"
@@ -81,296 +391,50 @@
             android:onClick="@{() -> viewModel.clickScrollRight()}"
             android:paddingStart="@dimen/margin_v_small"
             android:src="@{viewModel.isLastItemVisible ? @drawable/ic_right_scroll_arrow_disable : @drawable/ic_right_scroll_arrow}"
-            android:visibility="@{viewModel.isScrollButtonVisible ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/recycler_view_pieces"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/recycler_view_pieces"
             app:layout_constraintTop_toTopOf="@+id/recycler_view_pieces" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_pieces"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:orientation="horizontal"
-            app:data="@{viewModel.data.patternPieces}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toStartOf="@+id/image_scroll_right"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".15"
-            app:layout_constraintStart_toEndOf="@+id/image_scroll_left"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_top"
-            tools:listitem="@layout/patterns_pieces_item" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:background="@color/tab_divider_color"
-            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_pieces"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:background="@color/tab_divider_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/recycler_view_pieces" />
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_workspace_divider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".58" />
-
-        <RelativeLayout
-            android:id="@+id/layout_workspace_outer"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="@dimen/margin_workspace_layout"
-            android:background="@color/cardColor"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_workspace_divider"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view_pieces" />
-
-        <include
-            android:id="@+id/include_workspacearea"
-            layout="@layout/workspace_layout"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace_outer"
-            app:layout_constraintEnd_toEndOf="@+id/layout_workspace_outer"
-            app:layout_constraintStart_toStartOf="@+id/layout_workspace_outer"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace_outer"
-            app:viewModel="@{viewModel}" />
-
-        <TextView
-            android:id="@+id/txt_reeferance_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/reference_layout"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_reference_layout"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_45"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace_outer" />
-
-        <TextView
-            android:id="@+id/txt_instructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.onClickInstructions()}"
-            android:text="@string/instruction"
-            android:textColor="@color/text_underline"
-            android:textSize="@dimen/text_instruction"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_reeferance_layout"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace_outer" />
-
-        <TextView
-            android:id="@+id/txt_size_45"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_margin="@dimen/margin_text"
-            android:background="@{viewModel.clickedSize45?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
-            android:onClick="@{() -> viewModel.clickSize(true)}"
-            android:padding="@dimen/margin_v_small"
-            android:text="@string/_45"
-            android:textColor="@{viewModel.clickedSize45?@android:color/white:@android:color/black}"
-            android:textSize="@dimen/text_size_cloth"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
-            app:layout_constraintTop_toBottomOf="@+id/txt_reeferance_layout" />
-
-        <TextView
-            android:id="@+id/txt_size_60"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_margin="@dimen/margin_text"
-            android:background="@{viewModel.clickedSize45?@drawable/rounded_light_bg:@drawable/rounded_black_bg}"
-            android:onClick="@{() -> viewModel.clickSize(false)}"
-            android:padding="@dimen/margin_v_small"
-            android:text="@string/_60"
-            android:textColor="@{viewModel.clickedSize45?@android:color/black:@android:color/white}"
-            android:textSize="@dimen/text_size_cloth"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@+id/txt_size_45"
-            app:layout_constraintTop_toBottomOf="@+id/txt_reeferance_layout" />
-
-        <ImageView
-            android:id="@+id/image_selvage_horizontal"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:layout_marginTop="@dimen/margin_text"
-            android:layout_marginEnd="@dimen/margin_text"
-            android:layout_marginBottom="@dimen/margin_text"
-            app:layout_constraintBottom_toTopOf="@+id/txt_size_desc"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_45"
-            app:layout_constraintTop_toBottomOf="@+id/txt_size_45"
-            app:layout_constraintVertical_bias="1"
-            tools:src="@drawable/demo_fabric" />
-
-        <!--    app:layout_constraintEnd_toStartOf="@+id/image_selvage_vertical"-->
-
-
-        <!--    <ImageView-->
-        <!--        android:id="@+id/image_selvage_vertical"-->
-        <!--        android:layout_width="@dimen/dimen_0"-->
-        <!--        android:layout_height="@dimen/dimen_0"-->
-        <!--        android:layout_marginStart="@dimen/margin_text"-->
-        <!--        android:layout_marginTop="@dimen/margin_text"-->
-        <!--        android:layout_marginBottom="@dimen/margin_text"-->
-        <!--        android:src="@drawable/demo_fabric"-->
-        <!--        app:layout_constraintBottom_toTopOf="@+id/txt_size_desc"-->
-        <!--        app:layout_constraintEnd_toStartOf="@+id/guideline_right"-->
-        <!--        app:layout_constraintHorizontal_bias="1"-->
-        <!--        app:layout_constraintStart_toEndOf="@+id/image_selvage_horizontal"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/txt_size_45" />-->
-
-
-        <TextView
-            android:id="@+id/txt_size_desc"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/margin_v_small"
-            android:paddingBottom="@dimen/margin_v_small"
-            android:text="@string/size_36_nwith_or_without_nap"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_desc"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_selvages_horizontal"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="@+id/image_selvage_horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/image_selvage_horizontal" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_selvages_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".75" />
-
-        <View
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/line_size"
-            android:background="@color/line_divider_color"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_45"
-            app:layout_constraintTop_toTopOf="@+id/guideline_selvages_horizontal" />
 
         <LinearLayout
             android:id="@+id/cutbin_lay"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/text_move_pieces"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/txt_size_45"
-            app:layout_constraintTop_toTopOf="@+id/guideline_selvages_horizontal">
+            app:layout_constraintTop_toBottomOf="@+id/lineview">
 
             <ImageView
                 android:id="@+id/image_cut_bin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:src="@drawable/ic_cut_bin_icon" />
 
-            <SeekBar
-                android:id="@+id/seekbar_status"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:max="@{viewModel.data.totalPieces}"
-                android:maxHeight="@dimen/seek_height"
-                android:progressDrawable="@drawable/seek_progress"
-                android:progressTint="@color/progress_green"
-                android:splitTrack="false"
-                android:src="@drawable/ic_cut_bin_icon"
-                android:thumb="@drawable/ic_scissor_thumbnail" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <SeekBar
+                    android:id="@+id/seekbar_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:max="@{viewModel.data.totalPieces}"
+                    android:maxHeight="@dimen/seek_height"
+                    android:progressDrawable="@drawable/seek_progress"
+                    android:progressTint="@color/app_red"
+                    android:splitTrack="false"
+                    android:src="@drawable/ic_cut_bin_icon"
+                    android:thumb="@drawable/ic_scissor_thumbnail" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_complete_pieces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_v_small"
-            android:layout_marginEnd="@dimen/margin_workspace"
-            android:text="@{String.format(@string/seek_text,utility.progressCount, viewModel.data.totalPieces)}"
-            android:textColor="@color/text_move"
-            android:textSize="@dimen/text_seek_complete"
-            app:layout_constraintBottom_toTopOf="@+id/cutbin_lay"
-            app:layout_constraintEnd_toEndOf="@+id/cutbin_lay"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_selvages_horizontal" />
-
-       <!-- <LinearLayout
-            android:id="@+id/buttonLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace_outer"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".06"
-            app:layout_constraintStart_toStartOf="@+id/cutbin_lay"
-            app:layout_constraintTop_toBottomOf="@+id/text_move_pieces">-->
-
-            <Button
-                android:id="@+id/button_send_to_projector"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/margin_v_small"
-                android:background="@drawable/rounded_green_bg"
-                android:enabled="true"
-                app:layout_constraintBottom_toBottomOf="@+id/layout_workspace_outer"
-                app:layout_constraintEnd_toStartOf="@+id/button_save_and_exit"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent=".06"
-                app:layout_constraintStart_toStartOf="@+id/cutbin_lay"
-                app:layout_constraintTop_toBottomOf="@+id/text_move_pieces"
-                android:minHeight="40dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:onClick="@{() -> viewModel.projectWorkspace()}"
-                android:text="@string/send_to_projector"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/send_to_projector" />
-
-            <Button
-                android:id="@+id/button_save_and_exit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_black_bg"
-                android:enabled="true"
-                app:layout_constraintBottom_toBottomOf="@+id/button_send_to_projector"
-                app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent=".06"
-                app:layout_constraintStart_toEndOf="@+id/button_send_to_projector"
-                app:layout_constraintTop_toTopOf="@+id/button_send_to_projector"
-                android:layout_marginLeft="10dp"
-                android:onClick="@{() -> viewModel.clickSaveAndExit()}"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:minHeight="40dp"
-                android:text="@string/save_and_exit"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/send_to_projector" />
-
-
-       <!-- </LinearLayout>-->
 
         <TextView
             android:id="@+id/text_move_pieces"
@@ -380,7 +444,8 @@
             android:text="@string/move_pieces_to_bin_when_done"
             android:textColor="@color/text_move"
             android:textSize="@dimen/text_move_to_drag"
-            app:layout_constraintBottom_toTopOf="@+id/button_send_to_projector"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/cutbin_lay" />
 

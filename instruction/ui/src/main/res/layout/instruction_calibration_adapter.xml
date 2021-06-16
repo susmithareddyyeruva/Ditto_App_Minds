@@ -108,8 +108,7 @@
                         android:id="@+id/text_content_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/size_16px"
-                        android:textStyle="bold"
+                        android:textSize="@dimen/content_header_text_size"
                         android:textColor="@color/black"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         />
@@ -144,9 +143,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingEnd="@dimen/margin_text"
+                                android:textSize="@dimen/content_text_size"
                                 android:fontFamily="@font/avenir_next_lt_pro_regular"
-                                android:textColor="@color/instruction_content_text"
-                                android:textSize="@dimen/size_16sp" />
+                                android:textColor="@color/instruction_content_text" />
 
                         </LinearLayout>
 

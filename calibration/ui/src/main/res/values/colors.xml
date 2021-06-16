@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="White">#fff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#808080</color>
+    <!--<color name="green">#73BD00</color>-->
+    <color name="green">#000</color>
+    <color name="app_grey">#63666B</color>
+    <color name="instruction_content_text">#4A4A4A</color>
+    <color name="headerbar">#FFFFFF</color>
+    <color name="edittext_fill">#C0C0C0</color>
+    <color name="texthint">#63666B</color>
+    <color name="light_green">#73BD00</color>
+
+    <color name="colorPrimary">#000</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#FFF</color>
+    <color name="camera_button_border">#707070</color>
+    <color name="loading_background">#060606</color>
+</resources>

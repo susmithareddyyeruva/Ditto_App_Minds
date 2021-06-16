@@ -2,7 +2,7 @@
   "onboarding": [
     {
       "id": 1,
-      "title": "Beam Setup & Takedown",
+      "title": "Beam Setup & Take Down",
       "description": "Arrange projector and workspace",
       "imagePath": "beamsetupstepone",
       "instructions": [

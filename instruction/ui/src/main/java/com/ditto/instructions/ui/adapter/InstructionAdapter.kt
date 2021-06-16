@@ -7,22 +7,21 @@ package com.ditto.instructions.ui.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.ditto.howto.adapter.DoubleClickListener
+import com.bumptech.glide.Glide
 import com.ditto.instructions.domain.model.InstructionsData
 import com.ditto.instructions.ui.InstructionViewModel
+import com.ditto.instructions.ui.R
 import com.ditto.instructions.ui.databinding.InstructionAdapterBinding
 import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
+import core.ui.common.DoubleClickListener
 
 class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
     BindableAdapter<List<InstructionsData>> {
@@ -60,13 +59,13 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
                 "drawable",
                 parent.context.packageName
             )
-            val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
+           /* val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
-            binding.imageStep.setImageBitmap(bitmap)
-          /*  Glide.with(parent.context)
+            binding.imageStep.setImageBitmap(bitmap)*/
+            Glide.with(parent.context)
                 .load(instructiondata[position].imagePath)
                 .placeholder(R.drawable.ic_placeholder)
-                .into(binding.imageStep)*/
+                .into(binding.imageStep)
             binding.imageStep.setOnClickListener(object : DoubleClickListener() {
                 override fun onDoubleClick(v: View) {
                     viewModel.onClickPlayVideo()
@@ -86,6 +85,7 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
         intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
+        intent.putExtra("isFrom", "Instruction")
         ContextCompat.startActivity(context, intent, null)
     }
 

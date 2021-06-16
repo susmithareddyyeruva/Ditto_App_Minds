@@ -25,7 +25,7 @@ class ConnectivityUtils {
         var SERVER_SUCCESS_RESPONSE:String?="SERVICESUCCESS"
         var SERVice_ALREADY_REGISTERED:String?="ServiceAlreadyRegistered"
         var WIFIFAILS:String?="TRACEFailedWifi"
-
+        var nsdSericeNameAfterWifi: String = ""
         fun encrypt(@NotNull content: String): String? {
             var result: ByteArray? = null
             var encryptresult: String? = null

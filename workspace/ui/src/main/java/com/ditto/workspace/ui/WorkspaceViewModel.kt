@@ -1,8 +1,12 @@
 package com.ditto.workspace.ui
 
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
@@ -13,16 +17,25 @@ import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.util.Utility
+import core.PDF_PASSWORD
+import core.PDF_USERNAME
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
+import java.io.File
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.*
 import javax.inject.Inject
 
 class WorkspaceViewModel @Inject constructor(
@@ -44,7 +57,10 @@ class WorkspaceViewModel @Inject constructor(
     val splice_pices_count: ObservableInt = ObservableInt(0)
     val spliced_pices_visibility: ObservableBoolean = ObservableBoolean(false)
     val clicked_spliced_second_pieces: ObservableBoolean = ObservableBoolean(false)
+    val clickedPattenPieces: ObservableBoolean = ObservableBoolean(true)
     val clickedSize45: ObservableBoolean = ObservableBoolean(true)
+    val clickedSize60: ObservableBoolean = ObservableBoolean(false)
+    val clickedSplice: ObservableBoolean = ObservableBoolean(false)
     val isLastItemVisible: ObservableBoolean = ObservableBoolean(false)
     val isFirstItemVisible: ObservableBoolean = ObservableBoolean(false)
     val isScrollButtonVisible: ObservableBoolean = ObservableBoolean(false)
@@ -52,13 +68,16 @@ class WorkspaceViewModel @Inject constructor(
     val isProjectionRequest: ObservableBoolean = ObservableBoolean(false)
     val isFromQuickCheck: ObservableBoolean = ObservableBoolean(false)
 
+    val showDoubleTouchToZoom: ObservableBoolean = ObservableBoolean(true)
+    var referenceImage: ObservableField<String> = ObservableField("")
+    var calibrationText: ObservableField<String> = ObservableField("")
     var selectAllText: ObservableField<String> = ObservableField("Select All")
     val isSpliceRightVisible: ObservableBoolean = ObservableBoolean(false)
     val isSpliceLeftVisible: ObservableBoolean = ObservableBoolean(false)
     val isSpliceTopVisible: ObservableBoolean = ObservableBoolean(false)
     val isSpliceBottomVisible: ObservableBoolean = ObservableBoolean(false)
     val isWorkspaceSocketConnection: ObservableBoolean = ObservableBoolean(false)
-
+    val patternpdfuri: ObservableField<String> = ObservableField("")
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
 
@@ -66,8 +85,9 @@ class WorkspaceViewModel @Inject constructor(
     val events = uiEvents.stream()
     var isHorizontalMirror: Boolean = false
     var cutCount: Int = 0
+    var cutPiecePosition: Int = 0
     var isSingleDelete: Boolean = false
-    var cutType: core.ui.common.Utility.AlertType =core.ui.common.Utility.AlertType.CUT_BIN
+    var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
     //fetch data from repo (via usecase)
     fun fetchWorkspaceData() {
@@ -89,7 +109,7 @@ class WorkspaceViewModel @Inject constructor(
     private fun handleInsertDataResult(result: Any) {
         when (result) {
             is Result.OnSuccess<*> -> {
-                Log.d("handleInsertDataResult","OnSuccess")
+                Log.d("handleInsertDataResult", "OnSuccess")
             }
         }
         uiEvents.post(Event.CloseScreen)
@@ -115,7 +135,7 @@ class WorkspaceViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("handleError","WorkspaceViewModel")
+                Log.d("handleError", "WorkspaceViewModel")
             }
         }
     }
@@ -129,10 +149,27 @@ class WorkspaceViewModel @Inject constructor(
     fun projectWorkspace() {
         uiEvents.post(Event.onProject)
     }
+    fun setSpliceDefaultColor(){
+
+    }
 
     fun clickSize(isSize45: Boolean) {
         clickedSize45.set(isSize45)
+        clickedSize60.set(!isSize45)
+        clickedSplice.set(false)
         uiEvents.post(Event.OnClickInch)
+    }
+
+    fun clickSplice() {
+        clickedSplice.set(false)
+//        clickedSize45.set(false)
+//        clickedSize60.set(false)
+        uiEvents.post(Event.OnClickInch)
+    }
+
+    fun clickPatternReference(isPattern: Boolean) {
+        clickedPattenPieces.set(isPattern)
+        uiEvents.post(Event.OnClickPatternOrReference)
     }
 
     fun setImageModel(view: View, dragEvent: DragEvent, dragData: DragData, id: Int) {
@@ -168,7 +205,7 @@ class WorkspaceViewModel @Inject constructor(
     fun setCompletedCount(progress: Int) {
         val totalCount = Utility.progressCount.get() + progress
         data.value?.completedPieces = totalCount
-        Log.d("TRACE","Setting progress")
+        Log.d("TRACE", "Setting progress")
         Utility.progressCount.set(totalCount)
         uiEvents.post(Event.updateProgressCount)
     }
@@ -188,11 +225,13 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun clickSelectAll() {
-        if (selectAllText.get().equals("Select All")){
+        if (selectAllText.get().equals("Select All")) {
             uiEvents.post(Event.OnClickSelectAll)
             uiEvents.post(Event.DisableMirror)
+            uiEvents.post(Event.EnableClear)
         } else {
             uiEvents.post(Event.OnClickDeSelectAll)
+            uiEvents.post(Event.DisableClear)
         }
     }
 
@@ -200,14 +239,16 @@ class WorkspaceViewModel @Inject constructor(
         cutCount = 0
         cutType = core.ui.common.Utility.AlertType.CUT_BIN_ALL
         for (workspaceItem in workspaceItems.distinctBy { it.parentPatternId }) {
-            if(!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted?:false)){
+            if (!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted
+                    ?: false)
+            ) {
                 cutCount += workspaceItem?.cutQuantity?.get(4)
                     ?.let { Character.getNumericValue(it) }
             }
         }
         if (cutCount > 1) {
             uiEvents.post(Event.ShowCutBinDialog)
-        }else{
+        } else {
             cutAllPiecesConfirmed(workspaceItems)
         }
     }
@@ -220,15 +261,20 @@ class WorkspaceViewModel @Inject constructor(
         if (cutCount > 1 && data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
             uiEvents.post(Event.ShowCutBinDialog)
         } else {
-            cutIndividualPiecesConfirmed(workspaceItems,1)
+            cutIndividualPiecesConfirmed(workspaceItems, 1)
         }
     }
 
+    fun onPaternItemCheckboxClicked(){
+        cutType = core.ui.common.Utility.AlertType.CUT_COMPLETE
+        uiEvents.post(Event.ShowCutBinDialog)
+    }
 
-    fun cutIndividualPiecesConfirmed(workspaceItems: WorkspaceItems, cutCount :Int) {
+
+    fun cutIndividualPiecesConfirmed(workspaceItems: WorkspaceItems, cutCount: Int) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-        Utility.progressCount.set( Utility.progressCount.get() + cutCount)
+        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
         if (!data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
             data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }
                 ?.isCompleted = true
@@ -240,7 +286,7 @@ class WorkspaceViewModel @Inject constructor(
     fun cutAllPiecesConfirmed(workspaceItems: List<WorkspaceItems>?) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-        Utility.progressCount.set( Utility.progressCount.get() + cutCount)
+        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
         workspaceItems?.forEach { workspaceItem ->
             if (!workspaceItem?.isCompleted) {
                 data.value?.patternPieces?.find { it.id == workspaceItem.parentPatternId }
@@ -254,8 +300,29 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
+    fun cutCheckBoxClicked(count: Int?, isChecked : Boolean) {
+        if (isChecked){
+            Utility.progressCount.set(Utility.progressCount.get() + count!!)
+        } else {
+            Utility.progressCount.set(Utility.progressCount.get() - count!!)
+        }
+    }
+
+    fun clearPatternsSelected() {
+        data?.value?.patternPieces?.forEach { workspaceItem ->
+            if (workspaceItem?.isCompleted) {
+                workspaceItem?.isCompleted = false
+            }
+        }
+    }
+
+    fun clickReset() {
+        clearPatternsSelected()
+        uiEvents.post(Event.OnResetClicked)
+    }
+
     fun saveProject(projectName: String, isCompleted: Boolean?) {
-         if (data.value?.status.equals("New")) {
+        if (data.value?.status.equals("New")) {
             data.value?.status = "Active"
             data.value?.id = System.currentTimeMillis().toInt()
             data.value?.patternName = projectName
@@ -269,7 +336,7 @@ class WorkspaceViewModel @Inject constructor(
         if (isCompleted != null && isCompleted) {
             data.value?.status = "Completed"
         }
-        if(data.value?.completedPieces == data.value?.totalPieces) {
+        if (data.value?.completedPieces == data.value?.totalPieces) {
             data.value?.status = "Completed"
         }
         loop1@ for (patternPiecesId in data.value?.patternPieces!!) {
@@ -282,7 +349,7 @@ class WorkspaceViewModel @Inject constructor(
         }
         Log.d(
             "Coordinates",
-            "toSavedProject : " +data.value?.workspaceItems
+            "toSavedProject : " + data.value?.workspaceItems
         )
         insertData(data.value!!)
     }
@@ -293,8 +360,9 @@ class WorkspaceViewModel @Inject constructor(
         isCompleted: Boolean?
     ) {
         data.value?.patternName = oldPatternsData.patternName
-        if(data.value?.status == "New") {
-            data.value?.status = if((Utility.progressCount.get() == data.value?.totalPieces)) "Completed" else "Active"
+        if (data.value?.status == "New") {
+            data.value?.status =
+                if ((Utility.progressCount.get() == data.value?.totalPieces)) "Completed" else "Active"
             data.value?.id = oldPatternsData.id
         }
         data.value?.completedPieces = Utility.progressCount.get()
@@ -336,12 +404,20 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
+    fun clickClear() {
+        uiEvents.post(Event.OnClickClear)
+    }
+
     fun clickSaveAndExit() {
         uiEvents.post(Event.OnClickSaveAndExit)
     }
 
     fun onClickInstructions() {
         uiEvents.post(Event.OnClickPatternInstructions)
+    }
+
+    fun onClickTutorial() {
+        uiEvents.post(Event.OnClickTutorial)
     }
 
     fun onClickSpliceRight() {
@@ -368,6 +444,10 @@ class WorkspaceViewModel @Inject constructor(
         isSpliceBottomVisible.set(false)
     }
 
+    fun onFinished() {
+        uiEvents.post(Event.OnDownloadComplete)
+    }
+
     sealed class Event {
         /**
          * Event emitted by [events] when the data received successfully
@@ -388,6 +468,9 @@ class WorkspaceViewModel @Inject constructor(
          * Event emitted by [events] when instructions clicked
          */
         object OnClickPatternInstructions : Event()
+        object OnClickTutorial : Event()
+        object OnResetClicked : Event()
+        object OnClickPatternOrReference : Event()
 
         object CalculateScrollButtonVisibility : Event()
         object OnDataUpdated : Event()
@@ -396,8 +479,13 @@ class WorkspaceViewModel @Inject constructor(
         object OnClickDeSelectAll : Event()
         object EnableMirror : Event()
         object DisableMirror : Event()
+        object DisableClear : Event()
+        object EnableClear : Event()
+        object DisableSelectAll : Event()
+        object EnableSelectAll : Event()
         object OnClickMirrorHorizontal : Event()
         object OnClickMirrorVertical : Event()
+        object OnClickClear : Event()
         object OnClickSpliceRight : Event()
         object OnClickSpliceLeft : Event()
         object OnClickSpliceTop : Event()
@@ -411,6 +499,65 @@ class WorkspaceViewModel @Inject constructor(
         object ShowCutBinDialog : Event()
         object RemoveAllPatternPieces : Event()
         object updateProgressCount : Event()
+        object OnDownloadComplete : Event()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun downloadPDF(url: String, filename: String) {
+        performtask(url, filename)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun performtask(url: String, filename: String) {
+
+        withContext(Dispatchers.IO) {
+
+            val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
+            val inputStream: InputStream
+            var result: File? = null
+            val url: URL = URL(url)
+            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+            val basicAuth =
+                "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
+            conn.setRequestProperty("Authorization", basicAuth)
+            conn.requestMethod = "GET"
+            conn.connect()
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                patternpdfuri.set("")
+                onFinished()
+                return@withContext
+            }
+            inputStream = conn.inputStream
+            if (inputStream != null)
+                result = convertInputStreamToFile(inputStream, filename)
+            val path = Uri.fromFile(result)
+            patternpdfuri.set(path.toString())
+            onFinished()
+        }
+    }
+
+    private fun convertInputStreamToFile(inputStream: InputStream, filename: String): File? {
+        var result: File? = null
+        val outputFile: File? = null
+        var dittofolder: File? = null
+        dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+        )
+        if (!dittofolder.exists()) {
+            dittofolder.mkdir()
+        }
+        result = File(dittofolder, filename)
+        if (!result.exists()) {
+            result.createNewFile()
+        }
+        result.copyInputStreamToFile(inputStream)
+        return result
+    }
+
+    private fun File.copyInputStreamToFile(inputStream: InputStream) {
+        this.outputStream().use { fileOut ->
+            inputStream.copyTo(fileOut)
+        }
     }
 }
 

@@ -149,6 +149,7 @@ class OnboardingViewModel @Inject constructor(
 
     fun onClickDoNotShowItAgain(toShow: Boolean) {
         dontShowThisScreen.set(toShow)
+        clickLater()
     }
 
     fun onClickSkipAndContinue() {

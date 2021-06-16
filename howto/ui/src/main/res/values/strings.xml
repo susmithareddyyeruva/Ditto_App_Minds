@@ -1,7 +1,8 @@
 <resources>
-    <string name="toolbar_title">How to</string>
+    <string name="toolbar_title">How To</string>
     <string name="skip"><u>Skip Tutorial</u></string>
-    <string name="howtoskip">EXIT TUTORIAL</string>
+<!--    <string name="howtoskip">EXIT TUTORIAL</string>-->
+    <string name="howtoskip">Home</string>
     <string name="watch_video">Watch Video</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>

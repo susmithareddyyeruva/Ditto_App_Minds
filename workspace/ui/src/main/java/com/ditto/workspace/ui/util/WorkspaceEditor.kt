@@ -122,7 +122,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
                     imageView?.setColorFilter(
                         ContextCompat.getColor(
                             context,
-                            R.color.progress_green
+                            R.color.app_red
                         ), PorterDuff.Mode.SRC_ATOP
                     )
                     dragListener.onPositionChanged(view, workspaceItem)
@@ -136,7 +136,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
                     imageView?.setColorFilter(
                         ContextCompat.getColor(
                             context,
-                            R.color.progress_green
+                            R.color.app_red
                         ), PorterDuff.Mode.SRC_ATOP
                     )
                 }
@@ -422,7 +422,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
             image?.setColorFilter(
                 ContextCompat.getColor(
                     context,
-                    R.color.progress_green
+                    R.color.app_red
                 ), PorterDuff.Mode.SRC_ATOP
             )
         }
@@ -435,7 +435,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
             image?.setColorFilter(
                 ContextCompat.getColor(
                     context,
-                    R.color.progress_green
+                    R.color.app_red
                 ), PorterDuff.Mode.SRC_ATOP
             )
         }
