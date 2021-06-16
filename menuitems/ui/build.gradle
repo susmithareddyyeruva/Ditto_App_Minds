@@ -76,7 +76,7 @@ dependencies {
     implementation project(':logger')
     implementation project(':menuitems-domain')
     implementation project(':login-domain')
-
+    implementation project(path: ':connectivity-ui')
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
 

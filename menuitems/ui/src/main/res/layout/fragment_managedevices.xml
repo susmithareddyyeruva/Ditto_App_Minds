@@ -63,7 +63,7 @@
             android:layout_marginTop="@dimen/margin_between"
             android:layout_marginBottom="@dimen/top_margin"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:text="3 projectors found"
+            android:text="@{viewmodel.numberOfProjectors}"
             android:textColor="@color/text_disable2"
             android:textSize="@dimen/available_projector_text_size"
             app:layout_constraintBottom_toTopOf="@+id/topDevider"
@@ -93,6 +93,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/button_text_size"
+            android:onClick="@{() -> viewmodel.OnBluetoothClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/topDevider"
             app:layout_constraintEnd_toStartOf="@+id/guide_end"
             app:layout_constraintStart_toEndOf="@+id/textAvailable"
@@ -117,6 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/common_margin"
+            android:visibility="@{viewmodel.isShowServiceList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guide_end"
@@ -125,6 +127,27 @@
             tools:listitem="@layout/item_single_projector">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+
+
+        <TextView
+            android:id="@+id/noProjAvailable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:text="@string/no_projector"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/available_projector_text_size"
+            android:gravity="center"
+            android:visibility="@{viewmodel.isServiceNotFound()}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </TextView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

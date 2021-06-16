@@ -18,4 +18,5 @@
     <string name="available">Available projectors in the network</string>
     <string name="scan">Scan for devices</string>
     <string name="disconnect">Disconnect</string>
+    <string name="str_projectorsfound">%1$s projectors found</string>
 </resources>

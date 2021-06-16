@@ -27,6 +27,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
+import core.models.Nsdservicedata
 import core.network.Utility
 import core.ui.TokenViewModel
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +36,8 @@ import java.io.*
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -65,7 +68,8 @@ class Utility @Inject constructor(
         NETWORK,
         PDF,
         CUT_COMPLETE,
-        CONNECTIVITY
+        CONNECTIVITY,
+        SOC_CONNECT
     }
 
     enum class Iconype {
@@ -75,6 +79,9 @@ class Utility @Inject constructor(
     }
 
     companion object {
+
+        var searchServieList : ArrayList<Nsdservicedata>? = null
+
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
 
@@ -440,7 +447,8 @@ class Utility @Inject constructor(
             alert.window?.setBackgroundDrawable(null)
             val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
             val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
-            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE){
+            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE
+                || alertType == AlertType.SOC_CONNECT){
                 lay_withimage.visibility = View.GONE
                 lay_withoutimage.visibility = View.VISIBLE
 
