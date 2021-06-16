@@ -17,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -566,13 +565,13 @@ class InstructionFragment constructor(
     private fun checkSocketConnection() {
         GlobalScope.launch {
 
-            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
                 showConnectivityPopup()
             } else {
                 withContext(Dispatchers.Main) { showProgress(true) }
                 if (startSocketConnection(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
+                        core.network.NetworkUtility.nsdSericeHostName,
+                        core.network.NetworkUtility.nsdSericePortName
                     )
                 ) {
                     baseViewModel.activeSocketConnection.set(true)
@@ -661,8 +660,8 @@ class InstructionFragment constructor(
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()

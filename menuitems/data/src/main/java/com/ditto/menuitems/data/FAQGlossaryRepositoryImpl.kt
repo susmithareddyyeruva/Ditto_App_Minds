@@ -10,7 +10,7 @@ import com.ditto.menuitems.data.mapper.toDomain
 import com.ditto.menuitems.domain.FAQGlossaryRepository
 import com.ditto.menuitems.domain.model.faq.FAQGlossaryResultDomain
 import core.CLIENT_ID
-import core.network.Utility
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
@@ -30,7 +30,7 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
     }
 
     override fun getFAQGlosaaryDetails(): Single<Result<FAQGlossaryResultDomain>> {
-        if (!Utility.isNetworkAvailable(context)) {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return faqGlossaryService.getFAQGlossaryData(

@@ -16,7 +16,7 @@ import com.ditto.login.domain.LoginUser
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.network.Utility
+import core.network.NetworkUtility
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -61,7 +61,7 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
-        if (!Utility.isNetworkAvailable(context)) {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val loginRequest = LoginRequest("credentials")
