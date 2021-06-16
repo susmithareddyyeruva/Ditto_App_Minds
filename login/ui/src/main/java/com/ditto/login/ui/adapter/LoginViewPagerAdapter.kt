@@ -30,7 +30,7 @@ class LoginViewPagerAdapter : PagerAdapter(), BindableAdapter<List<String>> {
         //binding.ivViewpagerLogin.setImageDrawable(container.context.getDrawable(R.drawable.mask_group5))
 
         Glide.with( binding.ivViewpagerLogin.context)
-            .load(imageData.get(position))
+            .load(imageData[position])
             .placeholder(R.drawable.ic_placeholder)
             .into( binding.ivViewpagerLogin)
         container.addView(binding.root)
