@@ -86,6 +86,13 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         childModelsList.add(childModel)
 
         childModel = MenuModel(
+            "Privacy policy",
+            "ic_menu_privacy",
+            null
+        )
+        childModelsList.add(childModel)
+
+        childModel = MenuModel(
             "Workspace settings",
             "ic_ws_settings_icon",
             null
@@ -94,12 +101,6 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             childModelsList.add(childModel)
         }
 
-        childModel = MenuModel(
-            "Privacy and settings",
-            "ic_menu_privacy",
-            null
-        )
-        childModelsList.add(childModel)
 
         menuModel = MenuModel(
             "Settings",

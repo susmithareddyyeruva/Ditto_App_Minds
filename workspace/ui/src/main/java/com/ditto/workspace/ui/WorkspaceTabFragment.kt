@@ -111,6 +111,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
+        viewModel.fetchWorkspaceSettingData()
         if (viewModel.data.value == null) {
             viewModel.fetchWorkspaceData()
             setPatternPiecesAdapter()
@@ -643,16 +644,21 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCutBinDialog(count: Int, alertType: Utility.AlertType) {
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            resources.getString(R.string.complete_piece, count),
-            resources.getString(R.string.no),
-            resources.getString(R.string.yes),
-            this,
-            alertType,
-            Utility.Iconype.NONE
-        )
+        if(!viewModel.userData.value?.cCuttingReminder!!){
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                resources.getString(R.string.complete_piece, count),
+                resources.getString(R.string.no),
+                resources.getString(R.string.yes),
+                this,
+                alertType,
+                Utility.Iconype.NONE
+            )
+        }else{
+            adapter?.updatePositionAdapter()
+            viewModel.cutCheckBoxClicked(viewModel.cutCount,true)
+        }
     }
 
     private fun showSplicingForgetDialogue(alertType: Utility.AlertType) {
@@ -716,15 +722,25 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 setSelvageImage()
             }
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
-                getAlertDialogue(
-                    requireActivity(),
-                    resources.getString(R.string.mirror),
-                    resources.getString(R.string.mirror_message),
-                    resources.getString(R.string.cancel),
-                    resources.getString(R.string.ok),
-                    this,
-                    Utility.AlertType.MIRROR
-                )
+
+                if(!viewModel.userData.value?.cMirrorReminder!!){
+                    getAlertDialogue(
+                        requireActivity(),
+                        resources.getString(R.string.mirror),
+                        resources.getString(R.string.mirror_message),
+                        resources.getString(R.string.cancel),
+                        resources.getString(R.string.ok),
+                        this,
+                        Utility.AlertType.MIRROR
+                    )
+                }else{
+                    if (viewModel.isHorizontalMirror) {
+                        mWorkspaceEditor?.flipHorizontal()
+                    } else {
+                        mWorkspaceEditor?.flipVertical()
+                    }
+                }
+
             }
             is WorkspaceViewModel.Event.DisableMirror -> {
                 enableMirror(false)
@@ -903,7 +919,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.ShowCutBinDialog -> {
                 if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
-                    showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
+                    //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
                 } else {
                     showCutBinDialog(viewModel.cutCount, viewModel.cutType)
                 }
@@ -1067,15 +1083,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         enableClear(false)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
-                                getAlertDialogue(
-                                    requireActivity(),
-                                    resources.getString(R.string.spliced_piece),
-                                    resources.getString(R.string.spliced_piece_message),
-                                    resources.getString(R.string.empty_string),
-                                    resources.getString(R.string.ok),
-                                    this,
-                                    Utility.AlertType.DEFAULT
-                                )
+                                if(!viewModel.userData.value?.cSpliceMultiplePieceReminder!!){
+                                    getAlertDialogue(
+                                        requireActivity(),
+                                        resources.getString(R.string.spliced_piece),
+                                        resources.getString(R.string.spliced_piece_message),
+                                        resources.getString(R.string.empty_string),
+                                        resources.getString(R.string.ok),
+                                        this,
+                                        Utility.AlertType.DEFAULT
+                                    )
+                                }
+
                                 return true
                             }
                             mWorkspaceEditor?.clearAllSelection()
@@ -1090,26 +1109,31 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                getAlertDialogue(
-                                    requireActivity(),
-                                    resources.getString(R.string.splicing_required),
-                                    resources.getString(R.string.splicing_required_message),
-                                    resources.getString(R.string.empty_string),
-                                    resources.getString(R.string.ok),
-                                    this,
-                                    Utility.AlertType.DEFAULT
-                                )
+                                if(!viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
+                                    getAlertDialogue(
+                                        requireActivity(),
+                                        resources.getString(R.string.splicing_required),
+                                        resources.getString(R.string.splicing_required_message),
+                                        resources.getString(R.string.empty_string),
+                                        resources.getString(R.string.ok),
+                                        this,
+                                        Utility.AlertType.DEFAULT
+                                    )
+                                }
                                 return true
                             } else {
-                                getAlertDialogue(
-                                    requireActivity(),
-                                    resources.getString(R.string.splicing_required),
-                                    resources.getString(R.string.splicing_required_first_message),
-                                    resources.getString(R.string.empty_string),
-                                    resources.getString(R.string.ok),
-                                    this,
-                                    Utility.AlertType.DEFAULT
-                                )
+                                if(!viewModel.userData.value?.cSpliceReminder!!){
+                                    getAlertDialogue(
+                                        requireActivity(),
+                                        resources.getString(R.string.splicing_required),
+                                        resources.getString(R.string.splicing_required_first_message),
+                                        resources.getString(R.string.empty_string),
+                                        resources.getString(R.string.ok),
+                                        this,
+                                        Utility.AlertType.DEFAULT
+                                    )
+                                }
+
                             }
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
@@ -1135,7 +1159,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun cutPieces(count: Int?) {
         if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
-            showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
+            //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
         } else if (count != null && count > 1 && !viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }?.isCompleted!!) {
             mWorkspaceEditor?.clearAllSelection()
             enableMirror(false)
