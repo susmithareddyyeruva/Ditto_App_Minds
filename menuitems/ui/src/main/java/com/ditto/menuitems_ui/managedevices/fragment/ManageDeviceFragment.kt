@@ -93,7 +93,10 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             ManageDeviceViewModel.Event.OnConnectionFailed -> showFailedPopup()
             ManageDeviceViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
             ManageDeviceViewModel.Event.OnHideprogress -> bottomNavViewModel.showProgress.set(false)
-            ManageDeviceViewModel.Event.OnSocketDisconnect -> resetAdapter(false)
+            ManageDeviceViewModel.Event.OnSocketDisconnect -> {
+                viewModel.clearAppstate()
+                resetAdapter(false)
+            }
             ManageDeviceViewModel.Event.OnConnectClick -> showConnectPopup()
             ManageDeviceViewModel.Event.OnBleConnectClick -> showConnectivityPopup()
         }

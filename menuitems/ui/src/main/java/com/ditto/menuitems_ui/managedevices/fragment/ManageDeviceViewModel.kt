@@ -126,7 +126,6 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
         core.network.Utility.isServiceConnected = false
         core.network.Utility.nsdSericeHostName =  ""
         core.network.Utility.nsdSericePortName = 0
-        AppState.clearSavedService()
     }
 
 

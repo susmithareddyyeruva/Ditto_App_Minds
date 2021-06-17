@@ -65,6 +65,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var mPreviousServiceAvailable: Boolean = false
     private var mWifiServiceAvailable: Boolean = false
     private val SCAN_PERIOD: Long = 10000
+    private val SERVICE_SCAN_PERIOD: Long = 6000
     private var mDeviceAddress: String? = null
     private var mDeviceName: String? = null
     private var connSSID: String = ""
@@ -288,7 +289,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun startServiceTimer() {
 
         serviceConnectionWaitingJob = GlobalScope.launch {
-            delay(6000)
+            delay(SERVICE_SCAN_PERIOD)
             viewModel.isProgressBar.set(false)
             stopDiscovery()
             if (screenName == SCREEN_MANAGE_DEVICE){
