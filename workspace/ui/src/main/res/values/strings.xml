@@ -25,12 +25,12 @@
     <string name="mirror_h">Mirror H</string>
     <string name="clear">Clear</string>
     <string name="spliced_piece">Spliced Pieces</string>
-    <string name="spliced_piece_message">Additional pieces cannot be in the workspace at the same time as a spliced piece.</string>
+    <string name="spliced_piece_message">Additional pieces cannot be in the workspace at the same time as a spliced piece.</string><!--//multiple warning-->
     <string name="splicing_required">Splicing Required</string>
-    <string name="splicing_required_first_message">This is a spliced piece that is too large for the projection area and will be projected across two or more linked sections.</string>
-    <string name="splicing_required_message">This is a large piece which required splicing. This piece can\'t be projected at the same time as other pieces.</string>
+    <string name="splicing_required_first_message">This is a spliced piece that is too large for the projection area and will be projected across two or more linked sections.</string><!-- // done splice notification-->
+    <string name="splicing_required_message">This is a large piece which required splicing. This piece can\'t be projected at the same time as other pieces.</string> <!--//multiple-->
     <string name="mirror">Mirror</string>
-    <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string>
+    <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string> <!--// mirror reminder done-->
     <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="cancel">CANCEL</string>
     <string name="empty_string"></string>
@@ -49,8 +49,8 @@
     <string name="switching_message">Current work in workspace will be lost if you switch to different types.</string>
 
     <string name="complete_cutbin">Complete Bin</string>
-    <string name="complete_piece">Did you complete %1$d piece(s)?</string>
-    <string name="click_spliced_second_pieces">First select arrow to view remainder of spliced piece.</string>
+    <string name="complete_piece">Did you complete %1$d piece(s)?</string> <!--//cut number reminder done-->
+    <string name="click_spliced_second_pieces">First select arrow to view remainder of spliced piece.</string> <!--// splice notification--> //no need
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="save_and_exit_dialog_title">Name this project</string>
