@@ -116,6 +116,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
+
             is LoginViewModel.Event.OnLoginClicked -> {
                 getUserDetails(false)
                 //Re directing to On_boarding screen
@@ -136,12 +137,14 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
                     }
                 } else {
+                    bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))
                     showAlert()
                 }
 
             }
             is LoginViewModel.Event.OnLoginFailed -> {
+                bottomNavViewModel.showProgress.set(false)
                 showAlert()
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
