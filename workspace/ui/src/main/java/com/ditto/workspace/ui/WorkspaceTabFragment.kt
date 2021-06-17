@@ -1077,7 +1077,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                     resources.getString(R.string.empty_string),
                                     resources.getString(R.string.ok),
                                     this,
-                                    Utility.AlertType.DEFAULT,
+                                    Utility.AlertType.CUT_BIN,
                                     Utility.Iconype.NONE
                                 )
                                 return true
@@ -1982,38 +1982,53 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.WIFI -> {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
             }
-            Utility.AlertType.CONNECTIVITY -> {
-                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
-                showConnectivityPopup()
+            Utility.AlertType.CALIBRATION -> {
+                if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+                    showProgress(toShow = true)
+                    GlobalScope.launch { projectBorderImage() }
+                }
             }
-            Utility.AlertType.CUT_BIN -> {
-                if (!viewModel.workspacedata?.isCompleted!!) {
-                    viewModel.setCompletedCount(cutCount)
-                    viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
-                        ?.isCompleted =
-                        true
-                    com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
-                    adapter?.notifyDataSetChanged()
+            Utility.AlertType.QUICK_CHECK -> {
+                viewModel.isFromQuickCheck.set(false)
+                GlobalScope.launch {
+                    Utility.sendDittoImage(
+                        requireContext(),
+                        "solid_black"
+                    )
                 }
-                mWorkspaceEditor?.removePattern(viewModel.workspacedata, false)
-                if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-                    viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
+            }
+            Utility.AlertType.MIRROR -> {
+                if (viewModel.isHorizontalMirror) {
+                    mWorkspaceEditor?.flipHorizontal()
                 } else {
-                    viewModel.workspacedata = null
-                    clearWorkspace()
+                    mWorkspaceEditor?.flipVertical()
                 }
-                onDragCompleted()
             }
 
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
             }
+            Utility.AlertType.PATTERN_RENAME -> {
+                if (baseViewModel.activeSocketConnection.get()) {
+                    GlobalScope.launch {
+                        Utility.sendDittoImage(
+                            requireActivity(),
+                            "ditto_project"
+                        )
+                    }
+                }
+                viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
+            }
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount,true)
             }
+            else -> {
+                Log.d("WorkspaceTabfragment", "onPositiveButtonClicked")
+            }
         }
+
     }
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,

@@ -18,6 +18,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -443,7 +444,8 @@ class Utility @Inject constructor(
             alert.window?.setBackgroundDrawable(null)
             val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
             val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
-            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE){
+            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE
+                || alertType == AlertType.MIRROR || alertType==AlertType.CUT_BIN){
                 lay_withimage.visibility = View.GONE
                 lay_withoutimage.visibility = View.VISIBLE
 
@@ -458,6 +460,10 @@ class Utility @Inject constructor(
                 }else{
                     title_common.text = title
                     message_common.text = alertmessage
+                }
+
+                if(alertType==AlertType.CUT_BIN){
+                    message_common.gravity=Gravity.START
                 }
 
                 neg_text_common.text = negativeButton
