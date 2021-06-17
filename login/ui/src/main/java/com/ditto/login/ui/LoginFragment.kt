@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.databinding.LoginFragmentBinding
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -126,7 +127,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                if (Utility.getWifistatus(requireContext())){
+                if (NetworkUtility.isNetworkAvailable(requireContext())){
                     val bundle = bundleOf("UserId" to 0)
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)

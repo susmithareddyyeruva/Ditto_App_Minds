@@ -98,7 +98,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     private fun handleEvent(event: VideoPlayerViewModel.Event) =
         when (event) {
             is VideoPlayerViewModel.Event.OnPlayButtonClicked -> {
-                if (!core.network.Utility.isNetworkAvailable(requireContext())) {
+                if (!core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                     showSnackBar(getString(R.string.no_internet_available))
                 }else{
                     startPlayer()

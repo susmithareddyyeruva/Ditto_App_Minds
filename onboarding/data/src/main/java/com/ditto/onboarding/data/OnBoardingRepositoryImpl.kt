@@ -18,7 +18,7 @@ import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.storage.data.model.OnBoarding
 import core.CLIENT_ID
-import core.network.Utility
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
@@ -56,7 +56,7 @@ class OnBoardingRepositoryImpl @Inject constructor(
     }
 
     override fun getOnboardingContent(): Single<Result<OnBoardingResultDomain>> {
-        if (!Utility.isNetworkAvailable(context)) {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return onBoardingService.getContentApi(

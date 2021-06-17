@@ -395,8 +395,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 canvas.drawColor(Color.BLACK)
                 canvas.drawBitmap(bitmap, 0F, 0F, null)
                 clientSocket = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 val workspaceStream = ByteArrayOutputStream()
                 transformedBitmap.compress(Bitmap.CompressFormat.PNG, 0, workspaceStream)
@@ -1869,8 +1869,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()

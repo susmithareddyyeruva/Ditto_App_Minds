@@ -27,7 +27,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
-import core.network.Utility
+import core.network.NetworkUtility
 import core.ui.TokenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -350,7 +350,7 @@ class Utility @Inject constructor(
             withContext(Dispatchers.IO) {
                 var soc: Socket? = null
                 try {
-                    soc = Socket(Utility.nsdSericeHostName, Utility.nsdSericePortName)
+                    soc = Socket(NetworkUtility.nsdSericeHostName, NetworkUtility.nsdSericePortName)
                     if (soc.isConnected) {
                         var dataOutputStream: DataOutputStream =
                             DataOutputStream(soc.getOutputStream())

@@ -64,7 +64,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
         (activity as BottomNavigationActivity).hidemenu()
         if(viewModel.dataFromApi.value == null){
-            if (core.network.Utility.isNetworkAvailable(requireContext())) {
+            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnBoardingDataFromApi()
 
