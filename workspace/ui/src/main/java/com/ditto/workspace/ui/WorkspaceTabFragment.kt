@@ -2033,6 +2033,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount,true)
             }
+            Utility.AlertType.MIRROR -> {
+                if (viewModel.isHorizontalMirror) {
+                    mWorkspaceEditor?.flipHorizontal()
+                } else {
+                    mWorkspaceEditor?.flipVertical()
+                }
+            }
         }
     }
     override fun onCustomNegativeButtonClicked(
