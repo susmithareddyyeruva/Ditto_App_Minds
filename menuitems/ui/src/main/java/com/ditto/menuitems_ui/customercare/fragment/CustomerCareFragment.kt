@@ -2,6 +2,7 @@ package com.ditto.menuitems_ui.customercare.fragment
 
 
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.CustomerCareFragmentBinding
+import core.CUSTOMERCARE_EMAIL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -25,7 +27,7 @@ import io.reactivex.rxkotlin.plusAssign
 class CustomerCareFragment : BaseFragment() {
     private val viewModel: CustomerCareViewModel by ViewModelDelegate()
     lateinit var binding : CustomerCareFragmentBinding
-
+    lateinit var dynamicEmailData:String
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +89,12 @@ class CustomerCareFragment : BaseFragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setemailteststyle(){
-        val spannable = SpannableString(getString(R.string.str_email_text))
+
+        val res: Resources = getResources()
+
+        val text: String = String.format(res.getString(R.string.str_email_text,viewModel.getEmailId()))
+
+        val spannable = SpannableString(text)
         spannable.setSpan(
             ForegroundColorSpan(requireContext().getColor(R.color.emailblue)),
             6, 29,
