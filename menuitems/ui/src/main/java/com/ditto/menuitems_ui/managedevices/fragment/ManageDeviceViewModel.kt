@@ -6,9 +6,11 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import core.MODE_BLE
 import core.MODE_SERVICE
+import core.appstate.AppState
 import core.event.UiEvents
 import core.models.Nsdservicedata
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -107,6 +109,26 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
         mode.set(MODE_BLE)
         uiEvents.post(Event.OnBleConnectClick)
     }
+
+     fun resetAppstate(){
+        core.network.Utility.isServiceConnected = true
+        core.network.Utility.nsdSericeHostName =  Utility.searchServieList?.get(clickedPosition.get())?.nsdSericeHostAddress!!
+        core.network.Utility.nsdSericePortName = Utility.searchServieList?.get(clickedPosition.get())?.nsdServicePort!!
+        AppState.clearSavedService()
+        Utility.searchServieList?.get(clickedPosition.get())?.let {
+            AppState.saveCurrentService(
+                it
+            )
+        }
+    }
+
+    fun clearAppstate(){
+        core.network.Utility.isServiceConnected = false
+        core.network.Utility.nsdSericeHostName =  ""
+        core.network.Utility.nsdSericePortName = 0
+        AppState.clearSavedService()
+    }
+
 
     sealed class Event {
 

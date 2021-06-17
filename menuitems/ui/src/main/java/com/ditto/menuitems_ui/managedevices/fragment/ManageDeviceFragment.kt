@@ -13,14 +13,16 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.ditto.connectivity.ConnectivityActivity
+import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentManagedevicesBinding
 import com.ditto.menuitems_ui.managedevices.adapter.ManageDeviceAdapter
 import core.MODE_SERVICE
+import core.SCREEN_MANAGE_DEVICE
 import core.SEARCH_COMPLETE
-import core.appstate.AppState
+import core.SEARCH_COMPLETE_AFTER_WIFI
 import core.models.Nsdservicedata
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
@@ -40,10 +42,11 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     lateinit var loggerFactory: LoggerFactory
     private val viewModel: ManageDeviceViewModel by ViewModelDelegate()
     lateinit var binding: FragmentManagedevicesBinding
-    var receivedServiceList : ArrayList<Nsdservicedata>? = null
+    var receivedServiceList: ArrayList<Nsdservicedata>? = null
     val logger: Logger by lazy {
         loggerFactory.create(ManageDeviceFragment::class.java.simpleName)
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,8 +65,17 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         setuptoolbar()
         setUIEvents()
         viewModel.mode.set(MODE_SERVICE)
-        showConnectivityPopup()
+        checkBluetoothWifiPermission()
     }
+
+    private fun setAdapter() {
+        val adapter = ManageDeviceAdapter(requireContext(), receivedServiceList!!, viewModel)
+        binding.rvManageDevice.adapter = adapter
+    }
+
+    /**
+     * [Function] Setting UI events which triggers viewmodel events
+     */
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -71,6 +83,10 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 handleEvent(it)
             }
     }
+
+    /**
+     * [Function] Handles events of viewmodel
+     */
     private fun handleEvent(event: ManageDeviceViewModel.Event) =
         when (event) {
             ManageDeviceViewModel.Event.OnConnectionSuccess -> showSuccessPopup()
@@ -81,10 +97,13 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             ManageDeviceViewModel.Event.OnConnectClick -> showConnectPopup()
             ManageDeviceViewModel.Event.OnBleConnectClick -> showConnectivityPopup()
         }
-    private fun bindAdapter(){
-        if (receivedServiceList?.size!! > 0){
-            val adapter = ManageDeviceAdapter(requireContext(), receivedServiceList!!,viewModel)
-            binding.rvManageDevice.adapter = adapter
+
+    /**
+     * [Function] Setting the adapter to listview by checking the list size
+     */
+    private fun bindAdapter() {
+        if (receivedServiceList?.size!! > 0) {
+            setAdapter()
             filterServiceList()
         } else {
             viewModel.numberOfProjectors.set(
@@ -97,10 +116,61 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             viewModel.isShowServiceList.set(false)
         }
     }
-    private fun filterServiceList(){
+
+    /**
+     * [Function] Binding adapter after passing wifi credentials
+     */
+    private fun bindAdapterAfterWifi() {
+        if (receivedServiceList?.size!! > 0) {
+            setAdapter()
+            filterServiceListAfterWifi()
+        } else {
+            viewModel.numberOfProjectors.set(
+                getString(
+                    R.string.str_projectorsfound,
+                    receivedServiceList!!.size.toString()
+                )
+            )
+            viewModel.isServiceNotFound.set(true)
+            viewModel.isShowServiceList.set(false)
+        }
+    }
+
+    /**
+     * [Function] Filtering after passing wifi credentials and autoconnect to selected projector
+     */
+    private fun filterServiceListAfterWifi() {
+        if (ConnectivityUtils.nsdSericeNameAfterWifi != null) {
+            for (item in receivedServiceList!!.indices) {
+                if (ConnectivityUtils.nsdSericeNameAfterWifi == receivedServiceList!![item].nsdServiceName) {
+                    viewModel.clickedPosition.set(item)
+                    viewModel.connectToProjector(
+                        receivedServiceList!![item].nsdSericeHostAddress,
+                        receivedServiceList!![item].nsdServicePort,
+                        true
+                    )
+                    break
+                }
+            }
+
+        }
+        viewModel.numberOfProjectors.set(
+            getString(
+                R.string.str_projectorsfound,
+                receivedServiceList!!.size.toString()
+            )
+        )
+        viewModel.isServiceNotFound.set(false)
+        viewModel.isShowServiceList.set(true)
+    }
+
+    /**
+     * [Function] Filtering list to change to connection status of alredy connected wifi if any
+     */
+    private fun filterServiceList() {
         if (core.network.Utility.nsdSericeHostName != null) {
-            for (item in receivedServiceList!!.indices){
-                if (core.network.Utility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress){
+            for (item in receivedServiceList!!.indices) {
+                if (core.network.Utility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress) {
                     viewModel.clickedPosition.set(item)
                     resetAdapter(true)
                     break
@@ -116,19 +186,46 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.isServiceNotFound.set(false)
         viewModel.isShowServiceList.set(true)
     }
+
+    /**
+     * [Function] Starting connectivity module
+     */
     private fun showConnectivityPopup() {
         GlobalScope.launch {
             delay(100)
             val intent = Intent(requireContext(), ConnectivityActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.putExtra("ScreenName","MD")
-            intent.putExtra("ScreenMode",viewModel.mode.get())
+            intent.putExtra("ScreenName", SCREEN_MANAGE_DEVICE)
+            intent.putExtra("ScreenMode", viewModel.mode.get())
             startActivityForResult(
                 intent,
                 REQUEST_ACTIVITY_RESULT_CODE
             )
         }
     }
+
+    /**
+     * [Function] onActivityResult from connectivity module
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        receivedServiceList = Utility.searchServieList
+        if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
+            when {
+                data?.data.toString().equals(SEARCH_COMPLETE) -> {
+                    bindAdapter()
+                }
+                data?.data.toString().equals(SEARCH_COMPLETE_AFTER_WIFI) -> {
+                    bindAdapterAfterWifi()
+                }
+            }
+        }
+    }
+
+
+    /**
+     * [Function] Setting up the toolbar
+     */
     private fun setuptoolbar() {
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -139,133 +236,95 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         (activity as BottomNavigationActivity).setToolbarIcon()
 
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
-            when {
-                data?.data.toString().equals(SEARCH_COMPLETE) -> {
-                    receivedServiceList = Utility.searchServieList
-                    bindAdapter()
-                }
-
-            }
-        }
-    }
     companion object {
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
         private const val REQUEST_CODE_PERMISSIONS = 111
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
     }
 
-    private fun showSuccessPopup(){
+    /**
+     * [Function] After successfull connection
+     */
+    private fun showSuccessPopup() {
         baseViewModel.activeSocketConnection.set(true)
-        resetAppstate()
+        viewModel.resetAppstate()
         resetAdapter(true)
     }
 
-    private fun showFailedPopup(){
+    /**
+     * [Function] After Connection Failed
+     */
+    private fun showFailedPopup() {
         baseViewModel.activeSocketConnection.set(false)
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
-            "Connection failed!",
+            getString(R.string.str_connection_failed),
             "",
-            "OK",
+            getString(R.string.str_ok),
             this,
             Utility.AlertType.CONNECTIVITY,
             Utility.Iconype.FAILED
         )
     }
 
-    private fun showConnectPopup(){
+    /**
+     * [Function] Connection switch popup
+     */
+    private fun showConnectPopup() {
 
-        var toShowPopup : Boolean = false
-        for (item in receivedServiceList!!){
-            if (item.isConnected){
+        var toShowPopup: Boolean = false
+        for (item in receivedServiceList!!) {
+            if (item.isConnected) {
                 toShowPopup = true
                 break
             }
         }
-        if (toShowPopup){
+        if (toShowPopup) {
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
-                "Do you want to switch the projector?",
-                "No",
-                "Yes",
+                getString(R.string.str_switch_projector),
+                getString(R.string.str_no),
+                getString(R.string.str_yes),
                 this,
                 Utility.AlertType.SOC_CONNECT,
                 Utility.Iconype.FAILED
             )
         } else {
-            viewModel.connectToProjector(receivedServiceList!![viewModel.clickedPosition.get()]?.nsdSericeHostAddress,
-                receivedServiceList!![viewModel.clickedPosition.get()]?.nsdServicePort,
-                true)
-        }
-    }
-
-    override fun onCustomPositiveButtonClicked(
-        iconype: Utility.Iconype,
-        alertType: Utility.AlertType
-    ) {
-
-        when(alertType){
-            Utility.AlertType.SOC_CONNECT ->
-                viewModel.connectToProjector(receivedServiceList!![viewModel.clickedPosition.get()]?.nsdSericeHostAddress,
-                    receivedServiceList!![viewModel.clickedPosition.get()]?.nsdServicePort,
-                true)
-            Utility.AlertType.BLE -> {
-                val mBluetoothAdapter =
-                    BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
-                } else {
-                    showConnectivityPopup()
-                }
-            }
-            Utility.AlertType.WIFI -> {
-                startActivity(Intent(Settings.ACTION_SETTINGS))
-
-            }
-        }
-    }
-
-    override fun onCustomNegativeButtonClicked(
-        iconype: Utility.Iconype,
-        alertType: Utility.AlertType
-    ) {
-
-    }
-
-    private fun resetAppstate(){
-        core.network.Utility.isServiceConnected = true
-        core.network.Utility.nsdSericeHostName =  Utility.searchServieList?.get(viewModel.clickedPosition.get())?.nsdSericeHostAddress!!
-        core.network.Utility.nsdSericePortName = Utility.searchServieList?.get(viewModel.clickedPosition.get())?.nsdServicePort!!
-        AppState.clearSavedService()
-        Utility.searchServieList?.get(viewModel.clickedPosition.get())?.let {
-            AppState.saveCurrentService(
-                it
+            viewModel.connectToProjector(
+                receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
+                receivedServiceList!![viewModel.clickedPosition.get()].nsdServicePort,
+                true
             )
         }
     }
 
-    private fun resetAdapter(isConnected : Boolean){
+    /**
+     * [Function] Resetting adapter after changing the connection status
+     */
+    private fun resetAdapter(isConnected: Boolean) {
         bottomNavViewModel.showProgress.set(false)
         receivedServiceList?.get(viewModel.clickedPosition.get())?.isConnected = isConnected
         resetlist(isConnected)
         binding.rvManageDevice.adapter?.notifyDataSetChanged()
     }
 
-    private fun resetlist(isConnected: Boolean){
-        if (isConnected){
-            for (item in receivedServiceList!!.indices){
+    /**
+     * [Function] Resetting the service list
+     */
+    private fun resetlist(isConnected: Boolean) {
+        if (isConnected) {
+            for (item in receivedServiceList!!.indices) {
                 if (item != viewModel.clickedPosition.get())
                     receivedServiceList!![item].isConnected = false
             }
         }
     }
+
+    /**
+     * [Function] Checking permissions
+     */
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         context?.let { it1 ->
             ContextCompat.checkSelfPermission(
@@ -274,6 +333,9 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         } == PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * [Function] Checking whether the bluetooth and Wifi is connected
+     */
     private fun checkBluetoothWifiPermission() {
         if (allPermissionsGranted()) {
             if (!Utility.getBluetoothstatus()) {
@@ -290,13 +352,17 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             )
         }
     }
+
+    /**
+     * [Function] Popup to show Bluetooth Connection
+     */
     private fun showBluetoothDialogue() {
 
         Utility.getCommonAlertDialogue(
             requireContext(),
-            "Connectivity",
-            "This app needs Bluetooth connectivity",
-            "LATER",
+            getString(R.string.str_connecitivity_title),
+            getString(R.string.str_ble_message),
+            getString(R.string.str_later),
             resources.getString(R.string.turnon),
             this,
             Utility.AlertType.BLE,
@@ -304,18 +370,75 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         )
     }
 
+    /**
+     * [Function] Popup to show WIFI Connection
+     */
     private fun showWifiDialogue() {
 
         Utility.getCommonAlertDialogue(
             requireContext(),
-            "Connectivity",
-            "This app needs WiFi connectivity",
-            "LATER",
-            "SETTINGS",
+            getString(R.string.str_connecitivity_title),
+            getString(R.string.str_wifi_message),
+            getString(R.string.str_later),
+            getString(R.string.str_settings),
             this,
             Utility.AlertType.WIFI,
             Utility.Iconype.SUCCESS
         )
 
     }
+
+    /**
+     * [Function] Positive buttons click listner
+     */
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
+        when (alertType) {
+            Utility.AlertType.SOC_CONNECT ->
+                viewModel.connectToProjector(
+                    receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
+                    receivedServiceList!![viewModel.clickedPosition.get()].nsdServicePort,
+                    true
+                )
+            Utility.AlertType.BLE -> {
+                val mBluetoothAdapter =
+                    BluetoothAdapter.getDefaultAdapter()
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
+            Utility.AlertType.WIFI -> {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+                activity?.onBackPressed()
+            }
+        }
+    }
+
+    /**
+     * [Function] Negative buttons click listner
+     */
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
+        when (alertType) {
+
+            Utility.AlertType.BLE -> {
+
+                activity?.onBackPressed()
+            }
+            Utility.AlertType.WIFI -> {
+                activity?.onBackPressed()
+
+            }
+        }
+    }
+
 }

@@ -139,6 +139,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/available_projector_text_size"
             android:gravity="center"
+            android:layout_marginTop="@dimen/xx_large_padding"
             android:visibility="@{viewmodel.isServiceNotFound()}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -43,9 +43,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnSuccessListener
-import core.MODE_BLE
-import core.MODE_SERVICE
-import core.SEARCH_COMPLETE
+import core.*
 import core.appstate.AppState
 import core.models.Nsdservicedata
 import core.network.Utility
@@ -172,7 +170,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 mService?.port!!.toInt(),
                 false
             )
-            if (viewModel.isServiceFoundAfterWifi.get()){
+            if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE){
                 stopDiscovery()
                 connectServiceAfterWifi(nsdData)
             } else {
@@ -198,7 +196,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             stopDiscovery()
            for(item in serviceFoundList){
                nsdManager?.resolveService(item, MyResolveListener())
-               Thread.sleep(1000)
+               Thread.sleep(100)
            }
         }
     }
@@ -210,7 +208,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
-                if (viewModel.isServiceFoundAfterWifi.get()){
+                if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE){
                     if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
                         serviceFoundList.add(service)
                     }
@@ -290,12 +288,17 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun startServiceTimer() {
 
         serviceConnectionWaitingJob = GlobalScope.launch {
-            delay(7000)
+            delay(6000)
             viewModel.isProgressBar.set(false)
             stopDiscovery()
-            if (screenName == "MD"){
+            if (screenName == SCREEN_MANAGE_DEVICE){
                 searchServieList = serviceList
-                returnFromActivity(SEARCH_COMPLETE)
+                if (viewModel.isServiceFoundAfterWifi.get()){
+                    returnFromActivity(SEARCH_COMPLETE_AFTER_WIFI)
+                } else {
+                    returnFromActivity(SEARCH_COMPLETE)
+                }
+
             } else {
                 connectService()
             }
@@ -698,7 +701,11 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             } else if (BluetoothLeService.ACTION_GATT_SERVER_SUCCESS == action) {
                 showLayouts(false, false, false, false, true,"")
                 viewModel.isServiceFoundAfterWifi.set(true)
-                searchWifiNSDservice()
+                if (screenName == SCREEN_MANAGE_DEVICE){
+                    searchNSDservice()
+                } else {
+                    searchWifiNSDservice()
+                }
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVER_FAILURE == action) {
                 viewModel.isServiceError.set(true)
@@ -815,6 +822,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         viewModel.isWifiError.set(false)
+                        ConnectivityUtils.nsdSericeNameAfterWifi = ""
                         mBluetoothLeService?.connectWIFI(encryptedcred)!!
                         startWifiWaiting()
                     } else {

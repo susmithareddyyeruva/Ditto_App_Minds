@@ -19,4 +19,14 @@
     <string name="scan">Scan for devices</string>
     <string name="disconnect">Disconnect</string>
     <string name="str_projectorsfound">%1$s projectors found</string>
+    <string name="str_connection_failed">Projector connection failed!</string>
+    <string name="str_ok">OK</string>
+    <string name="str_switch_projector">Do you want to switch the projector?</string>
+    <string name="str_no">No</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_connecitivity_title">Connectivity</string>
+    <string name="str_ble_message">This app needs Bluetooth connectivity</string>
+    <string name="str_later">LATER</string>
+    <string name="str_wifi_message">This app needs WiFi connectivity</string>
+    <string name="str_settings">SETTINGS</string>
 </resources>
