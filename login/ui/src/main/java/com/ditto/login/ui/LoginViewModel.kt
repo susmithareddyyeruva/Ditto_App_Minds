@@ -40,7 +40,8 @@ class LoginViewModel @Inject constructor(
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
     val isLoginButtonFocusable: ObservableBoolean = ObservableBoolean(true)
     var errorString: ObservableField<String> = ObservableField("")
-    var videoUrl: String=""
+    var videoUrl: String = ""
+    var imageUrl: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -272,34 +273,6 @@ class LoginViewModel @Inject constructor(
         object OnLandingSuccess : Event()
     }
 
-    fun fetchViewPagerData() {
-
-        var languageList: List<LoginViewPagerData> = listOf(
-            LoginViewPagerData(
-                1,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            ),
-            LoginViewPagerData(
-                2,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            ),
-            LoginViewPagerData(
-                3,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            ),
-            LoginViewPagerData(
-                4,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            )
-        )
-
-        viewPagerData.value = languageList
-    }
-
     fun getLandingScreenDetails() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getLandingContentDetails().subscribeOn(Schedulers.io())
@@ -319,10 +292,11 @@ class LoginViewModel @Inject constructor(
                 storageManager.savePrefs(CUSTOMERCARE_EMAIL, it.data.c_body.customerCareEmail)
                 storageManager.savePrefs(CUSTOMERCARE_PHONE, it.data.c_body.customerCareePhone)
                 storageManager.savePrefs(CUSTOMERCARE_TIMING, it.data.c_body.customerCareeTiming)
-                videoUrl=it.data.c_body.videoUrl
-                viewPagerDataList.value=it.data.c_body.imageUrl
+                videoUrl = it.data.c_body.videoUrl
+                imageUrl.set(it.data.c_body.imageUrl)
                 uiEvents.post(Event.OnLandingSuccess)
             }
+            is Result.OnError -> handleError(it.error)
             else -> {
                 uiEvents.post(Event.OnHideProgress)
 

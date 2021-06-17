@@ -12,16 +12,15 @@ import androidx.annotation.Nullable
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
@@ -67,31 +66,9 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
         }
 
-        viewModel.fetchViewPagerData()
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
         setUIEvents()
         //setupKeyboardListener(binding.root) // call in OnCreate or similar
-
-    }
-
-    private fun setViewpagerImageAdapter() {
-        val adapter = LoginViewPagerAdapter()
-        login_view_pager.adapter = adapter
-        adapter.viewModel = viewModel
-        login_view_pager.adapter?.notifyDataSetChanged()
-        login_tablay.setupWithViewPager(login_view_pager)
-
-        viewModel.viewPagerDataList.value?.let {
-            if (it != null) {
-                adapter.setListData(it)
-            }
-        }
-        if (bottomNavViewModel.isLogoutEvent.get()){
-            Log.d("LOGIN SCREEN ","LOGOUT HAPPENED")
-            viewModel.deleteUserInfo()
-            bottomNavViewModel.isLogoutEvent.set(false)
-        }
-
 
     }
 
@@ -168,9 +145,18 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
             LoginViewModel.Event.OnLandingSuccess ->{
-                setViewpagerImageAdapter()
+             setLandingImage()
             }
         }
+
+    private fun setLandingImage() {
+        viewModel.imageUrl.let {
+            Glide.with( binding.ivViewpagerLogin.context)
+                .load(it.get())
+                .placeholder(R.drawable.ic_placeholder)
+                .into( binding.ivViewpagerLogin)
+        }
+    }
 
     private fun setupKeyboardListener(view: View) {
         view.viewTreeObserver.addOnGlobalLayoutListener {

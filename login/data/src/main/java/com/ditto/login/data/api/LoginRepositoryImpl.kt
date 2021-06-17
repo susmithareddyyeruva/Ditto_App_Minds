@@ -111,6 +111,7 @@ class LoginRepositoryImpl @Inject constructor(
             }
 
 
+
     }
 
     override fun deleteDbUser(user: String): Single<Boolean> {
@@ -120,23 +121,28 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override fun getLandingDetails(): Single<Result<LandingContentDomain>> {
-    return  loginService.getLandingContentDetails(CLIENT_ID)
-        .doOnSuccess {
-            Log.d("Landing Content", "***** Success**")
-        }
-        .map {
-            Result.withValue(it.toDomain())
+        if (!Utility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }else{
+            return  loginService.getLandingContentDetails(CLIENT_ID)
+                .doOnSuccess {
+                    Log.d("Landing Content", "***** Success**")
+                }
+                .map {
+                    Result.withValue(it.toDomain())
 
-        }
-        .onErrorReturn {
-            var errorMessage = "Error Fetching Landing Content"
-            Log.d("Try", "try block")
+                }
+                .onErrorReturn {
+                    var errorMessage = "Error Fetching Landing Content"
+                    Log.d("Try", "try block")
 
 
-            Result.withError(
-                LandingContentFetchError(errorMessage, it)
-            )
+                    Result.withError(
+                        LandingContentFetchError(errorMessage, it)
+                    )
+                }
         }
-    }
+        }
+
 }
 

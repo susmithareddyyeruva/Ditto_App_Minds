@@ -1,10 +1,10 @@
 package com.ditto.login.ui.adapter
 
+/*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.Glide
 import com.ditto.login.ui.LoginViewModel
 import com.ditto.login.ui.R
 import com.ditto.login.ui.databinding.LoginImageAdapterBinding
@@ -45,4 +45,4 @@ class LoginViewPagerAdapter : PagerAdapter(), BindableAdapter<List<String>> {
         imageData = listData
         notifyDataSetChanged()
     }
-}
+}*/
