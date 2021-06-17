@@ -13,6 +13,7 @@ import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -23,6 +24,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
@@ -35,6 +37,7 @@ import java.io.*
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
+import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -445,13 +448,21 @@ class Utility @Inject constructor(
                 lay_withoutimage.visibility = View.VISIBLE
 
                 val title_common = mDialogView.findViewById(R.id.common_title) as TextView
-                title_common.text = title
                 val message_common = mDialogView.findViewById(R.id.common_message) as TextView
-                message_common.text = alertmessage
                 val neg_text_common = mDialogView.findViewById(R.id.neg_text_common) as TextView
-                neg_text_common.text = negativeButton
                 val pos_text_common = mDialogView.findViewById(R.id.pos_txt_common) as TextView
+                if(alertType==AlertType.CUT_COMPLETE){
+                    title_common.text=alertmessage
+                    title_common.typeface=ResourcesCompat.getFont(context,R.font.avenir_next_lt_pro_regular)
+                    message_common.visibility=View.GONE
+                }else{
+                    title_common.text = title
+                    message_common.text = alertmessage
+                }
+
+                neg_text_common.text = negativeButton
                 pos_text_common.text = positiveButton
+
                 neg_text_common.setOnClickListener {
                     alert.dismiss()
                     customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
