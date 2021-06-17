@@ -1,12 +1,17 @@
 package com.ditto.menuitems_ui.managedevices.fragment
 
+import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -23,6 +28,9 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -109,14 +117,17 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.isShowServiceList.set(true)
     }
     private fun showConnectivityPopup() {
-        val intent = Intent(requireContext(), ConnectivityActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.putExtra("ScreenName","MD")
-        intent.putExtra("ScreenMode",viewModel.mode.get())
-        startActivityForResult(
-            intent,
-            REQUEST_ACTIVITY_RESULT_CODE
-        )
+        GlobalScope.launch {
+            delay(100)
+            val intent = Intent(requireContext(), ConnectivityActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.putExtra("ScreenName","MD")
+            intent.putExtra("ScreenMode",viewModel.mode.get())
+            startActivityForResult(
+                intent,
+                REQUEST_ACTIVITY_RESULT_CODE
+            )
+        }
     }
     private fun setuptoolbar() {
         bottomNavViewModel.visibility.set(false)
@@ -143,6 +154,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     }
     companion object {
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
+        private const val REQUEST_CODE_PERMISSIONS = 111
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
     }
 
     private fun showSuccessPopup(){
@@ -202,6 +215,20 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 viewModel.connectToProjector(receivedServiceList!![viewModel.clickedPosition.get()]?.nsdSericeHostAddress,
                     receivedServiceList!![viewModel.clickedPosition.get()]?.nsdServicePort,
                 true)
+            Utility.AlertType.BLE -> {
+                val mBluetoothAdapter =
+                    BluetoothAdapter.getDefaultAdapter()
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
+            Utility.AlertType.WIFI -> {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+
+            }
         }
     }
 
@@ -239,5 +266,56 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             }
         }
     }
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        context?.let { it1 ->
+            ContextCompat.checkSelfPermission(
+                it1, it
+            )
+        } == PackageManager.PERMISSION_GRANTED
+    }
 
+    private fun checkBluetoothWifiPermission() {
+        if (allPermissionsGranted()) {
+            if (!Utility.getBluetoothstatus()) {
+                showBluetoothDialogue()
+            } else if (!Utility.getWifistatus(requireContext())) {
+                showWifiDialogue()
+            } else {
+                showConnectivityPopup()
+            }
+        } else {
+            requestPermissions(
+                REQUIRED_PERMISSIONS,
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+    private fun showBluetoothDialogue() {
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs Bluetooth connectivity",
+            "LATER",
+            resources.getString(R.string.turnon),
+            this,
+            Utility.AlertType.BLE,
+            Utility.Iconype.SUCCESS
+        )
+    }
+
+    private fun showWifiDialogue() {
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "Connectivity",
+            "This app needs WiFi connectivity",
+            "LATER",
+            "SETTINGS",
+            this,
+            Utility.AlertType.WIFI,
+            Utility.Iconype.SUCCESS
+        )
+
+    }
 }

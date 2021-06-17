@@ -22,12 +22,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.BaseAdapter
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -35,6 +34,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import com.ditto.connectivity.databinding.ConnectivityActivityBinding
 import com.ditto.connectivity.service.BluetoothLeService
@@ -58,7 +59,7 @@ import java.net.InetAddress
 import java.net.Socket
 
 class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomCallbackDialogListener {
-
+    private var currentApiVersion = 0
     private var mLeDeviceListAdapter: LeDeviceListAdapter? = null
     private var mServiceListAdapter: ServiceListAdapter? = null
     private var mHandler: Handler? = null
@@ -95,6 +96,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fullScreenCall()
         setUIEvents()
         decideScreen()
         initNSD()
@@ -1069,6 +1071,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         viewModel.isDeviceListLayout.set(isShowBleListLayout)
         viewModel.alerMessage.set(alertMessage)
     }
+
+    private fun fullScreenCall(){
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+        val behavior =  WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        val type = WindowInsetsCompat.Type.systemBars()
+        insetsController.systemBarsBehavior = behavior
+        insetsController.hide(type)
+    }
+
 }
 
 
