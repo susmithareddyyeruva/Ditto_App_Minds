@@ -56,6 +56,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         val pinfo: PackageInfo = requireActivity().getPackageManager()
             .getPackageInfo(requireActivity().getPackageName(), 0)
         viewModel.versionName.set("Version " + pinfo.versionName)
+        bottomNavViewModel.showProgress.set(true)
         viewModel.getLandingScreenDetails()/**Fetch Landing screen Details.....*/
         if (savedInstanceState == null) {
             viewModel.disposable += viewModel.events
