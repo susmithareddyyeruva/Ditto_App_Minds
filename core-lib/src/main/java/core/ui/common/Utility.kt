@@ -465,6 +465,9 @@ class Utility @Inject constructor(
                 if(alertType==AlertType.CUT_BIN){
                     message_common.gravity=Gravity.START
                 }
+                if(alertType==AlertType.MIRROR){
+                    message_common.gravity=Gravity.START
+                }
 
                 neg_text_common.text = negativeButton
                 pos_text_common.text = positiveButton
