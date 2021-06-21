@@ -61,7 +61,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             bundle?.getString("title")?.let { title = it }
             bundle?.getString("from")?.let { from = it }
             Log.d("VideoPlayer", " title: $title")
-            if (from.equals("tutorial")) {
+            if (from == "tutorial") {
                 findViewById<TextView>(R.id.skipButton).visibility = View.GONE
                 findViewById<ImageView>(R.id.close).visibility = View.VISIBLE
                 findViewById<TextView>(R.id.header).text = title
