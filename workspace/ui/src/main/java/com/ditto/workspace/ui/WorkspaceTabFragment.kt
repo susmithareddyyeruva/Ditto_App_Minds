@@ -262,29 +262,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun disableInchTabs() {
-        if (viewModel.tabCategory == getString(R.string.lining) ||
-            viewModel.tabCategory == getString(R.string.interfacing)
-        ) {
-            disableInchTabs(binding.txtSize45)
-            disableInchTabs(binding.txtSize60)
-            disableInchTabs(binding.txtSizeSplice)
-            disablenap(binding.txtSize45Nap)
-            disablenap(binding.txtSize60Nap)
-        }
-    }
-
-    private fun disablenap(view: TextView) {
-        view.isEnabled = false
-        view.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.default_splice
-            )
-        )
+        viewModel.clickedSplice.set(false)
+        binding.txtSizeSplice.isEnabled = false
+        viewModel.enableSplice.set(false)
+        binding.txtSize45.isEnabled = false
+        viewModel.enableSize45.set(false)
+        binding.txtSize60.isEnabled = false
+        viewModel.enableSize60.set(false)
     }
 
     private fun disableInchTabs(view: TextView) {
         view.isEnabled = false
+        viewModel
         view.setBackgroundResource(R.drawable.rounded_light_bg)
         view.setTextColor(
             ContextCompat.getColor(
@@ -458,6 +447,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun setSelvageImage() {
+        if (viewModel.clickedSplice.get()) {
+            val splicePiece = getSplicePiece(
+                viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
+                viewModel.workspacedata?.currentSplicedPieceColumn ?: 0,
+                viewModel.workspacedata?.splicedImages
+            )
+            // Setting splice reference layout
+            showSpliceReference(splicePiece)
+            return
+        }
         if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size!! > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
@@ -468,79 +467,71 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
             if (garments?.size == 2) {
-                if ((garments[0].fabricLength == "45" || garments[1].fabricLength == "45") && viewModel.clickedSize45.get()) {
-                    garments[0].imagePath.let {
+                binding.txtSize45.isEnabled = true
+                binding.txtSize60.isEnabled = true
+                viewModel.enableSize45.set(true)
+                viewModel.enableSize60.set(true)
+                if (!viewModel.clickedSize45.get() && !viewModel.clickedSize60.get()) {
+                    viewModel.clickedSize45.set(true)
+                    viewModel.clickedSize60.set(false)
+                }
+                if (viewModel.clickedSize45.get()) {
+                    val selvage = garments.filter { it.fabricLength == "45" }[0]
+                    selvage.imagePath.let {
                         binding.imageSelvageHorizontal.setImageDrawable(
                             getDrawableFromString(context, it)
                         )
                     }
-                    viewModel.referenceImage.set(garments[0].imagePath)
-                } else if ((garments[0].fabricLength == "60" || garments[1].fabricLength == "60") && !viewModel.clickedSize45.get()) {
-                    garments[1].imagePath.let {
+                    viewModel.clickedSize45.set(true)
+                    viewModel.clickedSize60.set(false)
+                    viewModel.referenceImage.set(selvage.imagePath)
+                }
+                if (viewModel.clickedSize60.get()) {
+                    val selvage = garments.filter { it.fabricLength == "60" }[0]
+                    selvage.imagePath.let {
                         binding.imageSelvageHorizontal.setImageDrawable(
                             getDrawableFromString(context, it)
                         )
                     }
-                    viewModel.referenceImage.set(garments[1].imagePath)
+                    viewModel.clickedSize45.set(false)
+                    viewModel.clickedSize60.set(true)
+                    viewModel.referenceImage.set(selvage.imagePath)
                 }
 
+//                if ((garments[0].fabricLength == "45" || garments[1].fabricLength == "45") && viewModel.clickedSize45.get()) {
+//                    garments[0].imagePath.let {
+//                        binding.imageSelvageHorizontal.setImageDrawable(
+//                            getDrawableFromString(context, it)
+//                        )
+//                    }
+//
+//                } else if ((garments[0].fabricLength == "60" || garments[1].fabricLength == "60") && !viewModel.clickedSize45.get()) {
+//                    garments[1].imagePath.let {
+//                        binding.imageSelvageHorizontal.setImageDrawable(
+//                            getDrawableFromString(context, it)
+//                        )
+//                    }
+//                    viewModel.clickedSize45.set(false)
+//                    viewModel.clickedSize60.set(true)
+//                    viewModel.referenceImage.set(garments[1].imagePath)
+//                }
             } else {
                 if (garments?.get(0)!!.fabricLength == "45") {
-                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_black_bg)
-                    binding.txtSize45.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            android.R.color.white
-                        )
-                    )
-                    binding.txtSize60.isEnabled = false
-                    binding.txtSize60.setBackgroundResource(R.drawable.rounded_light_bg)
-                    binding.txtSize60.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.default_splice
-                        )
-                    )
-                    /*   binding.txtSize60Nap.setTextColor(
-                           ContextCompat.getColor(
-                               requireContext(),
-                               R.color.default_splice
-                           )
-                       )*/
-                    binding.txtSize45.isClickable = false
+//                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_black_bg)
+//                    binding.txtSize45.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            android.R.color.white
+//                        )
+//                    )
+                    binding.txtSize45.isEnabled = true
+                    viewModel.enableSize45.set(true)
+                    viewModel.clickedSize45.set(true)
                 } else if (garments[0].fabricLength == "60") {
-                    binding.txtSize60.setBackgroundResource(R.drawable.rounded_black_bg)
-                    binding.txtSize60.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            android.R.color.white
-                        )
-                    )
-                    /*   binding.txtSize60Nap.setTextColor(
-                           ContextCompat.getColor(
-                               requireContext(),
-                               android.R.color.white
-                           )
-                       )*/
-                    binding.txtSize45.isEnabled = false
-                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_light_bg)
-                    binding.txtSize45.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.disable
-                        )
-                    )
-                    /*     binding.txtSize45Nap.setTextColor(
-                             ContextCompat.getColor(
-                                 requireContext(),
-                                 R.color.disable
-                             )
-                         )*/
-
-                    binding.txtSize60.isClickable = false
+                    binding.txtSize60.isEnabled = true
+                    viewModel.enableSize60.set(true)
+                    viewModel.clickedSize60.set(true)
                 }
-
-
                 garments[0].imagePath.let {
                     binding.imageSelvageHorizontal.setImageDrawable(
                         getDrawableFromString(context, it)
@@ -565,6 +556,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     getDrawableFromString(context, it)
                 )
             }
+            binding.txtSize45.isEnabled = lining?.get(0)?.fabricLength == "45"
+            binding.txtSize60.isEnabled = lining?.get(0)?.fabricLength == "60"
+            viewModel.enableSize45.set(lining?.get(0)?.fabricLength == "45")
+            viewModel.enableSize60.set(lining?.get(0)?.fabricLength == "60")
+
+            if (lining?.get(0)?.fabricLength == "45") {
+                    viewModel.clickedSize45.set(true)
+                } else {
+                    viewModel.clickedSize60.set(true)
+            }
             viewModel.referenceImage.set(lining?.get(0)?.imagePath)
         }
 
@@ -583,11 +584,26 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     getDrawableFromString(context, it)
                 )
             }
+            binding.txtSize45.isEnabled = interfacing?.get(0)?.fabricLength == "45"
+            binding.txtSize60.isEnabled = interfacing?.get(0)?.fabricLength == "60"
+            viewModel.enableSize45.set(interfacing?.get(0)?.fabricLength == "45")
+            viewModel.enableSize60.set(interfacing?.get(0)?.fabricLength == "60")
+
+                if (interfacing?.get(0)?.fabricLength == "45") {
+                    viewModel.clickedSize45.set(true)
+                } else {
+                    viewModel.clickedSize60.set(true)
+                }
+
             viewModel.referenceImage.set(interfacing?.get(0)?.imagePath)
         }
     }
 
     fun clearWorkspace() {
+        disableInchTabs()
+        setSelvageImage()
+        viewModel.showDoubleTouchToZoom.set(false)
+        binding.invalidateAll()
 
         if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
             viewModel.clickReset()
@@ -761,11 +777,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
-                        viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?:0
+                        viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
                     showToWorkspace(true, false);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
-                }else{
+                } else {
                     //TODO
                 }
 
@@ -800,11 +816,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
-                        viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?:0
+                        viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
                     showToWorkspace(true, false);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
-                }else{
+                } else {
                     //TODO
                 }
             }
@@ -838,11 +854,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
-                        viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?:0
+                        viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
                     showToWorkspace(true, false);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
-                }else{
+                } else {
                     //TODO
                 }
             }
@@ -876,11 +892,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
-                        viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?:0
+                        viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
                     showToWorkspace(true, false);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
-                }else{
+                } else {
                     //TODO
                 }
             }
@@ -1048,7 +1064,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     override fun onResume() {
         super.onResume()
-        disableInchTabs()
         calculateScrollButtonVisibility()
         requireActivity().getWindow()
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
@@ -1059,6 +1074,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         if (com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.get()) {
             com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.set(false)
+        }
+        if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get() != true) {
+            viewModel.showDoubleTouchToZoom.set(false)
+            // Hide double tap to zoom text after showing
         }
     }
 
@@ -1241,7 +1260,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableClear(true)
         viewModel.workspacedata = workspaceItem
-        viewModel.showDoubleTouchToZoom.set(false)
         viewModel.checkMirroring()
     }
 
@@ -1552,6 +1570,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
+        if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
+            viewModel.showDoubleTouchToZoom.set(true)
+        }
         viewModel.selectAllText.set(getString(R.string.select_all))
         mWorkspaceEditor?.clearAllSelection()
         var imagename = viewModel.workspacedata?.imagePath
@@ -1604,12 +1625,32 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.workspacedata?.currentSplicedPieceColumn ?: 0
             )
 
-            imagename = getSplicePiece(
+            val splicePiece = getSplicePiece(
                 viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
                 viewModel.workspacedata?.currentSplicedPieceColumn ?: 0,
                 viewModel.workspacedata?.splicedImages
-            )?.imagePath
+            )
 
+            // Setting splice reference layout
+            showSpliceReference(splicePiece)
+            binding.txtSizeSplice.isEnabled = true
+            viewModel.enableSplice.set(true)
+            viewModel.clickedSplice.set(true)
+//            if (viewModel.tabCategory == getString(R.string.lining) ||
+//                viewModel.tabCategory == getString(R.string.interfacing)
+//            ) {
+//
+//                binding.txtSize45.isEnabled =false
+//                viewModel.disabledSize45.set(true)
+//                binding.txtSize45.isEnabled =false
+//                viewModel.disabledSize45.set(true)
+//
+//            } else {
+            viewModel.clickedSize45.set(false)
+            viewModel.clickedSize60.set(false)
+//            }
+
+            imagename = splicePiece?.imagePath
             viewModel.workspacedata?.splicedImages?.size?.let {
                 viewModel.splice_pices_count.set(
                     it
@@ -1630,6 +1671,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 this
             )
         }
+    }
+
+    private fun showSpliceReference(spliceImages: SpliceImages?) {
+        spliceImages?.reference_splice.let {
+            binding.imageSelvageHorizontal.setImageDrawable(
+                getDrawableFromString(context, it)
+            )
+        }
+        viewModel.referenceImage.set(spliceImages?.reference_splice)
     }
 
     private fun showSpliceArrows(row: Int?, column: Int?) {
@@ -1668,8 +1718,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.spliced_pices.set(1)
         }
         if (isSpliceDirectionAvailable(
-                row?.minus(1)  ?: 0,
-                column?: 0,
+                row?.minus(1) ?: 0,
+                column ?: 0,
                 viewModel.workspacedata?.splicedImages
             )
         ) {
