@@ -645,7 +645,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCutBinDialog(count: Int, alertType: Utility.AlertType) {
-        if(!viewModel.userData.value?.cCuttingReminder!!){
+        if(viewModel.userData.value?.cCuttingReminder!!){
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
@@ -724,7 +724,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 setSelvageImage()
             }
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
-                if(!viewModel.userData.value?.cMirrorReminder!!){
+                if(viewModel.userData.value?.cMirrorReminder!!){
                 Utility.getCommonAlertDialogue(
                     requireActivity(),
                     resources.getString(R.string.mirror),
@@ -919,11 +919,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }
             is WorkspaceViewModel.Event.ShowCutBinDialog -> {
-                if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
+                showCutBinDialog(viewModel.cutCount, viewModel.cutType)
+                /*if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
                     //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
                 } else {
                     showCutBinDialog(viewModel.cutCount, viewModel.cutType)
-                }
+                }*/
             }
             is WorkspaceViewModel.Event.RemoveAllPatternPieces -> {
                 clearWorkspace()
@@ -1084,7 +1085,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         enableClear(false)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
-                                if(!viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
+                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
                                     Utility.getCommonAlertDialogue(
                                         requireActivity(),
                                         resources.getString(R.string.spliced_piece),
@@ -1110,7 +1111,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                if(!viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
+                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
                                 Utility.getCommonAlertDialogue(
                                     requireActivity(),
                                     resources.getString(R.string.splicing_required),
@@ -1124,7 +1125,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             }
                                 return true
                             } else {
-                                if(!viewModel.userData.value?.cSpliceReminder!!) {
+                                if(viewModel.userData.value?.cSpliceReminder!!) {
                                     Utility.getCommonAlertDialogue(
                                         requireActivity(),
                                         resources.getString(R.string.splicing_required),
