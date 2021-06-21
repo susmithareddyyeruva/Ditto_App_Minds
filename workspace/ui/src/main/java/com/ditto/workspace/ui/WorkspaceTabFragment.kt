@@ -269,19 +269,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             disableInchTabs(binding.txtSize45)
             disableInchTabs(binding.txtSize60)
             disableInchTabs(binding.txtSizeSplice)
-            disablenap(binding.txtSize45Nap)
-            disablenap(binding.txtSize60Nap)
         }
-    }
-
-    private fun disablenap(view: TextView) {
-        view.isEnabled = false
-        view.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.default_splice
-            )
-        )
     }
 
     private fun disableInchTabs(view: TextView) {
