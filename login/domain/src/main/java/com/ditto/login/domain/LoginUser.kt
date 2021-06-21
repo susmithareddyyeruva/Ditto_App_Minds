@@ -30,4 +30,6 @@ data class LoginUser(
     val cCuttingReminder: Boolean? = true,
     val cInitialisationVector: String? = "",
     val cVectorKey: String? = ""
+
+
 )
