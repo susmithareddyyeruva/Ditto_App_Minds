@@ -17,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -33,6 +32,7 @@ import com.ditto.instructions.ui.adapter.InstructionCalibrationAdapter
 import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.BaseFragment
@@ -359,17 +359,22 @@ class InstructionFragment constructor(
                 "Beam Takedown"
             }
             val bundle = bundleOf("videoPath" to filePath,"title" to titlen,"from" to from)
-            findNavController().navigate(
+            val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+           /* findNavController().navigate(
                 R.id.action_destination_instruction_to_nav_graph_id_video,
                 bundle
-            )
+            )*/
         } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
             val bundle = bundleOf("videoPath" to filePath,"title" to "Calibration","from" to from)
-
-            findNavController().navigate(
+            val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+           /* findNavController().navigate(
                 R.id.action_destination_instruction_calibration_fragment_to_nav_graph_id_video,
                 bundle
-            )
+            )*/
         }
     }
 
