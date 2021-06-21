@@ -70,7 +70,7 @@ class WorkspaceProRepositoryImpl @Inject constructor(
             data,
             "Bearer "+AppState.getToken()!!)
             .doOnSuccess {
-                dbDataDao.updateWSSettingUser(data.c_mirrorReminder,data.c_spliceCutCompleteReminder,
+                dbDataDao.updateWSSettingUser(data.c_mirrorReminder,data.c_cuttingReminder,
                 data.c_spliceReminder,data.c_spliceMultiplePieceReminder)
                 Log.d("result_success","doOnSuccess >>> ${it.toString()}")
             }.map {

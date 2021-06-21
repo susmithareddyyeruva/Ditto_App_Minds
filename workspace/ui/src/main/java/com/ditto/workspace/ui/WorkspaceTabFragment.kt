@@ -47,6 +47,7 @@ import com.ditto.workspace.ui.util.WorkspaceEditor
 import com.ditto.workspace.ui.util.showPinchZoomPopup
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
@@ -112,7 +113,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
-        viewModel.fetchWorkspaceSettingData()
+       if(AppState.getIsLogged()) {
+           viewModel.fetchWorkspaceSettingData()
+       }
         if (viewModel.data.value == null) {
             viewModel.fetchWorkspaceData()
             setPatternPiecesAdapter()
@@ -645,7 +648,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCutBinDialog(count: Int, alertType: Utility.AlertType) {
-        if(viewModel.userData.value?.cCuttingReminder!!){
+        if(viewModel.userData.value?.cCuttingReminder?: true){
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
@@ -724,7 +727,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 setSelvageImage()
             }
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
-                if(viewModel.userData.value?.cMirrorReminder!!){
+                if(viewModel.userData.value?.cMirrorReminder ?: true){
                 Utility.getCommonAlertDialogue(
                     requireActivity(),
                     resources.getString(R.string.mirror),
@@ -1085,7 +1088,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         enableClear(false)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
-                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
+                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
                                     Utility.getCommonAlertDialogue(
                                         requireActivity(),
                                         resources.getString(R.string.spliced_piece),
@@ -1111,7 +1114,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder!!) {
+                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
                                 Utility.getCommonAlertDialogue(
                                     requireActivity(),
                                     resources.getString(R.string.splicing_required),
@@ -1125,7 +1128,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             }
                                 return true
                             } else {
-                                if(viewModel.userData.value?.cSpliceReminder!!) {
+                                if(viewModel.userData.value?.cSpliceReminder?: true) {
                                     Utility.getCommonAlertDialogue(
                                         requireActivity(),
                                         resources.getString(R.string.splicing_required),
