@@ -68,6 +68,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
               }else{
                   getUserDetails(true)
               }
+
                 findNavController().navigate(
                     R.id.action_loginFragment_to_OnboardingFragment,
                     bundle
@@ -167,8 +168,14 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                    val bundle = bundleOf(
+                        "videoPath" to "",
+                        "title" to "Tutorial",
+                        "from" to "tutorial"
+                    )
+                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
                     startActivityForResult(intent, 200)
 
                     //  findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
@@ -182,7 +189,12 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     val bundle = bundleOf("UserId" to 0)
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
-                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                        val bundle = bundleOf(
+                            "videoPath" to "",
+                            "title" to "Tutorial",
+                            "from" to "tutorial"
+                        )
+                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         startActivityForResult(intent, 200)
                         // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)

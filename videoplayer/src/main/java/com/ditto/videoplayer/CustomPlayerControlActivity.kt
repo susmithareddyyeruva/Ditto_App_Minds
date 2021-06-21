@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -23,9 +25,16 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private var mPlayer: YouTubePlayer? = null
     private var mPlayButtonLayout: View? = null
     private var mPlayTimeTextView: TextView? = null
+    private var skipButton: TextView? = null
     private var mHandler: Handler? = null
     private var mSeekBar: SeekBar? = null
     private var isPlay: Boolean = false
+    private var videoUrl = ""
+    private var tittle = ""
+    private var from = ""
+
+    /*    val viewModel: VideoPlayerViewModel by viewModels()
+        lateinit var binding: FragmentExoplayerBinding*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         hideSystemUI()
@@ -41,10 +50,31 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         mPlayButtonLayout = findViewById(R.id.video_control)
         findViewById<View>(R.id.play_video).setOnClickListener(this)
         findViewById<View>(R.id.close).setOnClickListener(this)
+        findViewById<View>(R.id.skipButton).setOnClickListener(this)
         mPlayTimeTextView = findViewById<View>(R.id.play_time) as TextView
+        skipButton = findViewById<View>(R.id.skipButton) as TextView
         mSeekBar = findViewById<View>(R.id.video_seekbar) as SeekBar
         mSeekBar!!.setOnSeekBarChangeListener(mVideoSeekBarChangeListener)
         mHandler = Handler()
+        setupViews()
+    }
+
+    private fun setupViews() {
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            bundle?.getString("videoPath")?.let { videoUrl = it }
+            bundle?.getString("title")?.let { title = it }
+            bundle?.getString("from")?.let { from = it }
+            Log.d("VideoPlayer", " title: $title")
+            if (from.equals("tutorial")) {
+                findViewById<TextView>(R.id.skipButton).visibility = View.GONE
+                findViewById<ImageView>(R.id.close).visibility = View.VISIBLE
+                findViewById<TextView>(R.id.header).text = title
+            } else {
+                findViewById<TextView>(R.id.skipButton).visibility = View.VISIBLE
+                findViewById<ImageView>(R.id.close).visibility = View.GONE
+            }
+        }
     }
 
     override fun onInitializationFailure(
