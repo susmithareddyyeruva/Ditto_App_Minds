@@ -168,6 +168,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
                     //  findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
                 } else {
+                    logger.d("condition false")
 
                 }
             }
@@ -176,9 +177,9 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     val bundle = bundleOf("UserId" to 0)
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
-                        val intent =
-                            Intent(requireContext(), CustomPlayerControlActivity::class.java)
-                        startActivity(intent)
+                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivityForResult(intent, 200)
                         // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                     } else {
 

@@ -3,6 +3,7 @@ package com.ditto.videoplayer
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -10,8 +11,6 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -78,11 +77,20 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
 
     private fun hideSystemUI() {
-        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
-        val behavior =  WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
-        val type = WindowInsetsCompat.Type.systemBars()
-        insetsController.systemBarsBehavior = behavior
-        insetsController.hide(type)
+        val decorView: View = this.window.decorView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        } else {
+
+            val uiOptions = decorView.systemUiVisibility
+            var newUiOptions = uiOptions
+            newUiOptions = newUiOptions or View.SYSTEM_UI_FLAG_LOW_PROFILE
+            newUiOptions = newUiOptions or View.SYSTEM_UI_FLAG_FULLSCREEN
+            newUiOptions = newUiOptions or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            newUiOptions = newUiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE
+            newUiOptions = newUiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            decorView.systemUiVisibility = newUiOptions
+        }
     }
 
     private var mPlaybackEventListener: PlaybackEventListener = object : PlaybackEventListener {

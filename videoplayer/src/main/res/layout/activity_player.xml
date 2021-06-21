@@ -66,11 +66,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#80000000"
+            android:padding="@dimen/small_padding"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:visibility="visible"
             android:weightSum="9"
-            app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/video_view">
@@ -80,7 +81,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="5dp"
                 android:layout_weight="0.5"
                 android:background="@null"
                 android:src="@drawable/exo_icon_play" />
@@ -99,8 +99,8 @@
                 android:id="@+id/play_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:layout_marginEnd="@dimen/small_padding"
                 android:text="--:--"
                 android:textColor="@android:color/white" />
 
@@ -108,10 +108,7 @@
                 android:id="@+id/skip"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_padding"
-                android:layout_marginTop="@dimen/small_padding"
-                android:layout_marginEnd="@dimen/medium_padding"
-                android:layout_marginBottom="@dimen/small_padding"
+                android:layout_marginEnd="@dimen/small_padding"
                 android:layout_weight="1.5"
                 android:background="@color/colorWhite"
                 android:drawablePadding="@dimen/medium_padding"
@@ -125,13 +122,6 @@
                 android:visibility="visible"
                 app:drawableEndCompat="@drawable/ic_skip" />
         </LinearLayout>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/horizontal_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.98" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
