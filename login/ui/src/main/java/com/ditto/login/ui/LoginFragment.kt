@@ -170,8 +170,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     val bundle = bundleOf(
                         "videoPath" to "",
-                        "title" to "Tutorial",
-                        "from" to "tutorial"
+                        "title" to "Ditto application overview",
+                        "from" to "onboarding"
                     )
                     val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -191,8 +191,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                         getUserDetails(true)
                         val bundle = bundleOf(
                             "videoPath" to "",
-                            "title" to "Tutorial",
-                            "from" to "tutorial"
+                            "title" to "Ditto application overview",
+                            "from" to "onboarding"
                         )
                         val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

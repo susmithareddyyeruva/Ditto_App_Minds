@@ -162,21 +162,27 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
 
     override fun onClick(v: View) {
-        val id = v.id
-        if (id == R.id.play_video) {
-            if (isPlay) {
-                playVideo()
-                isPlay = false
-            } else {
-                pauseVideo()
-                isPlay = true
+        when (v.id) {
+            R.id.play_video -> {
+                if (isPlay) {
+                    playVideo()
+                    isPlay = false
+                } else {
+                    pauseVideo()
+                    isPlay = true
+                }
             }
-        } else if (id == R.id.close) {
-            val intent = Intent()
-            intent.data = Uri.parse("SUCCESS")
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            R.id.close -> {
+                finish()
+            }
+            R.id.skipButton -> {
+                val intent = Intent()
+                intent.data = Uri.parse("SUCCESS")
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         }
+
     }
 
     private fun pauseVideo() {
