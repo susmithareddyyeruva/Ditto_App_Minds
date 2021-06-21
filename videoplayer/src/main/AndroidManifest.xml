@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.ditto.videoplayer">
-
+<manifest package="com.ditto.videoplayer"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application>
+        <activity
+            android:name="com.ditto.videoplayer.YouTubePLayerActivity" />
+        <activity
+            android:name="com.ditto.videoplayer.CustomPlayerControlActivity" />
+    </application>
 </manifest>

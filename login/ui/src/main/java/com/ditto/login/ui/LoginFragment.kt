@@ -1,5 +1,6 @@
 package com.ditto.login.ui
 
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.graphics.Rect
 import android.os.Bundle
@@ -16,7 +17,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
-import core.appstate.AppState
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
-class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
+class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -51,6 +52,23 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             it.lifecycleOwner = viewLifecycleOwner
         }
         return binding.rootLayout
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data?.data.toString().equals("SUCCESS")) {
+            getUserDetails(false)
+            //Re directing to Video Screen
+
+            val bundle = bundleOf("UserId" to 0)
+            if (findNavController().currentDestination?.id == R.id.destination_login) {
+
+                findNavController().navigate(
+                    R.id.action_loginFragment_to_OnboardingFragment,
+                    bundle
+                )
+            }
+        }
     }
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
@@ -87,8 +105,8 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
                 adapter.setListData(it)
             }
         }
-        if (bottomNavViewModel.isLogoutEvent.get()){
-            Log.d("LOGIN SCREEN ","LOGOUT HAPPENED")
+        if (bottomNavViewModel.isLogoutEvent.get()) {
+            Log.d("LOGIN SCREEN ", "LOGOUT HAPPENED")
             viewModel.deleteUserInfo()
             bottomNavViewModel.isLogoutEvent.set(false)
         }
@@ -140,20 +158,28 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         when (event) {
             is LoginViewModel.Event.OnLoginClicked -> {
                 getUserDetails(false)
-                //Re directing to On_boarding screen
+                //Re directing to Video Screen
+
                 val bundle = bundleOf("UserId" to 0)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivityForResult(intent, 200)
+
+                    //  findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
                 } else {
 
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                if (Utility.getWifistatus(requireContext())){
+                if (core.network.Utility.isNetworkAvailable(requireContext())) {
                     val bundle = bundleOf("UserId" to 0)
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
-                        findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                        val intent =
+                            Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                        startActivity(intent)
+                        // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                     } else {
 
                     }
@@ -180,7 +206,7 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         }
     }
 
-    private fun getUserDetails(isGuest : Boolean) {
+    private fun getUserDetails(isGuest: Boolean) {
         bottomNavViewModel.isGuestBase.set(isGuest)
         bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
@@ -209,8 +235,17 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
-        Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
-        ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
     }
 
 
