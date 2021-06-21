@@ -116,7 +116,7 @@ class InstructionFragment constructor(
         }
         setupToolbar()
 
-        instruction_view_pager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        binding.instructionViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
                 Log.d("onPageScroll", "state changed")
             }
@@ -163,7 +163,7 @@ class InstructionFragment constructor(
         if (viewModel.instructionID.get() == 2) {
             val adapter =
                 InstructionCalibrationAdapter()
-            instruction_view_pager.adapter = adapter
+            binding.instructionViewPager.adapter = adapter
             adapter.viewModel = viewModel
             viewModel.isShowindicator.set(false)
             adapter.setListData(viewModel.data.value?.instructions!!)
@@ -175,7 +175,7 @@ class InstructionFragment constructor(
 
             val adapter =
                 InstructionAdapter(position)
-            instruction_view_pager.adapter = adapter
+            binding.instructionViewPager.adapter = adapter
             adapter.viewModel = viewModel
             viewModel.isShowindicator.set(false)
             viewModel.data.value?.instructions?.get(position)?.instructions.let {
@@ -189,7 +189,7 @@ class InstructionFragment constructor(
                 viewModel.isStartingPage.set(true)
             }
         }
-        tablay.setupWithViewPager(instruction_view_pager)
+        tablay.setupWithViewPager(binding.instructionViewPager)
     }
 
     /**
@@ -200,7 +200,7 @@ class InstructionFragment constructor(
             is InstructionViewModel.Event.OnInstructionDataUpdated -> {
                 setInstructionadapter()
                 viewModel.toolbarTitle.set(viewModel.data.value?.title)
-                instruction_view_pager.adapter?.notifyDataSetChanged()
+                binding.instructionViewPager.adapter?.notifyDataSetChanged()
             }
             is InstructionViewModel.Event.OnNextButtonClicked -> {
                 viewpagernextbuttonclick()
@@ -250,14 +250,14 @@ class InstructionFragment constructor(
      * [Function] next chevron clicked
      */
     private fun viewpagernextbuttonclick() {
-        instruction_view_pager.setCurrentItem(getItem(+1), true)
+        binding.instructionViewPager.setCurrentItem(getItem(+1), true)
     }
 
     /**
      * [Function] Previous chevron clicked
      */
     private fun viewpagerpreviousbuttonclick() {
-        instruction_view_pager.setCurrentItem(getprevItem(+1), true)
+        binding.instructionViewPager.setCurrentItem(getprevItem(+1), true)
     }
 
     /**
@@ -314,14 +314,14 @@ class InstructionFragment constructor(
      * [Function] Current view pager selected item
      */
     private fun getItem(i: Int): Int {
-        return instruction_view_pager.currentItem + i
+        return binding.instructionViewPager.currentItem + i
     }
 
     /**
      * [Function] Previous view pager selected item
      */
     private fun getprevItem(i: Int): Int {
-        return instruction_view_pager.currentItem - i
+        return binding.instructionViewPager.currentItem - i
     }
 
     /**
@@ -331,16 +331,16 @@ class InstructionFragment constructor(
         val position = Common.currentSelectedTab.get()
         val filePath = if (viewModel.instructionID.get() == 1) {
             viewModel.data.value?.instructions?.get(position)?.instructions?.get(
-                instruction_view_pager.currentItem
+                binding.instructionViewPager.currentItem
             )?.videoPath
         } else {
-            viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.videoPath
+            viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.videoPath
         }
 
         val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
-            viewModel.data.value?.instructions?.get(position)?.instructions?.get(instruction_view_pager.currentItem)?.title
+            viewModel.data.value?.instructions?.get(position)?.instructions?.get(binding.instructionViewPager.currentItem)?.title
         } else {
-            viewModel.data.value?.instructions?.get(instruction_view_pager.currentItem)?.title // calibration
+            viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
         }
 
         displayFullScreenVideo(filePath,title,"tutorial")

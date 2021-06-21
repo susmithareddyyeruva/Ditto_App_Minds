@@ -18,6 +18,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
+import core.appstate.AppState
 import kotlinx.android.synthetic.main.activity_player.*
 
 class CustomPlayerControlActivity : YouTubeBaseActivity(),
@@ -32,6 +33,18 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private var videoUrl = ""
     private var tittle = ""
     private var from = ""
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (AppState.getIsLogged()){
+            finishAffinity()
+        }else{
+            val intent = Intent()
+            intent.data = Uri.parse("ONBACK")
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+    }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -90,10 +103,9 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
         // Start buffering
         if (!wasRestored) {
-            player.cueVideo(VIDEO_ID)
+            player.loadVideo(VIDEO_ID)
         }
         player.setPlayerStyle(PlayerStyle.CHROMELESS)
-        isPlay = true
         mPlayButtonLayout!!.visibility = View.VISIBLE
 
         // Add listeners to YouTubePlayer instance
@@ -125,6 +137,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         }
 
         override fun onPlaying() {
+            play_video.setImageResource(R.drawable.exo_icon_pause)
+            isPlay=false
             mHandler!!.postDelayed(runnable, 100)
             displayCurrentTime()
         }
