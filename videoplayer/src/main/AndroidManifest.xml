@@ -6,6 +6,7 @@
         <activity
             android:name="com.ditto.videoplayer.YouTubePLayerActivity" />
         <activity
-            android:name="com.ditto.videoplayer.CustomPlayerControlActivity" />
+            android:name="com.ditto.videoplayer.CustomPlayerControlActivity"
+            android:screenOrientation="sensorLandscape"/>
     </application>
 </manifest>
