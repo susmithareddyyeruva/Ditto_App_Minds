@@ -91,7 +91,6 @@ class CustomerCareFragment : BaseFragment() {
     private fun setemailteststyle(){
 
         val res: Resources = getResources()
-
         val text: String = String.format(res.getString(R.string.str_email_text,viewModel.getEmailId()))
 
         val spannable = SpannableString(text)
