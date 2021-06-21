@@ -32,20 +32,15 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private var videoUrl = ""
     private var tittle = ""
     private var from = ""
-
-    /*    val viewModel: VideoPlayerViewModel by viewModels()
-        lateinit var binding: FragmentExoplayerBinding*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        hideSystemUI()
         setContentView(R.layout.activity_player)
+        hideSystemUI()
 
         // Initializing YouTube player view
         val youTubePlayerView =
             findViewById<View>(R.id.video_view) as YouTubePlayerView
         youTubePlayerView.initialize(API_KEY, this)
-
-
         //Add play button to explicitly play video in YouTubePlayerView
         mPlayButtonLayout = findViewById(R.id.video_control)
         findViewById<View>(R.id.play_video).setOnClickListener(this)
