@@ -2,15 +2,19 @@ package com.ditto.menuitems_ui.aboutapp.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.ditto.menuitems_ui.databinding.FragmentAboutAppBinding
+import com.ditto.menuitems_ui.settings.WSProSettingViewModel
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,6 +59,27 @@ class AboutAppFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
+        viewModel.fetchUserData()
+        if (savedInstanceState == null) {
+            viewModel.disposable += viewModel.events
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    handleEvent(it)
+                }
+        }
+    }
+
+    private fun handleEvent(event: AboutAppViewModel.Event) {
+        when(event){
+            AboutAppViewModel.Event.updateResponseinText->{
+                binding.aboutwebview.requestFocus()
+                binding.aboutwebview.settings.javaScriptEnabled=true
+                binding.aboutwebview.settings.lightTouchEnabled=true
+                binding.aboutwebview.loadData(viewModel.getResponseText(),"text/html", "UTF-8")
+
+            }
+
+        }
     }
 
     private fun setuptoolbar(){
@@ -66,7 +91,18 @@ class AboutAppFragment : BaseFragment() {
         (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("About The App & Policies")
 
+
     }
+
+
+//    private fun handleEvent(event: AboutAppViewModel.Events) =
+//        when (event) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+//                Html.fromHtml("html", Html.FROM_HTML_MODE_COMPACT)
+//             else
+//                Html.fromHtml("html").
+//
+//        }
 
 
     companion object {
