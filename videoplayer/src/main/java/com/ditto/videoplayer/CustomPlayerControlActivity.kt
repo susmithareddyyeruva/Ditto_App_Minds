@@ -53,7 +53,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         // Initializing YouTube player view
         val youTubePlayerView =
             findViewById<View>(R.id.video_view) as YouTubePlayerView
-        youTubePlayerView.initialize(API_KEY, this)
+        youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
         //Add play button to explicitly play video in YouTubePlayerView
         mPlayButtonLayout = findViewById(R.id.video_control)
         findViewById<View>(R.id.play_video).setOnClickListener(this)
@@ -242,6 +242,6 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         const val API_KEY = "AIzaSyCkPkU1MbL78LtkMmjYrkdMatURfwrlOVE"
 
         //https://www.youtube.com/watch?v=<VIDEO_ID>
-        const val VIDEO_ID = "Jli6Sqm-2DU"
+        const val VIDEO_ID = "KdjB0fIYyDM"
     }
 }
