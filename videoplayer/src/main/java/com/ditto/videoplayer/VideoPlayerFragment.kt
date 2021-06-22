@@ -203,6 +203,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     }
 
     private fun showSnackBar(error: String?) {
+        bottomNavViewModel.showProgress.set(false)
         viewModel.isPlayButtonVisible.set(true)
         val errorMessage = getString(R.string.no_internet_available)
         //if (error.isNullOrEmpty()) getString(R.string.no_internet_available) else error
