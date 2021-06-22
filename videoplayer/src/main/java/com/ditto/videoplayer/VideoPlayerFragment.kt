@@ -98,6 +98,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     private fun handleEvent(event: VideoPlayerViewModel.Event) =
         when (event) {
             is VideoPlayerViewModel.Event.OnPlayButtonClicked -> {
+                bottomNavViewModel.showProgress.set(false)
                 if (!core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                     showSnackBar(getString(R.string.no_internet_available))
                 }else{
@@ -105,9 +106,11 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
                 }
             }
             is VideoPlayerViewModel.Event.OnSkipButtonClicked -> {
+                bottomNavViewModel.showProgress.set(false)
                 findNavController().navigate(R.id.action_VideoPlayer_to_Onboarding)
             }
             is VideoPlayerViewModel.Event.OnCloseButtonClicked -> {
+                bottomNavViewModel.showProgress.set(false)
                 findNavController().navigateUp()
             }
             else -> logger.d("Invalid Event")

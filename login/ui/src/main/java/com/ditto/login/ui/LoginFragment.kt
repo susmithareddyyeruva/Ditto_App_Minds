@@ -199,14 +199,6 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         smoothScrollBy(0, delta) //***/2 *****3/2
     }
 
-    private fun showSnackBar() {
-        val errorMessage = viewModel.errorString.get() ?: ""
-        Utility.showSnackBar(
-            errorMessage,
-            binding.rootLayout
-        )
-    }
-
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
         Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK

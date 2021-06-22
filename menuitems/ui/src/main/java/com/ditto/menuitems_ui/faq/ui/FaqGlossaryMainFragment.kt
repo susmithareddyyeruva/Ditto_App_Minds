@@ -16,10 +16,11 @@ import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 
-class FaqGlossaryMainFragment : BaseFragment() {
+class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogListener  {
 
     private val faqGlossaryfragmentViewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
     lateinit var binding: FaqGlossaryMainfragmentBinding
@@ -46,8 +47,10 @@ class FaqGlossaryMainFragment : BaseFragment() {
         /**
          * Api call for fetching FAQ and Glossary Details...
          */
-        bottomNavViewModel.showProgress.set(true)
-        faqGlossaryfragmentViewModel.fetchData()
+        if (faqGlossaryfragmentViewModel.data.value==null) {
+            bottomNavViewModel.showProgress.set(true)
+            faqGlossaryfragmentViewModel.fetchData()
+        }
         setUIEvents()
         setuptoolbar()
     }
@@ -87,9 +90,19 @@ class FaqGlossaryMainFragment : BaseFragment() {
                 bottomNavViewModel.showProgress.set(false)
 
             }
+            FAQGlossaryfragmentViewModel.Event.OnResultFailed -> {
+              showAlert()
+            }
+            FAQGlossaryfragmentViewModel.Event.NoInternet ->{
+             showAlert()
+            }
         }
 
-
+    private fun showAlert() {
+        val errorMessage = faqGlossaryfragmentViewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
+            ,Utility.Iconype.FAILED)
+    }
     private fun setTabsAdapter(data: FaqGlossaryResponseDomain?) {
         val fragmentAdapter = activity?.supportFragmentManager?.let {
             TabFaqAdapter(
@@ -132,5 +145,19 @@ class FaqGlossaryMainFragment : BaseFragment() {
                 Log.d("onTabSelection", "onTabReselected")
             }
         })
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
     }
 }
