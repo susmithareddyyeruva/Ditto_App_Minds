@@ -19,6 +19,8 @@ import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
 import core.appstate.AppState
 import kotlinx.android.synthetic.main.activity_player.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class CustomPlayerControlActivity : YouTubeBaseActivity(),
     YouTubePlayer.OnInitializedListener, View.OnClickListener {
@@ -64,6 +66,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         mSeekBar!!.setOnSeekBarChangeListener(mVideoSeekBarChangeListener)
         mHandler = Handler()
         setupViews()
+        VIDEO_ID=getYoutubeVideoId("https://youtu.be/KdjB0fIYyDM")?:""
+        Log.d("VideoPlayer ID==", " $videoUrl")
     }
 
     private fun setupViews() {
@@ -102,7 +106,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
         // Start buffering
         if (!wasRestored) {
-            player.loadVideo(VIDEO_ID)
+            player.cueVideo(VIDEO_ID)
         }
         player.setPlayerStyle(PlayerStyle.CHROMELESS)
         mPlayButtonLayout!!.visibility = View.VISIBLE
@@ -238,6 +242,24 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     companion object {
         //https://www.youtube.com/watch?v=<VIDEO_ID>
-        const val VIDEO_ID = "KdjB0fIYyDM"
+         var VIDEO_ID = "https://www.youtube.com/watch?v=IanggPhf7EY"
+    }
+
+    private fun getYoutubeVideoId(youtubeUrl: String?): String? {
+        var videoId: String? = ""
+        if (youtubeUrl != null && youtubeUrl.trim { it <= ' ' }.length > 0 && youtubeUrl.startsWith(
+                "http"
+            )
+        ) {
+            val expression =
+                "^.*((youtu.be" + "/)" + "|(v/)|(/u/w/)|(embed/)|(watch\\?))\\??v?=?([^#&\\?]*).*" // var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+            val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+            val matcher: Matcher = pattern.matcher(youtubeUrl)
+            if (matcher.matches()) {
+                val groupIndex1: String = matcher.group(7)
+                if (groupIndex1 != null && groupIndex1.length == 11) videoId = groupIndex1
+            }
+        }
+        return videoId
     }
 }
