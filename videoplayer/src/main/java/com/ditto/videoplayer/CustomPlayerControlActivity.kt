@@ -18,12 +18,13 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
 import core.appstate.AppState
+import core.ui.common.Utility
 import kotlinx.android.synthetic.main.activity_player.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class CustomPlayerControlActivity : YouTubeBaseActivity(),
-    YouTubePlayer.OnInitializedListener, View.OnClickListener {
+    YouTubePlayer.OnInitializedListener, View.OnClickListener,Utility.CustomCallbackDialogListener {
     private var mPlayer: YouTubePlayer? = null
     private var mPlayButtonLayout: View? = null
     private var mPlayTimeTextView: TextView? = null
@@ -106,7 +107,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
         // Start buffering
         if (!wasRestored) {
-            player.cueVideo(VIDEO_ID)
+            player.loadVideo(VIDEO_ID)
         }
         player.setPlayerStyle(PlayerStyle.CHROMELESS)
         mPlayButtonLayout!!.visibility = View.VISIBLE
@@ -156,7 +157,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
     var mPlayerStateChangeListener: PlayerStateChangeListener = object : PlayerStateChangeListener {
         override fun onAdStarted() {}
-        override fun onError(arg0: YouTubePlayer.ErrorReason) {}
+        override fun onError(arg0: YouTubePlayer.ErrorReason) {
+            Log.d("YOUTUBE ERROR","$arg0")
+            if (arg0 == YouTubePlayer.ErrorReason.NETWORK_ERROR) {
+                showAlert("No Internet Connection available !")
+            }
+        }
         override fun onLoaded(arg0: String) {}
         override fun onLoading() {}
         override fun onVideoEnded() {}
@@ -261,5 +267,33 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             }
         }
         return videoId
+    }
+    private fun showAlert(message:String) {
+        val errorMessage = message
+        Utility.getCommonAlertDialogue(
+           this,
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
     }
 }
