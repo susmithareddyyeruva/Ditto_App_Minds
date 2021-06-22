@@ -64,6 +64,12 @@ class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
                 holder.visit.visibility = View.GONE
                 holder.visit.visibility = View.GONE
             }
+            holder.visit.setOnClickListener {
+                visitSiteListener.onVisitClick(item?.web_url ?: "")
+            }
+            holder.watch.setOnClickListener {
+                watchVideoClickListener.onVideoClick(item?.video_url ?: "")
+            }
         } else {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE

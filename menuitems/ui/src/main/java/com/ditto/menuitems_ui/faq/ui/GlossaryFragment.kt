@@ -51,7 +51,7 @@ class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
                             val bundle =
                                 bundleOf(
                                     "videoPath" to path,
-                                    "title" to "FAQ",
+                                    "title" to "Glossary",
                                     "from" to "tutorial"
                                 )
 
