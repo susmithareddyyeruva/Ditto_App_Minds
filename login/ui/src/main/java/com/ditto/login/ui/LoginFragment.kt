@@ -2,7 +2,6 @@ package com.ditto.login.ui
 
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,9 +16,9 @@ import com.bumptech.glide.Glide
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.databinding.LoginFragmentBinding
-import core.network.NetworkUtility
 import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -99,27 +98,6 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     }
 
-    private fun setViewpagerImageAdapter() {
-        val adapter = LoginViewPagerAdapter()
-        login_view_pager.adapter = adapter
-        adapter.viewModel = viewModel
-        login_view_pager.adapter?.notifyDataSetChanged()
-        login_tablay.setupWithViewPager(login_view_pager)
-
-        viewModel.viewPagerData.value?.let {
-            if (it != null) {
-                adapter.setListData(it)
-            }
-        }
-        if (bottomNavViewModel.isLogoutEvent.get()) {
-            Log.d("LOGIN SCREEN ", "LOGOUT HAPPENED")
-            viewModel.deleteUserInfo()
-            bottomNavViewModel.isLogoutEvent.set(false)
-        }
-
-
-    }
-
     private fun setUIEvents() {
         binding.edittextPassword.customSelectionActionModeCallback =
             object : ActionMode.Callback {
@@ -166,13 +144,10 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             is LoginViewModel.Event.OnLoginClicked -> {
                 getUserDetails(false)
                 //Re directing to Video Screen
-
-                val bundle = bundleOf("UserId" to 0)
-                //Re directing to On_boarding screen
-                val bundle = bundleOf("UserId" to 0 ,"videoPath" to viewModel.videoUrl)
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     val bundle = bundleOf(
-                        "videoPath" to "",
+                        "UserId" to 0,
+                        "videoPath" to viewModel.videoUrl,
                         "title" to "Ditto application overview",
                         "from" to "onboarding"
                     )
@@ -189,11 +164,10 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
                 if (NetworkUtility.isNetworkAvailable(requireContext())){
-                    val bundle = bundleOf("UserId" to 0)
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
-                        val bundle = bundleOf(
-                            "videoPath" to "",
+                        val bundle = bundleOf("UserId" to 0,
+                            "videoPath" to viewModel.videoUrl,
                             "title" to "Ditto application overview",
                             "from" to "onboarding"
                         )
@@ -228,16 +202,6 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 .load(it.get())
                 .placeholder(R.drawable.ic_placeholder)
                 .into( binding.ivViewpagerLogin)
-        }
-    }
-
-    private fun setupKeyboardListener(view: View) {
-        view.viewTreeObserver.addOnGlobalLayoutListener {
-            val r = Rect()
-            view.getWindowVisibleDisplayFrame(r)
-            if (Math.abs(view.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-                onKeyboardShow()
-            }
         }
     }
 
