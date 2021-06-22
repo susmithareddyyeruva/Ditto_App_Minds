@@ -10,12 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.videoplayer.databinding.ActivityPlayerBinding
+import com.ditto.videoplayer.databinding.FragmentExoplayerBinding
 import com.ditto.videoplayer.utility.PlaybackStateListener
-import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.util.Util
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -38,13 +35,13 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
     private var playbackPosition: Long = 0
     private val viewModel: VideoPlayerViewModel by ViewModelDelegate()
     private var playbackStateListener: PlaybackStateListener? = null
-    lateinit var binding: ActivityPlayerBinding
+    lateinit var binding: FragmentExoplayerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ActivityPlayerBinding.inflate(
+        binding = FragmentExoplayerBinding.inflate(
             inflater
         ).also {
             it.viewModel = viewModel
@@ -114,22 +111,22 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
         }
 
 
-    override fun onStart() {
+ /*   override fun onStart() {
         super.onStart()
         if (Util.SDK_INT > 23) {
             initializePlayer()
         }
-    }
+    }*/
 
-    override fun onResume() {
+  /*  override fun onResume() {
         super.onResume()
         hideSystemUi()
         if (player == null) {
             initializePlayer()
         }
-    }
+    }*/
 
-    private fun initializePlayer() {
+    /*private fun initializePlayer() {
         bottomNavViewModel.showProgress.set(true)
         if (player == null) {
             val trackSelector = DefaultTrackSelector(requireContext())
@@ -141,11 +138,11 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
                 .build()
         }
         binding.videoView.player = player
-        /* val mediaItem =
+        *//* val mediaItem =
              MediaItem.Builder()
                  .setUri(getString(R.string.media_url_mp4))
                  .setMimeType(MimeTypes.APPLICATION_MPD)
-                 .build()*/
+                 .build()*//*
         // Replace this line
         val mediaItem =
             MediaItem.fromUri(getString(R.string.media_url_mp4))
@@ -155,7 +152,7 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
         player?.addListener(playbackStateListener!!)
         player?.prepare()
         startPlayer()
-    }
+    }*/
 
     private fun startPlayer() {
         player!!.playWhenReady = true
