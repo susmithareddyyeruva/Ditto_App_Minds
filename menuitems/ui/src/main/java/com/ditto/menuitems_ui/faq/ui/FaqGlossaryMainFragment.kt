@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
+import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FaqGlossaryMainfragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
 import com.google.android.material.tabs.TabLayout
@@ -66,6 +67,7 @@ class FaqGlossaryMainFragment : BaseFragment() {
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

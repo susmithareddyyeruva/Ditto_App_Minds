@@ -30,6 +30,8 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/nav_graph_mainFaq"
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
