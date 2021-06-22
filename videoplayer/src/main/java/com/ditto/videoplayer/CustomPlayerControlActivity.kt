@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -89,7 +88,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         provider: YouTubePlayer.Provider,
         result: YouTubeInitializationResult
     ) {
-        Toast.makeText(this, "Failed to initialize.", Toast.LENGTH_LONG).show()
+        Log.d("Youtube","Failed to initialize.")
     }
 
     override fun onInitializationSuccess(
@@ -238,9 +237,6 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
 
     companion object {
-        private val TAG = CustomPlayerControlActivity::class.java.simpleName
-        const val API_KEY = "AIzaSyCkPkU1MbL78LtkMmjYrkdMatURfwrlOVE"
-
         //https://www.youtube.com/watch?v=<VIDEO_ID>
         const val VIDEO_ID = "KdjB0fIYyDM"
     }
