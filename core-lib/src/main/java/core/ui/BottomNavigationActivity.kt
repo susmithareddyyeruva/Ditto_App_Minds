@@ -344,7 +344,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         binding.bottomNavViewModel?.userFirstNameBase?.set("")
         binding.bottomNavViewModel?.userLastNameBase?.set("")
         binding.bottomNavViewModel?.userPhoneBase?.set("")
-        binding.bottomNavViewModel?.refreshMenu(this)
+        //binding.bottomNavViewModel?.refreshMenu(this)
         binding.drawerLayout.closeDrawer(Gravity.RIGHT)
         if (isLogout) {
             binding.bottomNavViewModel?.logout()

@@ -1,5 +1,6 @@
 package com.ditto.workspace.data
 
+import com.ditto.login.domain.LoginUser
 import io.reactivex.Single
 import non_core.lib.Result
 import com.ditto.workspace.domain.WorkspaceRepository
@@ -17,6 +18,10 @@ class WorkspaceImpl @Inject constructor(
 
     override fun insert(patternsData: PatternsData): Single<Any> {
         return workspaceRepository.insertData(patternsData)
+    }
+
+    override fun getUserDetails(): Single<Result<LoginUser>> {
+        return workspaceRepository.getUserData()
     }
 
     override fun deleteAndInsert(id: Int, patternsData: PatternsData): Single<Any> {
