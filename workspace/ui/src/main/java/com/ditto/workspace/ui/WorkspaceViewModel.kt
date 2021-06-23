@@ -528,12 +528,12 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun downloadPDF(url: String, filename: String) {
-        performtask(url, filename)
+    suspend fun downloadPDF(url: String, filename: String, patternFolderName: String?) {
+        performtask(url, filename,patternFolderName)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun performtask(url: String, filename: String) {
+    suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
 
         withContext(Dispatchers.IO) {
 
@@ -554,25 +554,27 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, filename)
+                result = convertInputStreamToFile(inputStream, filename,patternFolderName?.replace(" ",""))
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
         }
     }
 
-    private fun convertInputStreamToFile(inputStream: InputStream, filename: String): File? {
+    private fun convertInputStreamToFile(inputStream: InputStream, filename: String, patternFolderName: String?): File? {
         var result: File? = null
         val outputFile: File? = null
         var dittofolder: File? = null
 
-        /*dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )*/
-
         val contextWrapper = ContextWrapper(context)
-        dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-        val file = File(dittofolder, "/Pattern")
+
+        dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "DittoPattern"
+        )
+
+        // uncomment following line to save file in internal app memory
+        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "").toLowerCase()}/Pattern Instruction")
         file.mkdirs()
 
         if (!dittofolder.exists()) {
@@ -587,8 +589,12 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     private fun File.copyInputStreamToFile(inputStream: InputStream) {
-        this.outputStream().use { fileOut ->
-            inputStream.copyTo(fileOut)
+        try {
+            this.outputStream().use { fileOut ->
+                inputStream.copyTo(fileOut)
+            }
+        } catch (e: Exception) {
+            Log.d("Error","",e)
         }
     }
 }

@@ -15,6 +15,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -403,16 +404,21 @@ class Utility @Inject constructor(
             context.startActivity(intent)
         }
 
-        fun isFileAvailable(filename: String, context: Context) : Uri? {
+        fun isFileAvailable(filename: String, context: Context, patternFolderName: String?) : Uri? {
 
-            val contextWrapper = ContextWrapper(context)
-            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-            val pdfFile = File(directory, "/Pattern" + filename)
 
-            /*val pdfFile = File(
+
+            val directory = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto/" + filename
-            )*/
+                    .toString() + "/DittoPattern"
+            )
+
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "").toLowerCase()*/
+            val pdfFile = File(directory, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "").toLowerCase()}/Pattern Instruction/${filename}" /*+ filename*/)
+
             var path : Uri? = null
             if (pdfFile.exists()){
                 path = Uri.fromFile(pdfFile)
