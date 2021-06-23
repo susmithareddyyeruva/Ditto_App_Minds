@@ -11,7 +11,7 @@
 
 
     <style name="AppTheme_PopupVideo" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">#30000000</item> <!-- Or any transparency or color you need -->
+        <item name="android:background">#10000000</item> <!-- Or any transparency or color you need -->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -19,6 +19,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#FFFFFF</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AppTheme_Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#FFFFFF</item>
+         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+
     </style>
 
 </resources>
