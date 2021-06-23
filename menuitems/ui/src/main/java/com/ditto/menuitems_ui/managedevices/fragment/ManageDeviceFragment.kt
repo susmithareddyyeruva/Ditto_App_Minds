@@ -24,6 +24,7 @@ import core.SCREEN_MANAGE_DEVICE
 import core.SEARCH_COMPLETE
 import core.SEARCH_COMPLETE_AFTER_WIFI
 import core.models.Nsdservicedata
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -171,9 +172,9 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      * [Function] Filtering list to change to connection status of alredy connected wifi if any
      */
     private fun filterServiceList() {
-        if (core.network.Utility.nsdSericeHostName != null) {
+        if (NetworkUtility.nsdSericeHostName != null) {
             for (item in receivedServiceList!!.indices) {
-                if (core.network.Utility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress) {
+                if (NetworkUtility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress) {
                     viewModel.clickedPosition.set(item)
                     resetAdapter(true)
                     break
