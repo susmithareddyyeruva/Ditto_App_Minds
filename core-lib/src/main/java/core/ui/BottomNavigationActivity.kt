@@ -96,7 +96,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
                 hidemenu()
-                navController.navigate(R.id.action_splashActivity_to_LoginFragment)
+                    navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
 
         }

@@ -193,13 +193,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun checkSocketConnection() {
         GlobalScope.launch {
-            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
                 showConnectivityPopup()
             } else {
                 withContext(Dispatchers.Main) { showProgress(true) }
                 if (startSocketConnection(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
+                        core.network.NetworkUtility.nsdSericeHostName,
+                        core.network.NetworkUtility.nsdSericePortName
                     )
                 ) {
                     //baseViewModel.activeSocketConnection.set(true)
@@ -367,8 +367,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()
@@ -507,7 +507,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun checkSocketConnectionBeforeWorkspace() {
         GlobalScope.launch {
-            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
                 withContext(Dispatchers.Main) {
                     baseViewModel.activeSocketConnection.set(false)
                     enterWorkspace()
@@ -515,8 +515,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else {
                 withContext(Dispatchers.Main) { showProgress(true) }
                 if (startSocketConnection(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
+                        core.network.NetworkUtility.nsdSericeHostName,
+                        core.network.NetworkUtility.nsdSericePortName
                     )
                 ) {
 
@@ -592,8 +592,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()

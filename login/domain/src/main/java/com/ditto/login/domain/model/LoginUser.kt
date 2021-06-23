@@ -1,4 +1,4 @@
-package com.ditto.login.domain
+package com.ditto.login.domain.model
 
 data class LoginUser(
     val userName: String?,
@@ -29,7 +29,9 @@ data class LoginUser(
     val cSpliceReminder: Boolean? = true,
     val cCuttingReminder: Boolean? = true,
     val cInitialisationVector: String? = "",
-    val cVectorKey: String? = ""
+    val cVectorKey: String? = "",
+    val c_subscriptionPlanEndDate: String?="",
+    val c_subscriptionValid: Boolean?=false
 
 
 )

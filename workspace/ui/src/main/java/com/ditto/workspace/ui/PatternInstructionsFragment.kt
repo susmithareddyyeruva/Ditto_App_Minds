@@ -108,7 +108,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     private fun pdfdownload(){
 
-        if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+        if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!){
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
                 downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }

@@ -4,13 +4,11 @@ import android.content.Context
 import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.data.api.LoginRepositoryImpl
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.menuitems.data.api.WsSettingsService
 import com.ditto.menuitems.data.error.WSProSettingFetchError
 import com.ditto.menuitems.data.mapper.toDomain
-import com.ditto.menuitems.data.model.WSProUpdateResult
 import com.ditto.menuitems.domain.WorkspaceProRepository
 import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
@@ -18,10 +16,7 @@ import com.ditto.storage.data.database.UserDao
 import core.CLIENT_ID
 import core.appstate.AppState
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class WorkspaceProRepositoryImpl @Inject constructor(

@@ -1,14 +1,14 @@
 package com.ditto.workspace.data
 
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.login.domain.LoginUser
-import io.reactivex.Single
-import non_core.lib.Result
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.workspace.data.mapper.toDomain
 import com.ditto.workspace.domain.WorkspaceRepository
 import com.ditto.workspace.domain.model.PatternsData
+import io.reactivex.Single
+import non_core.lib.Result
 import javax.inject.Inject
 
 /**

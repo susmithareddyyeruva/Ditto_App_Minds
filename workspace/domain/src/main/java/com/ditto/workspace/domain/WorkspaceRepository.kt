@@ -1,9 +1,9 @@
 package com.ditto.workspace.domain
 
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
+import com.ditto.workspace.domain.model.PatternsData
 import io.reactivex.Single
 import non_core.lib.Result
-import com.ditto.workspace.domain.model.PatternsData
 
 /**
  * Repository interface defining methods to be used by upper (UI/UseCase) layer

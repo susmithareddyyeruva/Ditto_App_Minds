@@ -3,8 +3,8 @@ package com.ditto.login.data.di
 
 import com.ditto.login.data.api.GetLoginDbUseCaseImpl
 import com.ditto.login.data.api.LoginRepositoryImpl
-import com.ditto.login.domain.GetLoginDbUseCase
 import com.ditto.login.domain.LoginRepository
+import com.ditto.login.domain.model.GetLoginDbUseCase
 import dagger.Binds
 import dagger.Module
 
