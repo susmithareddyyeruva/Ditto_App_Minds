@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
@@ -407,11 +408,21 @@ class Utility @Inject constructor(
             context.startActivity(intent)
         }
 
-        fun isFileAvailable(filename : String) : Uri? {
-            val pdfFile = File(
+        fun isFileAvailable(filename: String, context: Context, patternFolderName: String?) : Uri? {
+
+
+
+            val directory = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto/" + filename
+                    .toString() + "/DittoPattern"
             )
+
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            val pdfFile = File(directory, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction/${filename}")
+
             var path : Uri? = null
             if (pdfFile.exists()){
                 path = Uri.fromFile(pdfFile)
