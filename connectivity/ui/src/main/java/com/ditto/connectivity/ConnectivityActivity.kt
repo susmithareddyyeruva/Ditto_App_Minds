@@ -46,7 +46,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 import core.*
 import core.appstate.AppState
 import core.models.Nsdservicedata
-import core.network.Utility
+import core.network.NetworkUtility
 import core.ui.common.Utility.Companion.searchServieList
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -142,9 +142,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             viewModel.isServiceFoundAfterWifi.set(false)
             mClickedService = mServiceListAdapter!!.getDevice(position)!!
             isServiceFound = true
-            Utility.isServiceConnected = isServiceFound
-            Utility.nsdSericeHostName = mClickedService!!.nsdSericeHostAddress
-            Utility.nsdSericePortName = mClickedService!!.nsdServicePort
+            NetworkUtility.isServiceConnected = isServiceFound
+            NetworkUtility.nsdSericeHostName = mClickedService!!.nsdSericeHostAddress
+            NetworkUtility.nsdSericePortName = mClickedService!!.nsdServicePort
             serviceConnectionWaitingJob?.cancel()
             checkSocketConnection()
         }
@@ -257,21 +257,21 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private fun searchNSDservice() {
         Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
         serviceList.clear()
-        Utility.isServiceConnected = false
+        NetworkUtility.isServiceConnected = false
         discoverServices()
         startServiceTimer()
     }
     private fun searchWifiNSDservice() {
         Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
         serviceList.clear()
-        Utility.isServiceConnected = false
+        NetworkUtility.isServiceConnected = false
         discoverServices()
     }
     private fun searchNSDserviceFromPopup() {
         Log.d(ConnectivityUtils.TAG, "searchNSDserviceFromPopup()")
         serviceList.clear()
         mServiceListAdapter?.notifyDataSetChanged()
-        Utility.isServiceConnected = false
+        NetworkUtility.isServiceConnected = false
         discoverServices()
         startServiceTimer()
         viewModel.isNoServiceFound.set(false)
@@ -279,9 +279,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     }
     private fun nsdServiceAutoConnect(services : Nsdservicedata){
         isServiceFound = true
-        Utility.isServiceConnected = isServiceFound
-        Utility.nsdSericeHostName = services!!.nsdSericeHostAddress
-        Utility.nsdSericePortName = services!!.nsdServicePort
+        NetworkUtility.isServiceConnected = isServiceFound
+        NetworkUtility.nsdSericeHostName = services!!.nsdSericeHostAddress
+        NetworkUtility.nsdSericePortName = services!!.nsdServicePort
         serviceConnectionWaitingJob?.cancel()
         mClickedService = services
         checkSocketConnection()

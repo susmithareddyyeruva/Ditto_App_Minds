@@ -1,14 +1,14 @@
 package com.ditto.mylibrary.data
 
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.login.domain.LoginUser
-import io.reactivex.Single
-import non_core.lib.Result
-import com.ditto.storage.data.database.PatternsDao
-import com.ditto.storage.data.database.UserDao
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.storage.data.database.PatternsDao
+import com.ditto.storage.data.database.UserDao
+import io.reactivex.Single
+import non_core.lib.Result
 import javax.inject.Inject
 
 /**

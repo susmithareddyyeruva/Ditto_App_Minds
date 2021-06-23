@@ -1,6 +1,7 @@
 package com.ditto.login.data.api
 
-import com.ditto.login.domain.*
+import com.ditto.login.domain.LoginRepository
+import com.ditto.login.domain.model.*
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -22,5 +23,9 @@ class GetLoginDbUseCaseImpl @Inject constructor(
 
     override fun deleteDbUser(user: String): Single<Boolean> {
         return loginRepository.deleteDbUser(user)
+    }
+
+    override fun getLandingContentDetails(): Single<Result<LandingContentDomain>> {
+        return loginRepository.getLandingDetails()
     }
 }

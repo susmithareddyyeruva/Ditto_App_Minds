@@ -552,6 +552,7 @@ private class MyGestureListener(context: Context, path: String?) :
         Log.d("TAG", "DoubleTap: ")
         Utility.onDrag.set(false)
         if (!Utility.isPopupShowing.get()) {
+            Utility.isDoubleTapTextVisible.set(false)
             showPinchZoomPopup(
                 popUpContext,
                 imagePath,
