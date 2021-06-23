@@ -16,6 +16,8 @@
     <dimen name="margin_top_exo_play_button">10dp</dimen>
     <dimen name="dimen_per_guidline">.93</dimen>
     <dimen name="dimen_padding_bottom_exo_progress">35dp</dimen>
+    <dimen name="tab_padding">100dp</dimen>
+    <dimen name="content_start">34dp</dimen>
 
 
 </resources>

@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager.widget.ViewPager
 import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
 import com.ditto.menuitems_ui.R
@@ -19,6 +22,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+
 
 class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogListener  {
 
@@ -65,15 +69,12 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
             }
     }
 
-    private fun setuptoolbar() {
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(false)
+    private fun setuptoolbar(){
         bottomNavViewModel.visibility.set(false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-
     private fun handleEvent(event: FAQGlossaryfragmentViewModel.Event) =
         when (event) {
             is FAQGlossaryfragmentViewModel.Event.OnResultSuccess -> {
@@ -129,15 +130,29 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
             }
         })
 
-
+        val tabLayout =
+            ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(0) as LinearLayout
+        val tabTextView = tabLayout.getChildAt(1) as TextView
+        val typeface = ResourcesCompat.getFont(requireContext(), R.font.avenir_next_lt_pro_demi)
+        tabTextView.setTypeface(typeface)
         binding.tabLayoutFaq.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 Log.d("onTabSelection", "onTabSelected")
+                val tabLayout =
+                    ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+                val tabTextView = tabLayout.getChildAt(1) as TextView
+                val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_next_lt_pro_demi)
+                tabTextView.setTypeface(typeface)
 
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 Log.d("onTabSelection", "onTabUnselected")
+                val tabLayout =
+                    ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+                val tabTextView = tabLayout.getChildAt(1) as TextView
+                val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_next_lt_pro_regular)
+                tabTextView.setTypeface(typeface)
 
             }
 
