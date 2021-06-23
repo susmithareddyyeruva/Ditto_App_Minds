@@ -1,9 +1,9 @@
 package com.ditto.workspace.domain
 
-import com.ditto.login.domain.LoginUser
-import non_core.lib.Result
-import io.reactivex.Single
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.domain.model.PatternsData
+import io.reactivex.Single
+import non_core.lib.Result
 
 interface GetWorkspaceData {
     fun invoke(): Single<Result<List<PatternsData>>>

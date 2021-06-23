@@ -12,7 +12,7 @@ import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
