@@ -54,6 +54,8 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
 
     sealed class Event {
         object updateResponseinText : Event()
+        object OnShowProgress : Event()
+        object OnHideProgress : Event()
     }
 
 

@@ -1,21 +1,20 @@
 package com.ditto.menuitems_ui.aboutapp.fragment
 
-import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentAboutAppBinding
-import com.ditto.menuitems_ui.settings.WSProSettingViewModel
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -95,6 +94,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
                 binding.aboutwebview.requestFocus()
                 binding.aboutwebview.settings.javaScriptEnabled=true
                 binding.aboutwebview.webViewClient=object :WebViewClient(){
+                    @RequiresApi(Build.VERSION_CODES.M)
                     override fun onReceivedError(
                         view: WebView?,
                         request: WebResourceRequest?,
