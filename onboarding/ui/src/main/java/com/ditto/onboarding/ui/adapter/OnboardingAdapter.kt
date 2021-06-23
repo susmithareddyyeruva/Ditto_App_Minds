@@ -1,6 +1,7 @@
 package com.ditto.onboarding.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,13 +18,18 @@ import core.binding.BindableAdapter
 class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolder>(),
     BindableAdapter<List<OnboardingData>> {
 
-    private val images = intArrayOf(R.drawable.onboard_beam,R.drawable.onboard_calib,R.drawable.onboard_howto)
+    private val images = intArrayOf(R.drawable.onboard_beam,R.drawable.onboard_calib,R.drawable.onboard_howto,R.drawable.onboard_howto)
 
     lateinit var viewModel: OnboardingViewModel
     private var onBoarding: List<OnboardingData> = emptyList()
+    var mutableList : MutableList<OnboardingData> = mutableListOf()
 
     override fun setListData(items: List<OnboardingData>) {
+        val i = OnboardingData(4,"Demovideo","Testing","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
+       // items.toMutableList().add(i)
         onBoarding = items
+        mutableList = items.toMutableList()
+        mutableList!!.add(i)
         notifyDataSetChanged()
     }
 
@@ -33,14 +39,17 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
         return OnBoardingHolder(binding,viewType)
     }
 
-    override fun getItemCount() = onBoarding.size
+    override fun getItemCount() = mutableList.size
 
     override fun onBindViewHolder(holder: OnBoardingHolder, position: Int) {
-        holder.rowonboardingBinding.onboardingValue = onBoarding[position]
+        holder.rowonboardingBinding.onboardingValue = mutableList[position]
         holder.rowonboardingBinding.viewModel = viewModel
         //holder.rowonboardingBinding.imageView.setBackgroundResource(images[position])
+        if(position == 3){
+            holder.rowonboardingBinding.imagePlay.visibility = View.VISIBLE
+        }
         Glide.with(holder.rowonboardingBinding.cardView.context)
-            .load(onBoarding[position].image)
+            .load(mutableList[position].image)
             .placeholder(R.drawable.ic_placeholder)
             .into(holder.rowonboardingBinding.imageView)
     }

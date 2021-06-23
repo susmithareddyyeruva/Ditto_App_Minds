@@ -172,7 +172,14 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                     ISFROMHOME to isFromHomeScreen,
                     ISDNDCHECKED to viewModel.dontShowThisScreen.get()
                 )
-                if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
+
+                if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
+                    val bundle = bundleOf("videoPath" to "viewModel.videoUrl","title" to "Demo Video","from" to "tutorial")
+                    findNavController().navigate(
+                        R.id.action_destination_onboarding_to_nav_graph_id_video,
+                        bundle
+                    )
+                } else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
                     navigateInstructionOrCaliberation(bundle)
 
