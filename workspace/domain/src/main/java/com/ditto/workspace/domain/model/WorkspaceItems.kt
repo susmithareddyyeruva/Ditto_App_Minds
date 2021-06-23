@@ -14,7 +14,7 @@ data class WorkspaceItems (
     var splice: String = "",
     var spliceDirection: String = "",
     var spliceScreenQuantity: String = "",
-    var splicedImages: List<DescriptionImages> = emptyList(),
+    var splicedImages: List<SpliceImages> = emptyList(),
     var cutOnFold: String = "",
     var mirrorOption: String = "",
     var xcoordinate: Float = 0.0f,
@@ -27,5 +27,6 @@ data class WorkspaceItems (
     var showMirrorDialog: Boolean = true,
     var parentPatternId: Int = 0,
     var isCompleted: Boolean = false,
-    var currentSplicedPieceNo:Int = 0
+    var currentSplicedPieceRow:Int = 0,
+    var currentSplicedPieceColumn:Int = 0
 )
