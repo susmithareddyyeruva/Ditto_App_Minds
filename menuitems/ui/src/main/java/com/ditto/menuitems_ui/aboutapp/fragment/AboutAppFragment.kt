@@ -3,6 +3,7 @@ package com.ditto.menuitems_ui.aboutapp.fragment
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.ditto.menuitems_ui.R
@@ -101,7 +101,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
                         error: WebResourceError?
                     ) {
                         super.onReceivedError(view, request, error)
-                        Toast.makeText(requireContext(), error!!.description.toString(), Toast.LENGTH_SHORT).show();
+                       Log.d("Error","$error.description")
                     }
 
                     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {

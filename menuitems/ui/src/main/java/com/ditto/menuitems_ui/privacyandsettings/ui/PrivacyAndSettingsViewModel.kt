@@ -1,7 +1,6 @@
 package com.ditto.menuitems_ui.privacyandsettings.ui
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import com.ditto.menuitems.domain.AboutAppUseCase
 import com.ditto.menuitems.domain.model.AboutAppDomain
 import core.event.UiEvents
@@ -11,14 +10,16 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
+import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCase: AboutAppUseCase) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
-    var data: ObservableField<String> = ObservableField("")
+    var data: String=""
 
     fun fetchUserData() {
+        uiEvents.post(Event.OnShowProgress)
         disposable += aboutAppUseCase.getAboutAppAndPrivacyData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -31,11 +32,16 @@ class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCas
         {
             is Result.OnSuccess<AboutAppDomain> ->{
                 Log.d("PrivacyPolicy", "Success"+result.data)
-               data.set(result.data.c_body)
-                uiEvents.post(Event.updateResponseinText)
+               data=result.data.c_body
+                uiEvents.post(Event.onResultSuccess)
 
             }
+            is NoNetworkError -> {
+                uiEvents.post(Event.OnHideProgress)
+                uiEvents.post(Event.NoNetworkError)
+            }
             is Result.OnError -> {
+                uiEvents.post(Event.OnHideProgress)
                 Log.d("PrivacyPolicy", "Failed")
             }
         }
@@ -43,9 +49,10 @@ class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCas
 
 
     sealed class Event {
-        object updateResponseinText : Event()
+        object onResultSuccess : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
+        object NoNetworkError : Event()
     }
 
 }
