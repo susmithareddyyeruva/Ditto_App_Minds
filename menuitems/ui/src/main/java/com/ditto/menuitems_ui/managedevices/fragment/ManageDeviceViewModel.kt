@@ -9,6 +9,7 @@ import core.MODE_SERVICE
 import core.appstate.AppState
 import core.event.UiEvents
 import core.models.Nsdservicedata
+import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import core.ui.common.Utility
 import kotlinx.coroutines.Dispatchers
@@ -111,9 +112,9 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     }
 
      fun resetAppstate(){
-        core.network.Utility.isServiceConnected = true
-        core.network.Utility.nsdSericeHostName =  Utility.searchServieList?.get(clickedPosition.get())?.nsdSericeHostAddress!!
-        core.network.Utility.nsdSericePortName = Utility.searchServieList?.get(clickedPosition.get())?.nsdServicePort!!
+        NetworkUtility.isServiceConnected = true
+         NetworkUtility.nsdSericeHostName =  Utility.searchServieList?.get(clickedPosition.get())?.nsdSericeHostAddress!!
+         NetworkUtility.nsdSericePortName = Utility.searchServieList?.get(clickedPosition.get())?.nsdServicePort!!
         AppState.clearSavedService()
         Utility.searchServieList?.get(clickedPosition.get())?.let {
             AppState.saveCurrentService(
@@ -123,9 +124,9 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     }
 
     fun clearAppstate(){
-        core.network.Utility.isServiceConnected = false
-        core.network.Utility.nsdSericeHostName =  ""
-        core.network.Utility.nsdSericePortName = 0
+        NetworkUtility.isServiceConnected = false
+        NetworkUtility.nsdSericeHostName =  ""
+        NetworkUtility.nsdSericePortName = 0
     }
 
 
