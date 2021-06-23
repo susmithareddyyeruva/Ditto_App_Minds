@@ -1,4 +1,3 @@
-
 package com.ditto.base.core.di
 
 import android.content.Context
@@ -53,11 +52,11 @@ import javax.inject.Singleton
         SplashDbModule::class, StorageModule::class, RetrofitModule::class, TraceDbModule::class, SplashFragmentModule::class,
         LoginFragmentModule::class, InstructionFragmentModule::class, InstructionModule::class, HomeFragmentModule::class,
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
-        WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,LoginApiModule::class,
-        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class,
-        CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
-        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class, AboutAppDataModule::class]
-        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class,PrivacyAndSettingFragmentModule::class]
+        WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class, LoginApiModule::class,
+        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, VideoPlayerFragmentModule::class, OnboardingApiModule::class,
+        CustomerCareFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
+        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, AboutAppDataModule::class,
+        PrivacyAndSettingFragmentModule::class,AboutAppAPIModule::class]
 
 )
 @Singleton

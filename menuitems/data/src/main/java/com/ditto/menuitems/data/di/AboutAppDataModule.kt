@@ -1,10 +1,10 @@
 package com.ditto.menuitems.data.di
 
 
-import com.ditto.menuitems.data.AboutAppAbstractImpl
 import com.ditto.menuitems.data.AboutAppRepositoryImpl
-import com.ditto.menuitems.domain.AboutAppAbstractRespository
-import com.ditto.menuitems.domain.AbstractForAboutAppViewModel
+import com.ditto.menuitems.data.AboutAppsUseCaseImpl
+import com.ditto.menuitems.domain.AboutAppRepository
+import com.ditto.menuitems.domain.AboutAppUseCase
 import dagger.Binds
 import dagger.Module
 
@@ -14,14 +14,14 @@ import dagger.Module
 @Module(includes = [AbstractModule::class])
 interface AboutAppDataModule {
     @Binds
-    fun bindSettingsRepository(settingsImpl: AboutAppRepositoryImpl): AboutAppAbstractRespository
+    fun bindSettingsRepository(settingsImpl: AboutAppRepositoryImpl): AboutAppRepository
 }
 
 @Module
 internal interface AbstractModule {
     @Binds
     fun bindWSProUsecase(
-        getDbUseCaseImpl: AboutAppAbstractImpl
-    ): AbstractForAboutAppViewModel
+        getDbUseCaseImpl: AboutAppsUseCaseImpl
+    ): AboutAppUseCase
 
 }
