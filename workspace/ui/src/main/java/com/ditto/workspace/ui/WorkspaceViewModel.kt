@@ -554,7 +554,7 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, filename,patternFolderName?.replace(" ",""))
+                result = convertInputStreamToFile(inputStream, filename,patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
@@ -574,7 +574,7 @@ class WorkspaceViewModel @Inject constructor(
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "").toLowerCase()}/Pattern Instruction")
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
         file.mkdirs()
 
         if (!dittofolder.exists()) {

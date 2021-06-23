@@ -98,7 +98,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private fun checkavailablefile() {
         downloadFileName =
             PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName?.replace(" ","")) }//shri
+        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }//shri
         if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {
