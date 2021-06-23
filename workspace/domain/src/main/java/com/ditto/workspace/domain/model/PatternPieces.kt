@@ -14,7 +14,7 @@ data class PatternPieces(
     var splice: String,
     var spliceDirection: String,
     var spliceScreenQuantity: String,
-    var splicedImages: List<DescriptionImages> = emptyList(),
+    var splicedImages: List<SpliceImages> = emptyList(),
     var cutOnFold: String,
     var mirrorOption: String,
     var isCompleted: Boolean
