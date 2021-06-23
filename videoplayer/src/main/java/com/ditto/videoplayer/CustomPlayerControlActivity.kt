@@ -66,8 +66,6 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         mSeekBar = findViewById<View>(R.id.video_seekbar) as SeekBar
         mSeekBar!!.setOnSeekBarChangeListener(mVideoSeekBarChangeListener)
         mHandler = Handler()
-        VIDEO_ID=getYoutubeVideoId("https://youtu.be/KdjB0fIYyDM")?:""
-        Log.d("VideoPlayer ID==", " $videoUrl")
         setupViews()
     }
 
@@ -78,6 +76,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             bundle?.getString("title")?.let { title = it }
             bundle?.getString("from")?.let { from = it }
             Log.d("VideoPlayer", " title: $title")
+            VIDEO_ID=getYoutubeVideoId(videoUrl)?:""
+            Log.d("VideoPlayer ID==", " $videoUrl")
             if (from == "tutorial") {
                 findViewById<TextView>(R.id.skipButton).visibility = View.GONE
                 findViewById<ImageView>(R.id.close).visibility = View.VISIBLE
@@ -261,7 +261,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     companion object {
         //https://www.youtube.com/watch?v=<VIDEO_ID>
-         var VIDEO_ID = "https://www.youtube.com/watch?v=IanggPhf7EY"
+         var VIDEO_ID = ""
     }
 
     private fun getYoutubeVideoId(youtubeUrl: String?): String? {
