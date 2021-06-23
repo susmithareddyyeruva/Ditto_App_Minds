@@ -66,9 +66,9 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         mSeekBar = findViewById<View>(R.id.video_seekbar) as SeekBar
         mSeekBar!!.setOnSeekBarChangeListener(mVideoSeekBarChangeListener)
         mHandler = Handler()
-        setupViews()
         VIDEO_ID=getYoutubeVideoId("https://youtu.be/KdjB0fIYyDM")?:""
         Log.d("VideoPlayer ID==", " $videoUrl")
+        setupViews()
     }
 
     private fun setupViews() {
@@ -85,6 +85,9 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             } else {
                 findViewById<TextView>(R.id.skipButton).visibility = View.VISIBLE
                 findViewById<ImageView>(R.id.close).visibility = View.GONE
+
+                VIDEO_ID=getYoutubeVideoId("https://youtu.be/IanggPhf7EY")?:""  //For Testing purpose private video URL
+
             }
         }
     }
@@ -176,8 +179,10 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             progress: Int,
             fromUser: Boolean
         ) {
-            val lengthPlayed = mPlayer!!.durationMillis * progress / 100.toLong()
-            mPlayer!!.seekToMillis(lengthPlayed.toInt())
+            if (fromUser) {
+                val lengthPlayed = mPlayer!!.durationMillis * progress / 100.toLong()
+                mPlayer!!.seekToMillis(lengthPlayed.toInt())
+            }
         }
 
         override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -226,6 +231,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
         val duration = formatTime(mPlayer!!.durationMillis)
         val current = formatTime(mPlayer!!.currentTimeMillis)
+
+
     }
 
     private fun formatTime(millis: Int): String {
@@ -242,6 +249,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private val runnable: Runnable = object : Runnable {
         override fun run() {
             displayCurrentTime()
+            val playPercent =
+                (mPlayer!!.currentTimeMillis.toFloat() / mPlayer!!.durationMillis
+                    .toFloat() * 100).toInt()
+            println("get youtube displayTime 2 : $playPercent")
+            // update live progress
+            mSeekBar!!.setProgress(playPercent, true)
             mHandler!!.postDelayed(this, 100)
         }
     }
