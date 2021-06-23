@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/content_start"
     android:layout_marginRight="@dimen/padding_common_start"
-    android:layout_marginBottom="@dimen/margin_bottom"
+    android:layout_marginBottom="@dimen/item_bottom_margin"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -58,9 +58,9 @@
         <RelativeLayout
             android:id="@+id/relWatch"
             android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/watch_button_height"
             android:layout_below="@+id/rel_desc"
-            android:layout_marginStart="@dimen/margin_bottom"
+            android:layout_marginStart="@dimen/button_start_common_margin"
             android:layout_marginTop="@dimen/margin_top"
             android:layout_marginBottom="@dimen/margin_top"
             android:layout_marginEnd="@dimen/button_end_margin"
@@ -96,7 +96,7 @@
         <RelativeLayout
             android:id="@+id/relVisit"
             android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/watch_button_height"
             android:layout_below="@+id/rel_desc"
             android:layout_marginStart="@dimen/margin_bottom"
             android:layout_marginTop="@dimen/margin_top"

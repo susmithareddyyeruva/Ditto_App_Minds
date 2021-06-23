@@ -38,4 +38,7 @@
     <dimen name="text_status_margin_start">68dp</dimen>
     <dimen name="drawable_padding">15dp</dimen>
     <dimen name="padding_bottom">8dp</dimen>
+    <dimen name="button_start_common_margin">10dp</dimen>
+    <dimen name="watch_button_height">40dp</dimen>
+    <dimen name="item_bottom_margin">10dp</dimen>
 </resources>

@@ -22,7 +22,11 @@
     <dimen name="top_margin_items">12dp</dimen>
     <dimen name="drawable_padding">26dp</dimen>
     <dimen name="padding_bottom">8dp</dimen>
-    <dimen name="item_container_height">122dp</dimen>
+    <dimen name="item_container_height">80dp</dimen>
     <dimen name="item_container_height_manage">122dp</dimen>
+    <dimen name="button_start_common_margin">17dp</dimen>
+    <dimen name="watch_button_height">68dp</dimen>
+    <dimen name="item_bottom_margin">20dp</dimen>
+
 
 </resources>
