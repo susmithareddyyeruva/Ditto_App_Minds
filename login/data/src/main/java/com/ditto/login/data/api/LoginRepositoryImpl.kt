@@ -4,19 +4,22 @@ import android.content.Context
 import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.login.data.error.LandingContentFetchError
 import com.ditto.login.data.error.LoginError
 import com.ditto.login.data.error.LoginFetchError
 import com.ditto.login.data.mapper.toDomain
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.data.model.LoginRequest
-import com.ditto.login.domain.LoginInputData
 import com.ditto.login.domain.LoginRepository
-import com.ditto.login.domain.LoginResultDomain
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LandingContentDomain
+import com.ditto.login.domain.model.LoginInputData
+import com.ditto.login.domain.model.LoginResultDomain
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.network.Utility
+import core.CLIENT_ID
+import core.network.NetworkUtility
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -61,14 +64,14 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override fun loginUserWithCredential(user: LoginInputData): Single<Result<LoginResultDomain>> {
-        if (!Utility.isNetworkAvailable(context)) {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val loginRequest = LoginRequest("credentials")
         val basic =
             Credentials.basic(username = user.Username ?: "", password = user.Password ?: "")
         return loginService.loginWithCredential(
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            CLIENT_ID,
             loginRequest,
             basic
         )
@@ -108,6 +111,7 @@ class LoginRepositoryImpl @Inject constructor(
             }
 
 
+
     }
 
     override fun deleteDbUser(user: String): Single<Boolean> {
@@ -115,5 +119,30 @@ class LoginRepositoryImpl @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun getLandingDetails(): Single<Result<LandingContentDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }else{
+            return  loginService.getLandingContentDetails(CLIENT_ID)
+                .doOnSuccess {
+                    Log.d("Landing Content", "***** Success**")
+                }
+                .map {
+                    Result.withValue(it.toDomain())
+
+                }
+                .onErrorReturn {
+                    var errorMessage = "Error Fetching Landing Content"
+                    Log.d("Try", "try block")
+
+
+                    Result.withError(
+                        LandingContentFetchError(errorMessage, it)
+                    )
+                }
+        }
+        }
+
 }
 

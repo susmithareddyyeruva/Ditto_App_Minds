@@ -12,6 +12,7 @@ import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
@@ -44,6 +45,7 @@ class WorkspaceViewModel @Inject constructor(
 
     var allPatterns: MutableLiveData<List<PatternsData>> = MutableLiveData()
     var data: MutableLiveData<PatternsData> = MutableLiveData()
+    var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var patternId: ObservableInt = ObservableInt(1)
     var workspacedata: WorkspaceItems? = null
@@ -107,6 +109,26 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleInsertDataResult(it) }
+    }
+
+    fun fetchWorkspaceSettingData(){
+        disposable += getWorkspaceData.getUserDetails()
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleWorkspacesSettingResult(it) }
+    }
+
+    private fun handleWorkspacesSettingResult(result: Result<LoginUser>?) {
+        when (result) {
+            is Result.OnSuccess -> {
+                userData.value = result.data
+            }
+
+            is Result.OnError -> {
+                Log.d("WSProSettingViewModel", "Failed")
+            }
+        }
     }
 
     private fun handleInsertDataResult(result: Any) {

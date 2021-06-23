@@ -31,6 +31,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.util.Util
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -47,6 +48,7 @@ import com.ditto.workspace.ui.util.WorkspaceEditor
 import com.ditto.workspace.ui.util.showPinchZoomPopup
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
@@ -112,6 +114,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
+       if(AppState.getIsLogged()) {
+           viewModel.fetchWorkspaceSettingData()
+       }
         if (viewModel.data.value == null) {
             viewModel.fetchWorkspaceData()
             setPatternPiecesAdapter()
@@ -385,8 +390,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 canvas.drawColor(Color.BLACK)
                 canvas.drawBitmap(bitmap, 0F, 0F, null)
                 clientSocket = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 val workspaceStream = ByteArrayOutputStream()
                 transformedBitmap.compress(Bitmap.CompressFormat.PNG, 0, workspaceStream)
@@ -660,27 +665,33 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCutBinDialog(count: Int, alertType: Utility.AlertType) {
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            resources.getString(R.string.complete_piece, count),
-            resources.getString(R.string.no),
-            resources.getString(R.string.yes),
-            this,
-            alertType,
-            Utility.Iconype.NONE
-        )
+        if(viewModel.userData.value?.cCuttingReminder?: true){
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                resources.getString(R.string.complete_piece, count),
+                resources.getString(R.string.no),
+                resources.getString(R.string.yes),
+                this,
+                alertType,
+                Utility.Iconype.NONE
+            )
+        }else{
+            adapter?.updatePositionAdapter()
+            viewModel.cutCheckBoxClicked(viewModel.cutCount,true)
+        }
     }
 
     private fun showSplicingForgetDialogue(alertType: Utility.AlertType) {
-        getAlertDialogue(
+        Utility.getCommonAlertDialogue(
             requireContext(),
             resources.getString(R.string.complete_cutbin),
             resources.getString(R.string.click_spliced_second_pieces),
             resources.getString(R.string.empty_string),
             resources.getString(R.string.ok),
             this,
-            alertType
+            alertType,
+            Utility.Iconype.NONE
         )
     }
 
@@ -733,15 +744,24 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 setSelvageImage()
             }
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
-                getAlertDialogue(
+                if(viewModel.userData.value?.cMirrorReminder ?: true){
+                Utility.getCommonAlertDialogue(
                     requireActivity(),
                     resources.getString(R.string.mirror),
                     resources.getString(R.string.mirror_message),
                     resources.getString(R.string.cancel),
                     resources.getString(R.string.ok),
                     this,
-                    Utility.AlertType.MIRROR
+                    Utility.AlertType.MIRROR,
+                    Utility.Iconype.NONE
                 )
+                }else{
+                    if (viewModel.isHorizontalMirror) {
+                        mWorkspaceEditor?.flipHorizontal()
+                    } else {
+                        mWorkspaceEditor?.flipVertical()
+                    }
+                }
             }
             is WorkspaceViewModel.Event.DisableMirror -> {
                 enableMirror(false)
@@ -974,11 +994,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }
             is WorkspaceViewModel.Event.ShowCutBinDialog -> {
-                if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
-                    showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
+                showCutBinDialog(viewModel.cutCount, viewModel.cutType)
+                /*if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
+                    //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
                 } else {
                     showCutBinDialog(viewModel.cutCount, viewModel.cutType)
-                }
+                }*/
             }
             is WorkspaceViewModel.Event.RemoveAllPatternPieces -> {
                 clearWorkspace()
@@ -1142,15 +1163,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         enableClear(false)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
-                                getAlertDialogue(
-                                    requireActivity(),
-                                    resources.getString(R.string.spliced_piece),
-                                    resources.getString(R.string.spliced_piece_message),
-                                    resources.getString(R.string.empty_string),
-                                    resources.getString(R.string.ok),
-                                    this,
-                                    Utility.AlertType.DEFAULT
-                                )
+                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
+                                    Utility.getCommonAlertDialogue(
+                                        requireActivity(),
+                                        resources.getString(R.string.spliced_piece),
+                                        resources.getString(R.string.spliced_piece_message),
+                                        resources.getString(R.string.empty_string),
+                                        resources.getString(R.string.ok),
+                                        this,
+                                        Utility.AlertType.CUT_BIN,
+                                        Utility.Iconype.NONE
+                                    )
+                                }
                                 return true
                             }
                             mWorkspaceEditor?.clearAllSelection()
@@ -1165,26 +1189,32 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                getAlertDialogue(
+                                if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
+                                Utility.getCommonAlertDialogue(
                                     requireActivity(),
                                     resources.getString(R.string.splicing_required),
                                     resources.getString(R.string.splicing_required_message),
                                     resources.getString(R.string.empty_string),
                                     resources.getString(R.string.ok),
                                     this,
-                                    Utility.AlertType.DEFAULT
+                                    Utility.AlertType.CUT_BIN,
+                                    Utility.Iconype.NONE
                                 )
+                            }
                                 return true
                             } else {
-                                getAlertDialogue(
-                                    requireActivity(),
-                                    resources.getString(R.string.splicing_required),
-                                    resources.getString(R.string.splicing_required_first_message),
-                                    resources.getString(R.string.empty_string),
-                                    resources.getString(R.string.ok),
-                                    this,
-                                    Utility.AlertType.DEFAULT
-                                )
+                                if(viewModel.userData.value?.cSpliceReminder?: true) {
+                                    Utility.getCommonAlertDialogue(
+                                        requireActivity(),
+                                        resources.getString(R.string.splicing_required),
+                                        resources.getString(R.string.splicing_required_first_message),
+                                        resources.getString(R.string.empty_string),
+                                        resources.getString(R.string.ok),
+                                        this,
+                                        Utility.AlertType.CUT_BIN,
+                                        Utility.Iconype.NONE
+                                    )
+                                }
                             }
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
@@ -1210,7 +1240,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun cutPieces(count: Int?) {
         if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
-            showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
+            //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
         } else if (count != null && count > 1 && !viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }?.isCompleted!!) {
             mWorkspaceEditor?.clearAllSelection()
             enableMirror(false)
@@ -1340,24 +1370,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     mWorkspaceEditor?.flipVertical()
                 }
             }
-            Utility.AlertType.CUT_BIN -> {
-                if (!viewModel.workspacedata?.isCompleted!!) {
-                    viewModel.setCompletedCount(cutCount)
-                    viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
-                        ?.isCompleted =
-                        true
-                    com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
-                    adapter?.notifyDataSetChanged()
-                }
-                mWorkspaceEditor?.removePattern(viewModel.workspacedata, false)
-                if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-                    viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
-                } else {
-                    viewModel.workspacedata = null
-                    clearWorkspace()
-                }
-                onDragCompleted()
-            }
+
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
@@ -2072,8 +2085,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()
@@ -2198,37 +2211,57 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.WIFI -> {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
             }
-            Utility.AlertType.CONNECTIVITY -> {
-                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
-                showConnectivityPopup()
-            }
-            Utility.AlertType.CUT_BIN -> {
-                if (!viewModel.workspacedata?.isCompleted!!) {
-                    viewModel.setCompletedCount(cutCount)
-                    viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
-                        ?.isCompleted =
-                        true
-                    com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
-                    adapter?.notifyDataSetChanged()
+            Utility.AlertType.CALIBRATION -> {
+                if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+                    showProgress(toShow = true)
+                    GlobalScope.launch { projectBorderImage() }
                 }
-                mWorkspaceEditor?.removePattern(viewModel.workspacedata, false)
-                if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-                    viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
+            }
+            Utility.AlertType.QUICK_CHECK -> {
+                viewModel.isFromQuickCheck.set(false)
+                GlobalScope.launch {
+                    Utility.sendDittoImage(
+                        requireContext(),
+                        "solid_black"
+                    )
+                }
+            }
+            Utility.AlertType.MIRROR -> {
+                if (viewModel.isHorizontalMirror) {
+                    mWorkspaceEditor?.flipHorizontal()
                 } else {
-                    viewModel.workspacedata = null
-                    clearWorkspace()
+                    mWorkspaceEditor?.flipVertical()
                 }
-                onDragCompleted()
             }
+
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
+            }
+            Utility.AlertType.PATTERN_RENAME -> {
+                if (baseViewModel.activeSocketConnection.get()) {
+                    GlobalScope.launch {
+                        Utility.sendDittoImage(
+                            requireActivity(),
+                            "ditto_project"
+                        )
+                    }
+                }
+                viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
             }
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
             }
+            Utility.AlertType.MIRROR -> {
+                if (viewModel.isHorizontalMirror) {
+                    mWorkspaceEditor?.flipHorizontal()
+                } else {
+                    mWorkspaceEditor?.flipVertical()
+                }
+            }
         }
+
     }
 
     override fun onCustomNegativeButtonClicked(

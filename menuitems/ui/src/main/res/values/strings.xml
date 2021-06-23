@@ -4,7 +4,7 @@
     <string name="str_email">EMAIL</string>
     <string name="str_waittime">Wait Time : 24 hours</string>
     <string name="str_quest">Questions or Comments?</string>
-    <string name="str_email_text">Email <u>joannsupports@joann.com</u> to our customer care representatives and we will get back soon.</string>
+    <string name="str_email_text">Email <u>%1$s</u> to our customer care representatives and we will get back soon.</string>
     <string name="str_phone">PHONE</string>
     <string name="str_phn_waittime">Wait Time: Less than 30 sec</string>
     <string name="str_ustoll">US Toll Free:</string>

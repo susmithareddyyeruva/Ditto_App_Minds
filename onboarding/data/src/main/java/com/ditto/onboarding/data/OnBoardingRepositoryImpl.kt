@@ -6,7 +6,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.onboarding.data.api.OnBoardingService
 import com.ditto.onboarding.data.error.ContentApiFetchError
 import com.ditto.onboarding.data.mapper.toDomain
@@ -18,7 +18,7 @@ import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.storage.data.model.OnBoarding
 import core.CLIENT_ID
-import core.network.Utility
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
@@ -56,7 +56,7 @@ class OnBoardingRepositoryImpl @Inject constructor(
     }
 
     override fun getOnboardingContent(): Single<Result<OnBoardingResultDomain>> {
-        if (!Utility.isNetworkAvailable(context)) {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return onBoardingService.getContentApi(
