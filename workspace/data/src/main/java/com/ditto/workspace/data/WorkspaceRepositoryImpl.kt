@@ -1,6 +1,8 @@
 package com.ditto.workspace.data
 
 import com.ditto.login.data.mapper.toUserDomain
+import com.ditto.login.domain.model.LoginUser
+import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.LoginUser
 import io.reactivex.Single
 import non_core.lib.Result

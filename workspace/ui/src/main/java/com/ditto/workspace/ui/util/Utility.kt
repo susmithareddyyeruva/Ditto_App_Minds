@@ -32,7 +32,7 @@ class Utility {
         val isOverlappingEnabled: ObservableBoolean = ObservableBoolean(false)
         val isPopupShowing: ObservableBoolean =
             ObservableBoolean(false) // stop GC clear and app going to background on multiple click
-        val isFirstTimeLoad: ObservableBoolean = ObservableBoolean(false)
+        val isDoubleTapTextVisible: ObservableBoolean = ObservableBoolean(true)
 
         @JvmStatic
         val progressCount: ObservableInt = ObservableInt(0)

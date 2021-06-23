@@ -14,7 +14,7 @@ import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternsData
@@ -64,8 +64,11 @@ class WorkspaceViewModel @Inject constructor(
     val clicked_spliced_second_pieces: ObservableBoolean = ObservableBoolean(false)
     val clickedPattenPieces: ObservableBoolean = ObservableBoolean(true)
     val clickedSize45: ObservableBoolean = ObservableBoolean(true)
+    val enableSize45: ObservableBoolean = ObservableBoolean(false)
     val clickedSize60: ObservableBoolean = ObservableBoolean(false)
+    val enableSize60: ObservableBoolean = ObservableBoolean(false)
     val clickedSplice: ObservableBoolean = ObservableBoolean(false)
+    val enableSplice: ObservableBoolean = ObservableBoolean(false)
     val isLastItemVisible: ObservableBoolean = ObservableBoolean(false)
     val isFirstItemVisible: ObservableBoolean = ObservableBoolean(false)
     val isScrollButtonVisible: ObservableBoolean = ObservableBoolean(false)
@@ -73,7 +76,7 @@ class WorkspaceViewModel @Inject constructor(
     val isProjectionRequest: ObservableBoolean = ObservableBoolean(false)
     val isFromQuickCheck: ObservableBoolean = ObservableBoolean(false)
 
-    val showDoubleTouchToZoom: ObservableBoolean = ObservableBoolean(true)
+    val showDoubleTouchToZoom: ObservableBoolean = ObservableBoolean(false)
     var referenceImage: ObservableField<String> = ObservableField("")
     var calibrationText: ObservableField<String> = ObservableField("")
     var selectAllText: ObservableField<String> = ObservableField("Select All")
@@ -174,21 +177,18 @@ class WorkspaceViewModel @Inject constructor(
     fun projectWorkspace() {
         uiEvents.post(Event.onProject)
     }
-    fun setSpliceDefaultColor(){
-
-    }
 
     fun clickSize(isSize45: Boolean) {
+        clickedSplice.set(false)
         clickedSize45.set(isSize45)
         clickedSize60.set(!isSize45)
-        clickedSplice.set(false)
         uiEvents.post(Event.OnClickInch)
     }
 
     fun clickSplice() {
-        clickedSplice.set(false)
-//        clickedSize45.set(false)
-//        clickedSize60.set(false)
+        clickedSplice.set(true)
+        clickedSize45.set(false)
+        clickedSize60.set(false)
         uiEvents.post(Event.OnClickInch)
     }
 

@@ -1,7 +1,7 @@
 package com.ditto.login.ui
 
+import android.content.Intent
 import android.content.pm.PackageInfo
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,21 +12,22 @@ import androidx.annotation.Nullable
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.ui.adapter.LoginViewPagerAdapter
 import com.ditto.login.ui.databinding.LoginFragmentBinding
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 
-class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
+class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -53,11 +54,35 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         return binding.rootLayout
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data?.data.toString().equals("SUCCESS")) {
+            getUserDetails(false)
+            //Re directing to Video Screen
+
+            val bundle = bundleOf("UserId" to 0)
+            if (findNavController().currentDestination?.id == R.id.destination_login) {
+              if (AppState.getIsLogged()){
+                  getUserDetails(false)
+              }else{
+                  getUserDetails(true)
+              }
+
+                findNavController().navigate(
+                    R.id.action_loginFragment_to_OnboardingFragment,
+                    bundle
+                )
+            }
+        }
+    }
+
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val pinfo: PackageInfo = requireActivity().getPackageManager()
             .getPackageInfo(requireActivity().getPackageName(), 0)
         viewModel.versionName.set("Version " + pinfo.versionName)
+        bottomNavViewModel.showProgress.set(true)
+        viewModel.getLandingScreenDetails()/**Fetch Landing screen Details.....*/
         if (savedInstanceState == null) {
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,32 +92,9 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
         }
 
-        viewModel.fetchViewPagerData()
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
-        setViewpagerImageAdapter()
         setUIEvents()
         //setupKeyboardListener(binding.root) // call in OnCreate or similar
-
-    }
-
-    private fun setViewpagerImageAdapter() {
-        val adapter = LoginViewPagerAdapter()
-        login_view_pager.adapter = adapter
-        adapter.viewModel = viewModel
-        login_view_pager.adapter?.notifyDataSetChanged()
-        login_tablay.setupWithViewPager(login_view_pager)
-
-        viewModel.viewPagerData.value?.let {
-            if (it != null) {
-                adapter.setListData(it)
-            }
-        }
-        if (bottomNavViewModel.isLogoutEvent.get()){
-            Log.d("LOGIN SCREEN ","LOGOUT HAPPENED")
-            viewModel.deleteUserInfo()
-            bottomNavViewModel.isLogoutEvent.set(false)
-        }
-
 
     }
 
@@ -138,49 +140,72 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
+
             is LoginViewModel.Event.OnLoginClicked -> {
                 getUserDetails(false)
-                //Re directing to On_boarding screen
-                val bundle = bundleOf("UserId" to 0)
+                //Re directing to Video Screen
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                    val bundle = bundleOf(
+                        "UserId" to 0,
+                        "videoPath" to viewModel.videoUrl,
+                        "title" to "Ditto application overview",
+                        "from" to "onboarding"
+                    )
+                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                    startActivityForResult(intent, 200)
+
+                    //  findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
                 } else {
+                    logger.d("condition false")
 
                 }
             }
             is LoginViewModel.Event.OnSeeMoreClicked -> {
-                if (Utility.getWifistatus(requireContext())){
-                    val bundle = bundleOf("UserId" to 0)
+                if (NetworkUtility.isNetworkAvailable(requireContext())){
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
-                        findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                        val bundle = bundleOf("UserId" to 0,
+                            "videoPath" to viewModel.videoUrl,
+                            "title" to "Ditto application overview",
+                            "from" to "onboarding"
+                        )
+                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivityForResult(intent, 200)
+                        // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                     } else {
 
                     }
                 } else {
+                    bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))
                     showAlert()
                 }
 
             }
             is LoginViewModel.Event.OnLoginFailed -> {
+                bottomNavViewModel.showProgress.set(false)
                 showAlert()
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
+            LoginViewModel.Event.OnLandingSuccess ->{
+             setLandingImage()
+            }
         }
 
-    private fun setupKeyboardListener(view: View) {
-        view.viewTreeObserver.addOnGlobalLayoutListener {
-            val r = Rect()
-            view.getWindowVisibleDisplayFrame(r)
-            if (Math.abs(view.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-                onKeyboardShow()
-            }
+    private fun setLandingImage() {
+        viewModel.imageUrl.let {
+            Glide.with( binding.ivViewpagerLogin.context)
+                .load(it.get())
+                .placeholder(R.drawable.ic_placeholder)
+                .into( binding.ivViewpagerLogin)
         }
     }
 
-    private fun getUserDetails(isGuest : Boolean) {
+    private fun getUserDetails(isGuest: Boolean) {
         bottomNavViewModel.isGuestBase.set(isGuest)
         bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
@@ -209,8 +234,17 @@ class LoginFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
-        Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
-        ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
     }
 
 

@@ -1,6 +1,6 @@
 package com.ditto.menuitems.data
 
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.menuitems.domain.GetWorkspaceProData
 import com.ditto.menuitems.domain.WorkspaceProRepository
 import com.ditto.menuitems.domain.model.WSProSettingDomain

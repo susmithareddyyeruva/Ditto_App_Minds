@@ -1,5 +1,6 @@
 package com.ditto.workspace.domain
 
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.login.domain.LoginUser
 import non_core.lib.Result
 import io.reactivex.Single

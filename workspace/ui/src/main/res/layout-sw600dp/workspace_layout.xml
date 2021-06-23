@@ -67,7 +67,7 @@
             android:text="@{String.format(@string/splice_text,viewModel.spliced_pices, viewModel.splice_pices_count)}"
             android:textColor="@color/default_text_color"
             android:textSize="@dimen/text_select_all"
-            android:visibility="@{viewModel.spliced_pices_visibility ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
             app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
 
@@ -115,6 +115,52 @@
             android:visibility="@{viewModel.showDoubleTouchToZoom}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace" />
+
+
+
+        <ImageView
+            android:id="@+id/splice_right_border"
+            android:layout_width="@dimen/dimen_2"
+            android:layout_height="@dimen/dimen_0"
+            android:visibility="@{viewModel.isSpliceRightVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
+            android:background="@drawable/ic_workspace_splice_right_new"/>
+
+        <ImageView
+            android:id="@+id/splice_left_border"
+            android:layout_width="@dimen/dimen_2"
+            android:layout_height="@dimen/dimen_0"
+            android:visibility="@{viewModel.isSpliceLeftVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
+            android:background="@drawable/ic_workspace_splice_left_new"/>
+
+
+        <ImageView
+            android:id="@+id/splice_top_border"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_2"
+            android:visibility="@{viewModel.isSpliceTopVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
+            android:background="@drawable/ic_workspace_splice_top_new"/>
+
+
+        <ImageView
+            android:id="@+id/splice_bottom_border"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_2"
+            android:visibility="@{viewModel.isSpliceBottomVisible() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            android:background="@drawable/ic_workspace_splice_bottom_new"/>
+
+
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/splice_right"
@@ -170,7 +216,6 @@
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/arrow" />
-
 
         <TextView
             android:id="@+id/txt_select_all"

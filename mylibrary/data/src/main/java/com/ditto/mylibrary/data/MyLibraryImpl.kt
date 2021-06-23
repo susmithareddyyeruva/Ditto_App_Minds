@@ -1,6 +1,6 @@
 package com.ditto.mylibrary.data
 
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.MyLibraryData

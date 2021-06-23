@@ -19,6 +19,7 @@ import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.HowtoFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.ditto.workspace.ui.PinchAndZoom
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -109,7 +110,7 @@ class HowtoFragment : BaseFragment() {
                 Unit
             }
             is HowtoViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
-            is HowtoViewModel.Event.OnShowProgress ->bottomNavViewModel.showProgress.set(true)
+            is HowtoViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
             is HowtoViewModel.Event.OnSpinchAndZoom -> {
                 showPinchZoomPopup(viewModel.imagePath)
             }
@@ -117,19 +118,29 @@ class HowtoFragment : BaseFragment() {
 
                 if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 3)) {
 
-                    var title = viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
+                    var title =
+                        viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
 
-                    val bundle = bundleOf("videoPath" to viewModel.videoUrl,"title" to title,"from" to "tutorial")
-
-                    findNavController().navigate(
-                        com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
-                        bundle
+                    val bundle = bundleOf(
+                        "videoPath" to viewModel.videoUrl,
+                        "title" to title,
+                        "from" to "tutorial"
                     )
 
-                } else {}
+                    /*    findNavController().navigate(
+                            com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
+                            bundle
+                        )*/
+
+                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+
+                } else {
+                }
             }
             else -> {
-                Log.d("button event","Button clicked except onSkip")
+                Log.d("button event", "Button clicked except onSkip")
             }
         }
 
@@ -143,6 +154,7 @@ class HowtoFragment : BaseFragment() {
         intent.putExtra("isFrom", "Howto")
         context?.let { ContextCompat.startActivity(it, intent, null) }
     }
+
     /**
      * [Function] To show error popup
      */
@@ -203,7 +215,7 @@ class HowtoFragment : BaseFragment() {
         }
         binding.viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                Log.d("onPageScroll","state changed")
+                Log.d("onPageScroll", "state changed")
             }
 
             override fun onPageScrolled(
@@ -211,7 +223,7 @@ class HowtoFragment : BaseFragment() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScroll","onPageScrolled")
+                Log.d("onPageScroll", "onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -237,10 +249,11 @@ class HowtoFragment : BaseFragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                Log.d("onTabUnselected","tab selected")
+                Log.d("onTabUnselected", "tab selected")
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
-                Log.d("onTabReselected","re-selected")
+                Log.d("onTabReselected", "re-selected")
             }
         })
     }

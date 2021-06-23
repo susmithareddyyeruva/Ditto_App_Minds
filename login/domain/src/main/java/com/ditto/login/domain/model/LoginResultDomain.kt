@@ -1,4 +1,4 @@
-package com.ditto.login.domain
+package com.ditto.login.domain.model
 
 import com.ditto.login.domain.error.FaultDomain
 
@@ -57,5 +57,7 @@ data class LoginResultDomain(
     val cRegisteredWithNarvar: Boolean,
     val cTaxExempt: Boolean,
     val cInitialisationVector: String,
-    val cVectorKey: String
+    val cVectorKey: String,
+    val c_subscriptionPlanEndDate: String,
+    val c_subscriptionValid: Boolean
 )
