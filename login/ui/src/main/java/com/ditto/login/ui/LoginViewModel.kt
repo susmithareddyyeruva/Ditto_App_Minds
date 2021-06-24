@@ -265,6 +265,7 @@ class LoginViewModel @Inject constructor(
                 storageManager.savePrefs(CUSTOMERCARE_EMAIL, it.data.c_body.customerCareEmail)
                 storageManager.savePrefs(CUSTOMERCARE_PHONE, it.data.c_body.customerCareePhone)
                 storageManager.savePrefs(CUSTOMERCARE_TIMING, it.data.c_body.customerCareeTiming)
+                storageManager.savePrefs(VIDEO_URL, it.data.c_body.videoUrl)
                 videoUrl = it.data.c_body.videoUrl
                 imageUrl.set(it.data.c_body.imageUrl)
                 uiEvents.post(Event.OnLandingSuccess)
