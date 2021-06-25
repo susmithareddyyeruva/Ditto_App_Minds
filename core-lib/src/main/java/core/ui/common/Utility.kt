@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
@@ -14,7 +13,6 @@ import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -40,8 +38,6 @@ import java.io.*
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -420,14 +416,15 @@ class Utility @Inject constructor(
 
             val directory = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + "/DittoPattern"
+                    .toString() + "/Ditto"
             )
 
 
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
             var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
-            val pdfFile = File(directory, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction/${filename}")
+            Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
+            val pdfFile = File(directory, "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
 
             var path : Uri? = null
             if (pdfFile.exists()){
