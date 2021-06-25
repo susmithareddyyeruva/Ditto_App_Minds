@@ -21,7 +21,7 @@
             android:title="@string/str_menu_settings" />
 
         <item
-            android:id="@+id/nav_graph_faq"
+            android:id="@+id/nav_graph_mainFaq"
             android:icon="@drawable/ic_menu_faq"
             android:title="@string/str_menu_faq" />
 

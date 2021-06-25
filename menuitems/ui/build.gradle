@@ -74,11 +74,14 @@ dependencies {
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(':logger')
+    implementation project(path: ':videoplayer')
     implementation project(':menuitems-domain')
     implementation project(':login-domain')
-
+    implementation project(path: ':connectivity-ui')
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
-
+// Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
     implementation 'com.google.code.gson:gson:2.8.5'
 }

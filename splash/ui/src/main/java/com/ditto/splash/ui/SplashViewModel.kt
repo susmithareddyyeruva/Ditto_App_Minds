@@ -3,7 +3,7 @@ package com.ditto.splash.ui
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.splash.domain.GetDbDataUseCase
 import com.ditto.splash.domain.UpdateDbUseCase
 import com.ditto.storage.data.database.TraceDataDatabase
@@ -55,7 +55,7 @@ class SplashViewModel @Inject constructor(
                 uiEvents.post(Event.NavigateToLogin)
             }
         }
-        updateDb()
+       updateDb()
     }
 
     fun callToken(){

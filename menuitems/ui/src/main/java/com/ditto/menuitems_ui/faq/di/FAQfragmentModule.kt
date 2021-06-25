@@ -1,7 +1,7 @@
 package com.ditto.menuitems_ui.faq.di
 
 import androidx.lifecycle.ViewModel
-import com.ditto.menuitems_ui.faq.ui.FQAfragment
+import com.ditto.menuitems_ui.faq.ui.FAQFragment
 import com.ditto.menuitems_ui.faq.ui.FQAfragmentViewModel
 import core.ui.ViewModelKey
 import dagger.Binds
@@ -22,5 +22,5 @@ interface FAQfragmentViewModelModule {
 @Module
 interface FAQfragmentModule {
     @ContributesAndroidInjector(modules = [FAQfragmentViewModelModule::class])
-    fun FQAfragment(): FQAfragment
+    fun FQAfragment(): FAQFragment
 }

@@ -90,6 +90,7 @@ dependencies {
     // Storage modules
     implementation project(path: ':storage-data')
     implementation project(path: ':storage-domain')
+    implementation project(path: ':videoplayer')
 }
 
 repositories {

@@ -8,7 +8,7 @@
     <string name="wifi_connectivity_onboarding" tools:ignore="ExtraTranslation">This app needs WiFi Connectivity.</string>
     <string name="later">LATER</string>
     <string name="turnon">TURN ON</string>
-    <string name="settings">Setting</string>
+    <string name="settings">SETTINGS</string>
     <string name="tutorialheader">Welcome back,</string>
     <string name="tutorial_sub_header">What would you like to do today?</string>
     <string name="tutorial_sub_header_for_guest">Let\'s get started!</string>

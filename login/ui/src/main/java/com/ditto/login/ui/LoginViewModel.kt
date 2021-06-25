@@ -8,11 +8,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.domain.GetLoginDbUseCase
-import com.ditto.login.domain.LoginInputData
-import com.ditto.login.domain.LoginResultDomain
-import com.ditto.login.domain.LoginUser
-import com.ditto.login.domain.model.LoginViewPagerData
+import com.ditto.login.domain.model.*
 import com.ditto.storage.domain.StorageManager
 import core.*
 import core.appstate.AppState
@@ -44,11 +40,13 @@ class LoginViewModel @Inject constructor(
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
     val isLoginButtonFocusable: ObservableBoolean = ObservableBoolean(true)
     var errorString: ObservableField<String> = ObservableField("")
+    var videoUrl: String = ""
+    var imageUrl: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
     var viewPagerData: MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
-
+    var viewPagerDataList: MutableLiveData<List<String>> = MutableLiveData()
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
     }
@@ -69,7 +67,10 @@ class LoginViewModel @Inject constructor(
             //Making api call for Login
             uiEvents.post(Event.OnShowProgress)
             disposable += useCase.loginUserWithCredential(
-                LoginInputData(userName.get(), password.get())
+                LoginInputData(
+                    userName.get(),
+                    password.get()
+                )
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,12 +110,27 @@ class LoginViewModel @Inject constructor(
                         MULTIPLE_PIECE_REMINDER,
                         result.data.cSpliceMultiplePieceReminder
                     )
+                    /**
+                     * Storing the subscription information into Local Cache
+                     */
+
+                    storageManager.savePrefs(
+                        CSUBSCRIPTION_ENDDATE,
+                        result.data.c_subscriptionPlanEndDate
+                    )
+                    storageManager.savePrefs(
+                        CSUBSCRIPTION_VALID,
+                        result.data.c_subscriptionValid
+                    )
 
                     userEmail = result.data.email ?: ""
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
                     AppState.setIsLogged(true)
+                    /**
+                     * Storing the subscription information into DB
+                     */
                     disposable += useCase.createUser(
                         LoginUser(
                             userName = userName.get(),
@@ -141,35 +157,10 @@ class LoginViewModel @Inject constructor(
                             cSpliceMultiplePieceReminder = result.data.cSpliceMultiplePieceReminder,
                             cSpliceReminder = result.data.cSpliceReminder,
                             cCuttingReminder = result.data.cCuttingReminder,
-                            cInterestArt = result.data.cInterestArt,
-                            cInterestBridalSpecialOccasionProjects = result.data.cInterestBridalSpecialOccasionProjects,
-                            cInterestClassroomCraftsDecor = result.data.cInterestClassroomCraftsDecor,
-                            cInterestFloral = result.data.cInterestFloral,
-                            cInterestFoodCrafts = result.data.cInterestFoodCrafts,
-                            cInterestHolidayPartyDecorating = result.data.cInterestHolidayPartyDecorating,
-                            cInterestHomeDecor = result.data.cInterestHomeDecor,
-                            cInterestJewelry = result.data.cInterestJewelry,
-                            cInterestKidsCrafts = result.data.cInterestKidsCrafts,
-                            cInterestKnittingCrochet = result.data.cInterestKnittingCrochet,
-                            cInterestPaperCrafts = result.data.cInterestPaperCrafts,
-                            cInterestQuiltingSewingFabric = result.data.cInterestQuiltingSewingFabric,
-                            cIsCostumeGuildEnrolled = result.data.cIsCostumeGuildEnrolled,
-                            cIsFourHEnrolled = result.data.cIsFourHEnrolled,
-                            cIsGirlScoutsEnrolled = result.data.cIsGirlScoutsEnrolled,
-                            cIsJoannPlusCustomer = result.data.cIsJoannPlusCustomer,
-                            cIsMilitaryEnrolled = result.data.cIsMilitaryEnrolled,
-                            cIsTaxExempt = result.data.cIsTaxExempt,
-                            cIsTeacherEnrolled = result.data.cIsTeacherEnrolled,
-                            cLearnBrowseSocialMedia = result.data.cLearnBrowseSocialMedia,
-                            cLearnLookOnline = result.data.cLearnLookOnline,
-                            cLearnTakeAClass = result.data.cLearnTakeAClass,
-                            cLearnVisitJoannStore = result.data.cLearnVisitJoannStore,
-                            cReceiveDirectMail = result.data.cReceiveDirectMail,
-                            cReceiveTextMessage = result.data.cReceiveTextMessage,
-                            cRegisteredWithNarvar = result.data.cRegisteredWithNarvar,
-                            cTaxExempt = result.data.cTaxExempt,
                             cInitialisationVector = result.data.cInitialisationVector,
-                            cVectorKey = result.data.cVectorKey
+                            cVectorKey = result.data.cVectorKey,
+                            c_subscriptionPlanEndDate = result.data.c_subscriptionPlanEndDate,
+                            c_subscriptionValid = result.data.c_subscriptionValid
                         )
                     )
                         .subscribeOn(Schedulers.io())
@@ -252,35 +243,39 @@ class LoginViewModel @Inject constructor(
         object OnSeeMoreClicked : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
+        object OnLandingSuccess : Event()
     }
 
-    fun fetchViewPagerData() {
-        lateinit var languageList: List<LoginViewPagerData>
+    fun getLandingScreenDetails() {
+        uiEvents.post(Event.OnShowProgress)
+        disposable += useCase.getLandingContentDetails().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribeBy {
+                handleLandingScreenFetchDetails(it)
+            }
+    }
 
-        languageList = listOf(
-            LoginViewPagerData(
-                1,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            ),
-            LoginViewPagerData(
-                2,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            ),
-            LoginViewPagerData(
-                3,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            ),
-            LoginViewPagerData(
-                4,
-                "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/dojo.svg",
-                "The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-            )
-        )
+    private fun handleLandingScreenFetchDetails(it: Result<LandingContentDomain>?) {
+        logger.d("LandingDetails  : ${it.toString()}")
+        when (it) {
+            is Result.OnSuccess -> {
+                /**
+                 * Saving Customer Care Information's
+                 */
+                uiEvents.post(Event.OnHideProgress)
+                storageManager.savePrefs(CUSTOMERCARE_EMAIL, it.data.c_body.customerCareEmail)
+                storageManager.savePrefs(CUSTOMERCARE_PHONE, it.data.c_body.customerCareePhone)
+                storageManager.savePrefs(CUSTOMERCARE_TIMING, it.data.c_body.customerCareeTiming)
+                storageManager.savePrefs(VIDEO_URL, it.data.c_body.videoUrl)
+                videoUrl = it.data.c_body.videoUrl
+                imageUrl.set(it.data.c_body.imageUrl)
+                uiEvents.post(Event.OnLandingSuccess)
+            }
+            is Result.OnError -> handleError(it.error)
+            else -> {
+                uiEvents.post(Event.OnHideProgress)
 
-        viewPagerData.value = languageList
+            }
+        }
     }
 }
 

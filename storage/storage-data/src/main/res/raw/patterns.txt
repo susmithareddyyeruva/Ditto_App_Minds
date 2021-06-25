@@ -342,10 +342,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"m7987_36_c_4_splice_l",
               "imagePath": "m7987_36_c_4_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"m7987_36_c_4_splice_r",
               "imagePath": "m7987_36_c_4_splice_r"
             }
           ],
@@ -489,10 +495,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"m7987_36_c_10_splice_l",
               "imagePath": "m7987_36_c_10_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"m7987_36_c_10_splice_r",
               "imagePath": "m7987_36_c_10_splice_r"
             }
           ],
@@ -1227,10 +1239,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"m7991_m_a_8_dots_bottom",
               "imagePath": "m7991_m_a_8_dots_bottom"
             },
             {
               "id": 2,
+              "row":1,
+              "column":0,
+              "reference_splice":"m7991_m_a_8_dots_top",
               "imagePath": "m7991_m_a_8_dots_top"
             }
           ],
@@ -1299,10 +1317,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"midneck_1_splice_l",
               "imagePath": "midneck_1_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"midneck_1_splice_r",
               "imagePath": "midneck_1_splice_r"
             }
           ],
@@ -1326,10 +1350,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"midneck_2_splice_l",
               "imagePath": "midneck_2_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"midneck_2_splice_r",
               "imagePath": "midneck_2_splice_r"
             }
           ],
@@ -1353,10 +1383,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"midneck_3_splice_l",
               "imagePath": "midneck_3_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"midneck_3_splice_r",
               "imagePath": "midneck_3_splice_r"
             }
           ],
@@ -1380,10 +1416,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"midneck_4_splice_l",
               "imagePath": "midneck_4_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"midneck_4_splice_r",
               "imagePath": "midneck_4_splice_r"
             }
           ],
@@ -1552,10 +1594,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"womenpant_1_splice_l",
               "imagePath": "womenpant_1_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"womenpant_1_splice_r",
               "imagePath": "womenpant_1_splice_r"
             }
           ],
@@ -1579,10 +1627,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"womenpant_2_splice_l",
               "imagePath": "womenpant_2_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"womenpant_2_splice_r",
               "imagePath": "womenpant_2_splice_r"
             }
           ],
@@ -1606,10 +1660,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"womenpant_3_splice_l",
               "imagePath": "womenpant_3_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"womenpant_3_splice_r",
               "imagePath": "womenpant_3_splice_r"
             }
           ],
@@ -1633,10 +1693,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"womenpant_3_splice_l",
               "imagePath": "womenpant_3_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"womenpant_3_splice_r",
               "imagePath": "womenpant_3_splice_r"
             }
           ],
@@ -1984,10 +2050,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"knitwomen_3_splice_l",
               "imagePath": "knitwomen_3_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"knitwomen_3_splice_r",
               "imagePath": "knitwomen_3_splice_r"
             }
           ],
@@ -2011,10 +2083,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"knitwomen_4_splice_l",
               "imagePath": "knitwomen_4_splice_l"
             },
             {
               "id": 2,
+              "row":0,
+              "column":1,
+              "reference_splice":"knitwomen_4_splice_r",
               "imagePath": "knitwomen_4_splice_r"
             }
           ],
@@ -2038,10 +2116,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"knitwomen_5_splice_bottom",
               "imagePath": "knitwomen_5_splice_bottom"
             },
             {
               "id": 2,
+              "row":1,
+              "column":0,
+              "reference_splice":"knitwomen_5_splice_top",
               "imagePath": "knitwomen_5_splice_top"
             }
           ],
@@ -2110,10 +2194,16 @@
           "splicedImages": [
             {
               "id": 1,
+              "row":0,
+              "column":0,
+              "reference_splice":"knitsleeve_1_splice_bottom",
               "imagePath": "knitsleeve_1_splice_bottom"
             },
             {
               "id": 2,
+              "row":1,
+              "column":0,
+              "reference_splice":"knitsleeve_1_splice_top",
               "imagePath": "knitsleeve_1_splice_top"
             }
           ],
@@ -2244,6 +2334,102 @@
       "workspaceItems": [
 
       ]
-    }
+    },
+    {
+    			"id": 11,
+    			"patternName": "Z Test Patterns",
+    			"description": "New Splicing Test Pattern Pieces",
+    			"totalPieces": 1,
+    			"completedPieces": 0,
+    			"selectedTab": "Garment",
+    			"status": "New",
+    			"thumbnailImagePath": "m7739_b_thumbnail",
+    			"descriptionImages": [{
+    					"id": 1,
+    					"imagePath": "ic_girls_dress_desc_img"
+    				},
+    				{
+    					"id": 2,
+    					"imagePath": "ic_girls_dress_desc_img"
+    				}
+    			],
+    			"selvages": [{
+    					"id": 1,
+    					"imagePath": "m7739_layout_garment",
+    					"tabCategory": "Garment",
+    					"fabricLength": "45"
+    				},
+    				{
+    					"id": 2,
+    					"imagePath": "m7739_layout_lining",
+    					"tabCategory": "Lining",
+    					"fabricLength": "45"
+    				}
+    			],
+    			"patternPieces": [{
+    					"id": 1,
+    					"parentPattern": "M7739 Girl's Dress B",
+    					"imagePath": "ic_msplice_test",
+    					"size": "5",
+    					"view": "View B",
+    					"pieceNumber": "1",
+    					"pieceDescription": "Bodice Front",
+    					"positionInTab": "1",
+    					"tabCategory": "Garment",
+    					"cutQuantity": "Cut 1 on fold",
+                        "splice": "YES",
+    					"spliceDirection": "Splice Top-to-Bottom",
+    					"spliceScreenQuantity": "6",
+    					"splicedImages": [{
+    							"id": 1,
+                                "row":0,
+                                "column":0,
+                                "reference_splice":"ic_msplice_test_bottom_left",
+    							"imagePath": "ic_msplice_test_bottom_left"
+    						},
+    						{
+    							"id": 2,
+                                "row":0,
+                                "column":1,
+                                "reference_splice":"ic_msplice_test_bottom_right",
+    							"imagePath": "ic_msplice_test_bottom_right"
+    						},
+    						{
+    							"id": 3,
+                                "row":1,
+                                "column":0,
+                                "reference_splice":"ic_msplice_test_mid_left",
+    							"imagePath": "ic_msplice_test_mid_left"
+    						},
+    						{
+    							"id": 4,
+                                "row":1,
+                                "column":1,
+                                "reference_splice":"ic_msplice_test_mid_right",
+    							"imagePath": "ic_msplice_test_mid_right"
+    						},
+    					    {
+    							"id": 5,
+                                "row":2,
+                                "column":0,
+                                "reference_splice":"ic_msplice_test_top_left",
+    							"imagePath": "ic_msplice_test_top_left"
+    						},
+    						{
+    							"id": 6,
+                                "row":2,
+                                "column":1,
+                                "reference_splice":"ic_msplice_test_top_right",
+    							"imagePath": "ic_msplice_test_top_right"
+    						}
+    					],
+    					 "cutOnFold": "NO",
+                         "mirrorOption": "YES"
+                         }
+                         ],
+                              "workspaceItems": [
+
+                              ]
+                            }
   ]
 }

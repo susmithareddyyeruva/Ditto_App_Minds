@@ -47,7 +47,6 @@ class WorkspaceEditor private constructor(builder: Builder) {
         drawable: Drawable?,
         workspaceItem: WorkspaceItems?,
         scaleFactor: Double,
-        splicedSecondHalf: Boolean,
         showProjection: Boolean,
         isDraggedPiece: Boolean,
         dragListener: DraggableListener
@@ -76,14 +75,14 @@ class WorkspaceEditor private constructor(builder: Builder) {
             initialPosition(isDraggedPiece, workspaceItem, imageV)
             if (workspaceItem.spliceDirection.equals("Splice Left-to-Right")) {
                 workspaceItem.xcoordinate = 0F
-                params.addRule(if (splicedSecondHalf) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.addRule(if (workspaceItem.currentSplicedPieceColumn!=0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
                 sticky =
-                    if (splicedSecondHalf) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
+                    if (workspaceItem.currentSplicedPieceColumn!=0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
             } else if (workspaceItem.spliceDirection.equals("Splice Top-to-Bottom")) {
                 workspaceItem.ycoordinate = 0F
-                params.addRule(if (splicedSecondHalf) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
+                params.addRule(if (workspaceItem.currentSplicedPieceRow!=0) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
                 sticky =
-                    if (splicedSecondHalf) Draggable.STICKY.AXIS_Y_END else Draggable.STICKY.AXIS_Y_START
+                    if (workspaceItem.currentSplicedPieceRow!=0) Draggable.STICKY.AXIS_Y_END else Draggable.STICKY.AXIS_Y_START
             }
             imageRootView?.tag = workspaceItem.id
         }
@@ -179,7 +178,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
                 }
             })
         parentView?.addView(imageRootView, params)
-        addViewToParent(imageRootView, imageV, splicedSecondHalf, workspaceItem)
+        addViewToParent(imageRootView, imageV, workspaceItem)
         if (showProjection) {
             dragListener.onDragCompleted()
         }
@@ -315,7 +314,6 @@ class WorkspaceEditor private constructor(builder: Builder) {
     private fun addViewToParent(
         rootView: View?,
         imageV: View?,
-        splicedSecondHalf: Boolean,
         image: WorkspaceItems?
     ) {
 
@@ -332,7 +330,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
 
         // For fixing Virtual image spliced issue
         if (image?.spliceDirection.equals("Splice Left-to-Right")) {
-            image?.xcoordinate = if (splicedSecondHalf) 0F else {
+            image?.xcoordinate = if (image?.currentSplicedPieceRow!=0) 0F else {
                 parentView?.width?.toFloat()
                     ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
                     ?: 0F
@@ -345,7 +343,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
             )*/
         }
         if (image?.spliceDirection.equals("Splice Top-to-Bottom")) {
-            image?.ycoordinate = if (splicedSecondHalf) 0F else {
+            image?.ycoordinate = if (image?.currentSplicedPieceColumn!=0) 0F else {
                 parentView?.height?.toFloat()
                     ?.minus((imageV as ImageView)?.maxHeight?.toFloat() ?: 0F) ?: 0F
             }

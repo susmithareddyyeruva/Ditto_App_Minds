@@ -6,12 +6,13 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
 import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.onboarding.domain.model.OnboardingDomain
 import com.ditto.storage.domain.StorageManager
+import core.VIDEO_URL
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,6 +43,7 @@ class OnboardingViewModel @Inject constructor(
     val onBoardingTitle: ObservableField<String> = ObservableField("")
     val onBoardingSubTitle: ObservableField<String> = ObservableField("")
     val onBoardingUserName: ObservableField<String> = ObservableField("")
+    var videoUrl: String = ""
 
 
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
@@ -59,6 +61,11 @@ class OnboardingViewModel @Inject constructor(
         disposable.clear()
     }
 
+    fun getDemoVideoUrl(): String {
+         videoUrl = storageManager.getStringValue(VIDEO_URL)?:""
+        Log.d("videoooo","is: $videoUrl")
+        return videoUrl
+    }
     //fetch data from repo (via usecase)
      fun fetchOnBoardingData() {
         disposable += getOnboardingData.invoke()

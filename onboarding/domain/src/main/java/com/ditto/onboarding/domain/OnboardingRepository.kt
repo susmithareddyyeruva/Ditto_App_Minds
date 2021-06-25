@@ -1,6 +1,6 @@
 package com.ditto.onboarding.domain
 
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.onboarding.domain.model.OnBoardingResultDomain
 import com.ditto.onboarding.domain.model.OnboardingData
 import io.reactivex.Single

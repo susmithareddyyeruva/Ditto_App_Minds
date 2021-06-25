@@ -8,15 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.splash.ui.databinding.SplashActivityBinding
-import core.USER_EMAIL
-import core.USER_FIRST_NAME
-import core.USER_LAST_NAME
-import core.USER_PHONE
-import core.appstate.AppState
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
-import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
@@ -61,17 +54,23 @@ class SplashFragment : BaseFragment() {
     private fun handleEvent(event: SplashViewModel.Event) =
         when (event) {
             is SplashViewModel.Event.NavigateToLogin -> {
-                findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
+                if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash) {
+                    findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
+                } else{
+
+                }
             }
             is SplashViewModel.Event.NavigateToOnBoarding -> {
                 // navigate to onboarding
                 getUserDetails(false)
 //              findNavController().navigate(R.id.action_splashActivity_to_VideoFragment)
-                findNavController().navigate(R.id.action_splashActivity_to_Onboarding)
+                if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash)
+                    findNavController().navigate(R.id.action_splashActivity_to_Onboarding) else{}
             }
             is SplashViewModel.Event.NavigateToDashboard -> {
                 getUserDetails(false)
-                findNavController().navigate(R.id.action_splashActivity_to_HomeFragment)
+                if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash)
+                    findNavController().navigate(R.id.action_splashActivity_to_HomeFragment) else{}
             }
         }
 
