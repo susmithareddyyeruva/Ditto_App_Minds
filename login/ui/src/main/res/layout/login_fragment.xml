@@ -40,41 +40,23 @@
                     <FrameLayout
                         android:id="@+id/frame_layout_viewpager"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <androidx.viewpager.widget.ViewPager
-                                android:id="@+id/login_view_pager"
+                            <ImageView
+                                android:id="@+id/iv_viewpager_login"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_placeholder"
+                                android:background="@color/color_login_image_desc_background"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline_to"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                app:layout_constraintGuide_percent=".74" />
-
-                            <com.google.android.material.tabs.TabLayout
-                                android:id="@+id/login_tablay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:clickable="false"
-                                android:focusable="false"
-                                app:layout_constraintBottom_toTopOf="@id/guideline_to"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:tabBackground="@drawable/view_pager_carousel"
-                                app:tabGravity="center"
-                                app:tabIndicatorHeight="@dimen/dimen_0" />
-
-
+                                app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </FrameLayout>
 
@@ -227,7 +209,6 @@
                         android:layout_weight="45"
                         android:orientation="vertical"
                         android:weightSum="100">
-
 
 
                         <EditText

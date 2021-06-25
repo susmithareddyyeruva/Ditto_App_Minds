@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -142,12 +143,12 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun downloadPDF(url : String, filename: String){
-        performtask(url,filename)
+    suspend fun downloadPDF(url: String, filename: String, patternFolderName: String?){
+        performtask(url,filename,patternFolderName)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun performtask(url: String, filename : String){
+    suspend fun performtask(url: String, filename: String, patternFolderName: String?){
 
         withContext(Dispatchers.IO) {
 
@@ -168,27 +169,40 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             }
             inputStream = conn.inputStream
             if(inputStream != null)
-                result = convertInputStreamToFile(inputStream,filename)
+                //result = convertInputStreamToFile(inputStream,filename,patternFolderName?.replace(" ",""))
+                result = convertInputStreamToFile(inputStream,filename,patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
         }
     }
 
-    private fun convertInputStreamToFile(inputStream: InputStream,filename: String): File? {
+    private fun convertInputStreamToFile(
+        inputStream: InputStream,
+        filename: String, patternFolderName: String?
+    ): File? {
         var result : File? = null
         val outputFile : File? = null
         var dittofolder : File? = null
+
+        val contextWrapper = ContextWrapper(context)
+
         dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+            Environment.getExternalStorageDirectory().toString() + "/" + "DittoPattern"
         )
+
+        // uncomment following line to save file in internal app memory
+        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
+        file.mkdirs()
+
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
-        result = File(dittofolder, filename)
+        result = File(file, filename)
         if (!result.exists()) {
             result.createNewFile()
-        }
+                 }
         result.copyInputStreamToFile(inputStream)
         return result
     }

@@ -8,7 +8,7 @@ import android.os.Build
 /**
  * Helper Utility class for network related methods
  */
-class Utility {
+class NetworkUtility {
 
     companion object {
 

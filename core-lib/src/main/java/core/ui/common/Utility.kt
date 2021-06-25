@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
@@ -13,21 +14,25 @@ import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
-import core.network.Utility
+import core.models.Nsdservicedata
+import core.network.NetworkUtility
 import core.ui.TokenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,6 +40,7 @@ import java.io.*
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 import kotlin.jvm.Throws
 import kotlin.math.PI
 
@@ -66,7 +72,8 @@ class Utility @Inject constructor(
         NETWORK,
         PDF,
         CUT_COMPLETE,
-        CONNECTIVITY
+        CONNECTIVITY,
+        SOC_CONNECT
     }
 
     enum class Iconype {
@@ -76,6 +83,9 @@ class Utility @Inject constructor(
     }
 
     companion object {
+
+        var searchServieList : ArrayList<Nsdservicedata>? = null
+
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
 
@@ -351,7 +361,7 @@ class Utility @Inject constructor(
             withContext(Dispatchers.IO) {
                 var soc: Socket? = null
                 try {
-                    soc = Socket(Utility.nsdSericeHostName, Utility.nsdSericePortName)
+                    soc = Socket(NetworkUtility.nsdSericeHostName, NetworkUtility.nsdSericePortName)
                     if (soc.isConnected) {
                         var dataOutputStream: DataOutputStream =
                             DataOutputStream(soc.getOutputStream())
@@ -404,11 +414,21 @@ class Utility @Inject constructor(
             context.startActivity(intent)
         }
 
-        fun isFileAvailable(filename : String) : Uri? {
-            val pdfFile = File(
+        fun isFileAvailable(filename: String, context: Context, patternFolderName: String?) : Uri? {
+
+
+
+            val directory = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto/" + filename
+                    .toString() + "/DittoPattern"
             )
+
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            val pdfFile = File(directory, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction/${filename}")
+
             var path : Uri? = null
             if (pdfFile.exists()){
                 path = Uri.fromFile(pdfFile)
@@ -441,18 +461,34 @@ class Utility @Inject constructor(
             alert.window?.setBackgroundDrawable(null)
             val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
             val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
-            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE){
+            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE
+                || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType==AlertType.CUT_BIN){
                 lay_withimage.visibility = View.GONE
                 lay_withoutimage.visibility = View.VISIBLE
 
                 val title_common = mDialogView.findViewById(R.id.common_title) as TextView
-                title_common.text = title
                 val message_common = mDialogView.findViewById(R.id.common_message) as TextView
-                message_common.text = alertmessage
                 val neg_text_common = mDialogView.findViewById(R.id.neg_text_common) as TextView
-                neg_text_common.text = negativeButton
                 val pos_text_common = mDialogView.findViewById(R.id.pos_txt_common) as TextView
+                if(alertType==AlertType.CUT_COMPLETE){
+                    title_common.text=alertmessage
+                    title_common.typeface=ResourcesCompat.getFont(context,R.font.avenir_next_lt_pro_regular)
+                    message_common.visibility=View.GONE
+                }else{
+                    title_common.text = title
+                    message_common.text = alertmessage
+                }
+
+                if(alertType==AlertType.CUT_BIN){
+                    message_common.gravity=Gravity.START
+                }
+                if(alertType==AlertType.MIRROR){
+                    message_common.gravity=Gravity.START
+                }
+
+                neg_text_common.text = negativeButton
                 pos_text_common.text = positiveButton
+
                 neg_text_common.setOnClickListener {
                     alert.dismiss()
                     customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)

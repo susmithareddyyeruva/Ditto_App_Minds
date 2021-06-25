@@ -35,6 +35,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPatternInstructionsBinding
      var downloadFileName : String? = null
+     var patternFolderName : String? = null
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -70,15 +71,14 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarInstrctions)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_instrctions.setNavigationIcon(com.ditto.mylibrary.ui.R.drawable.ic_back_button)
-     /*   toolbarViewModel.isShowActionBar.set(true)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
-        toolbarViewModel.isShowTransparentActionBar.set(false)*/
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).hidemenu()
         setUIEvents()
         loadPdf()
+        Log.d("instruction123","prev pattern name: ${arguments?.getString("PatternName")}")
+        patternFolderName = arguments?.getString("PatternName")
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -110,7 +110,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun checkavailablefile() {
         downloadFileName = PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it) }
+        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }
         if (availableUri != null){
             showPdfFromUri(availableUri)
         } else {
@@ -121,10 +121,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     private fun pdfdownload(){
 
-        if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+        if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!){
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
-                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it,patternFolderName) }
             }
         } else {
             showNeworkError()

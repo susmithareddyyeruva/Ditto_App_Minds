@@ -52,7 +52,7 @@ import java.net.Socket
 import java.util.*
 import javax.inject.Inject
 
-class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener {
+class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -193,13 +193,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun checkSocketConnection() {
         GlobalScope.launch {
-            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
                 showConnectivityPopup()
             } else {
                 withContext(Dispatchers.Main) { showProgress(true) }
                 if (startSocketConnection(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
+                        core.network.NetworkUtility.nsdSericeHostName,
+                        core.network.NetworkUtility.nsdSericePortName
                     )
                 ) {
                     //baseViewModel.activeSocketConnection.set(true)
@@ -238,27 +238,29 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun showBluetoothDialogue() {
-        Utility.getAlertDialogue(
+        Utility.getCommonAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.ble_connectivity),
             resources.getString(R.string.skips),
             resources.getString(R.string.turnon),
             this,
-            Utility.AlertType.BLE
+            Utility.AlertType.BLE,
+            Utility.Iconype.NONE
         )
     }
 
     private fun showWifiDialogue() {
 
-        Utility.getAlertDialogue(
+        Utility.getCommonAlertDialogue(
             requireContext(),
             resources.getString(R.string.ditto_connect),
             resources.getString(R.string.wifi_connectivity),
             resources.getString(R.string.skips),
             resources.getString(R.string.settings),
             this,
-            Utility.AlertType.WIFI
+            Utility.AlertType.WIFI,
+            Utility.Iconype.NONE
         )
 
     }
@@ -272,20 +274,21 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             resources.getString(R.string.setup_calibration_calibrate),
             resources.getString(R.string.skips),
             this,
-            Utility.AlertType.CALIBRATION
+            Utility.AlertType.CALIBRATION,
         )
 
     }
 
     private fun showQuickCheckDialog() {
-        Utility.getAlertDialogue(
+        Utility.getCommonAlertDialogue(
             requireContext(),
             resources.getString(R.string.setup_quickcheck_title),
             resources.getString(R.string.setup_quickcheck_message),
             resources.getString(R.string.calibrate),
             resources.getString(R.string.yes_string),
             this,
-            Utility.AlertType.QUICK_CHECK
+            Utility.AlertType.QUICK_CHECK,
+            Utility.Iconype.NONE
         )
     }
 
@@ -364,8 +367,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()
@@ -504,7 +507,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun checkSocketConnectionBeforeWorkspace() {
         GlobalScope.launch {
-            if (core.network.Utility.nsdSericeHostName.isEmpty() && core.network.Utility.nsdSericePortName == 0) {
+            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
                 withContext(Dispatchers.Main) {
                     baseViewModel.activeSocketConnection.set(false)
                     enterWorkspace()
@@ -512,8 +515,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else {
                 withContext(Dispatchers.Main) { showProgress(true) }
                 if (startSocketConnection(
-                        core.network.Utility.nsdSericeHostName,
-                        core.network.Utility.nsdSericePortName
+                        core.network.NetworkUtility.nsdSericeHostName,
+                        core.network.NetworkUtility.nsdSericePortName
                     )
                 ) {
 
@@ -589,8 +592,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             var soc: Socket? = null
             try {
                 soc = Socket(
-                    core.network.Utility.nsdSericeHostName,
-                    core.network.Utility.nsdSericePortName
+                    core.network.NetworkUtility.nsdSericeHostName,
+                    core.network.NetworkUtility.nsdSericePortName
                 )
                 if (soc.isConnected) {
                     val workspaceStream = ByteArrayOutputStream()
@@ -699,4 +702,62 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         }
     }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        when (alertType) {
+            Utility.AlertType.BLE -> {
+                val mBluetoothAdapter =
+                    BluetoothAdapter.getDefaultAdapter()
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
+            Utility.AlertType.WIFI -> {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+            }
+            Utility.AlertType.CALIBRATION -> {
+                showProgress(toShow = true)
+                GlobalScope.launch { projectBorderImage() }
+            }
+            Utility.AlertType.QUICK_CHECK -> {
+                // to clear out workspace projection
+                if (baseViewModel.activeSocketConnection.get()) {
+                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+                }
+                enterWorkspace()
+            }
+            Utility.AlertType.DEFAULT -> {
+                Log.d("alertType", "DEFAULT")
+            }
+        }    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        when {
+            alertType == Utility.AlertType.BLE -> {
+                logger.d("Later clicked")
+                enterWorkspace()
+            }
+            alertType == Utility.AlertType.WIFI -> {
+                enterWorkspace()
+            }
+            alertType == Utility.AlertType.CALIBRATION -> {
+                sendQuickCheckImage()
+            }
+            alertType == Utility.AlertType.QUICK_CHECK -> {
+                showProgress(toShow = true)
+                GlobalScope.launch { projectBorderImage() }
+            }
+            alertType == Utility.AlertType.DEFAULT -> {
+                Log.d("alertType", "DEFAULT")
+            }
+        }    }
 }

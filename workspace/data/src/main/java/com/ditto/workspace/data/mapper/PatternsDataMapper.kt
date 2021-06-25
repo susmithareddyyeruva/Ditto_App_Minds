@@ -1,9 +1,6 @@
 package com.ditto.workspace.data.mapper
 
-import com.ditto.storage.data.model.PatternPieces
-import com.ditto.storage.data.model.DescriptionImages
-import com.ditto.storage.data.model.Patterns
-import com.ditto.storage.data.model.WorkspaceItems
+import com.ditto.storage.data.model.*
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
@@ -47,6 +44,16 @@ internal fun Patterns.toDomain(): PatternsData {
 internal fun DescriptionImages.toDomain(): com.ditto.workspace.domain.model.DescriptionImages {
     return com.ditto.workspace.domain.model.DescriptionImages(
         id = this.id,
+        imagePath = this.imagePath
+    )
+}
+
+internal fun SpliceImages.toDomain(): com.ditto.workspace.domain.model.SpliceImages {
+    return com.ditto.workspace.domain.model.SpliceImages(
+        id = this.id,
+        row = this.row,
+        column = this.column,
+        reference_splice = this.reference_splice,
         imagePath = this.imagePath
     )
 }
@@ -111,7 +118,8 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         isMirrorV = this.isMirrorV,
         parentPatternId = this.parentPatternId,
         isCompleted = this.isCompleted,
-        currentSplicedPieceNo = this.currentSplicedPieceNo
+        currentSplicedPieceRow = this.currentSplicedPieceRow,
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
 
@@ -136,6 +144,16 @@ internal fun PatternsData.toDomain(): Patterns {
 internal fun com.ditto.workspace.domain.model.DescriptionImages.toDomain(): DescriptionImages {
     return DescriptionImages(
         id = this.id,
+        imagePath = this.imagePath
+    )
+}
+
+internal fun com.ditto.workspace.domain.model.SpliceImages.toDomain(): SpliceImages {
+    return SpliceImages(
+        id = this.id,
+        row = this.row,
+        column = this.column,
+        reference_splice = this.reference_splice,
         imagePath = this.imagePath
     )
 }
@@ -200,7 +218,8 @@ internal fun com.ditto.workspace.domain.model.WorkspaceItems.toDomain(): Workspa
         isMirrorV = this.isMirrorV,
         parentPatternId = this.parentPatternId,
         isCompleted = this.isCompleted,
-        currentSplicedPieceNo = this.currentSplicedPieceNo
+        currentSplicedPieceRow = this.currentSplicedPieceRow,
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
 

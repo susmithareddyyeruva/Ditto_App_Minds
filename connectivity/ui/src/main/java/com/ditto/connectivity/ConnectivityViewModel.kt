@@ -1,8 +1,11 @@
 package com.ditto.connectivity
 
 
+import android.content.Context
+import android.net.nsd.NsdManager
 import android.os.StrictMode
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
@@ -29,6 +32,7 @@ class ConnectivityViewModel @Inject constructor() : BaseViewModel() {
     val isNoBleFound : ObservableBoolean = ObservableBoolean(false)
     val isShowServiceList : ObservableBoolean = ObservableBoolean(false)
     val isServiceFoundAfterWifi : ObservableBoolean = ObservableBoolean(false)
+    val isShowManageDeviceLay : ObservableBoolean = ObservableBoolean(false)
     var isBLEConnected:Boolean = false
 
 

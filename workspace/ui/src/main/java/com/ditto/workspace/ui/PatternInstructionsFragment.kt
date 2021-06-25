@@ -34,6 +34,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private val viewModel: WorkspaceViewModel by ViewModelDelegate()
     lateinit var binding: FragmentWsPatternInstructionsBinding
     var downloadFileName: String? = null
+    var patternFolderName : String? = null
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -62,6 +63,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         toolbar_instrctions.setNavigationIcon(R.drawable.ic_back_button)
         setUIEvents()
         loadPdf()
+        patternFolderName = arguments?.getString("PatternName")
     }
 
     companion object {
@@ -96,7 +98,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private fun checkavailablefile() {
         downloadFileName =
             PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it) }
+        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }//shri
         if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {
@@ -108,10 +110,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     private fun pdfdownload(){
 
-        if (context?.let { core.network.Utility.isNetworkAvailable(it) }!!){
+        if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!){
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
-                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it) }
+                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it,patternFolderName) }
             }
         } else {
             showNeworkError()

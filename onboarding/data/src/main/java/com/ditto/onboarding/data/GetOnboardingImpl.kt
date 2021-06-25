@@ -1,6 +1,6 @@
 package com.ditto.onboarding.data
 
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.onboarding.domain.GetOnboardingData
 import com.ditto.onboarding.domain.OnboardingRepository
 import com.ditto.onboarding.domain.model.OnBoardingResultDomain

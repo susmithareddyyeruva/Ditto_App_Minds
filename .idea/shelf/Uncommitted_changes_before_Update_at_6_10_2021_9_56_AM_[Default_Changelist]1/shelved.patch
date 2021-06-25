@@ -1,0 +1,119 @@
+Index: menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/WsSettingsRepositoryImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ditto.menuitems_ui.settings\r\n\r\nimport android.content.Context\r\nimport android.util.Log\r\nimport com.ditto.logger.Logger\r\nimport com.ditto.logger.LoggerFactory\r\nimport com.ditto.menuitems_ui.settings.data.LoginResult\r\nimport com.ditto.menuitems_ui.settings.data.WsSettingsPostError\r\nimport com.ditto.menuitems_ui.settings.domain.SettingsRepository\r\nimport com.ditto.menuitems_ui.settings.model.WSSettingsInputData\r\nimport core.CLIENT_ID\r\nimport core.network.Utility\r\nimport io.reactivex.Single\r\nimport non_core.lib.Result\r\nimport non_core.lib.error.NoNetworkError\r\nimport retrofit2.HttpException\r\nimport javax.inject.Inject\r\n\r\nclass WsSettingsRepositoryImpl @Inject constructor(\r\n    private val ws_settings: @JvmSuppressWildcards WsSettingsService,\r\n    private val loggerFactory: LoggerFactory\r\n) : SettingsRepository {\r\n\r\n    @Inject\r\n    lateinit var context: Context\r\n    val logger: Logger by lazy {\r\n        loggerFactory.create(WsSettingsRepositoryImpl::class.java.simpleName)\r\n    }\r\n\r\n//    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {\r\n//        if (!Utility.isNetworkAvailable(context)) {\r\n//            return Single.just(Result.OnError(NoNetworkError()))\r\n//        }\r\n//        return ws_settings.postSettingRequest(\r\n//            CLIENT_ID,\r\n//            data\r\n//        ).doOnSuccess(\r\n//            Log.d(\"Post\", \"*****Setting Post Success**\")\r\n//        ) .onErrorReturn {\r\n//            var errorMessage = \"Error Fetching data\"\r\n//            try {\r\n//                logger.d(\"try block\")\r\n//                val error = it as HttpException\r\n//                if (error != null) {\r\n//                    logger.d(\"Error Onboarding\")\r\n//                }\r\n//            } catch (e: Exception) {\r\n//                Log.d(\"Catch\", e.localizedMessage)\r\n//                errorMessage = e.message.toString()\r\n//            }\r\n//            Result.withError(\r\n//                WsSettingsPostError(errorMessage, it)\r\n//            )\r\n//        }\r\n//    }\r\n}
+===================================================================
+--- menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/WsSettingsRepositoryImpl.kt	(revision 4f07f1c69ae29760b345338239df0f7ce34704ab)
++++ menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/WsSettingsRepositoryImpl.kt	(date 1623246291023)
+@@ -27,30 +27,36 @@
+         loggerFactory.create(WsSettingsRepositoryImpl::class.java.simpleName)
+     }
+ 
+-//    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {
+-//        if (!Utility.isNetworkAvailable(context)) {
+-//            return Single.just(Result.OnError(NoNetworkError()))
+-//        }
+-//        return ws_settings.postSettingRequest(
+-//            CLIENT_ID,
+-//            data
+-//        ).doOnSuccess(
+-//            Log.d("Post", "*****Setting Post Success**")
+-//        ) .onErrorReturn {
+-//            var errorMessage = "Error Fetching data"
+-//            try {
+-//                logger.d("try block")
+-//                val error = it as HttpException
+-//                if (error != null) {
+-//                    logger.d("Error Onboarding")
+-//                }
+-//            } catch (e: Exception) {
+-//                Log.d("Catch", e.localizedMessage)
+-//                errorMessage = e.message.toString()
+-//            }
+-//            Result.withError(
+-//                WsSettingsPostError(errorMessage, it)
+-//            )
+-//        }
+-//    }
++
++
++    override fun postSwitchData(data: WSSettingsInputData): Single<Boolean> {
++        if (!Utility.isNetworkAvailable(context)) {
++             return Single.just(Result.OnError(NoNetworkError()))
++        }
++        return ws_settings.postSettingRequest(
++            CLIENT_ID,
++            data,
++            "asas"
++        ).doOnSuccess(
++            Log.d("Post", "*****Setting Post Success**")
++        ) .onErrorReturn {
++            var errorMessage = "Error Fetching data"
++            try {
++                logger.d("try block")
++                val error = it as HttpException
++                if (error != null) {
++                    logger.d("Error Onboarding")
++                }
++            } catch (e: Exception) {
++                Log.d("Catch", e.localizedMessage)
++                errorMessage = e.message.toString()
++            }
++            Result.withError(
++                WsSettingsPostError(errorMessage, it)
++            )
++        }
++    }
++
++
++    }
+ }
+\ No newline at end of file
+Index: menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/domain/GetWsSettingUseCaseImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ditto.menuitems_ui.settings.domain\r\n\r\nimport com.ditto.menuitems_ui.settings.UseCases\r\nimport com.ditto.menuitems_ui.settings.data.LoginResult\r\nimport com.ditto.menuitems_ui.settings.model.WSSettingsInputData\r\nimport io.reactivex.Single\r\nimport non_core.lib.Result\r\nimport javax.inject.Inject\r\n\r\nclass GetWsSettingUseCaseImpl @Inject constructor(\r\n    private val wsSettingsRepository: SettingsRepository\r\n) : UseCases {\r\n\r\n    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {\r\n       return wsSettingsRepository.postSwitchData(data)\r\n    }\r\n\r\n\r\n}
+===================================================================
+--- menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/domain/GetWsSettingUseCaseImpl.kt	(revision 4f07f1c69ae29760b345338239df0f7ce34704ab)
++++ menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/domain/GetWsSettingUseCaseImpl.kt	(date 1623243599033)
+@@ -11,7 +11,7 @@
+     private val wsSettingsRepository: SettingsRepository
+ ) : UseCases {
+ 
+-    override fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>> {
++    override fun postSwitchData(data: WSSettingsInputData): Single<Boolean> {
+        return wsSettingsRepository.postSwitchData(data)
+     }
+ 
+Index: menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/UseCases.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ditto.menuitems_ui.settings\r\n\r\nimport com.ditto.menuitems_ui.settings.data.LoginResult\r\nimport com.ditto.menuitems_ui.settings.model.WSSettingsInputData\r\nimport io.reactivex.Single\r\nimport non_core.lib.Result\r\n\r\ninterface UseCases {\r\n    fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>>\r\n\r\n}
+===================================================================
+--- menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/UseCases.kt	(revision 4f07f1c69ae29760b345338239df0f7ce34704ab)
++++ menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/UseCases.kt	(date 1623243599038)
+@@ -6,6 +6,6 @@
+ import non_core.lib.Result
+ 
+ interface UseCases {
+-    fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>>
++    fun postSwitchData(data: WSSettingsInputData): Single<Boolean>
+ 
+ }
+\ No newline at end of file
+Index: menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/domain/SettingsRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ditto.menuitems_ui.settings.domain\r\n\r\nimport com.ditto.menuitems_ui.settings.data.LoginResult\r\nimport com.ditto.menuitems_ui.settings.model.WSSettingsInputData\r\nimport io.reactivex.Single\r\nimport non_core.lib.Result\r\n\r\n\r\n/**\r\n * Repository interface defining methods to be used by upper (UI/UseCase) layer\r\n */\r\ninterface SettingsRepository {\r\n    fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>>\r\n\r\n}
+===================================================================
+--- menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/domain/SettingsRepository.kt	(revision 4f07f1c69ae29760b345338239df0f7ce34704ab)
++++ menuitems/ui/src/main/java/com/ditto/menuitems_ui/settings/domain/SettingsRepository.kt	(date 1623243599051)
+@@ -10,6 +10,6 @@
+  * Repository interface defining methods to be used by upper (UI/UseCase) layer
+  */
+ interface SettingsRepository {
+-    fun postSwitchData(data: WSSettingsInputData): Single<Result<LoginResult>>
++    fun postSwitchData(data: WSSettingsInputData): Single<Boolean>
+ 
+ }
+\ No newline at end of file

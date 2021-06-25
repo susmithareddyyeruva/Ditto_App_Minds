@@ -4,7 +4,7 @@
     <string name="str_email">EMAIL</string>
     <string name="str_waittime">Wait Time : 24 hours</string>
     <string name="str_quest">Questions or Comments?</string>
-    <string name="str_email_text">Email <u>joannsupports@joann.com</u> to our customer care representatives and we will get back soon.</string>
+    <string name="str_email_text">Email <u>%1$s</u> to our customer care representatives and we will get back soon.</string>
     <string name="str_phone">PHONE</string>
     <string name="str_phn_waittime">Wait Time: Less than 30 sec</string>
     <string name="str_ustoll">US Toll Free:</string>
@@ -18,4 +18,15 @@
     <string name="available">Available projectors in the network</string>
     <string name="scan">Scan for devices</string>
     <string name="disconnect">Disconnect</string>
+    <string name="str_projectorsfound">%1$s projectors found</string>
+    <string name="str_connection_failed">Projector connection failed!</string>
+    <string name="str_ok">OK</string>
+    <string name="str_switch_projector">Do you want to switch the projector?</string>
+    <string name="str_no">No</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_connecitivity_title">Connectivity</string>
+    <string name="str_ble_message">This app needs Bluetooth connectivity</string>
+    <string name="str_later">LATER</string>
+    <string name="str_wifi_message">This app needs WiFi connectivity</string>
+    <string name="str_settings">SETTINGS</string>
 </resources>
