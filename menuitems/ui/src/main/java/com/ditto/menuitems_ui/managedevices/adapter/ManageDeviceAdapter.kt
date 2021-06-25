@@ -10,8 +10,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems_ui.R
+import com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceViewModel
+import core.appstate.AppState
+import core.models.Nsdservicedata
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.net.ConnectException
+import java.net.InetAddress
+import java.net.Socket
 
-class ManageDeviceAdapter(private val context: Context) :
+class ManageDeviceAdapter(private val context: Context,
+                          private val mServiceList : ArrayList<Nsdservicedata>,
+                            private val mViewModel : ManageDeviceViewModel) :
     RecyclerView.Adapter<ManageDeviceAdapter.ViewHolder>() {
 
     /**
@@ -22,6 +32,7 @@ class ManageDeviceAdapter(private val context: Context) :
         val status: TextView = view.findViewById(R.id.textStatus)
         val scanButton: Button = view.findViewById(R.id.btnConnect)
         val imgVideo:ImageView=view.findViewById(R.id.imageVideo)
+        val projectorName:TextView=view.findViewById(R.id.textProjectorName)
 
     }
 
@@ -36,7 +47,8 @@ class ManageDeviceAdapter(private val context: Context) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (position == 0) {
+        if (mServiceList[position].isConnected) {
+            viewHolder.projectorName.text = mServiceList[position].nsdServiceName
             viewHolder.status.visibility = View.VISIBLE
             viewHolder.scanButton.background =
                 ContextCompat.getDrawable(context, R.drawable.bg_disconnect)
@@ -49,6 +61,7 @@ class ManageDeviceAdapter(private val context: Context) :
             viewHolder.scanButton.setText("Disconnect")
             viewHolder.imgVideo.setImageResource(R.drawable.ic_video)
         } else {
+            viewHolder.projectorName.text = mServiceList[position].nsdServiceName
             viewHolder.status.visibility = View.INVISIBLE
             viewHolder.scanButton.background =
                 ContextCompat.getDrawable(context, R.drawable.bg_connect)
@@ -61,13 +74,19 @@ class ManageDeviceAdapter(private val context: Context) :
             viewHolder.scanButton.setText("Connect")
             viewHolder.imgVideo.setImageResource(R.drawable.ic_default_video)
         }
+        viewHolder.scanButton.setOnClickListener(View.OnClickListener {
+            mViewModel.clickedPosition.set(position)
+            if (mServiceList[position].isConnected){
+                mViewModel.disConnectToProjector(mServiceList[position].nsdSericeHostAddress,mServiceList[position].nsdServicePort,true)
+            } else {
+                mViewModel.Connect()
+                //mViewModel.connectToProjector(mServiceList[position].nsdSericeHostAddress,mServiceList[position].nsdServicePort,true)
+            }
 
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
+        })
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = 3
+    override fun getItemCount() = mServiceList.size
 
 }

@@ -2,4 +2,5 @@
     package="com.ditto.menuitems_ui">
 
 
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 </manifest>

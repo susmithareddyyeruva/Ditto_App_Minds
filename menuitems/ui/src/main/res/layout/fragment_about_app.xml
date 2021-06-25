@@ -49,25 +49,14 @@
             app:layout_constraintTop_toTopOf="@+id/guide_top"
             app:layout_constraintVertical_bias="1.0">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/bottom_common">
+            <WebView
+                android:id="@+id/aboutwebview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_lt_pro_regular"
-                    android:gravity="start"
-                    android:scrollbars="none"
-                    android:text="@string/about_app"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/about_app_desc"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </LinearLayout>
 
 
         </androidx.core.widget.NestedScrollView>

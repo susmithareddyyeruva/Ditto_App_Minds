@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
@@ -30,6 +31,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
+import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.TokenViewModel
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,7 @@ import java.io.*
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 import kotlin.jvm.Throws
 import kotlin.math.PI
 
@@ -69,7 +72,8 @@ class Utility @Inject constructor(
         NETWORK,
         PDF,
         CUT_COMPLETE,
-        CONNECTIVITY
+        CONNECTIVITY,
+        SOC_CONNECT
     }
 
     enum class Iconype {
@@ -79,6 +83,9 @@ class Utility @Inject constructor(
     }
 
     companion object {
+
+        var searchServieList : ArrayList<Nsdservicedata>? = null
+
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
 
@@ -407,11 +414,21 @@ class Utility @Inject constructor(
             context.startActivity(intent)
         }
 
-        fun isFileAvailable(filename : String) : Uri? {
-            val pdfFile = File(
+        fun isFileAvailable(filename: String, context: Context, patternFolderName: String?) : Uri? {
+
+
+
+            val directory = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto/" + filename
+                    .toString() + "/DittoPattern"
             )
+
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            val pdfFile = File(directory, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction/${filename}")
+
             var path : Uri? = null
             if (pdfFile.exists()){
                 path = Uri.fromFile(pdfFile)
@@ -445,7 +462,7 @@ class Utility @Inject constructor(
             val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
             val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
             if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE
-                || alertType == AlertType.MIRROR || alertType==AlertType.CUT_BIN){
+                || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType==AlertType.CUT_BIN){
                 lay_withimage.visibility = View.GONE
                 lay_withoutimage.visibility = View.VISIBLE
 
