@@ -46,7 +46,8 @@ class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
         }
         holder.linheader.setOnClickListener { onItemClicked(item,position) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout_white)
+            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
+            holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
             holder.rvsubques.visibility = View.VISIBLE
             holder.ivArrow.setImageResource(R.drawable.ic_uparrow)

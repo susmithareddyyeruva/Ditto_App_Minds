@@ -18,6 +18,7 @@ import com.ditto.menuitems_ui.databinding.FaqGlossaryMainfragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -69,10 +70,14 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
             }
     }
 
-    private fun setuptoolbar(){
+    private fun setuptoolbar() {
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
+        (activity as? BottomNavigationActivity)?.hidemenu()
+        toolbarViewModel?.isShowActionMenu.set(false)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
     private fun handleEvent(event: FAQGlossaryfragmentViewModel.Event) =

@@ -53,7 +53,7 @@ class FAQAdapter(
         }*/
         holder.linheader.setOnClickListener { onItemClicked(item, position) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout_white)
+            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
             if (item?.SubAnsw?.size!! > 0) {
