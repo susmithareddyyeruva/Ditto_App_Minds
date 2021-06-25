@@ -20,7 +20,7 @@
             android:id="@+id/guide_top_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent=".23"
+            app:layout_constraintGuide_percent=".14"
             android:orientation="horizontal"/>
 
         <androidx.constraintlayout.widget.Guideline
@@ -74,7 +74,7 @@
             android:id="@+id/guide_top_tile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent=".34"
+            app:layout_constraintGuide_percent=".24"
             android:orientation="horizontal"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
