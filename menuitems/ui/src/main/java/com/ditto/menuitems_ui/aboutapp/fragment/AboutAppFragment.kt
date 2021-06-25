@@ -82,6 +82,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
                 }
         }
     }
+
     private fun showAlert() {
         val errorMessage = "No Internet connection available !"
         Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
