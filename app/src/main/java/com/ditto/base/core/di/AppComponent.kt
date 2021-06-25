@@ -13,14 +13,14 @@ import com.ditto.logger.di.LoggerModule
 import com.ditto.login.data.di.LoginApiModule
 import com.ditto.login.data.di.LoginDbModule
 import com.ditto.login.di.LoginFragmentModule
-import com.ditto.menuitems.data.di.AboutAppAPIModule
-import com.ditto.menuitems.data.di.AboutAppDataModule
-import com.ditto.menuitems.data.di.WSSettingsDataModule
-import com.ditto.menuitems.data.di.WsSettingsAPIModule
+import com.ditto.menuitems.data.di.*
 import com.ditto.menuitems_ui.aboutapp.di.AboutAppFragmentModule
 import com.ditto.menuitems_ui.customercare.di.CustomerCareFragmentModule
 import com.ditto.menuitems_ui.faq.di.FAQfragmentModule
+import com.ditto.menuitems_ui.faq.di.FaqGlossaryMainFragmentModule
+import com.ditto.menuitems_ui.faq.di.GlossaryFragmentModule
 import com.ditto.menuitems_ui.managedevices.di.ManageDeviceFragmentModule
+import com.ditto.menuitems_ui.privacyandsettings.di.PrivacyAndSettingFragmentModule
 import com.ditto.menuitems_ui.settings.di.WSProSettingsFragmentModule
 import com.ditto.mylibrary.data.di.MyLibraryDataModule
 import com.ditto.mylibrary.ui.di.MyLibraryFragmentModule
@@ -55,7 +55,8 @@ import javax.inject.Singleton
         WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,LoginApiModule::class,
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class,
         CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
-        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class]
+        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class,FaqGlossaryMainFragmentModule::class,
+        GlossaryFragmentModule::class,FAQGlossaryApiModule::class,FAQGlosaaryDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class]
 
 )
 @Singleton

@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ditto.menuitems.domain.model.faq.SubAnswDomain
 import com.ditto.menuitems_ui.R
-import com.ditto.menuitems_ui.faq.ui.models.SubAnswModel
 
-class SubquesAdapter (context: Context, data: List<SubAnswModel>?) :
+class SubquesAdapter (context: Context, data: List<SubAnswDomain>?) :
     RecyclerView.Adapter<SubquesAdapter.SubquesViewHolder>() {
 
-    private var items: List<SubAnswModel>? = data
+    private var items: List<SubAnswDomain>? = data
     private var inflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(
@@ -30,10 +30,11 @@ class SubquesAdapter (context: Context, data: List<SubAnswModel>?) :
     override fun onBindViewHolder(holder: SubquesAdapter.SubquesViewHolder, position: Int) {
         val item = items?.get(position)
         holder.tvTitle.text = item?.title
-        holder.tvDescription.text = item?.description
+        holder.tvDescription.text = item?.short_description
     }
     class SubquesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvTitle: TextView = itemView.findViewById(R.id.text_sub_head)
         var tvDescription: TextView = itemView.findViewById(R.id.text_sub_answ)
+
     }
 }

@@ -13,19 +13,26 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ditto.menuitems.domain.model.faq.FAQDomain
 import com.ditto.menuitems_ui.R
-import com.ditto.menuitems_ui.faq.ui.models.FAQModel
+import com.ditto.menuitems_ui.faq.ui.VisitSiteListener
+import com.ditto.menuitems_ui.faq.ui.WatchVideoClickListener
 
 
-class FAQAdapter (context: Context, data: List<FAQModel>?) :
+class FAQAdapter(
+    context: Context,
+    data: List<FAQDomain>?,
+    val watchVideoClickListener: WatchVideoClickListener,
+    val visitSiteListener: VisitSiteListener
+) :
     RecyclerView.Adapter<FAQAdapter.FAQViewHolder>() {
     private var mContext: Context = context
-    private var items: List<FAQModel>? = data
+    private var items: List<FAQDomain>? = data
     private var inflater: LayoutInflater = LayoutInflater.from(context)
-    private var subquesAdapter:SubquesAdapter? = null
+    private var subquesAdapter: SubquesAdapter? = null
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override
     fun onBindViewHolder(holder: FAQViewHolder, position: Int) {
@@ -33,28 +40,63 @@ class FAQAdapter (context: Context, data: List<FAQModel>?) :
         holder.tvques.text = item?.Ques
         val htmlAsSpanned = Html.fromHtml(item?.Answ)
         holder.tvAnsw.text = htmlAsSpanned
-        if (item?.SubAnsw?.size!! > 0){
+
+       /* if (item?.SubAnsw?.size!! > 0) {
             holder.rvsubques.visibility = View.VISIBLE
-            subquesAdapter = SubquesAdapter(mContext,item?.SubAnsw)
+            subquesAdapter = SubquesAdapter(mContext, item?.SubAnsw)
             holder.rvsubques.adapter = subquesAdapter
-            holder.rvsubques.layoutManager =LinearLayoutManager(mContext)
+            holder.rvsubques.layoutManager = LinearLayoutManager(mContext)
+
         } else {
+
             holder.rvsubques.visibility = View.GONE
-        }
-        holder.linheader.setOnClickListener { onItemClicked(item,position) }
+        }*/
+        holder.linheader.setOnClickListener { onItemClicked(item, position) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout_white)
+            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
+            holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
-            holder.rvsubques.visibility = View.VISIBLE
+            if (item?.SubAnsw?.size!! > 0) {
+                holder.rvsubques.visibility = View.VISIBLE
+                subquesAdapter = SubquesAdapter(mContext, item?.SubAnsw)
+                holder.rvsubques.adapter = subquesAdapter
+                holder.rvsubques.layoutManager = LinearLayoutManager(mContext)
+
+            } else {
+
+                holder.rvsubques.visibility = View.GONE
+            }
             holder.ivArrow.setImageResource(R.drawable.ic_uparrow)
+            if (!item?.web_url.isNullOrEmpty()) {
+                holder.visit.visibility = View.VISIBLE
+            } else {
+                holder.visit.visibility = View.GONE
+            }
+            if (!item?.video_url.isNullOrEmpty()) {
+                holder.watch.visibility = View.VISIBLE
+            } else {
+                holder.visit.visibility = View.GONE
+            }
+            if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
+                holder.visit.visibility = View.GONE
+                holder.visit.visibility = View.GONE
+            }
+            holder.visit.setOnClickListener {
+                visitSiteListener.onVisitClick(item?.web_url ?: "")
+            }
+            holder.watch.setOnClickListener {
+                watchVideoClickListener.onVideoClick(item?.video_url ?: "")
+            }
         } else {
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.rvsubques.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_down_arrow)
+            holder.watch.visibility = View.GONE
+            holder.visit.visibility = View.GONE
         }
         holder.tvAnsw.setOnClickListener {
-            if (position == 0){
+            if (position == 0) {
                 val url = mContext.getString(R.string.str_patterns_url)
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
@@ -63,11 +105,13 @@ class FAQAdapter (context: Context, data: List<FAQModel>?) :
         }
 
     }
-    private fun onItemClicked(faqModel: FAQModel?,pos : Int) {
+
+    private fun onItemClicked(faqModel: FAQDomain?, pos: Int) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FAQAdapter.FAQViewHolder {
         val view = inflater.inflate(R.layout.faq_desc_item, parent, false)
         return FAQViewHolder(view)
@@ -84,5 +128,7 @@ class FAQAdapter (context: Context, data: List<FAQModel>?) :
         var ivArrow: ImageView = itemView.findViewById(R.id.iv_icon)
         var linheader: LinearLayout = itemView.findViewById(R.id.header)
         var relparent: RelativeLayout = itemView.findViewById(R.id.parentlay)
+        var watch: RelativeLayout = itemView.findViewById(R.id.relWatch)
+        var visit: RelativeLayout = itemView.findViewById(R.id.relVisit)
     }
 }
