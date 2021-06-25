@@ -319,8 +319,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             }
 
             R.id.nav_graph_about -> {
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+             /*   binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)*/
                 true
             }
             R.id.nav_graph_faq -> {
@@ -384,8 +384,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
         else  if (selectedmenu.equals(this.getString(R.string.about_app_policies))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
-                navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+              /*  navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)*/
             }
         }
         else{
