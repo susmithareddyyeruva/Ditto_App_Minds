@@ -6,13 +6,11 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.data.api.AboutAppService
 import com.ditto.menuitems.data.error.AboutAppFetchError
-import com.ditto.menuitems.data.error.WSProSettingFetchError
 import com.ditto.menuitems.data.mapper.toDomain
 import com.ditto.menuitems.domain.AboutAppAbstractRespository
 import com.ditto.menuitems.domain.model.AboutAppDomain
-import com.ditto.menuitems.domain.model.AboutAppResponseData
 import core.CLIENT_ID
-import core.ui.common.Utility
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
@@ -30,7 +28,7 @@ class AboutAppRepositoryImpl @Inject constructor(private val aboutAppService: @J
     }
 
     override fun getAboutAppAndPrivacyData(): Single<Result<AboutAppDomain>> {
-        if (!core.network.Utility.isNetworkAvailable(context)) {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
             return aboutAppService.getAboutAndPrivacyPolicy(CLIENT_ID)
