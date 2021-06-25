@@ -74,6 +74,7 @@ dependencies {
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(':logger')
+    implementation project(path: ':videoplayer')
     implementation project(':menuitems-domain')
     implementation project(':login-domain')
     implementation project(path: ':connectivity-ui')

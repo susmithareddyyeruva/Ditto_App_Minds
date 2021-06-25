@@ -54,7 +54,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     private lateinit var navController: NavController
     var ishidemenu: Boolean = false
     lateinit var expandableListView: NoScrollExListView
-    lateinit var expandableListAdapter : ExpandableMenuListAdapter
+    lateinit var expandableListAdapter: ExpandableMenuListAdapter
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -316,9 +316,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
                 true
             }
-            R.id.nav_graph_faq -> {
+            R.id.nav_graph_mainFaq -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                navController.navigate(R.id.action_destination_to_FQAfragment)
+                navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
                 true
             }
             R.id.nav_graph_logout -> {
@@ -329,7 +329,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 logoutUser(false)
                 true
             }
-           else -> {
+            else -> {
                 false
             }
         }
@@ -361,7 +361,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             }
         } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
             if(navController.currentDestination?.label?.equals("Home")!!) {
-                navController.navigate(R.id.action_destination_to_FQAfragment)
+                navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
             }

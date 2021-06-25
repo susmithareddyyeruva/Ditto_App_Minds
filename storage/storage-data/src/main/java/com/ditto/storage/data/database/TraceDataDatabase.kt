@@ -58,7 +58,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
             ).build()
         }
 
-        fun preLoadOnboardingData(context: Context) {
+        /*fun preLoadOnboardingData(context: Context) {
             val dao = getInstance(
                 context
             ).onBoardingDataDao()
@@ -77,7 +77,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
             } catch (e: JSONException) {
                 Log.d("insertOnboardingData","exception")
             }
-        }
+        }*/
 
         fun preLoadPatternData(context: Context) {
             val dao = getInstance(

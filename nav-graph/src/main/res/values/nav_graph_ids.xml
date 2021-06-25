@@ -18,6 +18,7 @@
     <item name="destination_customercare" type="id" />
     <item name="nav_graph_customercare" type="id" />
     <item name="nav_graph_faq" type="id" />
+    <item name="nav_graph_mainFaq" type="id" />
     <item name="nav_graph_manage" type="id" />
 
     <!--action items-->
@@ -61,6 +62,9 @@
     <item name="action_homeFragment_to_aboutAppFragment" type="id" />
     <item name="action_destination_howto_to_nav_graph_id_video" type="id" />
     <item name="action_destination_instruction_to_nav_graph_id_video" type="id" />
+    <item name="action_fragment_to_FAQGlossaryfragment" type="id" />
+    <item name="action_destination_faq_to_nav_graph_id_video" type="id" />
+
     <item name="action_homeFragment_to_wssettings_fragment" type="id" />
     <item name="action_homeFragment_to_nav_graph_manage" type="id" />
 
