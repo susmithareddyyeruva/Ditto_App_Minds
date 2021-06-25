@@ -2,7 +2,7 @@ package com.ditto.splash.data
 
 import android.content.Context
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.splash.domain.DbRepository
 import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.PatternsDao

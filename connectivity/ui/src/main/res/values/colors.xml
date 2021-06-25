@@ -11,4 +11,6 @@
     <color name="white">#FFF</color>
     <color name="error_text_code">#63666B</color>
     <color name="instruction_content_text">#4A4A4A</color>
+    <color name="semitransparent">#30000000</color>
+    <color name="transparent">@android:color/transparent</color>
 </resources>

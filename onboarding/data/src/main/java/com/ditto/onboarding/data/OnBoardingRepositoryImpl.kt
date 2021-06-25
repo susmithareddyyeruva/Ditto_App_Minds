@@ -6,7 +6,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
 import com.ditto.login.data.mapper.toUserDomain
-import com.ditto.login.domain.LoginUser
+import com.ditto.login.domain.model.LoginUser
 import com.ditto.onboarding.data.api.OnBoardingService
 import com.ditto.onboarding.data.error.ContentApiFetchError
 import com.ditto.onboarding.data.mapper.toDomain

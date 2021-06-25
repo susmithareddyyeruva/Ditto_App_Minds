@@ -190,14 +190,14 @@
             android:layout_marginTop="@dimen/margin_text"
             android:layout_marginEnd="@dimen/splice_end_margin"
             android:layout_marginBottom="@dimen/margin_text"
-            android:background="@{viewModel.clickedSplice?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
+            android:background="@{viewModel.enableSplice ? (viewModel.clickedSplice?@drawable/rounded_black_bg:@drawable/rounded_light_bg) :@drawable/rounded_light_bg}"
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.clickSplice()}"
             android:paddingHorizontal="@dimen/padding_horizontal_splice"
             android:paddingVertical="@dimen/padding_vertical_splice"
             android:text="@string/splice"
-            android:textColor="@{viewModel.clickedSplice?@android:color/white :@color/default_splice}"
+            android:textColor="@{viewModel.enableSplice ?(viewModel.clickedSplice?@android:color/white :@android:color/black):@color/default_splice }"
             android:textSize="@dimen/text_splice"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
@@ -211,29 +211,16 @@
             android:layout_marginBottom="@dimen/margin_text"
             android:paddingHorizontal="@dimen/elevation_small"
             android:paddingVertical="@dimen/padding_vertical_splice"
-            android:background="@{viewModel.clickedSize45?@drawable/rounded_black_bg:@drawable/rounded_light_bg }"
+            android:background="@{viewModel.enableSize45 ?(viewModel.clickedSize45?@drawable/rounded_black_bg:@drawable/rounded_light_bg):@drawable/rounded_light_bg }"
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.clickSize(true)}"
             android:text="@string/_45"
-            android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
+            android:textColor="@{viewModel.enableSize45 ?(viewModel.clickedSize45?@android:color/white :@android:color/black):@color/default_splice }"
             android:textSize="@dimen/text_45"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_60"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
 
-        <TextView
-            android:id="@+id/txt_size_45_nap"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/elevation_pieces_reference"
-            android:visibility="gone"
-            android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/bottom_nap"
-            android:textColor="@{viewModel.clickedSize45?@android:color/white :@android:color/black}"
-            android:textSize="@dimen/text_size_nap"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_size_45"
-            app:layout_constraintEnd_toEndOf="@+id/txt_size_45"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_45" />
 
         <TextView
             android:id="@+id/txt_size_60"
@@ -243,29 +230,15 @@
             android:layout_marginBottom="@dimen/margin_text"
             android:paddingHorizontal="@dimen/elevation_small"
             android:paddingVertical="@dimen/padding_vertical_splice"
-            android:background="@{viewModel.clickedSize60?@drawable/rounded_black_bg:@drawable/rounded_light_bg}"
+            android:background="@{viewModel.enableSize60 ? (viewModel.clickedSize60?@drawable/rounded_black_bg:@drawable/rounded_light_bg):@drawable/rounded_light_bg}"
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:onClick="@{() -> viewModel.clickSize(false)}"
             android:text="@string/_60"
-            android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
+            android:textColor="@{viewModel.enableSize60 ?(viewModel.clickedSize60?@android:color/white:@android:color/black):@color/default_splice }"
             android:textSize="@dimen/text_60"
             app:layout_constraintEnd_toEndOf="@+id/txt_select_layout"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
-
-        <TextView
-            android:id="@+id/txt_size_60_nap"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/elevation_pieces_reference"
-            android:gravity="center_horizontal"
-            android:visibility="gone"
-            android:paddingBottom="@dimen/bottom_nap"
-            android:textColor="@{viewModel.clickedSize60?@android:color/white:@android:color/black}"
-            android:textSize="@dimen/text_size_nap"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_size_60"
-            app:layout_constraintEnd_toEndOf="@+id/txt_size_60"
-            app:layout_constraintStart_toStartOf="@+id/txt_size_60" />
 
         <ImageView
             android:id="@+id/image_selvage_horizontal"
@@ -287,8 +260,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{!viewModel.clickedPattenPieces}"
-            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,
-            txt_size_45_nap,txt_size_60,txt_size_60_nap,image_selvage_horizontal" />
+            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_pattern_pieces"

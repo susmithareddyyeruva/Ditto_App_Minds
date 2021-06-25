@@ -68,7 +68,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             logger.d("TRACE: Setting progress")
             Utility.progressCount.set(0)
             Utility.mPatternPieceList.clear()
-            Utility.isFirstTimeLoad.set(true)
+            Utility.isDoubleTapTextVisible.set(true)
             viewModel.fetchWorkspaceData()
         }
         binding.viewModel = viewModel
@@ -248,6 +248,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDataUpdated -> {
+                clearWorkspace()
                 updateTab()
             }
             else -> logger.d("Invalid Event")
@@ -299,7 +300,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 )
             }
         }
-
         clearWorkspace()
         binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
     }
