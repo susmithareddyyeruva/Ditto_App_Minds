@@ -55,7 +55,7 @@ class SplashViewModel @Inject constructor(
                 uiEvents.post(Event.NavigateToLogin)
             }
         }
-      // updateDb()
+       updateDb()
     }
 
     fun callToken(){
