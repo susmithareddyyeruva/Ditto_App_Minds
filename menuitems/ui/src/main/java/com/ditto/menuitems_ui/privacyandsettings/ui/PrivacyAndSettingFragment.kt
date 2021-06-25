@@ -14,6 +14,7 @@ import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentPrivacyAndSettingBinding
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -43,7 +44,7 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
-        if (core.network.Utility.isNetworkAvailable(requireContext())){
+        if (NetworkUtility.isNetworkAvailable(requireContext())){
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchUserData()
         }else{
