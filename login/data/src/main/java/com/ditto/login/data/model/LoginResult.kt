@@ -113,5 +113,28 @@ data class LoginResult(
     @SerializedName("c_InitialisationVector")
     val cInitialisationVector: String,
     @SerializedName("c_vectorKey")
-    val cVectorKey: String
+    val cVectorKey: String,
+
+    @SerializedName("c_subscriptionValid")
+    val cSubscriptionValid: Boolean,
+    @SerializedName("c_subscriptionPlanEndDate")
+    val cSubscriptionPlanEndDate: String,
+    @SerializedName("c_subscriptionPlanStartDate")
+    val cSubscriptionPlanStartDate: String,
+    @SerializedName("c_subscriptionPlanPrice")
+    val cSubscriptionPlanPrice: String,
+    @SerializedName("c_subscriptionPlanId")
+    val cSubscriptionPlanId: String,
+    @SerializedName("c_subscriptionPlanName")
+    val cSubscriptionPlanName: String,
+    @SerializedName("c_subscriptionID")
+    val cSubscriptionID: String,
+    @SerializedName("c_subscriptionPlanCurrency")
+    val cSubscriptionPlanCurrency: String,
+    @SerializedName("c_subscriptionType")
+    val cSubscriptionType: String,
+    @SerializedName("c_subscriptionPlanBillingEndDate")
+    val cSubscriptionPlanBillingEndDate: String,
+    @SerializedName("c_subscriptionPlanBillingStartDate")
+    val cSubscriptionPlanBillingStartDate: String
 )

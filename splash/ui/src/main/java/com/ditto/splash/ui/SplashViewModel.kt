@@ -8,10 +8,7 @@ import com.ditto.splash.domain.GetDbDataUseCase
 import com.ditto.splash.domain.UpdateDbUseCase
 import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.domain.StorageManager
-import core.USER_EMAIL
-import core.USER_FIRST_NAME
-import core.USER_LAST_NAME
-import core.USER_PHONE
+import core.*
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -74,6 +71,8 @@ class SplashViewModel @Inject constructor(
         userPhone = storageManager.getStringValue(USER_PHONE)
         userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
         userLastName = storageManager.getStringValue(USER_LAST_NAME)
+
+        subscriptionEndDate=storageManager.getStringValue(SUBSCRIPTION_END_DATE)
     }
 
     private fun fetchDbUser() {

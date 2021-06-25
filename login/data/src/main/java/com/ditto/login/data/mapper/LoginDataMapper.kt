@@ -44,7 +44,19 @@ fun User.toUserDomain(): LoginUser {
         cRegisteredWithNarvar = this.cRegisteredWithNarvar,
         cTaxExempt = this.cTaxExempt,
         cInitialisationVector = this.cInitialisationVector,
-        cVectorKey = this.cVectorKey
+        cVectorKey = this.cVectorKey,
+
+        cSubscriptionValid = this.cSubscriptionValid,
+        cSubscriptionPlanEndDate = this.cSubscriptionPlanEndDate,
+        cSubscriptionPlanStartDate = this.cSubscriptionPlanStartDate,
+        cSubscriptionPlanPrice = this.cSubscriptionPlanPrice,
+        cSubscriptionPlanId = this.cSubscriptionPlanId,
+        cSubscriptionPlanName = this.cSubscriptionPlanName,
+        cSubscriptionID = this.cSubscriptionID,
+        cSubscriptionPlanCurrency = this.cSubscriptionPlanCurrency,
+        cSubscriptionType = this.cSubscriptionType,
+        cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
+        cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate
 
 
     )
@@ -91,6 +103,19 @@ fun LoginUser.toDomain(): User {
         cRegisteredWithNarvar = this.cRegisteredWithNarvar,
         cTaxExempt = this.cTaxExempt,
         cInitialisationVector = this.cInitialisationVector,
-        cVectorKey = this.cVectorKey
+        cVectorKey = this.cVectorKey,
+
+        cSubscriptionValid = this.cSubscriptionValid,
+        cSubscriptionPlanEndDate = this.cSubscriptionPlanEndDate,
+        cSubscriptionPlanStartDate = this.cSubscriptionPlanStartDate,
+        cSubscriptionPlanPrice = this.cSubscriptionPlanPrice,
+        cSubscriptionPlanId = this.cSubscriptionPlanId,
+        cSubscriptionPlanName = this.cSubscriptionPlanName,
+        cSubscriptionID = this.cSubscriptionID,
+        cSubscriptionPlanCurrency = this.cSubscriptionPlanCurrency,
+        cSubscriptionType = this.cSubscriptionType,
+        cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
+        cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate
+
     )
 }

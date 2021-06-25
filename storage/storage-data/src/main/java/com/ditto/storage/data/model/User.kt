@@ -130,6 +130,40 @@ data class User(
     var cInitialisationVector: String?,
     @ColumnInfo(name = "c_vectorKey")
     @SerializedName("c_vectorKey")
-    var cVectorKey: String?
+    var cVectorKey: String?,
+
+    @ColumnInfo(name = "c_subscriptionValid")
+    @SerializedName("c_subscriptionValid")
+    val cSubscriptionValid: Boolean?,
+    @ColumnInfo(name = "c_subscriptionPlanEndDate")
+    @SerializedName("c_subscriptionPlanEndDate")
+    val cSubscriptionPlanEndDate: String?,
+    @ColumnInfo(name = "c_subscriptionPlanStartDate")
+    @SerializedName("c_subscriptionPlanStartDate")
+    val cSubscriptionPlanStartDate: String?,
+    @ColumnInfo(name = "c_subscriptionPlanPrice")
+    @SerializedName("c_subscriptionPlanPrice")
+    val cSubscriptionPlanPrice: String?,
+    @ColumnInfo(name = "c_subscriptionPlanId")
+    @SerializedName("c_subscriptionPlanId")
+    val cSubscriptionPlanId: String?,
+    @ColumnInfo(name = "c_subscriptionPlanName")
+    @SerializedName("c_subscriptionPlanName")
+    val cSubscriptionPlanName: String?,
+    @ColumnInfo(name = "c_subscriptionID")
+    @SerializedName("c_subscriptionID")
+    val cSubscriptionID: String?,
+    @ColumnInfo(name = "c_subscriptionPlanCurrency")
+    @SerializedName("c_subscriptionPlanCurrency")
+    val cSubscriptionPlanCurrency: String?,
+    @ColumnInfo(name = "c_subscriptionType")
+    @SerializedName("c_subscriptionType")
+    val cSubscriptionType: String?,
+    @ColumnInfo(name = "c_subscriptionPlanBillingEndDate")
+    @SerializedName("c_subscriptionPlanBillingEndDate")
+    val cSubscriptionPlanBillingEndDate: String?,
+    @ColumnInfo(name = "c_subscriptionPlanBillingStartDate")
+    @SerializedName("c_subscriptionPlanBillingStartDate")
+    val cSubscriptionPlanBillingStartDate: String?
 
 )

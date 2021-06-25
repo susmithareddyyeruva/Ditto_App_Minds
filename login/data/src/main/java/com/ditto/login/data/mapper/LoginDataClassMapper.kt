@@ -63,7 +63,19 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cRegisteredWithNarvar = this.cRegisteredWithNarvar,
         cTaxExempt = this.cTaxExempt,
         cInitialisationVector = this.cInitialisationVector,
-        cVectorKey = this.cVectorKey
+        cVectorKey = this.cVectorKey,
+
+        cSubscriptionValid = this.cSubscriptionValid,
+        cSubscriptionPlanEndDate = this.cSubscriptionPlanEndDate,
+        cSubscriptionPlanStartDate = this.cSubscriptionPlanStartDate,
+        cSubscriptionPlanPrice = this.cSubscriptionPlanPrice,
+        cSubscriptionPlanId = this.cSubscriptionPlanId,
+        cSubscriptionPlanName = this.cSubscriptionPlanName,
+        cSubscriptionID = this.cSubscriptionID,
+        cSubscriptionPlanCurrency = this.cSubscriptionPlanCurrency,
+        cSubscriptionType = this.cVectorKey,
+        cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
+        cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate
 
 
     )

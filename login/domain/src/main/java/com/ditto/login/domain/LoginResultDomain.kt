@@ -57,5 +57,17 @@ data class LoginResultDomain(
     val cRegisteredWithNarvar: Boolean,
     val cTaxExempt: Boolean,
     val cInitialisationVector: String,
-    val cVectorKey: String
+    val cVectorKey: String,
+
+    val cSubscriptionValid: Boolean,
+    val cSubscriptionPlanEndDate: String?,
+    val cSubscriptionPlanStartDate: String?,
+    val cSubscriptionPlanPrice: String?,
+    val cSubscriptionPlanId: String?,
+    val cSubscriptionPlanName: String?,
+    val cSubscriptionID: String?,
+    val cSubscriptionPlanCurrency: String?,
+    val cSubscriptionType: String?,
+    val cSubscriptionPlanBillingEndDate: String?,
+    val cSubscriptionPlanBillingStartDate: String?
 )

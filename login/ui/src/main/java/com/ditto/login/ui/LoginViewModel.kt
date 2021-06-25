@@ -44,6 +44,7 @@ class LoginViewModel @Inject constructor(
     val isPasswordValidated: ObservableBoolean = ObservableBoolean(true)
     val isLoginButtonFocusable: ObservableBoolean = ObservableBoolean(true)
     var errorString: ObservableField<String> = ObservableField("")
+
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -100,6 +101,14 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
+
+                    storageManager.savePrefs(SUBSCRIPTION_VALID, result.data.cSubscriptionValid)
+                    storageManager.savePrefs(SUBSCRIPTION_PLAN_NAME, result.data.cSubscriptionPlanName?:"")
+                    storageManager.savePrefs(SUBSCRIPTION_START_DATE, result.data.cSubscriptionPlanStartDate?:"")
+                    storageManager.savePrefs(SUBSCRIPTION_END_DATE, result.data.cSubscriptionPlanBillingEndDate?:"")
+                    storageManager.savePrefs(SUBSCRIPTION_PLAN_PRICE, result.data.cSubscriptionPlanPrice?:"")
+
+
                     AppState.setCustID(result.data.customer_id!!)
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
@@ -110,10 +119,12 @@ class LoginViewModel @Inject constructor(
                         result.data.cSpliceMultiplePieceReminder
                     )
 
+
                     userEmail = result.data.email ?: ""
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
+                    subscriptionEndDate=result.data.cSubscriptionPlanEndDate?:""
                     AppState.setIsLogged(true)
                     disposable += useCase.createUser(
                         LoginUser(
@@ -169,12 +180,25 @@ class LoginViewModel @Inject constructor(
                             cRegisteredWithNarvar = result.data.cRegisteredWithNarvar,
                             cTaxExempt = result.data.cTaxExempt,
                             cInitialisationVector = result.data.cInitialisationVector,
-                            cVectorKey = result.data.cVectorKey
+                            cVectorKey = result.data.cVectorKey,
+                            cSubscriptionValid = result.data.cSubscriptionValid,
+                            cSubscriptionPlanEndDate = result.data.cSubscriptionPlanEndDate,
+                            cSubscriptionPlanStartDate = result.data.cSubscriptionPlanStartDate,
+                            cSubscriptionPlanPrice = result.data.cSubscriptionPlanPrice,
+                            cSubscriptionPlanId = result.data.cSubscriptionPlanId,
+                            cSubscriptionPlanName = result.data.cSubscriptionPlanName,
+                            cSubscriptionID = result.data.cSubscriptionID,
+                            cSubscriptionPlanCurrency = result.data.cSubscriptionPlanCurrency,
+                            cSubscriptionType = result.data.cVectorKey,
+                            cSubscriptionPlanBillingEndDate = result.data.cSubscriptionPlanBillingEndDate,
+                            cSubscriptionPlanBillingStartDate = result.data.cSubscriptionPlanBillingStartDate
+
                         )
                     )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy { handleFetchResult(it) }
+
                 } else { //http status code is 200  also have error
                     isLoginButtonFocusable.set(true)
                     errorString.set(result.data.faultDomain?.message ?: "")
@@ -189,6 +213,7 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 
 
     fun forgotPasswordRedirection() {

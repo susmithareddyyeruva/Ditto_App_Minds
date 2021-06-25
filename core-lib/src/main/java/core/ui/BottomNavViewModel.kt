@@ -3,21 +3,12 @@ package core.ui
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import core.OCAPI_PASSWORD
-import core.OCAPI_USERNAME
 import core.appstate.AppState
-import core.data.TokenRequest
-import core.data.TokenResultDomain
-import core.domain.GetTokenUseCase
 import core.event.UiEvents
 import core.lib.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
-import non_core.lib.Result
-import java.util.*
 import core.ui.common.MenuModel
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -36,6 +27,9 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var headerList: MutableList<MenuModel> = ArrayList<MenuModel>()
     var childList = HashMap<MenuModel, List<MenuModel>?>()
     val isLogoutEvent: ObservableBoolean = ObservableBoolean(false)
+    var subscriptionEndDateBase: ObservableField<String> = ObservableField("")
+
+
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -44,7 +38,57 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         if (AppState.getIsLogged())
             isGuestBase.set(false) else
             isGuestBase.set(true)
-      
+
+    }
+
+    private fun getTotalNumberOfDays(){
+       // val endDate=storageManager.getStringValue(SUBSCRIPTION_END_DATE)
+//         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             val actualDate=subscriptionEndDateBase.get()?.replace("T"," ")
+//            val from = LocalDate.parse(actualDate!![0], DateTimeFormatter.ofPattern("yyyy-mm-dd"))
+//            val today=LocalDate.now()
+//            var period = Period.between(from, today)
+//
+//            println("The difference between " + from.format(DateTimeFormatter.ISO_LOCAL_DATE)
+//                    + " and " + today.format(DateTimeFormatter.ISO_LOCAL_DATE) + " is "
+//                    + period.getYears() + " years, " + period.getMonths() + " months and "
+//                    + period.getDays() + " days")
+//        } else {
+//            TODO("VERSION.SDK_INT < O")
+//        }
+
+        val simpleDateFormat = SimpleDateFormat("YYYY/MM/DD hh:mm:ss")
+        val currentTime = Calendar.getInstance().time
+        try {
+            val date1: Date = simpleDateFormat.parse(actualDate)
+            val date2: Date = simpleDateFormat.parse(currentTime.toString())
+            printDifference(date1, date2)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun printDifference(startDate: Date, endDate: Date) {
+        //milliseconds
+        var different = endDate.time - startDate.time
+        println("startDate : $startDate")
+        println("endDate : $endDate")
+        println("different : $different")
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+        val elapsedDays = different / daysInMilli
+        different = different % daysInMilli
+        val elapsedHours = different / hoursInMilli
+        different = different % hoursInMilli
+        val elapsedMinutes = different / minutesInMilli
+        different = different % minutesInMilli
+        val elapsedSeconds = different / secondsInMilli
+        System.out.printf(
+            "%d days, %d hours, %d minutes, %d seconds%n",
+            elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds
+        )
     }
 
     fun refreshMenu(context: Context?) {
@@ -56,6 +100,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             menuDescription.set(userEmailBase.get())
+            getTotalNumberOfDays()
         }
     }
 

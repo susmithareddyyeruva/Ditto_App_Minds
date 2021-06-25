@@ -56,7 +56,19 @@ data class LoginUser(
     val cRegisteredWithNarvar: Boolean? = false,
     val cTaxExempt: Boolean? = false,
     val cInitialisationVector: String? = "",
-    val cVectorKey: String? = ""
+    val cVectorKey: String? = "",
+
+    val cSubscriptionValid: Boolean?=false,
+    val cSubscriptionPlanEndDate: String?="",
+    val cSubscriptionPlanStartDate: String?="",
+    val cSubscriptionPlanPrice: String?="",
+    val cSubscriptionPlanId: String?="",
+    val cSubscriptionPlanName: String?="",
+    val cSubscriptionID: String?="",
+    val cSubscriptionPlanCurrency: String?="",
+    val cSubscriptionType: String?="",
+    val cSubscriptionPlanBillingEndDate: String?="",
+    val cSubscriptionPlanBillingStartDate: String?=""
 
 
 )
