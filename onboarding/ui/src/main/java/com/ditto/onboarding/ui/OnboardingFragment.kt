@@ -21,6 +21,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -172,7 +173,17 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                     ISFROMHOME to isFromHomeScreen,
                     ISDNDCHECKED to viewModel.dontShowThisScreen.get()
                 )
-                if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
+
+                if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
+                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "Demo Video","from" to "tutorial")
+                    /*findNavController().navigate(
+                        R.id.action_destination_onboarding_to_nav_graph_id_video,
+                        bundle
+                    )*/
+                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                } else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
                     navigateInstructionOrCaliberation(bundle)
 
