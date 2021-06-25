@@ -55,6 +55,9 @@ class SplashViewModel @Inject constructor(
                 uiEvents.post(Event.NavigateToLogin)
             }
         }
+        /**
+         * getting patterns data
+         */
        updateDb()
     }
 
