@@ -84,12 +84,5 @@ data class User(
     @ColumnInfo(name = "c_subscriptionPlanBillingStartDate")
     @SerializedName("c_subscriptionPlanBillingStartDate")
     val cSubscriptionPlanBillingStartDate: String?
-    var cVectorKey: String?,
-    @ColumnInfo(name = "c_subscriptionPlanEndDate")
-    @SerializedName("c_subscriptionPlanEndDate")
-    val c_subscriptionPlanEndDate : String?,
-    @ColumnInfo(name = "c_subscriptionValid")
-    @SerializedName("c_subscriptionValid")
-    val c_subscriptionValid : Boolean?
 
 )

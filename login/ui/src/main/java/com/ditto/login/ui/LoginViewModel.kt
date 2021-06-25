@@ -102,13 +102,6 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
 
-                    storageManager.savePrefs(SUBSCRIPTION_VALID, result.data.cSubscriptionValid)
-                    storageManager.savePrefs(SUBSCRIPTION_PLAN_NAME, result.data.cSubscriptionPlanName?:"")
-                    storageManager.savePrefs(SUBSCRIPTION_START_DATE, result.data.cSubscriptionPlanStartDate?:"")
-                    storageManager.savePrefs(SUBSCRIPTION_END_DATE, result.data.cSubscriptionPlanBillingEndDate?:"")
-                    storageManager.savePrefs(SUBSCRIPTION_PLAN_PRICE, result.data.cSubscriptionPlanPrice?:"")
-
-
                     AppState.setCustID(result.data.customer_id!!)
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
@@ -117,18 +110,6 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(
                         MULTIPLE_PIECE_REMINDER,
                         result.data.cSpliceMultiplePieceReminder
-                    )
-                    /**
-                     * Storing the subscription information into Local Cache
-                     */
-
-                    storageManager.savePrefs(
-                        CSUBSCRIPTION_ENDDATE,
-                        result.data.c_subscriptionPlanEndDate
-                    )
-                    storageManager.savePrefs(
-                        CSUBSCRIPTION_VALID,
-                        result.data.c_subscriptionValid
                     )
 
                     userEmail = result.data.email ?: ""
@@ -167,9 +148,6 @@ class LoginViewModel @Inject constructor(
                             cSpliceReminder = result.data.cSpliceReminder,
                             cCuttingReminder = result.data.cCuttingReminder,
                             cInitialisationVector = result.data.cInitialisationVector,
-                            cVectorKey = result.data.cVectorKey,
-                            c_subscriptionPlanEndDate = result.data.c_subscriptionPlanEndDate,
-                            c_subscriptionValid = result.data.c_subscriptionValid
                             cVectorKey = result.data.cVectorKey,
                             cSubscriptionValid = result.data.cSubscriptionValid,
                             cSubscriptionPlanEndDate = result.data.cSubscriptionPlanEndDate,

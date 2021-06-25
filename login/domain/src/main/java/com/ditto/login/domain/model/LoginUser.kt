@@ -30,8 +30,16 @@ data class LoginUser(
     val cCuttingReminder: Boolean? = true,
     val cInitialisationVector: String? = "",
     val cVectorKey: String? = "",
-    val c_subscriptionPlanEndDate: String?="",
-    val c_subscriptionValid: Boolean?=false
 
-
+    val cSubscriptionValid: Boolean?=false,
+    val cSubscriptionPlanEndDate: String?="",
+    val cSubscriptionPlanStartDate: String?="",
+    val cSubscriptionPlanPrice: String?="",
+    val cSubscriptionPlanId: String?="",
+    val cSubscriptionPlanName: String?="",
+    val cSubscriptionID: String?="",
+    val cSubscriptionPlanCurrency: String?="",
+    val cSubscriptionType: String?="",
+    val cSubscriptionPlanBillingEndDate: String?="",
+    val cSubscriptionPlanBillingStartDate: String?=""
 )

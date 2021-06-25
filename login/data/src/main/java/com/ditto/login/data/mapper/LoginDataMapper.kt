@@ -28,10 +28,6 @@ fun User.toUserDomain(): LoginUser {
         cCuttingReminder = this.cCuttingReminder,
         cInitialisationVector = this.cInitialisationVector,
         cVectorKey = this.cVectorKey,
-        c_subscriptionPlanEndDate = this.c_subscriptionPlanEndDate,
-        c_subscriptionValid = this.c_subscriptionValid
-        cVectorKey = this.cVectorKey,
-
         cSubscriptionValid = this.cSubscriptionValid,
         cSubscriptionPlanEndDate = this.cSubscriptionPlanEndDate,
         cSubscriptionPlanStartDate = this.cSubscriptionPlanStartDate,
@@ -63,8 +59,18 @@ fun LoginUser.toDomain(): User {
         cCuttingReminder = this.cCuttingReminder,
         cInitialisationVector = this.cInitialisationVector,
         cVectorKey = this.cVectorKey,
-        c_subscriptionPlanEndDate = this.c_subscriptionPlanEndDate,
-        c_subscriptionValid = this.c_subscriptionValid
+
+        cSubscriptionValid = this.cSubscriptionValid,
+        cSubscriptionPlanEndDate = this.cSubscriptionPlanEndDate,
+        cSubscriptionPlanStartDate = this.cSubscriptionPlanStartDate,
+        cSubscriptionPlanPrice = this.cSubscriptionPlanPrice,
+        cSubscriptionPlanId = this.cSubscriptionPlanId,
+        cSubscriptionPlanName = this.cSubscriptionPlanName,
+        cSubscriptionID = this.cSubscriptionID,
+        cSubscriptionPlanCurrency = this.cSubscriptionPlanCurrency,
+        cSubscriptionType = this.cSubscriptionType,
+        cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
+        cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate
     )
 
 
@@ -139,11 +145,6 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cSubscriptionType = this.cSubscriptionType,
         cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
         cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate
-
-        cVectorKey = this.cVectorKey,
-        c_subscriptionPlanEndDate = this.c_subscriptionPlanEndDate,
-        c_subscriptionValid = this.c_subscriptionValid
-
 
     )
 
