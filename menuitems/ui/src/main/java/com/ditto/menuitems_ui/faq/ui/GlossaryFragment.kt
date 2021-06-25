@@ -15,6 +15,7 @@ import com.ditto.menuitems.domain.model.faq.GlossaryDomain
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.GlossaryFragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.GlossaryAdapter
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import javax.inject.Inject
@@ -55,10 +56,9 @@ class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
                                     "from" to "tutorial"
                                 )
 
-                            findNavController().navigate(
-                                R.id.action_destination_faq_to_nav_graph_id_video,
-                                bundle
-                            )
+                            val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                            intent.putExtras(bundle)
+                            startActivity(intent)
                         }
                     }
 

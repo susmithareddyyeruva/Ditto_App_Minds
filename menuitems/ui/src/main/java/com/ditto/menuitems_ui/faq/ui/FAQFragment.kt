@@ -16,6 +16,7 @@ import com.ditto.menuitems.domain.model.faq.FAQDomain
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FaqfragmentLayoutBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.FAQAdapter
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import javax.inject.Inject
@@ -60,10 +61,9 @@ class FAQFragment(var fAQ: List<FAQDomain>) : BaseFragment() {
                                     "from" to "tutorial"
                                 )
 
-                            findNavController().navigate(
-                                R.id.action_destination_faq_to_nav_graph_id_video,
-                                bundle
-                            )
+                            val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                            intent.putExtras(bundle)
+                            startActivity(intent)
                         }
                     }
                 }, object : VisitSiteListener {
