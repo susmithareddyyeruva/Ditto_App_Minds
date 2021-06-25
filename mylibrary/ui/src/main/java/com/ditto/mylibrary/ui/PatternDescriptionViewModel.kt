@@ -188,21 +188,26 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         val contextWrapper = ContextWrapper(context)
 
         dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "DittoPattern"
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
-        file.mkdirs()
+
+        /*
+        code for creating folder with pattern name
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
+        file.mkdirs()*/
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
-        result = File(file, filename)
+
+        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}"
+        result = File(dittofolder, filename)
         if (!result.exists()) {
             result.createNewFile()
-                 }
+        }
         result.copyInputStreamToFile(inputStream)
         return result
     }
