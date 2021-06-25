@@ -68,7 +68,7 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
                 adapter?.setListData(it)
             }
         }
-        if(pos==3){
+        if(pos==0){
             howto_viewpager.visibility=View.VISIBLE
 
         }else{

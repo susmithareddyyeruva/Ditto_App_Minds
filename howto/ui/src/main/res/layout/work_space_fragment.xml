@@ -85,7 +85,7 @@
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
             android:src="@drawable/playicon"
-            android:visibility="@{position==3 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{position==0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/image_step"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@+id/image_step"
