@@ -18,6 +18,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.common.Utility
 import kotlinx.android.synthetic.main.activity_player.*
 import java.util.regex.Matcher
@@ -47,6 +48,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!NetworkUtility.isNetworkAvailable(this)) {
+            showAlert()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -86,7 +93,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
                 findViewById<TextView>(R.id.skipButton).visibility = View.VISIBLE
                 findViewById<ImageView>(R.id.close).visibility = View.GONE
 
-                VIDEO_ID=getYoutubeVideoId("https://youtu.be/IanggPhf7EY")?:""  //For Testing purpose private video URL
+                //VIDEO_ID=getYoutubeVideoId("https://youtu.be/IanggPhf7EY")?:""  //For Testing purpose private video URL
 
             }
         }
@@ -308,5 +315,20 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         alertType: Utility.AlertType
     ) {
 
+    }
+
+    private fun showAlert() {
+        val errorMessage = getString(R.string.no_internet_available)
+        Utility.getCommonAlertDialogue(
+            this,
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
     }
 }
