@@ -58,6 +58,16 @@ data class LoginResultDomain(
     val cTaxExempt: Boolean,
     val cInitialisationVector: String,
     val cVectorKey: String,
-    val c_subscriptionPlanEndDate: String,
-    val c_subscriptionValid: Boolean
+
+    val cSubscriptionValid: Boolean,
+    val cSubscriptionPlanEndDate: String?,
+    val cSubscriptionPlanStartDate: String?,
+    val cSubscriptionPlanPrice: String?,
+    val cSubscriptionPlanId: String?,
+    val cSubscriptionPlanName: String?,
+    val cSubscriptionID: String?,
+    val cSubscriptionPlanCurrency: String?,
+    val cSubscriptionType: String?,
+    val cSubscriptionPlanBillingEndDate: String?,
+    val cSubscriptionPlanBillingStartDate: String?
 )

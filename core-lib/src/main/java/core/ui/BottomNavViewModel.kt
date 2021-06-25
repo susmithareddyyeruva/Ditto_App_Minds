@@ -7,6 +7,9 @@ import core.appstate.AppState
 import core.event.UiEvents
 import core.lib.R
 import core.ui.common.MenuModel
+import core.ui.common.Utility
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -16,6 +19,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     val showProgress = ObservableBoolean(false)
     val menuTitle: ObservableField<String> = ObservableField("")
     val menuDescription: ObservableField<String> = ObservableField("")
+    val menuNumberOfDaysForSubscription:ObservableField<String> = ObservableField("")
 
     val isGuestBase: ObservableBoolean = ObservableBoolean(false)
     var userEmailBase: ObservableField<String> = ObservableField("")
@@ -25,6 +29,8 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     var headerList: MutableList<MenuModel> = ArrayList<MenuModel>()
     var childList = HashMap<MenuModel, List<MenuModel>?>()
     val isLogoutEvent: ObservableBoolean = ObservableBoolean(false)
+    var subscriptionEndDateBase: ObservableField<String> = ObservableField("")
+
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
@@ -33,7 +39,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         if (AppState.getIsLogged())
             isGuestBase.set(false) else
             isGuestBase.set(true)
-      
+
     }
 
     fun refreshMenu(context: Context?) {
@@ -45,6 +51,13 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             menuDescription.set(userEmailBase.get())
+            if(subscriptionEndDateBase.get().toString().isEmpty()){
+                menuNumberOfDaysForSubscription.set("0 days")
+            }else{
+                val days=Utility.getTotalNumberOfDays(subscriptionEndDateBase.get())
+                menuNumberOfDaysForSubscription.set("$days days")
+            }
+
         }
     }
 

@@ -211,6 +211,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
         bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)
         bottomNavViewModel.userLastNameBase.set(viewModel.userLastName)
+        bottomNavViewModel.subscriptionEndDateBase.set(viewModel.subscriptionEndDate)
     }
 
     private fun onKeyboardShow() {

@@ -123,7 +123,7 @@
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:paddingStart="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
-            android:text="769 days left"
+            android:text="@{bottomNavViewModel.menuNumberOfDaysForSubscription}"
             android:textColor="@color/subscription_yellow"
             android:textSize="@dimen/text_desc"
             android:visibility="@{bottomNavViewModel.isGuestBase() ? View.GONE : View.VISIBLE}"

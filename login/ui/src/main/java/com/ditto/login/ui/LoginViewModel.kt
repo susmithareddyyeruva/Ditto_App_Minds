@@ -101,6 +101,7 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
+
                     AppState.setCustID(result.data.customer_id!!)
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
@@ -110,23 +111,12 @@ class LoginViewModel @Inject constructor(
                         MULTIPLE_PIECE_REMINDER,
                         result.data.cSpliceMultiplePieceReminder
                     )
-                    /**
-                     * Storing the subscription information into Local Cache
-                     */
-
-                    storageManager.savePrefs(
-                        CSUBSCRIPTION_ENDDATE,
-                        result.data.c_subscriptionPlanEndDate
-                    )
-                    storageManager.savePrefs(
-                        CSUBSCRIPTION_VALID,
-                        result.data.c_subscriptionValid
-                    )
 
                     userEmail = result.data.email ?: ""
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
+                    subscriptionEndDate=result.data.cSubscriptionPlanEndDate?:""
                     AppState.setIsLogged(true)
                     /**
                      * Storing the subscription information into DB
@@ -159,13 +149,24 @@ class LoginViewModel @Inject constructor(
                             cCuttingReminder = result.data.cCuttingReminder,
                             cInitialisationVector = result.data.cInitialisationVector,
                             cVectorKey = result.data.cVectorKey,
-                            c_subscriptionPlanEndDate = result.data.c_subscriptionPlanEndDate,
-                            c_subscriptionValid = result.data.c_subscriptionValid
+                            cSubscriptionValid = result.data.cSubscriptionValid,
+                            cSubscriptionPlanEndDate = result.data.cSubscriptionPlanEndDate,
+                            cSubscriptionPlanStartDate = result.data.cSubscriptionPlanStartDate,
+                            cSubscriptionPlanPrice = result.data.cSubscriptionPlanPrice,
+                            cSubscriptionPlanId = result.data.cSubscriptionPlanId,
+                            cSubscriptionPlanName = result.data.cSubscriptionPlanName,
+                            cSubscriptionID = result.data.cSubscriptionID,
+                            cSubscriptionPlanCurrency = result.data.cSubscriptionPlanCurrency,
+                            cSubscriptionType = result.data.cVectorKey,
+                            cSubscriptionPlanBillingEndDate = result.data.cSubscriptionPlanBillingEndDate,
+                            cSubscriptionPlanBillingStartDate = result.data.cSubscriptionPlanBillingStartDate
+
                         )
                     )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy { handleFetchResult(it) }
+
                 } else { //http status code is 200  also have error
                     isLoginButtonFocusable.set(true)
                     errorString.set(result.data.faultDomain?.message ?: "")
@@ -180,6 +181,7 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 
 
     fun forgotPasswordRedirection() {

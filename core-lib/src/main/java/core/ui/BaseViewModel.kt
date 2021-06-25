@@ -17,4 +17,6 @@ abstract class BaseViewModel : ViewModel() {
     var userPhone: String? = ""
     var userFirstName: String? = ""
     var userLastName: String? = ""
+    var subscriptionEndDate: String? = ""
+
 }

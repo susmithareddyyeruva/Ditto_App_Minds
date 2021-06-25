@@ -36,8 +36,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -558,6 +560,37 @@ class Utility @Inject constructor(
                 callbackDialogListener.onPositiveButtonClicked(alertType)
             }
 
+        }
+
+         fun getTotalNumberOfDays(endDate:String?):String{
+             val formatter = SimpleDateFormat("dd/MM/yyyy")
+            val date = Date()
+            println(formatter.format(date))
+            val filterData = endDate!!.split(" ")[0]
+            val date2 = SimpleDateFormat("yyyy-MM-dd").parse(filterData)
+            val longValue=printDifference(date,date2)
+             return longValue.toString()
+        }
+
+        fun printDifference(startDate: Date, endDate: Date) :Long{
+            //milliseconds
+            var different = endDate.time - startDate.time
+            println("startDate : $startDate")
+            println("endDate : $endDate")
+            println("different : $different")
+            val secondsInMilli: Long = 1000
+            val minutesInMilli = secondsInMilli * 60
+            val hoursInMilli = minutesInMilli * 60
+            val daysInMilli = hoursInMilli * 24
+            val elapsedDays = different / daysInMilli
+            different %= daysInMilli
+            val elapsedHours = different / hoursInMilli
+            different %= hoursInMilli
+            val elapsedMinutes = different / minutesInMilli
+            different %= minutesInMilli
+            val elapsedSeconds = different / secondsInMilli
+            println("different : $elapsedDays")
+            return elapsedDays
         }
 
     }
