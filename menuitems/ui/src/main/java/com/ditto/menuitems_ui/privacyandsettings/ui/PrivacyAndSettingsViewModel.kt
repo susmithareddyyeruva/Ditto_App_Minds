@@ -1,4 +1,4 @@
-package com.ditto.menuitems_ui.aboutapp.fragment
+package com.ditto.menuitems_ui.privacyandsettings.ui
 
 import android.util.Log
 import com.ditto.menuitems.domain.AboutAppUseCase
@@ -10,16 +10,16 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
+import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
-
-class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAppUseCase): BaseViewModel() {
-
-    var txt:String=""
+class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCase: AboutAppUseCase) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+    var data: String=""
 
     fun fetchUserData() {
+        uiEvents.post(Event.OnShowProgress)
         disposable += aboutAppUseCase.getAboutAppAndPrivacyData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -31,32 +31,28 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
         when(result)
         {
             is Result.OnSuccess<AboutAppDomain> ->{
-                Log.d("AboutAppViewModel", "Success"+result.data)
-                setResponseText(result.data.c_body)
-                uiEvents.post(Event.updateResponseinText)
+                Log.d("PrivacyPolicy", "Success"+result.data)
+               data=result.data.c_body
+                uiEvents.post(Event.onResultSuccess)
 
             }
+            is NoNetworkError -> {
+                uiEvents.post(Event.OnHideProgress)
+                uiEvents.post(Event.NoNetworkError)
+            }
             is Result.OnError -> {
-                Log.d("WSProSettingViewModel", "Failed")
+                uiEvents.post(Event.OnHideProgress)
+                Log.d("PrivacyPolicy", "Failed")
             }
         }
     }
 
-    fun setResponseText(txt: String){
-        this.txt=txt
-    }
-
-    fun getResponseText():String{
-        return txt;
-    }
-
-
 
     sealed class Event {
-        object updateResponseinText : Event()
+        object onResultSuccess : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
+        object NoNetworkError : Event()
     }
-
 
 }

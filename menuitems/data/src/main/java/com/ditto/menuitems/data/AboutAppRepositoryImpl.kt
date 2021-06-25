@@ -7,7 +7,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.data.api.AboutAppService
 import com.ditto.menuitems.data.error.AboutAppFetchError
 import com.ditto.menuitems.data.mapper.toDomain
-import com.ditto.menuitems.domain.AboutAppAbstractRespository
+import com.ditto.menuitems.domain.AboutAppRepository
 import com.ditto.menuitems.domain.model.AboutAppDomain
 import core.CLIENT_ID
 import core.network.NetworkUtility
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class AboutAppRepositoryImpl @Inject constructor(private val aboutAppService: @JvmSuppressWildcards AboutAppService,
                                                  private val loggerFactory: LoggerFactory
-) :AboutAppAbstractRespository{
+) :AboutAppRepository{
 
 
     @Inject

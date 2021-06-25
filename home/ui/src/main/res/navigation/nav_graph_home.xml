@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_homeFragment_to_nav_graph_manage"
             app:destination="@id/manageDeviceFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_privacyAndSettingFragment"
+            app:destination="@id/privacyAndSettingFragment" />
 
 
     </fragment>
@@ -122,6 +125,10 @@
         android:id="@+id/manageDeviceFragment"
         android:name="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment"
         android:label="ManageDeviceFragment" />
+    <fragment
+        android:id="@+id/privacyAndSettingFragment"
+        android:name="com.ditto.menuitems_ui.privacyandsettings.ui.PrivacyAndSettingFragment"
+        android:label="PrivacyAndSettingFragment" />
 
 
 </navigation>
