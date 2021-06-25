@@ -24,7 +24,8 @@
             android:id="@+id/popup_window_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:theme="@style/AppTheme_PopupVideo">
+            android:background="@{viewmodel.isProjectorLayout()? @color/transparent :  @color/semitransparent }"
+            android:theme="@style/AppTheme_Transparent">
 
 
             <androidx.constraintlayout.widget.Guideline

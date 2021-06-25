@@ -10,6 +10,7 @@
     <include app:graph="@navigation/instruction_calibration_nav" />
     <include app:graph="@navigation/nav_graph_home" />
     <include app:graph="@navigation/nav_graph_howto" />
+    <include app:graph="@navigation/nav_graph_video" />
 
     <fragment
         android:id="@+id/destination_onboarding"
@@ -103,5 +104,12 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
            />
+        <action
+            android:id="@+id/action_destination_onboarding_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 </navigation>

@@ -137,4 +137,9 @@ data class LoginResult(
     val cSubscriptionPlanBillingEndDate: String,
     @SerializedName("c_subscriptionPlanBillingStartDate")
     val cSubscriptionPlanBillingStartDate: String
+    val cVectorKey: String,
+    @SerializedName("c_subscriptionPlanEndDate")
+    val c_subscriptionPlanEndDate : String,
+    @SerializedName("c_subscriptionValid")
+    val c_subscriptionValid : Boolean
 )

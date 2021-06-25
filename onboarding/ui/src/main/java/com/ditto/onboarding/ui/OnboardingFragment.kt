@@ -21,6 +21,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -30,7 +31,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.onboarding_fragment.*
 import javax.inject.Inject
 
-class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
+class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -64,7 +65,7 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
         (activity as BottomNavigationActivity).hidemenu()
         if(viewModel.dataFromApi.value == null){
-            if (core.network.Utility.isNetworkAvailable(requireContext())) {
+            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnBoardingDataFromApi()
 
@@ -172,7 +173,17 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
                     ISFROMHOME to isFromHomeScreen,
                     ISDNDCHECKED to viewModel.dontShowThisScreen.get()
                 )
-                if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
+
+                if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
+                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "Demo Video","from" to "tutorial")
+                    /*findNavController().navigate(
+                        R.id.action_destination_onboarding_to_nav_graph_id_video,
+                        bundle
+                    )*/
+                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                } else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
                     navigateInstructionOrCaliberation(bundle)
 
@@ -284,14 +295,15 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
 
     private fun showBluetoothDialogue() {  //Displaying Dialog for Bluetooth
         if (!viewModel.isBleLaterClicked.get() && !isFromHomeScreen) {
-            Utility.getAlertDialogue(
+            Utility.getCommonAlertDialogue(
                 requireContext(),
                 resources.getString(R.string.connectivity),
                 resources.getString(R.string.ble_connectivity_onboarding),
                 resources.getString(R.string.later),
                 resources.getString(R.string.turnon),
                 this,
-                Utility.AlertType.BLE
+                Utility.AlertType.BLE,
+                Utility.Iconype.NONE
             )
         }
     }
@@ -300,48 +312,20 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         //for retrict to open again
         if (!viewModel.isWifiLaterClicked.get()) {
             isWifiAlert = true
-            Utility.getAlertDialogue(
+            Utility.getCommonAlertDialogue(
                 requireContext(),
                 resources.getString(R.string.connectivity),
                 resources.getString(R.string.wifi_connectivity_onboarding),
                 resources.getString(R.string.later),
                 resources.getString(R.string.settings),
                 this,
-                Utility.AlertType.WIFI
+                Utility.AlertType.WIFI,
+                Utility.Iconype.NONE
             )
         }
 
     }
 
-    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Turn on button clicked
-        if (isWifiAlert) {
-            startActivity(Intent(Settings.ACTION_SETTINGS))
-        } else {
-            val mBluetoothAdapter =
-                BluetoothAdapter.getDefaultAdapter()
-            mBluetoothAdapter.enable()
-            if (!Utility.getWifistatus(requireContext())) {
-                viewModel.isWifiLaterClicked.set(false)
-                showWifiDialogue()
-            }
-        }
-
-    }
-
-    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {// Alert Dialog Later button clicked
-        if (!isWifiAlert) {
-            logger.d("Later clicked")
-            viewModel.isBleLaterClicked.set(true)
-            viewModel.onClickLater()
-        } else {
-            viewModel.isWifiLaterClicked.set(true)
-            viewModel.onClickLater()
-        }
-    }
-
-    override fun onNeutralButtonClicked() {
-        TODO("Not yet implemented")
-    }
 
     private fun setToolbar() {
 //        if (isFromHomeScreen) {
@@ -377,6 +361,35 @@ class OnboardingFragment : BaseFragment(), Utility.CallbackDialogListener {
         }
 
     }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        if (isWifiAlert) {
+            startActivity(Intent(Settings.ACTION_SETTINGS))
+        } else {
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            mBluetoothAdapter.enable()
+            if (!Utility.getWifistatus(requireContext())) {
+                viewModel.isWifiLaterClicked.set(false)
+                showWifiDialogue()
+            }
+        }    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        if (!isWifiAlert) {
+            logger.d("Later clicked")
+            viewModel.isBleLaterClicked.set(true)
+            viewModel.onClickLater()
+        } else {
+            viewModel.isWifiLaterClicked.set(true)
+            viewModel.onClickLater()
+        }    }
 
 
 }
