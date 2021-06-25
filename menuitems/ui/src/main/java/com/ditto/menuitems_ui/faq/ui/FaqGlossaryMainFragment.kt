@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager.widget.ViewPager
 import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
@@ -135,11 +136,14 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
             }
         })
 
-        val tabLayout =
-            ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(0) as LinearLayout
-        val tabTextView = tabLayout.getChildAt(1) as TextView
-        val typeface = ResourcesCompat.getFont(requireContext(), R.font.avenir_next_lt_pro_demi)
-        tabTextView.setTypeface(typeface)
+        try {
+            val tabLayout =
+                ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(0) as ConstraintLayout
+            val tabTextView = tabLayout.getChildAt(1) as TextView
+            val typeface = ResourcesCompat.getFont(requireContext(), R.font.avenir_next_lt_pro_demi)
+            tabTextView.setTypeface(typeface)
+        } catch (e: Exception) {
+        }
         binding.tabLayoutFaq.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 Log.d("onTabSelection", "onTabSelected")
