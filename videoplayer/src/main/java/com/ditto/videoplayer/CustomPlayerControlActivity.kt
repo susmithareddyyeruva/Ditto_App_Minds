@@ -331,4 +331,11 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             Utility.Iconype.FAILED
         )
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mPlayer!=null) {
+            mPlayer?.release()
+        }
+    }
 }
