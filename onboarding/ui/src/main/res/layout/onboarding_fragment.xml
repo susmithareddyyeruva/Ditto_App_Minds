@@ -16,6 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:keepScreenOn="true"
         android:background="@color/white">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/onboarding_appBar"
