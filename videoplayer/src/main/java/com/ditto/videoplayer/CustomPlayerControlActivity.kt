@@ -39,7 +39,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     override fun onBackPressed() {
         super.onBackPressed()
         if (AppState.getIsLogged()){
-            finishAffinity()
+            finish()
         }else{
             val intent = Intent()
             intent.data = Uri.parse("ONBACK")
