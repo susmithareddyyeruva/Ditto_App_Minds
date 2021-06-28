@@ -329,21 +329,22 @@ class InstructionFragment constructor(
      */
     private fun showVideoPopup() {
         val position = Common.currentSelectedTab.get()
-        val filePath = if (viewModel.instructionID.get() == 1) {
-            viewModel.data.value?.instructions?.get(position)?.instructions?.get(
-                binding.instructionViewPager.currentItem
-            )?.videoPath
-        } else {
-            viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.videoPath
-        }
+        if(position < (viewModel.data.value?.instructions?.size?:0)){
+            val filePath = if (viewModel.instructionID.get() == 1) {
+                viewModel.data.value?.instructions?.get(position)?.instructions?.get(
+                    binding.instructionViewPager.currentItem
+                )?.videoPath
+            } else {
+                viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.videoPath
+            }
 
-        val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
-            viewModel.data.value?.instructions?.get(position)?.instructions?.get(binding.instructionViewPager.currentItem)?.title
-        } else {
-            viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
+            val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
+                viewModel.data.value?.instructions?.get(position)?.instructions?.get(binding.instructionViewPager.currentItem)?.title
+            } else {
+                viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
+            }
+            displayFullScreenVideo(filePath,title,"tutorial")
         }
-
-        displayFullScreenVideo(filePath,title,"tutorial")
     }
 
     private fun displayFullScreenVideo(

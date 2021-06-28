@@ -78,11 +78,11 @@
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+<!--        android:background="@drawable/ic_workspace_new"-->
         <RelativeLayout
             android:id="@+id/layout_workspace_background"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@drawable/ic_workspace_new"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintDimensionRatio="14:9"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
@@ -122,43 +122,39 @@
             android:id="@+id/splice_right_border"
             android:layout_width="@dimen/dimen_2"
             android:layout_height="@dimen/dimen_0"
-            android:visibility="@{viewModel.isSpliceRightVisible() ? View.VISIBLE : View.GONE}"
+            android:src="@{viewModel.isSpliceRightVisible() ?@drawable/ic_workspace_splice_right_red : @drawable/ic_workspace_splice_right_black}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
-            android:background="@drawable/ic_workspace_splice_right_new"/>
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"/>
 
         <ImageView
             android:id="@+id/splice_left_border"
             android:layout_width="@dimen/dimen_2"
             android:layout_height="@dimen/dimen_0"
-            android:visibility="@{viewModel.isSpliceLeftVisible() ? View.VISIBLE : View.GONE}"
+            android:src="@{viewModel.isSpliceLeftVisible() ?@drawable/ic_workspace_splice_left_red : @drawable/ic_workspace_splice_left_black}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
-            android:background="@drawable/ic_workspace_splice_left_new"/>
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"/>
 
 
         <ImageView
             android:id="@+id/splice_top_border"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_2"
-            android:visibility="@{viewModel.isSpliceTopVisible() ? View.VISIBLE : View.GONE}"
+            android:src="@{viewModel.isSpliceTopVisible() ?@drawable/ic_workspace_splice_top_red : @drawable/ic_workspace_splice_top_black}"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
             app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace"
-            android:background="@drawable/ic_workspace_splice_top_new"/>
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace"/>
 
 
         <ImageView
             android:id="@+id/splice_bottom_border"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_2"
-            android:visibility="@{viewModel.isSpliceBottomVisible() ? View.VISIBLE : View.GONE}"
+            android:src="@{viewModel.isSpliceBottomVisible() ?@drawable/ic_workspace_splice_bottom_red : @drawable/ic_workspace_splice_bottom_black}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
-            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            android:background="@drawable/ic_workspace_splice_bottom_new"/>
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"/>
 
 
 

@@ -232,7 +232,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
-                if (isTablet(requireActivity())) {
+                if (isTablet(requireContext())) {
                     com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
                         0,
                         view.rootView.height / 2
@@ -613,9 +613,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
             viewModel.clickReset()
         }
-        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-            R.drawable.ic_workspace_new
-        )
+//        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
+//            R.drawable.ic_workspace_new
+//        )
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableMirror(false)

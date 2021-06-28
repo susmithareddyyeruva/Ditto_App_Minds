@@ -39,7 +39,7 @@
     <string name="pattern_pieces">Pattern Pieces</string>
     <string name="recalibrate">Calibrate</string>
     <string name="connect">Connect</string>
-    <string name="seek_text"> <font color="red"> %1$d</font>/%2$d </string>
+    <string name="seek_text"><![CDATA["<font color='#AD201A'> %1$d</font>/%2$d"]]></string>
     <string name="splice_text"> Spliced screen %1$d of %2$d</string>
     <string name="tap_to_enlarge">Double Tap to Zoom</string>
     <string name="select_a_layout">Select a layout</string>
