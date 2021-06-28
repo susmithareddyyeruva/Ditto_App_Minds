@@ -745,7 +745,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
                 if(viewModel.userData.value?.cMirrorReminder ?: true){
                 Utility.getCommonAlertDialogue(
-                    requireCo(),
+                    requireContext(),
                     resources.getString(R.string.mirror),
                     resources.getString(R.string.mirror_message),
                     resources.getString(R.string.cancel),
