@@ -1160,7 +1160,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
                         enableSelectAll(true)
-                        enableClear(false)
+                        enableClear(true)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
                                 if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
