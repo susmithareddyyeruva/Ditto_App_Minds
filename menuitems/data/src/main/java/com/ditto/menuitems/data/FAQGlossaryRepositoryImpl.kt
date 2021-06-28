@@ -14,7 +14,8 @@ import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
-import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 
@@ -48,15 +49,19 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
                 var errorMessage = "Error Fetching data"
                 try {
                     logger.d("try block")
-                    val error = it as HttpException
-                    if (error != null) {
-                        logger.d("Error Onboarding")
-                    }
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)
-                    errorMessage = e.message.toString()
-
-
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
                 }
 
 

@@ -14,6 +14,8 @@ import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class AboutAppRepositoryImpl @Inject constructor(private val aboutAppService: @JvmSuppressWildcards AboutAppService,
@@ -45,8 +47,18 @@ class AboutAppRepositoryImpl @Inject constructor(private val aboutAppService: @J
                         logger.d("try block")
                         logger.d("${it.localizedMessage}")
                     } catch (e: Exception) {
-                        logger.d("Catch ${e.localizedMessage}")
-                        errorMessage = e.message.toString()
+                        Log.d("Catch", e.localizedMessage)
+                        errorMessage = when (e) {
+                            is UnknownHostException -> {
+                                "Unknown host!"
+                            }
+                            is ConnectException -> {
+                                "No Internet connection available !"
+                            }
+                            else -> {
+                                "Error Fetching data!"
+                            }
+                        }
                     }
                     Result.withError(
                         AboutAppFetchError(errorMessage, it)
