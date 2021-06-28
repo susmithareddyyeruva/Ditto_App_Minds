@@ -61,7 +61,7 @@
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
     <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
-    <string name="socketfailed">Socket Connection failed. Try again!!</string>
+    <string name="socketfailed">Projector Connection failed. Try again!!</string>
     <string name="renameproject">Rename Project</string>
     <string name="rename">RENAME</string>
     <string name="existing_project">There is an existing project with the same name. Do you want to rename your project or override existing?</string>

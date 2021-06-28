@@ -65,7 +65,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-    private val CONNNECTION_FAILED = "Socket Connection failed. Try again!!" // Compliant
+    private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
 
 
     override fun onCreateView(

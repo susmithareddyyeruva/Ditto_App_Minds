@@ -2104,30 +2104,20 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     baseViewModel.activeSocketConnection.set(false)
                     baseViewModel.isProjecting.set(false)
                     viewModel.isProjectionRequest.set(false)
-                    showFailurePopup()
-                    /*withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         showProgress(toShow = false)
-                        Toast.makeText(
-                            requireContext(),
-                            resources.getString(R.string.socketfailed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }*/
+                         showFailurePopup()
+                    }
                 }
             } catch (e: Exception) {
                 baseViewModel.activeSocketConnection.set(false)
                 baseViewModel.isProjecting.set(false)
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
-                showFailurePopup()
-                /* withContext(Dispatchers.Main) {
-                     showProgress(toShow = false)
-                     Toast.makeText(
-                         requireContext(),
-                         resources.getString(R.string.socketfailed),
-                         Toast.LENGTH_SHORT
-                     ).show()
-                 }*/
+                withContext(Dispatchers.Main) {
+                    showProgress(toShow = false)
+                    showFailurePopup()
+                }
             } finally {
                 soc?.close()
             }
