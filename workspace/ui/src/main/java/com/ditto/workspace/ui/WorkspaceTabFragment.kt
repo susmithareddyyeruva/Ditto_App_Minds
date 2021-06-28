@@ -31,7 +31,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.util.Util
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -232,7 +231,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
-                if (isTablet(requireActivity())) {
+                if (isTablet(requireContext())) {
                     com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
                         0,
                         view.rootView.height / 2
