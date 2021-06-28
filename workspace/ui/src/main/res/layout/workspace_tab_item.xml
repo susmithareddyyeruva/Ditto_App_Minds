@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="androidx.core.text.HtmlCompat"/>
 
         <variable
             name="viewModel"
@@ -133,7 +134,7 @@
             android:layout_marginEnd="@dimen/large_padding"
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_it_pro_bold"
-            android:text="@{String.format(@string/seek_text,utility.progressCount, viewModel.data.totalPieces)}"
+            android:text="@{HtmlCompat.fromHtml(String.format(@string/seek_text,utility.progressCount, viewModel.data.totalPieces),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_seek_complete"
             app:layout_constraintBottom_toBottomOf="@+id/txt_reset"
