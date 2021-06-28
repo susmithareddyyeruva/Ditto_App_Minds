@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -96,7 +97,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
                 hidemenu()
-                    navController.navigate(R.id.action_splashActivity_to_LoginFragment)
+                navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
 
         }
@@ -133,9 +134,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
 
     private fun populateExpandableList() {
-        expandableListAdapter = ExpandableMenuListAdapter(this, binding.bottomNavViewModel!!.headerList,
-            binding.bottomNavViewModel!!.childList)
-        expandableListView =  binding.navSlideView.getHeaderView(0).findViewById(R.id.expandableListView)
+        expandableListAdapter = ExpandableMenuListAdapter(
+            this, binding.bottomNavViewModel!!.headerList,
+            binding.bottomNavViewModel!!.childList
+        )
+        expandableListView =
+            binding.navSlideView.getHeaderView(0).findViewById(R.id.expandableListView)
         expandableListView.setAdapter(expandableListAdapter)
         expandableListView.setOnGroupClickListener(OnGroupClickListener { parent, v, groupPosition, id ->
             if (binding.bottomNavViewModel!!.headerList.get(groupPosition).subMenu == null) {
@@ -162,26 +166,46 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 //            if(binding.bottomNavViewModel!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
 //                navController.navigate(R.id.action_fragments_to_wssettings)
 //            }
-            if (binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition)) != null) {
-                if(binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
-                        ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))){
+            if (binding.bottomNavViewModel!!.childList.get(
+                    binding.bottomNavViewModel!!.headerList.get(
+                        groupPosition
+                    )
+                ) != null
+            ) {
+                if (binding.bottomNavViewModel!!.childList.get(
+                        binding.bottomNavViewModel!!.headerList.get(
+                            groupPosition
+                        )
+                    )?.get(childPosition)
+                        ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))
+                ) {
 
-                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                    if (navController.currentDestination?.label?.equals("Home")!!) {
                         navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
                     }
                 }
 
 
-                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
-                        ?.menuName.equals(this.getString(R.string.str_menu_manage_projector))){
-                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                if (binding.bottomNavViewModel!!.childList.get(
+                        binding.bottomNavViewModel!!.headerList.get(
+                            groupPosition
+                        )
+                    )?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.str_menu_manage_projector))
+                ) {
+                    if (navController.currentDestination?.label?.equals("Home")!!) {
                         navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
                     }
                 }
 
-                if ( binding.bottomNavViewModel!!.childList.get(binding.bottomNavViewModel!!.headerList.get(groupPosition))?.get(childPosition)
-                        ?.menuName.equals(this.getString(R.string.privacy_policy))){
-                    if(navController.currentDestination?.label?.equals("Home")!!) {
+                if (binding.bottomNavViewModel!!.childList.get(
+                        binding.bottomNavViewModel!!.headerList.get(
+                            groupPosition
+                        )
+                    )?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.privacy_policy))
+                ) {
+                    if (navController.currentDestination?.label?.equals("Home")!!) {
                         navController.navigate(R.id.action_homeFragment_to_privacyAndSettingFragment)
                     }
                 }
@@ -208,7 +232,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         spanString.setSpan(ForegroundColorSpan(color), 0, spanString.length, 0)
         menu.title = spanString
     }
-      
+
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -216,7 +240,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
         super.onBackPressed()
     }
-      
+
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
 
@@ -292,16 +316,52 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             hideSystemUI()
+
         }
     }
 
     private fun hideSystemUI() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+            val controller = window.insetsController
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            // All below using to hide navigation bar
+            val currentApiVersion = Build.VERSION.SDK_INT
+            val flags = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+
+            // This work only for android 4.4+
+            if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+             window.decorView.systemUiVisibility = flags
+                // Code below is to handle presses of Volume up or Volume down.
+                // Without this, after pressing volume buttons, the navigation bar will
+                // show up and won't hide
+                val decorView = window.decorView
+                decorView.setOnSystemUiVisibilityChangeListener { visibility: Int ->
+                    if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+                        decorView.systemUiVisibility = flags
+                    }
+                }
+            }
+        }
+     /*   window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)*/
+
+
     }
 
     @SuppressLint("ResourceType")
@@ -311,16 +371,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 false
             }
-              R.id.nav_graph_support -> {
-              binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            R.id.nav_graph_support -> {
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
                 navController.navigate(R.id.action_fragments_to_customerCareFragment)
                 true
             }
 
             R.id.nav_graph_about -> {
-             /*   binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)*/
+                /*   binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                   navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)*/
                 true
             }
             R.id.nav_graph_mainFaq -> {
@@ -360,35 +420,33 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         }
     }
 
-    private fun handlemenuClick (selectedmenu : String){
-        if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))){
-            if(navController.currentDestination?.label?.equals("Home")!!) {
+    private fun handlemenuClick(selectedmenu: String) {
+        if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))) {
+            if (navController.currentDestination?.label?.equals("Home")!!) {
                 navController.navigate(R.id.action_fragments_to_customerCareFragment)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
-        } else  if (selectedmenu.equals(this.getString(R.string.str_menu_faq))){
-            if(navController.currentDestination?.label?.equals("Home")!!) {
+        } else if (selectedmenu.equals(this.getString(R.string.str_menu_faq))) {
+            if (navController.currentDestination?.label?.equals("Home")!!) {
                 navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
             }
-        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_logout))){
-            if(navController.currentDestination?.label?.equals("Home")!!) {
+        } else if (selectedmenu.equals(this.getString(R.string.str_menu_logout))) {
+            if (navController.currentDestination?.label?.equals("Home")!!) {
                 logoutUser(true)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
-        }else  if (selectedmenu.equals(this.getString(R.string.str_menu_signin))){
-            if(navController.currentDestination?.label?.equals("Home")!!) {
+        } else if (selectedmenu.equals(this.getString(R.string.str_menu_signin))) {
+            if (navController.currentDestination?.label?.equals("Home")!!) {
                 logoutUser(false)
             }
-        }
-        else  if (selectedmenu.equals(this.getString(R.string.about_app_policies))){
-            if(navController.currentDestination?.label?.equals("Home")!!) {
-              /*  navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)*/
+        } else if (selectedmenu.equals(this.getString(R.string.about_app_policies))) {
+            if (navController.currentDestination?.label?.equals("Home")!!) {
+                /*  navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
+                  binding.drawerLayout.closeDrawer(Gravity.RIGHT)*/
             }
-        }
-        else{
+        } else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
