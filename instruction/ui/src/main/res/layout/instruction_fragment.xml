@@ -190,6 +190,7 @@
                         android:layout_width="@dimen/size_0dp"
                         android:layout_height="@dimen/size_0dp"
                         android:gravity="center"
+                        android:visibility="invisible"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
