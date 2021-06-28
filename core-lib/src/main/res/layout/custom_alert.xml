@@ -104,6 +104,7 @@
             android:text="This app needs Bluetooth connectivity"
             android:layout_below="@+id/common_title"
             android:layout_marginLeft="@dimen/xx_large_padding"
+            android:layout_marginRight="@dimen/xx_large_padding"
             android:layout_marginTop="@dimen/medium_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:textSize="@dimen/alert_message_Text"
