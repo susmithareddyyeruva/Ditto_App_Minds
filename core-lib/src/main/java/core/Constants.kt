@@ -4,6 +4,7 @@ import core.lib.BuildConfig
 
 internal const val BASE_URL = BuildConfig.BASEURL
 internal const val TOKEN_BASE_URL = BuildConfig.TOKEN_BASEURL
+internal const val TAILONOVA_BASE_URL = BuildConfig.TAILORNOVA_BASEURL
 const val NO_NETWORK = "Network connection required !"
 internal const val MOCK_API_CERT = "mockapicert.crt"
 const val GUEST_SIGNED_IN = "GUEST"

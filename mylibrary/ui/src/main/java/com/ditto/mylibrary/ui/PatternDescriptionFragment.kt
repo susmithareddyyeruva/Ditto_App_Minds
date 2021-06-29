@@ -159,9 +159,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setData(){
-        viewModel.patternName.set(viewModel.data.value?.patternName)
+        /*viewModel.patternName.set(viewModel.data.value?.patternName)
         viewModel.patternDescription.set(viewModel.data.value?.description)
-        viewModel.patternStatus.set(viewModel.data.value?.status)
+        viewModel.patternStatus.set(viewModel.data.value?.status)*/
     }
 
 
@@ -447,12 +447,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                 ) {
-                    val bundle =
+                    /*val bundle =
                         bundleOf("PatternName" to viewModel.data.value?.patternPieces?.get(0)?.parentPattern)
                     findNavController().navigate(
                         R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
                         bundle
-                    )
+                    )*/
                 } else
                     Unit
             }
@@ -473,7 +473,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
 
-        val res: Resources = requireActivity().resources
+       /* val res: Resources = requireActivity().resources
         println("ImagefromDB${viewModel.data.value?.descriptionImages?.get(0)?.imagePath}")
         if (!viewModel.data.value?.descriptionImages?.get(0)?.imagePath.equals("")) {
             val resID: Int = res.getIdentifier(
@@ -484,7 +484,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             val drawable: Drawable = res.getDrawable(resID)
             val bitmap = (drawable as BitmapDrawable).bitmap
             image_pattern_desc.setImageBitmap(bitmap)
-        }
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -24,6 +24,7 @@ import com.ditto.menuitems_ui.privacyandsettings.di.PrivacyAndSettingFragmentMod
 import com.ditto.menuitems_ui.settings.di.WSProSettingsFragmentModule
 import com.ditto.mylibrary.data.di.MyLibraryDataModule
 import com.ditto.mylibrary.ui.di.MyLibraryFragmentModule
+import com.ditto.mylibrary.data.api.MylibraryApiModule
 import com.ditto.onboarding.data.di.OnboardingApiModule
 import com.ditto.onboarding.data.di.OnboardingDataModule
 import com.ditto.onboarding.ui.di.OnBoardingFragmentModule
@@ -56,7 +57,8 @@ import javax.inject.Singleton
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class,
         CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class,FaqGlossaryMainFragmentModule::class,
-        GlossaryFragmentModule::class,FAQGlossaryApiModule::class,FAQGlosaaryDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class]
+        GlossaryFragmentModule::class,FAQGlossaryApiModule::class,FAQGlosaaryDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class,
+        PrivacyAndSettingFragmentModule::class, MylibraryApiModule::class]
 
 )
 @Singleton

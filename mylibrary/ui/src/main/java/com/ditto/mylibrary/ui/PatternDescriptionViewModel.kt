@@ -13,6 +13,8 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.PatternIdResponse
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
@@ -41,7 +43,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
     val clickedID: ObservableInt = ObservableInt(1)
-    var data: MutableLiveData<MyLibraryData> = MutableLiveData()
+    var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
@@ -92,7 +94,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             .subscribeBy { handleFetchResult(it) }
     }
 
-    private fun handleFetchResult(result: Result<MyLibraryData>) {
+    private fun handleFetchResult(result: Result<PatternIdData>) {
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data

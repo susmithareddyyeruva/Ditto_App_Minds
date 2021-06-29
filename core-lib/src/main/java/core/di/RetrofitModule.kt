@@ -5,10 +5,7 @@ import core.*
 import core.BASE_URL
 import core.MOCK_API_CERT
 import core.TOKEN_BASE_URL
-import core.di.scope.WbApiRetrofit
-import core.di.scope.WbBaseUrl
-import core.di.scope.WbTokenApiRetrofit
-import core.di.scope.WbTokenBaseUrl
+import core.di.scope.*
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
@@ -35,7 +32,8 @@ import kotlin.jvm.Throws
     includes = [
         WbBaseUrlModule::class,
         WbSocketCertificateModule::class,
-        WbTokenBaseUrlModule :: class
+        WbTokenBaseUrlModule :: class,
+        WbTailornovaBaseUrlModule :: class
     ]
 )
 class RetrofitModule {
@@ -86,6 +84,28 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
+
+    @Provides
+    @WbTailornovaApiRetrofit
+    fun provideTailornovaRetrofit(
+        @WbTailornovaBaseUrl baseUrl: String
+    ): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(logging)
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
+            .client(httpClient.build())
+            .build()
+    }
 }
 
 @Module
@@ -103,6 +123,14 @@ class WbTokenBaseUrlModule {
     @WbTokenBaseUrl
     fun providesTokenBaseUrl(): String {
         return TOKEN_BASE_URL
+    }
+}
+@Module
+class WbTailornovaBaseUrlModule {
+    @Provides
+    @WbTailornovaBaseUrl
+    fun providesTailornovaBaseUrl(): String {
+        return TAILONOVA_BASE_URL
     }
 }
 
