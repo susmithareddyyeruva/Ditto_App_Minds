@@ -690,7 +690,7 @@ class InstructionFragment constructor(
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            "Projector Connection failed. Try again!!",
                             Toast.LENGTH_SHORT
                         ).show()
                         showProgress(false)
@@ -701,7 +701,7 @@ class InstructionFragment constructor(
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Socket Connection failed. Try again!!",
+                        "Projector Connection failed. Try again!!",
                         Toast.LENGTH_SHORT
                     ).show()
                     showProgress(false)

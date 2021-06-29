@@ -50,7 +50,7 @@
 
     <string name="complete_cutbin">Complete Bin</string>
     <string name="complete_piece">Did you complete %1$d piece(s)?</string> <!--//cut number reminder done-->
-    <string name="click_spliced_second_pieces">First select arrow to view remainder of spliced piece.</string> <!--// splice notification--> //no need
+    <string name="click_spliced_second_pieces">First select arrow to view remainder of spliced piece.</string> <!--// splice notification-->
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="save_and_exit_dialog_title">Name this project</string>
@@ -61,7 +61,7 @@
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
     <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
-    <string name="socketfailed">Socket Connection failed. Try again!!</string>
+    <string name="socketfailed">Projector Connection failed. Try again!!</string>
     <string name="renameproject">Rename Project</string>
     <string name="rename">RENAME</string>
     <string name="existing_project">There is an existing project with the same name. Do you want to rename your project or override existing?</string>

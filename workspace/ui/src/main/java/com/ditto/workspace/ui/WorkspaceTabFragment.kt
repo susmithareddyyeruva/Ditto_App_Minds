@@ -745,7 +745,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
                 if(viewModel.userData.value?.cMirrorReminder ?: true){
                 Utility.getCommonAlertDialogue(
-                    requireActivity(),
+                    requireContext(),
                     resources.getString(R.string.mirror),
                     resources.getString(R.string.mirror_message),
                     resources.getString(R.string.cancel),
@@ -1159,7 +1159,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
                         enableSelectAll(true)
-                        enableClear(false)
+                        enableClear(true)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
                                 if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
@@ -2104,30 +2104,20 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     baseViewModel.activeSocketConnection.set(false)
                     baseViewModel.isProjecting.set(false)
                     viewModel.isProjectionRequest.set(false)
-                    showFailurePopup()
-                    /*withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         showProgress(toShow = false)
-                        Toast.makeText(
-                            requireContext(),
-                            resources.getString(R.string.socketfailed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }*/
+                         showFailurePopup()
+                    }
                 }
             } catch (e: Exception) {
                 baseViewModel.activeSocketConnection.set(false)
                 baseViewModel.isProjecting.set(false)
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
-                showFailurePopup()
-                /* withContext(Dispatchers.Main) {
-                     showProgress(toShow = false)
-                     Toast.makeText(
-                         requireContext(),
-                         resources.getString(R.string.socketfailed),
-                         Toast.LENGTH_SHORT
-                     ).show()
-                 }*/
+                withContext(Dispatchers.Main) {
+                    showProgress(toShow = false)
+                    showFailurePopup()
+                }
             } finally {
                 soc?.close()
             }

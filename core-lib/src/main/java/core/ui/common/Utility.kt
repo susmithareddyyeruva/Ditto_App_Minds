@@ -368,7 +368,7 @@ class Utility @Inject constructor(
                         println("*****bytes.length = " + bytes?.size)
                         dataOutputStream.close()
                     } else {
-                        println("Socket Connection Failed")
+                        println("Projector Connection Failed")
                         /*withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
@@ -378,7 +378,7 @@ class Utility @Inject constructor(
                         }*/
                     }
                 } catch (e: Exception) {
-                    println("Socket Connection Failed")
+                    println("Projector Connection Failed")
                    /* withContext(Dispatchers.Main) {
                         Toast.makeText(
                             context,
