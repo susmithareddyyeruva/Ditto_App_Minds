@@ -28,7 +28,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     YouTubePlayer.OnInitializedListener, View.OnClickListener,
     Utility.CustomCallbackDialogListener {
     private var mPlayer: YouTubePlayer? = null
-    private var mPlayButtonLayout: View? = null
+/*    private var mPlayButtonLayout: View? = null*/
     private var mPlayTimeTextView: TextView? = null
     private var skipButton: TextView? = null
     private var mHandler: Handler? = null
@@ -57,7 +57,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+        setContentView(R.layout.custom_layout)
         hideSystemUI()
 
         // Initializing YouTube player view
@@ -65,7 +65,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             findViewById<View>(R.id.video_view) as YouTubePlayerView
         youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
         //Add play button to explicitly play video in YouTubePlayerView
-        mPlayButtonLayout = findViewById(R.id.video_control)
+    /*    mPlayButtonLayout = findViewById(R.id.video_control)*/
         findViewById<View>(R.id.play_video).setOnClickListener(this)
         findViewById<View>(R.id.close).setOnClickListener(this)
         findViewById<View>(R.id.skipButton).setOnClickListener(this)
@@ -121,7 +121,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             player.loadVideo(VIDEO_ID)
         }
         player.setPlayerStyle(PlayerStyle.CHROMELESS)
-        mPlayButtonLayout!!.visibility = View.VISIBLE
+      /*  mPlayButtonLayout!!.visibility = View.VISIBLE*/
 
         // Add listeners to YouTubePlayer instance
         player.setPlayerStateChangeListener(mPlayerStateChangeListener)
