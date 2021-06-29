@@ -2170,7 +2170,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showFailurePopup() {
         Utility.getCommonAlertDialogue(
-            requireContext(),
+            requireActivity(),
             "",
             "Projector connection failed",
             "CANCEL",
