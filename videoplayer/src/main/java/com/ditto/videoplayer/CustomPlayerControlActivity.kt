@@ -25,7 +25,8 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class CustomPlayerControlActivity : YouTubeBaseActivity(),
-    YouTubePlayer.OnInitializedListener, View.OnClickListener,Utility.CustomCallbackDialogListener {
+    YouTubePlayer.OnInitializedListener, View.OnClickListener,
+    Utility.CustomCallbackDialogListener {
     private var mPlayer: YouTubePlayer? = null
     private var mPlayButtonLayout: View? = null
     private var mPlayTimeTextView: TextView? = null
@@ -38,14 +39,20 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private var from = ""
     override fun onBackPressed() {
         super.onBackPressed()
-        if (AppState.getIsLogged()){
-            finishAffinity()
-        }else{
+        if (from == "LOGIN") {
+            if (AppState.getIsLogged()) {
+                finishAffinity()
+            } else {
+                finish()
+            }
+        } else {
             val intent = Intent()
             intent.data = Uri.parse("ONBACK")
             setResult(Activity.RESULT_OK, intent)
             finish()
-    }
+
+        }
+
     }
 
     override fun onResume() {
@@ -54,6 +61,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             showAlert()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -83,7 +91,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             bundle?.getString("title")?.let { title = it }
             bundle?.getString("from")?.let { from = it }
             Log.d("VideoPlayer", " title: $title")
-            VIDEO_ID=getYoutubeVideoId(videoUrl)?:""
+            VIDEO_ID = getYoutubeVideoId(videoUrl) ?: ""
             Log.d("VideoPlayer ID==", " $videoUrl")
             if (from == "tutorial") {
                 findViewById<TextView>(R.id.skipButton).visibility = View.GONE
@@ -103,7 +111,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         provider: YouTubePlayer.Provider,
         result: YouTubeInitializationResult
     ) {
-        Log.d("Youtube","Failed to initialize.")
+        Log.d("Youtube", "Failed to initialize.")
     }
 
     override fun onInitializationSuccess(
@@ -152,7 +160,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
         override fun onPlaying() {
             play_video.setImageResource(R.drawable.exo_icon_pause)
-            isPlay=false
+            isPlay = false
             mHandler!!.postDelayed(runnable, 100)
             displayCurrentTime()
         }
@@ -168,11 +176,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     var mPlayerStateChangeListener: PlayerStateChangeListener = object : PlayerStateChangeListener {
         override fun onAdStarted() {}
         override fun onError(arg0: YouTubePlayer.ErrorReason) {
-            Log.d("YOUTUBE ERROR","$arg0")
+            Log.d("YOUTUBE ERROR", "$arg0")
             if (arg0 == YouTubePlayer.ErrorReason.NETWORK_ERROR) {
                 showAlert("No Internet Connection available !")
             }
         }
+
         override fun onLoaded(arg0: String) {}
         override fun onLoading() {}
         override fun onVideoEnded() {}
@@ -208,7 +217,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
                 }
             }
             R.id.close -> {
-                finish()
+              onBackPressed()
             }
             R.id.skipButton -> {
                 val intent = Intent()
@@ -268,7 +277,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     companion object {
         //https://www.youtube.com/watch?v=<VIDEO_ID>
-         var VIDEO_ID = ""
+        var VIDEO_ID = ""
     }
 
     private fun getYoutubeVideoId(youtubeUrl: String?): String? {
@@ -288,10 +297,11 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         }
         return videoId
     }
-    private fun showAlert(message:String) {
+
+    private fun showAlert(message: String) {
         val errorMessage = message
         Utility.getCommonAlertDialogue(
-           this,
+            this,
             "",
             errorMessage,
             "",
