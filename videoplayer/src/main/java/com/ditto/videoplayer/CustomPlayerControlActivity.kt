@@ -213,7 +213,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
                 }
             }
             R.id.close -> {
-                finish()
+               onBackPressed()
             }
             R.id.skipButton -> {
                 val intent = Intent()
