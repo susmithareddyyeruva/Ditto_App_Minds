@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -58,6 +60,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.custom_layout)
+        fullScreenCall()
         hideSystemUI()
 
         // Initializing YouTube player view
@@ -338,5 +341,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         if (mPlayer!=null) {
             mPlayer?.release()
         }
+    }
+    private fun fullScreenCall(){
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+        val behavior =  WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        val type = WindowInsetsCompat.Type.systemBars()
+        insetsController.systemBarsBehavior = behavior
+        insetsController.hide(type)
     }
 }
