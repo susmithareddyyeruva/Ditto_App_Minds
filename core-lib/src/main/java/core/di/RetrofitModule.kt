@@ -2,14 +2,9 @@ package core.di
 
 import android.content.Context
 import core.*
-import core.BASE_URL
-import core.MOCK_API_CERT
-import core.TOKEN_BASE_URL
-import core.di.scope.WbApiRetrofit
-import core.di.scope.WbBaseUrl
-import core.di.scope.WbTokenApiRetrofit
-import core.di.scope.WbTokenBaseUrl
+import core.di.scope.*
 import core.lib.BuildConfig
+import core.lib.BuildConfig.MYLIBRARY_BASEURL
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
 import dagger.Provides
@@ -28,14 +23,14 @@ import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
-import kotlin.jvm.Throws
 
 
 @Module(
     includes = [
         WbBaseUrlModule::class,
         WbSocketCertificateModule::class,
-        WbTokenBaseUrlModule :: class
+        WbTokenBaseUrlModule :: class,
+        MyLibraryBaseUrlModule::class
     ]
 )
 class RetrofitModule {
@@ -86,6 +81,28 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
+    @Provides
+    @WbMyLibraryApiRetrofit
+    fun provideRetrofitMyLibrary(
+        @WbMyLibraryBaseUrl baseUrl: String
+    ): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+        // add logging interceptor only for DEBUG builds
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(logging)
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
+            .client(httpClient.build())
+            .build()
+    }
 }
 
 @Module
@@ -105,7 +122,14 @@ class WbTokenBaseUrlModule {
         return TOKEN_BASE_URL
     }
 }
-
+@Module
+class MyLibraryBaseUrlModule{
+    @Provides
+    @WbMyLibraryBaseUrl
+    fun providesTokenBaseUrl(): String {
+        return MYLIBRARY_BASEURL
+    }
+}
 @Module
 class WbSocketCertificateModule {
     @Provides

@@ -1,26 +1,42 @@
 package com.ditto.home.ui
 
+import android.util.Log
 import androidx.databinding.ObservableField
+import com.ditto.home.domain.MyLibraryUseCase
 import com.ditto.home.domain.model.HomeData
+import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
+import non_core.lib.error.Error
+import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(val storageManager: StorageManager) : BaseViewModel() {
+class HomeViewModel @Inject constructor(val storageManager: StorageManager, val useCase: MyLibraryUseCase) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val homeItem: ArrayList<HomeData> = ArrayList()
     var header: ObservableField<String> = ObservableField()
+    var errorString: ObservableField<String> = ObservableField("")
 
     sealed class Event {
         object OnClickMyPatterns : Event()
         object OnClickDitto : Event()
         object OnClickJoann : Event()
         object OnClickTutorial : Event()
+        object OnResultSuccess : HomeViewModel.Event()
+        object OnShowProgress : HomeViewModel.Event()
+        object OnHideProgress : HomeViewModel.Event()
+        object OnResultFailed : HomeViewModel.Event()
+        object NoInternet : HomeViewModel.Event()
     }
 
     init {
@@ -81,5 +97,47 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
             homeItem.add(homeItems)
         }
     }
+    fun fetchData() {
+        disposable += useCase.getMyLibraryDetails()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }
+
+
+    }
+    /**
+     * Handling fetch result here.....
+     */
+    private fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
+        uiEvents.post(Event.OnHideProgress)
+        when (result) {
+            is Result.OnSuccess-> {
+                uiEvents.post(Event.OnHideProgress)
+                uiEvents.post(Event.OnResultSuccess)
+
+            }
+            is Result.OnError -> {
+                uiEvents.post(Event.OnHideProgress)
+                Log.d("faq_glossary", "Failed")
+                handleError(result.error)
+            }
+        }
+    }
+    private fun handleError(error: Error) {
+        when (error) {
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                errorString.set(error.message)
+                uiEvents.post(Event.NoInternet)
+            }
+            else -> {
+                errorString.set(error.message)
+                uiEvents.post(Event.OnResultFailed)
+            }
+
+        }
+    }
+
+
 
 }

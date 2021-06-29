@@ -217,4 +217,7 @@ dependencies {
     implementation project(path: ':menuitems-ui')
     implementation project(path: ':menuitems-domain')
     implementation project(path: ':menuitems-data')
+
+    implementation project(path: ':home-data')
+    implementation project(path: ':home-domain')
 }

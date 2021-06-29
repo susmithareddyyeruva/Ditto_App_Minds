@@ -1,9 +1,10 @@
-
 package com.ditto.base.core.di
 
 import android.content.Context
 import com.ditto.base.DittoApplication
 import com.ditto.calibration.di.CalibrationFragmentModule
+import com.ditto.data.di.MyLibraryApiModule
+import com.ditto.data.di.MyLibraryDetailsDataModule
 import com.ditto.home.di.HomeFragmentModule
 import com.ditto.howto.di.HowToModule
 import com.ditto.howto.di.HowtoFragmentModule
@@ -52,11 +53,12 @@ import javax.inject.Singleton
         SplashDbModule::class, StorageModule::class, RetrofitModule::class, TraceDbModule::class, SplashFragmentModule::class,
         LoginFragmentModule::class, InstructionFragmentModule::class, InstructionModule::class, HomeFragmentModule::class,
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
-        WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class,LoginApiModule::class,
-        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class,
-        CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
-        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class,FaqGlossaryMainFragmentModule::class,
-        GlossaryFragmentModule::class,FAQGlossaryApiModule::class,FAQGlosaaryDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class]
+        WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class, LoginApiModule::class,
+        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, VideoPlayerFragmentModule::class, OnboardingApiModule::class,
+        CustomerCareFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
+        WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
+        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class,
+        MyLibraryApiModule::class, MyLibraryDetailsDataModule::class]
 
 )
 @Singleton

@@ -104,7 +104,26 @@ class HomeFragment : BaseFragment() {
                     logger.d("OnClickJoann failed")
                 }
             }
+            HomeViewModel.Event.OnResultSuccess -> {
+
+            }
+            HomeViewModel.Event.OnShowProgress -> {
+
+            }
+            HomeViewModel.Event.OnHideProgress -> {
+
+            }
+            HomeViewModel.Event.OnResultFailed -> {
+
+            }
+            HomeViewModel.Event.NoInternet -> {
+                showAlert()
+            }
         }
+
+    private fun showAlert() {
+
+    }
 
     private fun setHomeAdapter() {
         val adapter = HomeAdapter()
