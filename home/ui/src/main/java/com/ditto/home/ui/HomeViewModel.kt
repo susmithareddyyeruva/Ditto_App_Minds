@@ -11,6 +11,7 @@ import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -20,7 +21,11 @@ import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(val storageManager: StorageManager, val useCase: MyLibraryUseCase) : BaseViewModel() {
+class HomeViewModel @Inject constructor(
+    val storageManager: StorageManager,
+    val useCase: MyLibraryUseCase,
+    private val utility: Utility
+) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val homeItem: ArrayList<HomeData> = ArrayList()
@@ -40,8 +45,13 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager, val 
     }
 
     init {
+        if (Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
         setHomeHeader()
         setHomeItems()
+
+
     }
 
     fun onItemClick(id: Int) {
@@ -97,7 +107,9 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager, val 
             homeItem.add(homeItems)
         }
     }
+
     fun fetchData() {
+        uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getMyLibraryDetails()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -105,24 +117,27 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager, val 
 
 
     }
+
     /**
      * Handling fetch result here.....
      */
     private fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
-            is Result.OnSuccess-> {
+            is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
                 uiEvents.post(Event.OnResultSuccess)
 
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-                Log.d("faq_glossary", "Failed")
+                uiEvents.post(Event.OnResultFailed)
+                Log.d("Home Screen", "Failed")
                 handleError(result.error)
             }
         }
     }
+
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
@@ -137,6 +152,7 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager, val 
 
         }
     }
+
 
 
 

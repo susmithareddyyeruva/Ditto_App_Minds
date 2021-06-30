@@ -1,6 +1,7 @@
 package com.ditto.home.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,9 @@ import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
+import core.event.RxBus
+import core.event.RxBusEvent
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -25,7 +29,7 @@ import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
 
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -57,19 +61,36 @@ class HomeFragment : BaseFragment() {
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
         if (AppState.getIsLogged()) {
-             bottomNavViewModel.isGuestBase.set(false)
+            bottomNavViewModel.isGuestBase.set(false)
         } else {
-             bottomNavViewModel.isGuestBase.set(true)
+            bottomNavViewModel.isGuestBase.set(true)
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         setHomeAdapter()
+        if (NetworkUtility.isNetworkAvailable(requireContext())) {
+            bottomNavViewModel.showProgress.set(true)
+            if (!Utility.isTokenExpired()) {
+                homeViewModel.fetchData()
+            }
+        } else
+            showAlert()
+
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 handleEvent(it)
             }
+
+        RxBus.listen(RxBusEvent.isTokenRefreshed::class.java)
+            .subscribe {
+                Log.d("TOKEN======", "SUCCESSS")
+                homeViewModel.fetchData()
+            }
+
+
     }
+
 
     private fun handleEvent(event: HomeViewModel.Event) =
         when (event) {
@@ -89,46 +110,79 @@ class HomeFragment : BaseFragment() {
             }
             is HomeViewModel.Event.OnClickMyPatterns -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                        val bundle = bundleOf("clickedID" to context?.let { Utility.getSharedPref(it) },"isFrom" to "RESUME_RECENT")
-                        findNavController().navigate(R.id.action_home_to_my_library,bundle)
+                    val bundle = bundleOf(
+                        "clickedID" to context?.let { Utility.getSharedPref(it) },
+                        "isFrom" to "RESUME_RECENT"
+                    )
+                    findNavController().navigate(R.id.action_home_to_my_library, bundle)
                 } else {
                     logger.d("OnClickResumeRecent failed")
                 }
             }
             HomeViewModel.Event.OnClickTutorial -> {
-               (activity as BottomNavigationActivity).hidemenu()
+                (activity as BottomNavigationActivity).hidemenu()
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf("isFromHome" to true)
-                    findNavController().navigate(R.id.action_home_to_tutorial,bundle)
+                    findNavController().navigate(R.id.action_home_to_tutorial, bundle)
                 } else {
                     logger.d("OnClickJoann failed")
                 }
             }
             HomeViewModel.Event.OnResultSuccess -> {
+                bottomNavViewModel.showProgress.set(false)
 
             }
             HomeViewModel.Event.OnShowProgress -> {
+                bottomNavViewModel.showProgress.set(true)
 
             }
             HomeViewModel.Event.OnHideProgress -> {
+                bottomNavViewModel.showProgress.set(false)
 
             }
             HomeViewModel.Event.OnResultFailed -> {
+                bottomNavViewModel.showProgress.set(false)
 
             }
             HomeViewModel.Event.NoInternet -> {
+                bottomNavViewModel.showProgress.set(false)
                 showAlert()
             }
         }
 
     private fun showAlert() {
-
+        val errorMessage = homeViewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
     }
 
     private fun setHomeAdapter() {
         val adapter = HomeAdapter()
         recycler_view.adapter = adapter
         adapter.viewModel = homeViewModel
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        // TODO("Not yet implemented")
     }
 
 }

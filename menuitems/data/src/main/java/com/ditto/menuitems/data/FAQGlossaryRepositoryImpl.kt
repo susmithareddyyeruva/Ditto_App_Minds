@@ -33,6 +33,7 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
     override fun getFAQGlosaaryDetails(): Single<Result<FAQGlossaryResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
+
         }
         return faqGlossaryService.getFAQGlossaryData(
             CLIENT_ID,

@@ -12,6 +12,7 @@ import com.ditto.home.domain.GetMyLibraryRepository
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.logger.LoggerFactory
 import com.ditto.storage.data.database.UserDao
+import core.appstate.AppState
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
@@ -37,8 +38,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return homeService.getHomeScreenDetails(MyLibraryRequestData(OrderFilter(false,
-        "",false,false,false), ProductFilter("")
-        ))
+        "filterOne@gmail.com",true,false,false), ProductFilter("Vogue")
+        ),"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH HOME SUCCESS**")
             }

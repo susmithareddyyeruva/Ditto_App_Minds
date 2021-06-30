@@ -34,7 +34,7 @@ android {
             minifyEnabled false
             buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
             buildConfigField "String", "TOKEN_BASEURL", "\"https://dev02-na03-joann.demandware.net/dw/\""
-            buildConfigField "String", "MYLIBRARY_BASEURL", "\"https://dev02-na03-joann.demandware.net/on/demandware.store/\""
+            buildConfigField "String", "MYLIBRARY_BASEURL", "\"https://dev02-na03-joann.demandware.net/on/demandware.store/Sites-JoAnn-Site/\""
         }
     }
 
@@ -76,6 +76,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjava2_android_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
+
+
 
     /**
      * DAGGER

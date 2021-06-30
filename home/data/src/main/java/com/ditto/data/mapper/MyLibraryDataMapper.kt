@@ -9,7 +9,7 @@ fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
     return MyLibraryDetailsDomain(
       action = this.action,
         locale = this.locale,
-        prod = this.toDomain().prod,
+        prod = this.prod.map { it.toDomain() },
         queryString = this.queryString
     )
 }
