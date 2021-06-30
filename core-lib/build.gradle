@@ -25,14 +25,18 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
-            buildConfigField "String", "TOKEN_BASEURL", "\"https://dev02-na03-joann.demandware.net/dw/\""
+            buildConfigField "String", "BASEURL", "\"https://development.na03.joann.demandware.net/\""
+            buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
+            buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
+            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
         }
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
-            buildConfigField "String", "TOKEN_BASEURL", "\"https://dev02-na03-joann.demandware.net/dw/\""
+            buildConfigField "String", "BASEURL", "\"https://development.na03.joann.demandware.net/\""
+            buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
+            buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
+            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
         }
     }
 
