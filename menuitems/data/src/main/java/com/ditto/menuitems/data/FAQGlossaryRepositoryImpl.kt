@@ -9,7 +9,7 @@ import com.ditto.menuitems.data.error.FAQGlossaryFetchError
 import com.ditto.menuitems.data.mapper.toDomain
 import com.ditto.menuitems.domain.FAQGlossaryRepository
 import com.ditto.menuitems.domain.model.faq.FAQGlossaryResultDomain
-import core.CLIENT_ID
+import core.CLIENT_ID_DEV
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
@@ -36,7 +36,7 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
 
         }
         return faqGlossaryService.getFAQGlossaryData(
-            CLIENT_ID,
+            CLIENT_ID_DEV,
         )
             .doOnSuccess {
                 logger.d("*****FETCH FAQ and GLOSSARY SUCCESS**")
