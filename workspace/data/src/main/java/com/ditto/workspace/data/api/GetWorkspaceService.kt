@@ -8,11 +8,11 @@ import retrofit2.http.*
 
 interface GetWorkspaceService {
     @Headers("Content-Type: application/json")
-    @GET("custom_objects/traceWorkSpace/1_1_11?")
+    @GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/1_1_11?")
     fun getWorkspceDataFromApi(@Query("client_id") client_id:String):Single<WorkspaceResult>
 
     @Headers("Content-Type: application/json")
-    @POST("custom_objects/traceWorkSpace/1_1_11?")
+    @POST(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/1_1_11?method=PATCH")
     fun updateWorkspaceDataFromApi(
         @Query("client_id") client_id: String?,
         @Query("site_id") site_id: String?,

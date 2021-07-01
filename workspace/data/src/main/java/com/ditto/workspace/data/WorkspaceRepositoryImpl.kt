@@ -19,7 +19,7 @@ import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.WSUpdateResultDomain
 import com.ditto.workspace.domain.model.WorkspaceResultDomain
 import com.google.gson.Gson
-import core.CLIENT_ID
+import core.CLIENT_ID_DEV
 import core.SITE_ID
 import core.appstate.AppState
 import core.network.NetworkUtility
@@ -83,7 +83,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
 
-        return getWorkspaceService.getWorkspceDataFromApi(CLIENT_ID).doOnSuccess {
+        return getWorkspaceService.getWorkspceDataFromApi(CLIENT_ID_DEV).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
             Log.d("WorkspaceRepositoryImpl","${it.toString()}")
@@ -111,7 +111,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val numberOfCompletedPiece =
-            NumberOfCompletedPieceInputData(garment = 33, lining = 13, interfacee = 13)
+            NumberOfCompletedPieceInputData(garment = 53, lining = 13, interfacee = 13)
 
         val patternPieces = ArrayList<PatternPieceInputData>()
         val patternInputData = PatternPieceInputData(id = 1, isCompleted = "true")
@@ -165,8 +165,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.updateWorkspaceDataFromApi(
-            CLIENT_ID, SITE_ID, wsInputData,
-            "Bearer " + AppState.getToken()!!
+            CLIENT_ID_DEV, SITE_ID, wsInputData,
+            "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
             logger.d("*****update Workspace Success**")
         }.map {

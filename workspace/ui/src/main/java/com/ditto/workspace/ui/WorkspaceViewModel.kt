@@ -115,6 +115,16 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun handleFetchResultFromAPI(result: Result<WorkspaceResultDomain>) {
         Log.d("handleFethFromAPI", "is:\t ${result.toString()}")
+        when(result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel", "Success")
+
+            }
+
+            is Result.OnError -> {
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
     }
 
 
@@ -127,6 +137,16 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
+        when(result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel", "Success")
+                uiEvents.post(Event.OnClickSaveAndExit)
+            }
+
+            is Result.OnError -> {
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
     }
 
     fun insertData(value: PatternsData) {
@@ -457,8 +477,8 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun clickSaveAndExit() {
-        uiEvents.post(Event.OnClickSaveAndExit)
         updateWSAPI()
+       // uiEvents.post(Event.OnClickSaveAndExit)
     }
 
     fun onClickInstructions() {
