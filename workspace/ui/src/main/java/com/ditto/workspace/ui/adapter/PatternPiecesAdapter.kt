@@ -58,7 +58,9 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             )
             holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)
             if (patternPieces[position].splice == "YES") {
-                if (patternPieces[position].spliceDirection == "Splice Left-to-Right") {
+                if (patternPieces[position].spliceDirection == "Splice Multiple-to-Multiple") {
+
+                }else if (patternPieces[position].spliceDirection == "Splice Left-to-Right") {
                     holder.patternsPiecesBinding.imageArrow.visibility = View.VISIBLE
                     val arrowDrawable = Utility.getDrawableFromString(
                         viewGroup!!.context,
