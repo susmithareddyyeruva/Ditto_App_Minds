@@ -33,6 +33,7 @@ import com.ditto.storage.data.di.StorageModule
 import com.ditto.storage.data.di.TraceDbModule
 import com.ditto.tutorial.ui.di.TutorialFragmentModule
 import com.ditto.videoplayer.di.VideoPlayerFragmentModule
+import com.ditto.workspace.data.di.GetWorkspcaeDataApiModule
 import com.ditto.workspace.data.di.WorkspaceDataModule
 import com.ditto.workspace.ui.di.WorkspaceFragmentModule
 import core.data.di.TokenUsecaseModule
@@ -56,7 +57,8 @@ import javax.inject.Singleton
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class,VideoPlayerFragmentModule::class,OnboardingApiModule::class,
         CustomerCareFragmentModule::class,FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class,ManageDeviceFragmentModule::class,FaqGlossaryMainFragmentModule::class,
-        GlossaryFragmentModule::class,FAQGlossaryApiModule::class,FAQGlosaaryDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class]
+        GlossaryFragmentModule::class,FAQGlossaryApiModule::class,FAQGlosaaryDataModule::class,ManageDeviceFragmentModule::class, AboutAppAPIModule::class,AboutAppDataModule::class,
+        PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class]
 
 )
 @Singleton

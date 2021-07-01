@@ -16,9 +16,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.domain.GetWorkspaceData
-import com.ditto.workspace.domain.model.DragData
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.WorkspaceItems
+import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.util.Utility
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
@@ -104,6 +102,31 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+    }
+
+    //fetch data from API repo (via usecase)
+    fun fetchWorkspaceDataFromAPI() {
+        disposable += getWorkspaceData.getWorkspaceData()
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResultFromAPI(it) }
+    }
+
+    private fun handleFetchResultFromAPI(result: Result<WorkspaceResultDomain>) {
+        Log.d("handleFethFromAPI", "is:\t ${result.toString()}")
+    }
+
+
+    fun updateWSAPI(){
+        disposable += getWorkspaceData.updateWorkspaceData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy{handleWSUpdateResult(it)}
+    }
+
+    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
+        Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
     }
 
     fun insertData(value: PatternsData) {
@@ -435,6 +458,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun clickSaveAndExit() {
         uiEvents.post(Event.OnClickSaveAndExit)
+        updateWSAPI()
     }
 
     fun onClickInstructions() {

@@ -23,7 +23,6 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -70,6 +69,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
             viewModel.fetchWorkspaceData()
+            viewModel.fetchWorkspaceDataFromAPI()
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
