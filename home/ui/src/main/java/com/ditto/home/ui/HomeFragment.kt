@@ -18,7 +18,6 @@ import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
 import core.event.RxBus
 import core.event.RxBusEvent
-import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -68,13 +67,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         setHomeAdapter()
-        if (NetworkUtility.isNetworkAvailable(requireContext())) {
-            bottomNavViewModel.showProgress.set(true)
-            if (!Utility.isTokenExpired()) {
-                homeViewModel.fetchData()
-            }
-        } else
-            showAlert()
+        bottomNavViewModel.showProgress.set(true)
+        if (!Utility.isTokenExpired()) {
+            homeViewModel.fetchData()
+        }
 
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
