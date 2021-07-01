@@ -1,8 +1,8 @@
 package core
 
 internal const val MOCK_API_CERT = "mockapicert.crt"
-const val CLIENT_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-const val CLIENT_ID_DEV = "59eb4dd9-026d-4bac-adb5-2e5848d91263"
+/*const val CLIENT_ID_DEV = "59eb4dd9-026d-4bac-adb5-2e5848d91263"*/
+const val CLIENT_ID_DEV = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 const val PDF_USERNAME = "amrita.pattanaik@infosys.com"
 const val PDF_PASSWORD = "A@Mala3204"
 const val PDF_SAMPLE_URL =
@@ -13,8 +13,10 @@ const val USER_EMAIL = "USER_EMAIL"
 const val USER_PHONE = "USER_PHONE"
 const val USER_FIRST_NAME = "USER_FIRST_NAME"
 const val USER_LAST_NAME = "USER_LAST_NAME"
-const val OCAPI_USERNAME = "amrita.pattanaik@infosys.com"
-const val OCAPI_PASSWORD = "A@Mala3204:9xgMezNBFSP@"
+const val OCAPI_USERNAME = "nikhil.tyagi01@infosys.com"
+const val OCAPI_PASSWORD = "Sandbox\$695583:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+/*const val OCAPI_USERNAME = "amrita.pattanaik@infosys.com"
+const val OCAPI_PASSWORD = "A@Mala3204:9xgMezNBFSP@"*/
 const val TOKEN_BODY = "urn:demandware:params:oauth:grant-type:client-id:dwsid:dwsecuretoken"
 const val MIRROR_REMINDER = "MIRROR_REMINDER"
 const val RECIEVER_EMAIL = "RECIEVER_EMAIL"
