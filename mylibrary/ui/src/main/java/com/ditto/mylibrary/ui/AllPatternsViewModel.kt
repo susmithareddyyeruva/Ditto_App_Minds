@@ -54,9 +54,13 @@ class AllPatternsViewModel @Inject constructor(
         disposable += getPatternsData.invoke()
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
+            .whileSubscribed { handleProgress(it)}
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+    }
+
+    private fun handleProgress(isProgress: Boolean) {
+            uiEvents.post(if (isProgress) Event.OnLoadingStarts else Event.OnLoadingCompleted)
     }
 
     private fun handleFetchResult(result: Result<List<MyLibraryData>>) {
@@ -126,6 +130,10 @@ class AllPatternsViewModel @Inject constructor(
         object OnDataUpdated : Event()
 
         object OnAddProjectClick : Event()
+
+        object OnLoadingStarts : Event()
+
+        object OnLoadingCompleted : Event()
 
         class OnOptionsClicked(
             val view: View,

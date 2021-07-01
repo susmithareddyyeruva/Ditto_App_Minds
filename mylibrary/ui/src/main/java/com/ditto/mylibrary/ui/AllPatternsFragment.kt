@@ -298,6 +298,9 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setFilterActionAdapter()
     }
 
+    private fun showProgress(toShow: Boolean) {
+        bottomNavViewModel.showProgress.set(toShow)
+    }
     private fun setUpToolbar() {
         (activity as BottomNavigationActivity).hidemenu()
         toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -379,6 +382,10 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             //setPatternAdapter()
             Log.d("pattern","OnSyncClick : AllPatternsFragment")
             // open dialog
+        }is AllPatternsViewModel.Event.OnLoadingStarts -> {
+            showProgress(true)
+        }is AllPatternsViewModel.Event.OnLoadingCompleted -> {
+            showProgress(false)
         }
         else -> {
             logger.d("OnClickPattern")
