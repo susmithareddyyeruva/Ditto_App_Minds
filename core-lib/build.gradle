@@ -30,6 +30,7 @@ android {
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
          /*   buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""*/
             buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
+            buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
         }
         debug {
@@ -40,6 +41,7 @@ android {
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
           /*  buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""*/
             buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
+            buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
         }
     }
