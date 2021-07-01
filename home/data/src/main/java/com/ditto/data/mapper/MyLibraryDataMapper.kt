@@ -17,14 +17,11 @@ fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
 fun Prod.toDomain(): ProdDomain {
     return ProdDomain(
         ID = this.iD,
-        hasHighRiskIndicator = this.hasHighRiskIndicator,
-        isDiscountApplied = this.isDiscountApplied,
-        isProjectableProduct = this.isProjectableProduct,
-        isTailornovaProduct = this.isTailornovaProduct,
         prodBrand = this.prodBrand,
         prodGender = this.prodGender,
         prodName = this.prodName,
-        prodPrice = this.prodPrice,
+        patternType = this.patternType,
+        prodSize = this.prodSize,
         tailornovaDesignId = this.tailornovaDesignId,
         tailornovaDesignName = this.tailornovaDesignName
 

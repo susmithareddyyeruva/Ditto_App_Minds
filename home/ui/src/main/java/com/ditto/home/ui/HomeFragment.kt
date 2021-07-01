@@ -67,9 +67,15 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         setHomeAdapter()
-        bottomNavViewModel.showProgress.set(true)
-        if (!Utility.isTokenExpired()) {
-            homeViewModel.fetchData()
+
+        /**
+         * API call for getting pattern details....
+         */
+        if (AppState.getIsLogged()) {
+            if (!Utility.isTokenExpired()) {
+                bottomNavViewModel.showProgress.set(true)
+                homeViewModel.fetchData()
+            }
         }
 
         homeViewModel.disposable += homeViewModel.events
@@ -81,7 +87,9 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         RxBus.listen(RxBusEvent.isTokenRefreshed::class.java)
             .subscribe {
                 Log.d("TOKEN======", "SUCCESSS")
-                homeViewModel.fetchData()
+                if (AppState.getIsLogged()) {
+                    homeViewModel.fetchData()
+                }
             }
 
 
@@ -126,6 +134,9 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
             HomeViewModel.Event.OnResultSuccess -> {
                 bottomNavViewModel.showProgress.set(false)
+                (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
+                (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
+
 
             }
             HomeViewModel.Event.OnShowProgress -> {
@@ -135,9 +146,11 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             HomeViewModel.Event.OnHideProgress -> {
                 bottomNavViewModel.showProgress.set(false)
 
+
             }
             HomeViewModel.Event.OnResultFailed -> {
                 bottomNavViewModel.showProgress.set(false)
+                showAlert()
 
             }
             HomeViewModel.Event.NoInternet -> {
@@ -162,9 +175,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     }
 
     private fun setHomeAdapter() {
-        val adapter = HomeAdapter()
+        val adapter = HomeAdapter(requireContext())
         recycler_view.adapter = adapter
         adapter.viewModel = homeViewModel
+     //   adapter.setListData(emptyList())
     }
 
     override fun onCustomPositiveButtonClicked(

@@ -2,6 +2,7 @@ package com.ditto.home.ui
 
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.ditto.home.domain.MyLibraryUseCase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
@@ -31,6 +32,8 @@ class HomeViewModel @Inject constructor(
     val homeItem: ArrayList<HomeData> = ArrayList()
     var header: ObservableField<String> = ObservableField()
     var errorString: ObservableField<String> = ObservableField("")
+    var homeDataResponse: MutableLiveData<MyLibraryDetailsDomain> = MutableLiveData()
+    var productCount: Int = 0
 
     sealed class Event {
         object OnClickMyPatterns : Event()
@@ -49,9 +52,6 @@ class HomeViewModel @Inject constructor(
             utility.refreshToken()
         }
         setHomeHeader()
-        setHomeItems()
-
-
     }
 
     fun onItemClick(id: Int) {
@@ -105,7 +105,10 @@ class HomeViewModel @Inject constructor(
                 images[item],
             )
             homeItem.add(homeItems)
+
         }
+
+
     }
 
     fun fetchData() {
@@ -126,8 +129,13 @@ class HomeViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
+                homeDataResponse.value = result.data
+                Log.d("Home Screen", "$homeDataResponse.value.prod.size")
+                productCount = homeDataResponse.value!!.prod.size
+                AppState.setPatternCount(productCount)
+                Log.d("Home Screen", "${productCount}")
+                setHomeItems()
                 uiEvents.post(Event.OnResultSuccess)
-
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
@@ -152,8 +160,6 @@ class HomeViewModel @Inject constructor(
 
         }
     }
-
-
 
 
 }

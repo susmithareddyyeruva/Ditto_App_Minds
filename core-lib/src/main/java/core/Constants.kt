@@ -39,6 +39,7 @@ const val MODE_SERVICE = "MODE_SERVICE"
 const val MODE_BLE = "MODE_BLE"
 const val SCREEN_MANAGE_DEVICE = "MD"
 const val SUBSCRIPTION_END_DATE = "enddate"
+const val PATTERN_COUNT = "COUNT"
 
 
 
