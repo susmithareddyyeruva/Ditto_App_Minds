@@ -108,19 +108,27 @@
                     app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment"
                     app:menu="@menu/bottom_nav_menu" />
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animationView"
-                    android:layout_width="@dimen/progress_width"
-                    android:layout_height="@dimen/progress_heigth"
-                    android:visibility="@{bottomNavViewModel.showProgress}"
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/semitransparent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/ditto_loader" />
+                    android:clickable="true"
+                    android:visibility="@{bottomNavViewModel.showProgress}"
+                    android:gravity="center">
 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animationView"
+                        android:layout_width="@dimen/progress_width"
+                        android:layout_height="@dimen/progress_heigth"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/ditto_loader" />
+
+                </RelativeLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

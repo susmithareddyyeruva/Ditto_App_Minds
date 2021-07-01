@@ -20,6 +20,6 @@
     <string name="str_ok">OK</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="pattern_library">Pattern Library</string>
-    <string name="pattern_library_count">Pattern Library\u0020(10)</string>
+    <string name="pattern_library_count">Pattern Library\u0020(11)</string>
     <string name="about_app_policies">About the app &amp; policies</string>
 </resources>

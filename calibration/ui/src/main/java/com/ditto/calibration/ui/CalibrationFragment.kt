@@ -409,9 +409,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                     }
                 } else {
                     withContext(Dispatchers.Main) {
+                        baseViewModel.activeSocketConnection.set(false)
+                        restartCamera()
                         Toast.makeText(
                             requireContext(),
-                            "Socket Connection failed. Try again!!",
+                            "Projector Connection failed. Try again!!",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -419,9 +421,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             } catch (e: Exception) {
                 logger.d("Exception " + e.message)
                 withContext(Dispatchers.Main) {
+                    baseViewModel.activeSocketConnection.set(false)
+                    restartCamera()
                     Toast.makeText(
                         requireContext(),
-                        "Socket Connection failed. Try again!!",
+                        "Projector Connection failed. Try again!!",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

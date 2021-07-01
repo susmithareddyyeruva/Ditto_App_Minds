@@ -232,7 +232,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
-                if (isTablet(requireActivity())) {
+                if (isTablet(requireContext())) {
                     com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
                         0,
                         view.rootView.height / 2
@@ -613,9 +613,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
             viewModel.clickReset()
         }
-        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-            R.drawable.ic_workspace_new
-        )
+//        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
+//            R.drawable.ic_workspace_new
+//        )
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableMirror(false)
@@ -746,7 +746,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.ShowMirrorDialog -> {
                 if(viewModel.userData.value?.cMirrorReminder ?: true){
                 Utility.getCommonAlertDialogue(
-                    requireActivity(),
+                    requireContext(),
                     resources.getString(R.string.mirror),
                     resources.getString(R.string.mirror_message),
                     resources.getString(R.string.cancel),
@@ -1160,7 +1160,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
                         enableSelectAll(true)
-                        enableClear(false)
+                        enableClear(true)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
                                 if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
@@ -2105,30 +2105,20 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     baseViewModel.activeSocketConnection.set(false)
                     baseViewModel.isProjecting.set(false)
                     viewModel.isProjectionRequest.set(false)
-                    showFailurePopup()
-                    /*withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         showProgress(toShow = false)
-                        Toast.makeText(
-                            requireContext(),
-                            resources.getString(R.string.socketfailed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }*/
+                         showFailurePopup()
+                    }
                 }
             } catch (e: Exception) {
                 baseViewModel.activeSocketConnection.set(false)
                 baseViewModel.isProjecting.set(false)
                 viewModel.isProjectionRequest.set(false)
                 logger.d("Exception " + e.message)
-                showFailurePopup()
-                /* withContext(Dispatchers.Main) {
-                     showProgress(toShow = false)
-                     Toast.makeText(
-                         requireContext(),
-                         resources.getString(R.string.socketfailed),
-                         Toast.LENGTH_SHORT
-                     ).show()
-                 }*/
+                withContext(Dispatchers.Main) {
+                    showProgress(toShow = false)
+                    showFailurePopup()
+                }
             } finally {
                 soc?.close()
             }
@@ -2181,7 +2171,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showFailurePopup() {
         Utility.getCommonAlertDialogue(
-            requireContext(),
+            requireActivity(),
             "",
             "Projector connection failed",
             "CANCEL",

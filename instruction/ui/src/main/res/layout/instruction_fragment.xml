@@ -17,6 +17,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:keepScreenOn="true"
         android:background="@android:color/white">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -190,6 +191,7 @@
                         android:layout_width="@dimen/size_0dp"
                         android:layout_height="@dimen/size_0dp"
                         android:gravity="center"
+                        android:visibility="invisible"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

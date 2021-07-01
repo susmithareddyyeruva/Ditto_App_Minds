@@ -11,16 +11,16 @@
 <!--        </shape>-->
 <!--    </item>-->
     <item
-        android:top="-4dp"
-        android:start="-17.6dp"
-        android:right="-7dp">
+        android:top="-8.8dp"
+        android:bottom="-11dp"
+        android:left="-7dp">
         <shape>
             <stroke
-                android:width="3dp"
-                android:color="@color/app_red"
+                android:width="1dp"
+                android:color="@android:color/black"
                 android:dashWidth="10dp"
                 android:dashGap="6dp" />
-            <corners android:radius="2dp" />
+            <corners android:radius="1dp" />
         </shape>
     </item>
 </layer-list>

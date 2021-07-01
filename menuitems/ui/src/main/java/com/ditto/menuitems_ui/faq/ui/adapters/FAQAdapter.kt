@@ -66,7 +66,7 @@ class FAQAdapter(
 
                 holder.rvsubques.visibility = View.GONE
             }
-            holder.ivArrow.setImageResource(R.drawable.ic_uparrow)
+            holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
             if (!item?.web_url.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
             } else {
@@ -91,7 +91,7 @@ class FAQAdapter(
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.rvsubques.visibility = View.GONE
-            holder.ivArrow.setImageResource(R.drawable.ic_down_arrow)
+            holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)
             holder.watch.visibility = View.GONE
             holder.visit.visibility = View.GONE
         }

@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -25,9 +27,10 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class CustomPlayerControlActivity : YouTubeBaseActivity(),
-    YouTubePlayer.OnInitializedListener, View.OnClickListener,Utility.CustomCallbackDialogListener {
+    YouTubePlayer.OnInitializedListener, View.OnClickListener,
+    Utility.CustomCallbackDialogListener {
     private var mPlayer: YouTubePlayer? = null
-    private var mPlayButtonLayout: View? = null
+/*    private var mPlayButtonLayout: View? = null*/
     private var mPlayTimeTextView: TextView? = null
     private var skipButton: TextView? = null
     private var mHandler: Handler? = null
@@ -38,9 +41,9 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private var from = ""
     override fun onBackPressed() {
         super.onBackPressed()
-        if (AppState.getIsLogged()){
+        if (from == "LOGIN") {
             finishAffinity()
-        }else{
+        } else {
             val intent = Intent()
             intent.data = Uri.parse("ONBACK")
             setResult(Activity.RESULT_OK, intent)
@@ -56,7 +59,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+        setContentView(R.layout.custom_layout)
+        fullScreenCall()
         hideSystemUI()
 
         // Initializing YouTube player view
@@ -64,7 +68,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             findViewById<View>(R.id.video_view) as YouTubePlayerView
         youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
         //Add play button to explicitly play video in YouTubePlayerView
-        mPlayButtonLayout = findViewById(R.id.video_control)
+    /*    mPlayButtonLayout = findViewById(R.id.video_control)*/
         findViewById<View>(R.id.play_video).setOnClickListener(this)
         findViewById<View>(R.id.close).setOnClickListener(this)
         findViewById<View>(R.id.skipButton).setOnClickListener(this)
@@ -120,7 +124,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             player.loadVideo(VIDEO_ID)
         }
         player.setPlayerStyle(PlayerStyle.CHROMELESS)
-        mPlayButtonLayout!!.visibility = View.VISIBLE
+      /*  mPlayButtonLayout!!.visibility = View.VISIBLE*/
 
         // Add listeners to YouTubePlayer instance
         player.setPlayerStateChangeListener(mPlayerStateChangeListener)
@@ -208,7 +212,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
                 }
             }
             R.id.close -> {
-                finish()
+               onBackPressed()
             }
             R.id.skipButton -> {
                 val intent = Intent()
@@ -330,5 +334,19 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             ,
             Utility.Iconype.FAILED
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mPlayer!=null) {
+            mPlayer?.release()
+        }
+    }
+    private fun fullScreenCall(){
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+        val behavior =  WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        val type = WindowInsetsCompat.Type.systemBars()
+        insetsController.systemBarsBehavior = behavior
+        insetsController.hide(type)
     }
 }

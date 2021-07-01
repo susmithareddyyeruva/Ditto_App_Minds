@@ -98,7 +98,7 @@ class Utility @Inject constructor(
         }
 
         fun getAlertDialogue(
-            context: Context,
+            context: Context?,
             title: String,
             message: String,
             negativeButton: String,
@@ -106,25 +106,31 @@ class Utility @Inject constructor(
             callbackDialogListener: CallbackDialogListener,
             alertType: AlertType
         ) {
-            val dialogBuilder = AlertDialog.Builder(context)
-            dialogBuilder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onPositiveButtonClicked(alertType)
-                })
-                .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onNegativeButtonClicked(alertType)
-                })
+            if (context != null) {
+                val dialogBuilder = AlertDialog.Builder(context)
+                dialogBuilder.setMessage(message)
+                    .setCancelable(false)
+                    .setPositiveButton(
+                        positiveButton,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            dialog.dismiss()
+                            callbackDialogListener.onPositiveButtonClicked(alertType)
+                        })
+                    .setNegativeButton(
+                        negativeButton,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            dialog.dismiss()
+                            callbackDialogListener.onNegativeButtonClicked(alertType)
+                        })
 
-            val alert = dialogBuilder.create()
-            alert.setTitle(title)
-            alert.show()
+                val alert = dialogBuilder.create()
+                alert.setTitle(title)
+                alert.show()
+            }
         }
 
         fun getAlertDialogue(
-            context: Context,
+            context: Context?,
             title: String,
             message: String,
             negativeButton: String,
@@ -133,26 +139,32 @@ class Utility @Inject constructor(
             callbackDialogListener: CallbackDialogListener,
             alertType: AlertType
         ) {
-            val dialogBuilder = AlertDialog.Builder(context)
-            dialogBuilder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onPositiveButtonClicked(alertType)
-                })
-                .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onNegativeButtonClicked(alertType)
-                })
+            if (context != null) {
+                val dialogBuilder = AlertDialog.Builder(context)
+                dialogBuilder.setMessage(message)
+                    .setCancelable(false)
+                    .setPositiveButton(
+                        positiveButton,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            dialog.dismiss()
+                            callbackDialogListener.onPositiveButtonClicked(alertType)
+                        })
+                    .setNegativeButton(
+                        negativeButton,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            dialog.dismiss()
+                            callbackDialogListener.onNegativeButtonClicked(alertType)
+                        })
 
-                .setNeutralButton(neutralButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onNeutralButtonClicked()
-                })
+                    .setNeutralButton(neutralButton, DialogInterface.OnClickListener { dialog, id ->
+                        dialog.dismiss()
+                        callbackDialogListener.onNeutralButtonClicked()
+                    })
 
-            val alert = dialogBuilder.create()
-            alert.setTitle(title)
-            alert.show()
+                val alert = dialogBuilder.create()
+                alert.setTitle(title)
+                alert.show()
+            }
         }
         fun getAlertDialogueForCaliberate(
             context: Context,
@@ -312,11 +324,13 @@ class Utility @Inject constructor(
                 mediaDir else context.filesDir
         }
 
-        fun galleryAddPic(context: Context, file: String) {
-            Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-                val f = File(file)
-                mediaScanIntent.data = Uri.fromFile(f)
-                context.sendBroadcast(mediaScanIntent)
+        fun galleryAddPic(context: Context?, file: String) {
+            if (context != null){
+                Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+                    val f = File(file)
+                    mediaScanIntent.data = Uri.fromFile(f)
+                    context.sendBroadcast(mediaScanIntent)
+                }
             }
         }
 
@@ -349,7 +363,8 @@ class Utility @Inject constructor(
             }
         }
 
-        suspend fun sendDittoImage(context: Context, imageName: String) {
+        suspend fun sendDittoImage(context: Context?, imageName: String) {
+            if (context == null) return
             Log.d("TRACE_ Projection :","Send Ditto start " + Calendar. getInstance().timeInMillis)
             val uri = Uri.parse(
                 "android.resource://" + context.packageName
@@ -368,7 +383,7 @@ class Utility @Inject constructor(
                         println("*****bytes.length = " + bytes?.size)
                         dataOutputStream.close()
                     } else {
-                        println("Socket Connection Failed")
+                        println("Projector Connection Failed")
                         /*withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
@@ -378,7 +393,7 @@ class Utility @Inject constructor(
                         }*/
                     }
                 } catch (e: Exception) {
-                    println("Socket Connection Failed")
+                    println("Projector Connection Failed")
                    /* withContext(Dispatchers.Main) {
                         Toast.makeText(
                             context,
@@ -405,7 +420,8 @@ class Utility @Inject constructor(
             return byteBuffer.toByteArray()
         }
 
-        fun redirectToExternalBrowser(context: Context, url: String) {
+        fun redirectToExternalBrowser(context: Context?, url: String) {
+            if (context == null) return
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(url)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -442,7 +458,7 @@ class Utility @Inject constructor(
 
         @SuppressLint("ResourceType")
         fun getCommonAlertDialogue(
-            context: Context,
+            context: Context?,
             title: String,
             alertmessage: String,
             negativeButton: String,
@@ -451,84 +467,102 @@ class Utility @Inject constructor(
             alertType:AlertType,
             imgtyp : Iconype
         ) {
-            val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
-            val dialogBuilder =  AlertDialog.Builder(context)
-            dialogBuilder.setView(mDialogView)
-            val alert = dialogBuilder.create()
-            alert.setCancelable(false)
-            alert.show()
-            alert.window?.setBackgroundDrawable(null)
-            val lay_withimage = mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
-            val lay_withoutimage = mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
-            if (alertType == AlertType.BLE || alertType == AlertType.WIFI|| alertType == AlertType.CUT_COMPLETE
-                || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType==AlertType.CUT_BIN){
-                lay_withimage.visibility = View.GONE
-                lay_withoutimage.visibility = View.VISIBLE
+            if (context != null) {
+                val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
+                val dialogBuilder = AlertDialog.Builder(context)
+                dialogBuilder.setView(mDialogView)
+                val alert = dialogBuilder.create()
+                alert.setCancelable(false)
+                alert.show()
+                alert.window?.setBackgroundDrawable(null)
+                val lay_withimage =
+                    mDialogView.findViewById(R.id.layout_withImage) as RelativeLayout
+                val lay_withoutimage =
+                    mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
+                if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
+                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
+                ) {
+                    lay_withimage.visibility = View.GONE
+                    lay_withoutimage.visibility = View.VISIBLE
 
-                val title_common = mDialogView.findViewById(R.id.common_title) as TextView
-                val message_common = mDialogView.findViewById(R.id.common_message) as TextView
-                val neg_text_common = mDialogView.findViewById(R.id.neg_text_common) as TextView
-                val pos_text_common = mDialogView.findViewById(R.id.pos_txt_common) as TextView
-                if(alertType==AlertType.CUT_COMPLETE){
-                    title_common.text=alertmessage
-                    title_common.typeface=ResourcesCompat.getFont(context,R.font.avenir_next_lt_pro_regular)
-                    message_common.visibility=View.GONE
-                }else{
-                    title_common.text = title
-                    message_common.text = alertmessage
-                }
+                    val title_common = mDialogView.findViewById(R.id.common_title) as TextView
+                    val message_common = mDialogView.findViewById(R.id.common_message) as TextView
+                    val neg_text_common = mDialogView.findViewById(R.id.neg_text_common) as TextView
+                    val pos_text_common = mDialogView.findViewById(R.id.pos_txt_common) as TextView
+                    if (alertType == AlertType.CUT_COMPLETE) {
+                        title_common.text = alertmessage
+                        title_common.typeface =
+                            ResourcesCompat.getFont(context, R.font.avenir_next_lt_pro_regular)
+                        message_common.visibility = View.GONE
+                    } else {
+                        title_common.text = title
+                        message_common.text = alertmessage
+                    }
 
-                if(alertType==AlertType.CUT_BIN){
-                    message_common.gravity=Gravity.START
-                }
-                if(alertType==AlertType.MIRROR){
-                    message_common.gravity=Gravity.START
-                }
+                    if (alertType == AlertType.CUT_BIN) {
+                        message_common.gravity = Gravity.START
+                    }
+                    if (alertType == AlertType.MIRROR) {
+                        message_common.gravity = Gravity.START
+                    }
 
-                neg_text_common.text = negativeButton
-                pos_text_common.text = positiveButton
+                    neg_text_common.text = negativeButton
+                    pos_text_common.text = positiveButton
 
-                neg_text_common.setOnClickListener {
-                    alert.dismiss()
-                    customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
-                }
-                pos_text_common.setOnClickListener {
-                    alert.dismiss()
-                    customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
-                }
+                    neg_text_common.setOnClickListener {
+                        alert.dismiss()
+                        customcallbackDialogListener.onCustomNegativeButtonClicked(
+                            imgtyp,
+                            alertType
+                        )
+                    }
+                    pos_text_common.setOnClickListener {
+                        alert.dismiss()
+                        customcallbackDialogListener.onCustomPositiveButtonClicked(
+                            imgtyp,
+                            alertType
+                        )
+                    }
 
-            } else {
-                lay_withimage.visibility = View.VISIBLE
-                lay_withoutimage.visibility = View.GONE
-
-                val message = mDialogView.findViewById(R.id.alert_message) as TextView
-                message.text = alertmessage
-                val negative = mDialogView.findViewById(R.id.neg_text) as TextView
-                negative.text = negativeButton
-                val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
-                positive.text = positiveButton
-                val icon = mDialogView.findViewById(R.id.img_icon) as ImageView
-                if (imgtyp.equals(Iconype.SUCCESS)){
-                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
-                } else  if (imgtyp.equals(Iconype.FAILED)){
-                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
                 } else {
-                    icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
-                }
-                negative.setOnClickListener {
-                    alert.dismiss()
-                    customcallbackDialogListener.onCustomNegativeButtonClicked(imgtyp,alertType)
-                }
-                positive.setOnClickListener {
-                    alert.dismiss()
-                    customcallbackDialogListener.onCustomPositiveButtonClicked(imgtyp,alertType)
+                    lay_withimage.visibility = View.VISIBLE
+                    lay_withoutimage.visibility = View.GONE
+
+                    val message = mDialogView.findViewById(R.id.alert_message) as TextView
+                    message.text = alertmessage
+                    val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+                    negative.text = negativeButton
+                    val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+                    positive.text = positiveButton
+                    val icon = mDialogView.findViewById(R.id.img_icon) as ImageView
+                    if (imgtyp.equals(Iconype.SUCCESS)) {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
+                    } else if (imgtyp.equals(Iconype.FAILED)) {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                    } else {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                    }
+                    negative.setOnClickListener {
+                        alert.dismiss()
+                        customcallbackDialogListener.onCustomNegativeButtonClicked(
+                            imgtyp,
+                            alertType
+                        )
+                    }
+                    positive.setOnClickListener {
+                        alert.dismiss()
+                        customcallbackDialogListener.onCustomPositiveButtonClicked(
+                            imgtyp,
+                            alertType
+                        )
+                    }
                 }
             }
         }
 
         @SuppressLint("ResourceType")
         fun showAlertDialogue(
-            context: Context,
+            context: Context?,
             resourceDrawable : Int,
             alertmessage: String,
             negativeButton: String,
@@ -536,30 +570,32 @@ class Utility @Inject constructor(
             callbackDialogListener: CallbackDialogListener,
             alertType:AlertType
         ) {
-            val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert_calibration, null)
-            val dialogBuilder =  AlertDialog.Builder(context)
-            dialogBuilder.setView(mDialogView)
-            val alert = dialogBuilder.create()
-            alert.setCancelable(false)
-            alert.show()
-            alert.window?.setBackgroundDrawable(null)
-            val image = mDialogView.findViewById(R.id.img_icon) as ImageView
-            image.setImageResource(resourceDrawable)
-            val message = mDialogView.findViewById(R.id.alert_message) as TextView
-            message.text = alertmessage
-            val negative = mDialogView.findViewById(R.id.neg_text) as TextView
-            negative.text = negativeButton
-            val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
-            positive.text = positiveButton
-            negative.setOnClickListener {
-                alert.dismiss()
-                callbackDialogListener.onNegativeButtonClicked(alertType)
+            if (context != null) {
+                val mDialogView =
+                    LayoutInflater.from(context).inflate(R.layout.custom_alert_calibration, null)
+                val dialogBuilder = AlertDialog.Builder(context)
+                dialogBuilder.setView(mDialogView)
+                val alert = dialogBuilder.create()
+                alert.setCancelable(false)
+                alert.show()
+                alert.window?.setBackgroundDrawable(null)
+                val image = mDialogView.findViewById(R.id.img_icon) as ImageView
+                image.setImageResource(resourceDrawable)
+                val message = mDialogView.findViewById(R.id.alert_message) as TextView
+                message.text = alertmessage
+                val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+                negative.text = negativeButton
+                val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+                positive.text = positiveButton
+                negative.setOnClickListener {
+                    alert.dismiss()
+                    callbackDialogListener.onNegativeButtonClicked(alertType)
+                }
+                positive.setOnClickListener {
+                    alert.dismiss()
+                    callbackDialogListener.onPositiveButtonClicked(alertType)
+                }
             }
-            positive.setOnClickListener {
-                alert.dismiss()
-                callbackDialogListener.onPositiveButtonClicked(alertType)
-            }
-
         }
 
          fun getTotalNumberOfDays(endDate:String?):String{

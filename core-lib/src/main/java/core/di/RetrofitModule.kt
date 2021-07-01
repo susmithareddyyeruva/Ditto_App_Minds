@@ -1,10 +1,9 @@
 package core.di
 
 import android.content.Context
-import core.*
-import core.BASE_URL
 import core.MOCK_API_CERT
-import core.TOKEN_BASE_URL
+import core.OCAPI_PASSWORD
+import core.OCAPI_USERNAME
 import core.di.scope.WbApiRetrofit
 import core.di.scope.WbBaseUrl
 import core.di.scope.WbTokenApiRetrofit
@@ -25,16 +24,12 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.TrustManagerFactory
-import kotlin.jvm.Throws
+import javax.net.ssl.*
 
 
 @Module(
     includes = [
         WbBaseUrlModule::class,
-        WbSocketCertificateModule::class,
         WbTokenBaseUrlModule :: class
     ]
 )
@@ -50,6 +45,15 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
+
+
+        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+            val hv: HostnameVerifier =
+                HttpsURLConnection.getDefaultHostnameVerifier()
+            hv.verify("demandware.net", session)
+        })
+
+
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -61,7 +65,6 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
-
     @Provides
     @WbTokenApiRetrofit
     fun provideTokenRetrofit(
@@ -75,6 +78,11 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
+        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+            val hv: HostnameVerifier =
+                HttpsURLConnection.getDefaultHostnameVerifier()
+            hv.verify("demandware.net", session)
+        })
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -93,7 +101,7 @@ class WbBaseUrlModule {
     @Provides
     @WbBaseUrl
     fun providesBaseUrl(): String {
-        return BASE_URL
+        return BuildConfig.BASEURL
     }
 }
 
@@ -102,7 +110,7 @@ class WbTokenBaseUrlModule {
     @Provides
     @WbTokenBaseUrl
     fun providesTokenBaseUrl(): String {
-        return TOKEN_BASE_URL
+        return BuildConfig.BASEURL
     }
 }
 

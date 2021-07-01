@@ -9,12 +9,13 @@ import com.ditto.menuitems.data.error.FAQGlossaryFetchError
 import com.ditto.menuitems.data.mapper.toDomain
 import com.ditto.menuitems.domain.FAQGlossaryRepository
 import com.ditto.menuitems.domain.model.faq.FAQGlossaryResultDomain
-import core.CLIENT_ID
+import core.CLIENT_ID_DEV
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
-import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 
@@ -34,7 +35,7 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return faqGlossaryService.getFAQGlossaryData(
-            CLIENT_ID,
+            CLIENT_ID_DEV,
         )
             .doOnSuccess {
                 logger.d("*****FETCH FAQ and GLOSSARY SUCCESS**")
@@ -48,15 +49,19 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
                 var errorMessage = "Error Fetching data"
                 try {
                     logger.d("try block")
-                    val error = it as HttpException
-                    if (error != null) {
-                        logger.d("Error Onboarding")
-                    }
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)
-                    errorMessage = e.message.toString()
-
-
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
                 }
 
 
