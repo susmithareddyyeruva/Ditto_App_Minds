@@ -3,7 +3,7 @@ package com.ditto.data
 import android.content.Context
 import android.util.Log
 import com.ditto.data.api.MyLibraryService
-import com.ditto.data.api.request.MyLibraryRequestData
+import com.ditto.data.api.request.MyLibraryFilterRequestData
 import com.ditto.data.api.request.OrderFilter
 import com.ditto.data.api.request.ProductFilter
 import com.ditto.data.error.HomeDataFetchError
@@ -37,7 +37,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return homeService.getHomeScreenDetails(MyLibraryRequestData(OrderFilter(true,
+        return homeService.getHomeScreenDetails(MyLibraryFilterRequestData(OrderFilter(true,
         "subscustomerOne@gmail.com",false,false,false), ProductFilter("Vogue")
         ),"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {

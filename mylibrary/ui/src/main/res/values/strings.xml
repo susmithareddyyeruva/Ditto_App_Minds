@@ -58,5 +58,6 @@
     <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="pattern_instructions">Pattern Instructions</string>
     <string name="pattern_details">Pattern details</string>
+    <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
 
 </resources>

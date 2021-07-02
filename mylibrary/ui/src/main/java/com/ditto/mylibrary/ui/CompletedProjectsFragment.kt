@@ -108,6 +108,9 @@ class CompletedProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
+            else -> {
+
+            }
         }
 
 }

@@ -1,7 +1,11 @@
 package com.ditto.mylibrary.data.mapper
 
-import com.ditto.storage.data.model.Patterns
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryDetailsDomain
+import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.model.MyLibraryResult
+import com.ditto.mylibrary.model.Prod
+import com.ditto.storage.data.model.Patterns
 
 internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
     return this.map {
@@ -37,5 +41,27 @@ internal fun Patterns.toDomain(): MyLibraryData {
         selvages = this.selvages,
         patternPieces = this.patternPieces,
         workspaceItems = this.workspaceItems
+    )
+}
+fun MyLibraryResult.toDomain(): MyLibraryDetailsDomain {
+    return MyLibraryDetailsDomain(
+        action = this.action,
+        locale = this.locale,
+        prod = this.prod.map { it.toDomain() },
+        queryString = this.queryString
+    )
+}
+
+fun Prod.toDomain(): ProdDomain {
+    return ProdDomain(
+        ID = this.iD,
+        prodBrand = this.prodBrand,
+        prodGender = this.prodGender,
+        prodName = this.prodName,
+        patternType = this.patternType,
+        prodSize = this.prodSize,
+        tailornovaDesignId = this.tailornovaDesignId,
+        tailornovaDesignName = this.tailornovaDesignName
+
     )
 }

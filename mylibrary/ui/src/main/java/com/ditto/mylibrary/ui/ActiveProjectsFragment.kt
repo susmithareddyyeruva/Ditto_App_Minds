@@ -112,6 +112,9 @@ class ActiveProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
+            else -> {
+
+            }
         }
 
     private fun showPopupMenu(view: View, patternId: Int) {

@@ -1,6 +1,6 @@
 package com.ditto.data.api.request
 
-data class MyLibraryRequestData(
+data class MyLibraryFilterRequestData(
     var OrderFilter: OrderFilter,
     var ProductFilter: ProductFilter
 )

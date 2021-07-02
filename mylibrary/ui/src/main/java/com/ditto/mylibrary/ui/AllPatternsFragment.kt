@@ -2,9 +2,6 @@ package com.ditto.mylibrary.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -26,18 +23,21 @@ import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.ClickListener
 import com.ditto.mylibrary.ui.util.RecyclerTouchListener
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.all_patterns_fragment.view.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener {
+class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener, Utility.CustomCallbackDialogListener  {
 
 
     @Inject
@@ -73,7 +73,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterItems("Female")
     )
     val brandList = arrayListOf(
-        FilterItems("Lee"),
+        FilterItems("Vogue"),
         FilterItems("Addidas")
     )
     val sizeList = arrayListOf(
@@ -129,7 +129,6 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setFilterMenuAdapter(0)
         viewModel.fetchOnPatternData()
         setList()
-
 
         // Add Item Touch Listener
         binding.rvCategory.addOnItemTouchListener(RecyclerTouchListener(requireContext(), object :
@@ -209,7 +208,16 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             setFilterMenuAdapter(0)
         }
         binding.apply.setOnClickListener {
-            viewModel.createJson()
+          //  viewModel.createJson()
+            /**
+             * API call for getting filter Results....
+             */
+            if (AppState.getIsLogged()) {
+                if (!Utility.isTokenExpired()) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.getFilteredPatternsData( viewModel.createJson())
+                }
+            }
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
         }
@@ -303,6 +311,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
+        binding.toolbar.header_view_title_pattern_count.text=getString(R.string.pattern_library_count,AppState.getPatternCount())
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -380,11 +389,40 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             Log.d("pattern","OnSyncClick : AllPatternsFragment")
             // open dialog
         }
-        else -> {
-            logger.d("OnClickPattern")
+        AllPatternsViewModel.Event.OnResultSuccess ->{
+            bottomNavViewModel.showProgress.set(false)
+        }
+        AllPatternsViewModel.Event.OnShowProgress -> {
+            bottomNavViewModel.showProgress.set(true)
+        }
+        AllPatternsViewModel.Event.OnHideProgress ->{
+            bottomNavViewModel.showProgress.set(false)
+        }
+        AllPatternsViewModel.Event.OnResultFailed ->{
+            bottomNavViewModel.showProgress.set(false)
+            showAlert()
+        }
+        AllPatternsViewModel.Event.NoInternet -> {
+            bottomNavViewModel.showProgress.set(false)
+            showAlert()
+        }else->{
+            Log.d("event","Add project")
         }
     }
-
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
+    }
     private fun showPopupMenu(view: View, patternId: Int) {
         this.patternId = patternId
         val popup = PopupMenu(requireContext(), view)
@@ -417,5 +455,17 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
         logger.d("Items==" + title)
     }
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
 
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        // TODO("Not yet implemented")
+    }
 }

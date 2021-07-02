@@ -4,6 +4,8 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryDetailsDomain
+import com.ditto.mylibrary.domain.model.ProductFilter
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -30,5 +32,9 @@ class MyLibraryImpl @Inject constructor(
 
     override fun completeProject(patternId: Int): Single<Any> {
         return myLibraryRepository.completeProject(patternId)
+    }
+
+    override fun getFilteredPatterns(createJson: ProductFilter): Single<Result<MyLibraryDetailsDomain>> {
+        return myLibraryRepository.getFilteredPatterns(createJson)
     }
 }

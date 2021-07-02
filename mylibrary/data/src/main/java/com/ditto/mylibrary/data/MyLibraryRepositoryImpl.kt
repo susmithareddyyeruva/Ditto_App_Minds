@@ -1,14 +1,27 @@
 package com.ditto.mylibrary.data
 
+import android.content.Context
+import android.util.Log
+import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
+import com.ditto.mylibrary.data.api.MyLibraryFilterService
+import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
+import com.ditto.mylibrary.data.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.data.request.OrderFilter
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.MyLibraryDetailsDomain
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
+import core.appstate.AppState
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
+import non_core.lib.error.NoNetworkError
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 /**
@@ -16,8 +29,15 @@ import javax.inject.Inject
  */
 class MyLibraryRepositoryImpl @Inject constructor(
     private val dbDataDao: @JvmSuppressWildcards UserDao,
-    private val patternsDao: @JvmSuppressWildcards PatternsDao
+    private val patternsDao: @JvmSuppressWildcards PatternsDao,
+    private val myLibraryService: @JvmSuppressWildcards MyLibraryFilterService,
+    private val loggerFactory: LoggerFactory
 ) : MyLibraryRepository {
+    @Inject
+    lateinit var context: Context
+    val logger: com.ditto.logger.Logger by lazy {
+        loggerFactory.create(MyLibraryRepositoryImpl::class.java.simpleName)
+    }
     /**
      * fetches data from local store first. if not available locally, fetches from server
      */
@@ -55,6 +75,51 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun removePattern(patternId: Int): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+
+    override fun getFilteredPatterns(createJson: com.ditto.mylibrary.domain.model.ProductFilter): Single<Result<MyLibraryDetailsDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return myLibraryService.getFilterredPatterns(MyLibraryFilterRequestData(
+            OrderFilter(true,
+            "subscustomerOne@gmail.com",false,false,false),createJson
+        ),"Bearer "+ AppState.getToken()!!)
+            .doOnSuccess {
+                logger.d("*****FETCH FILTER SUCCESS**")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
+                }
+
+
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
+
     }
 
 

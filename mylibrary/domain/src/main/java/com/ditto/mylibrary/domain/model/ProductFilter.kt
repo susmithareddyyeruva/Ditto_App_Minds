@@ -2,10 +2,10 @@ package com.ditto.mylibrary.domain.model
 
 import com.google.gson.annotations.SerializedName
 
-class FilterCriteria {
+class ProductFilter {
     @SerializedName("Category")
     var category:String?=null
-    @SerializedName("Brand")
+    @SerializedName("brand")
     var brand:String?=null
     @SerializedName("Gender")
     var gender:String?=null
