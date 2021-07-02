@@ -134,7 +134,7 @@ class HomeViewModel @Inject constructor(
                 productCount = homeDataResponse.value!!.prod.size
                 AppState.setPatternCount(productCount)
                 Log.d("Home Screen", "${productCount}")
-                setHomeItems()
+                setHomeItems()  //Preparing menu items
                 uiEvents.post(Event.OnResultSuccess)
             }
             is Result.OnError -> {

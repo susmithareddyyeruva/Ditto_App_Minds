@@ -1,5 +1,6 @@
 package com.ditto.home.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -54,6 +55,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         return binding.root
     }
 
+    @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
@@ -66,7 +68,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
-        setHomeAdapter()
+       setHomeAdapter()
 
         /**
          * API call for getting pattern details....
@@ -178,7 +180,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         val adapter = HomeAdapter(requireContext())
         recycler_view.adapter = adapter
         adapter.viewModel = homeViewModel
-     //   adapter.setListData(emptyList())
     }
 
     override fun onCustomPositiveButtonClicked(
