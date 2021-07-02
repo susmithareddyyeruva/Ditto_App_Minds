@@ -446,7 +446,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             showSpliceReference(splicePiece)
             return
         }
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size!! > 0 &&
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size?:0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
             val garments =
@@ -506,7 +506,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
 
         if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.lining) }
-                ?.isNotEmpty()!! &&
+                ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
         ) {
             val lining =
@@ -534,7 +534,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
 
         if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.interfacing) }
-                ?.isNotEmpty()!! &&
+                ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
         ) {
             val interfacing =
