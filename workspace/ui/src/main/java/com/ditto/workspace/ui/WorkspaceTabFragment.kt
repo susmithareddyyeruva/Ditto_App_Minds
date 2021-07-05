@@ -322,21 +322,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showProgress(toShow: Boolean) {
         bottomNavViewModel.showProgress.set(toShow)
-        /*if (toShow) {
-            val layout =
-                activity?.layoutInflater?.inflate(R.layout.progress_dialog, null)
-
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-            dialogBuilder
-                .setCancelable(false)
-            alert = dialogBuilder.create()
-            alert.setView(layout)
-            alert.show()
-        } else {
-            if (::alert.isInitialized) {
-                alert.dismiss()
-            }
-        }*/
     }
 
     private fun handleResult(
@@ -461,7 +446,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             showSpliceReference(splicePiece)
             return
         }
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size!! > 0 &&
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size?:0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
             val garments =
@@ -501,33 +486,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage.imagePath)
                 }
-
-//                if ((garments[0].fabricLength == "45" || garments[1].fabricLength == "45") && viewModel.clickedSize45.get()) {
-//                    garments[0].imagePath.let {
-//                        binding.imageSelvageHorizontal.setImageDrawable(
-//                            getDrawableFromString(context, it)
-//                        )
-//                    }
-//
-//                } else if ((garments[0].fabricLength == "60" || garments[1].fabricLength == "60") && !viewModel.clickedSize45.get()) {
-//                    garments[1].imagePath.let {
-//                        binding.imageSelvageHorizontal.setImageDrawable(
-//                            getDrawableFromString(context, it)
-//                        )
-//                    }
-//                    viewModel.clickedSize45.set(false)
-//                    viewModel.clickedSize60.set(true)
-//                    viewModel.referenceImage.set(garments[1].imagePath)
-//                }
             } else {
                 if (garments?.get(0)!!.fabricLength == "45") {
-//                    binding.txtSize45.setBackgroundResource(R.drawable.rounded_black_bg)
-//                    binding.txtSize45.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            android.R.color.white
-//                        )
-//                    )
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
                     viewModel.clickedSize45.set(true)
@@ -546,7 +506,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
 
         if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.lining) }
-                ?.isNotEmpty()!! &&
+                ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
         ) {
             val lining =
@@ -574,7 +534,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
 
         if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.interfacing) }
-                ?.isNotEmpty()!! &&
+                ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
         ) {
             val interfacing =
@@ -769,25 +729,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 enableMirror(true)
             }
             is WorkspaceViewModel.Event.OnClickSpliceRight -> {
-//                binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-//                    R.drawable.ic_workspace_splice_left_new
-//                )
-//                binding.includeWorkspacearea?.spliceLeft?.bringToFront()
-//                mWorkspaceEditor?.clearAllViews()
-//                mWorkspaceEditor?.addImage(
-//                    getDrawableFromString(
-//                        context,
-//                        viewModel.workspacedata?.splicedImages?.get(1)?.imagePath
-//                    ),
-//                    viewModel.workspacedata,
-//                    viewModel.scaleFactor.get(),
-//                    true,
-//                    false,
-//                    this
-//                )
-//                viewModel.workspacedata?.currentSplicedPieceNo = 1
-//                viewModel.spliced_pices.set(2)
-//                viewModel.clicked_spliced_second_pieces.set(true)
                 mWorkspaceEditor?.clearAllViews()
                 if (isSpliceDirectionAvailable(
                         viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
@@ -806,27 +747,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
             }
             is WorkspaceViewModel.Event.OnClickSpliceLeft -> {
-//                binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-//                    R.drawable.ic_workspace_splice_right_new
-//                )
-//                binding.includeWorkspacearea?.spliceRight?.bringToFront()
-//                mWorkspaceEditor?.clearAllViews()
-//                mWorkspaceEditor?.addImage(
-//                    getDrawableFromString(
-//                        context,
-//                        viewModel.workspacedata?.splicedImages?.get(0)?.imagePath
-//                    ),
-//                    viewModel.workspacedata,
-//                    viewModel.scaleFactor.get(),
-//                    true,
-//                    false,
-//                    this
-//                )
-//                mWorkspaceEditor?.highlightSplicePiece()
-//                enableClear(true)
-//                viewModel.workspacedata?.currentSplicedPieceNo = 0
-//                viewModel.spliced_pices.set(1)
-//                viewModel.clicked_spliced_second_pieces.set(true)
                 mWorkspaceEditor?.clearAllViews()
                 if (isSpliceDirectionAvailable(
                         viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
@@ -844,27 +764,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }
             is WorkspaceViewModel.Event.OnClickSpliceBottom -> {
-//                binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-//                    R.drawable.ic_workspace_splice_top_new
-//                )
-//                binding.includeWorkspacearea?.spliceTop?.bringToFront()
-//                mWorkspaceEditor?.clearAllViews()
-//                mWorkspaceEditor?.addImage(
-//                    getDrawableFromString(
-//                        context,
-//                        viewModel.workspacedata?.splicedImages?.get(0)?.imagePath
-//                    ),
-//                    viewModel.workspacedata,
-//                    viewModel.scaleFactor.get(),
-//                    true,
-//                    false,
-//                    this
-//                )
-//                mWorkspaceEditor?.highlightSplicePiece()
-//                enableClear(true)
-//                viewModel.workspacedata?.currentSplicedPieceNo = 0
-//                viewModel.spliced_pices.set(1)
-//                viewModel.clicked_spliced_second_pieces.set(true)
                 mWorkspaceEditor?.clearAllViews()
                 if (isSpliceDirectionAvailable(
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0,
@@ -882,27 +781,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }
             is WorkspaceViewModel.Event.OnClickSpliceTop -> {
-//                binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
-//                    R.drawable.ic_workspace_splice_bottom_new
-//                )
-//                binding.includeWorkspacearea?.spliceBottom?.bringToFront()
-//                mWorkspaceEditor?.clearAllViews()
-//                mWorkspaceEditor?.addImage(
-//                    getDrawableFromString(
-//                        context,
-//                        viewModel.workspacedata?.splicedImages?.get(1)?.imagePath
-//                    ),
-//                    viewModel.workspacedata,
-//                    viewModel.scaleFactor.get(),
-//                    true,
-//                    false,
-//                    this
-//                )
-//                mWorkspaceEditor?.highlightSplicePiece()
-//                enableClear(true)
-//                viewModel.workspacedata?.currentSplicedPieceNo = 1
-//                viewModel.spliced_pices.set(2)
-//                viewModel.clicked_spliced_second_pieces.set(true)
                 mWorkspaceEditor?.clearAllViews()
                 if (isSpliceDirectionAvailable(
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0,
@@ -1159,7 +1037,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
                         enableSelectAll(true)
-                        enableClear(true)
+//                        enableClear(true)
                         if (dragData?.patternPieces?.splice == SPLICE_NO) {
                             if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
                                 if(viewModel.userData.value?.cSpliceMultiplePieceReminder?: true) {
@@ -1588,49 +1466,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.selectAllText.set(getString(R.string.select_all))
         mWorkspaceEditor?.clearAllSelection()
         var imagename = viewModel.workspacedata?.imagePath
-
-//        if (viewModel.workspacedata?.spliceDirection == SPLICE_LEFT_TO_RIGHT) {
-//            if (viewModel.workspacedata?.currentSplicedPieceNo == 0) {
-//                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_right_new)
-//                splice_right.bringToFront()
-//                viewModel.isSpliceRightVisible.set(true)
-//                viewModel.spliced_pices.set(1)
-//            } else {
-//                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_left_new)
-//                splice_left.bringToFront()
-//                viewModel.isSpliceLeftVisible.set(true)
-//                viewModel.spliced_pices.set(2)
-//                viewModel.clicked_spliced_second_pieces.set(true) // works only for saved project
-//            }
-//        } else if (viewModel.workspacedata?.spliceDirection == SPLICE_TOP_TO_BOTTOM) {
-//            if (viewModel.workspacedata?.currentSplicedPieceNo == 0) {
-//                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_top_new)
-//                splice_top.bringToFront()
-//                viewModel.isSpliceTopVisible.set(true)
-//                viewModel.spliced_pices.set(1)
-//            } else {
-//                layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_bottom_new)
-//                splice_bottom.bringToFront()
-//                viewModel.isSpliceBottomVisible.set(true)
-//                viewModel.spliced_pices.set(2)
-//                viewModel.clicked_spliced_second_pieces.set(true) // works only for saved project
-//            }
-//        }
-
-//        if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
-//            imagename = viewModel.workspacedata?.currentSplicedPieceNo?.let {
-//                viewModel.workspacedata?.splicedImages?.get(
-//                    it
-//                )?.imagePath
-//            }
-//            viewModel.workspacedata?.splicedImages?.size?.let {
-//                viewModel.splice_pices_count.set(
-//                    it
-//                )
-//            }
-//            viewModel.spliced_pices_visibility.set(true)
-//        }
-
         if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
             showSpliceArrows(
                 viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
@@ -1648,19 +1483,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             binding.txtSizeSplice.isEnabled = true
             viewModel.enableSplice.set(true)
             viewModel.clickedSplice.set(true)
-//            if (viewModel.tabCategory == getString(R.string.lining) ||
-//                viewModel.tabCategory == getString(R.string.interfacing)
-//            ) {
-//
-//                binding.txtSize45.isEnabled =false
-//                viewModel.disabledSize45.set(true)
-//                binding.txtSize45.isEnabled =false
-//                viewModel.disabledSize45.set(true)
-//
-//            } else {
             viewModel.clickedSize45.set(false)
             viewModel.clickedSize60.set(false)
-//            }
 
             imagename = splicePiece?.imagePath
             viewModel.workspacedata?.splicedImages?.size?.let {

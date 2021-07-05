@@ -649,7 +649,7 @@
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            android:text="CONNECT TO WIFI"
+                            android:text="@string/connect_projector_to_wifi"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/size_12px"
                             android:textStyle="bold" />

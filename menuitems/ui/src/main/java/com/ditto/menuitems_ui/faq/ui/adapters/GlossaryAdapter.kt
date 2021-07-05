@@ -50,7 +50,7 @@ class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
             holder.rvsubques.visibility = View.VISIBLE
-            holder.ivArrow.setImageResource(R.drawable.ic_uparrow)
+            holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
             if (!item?.web_url.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
             } else {
@@ -75,18 +75,18 @@ class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
             holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.rvsubques.visibility = View.GONE
-            holder.ivArrow.setImageResource(R.drawable.ic_down_arrow)
+            holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)
             holder.watch.visibility = View.GONE
             holder.visit.visibility = View.GONE
         }
-        holder.tvAnsw.setOnClickListener {
-            if (position == 0){
-                val url = mContext.getString(R.string.str_patterns_url)
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(url)
-                mContext.startActivity(i)
-            }
-        }
+//        holder.tvAnsw.setOnClickListener {
+//            if (position == 0){
+//                val url = mContext.getString(R.string.str_patterns_url)
+//                val i = Intent(Intent.ACTION_VIEW)
+//                i.data = Uri.parse(url)
+//                mContext.startActivity(i)
+//            }
+//        }
 
     }
     private fun onItemClicked(faqModel: GlossaryDomain?, pos : Int) {
