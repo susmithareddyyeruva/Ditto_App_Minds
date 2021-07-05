@@ -178,6 +178,10 @@ class AllPatternsViewModel @Inject constructor(
             Filter.genderList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val brandAsString =
             Filter.brandList.filter { it.isSelected }.map { it.title }.joinToString(",")
+        val brandAsStringArray: ArrayList<String> = ArrayList()
+        brandAsStringArray.add(Filter.brandList.filter { it.isSelected }.map { it.title }
+            .joinToString(","))
+
         val categoryAsString =
             Filter.categoryList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val sizeAsString =
@@ -193,21 +197,22 @@ class AllPatternsViewModel @Inject constructor(
         val customizationAsString =
             Filter.customizationList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val filterCriteria = ProductFilter()
-        filterCriteria.category = categoryAsString
+        // filterCriteria.category = categoryAsString
         filterCriteria.brand = brandAsString
-        filterCriteria.gender = genderAsString
-        filterCriteria.size = sizeAsString
-        filterCriteria.type = typeAsString
-        filterCriteria.season = seasonAsString
-        filterCriteria.occasion = occasionAsString
-        filterCriteria.suitable = suitableAsString
-        filterCriteria.customization = customizationAsString
+        filterCriteria.brandString = brandAsStringArray
+        //filterCriteria.gender = genderAsString
+        //  filterCriteria.size = sizeAsString
+        //  filterCriteria.type = typeAsString
+        //  filterCriteria.season = seasonAsString
+        // filterCriteria.occasion = occasionAsString
+        // filterCriteria.suitable = suitableAsString
+        // filterCriteria.customization = customizationAsString
 
         val json = Gson().toJson(filterCriteria)
         Log.d("JSON===", json)
-        val deserialized: ProductFilter = Gson().fromJson(json, ProductFilter::class.java)
-        println(deserialized)
-        return deserialized
+        /* val deserialized: ProductFilter = Gson().fromJson(json, ProductFilter::class.java)
+         println(deserialized)*/
+        return filterCriteria
     }
 
 
