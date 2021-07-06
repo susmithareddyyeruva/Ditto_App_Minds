@@ -37,8 +37,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return homeService.getHomeScreenDetails(MyLibraryFilterRequestData(OrderFilter(true,
-        "subscustomerOne@gmail.com",false,false,false), ProductFilter("Vogue")
+        return homeService.getHomeScreenDetails(MyLibraryFilterRequestData(OrderFilter(false,
+        "mylibrary@gmail.com",true,false,false), ProductFilter()
         ),"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH HOME SUCCESS**")

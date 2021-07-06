@@ -174,13 +174,11 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun createJson(): ProductFilter {
-        val genderAsString =
-            Filter.genderList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val brandAsString =
-            Filter.brandList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val brandAsStringArray: ArrayList<String> = ArrayList()
-        brandAsStringArray.add(Filter.brandList.filter { it.isSelected }.map { it.title }
-            .joinToString(","))
+        var  genderAsString:ArrayList<String> = ArrayList()
+         genderAsString= ArrayList(Filter.genderList.filter { it.isSelected }.map { it.title })
+        var  brandAsStringArray: ArrayList<String> = ArrayList()
+      //  brandAsStringArray.add(Filter.brandList.filter { it.isSelected }.map { it.title }.toString())
+        brandAsStringArray= ArrayList(Filter.brandList.filter { it.isSelected }.map { it.title })
 
         val categoryAsString =
             Filter.categoryList.filter { it.isSelected }.map { it.title }.joinToString(",")
@@ -198,8 +196,9 @@ class AllPatternsViewModel @Inject constructor(
             Filter.customizationList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val filterCriteria = ProductFilter()
         // filterCriteria.category = categoryAsString
-        filterCriteria.brand = brandAsString
+     /*   filterCriteria.brand = brandAsString*/
         filterCriteria.brandString = brandAsStringArray
+        filterCriteria.gender = genderAsString
         //filterCriteria.gender = genderAsString
         //  filterCriteria.size = sizeAsString
         //  filterCriteria.type = typeAsString

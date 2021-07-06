@@ -84,8 +84,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return myLibraryService.getFilterredPatterns(MyLibraryFilterRequestData(
-            OrderFilter(true,
-            "subscustomerOne@gmail.com",false,false,false),createJson
+            OrderFilter(false,
+            "mylibrary@gmail.com",true,false,false),createJson
         ),"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH FILTER SUCCESS**")

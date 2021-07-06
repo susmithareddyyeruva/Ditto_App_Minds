@@ -73,8 +73,8 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterItems("Female")
     )
     val brandList = arrayListOf(
-        FilterItems("Vogue"),
-        FilterItems("Addidas")
+        FilterItems("Simplicity"),
+        FilterItems("Sample")
     )
     val sizeList = arrayListOf(
         FilterItems("32"),

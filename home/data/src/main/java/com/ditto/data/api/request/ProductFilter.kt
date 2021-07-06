@@ -1,5 +1,5 @@
 package com.ditto.data.api.request
 
 data class ProductFilter(
-    var brand: String
+    var brand: ArrayList<String>?= arrayListOf()
 )

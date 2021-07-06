@@ -6,11 +6,9 @@ class ProductFilter {
     @SerializedName("Category")
     var category:String?=null
     @SerializedName("brand")
-    var brand:String?=null
-    @SerializedName("brand")
-    var brandString:ArrayList<String>?=null
-    @SerializedName("Gender")
-    var gender:String?=null
+    var brandString:ArrayList<String>?= arrayListOf()
+    @SerializedName("gender")
+    var gender:ArrayList<String>?= arrayListOf()
     @SerializedName("Type")
     var type:String?=null
     @SerializedName("Suitable")
