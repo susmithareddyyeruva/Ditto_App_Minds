@@ -23,7 +23,7 @@
 
     <!--action items-->
     <item name="action_splashActivity_to_LoginFragment" type="id" />
-    <item name="action_loginFragment_to_OnboardingFragment" type="id" />
+    <item name="action_loginFragment_to_HomeFragment" type="id" />
     <item name="action_destination_calibrationFragment_to_instruction_navigation" type="id" />
     <item name="action_tutorialFragment_to_nav_graph_id_onboarding" type="id" />
     <item name="action_splashActivity_to_HomeFragment" type="id" />
