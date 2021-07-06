@@ -99,6 +99,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         if (viewModel.data.value == null) {
             arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchPattern()
             setUIEvents()
         } else {
@@ -159,9 +160,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setData(){
-        /*viewModel.patternName.set(viewModel.data.value?.patternName)
+        viewModel.patternName.set(viewModel.data.value?.name)
         viewModel.patternDescription.set(viewModel.data.value?.description)
-        viewModel.patternStatus.set(viewModel.data.value?.status)*/
+        //viewModel.patternStatus.set(viewModel.data.value?.status)
+        viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
 
 
@@ -435,6 +437,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
+                bottomNavViewModel.showProgress.set(false)
                 setUpUiBasedOnLoggedIn()
             }
 
@@ -473,18 +476,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
 
-       /* val res: Resources = requireActivity().resources
-        println("ImagefromDB${viewModel.data.value?.descriptionImages?.get(0)?.imagePath}")
-        if (!viewModel.data.value?.descriptionImages?.get(0)?.imagePath.equals("")) {
-            val resID: Int = res.getIdentifier(
-                viewModel.data.value?.descriptionImages?.get(0)?.imagePath,
-                "drawable",
-                requireContext().packageName
-            )
-            val drawable: Drawable = res.getDrawable(resID)
-            val bitmap = (drawable as BitmapDrawable).bitmap
-            image_pattern_desc.setImageBitmap(bitmap)
-        }*/
+        val res: Resources = requireActivity().resources
+        if (!viewModel.data.value?.patternDescriptionImageUrl.equals("")) {
+            // LOAD GLIDE AFTER GETTING ACTUAL URL
+        } else {
+            binding.imagePatternDesc.setImageDrawable(requireContext().getDrawable(R.drawable.ic_placeholder))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
