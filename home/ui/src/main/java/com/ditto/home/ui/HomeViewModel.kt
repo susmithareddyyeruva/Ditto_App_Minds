@@ -52,6 +52,7 @@ class HomeViewModel @Inject constructor(
             utility.refreshToken()
         }
         setHomeHeader()
+
     }
 
     fun onItemClick(id: Int) {
@@ -102,7 +103,7 @@ class HomeViewModel @Inject constructor(
                 item,
                 title[item],
                 description[item],
-                images[item],
+                images[item]
             )
             homeItem.add(homeItems)
 
@@ -145,6 +146,8 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+
 
     private fun handleError(error: Error) {
         when (error) {

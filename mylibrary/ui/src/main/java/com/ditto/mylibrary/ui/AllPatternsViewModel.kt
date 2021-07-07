@@ -7,10 +7,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.Filter
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryDetailsDomain
-import com.ditto.mylibrary.domain.model.ProductFilter
+import com.ditto.mylibrary.domain.model.*
 import com.google.gson.Gson
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -38,6 +35,7 @@ class AllPatternsViewModel @Inject constructor(
     var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
+    var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
 
     init {
     }
@@ -59,6 +57,7 @@ class AllPatternsViewModel @Inject constructor(
 
     //fetch data from repo (via usecase)
     fun fetchOnPatternData() {
+        uiEvents.post(Event.OnShowProgress)
         disposable += getPatternsData.invoke()
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
@@ -66,6 +65,7 @@ class AllPatternsViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
+
 
     fun getFilteredPatternsData(createJson: ProductFilter) {
         uiEvents.post(Event.OnShowProgress)
@@ -77,11 +77,12 @@ class AllPatternsViewModel @Inject constructor(
             .subscribeBy { handleFilterResult(it) }
     }
 
-    private fun handleFilterResult(result: Result<MyLibraryDetailsDomain>) {
+    private fun handleFilterResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                uiEvents.post(Event.OnResultSuccess)
+                patternList.value = result.data.prod
+                uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> {
                 handleError(result.error)
@@ -90,11 +91,12 @@ class AllPatternsViewModel @Inject constructor(
 
     }
 
-    private fun handleFetchResult(result: Result<List<MyLibraryData>>) {
+    private fun handleFetchResult(result: Result<AllPatternsDomain>) {
+        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                data.value = result.data
-                uiEvents.post(Event.OnDataUpdated)
+                patternList.value = result.data.prod
+                uiEvents.post(Event.OnResultSuccess)
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -174,11 +176,11 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun createJson(): ProductFilter {
-        var  genderAsString:ArrayList<String> = ArrayList()
-         genderAsString= ArrayList(Filter.genderList.filter { it.isSelected }.map { it.title })
-        var  brandAsStringArray: ArrayList<String> = ArrayList()
-      //  brandAsStringArray.add(Filter.brandList.filter { it.isSelected }.map { it.title }.toString())
-        brandAsStringArray= ArrayList(Filter.brandList.filter { it.isSelected }.map { it.title })
+        var genderAsString: ArrayList<String> = ArrayList()
+        genderAsString = ArrayList(Filter.genderList.filter { it.isSelected }.map { it.title })
+        var brandAsStringArray: ArrayList<String> = ArrayList()
+        //  brandAsStringArray.add(Filter.brandList.filter { it.isSelected }.map { it.title }.toString())
+        brandAsStringArray = ArrayList(Filter.brandList.filter { it.isSelected }.map { it.title })
 
         val categoryAsString =
             Filter.categoryList.filter { it.isSelected }.map { it.title }.joinToString(",")
@@ -196,7 +198,7 @@ class AllPatternsViewModel @Inject constructor(
             Filter.customizationList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val filterCriteria = ProductFilter()
         // filterCriteria.category = categoryAsString
-     /*   filterCriteria.brand = brandAsString*/
+        /*   filterCriteria.brand = brandAsString*/
         filterCriteria.brandString = brandAsStringArray
         filterCriteria.gender = genderAsString
         //filterCriteria.gender = genderAsString

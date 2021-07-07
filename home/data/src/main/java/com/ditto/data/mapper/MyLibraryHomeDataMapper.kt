@@ -23,7 +23,9 @@ fun Prod.toDomain(): ProdDomain {
         patternType = this.patternType,
         prodSize = this.prodSize,
         tailornovaDesignId = this.tailornovaDesignId,
-        tailornovaDesignName = this.tailornovaDesignName
+        tailornovaDesignName = this.tailornovaDesignName,
+        image = this.image
+
 
     )
 }

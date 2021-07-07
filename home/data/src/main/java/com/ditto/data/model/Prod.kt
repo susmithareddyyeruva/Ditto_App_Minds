@@ -21,5 +21,7 @@ data class Prod(
     @SerializedName("tailornovaDesignId")
     val tailornovaDesignId: String="",
     @SerializedName("tailornovaDesignName")
-    val tailornovaDesignName: String=""
+    val tailornovaDesignName: String="",
+    @SerializedName("image")
+    var image: String = ""
 )

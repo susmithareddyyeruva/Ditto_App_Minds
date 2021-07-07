@@ -8,5 +8,6 @@ data class ProdDomain(
     var patternType:String="",
     var tailornovaDesignId: String="",
     var prodSize: String="",
-    var tailornovaDesignName: String=""
+    var tailornovaDesignName: String="",
+    var image: String = ""
 )

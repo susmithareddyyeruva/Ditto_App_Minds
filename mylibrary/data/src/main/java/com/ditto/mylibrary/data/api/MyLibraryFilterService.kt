@@ -12,6 +12,10 @@ import retrofit2.http.POST
 interface MyLibraryFilterService {
     @Headers("Content-Type: application/json")
     @POST(BuildConfig.MYLIBRARY_ENDURL+"TraceAppMyLibrary-Shows")
+    fun getAllPatternsPatterns(@Body body: MyLibraryFilterRequestData?, @Header("Authorization") header:String): Single<MyLibraryResult>
+
+    @Headers("Content-Type: application/json")
+    @POST(BuildConfig.MYLIBRARY_ENDURL+"TraceAppMyLibrary-Shows")
     fun getFilterredPatterns(@Body body: MyLibraryFilterRequestData?, @Header("Authorization") header:String): Single<MyLibraryResult>
 
 }

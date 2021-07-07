@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
@@ -16,10 +17,9 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.Filter
 import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.domain.model.FilterMenuItem
-import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
-import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.ClickListener
 import com.ditto.mylibrary.ui.util.RecyclerTouchListener
@@ -31,13 +31,11 @@ import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.all_patterns_fragment.view.*
-import java.util.*
 import javax.inject.Inject
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener, Utility.CustomCallbackDialogListener  {
+class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener,
+    Utility.CustomCallbackDialogListener {
 
 
     @Inject
@@ -127,7 +125,11 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setUpToolbar()
         setUpNavigationDrawer()
         setFilterMenuAdapter(0)
-        viewModel.fetchOnPatternData()
+        if (AppState.getIsLogged()) {
+            if (!Utility.isTokenExpired()) {
+                viewModel.fetchOnPatternData()
+            }
+        }
         setList()
 
         // Add Item Touch Listener
@@ -208,14 +210,14 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             setFilterMenuAdapter(0)
         }
         binding.apply.setOnClickListener {
-          //  viewModel.createJson()
+            //  viewModel.createJson()
             /**
              * API call for getting filter Results....
              */
             if (AppState.getIsLogged()) {
                 if (!Utility.isTokenExpired()) {
                     bottomNavViewModel.showProgress.set(true)
-                    viewModel.getFilteredPatternsData( viewModel.createJson())
+                    viewModel.getFilteredPatternsData(viewModel.createJson())
                 }
             }
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -234,6 +236,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             binding.clearFilter.performClick()
         }
     }
+
 
     private fun setAsDefault() {
         categoryFilterList.forEach {
@@ -311,7 +314,8 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        binding.toolbar.header_view_title_pattern_count.text=getString(R.string.pattern_library_count,AppState.getPatternCount())
+        binding.toolbar.header_view_title_pattern_count.text =
+            getString(R.string.pattern_library_count, AppState.getPatternCount())
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -326,22 +330,31 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
 
 
     private fun setPatternAdapter() {
-        val adapter = PatternAdapter()
+        /*   val adapter = PatternAdapter()
+           binding.recyclerViewPatterns.adapter = adapter
+           adapter.viewModel = viewModel
+           val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
+
+           //for sorting
+           Collections.sort(patternData,
+               Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.patternName.compareTo(rhs!!.patternName) })
+
+           patternData?.let { adapter.setListData(it) }*/
+
+
+        val adapter = AllPatternsAdapter()
         binding.recyclerViewPatterns.adapter = adapter
         adapter.viewModel = viewModel
-        val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
+        viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
+            adapter.setListData(items = list)
+        })
 
-        //for sorting
-        Collections.sort(patternData,
-            Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.patternName.compareTo(rhs!!.patternName) })
-
-        patternData?.let { adapter.setListData(it) }
     }
 
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment ||findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
@@ -353,7 +366,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
-            setPatternAdapter()
+            bottomNavViewModel.showProgress.set(false)
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
@@ -378,37 +391,42 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             //setPatternAdapter()
-            Log.d("pattern","onFilterClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnSearchClick -> {
-            //setPatternAdapter()
-            Log.d("pattern","OnSearchClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnSyncClick -> {
-            //setPatternAdapter()
-            Log.d("pattern","OnSyncClick : AllPatternsFragment")
+            Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // open dialog
         }
-        AllPatternsViewModel.Event.OnResultSuccess ->{
+        is AllPatternsViewModel.Event.OnSearchClick -> {
+            //setPatternAdapter()
+            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
+            // open dialog
+        }
+        is AllPatternsViewModel.Event.OnSyncClick -> {
+            //setPatternAdapter()
+            Log.d("pattern", "OnSyncClick : AllPatternsFragment")
+            // open dialog
+        }
+        AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
+            setPatternAdapter()
         }
         AllPatternsViewModel.Event.OnShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
         }
-        AllPatternsViewModel.Event.OnHideProgress ->{
+        AllPatternsViewModel.Event.OnHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        AllPatternsViewModel.Event.OnResultFailed ->{
+        AllPatternsViewModel.Event.OnResultFailed -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
         AllPatternsViewModel.Event.NoInternet -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
-        }else->{
-            Log.d("event","Add project")
+        }
+        else -> {
+            Log.d("event", "Add project")
         }
     }
+
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
         Utility.getCommonAlertDialogue(
@@ -423,6 +441,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             Utility.Iconype.FAILED
         )
     }
+
     private fun showPopupMenu(view: View, patternId: Int) {
         this.patternId = patternId
         val popup = PopupMenu(requireContext(), view)
@@ -455,6 +474,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
         logger.d("Items==" + title)
     }
+
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType

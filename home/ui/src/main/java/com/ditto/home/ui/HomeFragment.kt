@@ -115,10 +115,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 }
             }
             is HomeViewModel.Event.OnClickMyPatterns -> {
+                val list=homeViewModel.homeDataResponse.value!!.prod
+
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf(
                         "clickedID" to context?.let { Utility.getSharedPref(it) },
-                        "isFrom" to "RESUME_RECENT"
+                        "isFrom" to "RESUME_RECENT","PATTERNS" to  list
                     )
                     findNavController().navigate(R.id.action_home_to_my_library, bundle)
                 } else {
@@ -138,7 +140,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 bottomNavViewModel.showProgress.set(false)
                 (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
                 (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
-
+                logger.d("PATTERNS=  :  $homeViewModel.homeDataResponse")
 
             }
             HomeViewModel.Event.OnShowProgress -> {

@@ -11,8 +11,9 @@ import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.data.request.OrderFilter
 import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryDetailsDomain
+import com.ditto.mylibrary.domain.model.ProductFilter
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import core.appstate.AppState
@@ -41,22 +42,57 @@ class MyLibraryRepositoryImpl @Inject constructor(
     /**
      * fetches data from local store first. if not available locally, fetches from server
      */
-    override fun getMyLibraryData(): Single<Result<List<MyLibraryData>>> {
-        return Single.fromCallable {
-            //fetch from local DB
-            val data = patternsDao.getPatternsData()
-            Result.withValue(data.toDomain())
+    override fun getMyLibraryData(): Single<Result<AllPatternsDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+                return Single.just(Result.OnError(NoNetworkError()))
+            }
+            return myLibraryService.getAllPatternsPatterns(MyLibraryFilterRequestData(
+                OrderFilter(false,
+                    "mylibrary@gmail.com",true,false,false), ProductFilter()
+            ),"Bearer "+ AppState.getToken()!!)
+                .doOnSuccess {
+                    logger.d("*****FETCH FILTER SUCCESS**")
+                }
+                .map {
+                    Result.withValue(it.toDomain())
+
+
+                }
+                .onErrorReturn {
+                    var errorMessage = "Error Fetching data"
+                    try {
+                        logger.d("try block")
+                    } catch (e: Exception) {
+                        Log.d("Catch", e.localizedMessage)
+                        errorMessage = when (e) {
+                            is UnknownHostException -> {
+                                "Unknown host!"
+                            }
+                            is ConnectException -> {
+                                "No Internet connection available !"
+                            }
+                            else -> {
+                                "Error Fetching data!"
+                            }
+                        }
+                    }
+
+
+                    Result.withError(
+                        FilterError(errorMessage, it)
+                    )
+                }
         }
-    }
+
 
     /**
      * creates user data to local store.
      */
     override fun getUserData(): Single<Result<LoginUser>> {
         return Single.fromCallable {
-            val data = dbDataDao.getUserData()
+           val data = dbDataDao.getUserData()
             if (data != null)
-                Result.withValue(data.toUserDomain())
+              Result.withValue(data.toUserDomain())
             else
                 Result.withValue(LoginUser(""))
         }
@@ -79,13 +115,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
 
 
-    override fun getFilteredPatterns(createJson: com.ditto.mylibrary.domain.model.ProductFilter): Single<Result<MyLibraryDetailsDomain>> {
+    override fun getFilteredPatterns(product: com.ditto.mylibrary.domain.model.ProductFilter): Single<Result<AllPatternsDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getFilterredPatterns(MyLibraryFilterRequestData(
+        return myLibraryService.getAllPatternsPatterns(MyLibraryFilterRequestData(
             OrderFilter(false,
-            "mylibrary@gmail.com",true,false,false),createJson
+                "mylibrary@gmail.com",true,false,false),product
         ),"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH FILTER SUCCESS**")

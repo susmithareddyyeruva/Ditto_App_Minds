@@ -5,21 +5,23 @@ import com.google.gson.annotations.SerializedName
 
 data class Prod(
     @SerializedName("ID")
-    val iD: String="",
+    val iD: String = "",
     @SerializedName("prodBrand")
-    val prodBrand: String="",
+    val prodBrand: String = "",
     @SerializedName("prodGender")
-    val prodGender: String="",
+    val prodGender: String = "",
     @SerializedName("prodName")
-    val prodName: String="",
+    val prodName: String = "",
     @SerializedName("prodPrice")
-    val prodPrice: String="",
+    val prodPrice: String = "",
     @SerializedName("patternType")
-    val patternType: String="",
+    val patternType: String = "",
     @SerializedName("prodSize")
-    val prodSize: String="",
+    val prodSize: String = "",
     @SerializedName("tailornovaDesignId")
-    val tailornovaDesignId: String="",
+    val tailornovaDesignId: String = "",
     @SerializedName("tailornovaDesignName")
-    val tailornovaDesignName: String=""
+    val tailornovaDesignName: String = "",
+    @SerializedName("image")
+    val image: String = ""
 )
