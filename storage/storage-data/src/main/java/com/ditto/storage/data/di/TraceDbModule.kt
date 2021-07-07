@@ -1,12 +1,9 @@
 package com.ditto.storage.data.di
 
 import android.content.Context
+import com.ditto.storage.data.database.*
 import dagger.Module
 import dagger.Provides
-import com.ditto.storage.data.database.OnBoardingDao
-import com.ditto.storage.data.database.PatternsDao
-import com.ditto.storage.data.database.TraceDataDatabase
-import com.ditto.storage.data.database.UserDao
 import javax.inject.Singleton
 
 /**
@@ -31,6 +28,12 @@ class TraceDbModule {
     @Singleton
     fun providePatternsDataDao(db: TraceDataDatabase): PatternsDao {
         return db.patternDataDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkspaceDataDao(db: TraceDataDatabase): WorkspaceDataDao {
+        return db.workspaceDataDao()
     }
 
     @Provides

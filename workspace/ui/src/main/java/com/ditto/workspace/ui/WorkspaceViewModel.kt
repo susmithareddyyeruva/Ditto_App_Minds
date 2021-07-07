@@ -141,6 +141,7 @@ class WorkspaceViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 Log.d("WorkspaceViewModel", "Success")
                 uiEvents.post(Event.OnClickSaveAndExit)
+                //save to db
             }
 
             is Result.OnError -> {
@@ -149,6 +150,7 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
+    //todo
     fun insertData(value: PatternsData) {
         disposable += getWorkspaceData.insert(value)
             .whileSubscribed { it }
@@ -419,7 +421,7 @@ class WorkspaceViewModel @Inject constructor(
             "Coordinates",
             "toSavedProject : " + data.value?.workspaceItems
         )
-        insertData(data.value!!)
+        insertData(data.value!!) //todoshri
     }
 
     fun overridePattern(

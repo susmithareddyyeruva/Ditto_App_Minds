@@ -86,6 +86,48 @@ class Converters {
     }
 
     @TypeConverter
+    fun stringToWorkspaceItemAPIList(data: String?): List<WorkspaceItemAPI> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<WorkspaceItemAPI>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun workspaceItemAPIListToString(someObjects: List<WorkspaceItemAPI>): String {
+        return Gson().toJson(someObjects)
+    }
+
+    @TypeConverter
+    fun stringToPatternPiecesFromApiList(data: String?): List<PatternPiecesFromApiWorkspcaeData> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<PatternPiecesFromApiWorkspcaeData>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun patternPiecesFromApiListToString(someObjects: List<PatternPiecesFromApiWorkspcaeData>): String {
+        return Gson().toJson(someObjects)
+    }
+    @TypeConverter
+    fun stringToNumberOfPieces(string: String?): NumberOfPieces? {
+        return Gson().fromJson(string, NumberOfPieces::class.java)
+    }
+
+    @TypeConverter
+    fun NumberOfPiecesToString(numberOfPieces: NumberOfPieces?): String {
+        return Gson().toJson(numberOfPieces)
+    }
+
+
+    @TypeConverter
     fun instructionsListToString(someObjects: List<Instructions>): String {
         return Gson().toJson(someObjects)
     }

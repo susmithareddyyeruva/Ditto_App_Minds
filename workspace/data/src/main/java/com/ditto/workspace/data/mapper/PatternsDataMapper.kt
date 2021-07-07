@@ -122,7 +122,7 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
-
+//todo check below
 internal fun PatternsData.toDomain(): Patterns {
     return Patterns(
         id = this.id,

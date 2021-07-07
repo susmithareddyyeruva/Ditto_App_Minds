@@ -9,6 +9,7 @@ import androidx.room.TypeConverters
 import com.ditto.storage.data.model.OnBoarding
 import com.ditto.storage.data.model.Patterns
 import com.ditto.storage.data.model.User
+import com.ditto.storage.data.model.WorkspaceData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
@@ -24,13 +25,14 @@ import java.util.concurrent.Executors
 /**
  * The Room database for this app
  */
-@Database(entities = [OnBoarding::class, User::class, Patterns::class], version = 1, exportSchema = false)
+@Database(entities = [OnBoarding::class, User::class, Patterns::class, WorkspaceData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TraceDataDatabase : RoomDatabase() {
 
     abstract fun onBoardingDataDao(): OnBoardingDao
     abstract fun userDataDao(): UserDao
     abstract fun patternDataDao(): PatternsDao
+    abstract fun workspaceDataDao():WorkspaceDataDao
 
     companion object {
         val TAG = TraceDataDatabase::class.java.simpleName
