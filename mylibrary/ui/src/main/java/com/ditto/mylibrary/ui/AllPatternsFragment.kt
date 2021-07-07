@@ -127,6 +127,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setFilterMenuAdapter(0)
         if (AppState.getIsLogged()) {
             if (!Utility.isTokenExpired()) {
+                bottomNavViewModel.showProgress.set(false)
                 viewModel.fetchOnPatternData()
             }
         }
