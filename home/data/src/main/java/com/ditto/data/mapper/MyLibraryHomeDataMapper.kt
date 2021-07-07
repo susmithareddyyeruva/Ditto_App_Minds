@@ -16,15 +16,24 @@ fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
 
 fun Prod.toDomain(): ProdDomain {
     return ProdDomain(
-        ID = this.iD,
+        iD = this.iD,
         prodBrand = this.prodBrand,
         prodGender = this.prodGender,
         prodName = this.prodName,
         patternType = this.patternType,
         prodSize = this.prodSize,
         tailornovaDesignId = this.tailornovaDesignId,
-        tailornovaDesignName = this.tailornovaDesignName,
-        image = this.image
+        creationDate = this.creationDate,
+        image = this.image,
+        customization = this.customization,
+        dateOfModification = this.dateOfModification,
+        longDescription = this.longDescription,
+        occasion = this.occasion,
+        season = this.season,
+        status = this.status,
+        subscriptionExpiryDate = this.subscriptionExpiryDate,
+        suitableFor = this.suitableFor,
+        type = this.type
 
 
     )

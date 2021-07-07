@@ -1,13 +1,22 @@
 package com.ditto.home.domain.model
 
 data class ProdDomain(
-    var ID: String="",
-    var prodBrand: String="",
-    var prodGender: String="",
-    var prodName: String="",
-    var patternType:String="",
-    var tailornovaDesignId: String="",
-    var prodSize: String="",
-    var tailornovaDesignName: String="",
-    var image: String = ""
+    val iD: Int = 0,
+    val image: String = "",
+    val prodName: String = "",
+    val longDescription: String = "",
+    val creationDate: String = "",
+    val patternType: String = "",
+    val status: String = "",
+    val subscriptionExpiryDate: String = "",
+    val customization: String = "",
+    val dateOfModification: String = "",
+    val type: String = "",
+    val season: String = "",
+    val occasion: String = "",
+    val suitableFor: String = "",
+    val tailornovaDesignId: String = "",
+    val prodSize: String = "",
+    val prodGender: String = "",
+    val prodBrand: String = ""
 )

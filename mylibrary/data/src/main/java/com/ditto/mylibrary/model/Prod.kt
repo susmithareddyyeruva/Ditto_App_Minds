@@ -4,7 +4,7 @@ package com.ditto.mylibrary.model
 import com.google.gson.annotations.SerializedName
 
 data class Prod(
-    @SerializedName("ID") val iD : Int=0,
+    @SerializedName("ID") val iD : String="",
     @SerializedName("image") val image : String="",
     @SerializedName("prodName") val prodName : String="",
     @SerializedName("longDescription") val longDescription : String="",

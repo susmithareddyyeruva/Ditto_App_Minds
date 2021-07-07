@@ -4,24 +4,22 @@ package com.ditto.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Prod(
-    @SerializedName("ID")
-    val iD: String="",
-    @SerializedName("prodBrand")
-    val prodBrand: String="",
-    @SerializedName("prodGender")
-    val prodGender: String="",
-    @SerializedName("prodName")
-    val prodName: String="",
-    @SerializedName("prodPrice")
-    val prodPrice: String="",
-    @SerializedName("patternType")
-    val patternType: String="",
-    @SerializedName("prodSize")
-    val prodSize: String="",
-    @SerializedName("tailornovaDesignId")
-    val tailornovaDesignId: String="",
-    @SerializedName("tailornovaDesignName")
-    val tailornovaDesignName: String="",
-    @SerializedName("image")
-    var image: String = ""
+    @SerializedName("ID") val iD : Int=0,
+    @SerializedName("image") val image : String="",
+    @SerializedName("prodName") val prodName : String="",
+    @SerializedName("longDescription") val longDescription : String="",
+    @SerializedName("creationDate") val creationDate : String="",
+    @SerializedName("patternType") val patternType : String="",
+    @SerializedName("status") val status : String="",
+    @SerializedName("subscriptionExpiryDate") val subscriptionExpiryDate : String="",
+    @SerializedName("customization") val customization : String="",
+    @SerializedName("dateOfModification") val dateOfModification : String="",
+    @SerializedName("type") val type : String="",
+    @SerializedName("season") val season : String="",
+    @SerializedName("occasion") val occasion : String="",
+    @SerializedName("suitableFor") val suitableFor : String="",
+    @SerializedName("tailornovaDesignId") val tailornovaDesignId : String="",
+    @SerializedName("prodSize") val prodSize : String="",
+    @SerializedName("prodGender") val prodGender : String="",
+    @SerializedName("prodBrand") val prodBrand : String=""
 )

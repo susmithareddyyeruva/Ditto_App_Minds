@@ -22,6 +22,7 @@
         android:layout_marginTop="@dimen/margin_card_top"
         android:layout_marginEnd="@dimen/margin_card_end"
         android:elevation="@dimen/elevation_card"
+        android:onClick="@{() -> viewModel.onItemClickPattern(product.ID)}"
         app:cardBackgroundColor="@color/cardColor">
 
 

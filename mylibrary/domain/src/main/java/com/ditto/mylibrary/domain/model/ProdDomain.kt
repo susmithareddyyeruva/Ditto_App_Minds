@@ -1,7 +1,7 @@
 package com.ditto.mylibrary.domain.model
 
 data class ProdDomain(
-    val iD: Int = 0,
+    val iD: String = "",
     val image: String = "",
     val prodName: String = "",
     val longDescription: String = "",
