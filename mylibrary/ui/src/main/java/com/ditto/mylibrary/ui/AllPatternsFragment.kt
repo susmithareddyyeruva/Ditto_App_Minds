@@ -50,6 +50,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private var isOpen = true
     private var selectedItemsList = ArrayList<String>()
     private lateinit var adapter: FilterRvAdapter
+    private val allPatternAdapter = AllPatternsAdapter()
     var menuItems = arrayListOf(
         FilterMenuItem("Category", 1),
         FilterMenuItem("Gender", 2),
@@ -125,10 +126,15 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setUpToolbar()
         setUpNavigationDrawer()
         setFilterMenuAdapter(0)
+        setPatternAdapter()
         if (AppState.getIsLogged()) {
             if (!Utility.isTokenExpired()) {
-                bottomNavViewModel.showProgress.set(false)
-                viewModel.fetchOnPatternData()
+                if (viewModel.patternList.value == null) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.fetchOnPatternData()
+                } else {
+                    updatePatterns()
+                }
             }
         }
         setList()
@@ -238,6 +244,12 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }
     }
 
+    private fun updatePatterns() {// Updating the adapter
+
+        viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
+            allPatternAdapter.setListData(items = list)
+        })
+    }
 
     private fun setAsDefault() {
         categoryFilterList.forEach {
@@ -343,13 +355,8 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
            patternData?.let { adapter.setListData(it) }*/
 
 
-        val adapter = AllPatternsAdapter()
-        binding.recyclerViewPatterns.adapter = adapter
-        adapter.viewModel = viewModel
-        viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
-            adapter.setListData(items = list)
-        })
-
+        binding.recyclerViewPatterns.adapter = allPatternAdapter
+        allPatternAdapter.viewModel = viewModel
     }
 
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
@@ -407,7 +414,10 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
-            setPatternAdapter()
+            /**
+             * Getting ALL PATTERNS LIST
+             */
+            updatePatterns()
         }
         AllPatternsViewModel.Event.OnShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
