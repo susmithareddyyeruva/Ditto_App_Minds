@@ -76,7 +76,7 @@
 
         <Button
             android:id="@+id/btnScan"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="@dimen/button_scan_width"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/margin_top_devider"
             android:layout_marginRight="44dp"
