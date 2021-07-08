@@ -82,7 +82,7 @@
             android:layout_marginRight="44dp"
             android:background="@drawable/bg_scandevice"
             android:drawableLeft="@drawable/bleicon_selector"
-            android:drawablePadding="3dp"
+            android:drawablePadding="5dp"
             android:singleLine="true"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:gravity="center"

@@ -16,7 +16,7 @@
     <dimen name="item_container_height">40dp</dimen>
     <dimen name="item_container_height_manage">72dp</dimen>
     <dimen name="button_width">133dp</dimen>
-    <dimen name="button_scan_width">144dp</dimen>
+    <dimen name="button_scan_width">146dp</dimen>
     <dimen name="padding_9">9dp</dimen>
     <dimen name="padding_11">11dp</dimen>
     <dimen name="button_end_margin">9dp</dimen>
