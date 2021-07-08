@@ -279,18 +279,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onPositiveButtonClicked(alertType: core.ui.common.Utility.AlertType) {
         if (alertType == core.ui.common.Utility.AlertType.TAB_SWITCH) {
-            if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch {
-                    core.ui.common.Utility.sendDittoImage(
-                        requireActivity(),
-                        "solid_black"
-                    )
-                }
-            }
-
-            clearWorkspace()
-            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
-
+            switchTab()
         }
 
     }
@@ -325,7 +314,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
                     viewModel.selectedTab.set(view?.tag as Int)
                     //onTabSwitchAlert()
-                    switchTab()
+                    //switchTab()
                     return true
                 }
                 return false
