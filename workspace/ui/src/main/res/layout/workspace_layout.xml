@@ -308,19 +308,19 @@
             app:layout_constraintVertical_bias="1" />
 
 
-        <!--        <com.airbnb.lottie.LottieAnimationView-->
-        <!--            android:id="@+id/animationView"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:elevation="@dimen/elevation_card"-->
-        <!--            android:visibility="@{!viewModel.isWorkspaceSocketConnection()}"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@+id/txt_recalibrate"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/txt_recalibrate"-->
-        <!--            app:layout_constraintStart_toStartOf="@+id/txt_recalibrate"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/txt_recalibrate"-->
-        <!--            app:lottie_autoPlay="true"-->
-        <!--            app:lottie_loop="true"-->
-        <!--            app:lottie_rawRes="@raw/connect_animation" />-->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:elevation="@dimen/elevation_card"
+                    android:visibility="@{!viewModel.isWorkspaceSocketConnection()}"
+                    app:layout_constraintBottom_toBottomOf="@+id/txt_recalibrate"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_recalibrate"
+                    app:layout_constraintStart_toStartOf="@+id/txt_recalibrate"
+                    app:layout_constraintTop_toTopOf="@+id/txt_recalibrate"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/connect_animation" />
 
         <TextView
             android:id="@+id/txt_tutorial"
