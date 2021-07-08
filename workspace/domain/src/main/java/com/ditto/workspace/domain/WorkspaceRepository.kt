@@ -1,10 +1,7 @@
 package com.ditto.workspace.domain
 
 import com.ditto.login.domain.model.LoginUser
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.WSUpdateResultDomain
-import com.ditto.workspace.domain.model.WorkspaceDataAPI
-import com.ditto.workspace.domain.model.WorkspaceResultDomain
+import com.ditto.workspace.domain.model.*
 import io.reactivex.Single
 import non_core.lib.Result
 
@@ -18,5 +15,5 @@ interface WorkspaceRepository {
     fun deleteAndInsert(id:Int, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>
     fun getWorkspaceDataFromApi(): Single<Result<WorkspaceResultDomain>>
-    fun updateWorkspaceDataFromApi(): Single<Result<WSUpdateResultDomain>>
+    fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
 }

@@ -84,6 +84,10 @@ dependencies {
     implementation project(path: ':login-domain')
     implementation project(':logger')
 
+    // Storage modules
+    implementation project(path: ':storage-data')
+    implementation project(path: ':storage-domain')
+
     implementation 'com.jsibbold:zoomage:1.3.1'
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':calibration-ui')

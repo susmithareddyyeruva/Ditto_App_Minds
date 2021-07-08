@@ -3,10 +3,7 @@ package com.ditto.workspace.data
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.WorkspaceRepository
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.WSUpdateResultDomain
-import com.ditto.workspace.domain.model.WorkspaceDataAPI
-import com.ditto.workspace.domain.model.WorkspaceResultDomain
+import com.ditto.workspace.domain.model.*
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -39,8 +36,9 @@ class WorkspaceImpl @Inject constructor(
         return workspaceRepository.getWorkspaceDataFromApi()
     }
 
-    override fun updateWorkspaceData(): Single<Result<WSUpdateResultDomain>> {
-        return workspaceRepository.updateWorkspaceDataFromApi()
+    override fun updateWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+        return workspaceRepository.updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData)
+
     }
 
 }

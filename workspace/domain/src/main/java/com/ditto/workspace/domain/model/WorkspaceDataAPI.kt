@@ -1,5 +1,4 @@
 package com.ditto.workspace.domain.model
-
 data class WorkspaceDataAPI (
 
     //getWorkspace data response
@@ -7,10 +6,10 @@ data class WorkspaceDataAPI (
     var selectedTab: String? ="",
     var status:String="",
     var numberOfPieces: NumberOfPieces,
-    var patternPiecesFromApi: List<PatternPiecesWorkspcaeDataDomain> = emptyList(),
-    var garmetWorkspaceItems: List<WorkspaceItemAPIWorkspace> = emptyList(),
-    var liningWorkspaceItems: List<WorkspaceItemAPIWorkspace> = emptyList(),
-    var interfaceWorkspaceItems: List<WorkspaceItemAPIWorkspace> = emptyList()
+    var patternPiecesFromApi: List<PatternPieceDomain> = emptyList(),
+    var garmetWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList(),
+    var liningWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList(),
+    var interfaceWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList()
 
     // tailernova response
     /*var id: Int = 0,

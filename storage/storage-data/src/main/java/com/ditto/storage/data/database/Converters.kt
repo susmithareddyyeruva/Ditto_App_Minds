@@ -117,12 +117,12 @@ class Converters {
         return Gson().toJson(someObjects)
     }
     @TypeConverter
-    fun stringToNumberOfPieces(string: String?): NumberOfPieces? {
-        return Gson().fromJson(string, NumberOfPieces::class.java)
+    fun stringToNumberOfPieces(string: String?): NumberOfPiecesStorage? {
+        return Gson().fromJson(string, NumberOfPiecesStorage::class.java)
     }
 
     @TypeConverter
-    fun NumberOfPiecesToString(numberOfPieces: NumberOfPieces?): String {
+    fun NumberOfPiecesToString(numberOfPieces: NumberOfPiecesStorage?): String {
         return Gson().toJson(numberOfPieces)
     }
 

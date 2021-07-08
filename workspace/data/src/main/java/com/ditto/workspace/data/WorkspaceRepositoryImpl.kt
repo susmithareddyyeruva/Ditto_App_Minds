@@ -10,19 +10,13 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.storage.data.database.WorkspaceDataDao
-import com.ditto.storage.data.model.NumberOfPiecesStorage
-import com.ditto.storage.data.model.PatternPiecesFromApiWorkspcaeData
-import com.ditto.storage.data.model.WorkspaceItemAPI
 import com.ditto.workspace.data.api.GetWorkspaceService
 import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
 import com.ditto.workspace.data.error.UpdateWorkspaceApiFetchError
 import com.ditto.workspace.data.mapper.toDomain
-import com.ditto.workspace.data.model.*
+import com.ditto.workspace.data.model.WSInputData
 import com.ditto.workspace.domain.WorkspaceRepository
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.WSUpdateResultDomain
-import com.ditto.workspace.domain.model.WorkspaceDataAPI
-import com.ditto.workspace.domain.model.WorkspaceResultDomain
+import com.ditto.workspace.domain.model.*
 import com.google.gson.Gson
 import core.CLIENT_ID_DEV
 import core.SITE_ID
@@ -118,52 +112,10 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updateWorkspaceDataFromApi(): Single<Result<WSUpdateResultDomain>> {
+    override fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val numberOfCompletedPiece =
-            NumberOfPiecesStorage(garment = 53, lining = 13, interfacee = 13)
-
-        val patternPieces = ArrayList<PatternPiecesFromApiWorkspcaeData>()
-        val patternInputData = PatternPiecesFromApiWorkspcaeData(id = 1, isCompleted = "true")
-        patternPieces.add(patternInputData)
-        val patternInputData2 = PatternPiecesFromApiWorkspcaeData(id = 2, isCompleted = "true")
-        patternPieces.add(patternInputData2)
-
-        //var garmetWorkspaceItems: List<WorkspaceItemInputData> = emptyList()
-        val garmetWorkspaceItems = ArrayList<WorkspaceItemAPI>()
-        val garmentWorkspaceItemInputData = WorkspaceItemAPI(id=1,patternPiecesId = 1,
-            isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
-            transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
-            showMirrorDialog = "true",currentSplicedPieceNo = "2")
-
-        val garmentWorkspaceItemInputData1 = WorkspaceItemAPI(id=1,patternPiecesId = 1,
-            isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
-            transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
-            showMirrorDialog = "true",currentSplicedPieceNo = "2")
-        garmetWorkspaceItems.add(garmentWorkspaceItemInputData)
-        garmetWorkspaceItems.add(garmentWorkspaceItemInputData1)
-
-        val liningWorkspaceItems = ArrayList<WorkspaceItemAPI>()
-        val liningWorkspaceItemInputData = WorkspaceItemAPI(id=1,patternPiecesId = 1,
-            isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
-            transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
-            showMirrorDialog = "true",currentSplicedPieceNo = "2")
-        liningWorkspaceItems.add(liningWorkspaceItemInputData)
-
-        val interfaceWorkspaceItem = ArrayList<WorkspaceItemAPI>()
-
-        val interfaceWorkspaceItemInputData = WorkspaceItemAPI(id=1,patternPiecesId = 1,
-            isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
-            transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
-            showMirrorDialog = "true",currentSplicedPieceNo = "2")
-        interfaceWorkspaceItem.add(interfaceWorkspaceItemInputData)
-
-        val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(tailornaovaDesignId =1 ,selectedTab ="ABC" ,status = "DONE",
-            numberOfCompletedPiece = numberOfCompletedPiece,patternPieces,garmetWorkspaceItems = garmetWorkspaceItems,
-            liningWorkspaceItems = liningWorkspaceItems,interfaceWorkspaceItem =interfaceWorkspaceItem)
-
         val jsonobj = Gson().toJson(cTraceWorkSpacePatternInputData)
         Log.d("WorkspaceRepositoryImpl", "json object is: $jsonobj")
 
@@ -181,14 +133,6 @@ class WorkspaceRepositoryImpl @Inject constructor(
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
             logger.d("*****update Workspace Success**")
-            //save data to db
-            val wsData = WorkspaceDataAPI(cTraceWorkSpacePatternInputData.tailornaovaDesignId,cTraceWorkSpacePatternInputData.selectedTab,
-                cTraceWorkSpacePatternInputData.status,cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
-            cTraceWorkSpacePatternInputData.patternPieces,cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
-            cTraceWorkSpacePatternInputData.liningWorkspaceItems,cTraceWorkSpacePatternInputData.interfaceWorkspaceItem)
-
-            workspcaeDataDao.insertWorkspcaeData(wsData)
-
         }.map {
             Result.withValue(it.toDomain())
         }.onErrorReturn {
