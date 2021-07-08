@@ -16,7 +16,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.CustomerCareFragmentBinding
-import core.CUSTOMERCARE_EMAIL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -40,6 +39,7 @@ class CustomerCareFragment : BaseFragment() {
             it.lifecycleOwner = viewLifecycleOwner
         }
 
+
         return binding.ccContainer
     }
     @RequiresApi(Build.VERSION_CODES.M)
@@ -56,6 +56,10 @@ class CustomerCareFragment : BaseFragment() {
         // TODO: Use the ViewModel
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hideDrawerLayout()
+    }
     private fun handleEvent(event: CustomerCareViewModel.Event) =
         when (event) {
             CustomerCareViewModel.Event.OnPhoneClicked ->

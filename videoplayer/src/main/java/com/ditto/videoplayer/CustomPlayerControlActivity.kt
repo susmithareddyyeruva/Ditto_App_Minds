@@ -19,7 +19,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
-import core.appstate.AppState
 import core.network.NetworkUtility
 import core.ui.common.Utility
 import kotlinx.android.synthetic.main.activity_player.*
@@ -337,10 +336,11 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         if (mPlayer!=null) {
             mPlayer?.release()
+            mPlayer=null
         }
+        super.onDestroy()
     }
     private fun fullScreenCall(){
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)

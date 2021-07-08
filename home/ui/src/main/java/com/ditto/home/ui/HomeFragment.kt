@@ -51,6 +51,11 @@ class HomeFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
