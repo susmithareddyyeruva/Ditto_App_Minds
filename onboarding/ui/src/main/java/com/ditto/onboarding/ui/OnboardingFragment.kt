@@ -183,7 +183,14 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                     val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
                     intent.putExtras(bundle)
                     startActivity(intent)
-                } else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
+                }
+                if (viewModel.clickedId.get() == ONBOARDING.FAQANDGLOSSARY.id) {
+                    if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                        findNavController().navigate(R.id.action_onboardingFragment_to_FaqAndGlossary)
+                    }
+                }
+
+                else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
                     navigateInstructionOrCaliberation(bundle)
 

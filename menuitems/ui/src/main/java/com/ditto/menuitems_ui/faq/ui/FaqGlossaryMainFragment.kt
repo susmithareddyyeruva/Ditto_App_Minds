@@ -1,5 +1,6 @@
 package com.ditto.menuitems_ui.faq.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,11 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
 
     private val faqGlossaryfragmentViewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
     lateinit var binding: FaqGlossaryMainfragmentBinding
+
+    @SuppressLint("ValidFragment")
+    fun FaqGlossaryMainFragment() {
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

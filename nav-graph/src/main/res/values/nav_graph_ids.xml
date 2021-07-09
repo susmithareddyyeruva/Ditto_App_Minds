@@ -38,6 +38,8 @@
     <item name="action_onboardingFragment_to_calibrationfragment" type="id" />
     <item name="action_onboardingFragment_to_calibrationfragment_From_Tutorial" type="id" />
     <item name="action_onboardingFragment_to_calibrationfragment_checkedbox_clicked" type="id" />
+    <item name="action_onboardingFragment_to_FaqAndGlossary" type="id" />
+
 
     <!--action items for Instruction Fragment-->
     <item name="calibration_nav_graph" type="id" />
