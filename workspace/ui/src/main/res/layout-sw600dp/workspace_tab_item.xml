@@ -90,7 +90,7 @@
             android:layout_height="@dimen/dimen_0"
             android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
             android:elevation="@dimen/elevation_pieces_reference"
-            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:gravity="center"
             android:onClick="@{() -> viewModel.clickPatternReference(false)}"
             android:text="@string/reference_layout"
