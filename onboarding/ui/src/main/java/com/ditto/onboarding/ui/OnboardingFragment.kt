@@ -184,7 +184,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                     intent.putExtras(bundle)
                     startActivity(intent)
                 }
-                if (viewModel.clickedId.get() == ONBOARDING.FAQANDGLOSSARY.id) {
+                else if (viewModel.clickedId.get() == ONBOARDING.FAQANDGLOSSARY.id) {
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                         findNavController().navigate(R.id.action_onboardingFragment_to_FaqAndGlossary)
                     }
