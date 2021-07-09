@@ -8,8 +8,6 @@ import core.event.UiEvents
 import core.lib.R
 import core.ui.common.MenuModel
 import core.ui.common.Utility
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -112,12 +110,12 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         headerList.add(menuModel)
         childList.put(menuModel, childModelsList)
 
-        menuModel = MenuModel(
+       /* menuModel = MenuModel(
             "FAQ & Glossary",
             "ic_menu_faq",
             null
         )
-        headerList.add(menuModel)
+        headerList.add(menuModel)*/
 
         menuModel = MenuModel(
             "Customer Service",
