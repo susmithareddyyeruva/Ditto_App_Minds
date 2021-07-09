@@ -9,6 +9,7 @@
     <string name="later">LATER</string>
     <string name="turnon">TURN ON</string>
     <string name="settings">SETTINGS</string>
+    <string name="tutorial_header">Tutorials</string>
     <string name="tutorialheader">Welcome back,</string>
     <string name="tutorial_sub_header">What would you like to do today?</string>
     <string name="tutorial_sub_header_for_guest">Let\'s get started!</string>

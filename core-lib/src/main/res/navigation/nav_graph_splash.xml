@@ -76,7 +76,7 @@
 
         <action
             android:id="@+id/action_fragment_to_FAQGlossaryfragment"
-            app:destination="@id/nav_graph_mainFaq" />
+            app:destination="@id/nav_graph_mainfaq" />
     </fragment>
 
 </navigation>

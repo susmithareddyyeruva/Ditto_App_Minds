@@ -393,7 +393,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                    navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)*/
                 true
             }
-            R.id.nav_graph_mainFaq -> {
+            R.id.nav_graph_mainfaq -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
                 true

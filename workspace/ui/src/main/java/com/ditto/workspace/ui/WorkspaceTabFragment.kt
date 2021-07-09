@@ -1376,6 +1376,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
         baseViewModel.isSaveExitButtonClicked.set(true)
         findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+        findNavController().popBackStack(R.id.nav_graph_mylibrary, false)
+        findNavController().navigate(R.id.nav_graph_id_home)
+
         activity?.onBackPressed()
     }
 
