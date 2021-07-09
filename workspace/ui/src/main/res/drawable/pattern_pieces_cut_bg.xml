@@ -14,7 +14,7 @@
         android:top="1dp"
         android:bottom="1dp">
         <shape>
-            <solid android:color="@color/button_stroke_color" />
+            <solid android:color="#26677689" />
             <stroke
                 android:width="@dimen/small_padding"
                 android:color="@android:color/white" />

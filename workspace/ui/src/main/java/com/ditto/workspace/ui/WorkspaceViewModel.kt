@@ -587,7 +587,10 @@ class WorkspaceViewModel @Inject constructor(
 
         result = File(dittofolder, filename)
         if (!result.exists()) {
-            result.createNewFile()
+            try {
+                result.createNewFile()
+            } catch (e: Exception) {
+            }
         }
         result.copyInputStreamToFile(inputStream)
         return result

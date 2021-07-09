@@ -41,5 +41,5 @@
     <string name="str_conn_failed">Projector connection failed</string>
     <string name="select_projector">Select projector</string>
     <string name="no_projector">No projectors found!!</string>
-    <string name="connect_projector_to_wifi">CONNECT PROJECTOR TO WIFI</string>
+    <string name="connect_projector_to_wifi">CONNECT TO WIFI</string>
 </resources>

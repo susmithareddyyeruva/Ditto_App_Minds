@@ -175,7 +175,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                 )
 
                 if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
-                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "Demo Video","from" to "tutorial")
+                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "ditto tour","from" to "tutorial")
                     /*findNavController().navigate(
                         R.id.action_destination_onboarding_to_nav_graph_id_video,
                         bundle
@@ -183,7 +183,14 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                     val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
                     intent.putExtras(bundle)
                     startActivity(intent)
-                } else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
+                }
+                else if (viewModel.clickedId.get() == ONBOARDING.FAQANDGLOSSARY.id) {
+                    if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
+                        findNavController().navigate(R.id.action_onboardingFragment_to_FaqAndGlossary)
+                    }
+                }
+
+                else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
                     navigateInstructionOrCaliberation(bundle)
 
