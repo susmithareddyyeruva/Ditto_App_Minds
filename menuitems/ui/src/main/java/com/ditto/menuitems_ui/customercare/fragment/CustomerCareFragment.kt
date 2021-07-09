@@ -103,6 +103,14 @@ class CustomerCareFragment : BaseFragment() {
             6, 29,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
+
+        // TDP-35 : added font family for email id
+        spannable.setSpan(
+            R.font.avenir_next_lt_pro_demi,
+            6, 29,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
         spannable.setSpan(
             UnderlineSpan(),
             6, 29,
