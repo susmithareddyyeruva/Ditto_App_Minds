@@ -46,8 +46,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
     override fun onBindViewHolder(holder: PatternPieceHolder, position: Int) {
         holder.patternsPiecesBinding.viewModel = viewModel
-        holder.patternsPiecesBinding.txtPieceName.text =
-            patternPieces.get(position).pieceDescription
+        holder.patternsPiecesBinding.txtPieceName.text = "#"+patternPieces.get(position).pieceNumber+" "+patternPieces.get(position).pieceDescription
         holder.patternsPiecesBinding.txtPieceCut.text = patternPieces.get(position).cutQuantity
         holder.patternsPiecesBinding.imageArrow.visibility = View.GONE
         println("ImagefromDB${patternPieces.get(position).imagePath}")

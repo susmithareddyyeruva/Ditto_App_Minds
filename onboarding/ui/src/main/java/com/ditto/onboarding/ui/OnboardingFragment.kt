@@ -175,7 +175,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                 )
 
                 if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
-                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "Demo Video","from" to "tutorial")
+                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "ditto tour","from" to "tutorial")
                     /*findNavController().navigate(
                         R.id.action_destination_onboarding_to_nav_graph_id_video,
                         bundle

@@ -2339,7 +2339,7 @@
          "id":11,
          "patternName":"Z Multidirection dress test",
          "description":"Z New Splicing Multidirection dress test",
-         "totalPieces":1,
+         "totalPieces":6,
          "completedPieces":0,
          "selectedTab":"Garment",
          "status":"New",

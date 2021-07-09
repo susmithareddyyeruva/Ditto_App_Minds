@@ -12,7 +12,7 @@
 
     <dimen name="progress_width">175dp</dimen>
     <dimen name="progress_heigth">42dp</dimen>
-    <dimen name="process_text">56sp</dimen>
+    <dimen name="process_text">26sp</dimen>
     <dimen name="process_text_top">60dp</dimen>
     <dimen name="end_margin_yes">58dp</dimen>
 </resources>
