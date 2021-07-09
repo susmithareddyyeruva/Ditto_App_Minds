@@ -20,7 +20,7 @@
     <dimen name="small_padding_x">10dp</dimen>
     <dimen name="text_splice">16sp</dimen>
     <dimen name="margin_v_small">5dp</dimen>
-    <dimen name="splice_button">90dp</dimen>
+    <dimen name="splice_button">50dp</dimen>
     <dimen name="seek_bar_thickness">10dp</dimen>
     <dimen name="margin_workspace">15dp</dimen>
     <dimen name="line_size">1dp</dimen>

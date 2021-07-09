@@ -27,7 +27,7 @@
     <dimen name="elevation_small_x">6dp</dimen>
     <dimen name="elevation_card">15dp</dimen>
     <dimen name="elevation_pieces_reference">5dp</dimen>
-    <dimen name="splice_button">50dp</dimen>
+    <dimen name="splice_button">30dp</dimen>
     <dimen name="seek_bar_thickness">5dp</dimen>
     <dimen name="margin_card">30dp</dimen>
     <dimen name="margin_v_small">5dp</dimen>
