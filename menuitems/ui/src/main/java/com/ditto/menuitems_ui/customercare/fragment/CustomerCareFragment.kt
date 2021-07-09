@@ -58,6 +58,7 @@ class CustomerCareFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).hideDrawerLayout()
     }
     private fun handleEvent(event: CustomerCareViewModel.Event) =
