@@ -8,7 +8,8 @@
 
     <include app:graph="@navigation/instruction_navigation" />
     <include app:graph="@navigation/instruction_calibration_nav" />
-    <include app:graph="@navigation/nav_grapgh_faq_glossary" />
+    <include app:graph="@navigation/nav_graph_mainfaq" />
+    <include app:graph="@navigation/nav_graph_faq" />
     <include app:graph="@navigation/nav_graph_home" />
     <include app:graph="@navigation/nav_graph_howto" />
     <include app:graph="@navigation/nav_graph_video" />
@@ -81,7 +82,7 @@
 
         <action
             android:id="@+id/action_onboardingFragment_to_FaqAndGlossary"
-            app:destination="@id/nav_graph_mainFaq"
+            app:destination="@id/nav_graph_mainfaq"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

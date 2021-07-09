@@ -18,7 +18,7 @@
     <item name="destination_customercare" type="id" />
     <item name="nav_graph_customercare" type="id" />
     <item name="nav_graph_faq" type="id" />
-    <item name="nav_graph_mainFaq" type="id" />
+    <item name="nav_graph_mainfaq" type="id" />
     <item name="nav_graph_manage" type="id" />
 
     <!--action items-->

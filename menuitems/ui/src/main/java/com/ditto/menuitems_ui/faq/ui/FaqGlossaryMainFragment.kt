@@ -31,9 +31,7 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
     private val faqGlossaryfragmentViewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
     lateinit var binding: FaqGlossaryMainfragmentBinding
 
-    @SuppressLint("ValidFragment")
-    fun FaqGlossaryMainFragment() {
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
