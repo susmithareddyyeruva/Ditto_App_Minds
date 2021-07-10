@@ -275,6 +275,18 @@
 
             </LinearLayout>
 
+<!--            <ImageView-->
+<!--                android:id="@+id/img_setup"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:background="@drawable/setup_pattern_waiting"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent" />-->
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
