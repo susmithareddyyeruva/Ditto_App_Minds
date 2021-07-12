@@ -36,12 +36,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_projector_connection.*
 import kotlinx.coroutines.*
+import java.io.BufferedReader
 import java.io.DataInputStream
-import java.lang.reflect.Field
+import java.io.InputStreamReader
+import java.net.InetAddress
 import java.net.InetSocketAddress
-import java.net.NetworkInterface
 import java.net.ServerSocket
 import java.net.Socket
+import java.nio.charset.Charset
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -316,7 +318,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         val serviceInfo = NsdServiceInfo()
         serviceInfo.port = port
         //viewModel.mServiceName.set("DITTO_"+viewModel.mBluetoothManager!!.adapter.address)
-        viewModel.mServiceName.set("DITTO_"+deviceid)
+        viewModel.mServiceName.set("DITTO_" + deviceid)
         serviceInfo.serviceName = viewModel.mServiceName.get()
         serviceInfo.serviceType = viewModel.SERVICE_TYPE
         Log.d("CONNECTIVITY_PROJECTOR", "register Service- $serviceInfo")
@@ -432,7 +434,10 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private fun sendSuccessToClient() {
         viewModel.samplestring.set("Sending Response to client")
         showToast()
-        viewModel.sendResponseToClient(this, getString(R.string.successmessage)+","+viewModel.mServiceName.get())
+        viewModel.sendResponseToClient(
+            this,
+            getString(R.string.successmessage) + "," + viewModel.mServiceName.get()
+        )
     }
 
 
@@ -486,10 +491,15 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             val imageBytes: ByteArray = datainput.readBytes()
                             //viewModel.samplestring.set("Recevied bytes " + imageBytes.size)
                             viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
+                            println("TRACE_APP_CONNECTIONS   *******  : " + mConnectionSocket.inetAddress)
                             withContext(Dispatchers.Main) {
+                                img_setup.setImageResource(R.drawable.setup_pattern_connected)
                                 viewModel.samplestring.set("Receving Request from Socket")
                                 showToast()
+                                println("TRACE_APP_CONNECTIONS   imageBytes *******  : " + imageBytes.size+
+                                " : "+mConnectionSocket.getInputStream().read())
                                 if (imageBytes.isNotEmpty()) {
+                                    println("TRACE_APP_CONNECTIONS  imageBytes not null")
                                     showImage(imageBytes)
                                 }
                             }
@@ -519,6 +529,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 " TRACE_ Projection showImage " + Calendar.getInstance().timeInMillis
             )
         } catch (e: java.lang.Exception) {
+            println("TRACE_APP_CONNECTIONS   Cannot convert to image *******  : " + e)
             viewModel.samplestring.set("Cannot convert to image - Exception - $e")
             showToast()
         }
@@ -619,11 +630,16 @@ class ProjectorConnectionActivity : AppCompatActivity(),
 
     //---------------------------------------------------------------------------------------------//
 
-    private fun tearDown(place : String) {
+    private fun tearDown(place: String) {
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
             this@ProjectorConnectionActivity.runOnUiThread {
-                Toast.makeText(this, resources.getString(R.string.teardown) + " "+place, Toast.LENGTH_SHORT).show()
+                img_setup.setImageResource(R.drawable.setup_pattern_waiting)
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.teardown) + " " + place,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
@@ -636,7 +652,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 )
                 viewModel.mNsdManager?.unregisterService(viewModel.mRegistrationListener)
             } finally {
-                Log.d("teardown","final block")
+                Log.d("teardown", "final block")
             }
             viewModel.mRegistrationListener = null
         }
@@ -710,7 +726,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
             }
 
         } catch (e: Exception) {
-            Log.d("exception","wifi")
+            Log.d("exception", "wifi")
         }
     }
 }

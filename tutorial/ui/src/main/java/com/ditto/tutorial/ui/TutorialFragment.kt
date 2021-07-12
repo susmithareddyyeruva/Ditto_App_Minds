@@ -104,7 +104,7 @@ class TutorialFragment : BaseFragment() {
 
     private fun setuptoolbar() {
         toolbarViewModel.isShowActionBar.set(false)
-        toolbarViewModel.isShowTransparentActionBar.set(true)
+        toolbarViewModel.isShowTransparentActionBar.set(false)
         bottomNavViewModel.visibility.set(true)
     }
 }

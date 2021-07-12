@@ -5,7 +5,7 @@
     <color name="colorAccent">#000000</color>
     <color name="cardColor">#EEEEEE</color>
     <color name="line_divider_color">#C0C0C0</color>
-    <color name="button_stroke_color">#80BFBFBF</color>
+    <color name="button_stroke_color">#BFBFBF</color>
     <color name="tab_divider_color">#DDDEDE</color>
     <color name="tab_text_color">#63666B</color>
     <color name="text_underline">#63666B</color>

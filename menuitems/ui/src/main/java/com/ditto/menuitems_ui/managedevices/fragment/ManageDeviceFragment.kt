@@ -238,7 +238,6 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.manage_devices))
         (activity as BottomNavigationActivity).setToolbarIcon()
 

@@ -56,8 +56,6 @@ class MyLibraryFragment : BaseFragment() {
 
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        //(activity as BottomNavigationActivity).setToolbarTitle("Pattern Description")
-        (activity as BottomNavigationActivity).showmenu()
 
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())

@@ -453,7 +453,6 @@ class InstructionFragment constructor(
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
-            (activity as BottomNavigationActivity).hidemenu()
         } else {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
@@ -461,7 +460,6 @@ class InstructionFragment constructor(
             toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            (activity as BottomNavigationActivity).hidemenu()
         }
     }
 

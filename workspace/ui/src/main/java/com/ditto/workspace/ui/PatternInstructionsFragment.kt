@@ -57,7 +57,6 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarInstrctions)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_instrctions.setNavigationIcon(R.drawable.ic_back_button)

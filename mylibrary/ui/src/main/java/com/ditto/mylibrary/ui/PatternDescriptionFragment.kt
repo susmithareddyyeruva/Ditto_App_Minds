@@ -91,7 +91,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern details")
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)

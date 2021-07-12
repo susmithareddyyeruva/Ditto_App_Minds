@@ -79,7 +79,6 @@ class WSProSettingsFragment : BaseFragment() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarTitle("Workspace settings")
         (activity as BottomNavigationActivity).setToolbarIcon()
     }

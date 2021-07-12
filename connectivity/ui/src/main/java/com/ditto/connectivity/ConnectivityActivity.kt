@@ -209,6 +209,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
+                Log.d(ConnectivityUtils.TAG, "Service discovery Found " +service.serviceName)
                 if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE){
                     if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
                         serviceFoundList.add(service)
@@ -230,15 +231,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
             override fun onDiscoveryStopped(serviceType: String) {
-                Log.d(ConnectivityUtils.TAG, "Discovery stopped: $serviceType")
+                Log.d(ConnectivityUtils.TAG, "service Discovery stopped: $serviceType")
             }
 
             override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
-                Log.d(ConnectivityUtils.TAG, "Discovery failed: Error code:$errorCode")
+                Log.d(ConnectivityUtils.TAG, "service Discovery failed: Error code:$errorCode")
             }
 
             override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
-                Log.d(ConnectivityUtils.TAG, "Discovery failed: Error code:$errorCode")
+                Log.d(ConnectivityUtils.TAG, "service Discovery failed: Error code:$errorCode")
             }
         }
     }

@@ -26,7 +26,7 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
 
     override fun setListData(items: List<OnboardingData>) {
         val i = OnboardingData(5,"Take a Tour","Watch the demo video","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
-        val i1 = OnboardingData(4,"FAQs and Glossary","View Faq and Glossary","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
+        val i1 = OnboardingData(4,"FAQ & Glossary","View FAQ & Glossary","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
        // items.toMutableList().add(i)
         onBoarding = items
         mutableList = items.toMutableList()
