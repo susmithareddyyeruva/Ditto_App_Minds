@@ -149,6 +149,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
     private fun showPdfFromUri(pdfName: Uri) {
         bottomNavViewModel.showProgress.set(false)
+        if(context == null) return
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
@@ -162,6 +163,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     }
 
     private fun showPdfFromAssets(pdfName: String) {
+        if(context == null) return
         binding.pdfView.fromAsset(pdfName)
             .defaultPage(0)
             .scrollHandle(DefaultScrollHandle(requireContext()))// set the default page to open

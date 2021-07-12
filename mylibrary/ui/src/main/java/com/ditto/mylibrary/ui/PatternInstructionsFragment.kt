@@ -81,7 +81,6 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadPdf(){
-
         if (allPermissionsGranted()) {
             checkavailablefile()
         } else {
@@ -129,6 +128,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         }
     }
     private fun showPdfFromAssets(pdfName: String) {
+        if(context == null) return
         binding.pdfView.fromAsset(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
@@ -143,9 +143,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
     private fun showPdfFromUri(pdfName: Uri) {
         bottomNavViewModel.showProgress.set(false)
+        if(context == null) return
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
-            .scrollHandle(DefaultScrollHandle(requireContext()))
+            .scrollHandle(DefaultScrollHandle(context))
             .onError {
                 showRedownload()
             }
@@ -179,7 +180,6 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     }
 
     private fun showNeworkError(){
-
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
