@@ -47,6 +47,7 @@ import core.*
 import core.appstate.AppState
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
+import core.ui.common.Utility
 import core.ui.common.Utility.Companion.searchServieList
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -355,6 +356,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     AppState.saveCurrentService(mClickedService)
                     viewModel.isServiceError.set(false)
                     viewModel.isWifiError.set(false)
+                    GlobalScope.launch { Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected") }
                     showLayouts(false, false, false, true, false,"Successfully connected!")
 
                 } else {

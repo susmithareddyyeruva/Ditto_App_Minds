@@ -75,6 +75,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
             .subscribe {
                 handleEvent(it)
             }
+        img_receivedimage.setImageResource(R.drawable.setup_pattern_waiting)
         startBLE()
         initapp()
         deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
@@ -501,6 +502,8 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                                 if (imageBytes.isNotEmpty()) {
                                     println("TRACE_APP_CONNECTIONS  imageBytes not null")
                                     showImage(imageBytes)
+                                } else {
+                                    img_receivedimage.setImageResource(R.drawable.setup_pattern_waiting)
                                 }
                             }
 
