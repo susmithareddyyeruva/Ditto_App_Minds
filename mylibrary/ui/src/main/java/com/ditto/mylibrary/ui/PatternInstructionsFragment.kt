@@ -30,12 +30,12 @@ import kotlinx.android.synthetic.main.fragment_pattern_instructions.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
+class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPatternInstructionsBinding
-     var downloadFileName : String? = null
-     var patternFolderName : String? = null
+    var downloadFileName: String? = null
+    var patternFolderName: String? = null
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -49,14 +49,17 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         }
         return binding.root
     }
+
     /**
      * Variable creations
      */
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 20
         private val REQUIRED_PERMISSIONS =
-            arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+            arrayOf(
+                Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.MANAGE_EXTERNAL_STORAGE
+            )
 
     }
 
@@ -75,12 +78,13 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         toolbarViewModel.isShowActionMenu.set(false)
         setUIEvents()
         loadPdf()
-        Log.d("instruction123","prev pattern name: ${arguments?.getString("PatternName")}")
+        Log.d("instruction123", "prev pattern name: ${arguments?.getString("PatternName")}")
         patternFolderName = arguments?.getString("PatternName")
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadPdf(){
+    private fun loadPdf() {
         if (allPermissionsGranted()) {
             checkavailablefile()
         } else {
@@ -90,6 +94,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
             )
         }
     }
+
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -97,38 +102,57 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
                 handleEvent(it)
             }
     }
+
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
-            PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
-                viewModel.patternpdfuri.get()
-            ))
+            PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(
+                Uri.parse(
+                    viewModel.patternpdfuri.get()
+                )
+            )
             else -> Log.d("Error", "Invaid Event")
         }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private  fun checkavailablefile() {
-        downloadFileName = PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }
-        if (availableUri != null){
+    private fun checkavailablefile() {
+        downloadFileName =
+            PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
+        val availableUri = downloadFileName?.let {
+            Utility.isFileAvailable(
+                it,
+                requireContext(),
+                patternFolderName
+            )
+        }
+        if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {
             pdfdownload()
         }
 
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun pdfdownload(){
 
-        if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun pdfdownload() {
+
+        if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
-                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it,patternFolderName) }
+                downloadFileName?.let {
+                    viewModel.downloadPDF(
+                        PDF_SAMPLE_URL,
+                        it,
+                        patternFolderName
+                    )
+                }
             }
         } else {
             showNeworkError()
         }
     }
+
     private fun showPdfFromAssets(pdfName: String) {
-        if(context == null) return
+        if (context == null) return
         binding.pdfView.fromAsset(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
@@ -143,7 +167,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
     private fun showPdfFromUri(pdfName: Uri) {
         bottomNavViewModel.showProgress.set(false)
-        if(context == null) return
+        if (context == null) return
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(context))
@@ -155,6 +179,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
             }
             .load()
     }
+
     /**
      * [Function] Function to check permissions for opening camera
      */
@@ -174,12 +199,14 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+        if (allPermissionsGranted() && requestCode == REQUEST_CODE_PERMISSIONS) {
             checkavailablefile()
+        } else {
+            showRedownload()
         }
     }
 
-    private fun showNeworkError(){
+    private fun showNeworkError() {
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
@@ -192,7 +219,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         )
     }
 
-    private fun showRedownload(){
+    private fun showRedownload() {
 
         Utility.getCommonAlertDialogue(
             requireContext(),
@@ -204,15 +231,15 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
             Utility.AlertType.PDF,
             Utility.Iconype.FAILED
         )
-    } 
-    
-      override fun onCustomPositiveButtonClicked(
+    }
+
+    override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
         when (alertType) {
-            Utility.AlertType.NETWORK,  Utility.AlertType.PDF -> {
-                findNavController().popBackStack(R.id.patternInstructionsFragment,true)
+            Utility.AlertType.NETWORK, Utility.AlertType.PDF -> {
+                findNavController().popBackStack(R.id.patternInstructionsFragment, true)
             }
         }
     }
@@ -222,12 +249,19 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-       when (alertType) {
+        when (alertType) {
             Utility.AlertType.PDF -> {
-                pdfdownload()
+                if (allPermissionsGranted()) {
+                    pdfdownload()
+                }else{
+                    requestPermissions(
+                        REQUIRED_PERMISSIONS,
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                }
             }
         }
     }
- 
+
 }
 

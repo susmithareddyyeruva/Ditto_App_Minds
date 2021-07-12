@@ -88,8 +88,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+        if (allPermissionsGranted() && requestCode == REQUEST_CODE_PERMISSIONS) {
             checkavailablefile()
+        }else{
+            showRedownload()
         }
     }
 
@@ -192,7 +194,6 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
 
     private fun showRedownload(){
-
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
@@ -223,7 +224,14 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     ) {
        when (alertType) {
             Utility.AlertType.PDF -> {
-                pdfdownload()
+                if (allPermissionsGranted()) {
+                    pdfdownload()
+                }else{
+                    requestPermissions(
+                        REQUIRED_PERMISSIONS,
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                }
             }
         }
     }
