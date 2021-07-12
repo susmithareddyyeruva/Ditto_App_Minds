@@ -70,6 +70,7 @@ class InstructionFragment constructor(
     private val viewModel: InstructionViewModel by ViewModelDelegate()
     lateinit var binding: InstructionFragmentBinding
     private var alert: AlertDialog? = null
+
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
      */
@@ -116,7 +117,8 @@ class InstructionFragment constructor(
         }
         setupToolbar()
 
-        binding.instructionViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        binding.instructionViewPager?.addOnPageChangeListener(object :
+            ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
                 Log.d("onPageScroll", "state changed")
             }
@@ -169,9 +171,10 @@ class InstructionFragment constructor(
             adapter.setListData(viewModel.data.value?.instructions!!)
             viewModel.isFinalPage.set(false)
             viewModel.isStartingPage.set(true)
-            binding.bottomViewpager.visibility=View.VISIBLE
+            binding.bottomViewpager.visibility =
+                if (viewModel.data.value?.instructions?.size ?: 0 > 1) View.VISIBLE else View.INVISIBLE
         } else {
-            binding.bottomViewpager.visibility=View.INVISIBLE
+            binding.bottomViewpager.visibility = View.INVISIBLE
 
             val adapter =
                 InstructionAdapter(position)
@@ -302,7 +305,8 @@ class InstructionFragment constructor(
         if (findNavController().currentDestination?.id == R.id.destination_instruction ||
             findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
         ) {
-            val bundle = bundleOf("isFromHome" to viewModel?.isFromHome?.get(), "InstructionId" to 3)
+            val bundle =
+                bundleOf("isFromHome" to viewModel?.isFromHome?.get(), "InstructionId" to 3)
             findNavController().navigate(
                 R.id.action_destination_instruction_to_howto_nav_graph,
                 bundle
@@ -329,7 +333,7 @@ class InstructionFragment constructor(
      */
     private fun showVideoPopup() {
         val position = Common.currentSelectedTab.get()
-        if(position < (viewModel.data.value?.instructions?.size?:0)){
+        if (position < (viewModel.data.value?.instructions?.size ?: 0)) {
             val filePath = if (viewModel.instructionID.get() == 1) {
                 viewModel.data.value?.instructions?.get(position)?.instructions?.get(
                     binding.instructionViewPager.currentItem
@@ -343,7 +347,7 @@ class InstructionFragment constructor(
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
             }
-            displayFullScreenVideo(filePath,title,"tutorial")
+            displayFullScreenVideo(filePath, title, "tutorial")
         }
     }
 
@@ -354,28 +358,28 @@ class InstructionFragment constructor(
     ) {
         if (findNavController().currentDestination?.id == R.id.destination_instruction
         ) {
-            var titlen= if(position==0){
+            var titlen = if (position == 0) {
                 "Beam Setup"
-            }else{
+            } else {
                 "Beam Takedown"
             }
-            val bundle = bundleOf("videoPath" to filePath,"title" to titlen,"from" to from)
+            val bundle = bundleOf("videoPath" to filePath, "title" to titlen, "from" to from)
             val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
-           /* findNavController().navigate(
-                R.id.action_destination_instruction_to_nav_graph_id_video,
-                bundle
-            )*/
+            /* findNavController().navigate(
+                 R.id.action_destination_instruction_to_nav_graph_id_video,
+                 bundle
+             )*/
         } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
-            val bundle = bundleOf("videoPath" to filePath,"title" to "Calibration","from" to from)
+            val bundle = bundleOf("videoPath" to filePath, "title" to "Calibration", "from" to from)
             val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
-           /* findNavController().navigate(
-                R.id.action_destination_instruction_calibration_fragment_to_nav_graph_id_video,
-                bundle
-            )*/
+            /* findNavController().navigate(
+                 R.id.action_destination_instruction_calibration_fragment_to_nav_graph_id_video,
+                 bundle
+             )*/
         }
     }
 
@@ -415,18 +419,22 @@ class InstructionFragment constructor(
             )
         dialogBuilder
             .setCancelable(false)
-            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-            })
-            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-                enableCalibrateButton(true)
-                if (findNavController().currentDestination?.id == R.id.destination_instruction
-                    || findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
-                ) {
-                    sendCalibrationPattern()
-                }
-            })
+            .setNegativeButton(
+                getString(R.string.cancel),
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                })
+            .setPositiveButton(
+                getString(R.string.launch_camera),
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                    enableCalibrateButton(true)
+                    if (findNavController().currentDestination?.id == R.id.destination_instruction
+                        || findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment
+                    ) {
+                        sendCalibrationPattern()
+                    }
+                })
 
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
@@ -619,7 +627,7 @@ class InstructionFragment constructor(
 
     private fun sendCalibrationPattern() {
         showProgress(true)
-        logger.d("TRACE_ Projection : sendCalibrationPattern " + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : sendCalibrationPattern " + Calendar.getInstance().timeInMillis)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
             performTransform(
@@ -636,8 +644,8 @@ class InstructionFragment constructor(
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>) {
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
-        logger.d("TRACE_ Projection : sendCalibrationPattern Success" + Calendar. getInstance().timeInMillis)
-         // alert?.dismiss()
+        logger.d("TRACE_ Projection : sendCalibrationPattern Success" + Calendar.getInstance().timeInMillis)
+        // alert?.dismiss()
         when (result.first) {
             TransformErrorCode.Success -> GlobalScope.launch {
                 sendSampleImage(
@@ -660,7 +668,7 @@ class InstructionFragment constructor(
         transformedBitmap: Bitmap,
         isNavigateToCalibration: Boolean
     ) {
-        logger.d("TRACE_ Projection : send Image Start" + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : send Image Start" + Calendar.getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
             var soc: Socket? = null
             try {
@@ -706,7 +714,7 @@ class InstructionFragment constructor(
                 }
             } finally {
                 soc?.close()
-                logger.d("TRACE_ Projection : send Image Finish" + Calendar. getInstance().timeInMillis)
+                logger.d("TRACE_ Projection : send Image Finish" + Calendar.getInstance().timeInMillis)
             }
         }
     }
