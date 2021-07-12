@@ -12,10 +12,7 @@ import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import core.ui.common.Utility
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
@@ -56,6 +53,8 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
             try {
                 soc = Socket(host, port)
                 soc.close()
+                NetworkUtility.nsdSericeHostName = ""
+                NetworkUtility.nsdSericePortName = 0
                 uiEvents.post(Event.OnSocketDisconnect)
             } catch (e: ConnectException) {
                 uiEvents.post(Event.OnSocketDisconnect)
@@ -75,6 +74,8 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
             try {
                 soc = Socket(host, port)
                 if (soc.isConnected) {
+                    NetworkUtility.nsdSericeHostName = hostAddress
+                    NetworkUtility.nsdSericePortName = port
                     connectionSuccess()
                 } else {
                     connectionFailed()
@@ -98,6 +99,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     }
 
     private fun connectionSuccess() {
+        println("******************* connectionSuccess")
         uiEvents.post(Event.OnHideprogress)
         uiEvents.post(Event.OnConnectionSuccess)
     }

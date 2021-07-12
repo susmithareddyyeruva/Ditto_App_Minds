@@ -252,7 +252,10 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      * [Function] After successfull connection
      */
     private fun showSuccessPopup() {
-        GlobalScope.launch { Utility.sendDittoImage(requireContext(), "setup_pattern_connected") }
+        GlobalScope.launch {
+            delay(200)
+            Utility.sendDittoImage(requireContext(), "setup_pattern_connected")
+        }
         baseViewModel.activeSocketConnection.set(true)
         viewModel.resetAppstate()
         resetAdapter(true)

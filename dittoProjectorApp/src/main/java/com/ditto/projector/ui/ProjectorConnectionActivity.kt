@@ -494,7 +494,6 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             viewModel.liveconnectionstatus.set("Connected to Client(Android or IOS)")
                             println("TRACE_APP_CONNECTIONS   *******  : " + mConnectionSocket.inetAddress)
                             withContext(Dispatchers.Main) {
-                                img_setup.setImageResource(R.drawable.setup_pattern_connected)
                                 viewModel.samplestring.set("Receving Request from Socket")
                                 showToast()
                                 println("TRACE_APP_CONNECTIONS   imageBytes *******  : " + imageBytes.size+
