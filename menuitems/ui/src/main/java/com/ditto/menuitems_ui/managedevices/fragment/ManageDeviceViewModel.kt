@@ -27,16 +27,24 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     val mode: ObservableField<String> = ObservableField(MODE_SERVICE)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+
     fun connectToProjector(hostAddress : String, port : Int, isShowProgress : Boolean){
         showProgress(isShowProgress)
         GlobalScope.launch {
+            delay(200)
             startSocketConnection(hostAddress,port)
         }
+    }
+
+    fun sendWaitingImage(){
+        showProgress(true)
+        uiEvents.post(Event.OnWaitingImageSent)
     }
 
     fun disConnectToProjector(hostAddress : String, port : Int, isShowProgress : Boolean){
         showProgress(isShowProgress)
         GlobalScope.launch {
+            delay(200)
             disconnectSocketConnection(hostAddress,port)
         }
     }
@@ -67,7 +75,6 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     }
 
      private suspend fun startSocketConnection(hostAddress : String, port : Int) {
-
         withContext(Dispatchers.IO) {
             val host = InetAddress.getByName(hostAddress)
             var soc: Socket? = null
@@ -141,5 +148,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
         object OnSocketDisconnect : Event()
         object OnConnectClick : Event()
         object OnBleConnectClick : Event()
+        object OnWaitingImageSent : Event()
+        object OnConnectedImageSent : Event()
     }
 }

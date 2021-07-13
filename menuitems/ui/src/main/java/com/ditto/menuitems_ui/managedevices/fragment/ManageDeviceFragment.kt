@@ -103,6 +103,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             }
             ManageDeviceViewModel.Event.OnConnectClick -> showConnectPopup()
             ManageDeviceViewModel.Event.OnBleConnectClick -> showConnectivityPopup()
+            ManageDeviceViewModel.Event.OnConnectedImageSent -> sendConnectImage()
+            ManageDeviceViewModel.Event.OnWaitingImageSent -> sendWaitingImage()
         }
 
     /**
@@ -174,10 +176,31 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     /**
      * [Function] Filtering list to change to connection status of alredy connected wifi if any
      */
+    private fun sendWaitingImage() {
+        GlobalScope.launch {
+            Utility.sendDittoImage(context, "setup_pattern_waiting")
+        }
+    }
+
+    /**
+     * [Function] Filtering list to change to connection status of alredy connected wifi if any
+     */
+    private fun sendConnectImage() {
+        GlobalScope.launch {
+            Utility.sendDittoImage(context, "setup_pattern_connected")
+        }
+    }
+
+
+    /**
+        }
+     * [Function] Filtering list to change to connection status of alredy connected wifi if any
+     */
     private fun filterServiceList() {
         if (NetworkUtility.nsdSericeHostName != null) {
             for (item in receivedServiceList!!.indices) {
-                if (NetworkUtility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress) {
+                if (NetworkUtility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress &&
+                        NetworkUtility.nsdSericePortName == receivedServiceList!![item].nsdServicePort) {
                     viewModel.clickedPosition.set(item)
                     resetAdapter(true)
                     break
@@ -282,7 +305,6 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      * [Function] Connection switch popup
      */
     private fun showConnectPopup() {
-
         var toShowPopup: Boolean = false
         for (item in receivedServiceList!!) {
             if (item.isConnected) {
@@ -407,12 +429,14 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     ) {
 
         when (alertType) {
-            Utility.AlertType.SOC_CONNECT ->
+            Utility.AlertType.SOC_CONNECT ->{
+                viewModel.sendWaitingImage()
                 viewModel.connectToProjector(
                     receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
                     receivedServiceList!![viewModel.clickedPosition.get()].nsdServicePort,
                     true
                 )
+            }
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()

@@ -501,8 +501,6 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                                 if (imageBytes.isNotEmpty()) {
                                     println("TRACE_APP_CONNECTIONS  imageBytes not null")
                                     showImage(imageBytes)
-                                } else {
-                                    img_receivedimage.setImageResource(R.drawable.setup_pattern_waiting)
                                 }
                             }
 
@@ -635,14 +633,6 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private fun tearDown(place: String) {
         Log.d("CONNECTIVITY_PROJECTOR", "teardown entered")
         if (::mConnectionSocket.isInitialized && mConnectionSocket.isConnected) {
-            this@ProjectorConnectionActivity.runOnUiThread {
-                img_setup.setImageResource(R.drawable.setup_pattern_waiting)
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.teardown) + " " + place,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
             Log.d("CONNECTIVITY_PROJECTOR", "teardown - mConnectionSocket.isConnected")
             mConnectionSocket.close()
         }
