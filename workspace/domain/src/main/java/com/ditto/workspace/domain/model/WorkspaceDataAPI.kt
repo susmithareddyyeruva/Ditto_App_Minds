@@ -1,5 +1,5 @@
 package com.ditto.workspace.domain.model
-data class WorkspaceDataAPI (
+data class WorkspaceDataAPI ( //todo move to storage
 
     //getWorkspace data response
     var tailornaovaDesignId: Int? = 0,

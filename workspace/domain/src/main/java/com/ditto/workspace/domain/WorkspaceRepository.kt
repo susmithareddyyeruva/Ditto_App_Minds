@@ -12,6 +12,17 @@ interface WorkspaceRepository {
     fun getWorkspaceData(): Single<Result<List<PatternsData>>>
     fun insertData(patternsData: PatternsData): Single<Any>
     fun insertWorkspaceData(patternsData: WorkspaceDataAPI): Single<Any>
+    //fun updateOfflineStorageData(tailornaovaDesignId:Int,selectedTab: String,status:String): Single<Any>
+    fun updateOfflineStorageData(
+        tailornaovaDesignId: Int,
+        selectedTab: String,
+        status: String,
+        numberOfCompletedPiece: NumberOfPieces,
+        patternPieces: List<PatternPieceDomain>,
+        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+    ): Single<Any>
     fun deleteAndInsert(id:Int, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>
     fun getWorkspaceDataFromApi(): Single<Result<WorkspaceResultDomain>>

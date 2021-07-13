@@ -8,6 +8,16 @@ import non_core.lib.Result
 interface GetWorkspaceData {
     fun invoke(): Single<Result<List<PatternsData>>>
     fun insert(patternsData: PatternsData): Single<Any>//follow same
+    fun updateOfflineStorageData(
+        tailornaovaDesignId: Int,
+        selectedTab: String,
+        status: String,
+        numberOfCompletedPiece: NumberOfPieces,
+        patternPieces: List<PatternPieceDomain>,
+        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+    ): Single<Any>
     fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
     fun getUserDetails():Single<Result<LoginUser>>
     fun deleteAndInsert(id: Int, patternsData: PatternsData): Single<Any>

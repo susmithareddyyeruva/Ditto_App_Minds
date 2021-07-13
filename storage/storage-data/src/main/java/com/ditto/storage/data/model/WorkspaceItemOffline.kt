@@ -1,6 +1,6 @@
 package com.ditto.storage.data.model
 
-data class WorkspaceItemAPI (
+data class WorkspaceItemOffline (
     val id:Int=0,
     val patternPiecesId:Int=0,
     val isCompleted:String?="",

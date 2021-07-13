@@ -86,44 +86,44 @@ class Converters {
     }
 
     @TypeConverter
-    fun stringToWorkspaceItemAPIList(data: String?): List<WorkspaceItemAPI> {
+    fun stringToWorkspaceItemAPIList(data: String?): List<WorkspaceItemOffline> {
         if (data == null) {
             return emptyList()
         }
 
-        val listType = object : TypeToken<List<WorkspaceItemAPI>>() {
+        val listType = object : TypeToken<List<WorkspaceItemOffline>>() {
         }.type
         return Gson().fromJson(data, listType)
     }
 
     @TypeConverter
-    fun workspaceItemAPIListToString(someObjects: List<WorkspaceItemAPI>): String {
+    fun workspaceItemAPIListToString(someObjects: List<WorkspaceItemOffline>): String {
         return Gson().toJson(someObjects)
     }
 
     @TypeConverter
-    fun stringToPatternPiecesFromApiList(data: String?): List<PatternPiecesFromApiWorkspcaeData> {
+    fun stringToPatternPiecesFromApiList(data: String?): List<PatternPiecesOffline> {
         if (data == null) {
             return emptyList()
         }
 
-        val listType = object : TypeToken<List<PatternPiecesFromApiWorkspcaeData>>() {
+        val listType = object : TypeToken<List<PatternPiecesOffline>>() {
         }.type
         return Gson().fromJson(data, listType)
     }
 
     @TypeConverter
-    fun patternPiecesFromApiListToString(someObjects: List<PatternPiecesFromApiWorkspcaeData>): String {
+    fun patternPiecesFromApiListToString(someObjects: List<PatternPiecesOffline>): String {
         return Gson().toJson(someObjects)
     }
     @TypeConverter
-    fun stringToNumberOfPieces(string: String?): NumberOfPiecesStorage? {
-        return Gson().fromJson(string, NumberOfPiecesStorage::class.java)
+    fun stringToNumberOfPieces(string: String?): NumberOfCompletedPiecesOffline? {
+        return Gson().fromJson(string, NumberOfCompletedPiecesOffline::class.java)
     }
 
     @TypeConverter
-    fun NumberOfPiecesToString(numberOfPieces: NumberOfPiecesStorage?): String {
-        return Gson().toJson(numberOfPieces)
+    fun NumberOfPiecesToString(numberOfCompletedPieces: NumberOfCompletedPiecesOffline?): String {
+        return Gson().toJson(numberOfCompletedPieces)
     }
 
 

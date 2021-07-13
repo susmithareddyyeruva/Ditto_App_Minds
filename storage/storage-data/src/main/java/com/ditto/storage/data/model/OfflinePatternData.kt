@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "workspace_data")
-data class WorkspaceData(
+@Entity(tableName = "offline_pattern_data")
+data class OfflinePatternData(
 
     //getWorkspace data response
     @PrimaryKey
@@ -24,23 +24,23 @@ data class WorkspaceData(
 
     @ColumnInfo(name = "numberOfCompletedPieces")
     @SerializedName("numberOfCompletedPieces")
-    var numberOfPieces: NumberOfPiecesStorage,
+    var numberOfCompletedPieces: NumberOfCompletedPiecesOffline,
 
     @ColumnInfo(name = "patternPieces")
     @SerializedName("patternPieces")
-    var patternPiecesFromApi: List<PatternPiecesFromApiWorkspcaeData> = emptyList(),
+    var patternPiecesFromApi: List<PatternPiecesOffline> = emptyList(),
 
     @ColumnInfo(name = "garmetWorkspaceItems")
     @SerializedName("garmetWorkspaceItems")
-    var garmetWorkspaceItems: List<WorkspaceItemAPI> = emptyList(),
+    var garmetWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList(),
 
     @ColumnInfo(name = "liningWorkspaceItems")
     @SerializedName("liningWorkspaceItems")
-    var liningWorkspaceItems: List<WorkspaceItemAPI> = emptyList(),
+    var liningWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList(),
 
     @ColumnInfo(name = "interfaceWorkspaceItems")
     @SerializedName("interfaceWorkspaceItems")
-    var interfaceWorkspaceItems: List<WorkspaceItemAPI> = emptyList()
+    var interfaceWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList()
 
     // tailernova response
     /*@PrimaryKey

@@ -64,7 +64,23 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
     override fun insertWorkspaceData(workspaceData: WorkspaceDataAPI): Single<Any> {
         return Single.fromCallable{
-            workspcaeDataDao.insertWorkspcaeData(workspaceData.toDomain())
+            workspcaeDataDao.insertOfflinePatternData(workspaceData.toDomain())
+        }
+    }
+
+    override fun updateOfflineStorageData(
+        tailornaovaDesignId: Int,
+        selectedTab: String,
+        status: String,
+        numberOfCompletedPiece: NumberOfPieces,
+        patternPieces: List<PatternPieceDomain>,
+        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+    ): Single<Any> {
+        return Single.fromCallable{
+            workspcaeDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece.toDomain(),
+                patternPieces.map { it.toDomain() },garmetWorkspaceItems.map { it.toDomain() },liningWorkspaceItems.map { it.toDomain() },interfaceWorkspaceItem.map { it.toDomain() })
         }
     }
 

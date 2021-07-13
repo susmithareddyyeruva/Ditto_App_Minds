@@ -6,10 +6,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.ditto.storage.data.model.OfflinePatternData
 import com.ditto.storage.data.model.OnBoarding
 import com.ditto.storage.data.model.Patterns
 import com.ditto.storage.data.model.User
-import com.ditto.storage.data.model.WorkspaceData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
@@ -25,7 +25,7 @@ import java.util.concurrent.Executors
 /**
  * The Room database for this app
  */
-@Database(entities = [OnBoarding::class, User::class, Patterns::class, WorkspaceData::class], version = 1, exportSchema = false)
+@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatternData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TraceDataDatabase : RoomDatabase() {
 

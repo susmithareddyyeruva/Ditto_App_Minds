@@ -134,25 +134,6 @@ class WorkspaceViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy{handleWSUpdateResult(it)}
     }
-    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
-        Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
-        when(result) {
-            is Result.OnSuccess -> {
-                Log.d("WorkspaceViewModel456", "Success>>>>>>>>>>>>>>>>>>> $result")
-                val c:CTraceWorkSpacePatternInputData=getWorkspaceInputDataToAPI()
-                val wsData = WorkspaceDataAPI(c.tailornaovaDesignId,c.selectedTab,
-                    c.status,getWorkspaceInputDataToAPI().numberOfCompletedPiece,
-                    c.patternPieces,c.garmetWorkspaceItems,
-                    c.liningWorkspaceItems,c.interfaceWorkspaceItem)
-
-                updateWSAPIDataToDB(wsData)//todo CTraceWorkSpacePatternInputData
-            }
-
-            is Result.OnError -> {
-                Log.d("WorkspaceViewModel", "Failed")
-            }
-        }
-    }
 
     //todo
     fun insertData(value: PatternsData) {
@@ -162,6 +143,60 @@ class WorkspaceViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleInsertDataResult(it) }
     }
+
+    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
+        Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
+        when(result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel456", "Success>>>>>>>>>>>>>>>>>>> $result")
+
+                val c:CTraceWorkSpacePatternInputData=getWorkspaceInputDataToAPI()
+
+                val wsData = WorkspaceDataAPI(c.tailornaovaDesignId,c.selectedTab,
+                    c.status,c.numberOfCompletedPiece,
+                    c.patternPieces,c.garmetWorkspaceItems,
+                    c.liningWorkspaceItems,c.interfaceWorkspaceItem)
+
+                //updateWSAPIDataToDB(wsData)//todo need to add tailernova details
+                updateWSPatternDataStorage(3,"Update123","DoneUpdate123",c.numberOfCompletedPiece,
+                    c.patternPieces,c.garmetWorkspaceItems,
+                    c.liningWorkspaceItems,c.interfaceWorkspaceItem)//todo need to add tailernova details
+            }
+
+            is Result.OnError -> {
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
+    }
+
+    fun updateWSPatternDataStorage(
+        tailornaovaDesignId: Int,
+        selectedTab: String,
+        status: String,
+        numberOfCompletedPiece: NumberOfPieces,
+        patternPieces: List<PatternPieceDomain>,
+        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+    ){
+        disposable += getWorkspaceData.updateOfflineStorageData(tailornaovaDesignId, selectedTab,status,
+            numberOfCompletedPiece,patternPieces,garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItem)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy{handleWSPatternDataStorage(it)}
+    }
+
+    private fun handleWSPatternDataStorage(result: Any?) {
+        when (result) {
+            is Result.OnSuccess<*> -> {
+                Log.d("handleUpdateDataResult", "OnSuccess")
+                uiEvents.post(Event.OnClickSaveAndExit)
+
+            }
+        }
+        uiEvents.post(Event.OnClickSaveAndExit)
+    }
+
 
     fun updateWSAPIDataToDB(value:WorkspaceDataAPI){
         disposable += getWorkspaceData.insertWorkspaceData(value)
@@ -674,32 +709,32 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun getWorkspaceInputDataToAPI(): CTraceWorkSpacePatternInputData {
         val numberOfCompletedPiece =
-            NumberOfPieces(garment = 880, lining = 13, interfacee = 13)
+            NumberOfPieces(garment = 400, lining = 13, interfacee = 13)
 
         var patternPieces=mutableListOf<PatternPieceDomain>()
-        val patternInputData = PatternPieceDomain(id = 1, isCompleted = "true")
+        val patternInputData = PatternPieceDomain(id = 11, isCompleted = "true")
         patternPieces.add(patternInputData)
-        val patternInputData2 = PatternPieceDomain(id = 2, isCompleted = "true")
+        val patternInputData2 = PatternPieceDomain(id = 21, isCompleted = "true")
         patternPieces.add(patternInputData2)
 
 
         val garmetWorkspaceItems: ArrayList<WorkspaceItemAPIDomain> = ArrayList()
 
-        val garmentWorkspaceItemInputData = WorkspaceItemAPIDomain(id=1,patternPiecesId = 1,
+        val garmentWorkspaceItemInputData = WorkspaceItemAPIDomain(id=11,patternPiecesId = 11,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "2")
 
-        val garmentWorkspaceItemInputData1 = WorkspaceItemAPIDomain(id=1,patternPiecesId = 1,
+        val garmentWorkspaceItemInputData1 = WorkspaceItemAPIDomain(id=1,patternPiecesId = 12,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
-            showMirrorDialog = "true",currentSplicedPieceNo = "2")
+            showMirrorDialog = "true",currentSplicedPieceNo = "22")
         garmetWorkspaceItems.add(garmentWorkspaceItemInputData)
         garmetWorkspaceItems.add(garmentWorkspaceItemInputData1)
 
         val liningWorkspaceItems:ArrayList<WorkspaceItemAPIDomain> = ArrayList()
 
-        val liningWorkspaceItemInputData = WorkspaceItemAPIDomain(id=1,patternPiecesId = 1,
+        val liningWorkspaceItemInputData = WorkspaceItemAPIDomain(id=12,patternPiecesId = 12,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "2")
@@ -708,12 +743,12 @@ class WorkspaceViewModel @Inject constructor(
         val interfaceWorkspaceItem: ArrayList<WorkspaceItemAPIDomain> = ArrayList()
 
         val interfaceWorkspaceItemInputData = WorkspaceItemAPIDomain(id=1,patternPiecesId = 1,
-            isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
+            isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.100",pivotX = "122",pivotY = "112",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "2")
         interfaceWorkspaceItem.add(interfaceWorkspaceItemInputData)
 
-        val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(tailornaovaDesignId =2 ,selectedTab ="ABC" ,status = "DONE",
+        val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(tailornaovaDesignId =3 ,selectedTab ="ABC" ,status = "DONE",
             numberOfCompletedPiece = numberOfCompletedPiece,patternPieces,garmetWorkspaceItems = garmetWorkspaceItems,
             liningWorkspaceItems = liningWorkspaceItems,interfaceWorkspaceItem =interfaceWorkspaceItem)
 
