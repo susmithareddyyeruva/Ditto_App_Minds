@@ -26,9 +26,9 @@ class WorkspaceImpl @Inject constructor(
         status: String,
         numberOfCompletedPiece: NumberOfPieces,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+        garmetWorkspaceItems: List<WorkspaceItemDomain>,
+        liningWorkspaceItems: List<WorkspaceItemDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any> {
         return workspaceRepository.updateOfflineStorageData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece,patternPieces,
         garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItem)

@@ -14,9 +14,9 @@ interface GetWorkspaceData {
         status: String,
         numberOfCompletedPiece: NumberOfPieces,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+        garmetWorkspaceItems: List<WorkspaceItemDomain>,
+        liningWorkspaceItems: List<WorkspaceItemDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any>
     fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
     fun getUserDetails():Single<Result<LoginUser>>

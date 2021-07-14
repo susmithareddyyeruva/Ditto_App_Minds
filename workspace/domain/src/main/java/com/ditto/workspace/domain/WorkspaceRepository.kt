@@ -19,9 +19,9 @@ interface WorkspaceRepository {
         status: String,
         numberOfCompletedPiece: NumberOfPieces,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+        garmetWorkspaceItems: List<WorkspaceItemDomain>,
+        liningWorkspaceItems: List<WorkspaceItemDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any>
     fun deleteAndInsert(id:Int, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>

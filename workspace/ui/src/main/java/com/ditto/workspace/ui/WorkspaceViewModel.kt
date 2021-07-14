@@ -158,7 +158,7 @@ class WorkspaceViewModel @Inject constructor(
                     c.liningWorkspaceItems,c.interfaceWorkspaceItem)
 
                 //updateWSAPIDataToDB(wsData)//todo need to add tailernova details
-                updateWSPatternDataStorage(3,"Update123","DoneUpdate123",c.numberOfCompletedPiece,
+                updateWSPatternDataStorage(3,"UpdateTAB","DoneUpdate123",c.numberOfCompletedPiece,
                     c.patternPieces,c.garmetWorkspaceItems,
                     c.liningWorkspaceItems,c.interfaceWorkspaceItem)//todo need to add tailernova details
             }
@@ -175,9 +175,9 @@ class WorkspaceViewModel @Inject constructor(
         status: String,
         numberOfCompletedPiece: NumberOfPieces,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+        garmetWorkspaceItems: List<WorkspaceItemDomain>,
+        liningWorkspaceItems: List<WorkspaceItemDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ){
         disposable += getWorkspaceData.updateOfflineStorageData(tailornaovaDesignId, selectedTab,status,
             numberOfCompletedPiece,patternPieces,garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItem)
@@ -194,7 +194,7 @@ class WorkspaceViewModel @Inject constructor(
 
             }
         }
-        uiEvents.post(Event.OnClickSaveAndExit)
+        uiEvents.post(Event.OnClickSaveAndExit)//todo check
     }
 
 
@@ -213,7 +213,6 @@ class WorkspaceViewModel @Inject constructor(
 
             }
         }
-        uiEvents.post(Event.CloseScreen)
     }
 
     fun fetchWorkspaceSettingData(){
@@ -718,31 +717,31 @@ class WorkspaceViewModel @Inject constructor(
         patternPieces.add(patternInputData2)
 
 
-        val garmetWorkspaceItems: ArrayList<WorkspaceItemAPIDomain> = ArrayList()
+        val garmetWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
 
-        val garmentWorkspaceItemInputData = WorkspaceItemAPIDomain(id=11,patternPiecesId = 11,
+        val garmentWorkspaceItemInputData = WorkspaceItemDomain(id=11,patternPiecesId = 11,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "2")
 
-        val garmentWorkspaceItemInputData1 = WorkspaceItemAPIDomain(id=1,patternPiecesId = 12,
+        val garmentWorkspaceItemInputData1 = WorkspaceItemDomain(id=1,patternPiecesId = 12,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "22")
         garmetWorkspaceItems.add(garmentWorkspaceItemInputData)
         garmetWorkspaceItems.add(garmentWorkspaceItemInputData1)
 
-        val liningWorkspaceItems:ArrayList<WorkspaceItemAPIDomain> = ArrayList()
+        val liningWorkspaceItems:ArrayList<WorkspaceItemDomain> = ArrayList()
 
-        val liningWorkspaceItemInputData = WorkspaceItemAPIDomain(id=12,patternPiecesId = 12,
+        val liningWorkspaceItemInputData = WorkspaceItemDomain(id=12,patternPiecesId = 12,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.10",pivotX = "1",pivotY = "2",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "2")
         liningWorkspaceItems.add(liningWorkspaceItemInputData)
 
-        val interfaceWorkspaceItem: ArrayList<WorkspaceItemAPIDomain> = ArrayList()
+        val interfaceWorkspaceItem: ArrayList<WorkspaceItemDomain> = ArrayList()
 
-        val interfaceWorkspaceItemInputData = WorkspaceItemAPIDomain(id=1,patternPiecesId = 1,
+        val interfaceWorkspaceItemInputData = WorkspaceItemDomain(id=1,patternPiecesId = 1,
             isCompleted = "true",xcoordinate = "0.10",ycoordinate = "0.100",pivotX = "122",pivotY = "112",
             transformA = "1",transformD = "1",rotationAngle = "10",isMirrorH ="true",isMirrorV = "10",
             showMirrorDialog = "true",currentSplicedPieceNo = "2")

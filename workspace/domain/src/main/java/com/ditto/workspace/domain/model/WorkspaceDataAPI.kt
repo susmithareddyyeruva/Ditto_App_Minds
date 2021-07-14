@@ -1,5 +1,5 @@
 package com.ditto.workspace.domain.model
-data class WorkspaceDataAPI ( //todo move to storage
+data class WorkspaceDataAPI (
 
     //getWorkspace data response
     var tailornaovaDesignId: Int? = 0,
@@ -7,9 +7,9 @@ data class WorkspaceDataAPI ( //todo move to storage
     var status:String="",
     var numberOfPieces: NumberOfPieces,
     var patternPiecesFromApi: List<PatternPieceDomain> = emptyList(),
-    var garmetWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList(),
-    var liningWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList(),
-    var interfaceWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList()
+    var garmetWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
+    var liningWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
+    var interfaceWorkspaceItems: List<WorkspaceItemDomain> = emptyList()
 
     // tailernova response
     /*var id: Int = 0,

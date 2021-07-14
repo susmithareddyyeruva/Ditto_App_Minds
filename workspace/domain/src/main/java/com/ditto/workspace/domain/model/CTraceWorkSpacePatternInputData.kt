@@ -7,7 +7,7 @@ data class CTraceWorkSpacePatternInputData (
     val status:String,
     val numberOfCompletedPiece:NumberOfPieces,
     var patternPieces: List<PatternPieceDomain> = emptyList(),
-    var garmetWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList(),
-    var liningWorkspaceItems: List<WorkspaceItemAPIDomain> = emptyList(),
-    var interfaceWorkspaceItem: List<WorkspaceItemAPIDomain> = emptyList()
+    var garmetWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
+    var liningWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
+    var interfaceWorkspaceItem: List<WorkspaceItemDomain> = emptyList()
 )

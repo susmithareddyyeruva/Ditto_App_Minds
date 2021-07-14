@@ -134,8 +134,8 @@ fun com.ditto.storage.data.model.PatternPiecesOffline.toDomain(): PatternPieceDo
     )
 }
 
-fun com.ditto.storage.data.model.WorkspaceItemOffline.toDomain(): WorkspaceItemAPIDomain {
-    return WorkspaceItemAPIDomain(
+fun com.ditto.storage.data.model.WorkspaceItemOffline.toDomain(): WorkspaceItemDomain {
+    return WorkspaceItemDomain(
         id = this.id,
         patternPiecesId = this.patternPiecesId,
         isCompleted = this.isCompleted,
@@ -153,7 +153,7 @@ fun com.ditto.storage.data.model.WorkspaceItemOffline.toDomain(): WorkspaceItemA
     )
 }
 
-fun WorkspaceItemAPIDomain.toDomain(): com.ditto.storage.data.model.WorkspaceItemOffline {
+fun WorkspaceItemDomain.toDomain(): com.ditto.storage.data.model.WorkspaceItemOffline {
     return com.ditto.storage.data.model.WorkspaceItemOffline(
         id = this.id,
         patternPiecesId = this.patternPiecesId,

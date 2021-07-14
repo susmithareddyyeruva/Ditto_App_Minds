@@ -74,9 +74,9 @@ class WorkspaceRepositoryImpl @Inject constructor(
         status: String,
         numberOfCompletedPiece: NumberOfPieces,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        liningWorkspaceItems: List<WorkspaceItemAPIDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemAPIDomain>
+        garmetWorkspaceItems: List<WorkspaceItemDomain>,
+        liningWorkspaceItems: List<WorkspaceItemDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any> {
         return Single.fromCallable{
             workspcaeDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece.toDomain(),
