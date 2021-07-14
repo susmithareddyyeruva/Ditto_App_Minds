@@ -36,6 +36,7 @@ class AllPatternsViewModel @Inject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
+    private var menuItem: ArrayList<MenuDomain>? = ArrayList()
 
     init {
     }
@@ -96,6 +97,7 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
+                menuItem?.add(result.data.menuItem)
                 uiEvents.post(Event.OnResultSuccess)
             }
             is Result.OnError -> handleError(result.error)
@@ -110,14 +112,11 @@ class AllPatternsViewModel @Inject constructor(
     fun onItemClickPattern(id: String) {
         if (id == "10617801") {
             clickedId.set(1)
-        }
-        else if (id == "11836020") {
+        } else if (id == "11836020") {
             clickedId.set(2)
-        }
-        else if (id == "13239611") {
+        } else if (id == "13239611") {
             clickedId.set(3)
-        }
-        else if (id == "15131196") {
+        } else if (id == "15131196") {
             clickedId.set(4)
         }
         uiEvents.post(Event.OnItemClick)

@@ -1,8 +1,10 @@
 package com.ditto.mylibrary.data.mapper
 
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
+import com.ditto.mylibrary.domain.model.MenuDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.model.MenuItem
 import com.ditto.mylibrary.model.MyLibraryResult
 import com.ditto.mylibrary.model.Prod
 import com.ditto.storage.data.model.Patterns
@@ -47,7 +49,18 @@ fun MyLibraryResult.toDomain(): AllPatternsDomain {
         action = this.action,
         locale = this.locale,
         prod = this.prod.map { it.toDomain() },
-        queryString = this.queryString
+        queryString = this.queryString,
+        totalCount = this.totalCount,
+        menuItem = this.menu.toDomain()
+    )
+}
+
+fun MenuItem.toDomain(): MenuDomain {
+    return MenuDomain(
+        category = this.category,
+        brand = this.brand,
+        gender = this.gender,
+        size = this.size
     )
 }
 

@@ -11,5 +11,9 @@ data class MyLibraryResult(
     @SerializedName("prod")
     val prod: List<Prod>,
     @SerializedName("queryString")
-    val queryString: String
+    val queryString: String,
+    @SerializedName("totalCount")
+    val totalCount: Int,
+    @SerializedName("filter")
+    val menu: MenuItem
 )
