@@ -586,7 +586,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private suspend fun projectBorderImage() {
         withContext(Dispatchers.IO) {
-            val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
+            val bitmap = Utility.getBitmapFromDrawable("setup_pattern_border", requireContext())
 
             var soc: Socket? = null
             try {

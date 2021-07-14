@@ -19,6 +19,6 @@ limitations under the License. -->
     <string name="pause">Pause</string>
     <string name="divider">/</string>
     <string name="skip_video">Skip video</string>
-    <string name="ditto_application_overview">ditto application overview</string>
+    <string name="ditto_application_overview">Ditto application overview</string>
     <string name="youtube_api_key">AIzaSyCkPkU1MbL78LtkMmjYrkdMatURfwrlOVE</string>
 </resources>

@@ -398,7 +398,7 @@ class InstructionFragment constructor(
     }
 
     private fun projectBorderImage() {
-        val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
+        val bitmap = Utility.getBitmapFromDrawable("setup_pattern_border", requireContext())
         GlobalScope.launch { sendSampleImage(bitmap, false) }
     }
 

@@ -148,7 +148,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     val bundle = bundleOf(
                         "UserId" to 0,
                         "videoPath" to viewModel.videoUrl,
-                        "title" to "ditto application overview",
+                        "title" to "Ditto application overview",
                         "from" to "LOGIN"
                     )
                     val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
@@ -168,7 +168,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                         getUserDetails(true)
                         val bundle = bundleOf("UserId" to 0,
                             "videoPath" to viewModel.videoUrl,
-                            "title" to "ditto application overview",
+                            "title" to "Ditto application overview",
                             "from" to "LOGIN"
                         )
                         val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)

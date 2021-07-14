@@ -1900,7 +1900,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         withContext(Dispatchers.IO) {
             val bitmap =
                 Utility.getBitmapFromDrawable(
-                    "calibration_border",
+                    "setup_pattern_border",
                     requireContext()
                 )
             var soc: Socket? = null
