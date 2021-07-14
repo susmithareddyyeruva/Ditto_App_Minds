@@ -51,7 +51,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private var selectedItemsList = ArrayList<String>()
     private lateinit var adapter: FilterRvAdapter
     private val allPatternAdapter = AllPatternsAdapter()
-    var menuItems = arrayListOf(
+/*    var menuItems = arrayListOf(
         FilterMenuItem("Category", 1),
         FilterMenuItem("Gender", 2),
         FilterMenuItem("Brand", 3),
@@ -61,50 +61,50 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterMenuItem("Occasion", 7),
         FilterMenuItem("Age Group", 8),
         FilterMenuItem("Customization", 9)
-    )
-    var categoryFilterList = arrayListOf(
-        FilterItems("SubScribed"),
-        FilterItems("Purchased"),
-        FilterItems("Trials"),
-    )
-    val genderList = arrayListOf(
-        FilterItems("Male"),
-        FilterItems("Female")
-    )
-    val brandList = arrayListOf(
-        FilterItems("Simplicity"),
-        FilterItems("Sample")
-    )
-    val sizeList = arrayListOf(
-        FilterItems("32"),
-        FilterItems("34"),
-        FilterItems("36"),
-        FilterItems("38")
-    )
-    val typeList = arrayListOf(
-        FilterItems("Dress"),
-        FilterItems("Skirt"),
-        FilterItems("Blouse")
-    )
-    val occasionList = arrayListOf(
-        FilterItems("Sleepwear"),
-        FilterItems("Lounge"),
-        FilterItems("Formal"),
-        FilterItems("Sport")
-    )
-    val suitableList = arrayListOf(
-        FilterItems("Children"),
-        FilterItems("Men"),
-        FilterItems("Women"),
-    )
-    val customizationList = arrayListOf(
-        FilterItems("Yes"),
-        FilterItems("No")
-    )
-    val seasonList = arrayListOf(
-        FilterItems("Winter"),
-        FilterItems("Summer")
-    )
+    )*/
+    /* var categoryFilterList = arrayListOf(
+         FilterItems("SubScribed"),
+         FilterItems("Purchased"),
+         FilterItems("Trials"),
+     )
+     val genderList = arrayListOf(
+         FilterItems("Male"),
+         FilterItems("Female")
+     )
+     val brandList = arrayListOf(
+         FilterItems("Simplicity"),
+         FilterItems("Sample")
+     )
+     val sizeList = arrayListOf(
+         FilterItems("32"),
+         FilterItems("34"),
+         FilterItems("36"),
+         FilterItems("38")
+     )
+     val typeList = arrayListOf(
+         FilterItems("Dress"),
+         FilterItems("Skirt"),
+         FilterItems("Blouse")
+     )
+     val occasionList = arrayListOf(
+         FilterItems("Sleepwear"),
+         FilterItems("Lounge"),
+         FilterItems("Formal"),
+         FilterItems("Sport")
+     )
+     val suitableList = arrayListOf(
+         FilterItems("Children"),
+         FilterItems("Men"),
+         FilterItems("Women"),
+     )
+     val customizationList = arrayListOf(
+         FilterItems("Yes"),
+         FilterItems("No")
+     )
+     val seasonList = arrayListOf(
+         FilterItems("Winter"),
+         FilterItems("Summer")
+     )*/
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -125,7 +125,6 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setUIEvents()
         setUpToolbar()
         setUpNavigationDrawer()
-        setFilterMenuAdapter(0)
         setPatternAdapter()
         if (AppState.getIsLogged()) {
             if (!Utility.isTokenExpired()) {
@@ -144,68 +143,90 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             ClickListener {
             override fun onClick(view: View, position: Int) {
                 setFilterMenuAdapter(position)
-                when (position) {
-                    0 -> {//category
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            categoryFilterList,
-                            menuItems[position].menuItem
-                        )
+                val menuArray= ArrayList<FilterMenuItem>()  //menus
+                val menuValArray= ArrayList<FilterItems>()  //menus
+                val menuIte= viewModel.menuItem!![position]
+                viewModel.menuItem!!.forEach {
+                   menuArray.add(FilterMenuItem(it,0))
+                }
 
-                    }
-                    1 -> {//Gender
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            genderList,
-                            menuItems[position].menuItem
-                        )
-                    }
-                    2 -> {//Brand
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            brandList,
-                            menuItems[position].menuItem
-                        )
+                val list = viewModel.menuValues?.get(position)
+                list?.forEach {
+                   menuValArray.add( FilterItems(it.toString()))
+                }
 
-                    }
-                    3 -> {//Size
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            sizeList,
-                            menuItems[position].menuItem
-                        )
 
-                    }
-                    4 -> {//Type
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            typeList,
-                            menuItems[position].menuItem
-                        )
+                /*         when (position) {
+                             0 -> {//category
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     categoryFilterList,
+                                     viewModel.menuItem!![position]
+                                 )
 
-                    }
-                    5 -> {//Season
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            seasonList,
-                            menuItems[position].menuItem
-                        )
+                             }
+                             1 -> {//Gender
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     genderList,
+                                     viewModel.menuItem!![position]
+                                 )
+                             }
+                             2 -> {//Brand
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     brandList,
+                                     viewModel.menuItem!![position]
+                                 )
 
-                    }
-                    6 -> {//Occasion
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            occasionList,
-                            menuItems[position].menuItem
-                        )
+                             }
+                             3 -> {//Size
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     sizeList,
+                                     viewModel.menuItem!![position]
+                                 )
 
-                    }
-                    7 -> {//Suitable
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            suitableList,
-                            menuItems[position].menuItem
-                        )
+                             }
+                             4 -> {//Type
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     typeList,
+                                     viewModel.menuItem!![position]
+                                 )
 
-                    }
-                    8 -> {//Customization
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            customizationList,
-                            menuItems[position].menuItem
-                        )
+                             }
+                             5 -> {//Season
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     seasonList,
+                                     viewModel.menuItem!![position]
+                                 )
 
+                             }
+                             6 -> {//Occasion
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     occasionList,
+                                     viewModel.menuItem!![position]
+                                 )
+
+                             }
+                             7 -> {//Suitable
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     suitableList,
+                                     viewModel.menuItem!![position]
+                                 )
+
+                             }
+                             8 -> {//Customization
+                                 (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                                     customizationList,
+                                     viewModel.menuItem!![position]
+                                 )
+
+                             }
+                         }*/
+                when (viewModel.menuItem!![position]) {
+                    "category" -> {
+
+                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
+                            viewModel.categoryList!!,
+                            viewModel.menuItem!![position]
+                        )
                     }
                 }
 
@@ -249,77 +270,81 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
             allPatternAdapter.setListData(items = list)
         })
+        setFilterMenuAdapter(0)   //Setting Menu Items
     }
 
     private fun setAsDefault() {
-        categoryFilterList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        brandList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        genderList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        seasonList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        occasionList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        suitableList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        typeList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        customizationList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        sizeList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
+        /*   categoryFilterList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           brandList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           genderList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           seasonList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           occasionList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           suitableList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           typeList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           customizationList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }
+           sizeList.forEach {
+               if (it.isSelected) {
+                   it.isSelected = false
+               }
+           }*/
     }
 
     private fun setList() {
-        Filter.genderList.addAll(genderList)
-        Filter.brandList.addAll(brandList)
-        Filter.categoryList.addAll(categoryFilterList)
-        Filter.sizeList.addAll(sizeList)
-        Filter.typeList.addAll(typeList)
-        Filter.occasionList.addAll(occasionList)
-        Filter.seasonList.addAll(seasonList)
-        Filter.suitableList.addAll(suitableList)
-        Filter.customizationList.addAll(customizationList)
+        Filter.categoryList.addAll(viewModel.categoryList!!.toMutableList())
+        /*   Filter.genderList.addAll(genderList)
+           Filter.brandList.addAll(brandList)
+           Filter.categoryList.addAll(categoryFilterList)
+           Filter.sizeList.addAll(sizeList)
+           Filter.typeList.addAll(typeList)
+           Filter.occasionList.addAll(occasionList)
+           Filter.seasonList.addAll(seasonList)
+           Filter.suitableList.addAll(suitableList)
+           Filter.customizationList.addAll(customizationList)*/
     }
 
     private fun setFilterActionAdapter() {
         binding.rvActions.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvActions.adapter = FilterActionsAdapter(categoryFilterList, this)
+        binding.rvActions.adapter = FilterActionsAdapter(arrayListOf(), this)
     }
 
     private fun setFilterMenuAdapter(position: Int) {
-        binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCategory.adapter = FilterRvAdapter(menuItems, position)
-        setFilterActionAdapter()
+        if (viewModel.menuItem != null) {
+            binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCategory.adapter = FilterRvAdapter(viewModel.menuItem!!, position)
+            setFilterActionAdapter()
+        }
     }
 
     private fun setUpToolbar() {

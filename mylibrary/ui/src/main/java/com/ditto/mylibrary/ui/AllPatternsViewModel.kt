@@ -36,7 +36,10 @@ class AllPatternsViewModel @Inject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
-    private var menuItem: ArrayList<MenuDomain>? = ArrayList()
+    var menuItem: List<String>? = emptyList()
+    var categoryList: ArrayList<FilterItems>? = ArrayList()
+    var menuValues: ArrayList<String>? = ArrayList()
+    var mutableList = mutableListOf<String>()
 
     init {
     }
@@ -97,7 +100,20 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
-                menuItem?.add(result.data.menuItem)
+                val sortedMap = result.data.menuItem.toSortedMap()
+                menuItem = sortedMap.keys.toList()
+                sortedMap.values.forEach {
+                    menuValues?.addAll(it)
+                }
+
+
+                /*      val catiList = sortedMap.filter {
+                          it.key.equals("category")
+                      }
+                      catiList.values.forEach {
+                          categoryList?.add(FilterItems(it[]))
+                      }*/
+
                 uiEvents.post(Event.OnResultSuccess)
             }
             is Result.OnError -> handleError(result.error)
@@ -211,6 +227,7 @@ class AllPatternsViewModel @Inject constructor(
             Filter.suitableList.filter { it.isSelected }.map { it.title }.joinToString(",")
         val customizationAsString =
             Filter.customizationList.filter { it.isSelected }.map { it.title }.joinToString(",")
+
         val filterCriteria = ProductFilter()
         // filterCriteria.category = categoryAsString
         /*   filterCriteria.brand = brandAsString*/

@@ -15,5 +15,5 @@ data class MyLibraryResult(
     @SerializedName("totalCount")
     val totalCount: Int,
     @SerializedName("filter")
-    val menu: MenuItem
+    val menu: HashMap<String,List<String>>
 )

@@ -11,7 +11,7 @@ import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_filter.view.*
 
 class FilterActionsAdapter(
-    private var items: ArrayList<FilterItems>,
+    private var items: List<FilterItems>,
     private var ItemsListener: SelectedItemsListener
 ) : RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
 
@@ -54,7 +54,7 @@ class FilterActionsAdapter(
     }
 
     fun updateList(
-        filterList: ArrayList<FilterItems>,
+        filterList: List<FilterItems>,
         menu: String
     ) {
         this.items = filterList

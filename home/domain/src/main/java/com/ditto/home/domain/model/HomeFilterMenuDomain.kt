@@ -1,6 +1,6 @@
-package com.ditto.mylibrary.domain.model
+package com.ditto.home.domain.model
 
-data class MenuDomain(
+data class HomeFilterMenuDomain(
     val category: List<String>,
     val brand: List<String>,
     val size: List<String>,

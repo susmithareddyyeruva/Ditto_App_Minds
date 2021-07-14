@@ -6,6 +6,6 @@ data class MenuItem(
 
     @SerializedName("category") val category: List<String>,
     @SerializedName("brand") val brand: List<String>,
-    @SerializedName("size") val size: List<Int>,
+    @SerializedName("size") val size: List<String>,
     @SerializedName("gender") val gender: List<String>
 )

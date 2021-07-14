@@ -48,7 +48,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             return myLibraryService.getAllPatternsPatterns(MyLibraryFilterRequestData(
                 OrderFilter(false,
-                    "mylibrary@gmail.com",true,false,false), ProductFilter()
+                    "subscustomerOne@gmail.com",true,false), ProductFilter()
             ),"Bearer "+ AppState.getToken()!!)
                 .doOnSuccess {
                     logger.d("*****FETCH FILTER SUCCESS**")
@@ -120,8 +120,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return myLibraryService.getAllPatternsPatterns(MyLibraryFilterRequestData(
-            OrderFilter(false,
-                "mylibrary@gmail.com",true,false,false),product
+            OrderFilter(true,
+                "subscustomerOne@gmail.com",true,false),product
         ),"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH FILTER SUCCESS**")

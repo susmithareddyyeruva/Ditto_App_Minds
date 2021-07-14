@@ -51,7 +51,7 @@ fun MyLibraryResult.toDomain(): AllPatternsDomain {
         prod = this.prod.map { it.toDomain() },
         queryString = this.queryString,
         totalCount = this.totalCount,
-        menuItem = this.menu.toDomain()
+        menuItem = this.menu
     )
 }
 
