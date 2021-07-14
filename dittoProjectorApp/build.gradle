@@ -14,7 +14,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "0.04"
+        versionName "2.08(03)"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,8 +29,8 @@ android {
         debug{
             debuggable true
             minifyEnabled false
-//            buildConfigField "String", "APP_CENTER_KEY", "\"8e8cc19b-bfe4-455c-b4e7-740ea3063a9a\"" // ---- DEV
-            buildConfigField "String", "APP_CENTER_KEY", "\"6c14361c-dde8-4a4a-be5f-be1082bd016c\""   // ----- NS
+            buildConfigField "String", "APP_CENTER_KEY", "\"8e8cc19b-bfe4-455c-b4e7-740ea3063a9a\"" // ---- DEV
+//            buildConfigField "String", "APP_CENTER_KEY", "\"6c14361c-dde8-4a4a-be5f-be1082bd016c\""   // ----- NS
         }
     }
     compileOptions {
