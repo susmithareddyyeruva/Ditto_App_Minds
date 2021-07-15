@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_singlecategory.view.*
 
-class FilterRvAdapter(private var items: List<String>, private var currentPos: Int) :RecyclerView.Adapter<FilterRvAdapter.NavigationItemViewHolder>() {
+class FilterRvAdapter(private var items: List<String>, private var currentPos: Int,private  val clickListener: MenuClickListener) :RecyclerView.Adapter<FilterRvAdapter.NavigationItemViewHolder>() {
 
     private lateinit var context: Context
 
@@ -43,5 +43,13 @@ class FilterRvAdapter(private var items: List<String>, private var currentPos: I
         }
 
         holder.itemView.itemCategoryName.text = items[position]
+        holder.itemView.setOnClickListener {
+            currentPos=position
+            clickListener.onMenuSelected(items[position])
+           notifyDataSetChanged()
+        }
+    }
+    interface MenuClickListener{
+        fun onMenuSelected( menu: String)
     }
 }

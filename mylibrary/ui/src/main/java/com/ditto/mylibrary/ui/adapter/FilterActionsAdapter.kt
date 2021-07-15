@@ -11,8 +11,10 @@ import com.ditto.mylibrary.ui.R
 import kotlinx.android.synthetic.main.item_filter.view.*
 
 class FilterActionsAdapter(
-    private var items: List<FilterItems>,
-    private var ItemsListener: SelectedItemsListener
+  /*  private var items: List<FilterItems>,*/
+    private var ItemsListener: SelectedItemsListener,
+    private var menuList: HashMap<String, ArrayList<FilterItems>>,
+    private var keys: String
 ) : RecyclerView.Adapter<FilterActionsAdapter.NavigationItemViewHolder>() {
 
     private lateinit var context: Context
@@ -27,26 +29,27 @@ class FilterActionsAdapter(
         return NavigationItemViewHolder(navItem)
     }
 
-    override fun getItemCount(): Int {
-        return items.count()
-    }
+    override fun getItemCount() = menuList[keys]?.toList()?.size?:0
 
     override fun onBindViewHolder(holder: NavigationItemViewHolder, position: Int) {
-        holder.itemView.itemAction.text = items[position].title
-        holder.itemView.checkItem.isChecked = items[position].isSelected
+        val result=menuList[keys]?.toList()
+        holder.itemView.itemAction.text = result?.get(position)?.title
+        holder.itemView.checkItem.isChecked =  result?.get(position)?.isSelected?:false
         holder.itemView.setOnClickListener {
             holder.itemView.checkItem.performClick()
+          /*  items[position].isSelected=!items[position].isSelected
+            notifyDataSetChanged()*/
         }
         holder.itemView.checkItem.setOnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isChecked) {
-                Log.d("Checked true", items[position].title)
-                items[position].isSelected = true
-                ItemsListener.onItemsSelected(items[position].title, true, menuItem)
+                Log.d("Checked true", result?.get(position)?.title?:"")
+                result?.get(position)?.isSelected = true
+                ItemsListener.onItemsSelected(result?.get(position)?.title?:"", true, menuItem)
             } else {
-                items[position].isSelected = false
+                result?.get(position)?.isSelected = false
                 compoundButton.isChecked = false
-                Log.d("Checked false", items[position].title)
-                ItemsListener.onItemsSelected(items[position].title, false, menuItem)
+                Log.d("Checked false", result?.get(position)?.title?:"")
+                ItemsListener.onItemsSelected(result?.get(position)?.title?:"", false, menuItem)
             }
         }
 
@@ -54,16 +57,17 @@ class FilterActionsAdapter(
     }
 
     fun updateList(
-        filterList: List<FilterItems>,
-        menu: String
+        menuKey: String
     ) {
-        this.items = filterList
-        this.menuItem = menu
+        this.keys=menuKey
         notifyDataSetChanged()
 
     }
 
+
     interface SelectedItemsListener {
         fun onItemsSelected(title: String, isSelected: Boolean, menu: String)
     }
+
+
 }

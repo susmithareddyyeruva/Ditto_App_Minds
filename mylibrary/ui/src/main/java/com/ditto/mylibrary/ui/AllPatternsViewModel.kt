@@ -19,8 +19,13 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 
 class AllPatternsViewModel @Inject constructor(
     private val getPatternsData: GetMylibraryData
@@ -36,13 +41,8 @@ class AllPatternsViewModel @Inject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
-    var menuItem: List<String>? = emptyList()
-    var categoryList: ArrayList<FilterItems>? = ArrayList()
-    var menuValues: ArrayList<String>? = ArrayList()
-    var mutableList = mutableListOf<String>()
-
-    init {
-    }
+    var map = HashMap<String, List<String>>()
+    val menuList = hashMapOf<String, ArrayList<FilterItems>>()
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -100,24 +100,29 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
-                val sortedMap = result.data.menuItem.toSortedMap()
-                menuItem = sortedMap.keys.toList()
-                sortedMap.values.forEach {
-                    menuValues?.addAll(it)
-                }
-
-
-                /*      val catiList = sortedMap.filter {
-                          it.key.equals("category")
-                      }
-                      catiList.values.forEach {
-                          categoryList?.add(FilterItems(it[]))
-                      }*/
-
+                map = result.data.menuItem  //hashmap
+                setList()
                 uiEvents.post(Event.OnResultSuccess)
             }
             is Result.OnError -> handleError(result.error)
         }
+    }
+
+    fun setList() {
+
+        for ((key, value) in map) {
+            var menuValues: ArrayList<FilterItems> = ArrayList()
+            for (aString in value) {
+                menuValues?.add(FilterItems(aString))
+
+            }
+            //  Filter.menuItemListFilter[key] = menuValues
+            menuList[key] = menuValues
+        }
+
+        Log.d("MAP  RESULT== ", menuList.size.toString())
+        uiEvents.post(Event.OnUpdateFilter)
+
     }
 
     fun onItemClick(id: Int) {
@@ -204,43 +209,11 @@ class AllPatternsViewModel @Inject constructor(
         object OnHideProgress : Event()
         object OnResultFailed : Event()
         object NoInternet : Event()
+        object OnUpdateFilter : Event()
     }
 
     fun createJson(): ProductFilter {
-        var genderAsString: ArrayList<String> = ArrayList()
-        genderAsString = ArrayList(Filter.genderList.filter { it.isSelected }.map { it.title })
-        var brandAsStringArray: ArrayList<String> = ArrayList()
-        //  brandAsStringArray.add(Filter.brandList.filter { it.isSelected }.map { it.title }.toString())
-        brandAsStringArray = ArrayList(Filter.brandList.filter { it.isSelected }.map { it.title })
-
-        val categoryAsString =
-            Filter.categoryList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val sizeAsString =
-            Filter.sizeList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val typeAsString =
-            Filter.typeList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val seasonAsString =
-            Filter.seasonList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val occasionAsString =
-            Filter.occasionList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val suitableAsString =
-            Filter.suitableList.filter { it.isSelected }.map { it.title }.joinToString(",")
-        val customizationAsString =
-            Filter.customizationList.filter { it.isSelected }.map { it.title }.joinToString(",")
-
         val filterCriteria = ProductFilter()
-        // filterCriteria.category = categoryAsString
-        /*   filterCriteria.brand = brandAsString*/
-        filterCriteria.brandString = brandAsStringArray
-        filterCriteria.gender = genderAsString
-        //filterCriteria.gender = genderAsString
-        //  filterCriteria.size = sizeAsString
-        //  filterCriteria.type = typeAsString
-        //  filterCriteria.season = seasonAsString
-        // filterCriteria.occasion = occasionAsString
-        // filterCriteria.suitable = suitableAsString
-        // filterCriteria.customization = customizationAsString
-
         val json = Gson().toJson(filterCriteria)
         Log.d("JSON===", json)
         /* val deserialized: ProductFilter = Gson().fromJson(json, ProductFilter::class.java)
