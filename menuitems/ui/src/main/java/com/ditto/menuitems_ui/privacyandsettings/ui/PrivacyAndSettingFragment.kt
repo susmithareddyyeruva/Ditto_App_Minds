@@ -120,7 +120,6 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.privacy_policy))
         (activity as BottomNavigationActivity).setToolbarIcon()
     }

@@ -53,7 +53,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
     private lateinit var binding: ActivityBottomNavigationBinding
     private lateinit var navController: NavController
-    var ishidemenu: Boolean = false
     lateinit var expandableListView: NoScrollExListView
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
 
@@ -96,7 +95,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.bottomNavViewModel?.visibility?.set(false)
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
-                hidemenu()
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
 
@@ -247,9 +245,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     override fun androidInjector(): AndroidInjector<Any> = fragmentInjector
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        var menuItem: MenuItem = menu!!.findItem(R.id.action_menu)
-        menuItem.isVisible = !ishidemenu
+//        menuInflater.inflate(R.menu.toolbar_menu, menu)
+//        var menuItem: MenuItem = menu!!.findItem(R.id.action_menu)
+//        menuItem.isVisible = !ishidemenu
         return true
     }
 
@@ -292,16 +290,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             }
         }
         return super.dispatchTouchEvent(event)
-    }
-
-    fun hidemenu() {
-        ishidemenu = true
-        invalidateOptionsMenu()
-    }
-
-    fun showmenu() {
-        ishidemenu = false
-        invalidateOptionsMenu()
     }
 
     fun hideDrawerLayout() {

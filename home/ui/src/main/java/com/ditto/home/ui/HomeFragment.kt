@@ -101,7 +101,6 @@ class HomeFragment : BaseFragment() {
                 }
             }
             HomeViewModel.Event.OnClickTutorial -> {
-               (activity as BottomNavigationActivity).hidemenu()
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf("isFromHome" to true)
                     findNavController().navigate(R.id.action_home_to_tutorial,bundle)

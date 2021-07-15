@@ -106,6 +106,7 @@
                     android:layout_marginBottom="@dimen/margin_text"
                     android:fadeScrollbars="false"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:lineSpacingMultiplier="1.25"
                     android:paddingEnd="@dimen/margin_text"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"

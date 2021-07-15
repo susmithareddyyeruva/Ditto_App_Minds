@@ -12,10 +12,7 @@ import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import core.ui.common.Utility
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
@@ -30,16 +27,24 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     val mode: ObservableField<String> = ObservableField(MODE_SERVICE)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+
     fun connectToProjector(hostAddress : String, port : Int, isShowProgress : Boolean){
         showProgress(isShowProgress)
         GlobalScope.launch {
+            delay(200)
             startSocketConnection(hostAddress,port)
         }
+    }
+
+    fun sendWaitingImage(){
+        showProgress(true)
+        uiEvents.post(Event.OnWaitingImageSent)
     }
 
     fun disConnectToProjector(hostAddress : String, port : Int, isShowProgress : Boolean){
         showProgress(isShowProgress)
         GlobalScope.launch {
+            delay(200)
             disconnectSocketConnection(hostAddress,port)
         }
     }
@@ -56,6 +61,8 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
             try {
                 soc = Socket(host, port)
                 soc.close()
+                NetworkUtility.nsdSericeHostName = ""
+                NetworkUtility.nsdSericePortName = 0
                 uiEvents.post(Event.OnSocketDisconnect)
             } catch (e: ConnectException) {
                 uiEvents.post(Event.OnSocketDisconnect)
@@ -68,13 +75,14 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     }
 
      private suspend fun startSocketConnection(hostAddress : String, port : Int) {
-
         withContext(Dispatchers.IO) {
             val host = InetAddress.getByName(hostAddress)
             var soc: Socket? = null
             try {
                 soc = Socket(host, port)
                 if (soc.isConnected) {
+                    NetworkUtility.nsdSericeHostName = hostAddress
+                    NetworkUtility.nsdSericePortName = port
                     connectionSuccess()
                 } else {
                     connectionFailed()
@@ -98,6 +106,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     }
 
     private fun connectionSuccess() {
+        println("******************* connectionSuccess")
         uiEvents.post(Event.OnHideprogress)
         uiEvents.post(Event.OnConnectionSuccess)
     }
@@ -139,5 +148,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
         object OnSocketDisconnect : Event()
         object OnConnectClick : Event()
         object OnBleConnectClick : Event()
+        object OnWaitingImageSent : Event()
+        object OnConnectedImageSent : Event()
     }
 }

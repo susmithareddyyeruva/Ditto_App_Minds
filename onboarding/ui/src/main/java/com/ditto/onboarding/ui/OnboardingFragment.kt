@@ -63,7 +63,6 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
         viewModel.isFromHome_Observable.set(isFromHomeScreen)
-        (activity as BottomNavigationActivity).hidemenu()
         if(viewModel.dataFromApi.value == null){
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)

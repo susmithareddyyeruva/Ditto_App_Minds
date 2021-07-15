@@ -179,7 +179,6 @@ class HowtoFragment : BaseFragment() {
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             viewModel.toolbarTitle.set("How To")
-            (activity as BottomNavigationActivity).hidemenu()
             toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -190,7 +189,6 @@ class HowtoFragment : BaseFragment() {
             toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            (activity as BottomNavigationActivity).hidemenu()
         }
     }
 

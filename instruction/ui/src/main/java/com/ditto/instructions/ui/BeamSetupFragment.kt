@@ -82,7 +82,6 @@ class BeamSetupFragment : BaseFragment() {
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             viewModel.toolbarTitle.set("Beam Setup & Takedown")
-            (activity as BottomNavigationActivity).hidemenu()
             toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -94,7 +93,6 @@ class BeamSetupFragment : BaseFragment() {
             viewModel.toolbarTitle.set("Beam Setup & Takedown")
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            (activity as BottomNavigationActivity).hidemenu()
         }
     }
 

@@ -91,7 +91,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern details")
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
@@ -587,7 +586,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private suspend fun projectBorderImage() {
         withContext(Dispatchers.IO) {
-            val bitmap = Utility.getBitmapFromDrawable("calibration_border", requireContext())
+            val bitmap = Utility.getBitmapFromDrawable("setup_pattern_border", requireContext())
 
             var soc: Socket? = null
             try {

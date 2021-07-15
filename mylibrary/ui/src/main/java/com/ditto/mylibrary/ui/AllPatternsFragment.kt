@@ -302,7 +302,6 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         bottomNavViewModel.showProgress.set(toShow)
     }
     private fun setUpToolbar() {
-        (activity as BottomNavigationActivity).hidemenu()
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)

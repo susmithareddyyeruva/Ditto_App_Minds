@@ -83,7 +83,6 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
         bottomNavViewModel.visibility.set(false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        (activity as? BottomNavigationActivity)?.hidemenu()
         toolbarViewModel?.isShowActionMenu.set(false)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

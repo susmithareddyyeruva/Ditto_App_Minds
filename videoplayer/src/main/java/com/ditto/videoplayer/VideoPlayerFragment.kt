@@ -81,7 +81,6 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            (activity as BottomNavigationActivity).hidemenu()
     }
 
     private fun setUIEvents() {
