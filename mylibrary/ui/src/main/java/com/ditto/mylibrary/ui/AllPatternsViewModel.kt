@@ -222,21 +222,8 @@ class AllPatternsViewModel @Inject constructor(
         val json1 = Gson().toJson(menuList)
         Log.d("JSON===", json1)
 
-
-        val tempMap = hashMapOf<String, ArrayList<FilterItems>>()
         val resultMap = hashMapOf<String, ArrayList<String>>()
 
-
-
-     /*   for ((key, value) in menuList) {
-            for (result in value) {
-                if (result.isSelected) {
-                    tempMap[key] = value
-
-                }
-            }
-
-        }*/
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         menuList.forEach { (key, value) ->
             val filtered=value.filter {prod-> prod.isSelected }
