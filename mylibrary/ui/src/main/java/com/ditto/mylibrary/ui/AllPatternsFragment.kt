@@ -146,7 +146,7 @@ class AllPatternsFragment : BaseFragment(),
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        binding.toolbar.header_view_title_pattern_count.text =
+        binding.toolbar.header_view_title.text =
             getString(R.string.pattern_library_count, AppState.getPatternCount())
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
