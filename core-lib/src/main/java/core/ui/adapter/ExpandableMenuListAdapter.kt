@@ -2,6 +2,7 @@ package core.ui.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,6 +82,7 @@ class ExpandableMenuListAdapter(
             headerMenuTitle?.setTextColor(context.getColor(R.color.app_red))
         }else if(headerTitle == "Sign in"){
             headerMenuTitle?.setTextColor(context.getColor(R.color.sign_in_blue))
+            headerMenuTitle?.setPaintFlags(headerMenuTitle.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
         }else{
             headerMenuTitle?.setTextColor(Color.BLACK)
         }
