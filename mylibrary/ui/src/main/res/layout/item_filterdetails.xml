@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.mylibrary.ui.AllPatternsViewModel">
+
+        </variable>
+
+        <variable
+            name="filter"
+            type="com.ditto.mylibrary.domain.model.FilterItems" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cheboxContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/start_margin">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox_filter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatCheckBox>
+
+        <TextView
+            android:id="@+id/itemAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:paddingStart="@dimen/action_text_start"
+            android:paddingTop="@dimen/item_cell_margin_top"
+            android:paddingBottom="@dimen/item_cell_margin_top"
+            android:text="@{filter.title}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/item_action_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/checkItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Subscribed" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_1"
+            android:background="@color/item_devider"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

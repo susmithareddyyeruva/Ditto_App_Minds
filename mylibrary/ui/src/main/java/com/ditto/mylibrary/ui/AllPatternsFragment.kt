@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
-import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
+import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import core.appstate.AppState
@@ -95,7 +95,7 @@ class AllPatternsFragment : BaseFragment(),
         }
 
         binding.clearFilter.setOnClickListener {
-            viewModel.menuList.clear()
+            // viewModel.menuList.clear()
             viewModel.setList()
         }
 
@@ -113,16 +113,7 @@ class AllPatternsFragment : BaseFragment(),
     }
 
 
-    private fun setFilterActionAdapter(keys: String) {
-        binding.rvActions.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvActions.adapter = FilterActionsAdapter(object :
-            FilterActionsAdapter.SelectedItemsListener {
-            override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
-                logger.d("Items==" + title)
-            }
-        }, viewModel.menuList, keys)
 
-    }
 
     private fun setFilterMenuAdapter(position: Int) {
         val result = viewModel.menuList.keys.toList()   //setting menus
@@ -132,13 +123,24 @@ class AllPatternsFragment : BaseFragment(),
                 override fun onMenuSelected(menu: String) {
                     Log.d("CLICKED===", menu)
                     clikedMenu = menu
-                    (binding.rvActions.adapter as FilterActionsAdapter).updateList(menu)
+                    (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
                 }
 
             })
         setFilterActionAdapter(result[0])  //set menu items
     }
+    private fun setFilterActionAdapter(keys: String) {
+        val filterDetailsAdapter = FilterDetailsAdapter(object :
+            FilterDetailsAdapter.SelectedItemsListener {
+            override fun onItemsSelected(title: String, isSelected: Boolean) {
+                logger.d("Items==" + title)
+            }
+        },viewModel.menuList, keys)
+        binding.rvActions.adapter = filterDetailsAdapter
+        filterDetailsAdapter.viewModel = viewModel
+        filterDetailsAdapter.updateList(keys)
 
+    }
     private fun setUpToolbar() {
         (activity as BottomNavigationActivity).hidemenu()
         toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -245,7 +247,11 @@ class AllPatternsFragment : BaseFragment(),
                 setFilterMenuAdapter(0)   //Setting Menu Items
             } else {
                 Log.d("MAP  RESULT== ", "ELSE")
-                (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
+                /*  (binding.rvActions.adapter as FilterDetailsAdapter).setListData(
+                      viewModel.menuList[clikedMenu]?.toList() ?: emptyList()
+                  )*/
+                binding.rvCategory.adapter?.notifyDataSetChanged()
+                binding.rvActions.adapter?.notifyDataSetChanged()
 
 
             }
