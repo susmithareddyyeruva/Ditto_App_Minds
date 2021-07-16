@@ -95,7 +95,7 @@ class AllPatternsFragment : BaseFragment(),
         }
 
         binding.clearFilter.setOnClickListener {
-            // viewModel.menuList.clear()
+             viewModel.menuList.clear()
             viewModel.setList()
         }
 
@@ -124,6 +124,7 @@ class AllPatternsFragment : BaseFragment(),
                     Log.d("CLICKED===", menu)
                     clikedMenu = menu
                     (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
+
                 }
 
             })
@@ -134,6 +135,9 @@ class AllPatternsFragment : BaseFragment(),
             FilterDetailsAdapter.SelectedItemsListener {
             override fun onItemsSelected(title: String, isSelected: Boolean) {
                 logger.d("Items==" + title)
+                for ((key, value) in viewModel.menuList) {
+                    logger.d("After  clik selection : $key = $value")
+                }
             }
         },viewModel.menuList, keys)
         binding.rvActions.adapter = filterDetailsAdapter

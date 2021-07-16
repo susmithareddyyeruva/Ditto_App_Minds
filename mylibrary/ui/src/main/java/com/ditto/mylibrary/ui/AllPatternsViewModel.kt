@@ -43,6 +43,7 @@ class AllPatternsViewModel @Inject constructor(
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
+    val jsonList = hashMapOf<String, ArrayList<String>>()
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -215,9 +216,56 @@ class AllPatternsViewModel @Inject constructor(
     fun createJson(): ProductFilter {
         val filterCriteria = ProductFilter()
         val json = Gson().toJson(filterCriteria)
-        Log.d("JSON===", json)
-        /* val deserialized: ProductFilter = Gson().fromJson(json, ProductFilter::class.java)
-         println(deserialized)*/
+        /*  for ((key, value) in menuList) {
+              Log.d("RESULT==", ":$key = $value")
+          }*/
+        val json1 = Gson().toJson(menuList)
+        Log.d("JSON===", json1)
+
+
+        val tempMap = hashMapOf<String, ArrayList<FilterItems>>()
+        val resultMap = hashMapOf<String, ArrayList<String>>()
+
+
+
+     /*   for ((key, value) in menuList) {
+            for (result in value) {
+                if (result.isSelected) {
+                    tempMap[key] = value
+
+                }
+            }
+
+        }*/
+        val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
+        menuList.forEach { (key, value) ->
+            val filtered=value.filter {prod-> prod.isSelected }
+            if(filtered.isNotEmpty()){
+                filteredMap[key]=filtered.toTypedArray()
+
+
+            }
+        }
+
+        for ((key, value) in filteredMap) {
+            Log.d("FILTER MAP==", ":$key = $value")
+
+        }
+
+        for ((key, value) in filteredMap) {
+            var arraYlist = ArrayList<String>()
+            for (result in value) {
+                arraYlist.add(result.title)
+                resultMap[key]=arraYlist
+
+            }
+
+        }
+        val resultJson = Gson().toJson(resultMap)
+        Log.d("JSON===", resultJson)
+
+
+
         return filterCriteria
     }
 

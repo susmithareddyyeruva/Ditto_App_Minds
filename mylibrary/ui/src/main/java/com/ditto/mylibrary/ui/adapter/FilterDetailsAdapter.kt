@@ -1,11 +1,12 @@
 package com.ditto.mylibrary.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.AllPatternsViewModel
+import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemFilterdetailsBinding
 
 class FilterDetailsAdapter(
@@ -25,27 +26,28 @@ class FilterDetailsAdapter(
         return FilterCategoriesHolder(binding, viewType)
     }
 
-    override fun getItemCount() = menuList[keys]?.toList()?.size?:0
+    override fun getItemCount() = menuList[keys]?.toList()?.size ?: 0
 
     override fun onBindViewHolder(holder: FilterCategoriesHolder, position: Int) {
-        val filterItems=menuList[keys]?.toList()
+        val filterItems = menuList[keys]?.toList()
         holder.itemFilterdetailsBinding.filter = filterItems?.get(position)
         holder.itemFilterdetailsBinding.viewModel = viewModel
-        holder.itemFilterdetailsBinding.checkItem.isChecked = filterItems?.get(position)?.isSelected?:false
-        holder.itemView.setOnClickListener {
-            holder.itemFilterdetailsBinding.checkItem.performClick()
+        if (filterItems?.get(position)?.isSelected == true) {
+            holder.itemFilterdetailsBinding.checkItem.background = ContextCompat.getDrawable(
+                holder.itemFilterdetailsBinding.checkItem.context,
+                R.drawable.ic_chk_select
+            )
+        } else {
+            holder.itemFilterdetailsBinding.checkItem.background = ContextCompat.getDrawable(
+                holder.itemFilterdetailsBinding.checkItem.context,
+                R.drawable.ic_chk_unselected
+            )
         }
-        holder.itemFilterdetailsBinding.checkItem.setOnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.isChecked) {
-                Log.d("Checked true", filterItems?.get(position)?.title?:"")
-                filterItems?.get(position)?.isSelected = true
-                ItemsListener.onItemsSelected(filterItems?.get(position)?.title?:"", true)
-            } else {
-                filterItems?.get(position)?.isSelected = false
-                compoundButton.isChecked = false
-                Log.d("Checked false", filterItems?.get(position)?.title?:"")
-                ItemsListener.onItemsSelected(filterItems?.get(position)?.title?:"", false)
-            }
+        holder.itemView.setOnClickListener {
+            //holder.itemFilterdetailsBinding.checkItem.performClick()
+            filterItems?.get(position)?.isSelected =
+                !(filterItems?.get(position)?.isSelected ?: false)
+            notifyDataSetChanged()
         }
 
     }
@@ -54,8 +56,7 @@ class FilterDetailsAdapter(
         val itemFilterdetailsBinding: ItemFilterdetailsBinding,
         viewType: Int
     ) :
-        RecyclerView.ViewHolder(itemFilterdetailsBinding.root) {
-    }
+        RecyclerView.ViewHolder(itemFilterdetailsBinding.root)
 
     interface SelectedItemsListener {
         fun onItemsSelected(title: String, isSelected: Boolean)
