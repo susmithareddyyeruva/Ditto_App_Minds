@@ -438,7 +438,7 @@
                     app:layout_constraintStart_toEndOf="@+id/guideline_center"
                     app:layout_constraintTop_toBottomOf="@+id/topDevider"
                     tools:itemCount="3"
-                    tools:listitem="@layout/item_filter"
+                    tools:listitem="@layout/item_filterdetails"
                     tools:orientation="vertical">
 
                 </androidx.recyclerview.widget.RecyclerView>

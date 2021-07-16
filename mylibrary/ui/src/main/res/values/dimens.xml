@@ -112,5 +112,6 @@
     <dimen name="margin_left_button">12dp</dimen>
     <dimen name="margin_start_pattern_liabry_count">10dp</dimen>
     <dimen name="pattern_name">18sp</dimen>
+    <dimen name="text_width">140dp</dimen>
 
 </resources>

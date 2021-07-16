@@ -35,13 +35,17 @@
 
         <TextView
             android:id="@+id/itemAction"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/text_width"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:paddingStart="@dimen/action_text_start"
             android:paddingTop="@dimen/item_cell_margin_top"
             android:paddingBottom="@dimen/item_cell_margin_top"
             android:text="@{filter.title}"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/black"
             android:textSize="@dimen/item_action_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
