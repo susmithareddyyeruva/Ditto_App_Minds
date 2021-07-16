@@ -250,9 +250,8 @@ class AllPatternsViewModel @Inject constructor(
         }
         val resultJson = Gson().toJson(resultMap)
         Log.d("JSON===", resultJson)
-
-
-
+        val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
+        Log.d("RESULT STRING===", resultString)
         return filterCriteria
     }
 
