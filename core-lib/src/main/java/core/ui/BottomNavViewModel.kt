@@ -110,12 +110,12 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         headerList.add(menuModel)
         childList.put(menuModel, childModelsList)
 
-       /* menuModel = MenuModel(
+        menuModel = MenuModel(
             "FAQ & Glossary",
             "ic_menu_faq",
             null
         )
-        headerList.add(menuModel)*/
+        headerList.add(menuModel)
 
         menuModel = MenuModel(
             "Customer Service",
