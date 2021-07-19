@@ -34,6 +34,7 @@ class HomeViewModel @Inject constructor(
     var errorString: ObservableField<String> = ObservableField("")
     var homeDataResponse: MutableLiveData<MyLibraryDetailsDomain> = MutableLiveData()
     var productCount: Int = 0
+    val resultMap = hashMapOf<String, ArrayList<String>>()
 
     sealed class Event {
         object OnClickMyPatterns : Event()
@@ -114,7 +115,16 @@ class HomeViewModel @Inject constructor(
 
     fun fetchData() {
         uiEvents.post(Event.OnShowProgress)
-        disposable += useCase.getMyLibraryDetails()
+        disposable += useCase.getMyLibraryDetails(
+            com.ditto.home.domain.request.MyLibraryFilterRequestData(
+                com.ditto.home.domain.request.OrderFilter(
+                    true,
+                    "subscustomerOne@gmail.com",
+                    true,
+                    true
+                ), ProductFilter = resultMap
+            )
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
@@ -132,7 +142,7 @@ class HomeViewModel @Inject constructor(
                 uiEvents.post(Event.OnHideProgress)
                 homeDataResponse.value = result.data
                 Log.d("Home Screen", "$homeDataResponse.value.prod.size")
-                productCount = homeDataResponse.value!!.prod.size
+                productCount = homeDataResponse.value!!.totalCount
                 AppState.setPatternCount(productCount)
                 Log.d("Home Screen", "${productCount}")
                 setHomeItems()  //Preparing menu items
@@ -146,7 +156,6 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
 
 
     private fun handleError(error: Error) {

@@ -1,4 +1,4 @@
-package com.ditto.data.api.request
+package com.ditto.home.domain.request
 
 data class OrderFilter(
     var allQuery: Boolean,

@@ -1,6 +1,6 @@
 package com.ditto.mylibrary.data.api
 
-import com.ditto.mylibrary.data.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.model.MyLibraryResult
 import core.lib.BuildConfig
 import io.reactivex.Single

@@ -102,16 +102,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/margin_start_pattern_liabry_count"
                             android:fontFamily="@font/avenir_next_it_pro_bold"
                             android:gravity="center"
-                            tools:text="(11)"
-                            android:visibility="gone"
-                            android:layout_marginStart="@dimen/margin_start_pattern_liabry_count"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/size_pattern_lib_text"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@id/header_view_title"
                             app:layout_constraintLeft_toRightOf="@id/header_view_title"
-                            app:layout_constraintTop_toTopOf="@id/header_view_title"/>
+                            app:layout_constraintTop_toTopOf="@id/header_view_title"
+                            tools:text="(11)" />
 
                         <View
                             android:id="@+id/view_vertical"
@@ -124,22 +124,22 @@
                             app:layout_constraintTop_toTopOf="@id/header_view_title" />
 
                         <TextView
-                        android:id="@+id/tv_sync"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginStart="@dimen/margin_start_search"
-                        android:drawableStart="@drawable/ic_sync"
-                        android:drawablePadding="@dimen/distance_after_icon_sync"
-                        android:fontFamily="@font/avenir_next_lt_pro_demi"
-                        android:gravity="center"
-                        android:text="@string/text_sync"
-                        android:onClick="@{() -> viewModel.onSyncClick()}"
-                        android:textColor="@color/search_text_code"
-                        android:textSize="@dimen/size_search"
-                        app:layout_constraintBottom_toBottomOf="@id/header_view_title_pattern_count"
-                        app:layout_constraintLeft_toRightOf="@id/view_vertical"
-                        app:layout_constraintTop_toTopOf="@id/header_view_title_pattern_count" />
+                            android:id="@+id/tv_sync"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/margin_start_search"
+                            android:drawableStart="@drawable/ic_sync"
+                            android:drawablePadding="@dimen/distance_after_icon_sync"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="center"
+                            android:onClick="@{() -> viewModel.onSyncClick()}"
+                            android:text="@string/text_sync"
+                            android:textColor="@color/search_text_code"
+                            android:textSize="@dimen/size_search"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title_pattern_count"
+                            app:layout_constraintLeft_toRightOf="@id/view_vertical"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title_pattern_count" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -147,7 +147,8 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginEnd="@dimen/margin_end_search"
                             android:layout_toLeftOf="@+id/tv_filter"
-                            android:drawableStart="@drawable/ic_search"                            android:drawablePadding="@dimen/distance_after_icon_sync"
+                            android:drawableStart="@drawable/ic_search"
+                            android:drawablePadding="@dimen/distance_after_icon_sync"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
                             android:onClick="@{() -> viewModel.onSearchClick()}"
@@ -223,39 +224,39 @@
                     android:id="@+id/tv_filter_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/clear_text_margin_top"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:padding="@dimen/dimen_5"
                     android:text="@string/text_filter_result"
                     android:textColor="@color/search_text_code"
                     android:textSize="@dimen/txt_filter_result"
-                    android:padding="@dimen/dimen_5"
-                    android:layout_marginTop="@dimen/clear_text_margin_top"
-                    android:fontFamily="@font/avenir_next_lt_pro_regular"
-                    app:layout_constraintTop_toBottomOf="@id/topbar"
-                    app:layout_constraintStart_toStartOf="@id/guide_start_clear_text"/>
+                    app:layout_constraintStart_toStartOf="@id/guide_start_clear_text"
+                    app:layout_constraintTop_toBottomOf="@id/topbar" />
 
                 <TextView
                     android:id="@+id/textview_clear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_marginTop="@dimen/clear_text_margin_top"
+                    android:drawableStart="@drawable/ic_clear_result"
+                    android:drawablePadding="@dimen/dimen_5"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:padding="@dimen/dimen_5"
                     android:text="@string/text_clear_filter"
                     android:textColor="@color/color_clear_filter"
                     android:textSize="@dimen/txt_clear_filter"
-                    android:layout_marginStart="@dimen/dimen_10"
-                    android:layout_marginTop="@dimen/clear_text_margin_top"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
-                    app:layout_constraintTop_toBottomOf="@id/topbar"
-                    android:padding="@dimen/dimen_5"
                     app:layout_constraintStart_toEndOf="@id/tv_filter_result"
-                    android:drawableStart="@drawable/ic_clear_result"
-                    android:drawablePadding="@dimen/dimen_5"/>
+                    app:layout_constraintTop_toBottomOf="@id/topbar" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_patterns"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/recy_margin_top"
                     android:layout_marginBottom="@dimen/margin_text"
                     android:clickable="true"
-                    android:layout_marginTop="@dimen/recy_margin_top"
                     android:overScrollMode="never"
                     android:scrollbars="none"
                     android:visibility="@{!viewModel.isLoading()}"
@@ -370,15 +371,31 @@
                     app:layout_constraintEnd_toEndOf="@+id/guideline_center"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/topDevider"
-                    tools:itemCount="9"
+                    tools:itemCount="30"
                     tools:listitem="@layout/item_singlecategory"
                     tools:orientation="vertical"
                     tools:src="@tools:sample/avatars">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvActions"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:paddingBottom="@dimen/small_padding"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@+id/linBottom"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_center"
+                    app:layout_constraintTop_toBottomOf="@+id/topDevider"
+                    tools:itemCount="20"
+                    tools:listitem="@layout/item_filterdetails"
+                    tools:orientation="vertical">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <LinearLayout
+                    android:id="@+id/linBottom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/clear_text_start"
@@ -394,9 +411,9 @@
                     <ImageView
                         android:id="@+id/imageClearAll"
                         android:layout_width="@dimen/close_filter"
-                        android:visibility="visible"
                         android:layout_height="@dimen/close_image"
-                        android:src="@drawable/ic_closebtn_new">
+                        android:src="@drawable/ic_closebtn_new"
+                        android:visibility="visible">
 
                     </ImageView>
 
@@ -405,11 +422,11 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:paddingBottom="@dimen/dimen_2"
                         android:drawablePadding="@dimen/padding_small"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center_vertical"
                         android:paddingStart="@dimen/padding_small"
+                        android:paddingBottom="@dimen/dimen_2"
                         android:text="@string/clear_all"
                         android:textColor="@color/blue"
                         android:textSize="@dimen/item_action_text_size" />
@@ -431,18 +448,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvActions"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintStart_toEndOf="@+id/guideline_center"
-                    app:layout_constraintTop_toBottomOf="@+id/topDevider"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_filterdetails"
-                    tools:orientation="vertical">
-
-                </androidx.recyclerview.widget.RecyclerView>
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidlineBottom"
@@ -452,7 +457,6 @@
                     android:visibility="visible"
                     app:layout_constraintGuide_percent=".93"
                     app:layout_constraintStart_toEndOf="@+id/guideline_center" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.navigation.NavigationView>

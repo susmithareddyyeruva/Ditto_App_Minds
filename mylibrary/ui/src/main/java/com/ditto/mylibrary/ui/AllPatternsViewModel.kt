@@ -7,8 +7,14 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.model.AllPatternsDomain
+import com.ditto.mylibrary.domain.model.FilterItems
+import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,10 +25,9 @@ import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
-import java.util.*
+import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -43,7 +48,7 @@ class AllPatternsViewModel @Inject constructor(
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
-    val jsonList = hashMapOf<String, ArrayList<String>>()
+    val resultMap = hashMapOf<String, ArrayList<String>>()
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -63,7 +68,16 @@ class AllPatternsViewModel @Inject constructor(
     //fetch data from repo (via usecase)
     fun fetchOnPatternData() {
         uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.invoke()
+        disposable += getPatternsData.invoke(
+            MyLibraryFilterRequestData(
+                OrderFilter(
+                    true,
+                    "subscustomerOne@gmail.com",
+                    true,
+                    true
+                ), ProductFilter = resultMap
+            )
+        )
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
@@ -72,9 +86,9 @@ class AllPatternsViewModel @Inject constructor(
     }
 
 
-    fun getFilteredPatternsData(createJson: ProductFilter) {
+    fun getFilteredPatternsData(request: MyLibraryFilterRequestData) {
         uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.getFilteredPatterns(createJson)
+        disposable += getPatternsData.getFilteredPatterns(request)
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
@@ -87,6 +101,7 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
+                AppState.setPatternCount(result.data.totalCount)
                 uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> {
@@ -101,6 +116,7 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
+                AppState.setPatternCount(result.data.totalCount)
                 map = result.data.menuItem  //hashmap
                 setList()
                 uiEvents.post(Event.OnResultSuccess)
@@ -213,22 +229,22 @@ class AllPatternsViewModel @Inject constructor(
         object OnUpdateFilter : Event()
     }
 
-    fun createJson(): ProductFilter {
-        val filterCriteria = ProductFilter()
-        val json = Gson().toJson(filterCriteria)
-        /*  for ((key, value) in menuList) {
-              Log.d("RESULT==", ":$key = $value")
-          }*/
+    fun createJson(): MyLibraryFilterRequestData {
+        val filterCriteria = MyLibraryFilterRequestData(
+            OrderFilter(
+                true,
+                "subscustomerOne@gmail.com",
+                true,
+                true
+            )
+        )
         val json1 = Gson().toJson(menuList)
         Log.d("JSON===", json1)
-
-        val resultMap = hashMapOf<String, ArrayList<String>>()
-
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         menuList.forEach { (key, value) ->
-            val filtered=value.filter {prod-> prod.isSelected }
-            if(filtered.isNotEmpty()){
-                filteredMap[key]=filtered.toTypedArray()
+            val filtered = value.filter { prod -> prod.isSelected }
+            if (filtered.isNotEmpty()) {
+                filteredMap[key] = filtered.toTypedArray()
 
 
             }
@@ -238,18 +254,25 @@ class AllPatternsViewModel @Inject constructor(
             Log.d("FILTER MAP==", ":$key = $value")
 
         }
-
+        val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()
             for (result in value) {
                 arraYlist.add(result.title)
-                resultMap[key]=arraYlist
+                resultMap[key] = arraYlist
+                jsonProduct.put(key, arraYlist)
+
 
             }
 
+
         }
+        filterCriteria.ProductFilter = resultMap
         val resultJson = Gson().toJson(resultMap)
         Log.d("JSON===", resultJson)
+
+        val jsonString: String = resultJson
+
         val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
         Log.d("RESULT STRING===", resultString)
         return filterCriteria
@@ -257,3 +280,5 @@ class AllPatternsViewModel @Inject constructor(
 
 
 }
+
+

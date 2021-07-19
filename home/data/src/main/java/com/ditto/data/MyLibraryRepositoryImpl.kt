@@ -3,13 +3,11 @@ package com.ditto.data
 import android.content.Context
 import android.util.Log
 import com.ditto.data.api.MyLibraryService
-import com.ditto.data.api.request.MyLibraryFilterRequestData
-import com.ditto.data.api.request.OrderFilter
-import com.ditto.data.api.request.ProductFilter
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.toDomain
 import com.ditto.home.domain.GetMyLibraryRepository
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
+import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import com.ditto.logger.LoggerFactory
 import com.ditto.storage.data.database.UserDao
 import core.appstate.AppState
@@ -33,13 +31,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
         loggerFactory.create(MyLibraryRepositoryImpl::class.java.simpleName)
     }
 
-    override fun getMyLibraryDetails(): Single<Result<MyLibraryDetailsDomain>> {
+    override fun getMyLibraryDetails(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return homeService.getHomeScreenDetails(MyLibraryFilterRequestData(OrderFilter(true,
-        "subscustomerOne@gmail.com",true,false), ProductFilter()
-        ),"Bearer "+ AppState.getToken()!!)
+        return homeService.getHomeScreenDetails(requestData,"Bearer "+ AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH HOME SUCCESS**")
             }

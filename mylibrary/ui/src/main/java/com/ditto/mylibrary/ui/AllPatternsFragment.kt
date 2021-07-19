@@ -109,7 +109,8 @@ class AllPatternsFragment : BaseFragment(),
         viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
             allPatternAdapter.setListData(items = list)
         })
-
+        binding.toolbar.header_view_title.text =
+            getString(R.string.pattern_library_count, AppState.getPatternCount())
     }
 
 
@@ -186,6 +187,8 @@ class AllPatternsFragment : BaseFragment(),
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
+            binding.toolbar.header_view_title.text =
+                getString(R.string.pattern_library_count, AppState.getPatternCount())
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {

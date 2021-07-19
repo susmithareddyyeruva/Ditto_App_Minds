@@ -1,7 +1,7 @@
 package com.ditto.data.api
 
-import com.ditto.data.api.request.MyLibraryFilterRequestData
 import com.ditto.data.model.MyLibraryResult
+import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import core.lib.BuildConfig
 import io.reactivex.Single
 import retrofit2.http.Body

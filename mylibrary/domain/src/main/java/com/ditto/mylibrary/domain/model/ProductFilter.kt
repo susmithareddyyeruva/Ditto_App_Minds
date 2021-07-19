@@ -1,15 +1,15 @@
 package com.ditto.mylibrary.domain.model
 
-import com.google.gson.annotations.SerializedName
-
-class ProductFilter {
-    @SerializedName("brand")
-    var brandString:ArrayList<String>?= arrayListOf()
-
-
-
-
-
-
-
+ class ProductFilter{
+    var ProductFilter: HashMap<String, ArrayList<String>>? = HashMap()
 }
+
+
+
+
+
+
+
+
+
+
