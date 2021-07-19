@@ -148,13 +148,13 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onItemClickPattern(id: String) {
-        if (id == "10617801") {
+        if (id == "10140549") {
             clickedId.set(1)
-        } else if (id == "11836020") {
+        } else if (id == "10544781") {
             clickedId.set(2)
-        } else if (id == "13239611") {
+        } else if (id == "10140606") {
             clickedId.set(3)
-        } else if (id == "15131196") {
+        } else  {
             clickedId.set(4)
         }
         uiEvents.post(Event.OnItemClick)
