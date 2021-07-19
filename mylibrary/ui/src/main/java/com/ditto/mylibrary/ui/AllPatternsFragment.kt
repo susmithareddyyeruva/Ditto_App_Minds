@@ -85,8 +85,11 @@ class AllPatternsFragment : BaseFragment(),
              */
             if (AppState.getIsLogged()) {
                 if (!Utility.isTokenExpired()) {
+                    viewModel.resultMap.clear()
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.getFilteredPatternsData(viewModel.createJson())
+
+
                 }
             }
             binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -94,7 +97,7 @@ class AllPatternsFragment : BaseFragment(),
         }
 
         binding.clearFilter.setOnClickListener {
-             viewModel.menuList.clear()
+            viewModel.menuList.clear()
             viewModel.setList()
         }
 
@@ -113,8 +116,6 @@ class AllPatternsFragment : BaseFragment(),
     }
 
 
-
-
     private fun setFilterMenuAdapter(position: Int) {
         val result = viewModel.menuList.keys.toList()   //setting menus
         binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
@@ -130,6 +131,7 @@ class AllPatternsFragment : BaseFragment(),
             })
         setFilterActionAdapter(result[0])  //set menu items
     }
+
     private fun setFilterActionAdapter(keys: String) {
         val filterDetailsAdapter = FilterDetailsAdapter(object :
             FilterDetailsAdapter.SelectedItemsListener {
@@ -139,12 +141,13 @@ class AllPatternsFragment : BaseFragment(),
                     logger.d("After  clik selection : $key = $value")
                 }
             }
-        },viewModel.menuList, keys)
+        }, viewModel.menuList, keys)
         binding.rvActions.adapter = filterDetailsAdapter
         filterDetailsAdapter.viewModel = viewModel
         filterDetailsAdapter.updateList(keys)
 
     }
+
     private fun setUpToolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
@@ -204,7 +207,8 @@ class AllPatternsFragment : BaseFragment(),
             // open dialog
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-            //setPatternAdapter()
+            viewModel.resultMap.clear()
+            viewModel.getFilteredPatternsData(viewModel.createJson())
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")

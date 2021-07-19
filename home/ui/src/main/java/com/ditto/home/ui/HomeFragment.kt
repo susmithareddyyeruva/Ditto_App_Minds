@@ -137,8 +137,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
             HomeViewModel.Event.OnResultSuccess -> {
                 bottomNavViewModel.showProgress.set(false)
-                (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
-                (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
+                if (recycler_view!=null) {
+                    (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
+                    (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
+                }
                 logger.d("PATTERNS=  :  $homeViewModel.homeDataResponse")
 
             }
