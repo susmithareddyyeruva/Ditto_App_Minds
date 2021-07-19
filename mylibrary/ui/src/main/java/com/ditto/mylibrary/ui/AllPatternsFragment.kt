@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -18,6 +19,7 @@ import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
+import com.ditto.mylibrary.ui.util.PaginationScrollListener
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -43,6 +45,9 @@ class AllPatternsFragment : BaseFragment(),
     private var patternId: Int = 0
     private val allPatternAdapter = AllPatternsAdapter()
     private var clikedMenu: String = ""
+    var isLastPage: Boolean = false
+    var isLoading: Boolean = false
+    lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -104,8 +109,33 @@ class AllPatternsFragment : BaseFragment(),
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
-    }
+        binding.recyclerViewPatterns?.addOnScrollListener(object : PaginationScrollListener(gridLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
 
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true
+                //you have to call loadmore items to get more data
+               // getMoreItems()
+            }
+        })
+
+
+    }
+    fun getMoreItems() {
+        //after fetching your data assuming you have fetched list in your
+        // recyclerview adapter assuming your recyclerview adapter is
+        //rvAdapter
+        //   after getting your data you have to assign false to isLoading
+        isLoading = false
+
+        updatePatterns()
+    }
     private fun updatePatterns() {// Updating the adapter
 
         viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
@@ -168,6 +198,7 @@ class AllPatternsFragment : BaseFragment(),
 
 
     private fun setPatternAdapter() {
+        gridLayoutManager= GridLayoutManager(requireContext(),4)
         binding.recyclerViewPatterns.adapter = allPatternAdapter
         allPatternAdapter.viewModel = viewModel
     }
