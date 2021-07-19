@@ -329,7 +329,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     private fun transform() {
         logger.d("TRACE_ Projection : performTransform  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
+        val bitmap = Utility.getBitmapFromDrawable("calibration_check_pattern", requireContext())
 
         viewModel.disposable += Observable.fromCallable {
             performTransform(bitmap, context?.applicationContext, null, false)
@@ -589,7 +589,6 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity?)?.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-        (activity as BottomNavigationActivity).hidemenu()
         binding.toolbarCalibration.setNavigationOnClickListener {
             activity?.onBackPressed()
             /*if(baseViewModel.activeSocketConnection.get()) {

@@ -59,16 +59,19 @@ class HomeViewModel @Inject constructor(
     fun onItemClick(id: Int) {
         when (id) {
             0 -> {
-                uiEvents.post(Event.OnClickMyPatterns)
+                uiEvents.post(Event.OnClickTutorial)
+
             }
             1 -> {
-                uiEvents.post(Event.OnClickDitto)
+                uiEvents.post(Event.OnClickMyPatterns)
+
             }
             2 -> {
-                uiEvents.post(Event.OnClickJoann)
+                uiEvents.post(Event.OnClickDitto)
+
             }
             3 -> {
-                uiEvents.post(Event.OnClickTutorial)
+                uiEvents.post(Event.OnClickJoann)
             }
         }
     }
@@ -84,7 +87,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setHomeItems() {
-        val images = intArrayOf(
+   /*     val images = intArrayOf(
             R.drawable.ic_home_pattern_library, R.drawable.ic_home_ditto,
             R.drawable.ic_home_joann, R.drawable.ic_home_tutorial
         )
@@ -97,8 +100,21 @@ class HomeViewModel @Inject constructor(
         val description = intArrayOf(
             R.string.all_your_patterns_in_one_place, R.string.ditto_patterns_site,
             R.string.joann_site, R.string.view_tutorial
+        )*/
+        val images = intArrayOf(
+            R.drawable.ic_home_tutorial, R.drawable.ic_home_pattern_library,
+            R.drawable.ic_home_ditto, R.drawable.ic_home_joann
         )
 
+        val title = intArrayOf(
+            R.string.beam_setup_and_calibration, R.string.pattern_library_count,
+            R.string.more_patterns_available_at, R.string.for_fine_crafts_and_fabrics_visit_our_site
+        )
+
+        val description = intArrayOf(
+            R.string.view_tutorial,  R.string.all_your_patterns_in_one_place, R.string.ditto_patterns_site,
+            R.string.joann_site
+        )
         for (item in images.indices) {
             var homeItems: HomeData = HomeData(
                 item,

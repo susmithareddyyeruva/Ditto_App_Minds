@@ -83,6 +83,11 @@ class WorkspaceEditor private constructor(builder: Builder) {
                 params.addRule(if (workspaceItem.currentSplicedPieceRow!=0) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
                 sticky =
                     if (workspaceItem.currentSplicedPieceRow!=0) Draggable.STICKY.AXIS_Y_END else Draggable.STICKY.AXIS_Y_START
+            } else if (workspaceItem.spliceDirection.equals("Splice Multiple-to-Multiple")) {
+                workspaceItem.xcoordinate = 0F
+                params.addRule(if (workspaceItem.currentSplicedPieceColumn!=0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
+                sticky =
+                    if (workspaceItem.currentSplicedPieceColumn!=0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
             }
             imageRootView?.tag = workspaceItem.id
         }
@@ -335,24 +340,19 @@ class WorkspaceEditor private constructor(builder: Builder) {
                     ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
                     ?: 0F
             }
-            /*(imageV as ImageView).setColorFilter(
-                ContextCompat.getColor(
-                    context,
-                    R.color.progress_green
-                ), PorterDuff.Mode.SRC_ATOP
-            )*/
         }
         if (image?.spliceDirection.equals("Splice Top-to-Bottom")) {
             image?.ycoordinate = if (image?.currentSplicedPieceColumn!=0) 0F else {
                 parentView?.height?.toFloat()
                     ?.minus((imageV as ImageView)?.maxHeight?.toFloat() ?: 0F) ?: 0F
             }
-            /*(imageV as ImageView).setColorFilter(
-                ContextCompat.getColor(
-                    context,
-                    R.color.progress_green
-                ), PorterDuff.Mode.SRC_ATOP
-            )*/
+        }
+        if (image?.spliceDirection.equals("Splice Multiple-to-Multiple")) {
+            image?.xcoordinate = if (image?.currentSplicedPieceRow!=0) 0F else {
+                parentView?.width?.toFloat()
+                    ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
+                    ?: 0F
+            }
         }
         //
         rootView?.let { addedViews.add(it) }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -78,7 +77,7 @@
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-<!--        android:background="@drawable/ic_workspace_new"-->
+        <!--        android:background="@drawable/ic_workspace_new"-->
         <RelativeLayout
             android:id="@+id/layout_workspace_background"
             android:layout_width="@dimen/dimen_0"
@@ -117,7 +116,6 @@
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace" />
 
 
-
         <ImageView
             android:id="@+id/splice_right_border"
             android:layout_width="@dimen/dimen_2"
@@ -125,7 +123,7 @@
             android:src="@{viewModel.isSpliceRightVisible() ?@drawable/ic_workspace_splice_right_red : @drawable/ic_workspace_splice_right_black}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace"/>
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
 
         <ImageView
             android:id="@+id/splice_left_border"
@@ -134,7 +132,7 @@
             android:src="@{viewModel.isSpliceLeftVisible() ?@drawable/ic_workspace_splice_left_red : @drawable/ic_workspace_splice_left_black}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace"/>
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
 
 
         <ImageView
@@ -144,7 +142,7 @@
             android:src="@{viewModel.isSpliceTopVisible() ?@drawable/ic_workspace_splice_top_red : @drawable/ic_workspace_splice_top_black}"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
             app:layout_constraintStart_toStartOf="@+id/layout_workspace"
-            app:layout_constraintTop_toTopOf="@+id/layout_workspace"/>
+            app:layout_constraintTop_toTopOf="@+id/layout_workspace" />
 
 
         <ImageView
@@ -154,8 +152,7 @@
             android:src="@{viewModel.isSpliceBottomVisible() ?@drawable/ic_workspace_splice_bottom_red : @drawable/ic_workspace_splice_bottom_black}"
             app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
-            app:layout_constraintStart_toStartOf="@+id/layout_workspace"/>
-
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace" />
 
 
         <com.airbnb.lottie.LottieAnimationView
@@ -339,6 +336,19 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_workspace"
             app:layout_constraintVertical_bias=".25" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="@dimen/elevation_card"
+            android:visibility="@{!viewModel.isWorkspaceSocketConnection()}"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_recalibrate"
+            app:layout_constraintEnd_toEndOf="@+id/txt_recalibrate"
+            app:layout_constraintStart_toStartOf="@+id/txt_recalibrate"
+            app:layout_constraintTop_toTopOf="@+id/txt_recalibrate"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/connect_animation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

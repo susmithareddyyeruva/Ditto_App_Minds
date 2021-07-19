@@ -78,12 +78,12 @@
         <LinearLayout
             android:id="@+id/textLayout"
             android:layout_width="@dimen/size_0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias=".18"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_lay"
             app:layout_constraintStart_toStartOf="@+id/guide_container_start"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".18">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -110,6 +110,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/content_header_text_size"
                         android:textColor="@color/black"
+                        android:lineSpacingMultiplier="1.25"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         />
 
@@ -118,7 +119,9 @@
                 <LinearLayout
                     android:id="@+id/linear_content"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    app:layout_constraintVertical_bias="0"
+                    android:orientation="vertical"
                     android:layout_marginTop="@dimen/instruction_margin"
                     app:layout_constraintBottom_toTopOf="@+id/button_calibrate"
                     app:layout_constraintStart_toStartOf="parent"
@@ -136,12 +139,14 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/text_content"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:lineSpacingMultiplier="1.25"
                                 android:paddingEnd="@dimen/margin_text"
                                 android:textSize="@dimen/content_text_size"
                                 android:fontFamily="@font/avenir_next_lt_pro_regular"
@@ -224,13 +229,13 @@
                     android:layout_height="@dimen/dimen_0"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/instruction_button_margin"
+                    android:background="@drawable/ic_button_border"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
                     android:onClick="@{() ->viewModel.onCalibrationButtonClicked()}"
                     android:text="@string/Calibrate"
-                    android:textSize="@dimen/size_14sp"
-                    android:background="@drawable/ic_button_border"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:textColor="@color/White"
+                    android:textSize="@dimen/size_14sp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

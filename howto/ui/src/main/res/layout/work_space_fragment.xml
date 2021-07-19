@@ -127,6 +127,7 @@
             android:textColor="@color/instruction_content_text"
             android:textSize="@dimen/content_text_size"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:lineSpacingMultiplier="1.25"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guide_image_end"
             app:layout_constraintStart_toStartOf="@+id/guide_image_start"

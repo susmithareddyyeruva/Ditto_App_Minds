@@ -95,14 +95,14 @@ class FAQAdapter(
             holder.watch.visibility = View.GONE
             holder.visit.visibility = View.GONE
         }
-        holder.tvAnsw.setOnClickListener {
-            if (position == 0) {
-                val url = mContext.getString(R.string.str_patterns_url)
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(url)
-                mContext.startActivity(i)
-            }
-        }
+//        holder.tvAnsw.setOnClickListener {
+//            if (position == 0) {
+//                val url = mContext.getString(R.string.str_patterns_url)
+//                val i = Intent(Intent.ACTION_VIEW)
+//                i.data = Uri.parse(url)
+//                mContext.startActivity(i)
+//            }
+//        }
 
     }
 

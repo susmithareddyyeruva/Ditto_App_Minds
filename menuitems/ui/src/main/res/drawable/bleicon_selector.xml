@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/ic_bluetoothtab"
+        android:width="@dimen/ble_icon_width"
+        android:height="@dimen/ble_icon_height"
+        />
+
+</layer-list >
