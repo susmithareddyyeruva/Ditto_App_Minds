@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -85,7 +84,7 @@ class AllPatternsFragment : BaseFragment(),
                 if (!Utility.isTokenExpired()) {
                     viewModel.resultMap.clear()
                     bottomNavViewModel.showProgress.set(true)
-                    viewModel.getFilteredPatternsData(viewModel.createJson(CURRENT_PAGE))
+                    viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
 
 
                 }
@@ -109,44 +108,16 @@ class AllPatternsFragment : BaseFragment(),
             }
 
         }
-        binding.recyclerViewPatterns?.addOnScrollListener(object : PaginationScrollListener(gridLayoutManager,viewModel.totalPageCount) {
-            override fun isLastPage(): Boolean {
-                return isLastPage
-            }
-
-            override fun isLoading(): Boolean {
-                return isLoading
-            }
-
-            override fun loadMoreItems() {
-                isLoading = true;
-                CURRENT_PAGE.inc()
-                //you have to call loadmore items to get more data
-
-                if (CURRENT_PAGE<=viewModel.totalPageCount) {
-                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                        if (viewModel.patternList.value == null) {
-                            bottomNavViewModel.showProgress.set(true)
-                            viewModel.fetchOnPatternData( viewModel.createJson(CURRENT_PAGE))
-                        }
-
-                    }
-                }else{
-                    isLastPage=true
-                    isLoading=false
-                }
-
-            }
-        })
 
 
     }
 
     private fun updatePatterns() {// Updating the adapter
 
-        viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
-            allPatternAdapter.setListData(items = list)
-        })
+        /*  viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
+              allPatternAdapter.setListData(items = list)
+          })*/
+        allPatternAdapter.setListData(items = viewModel.patternArrayList)
         binding.toolbar.header_view_title.text =
             getString(R.string.pattern_library_count, AppState.getPatternCount())
     }
@@ -204,10 +175,37 @@ class AllPatternsFragment : BaseFragment(),
 
 
     private fun initializeAdapter() {
-        gridLayoutManager= GridLayoutManager(requireContext(),4)
-        binding.recyclerViewPatterns.layoutManager=gridLayoutManager
+        gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        binding.recyclerViewPatterns.layoutManager = gridLayoutManager
         binding.recyclerViewPatterns.adapter = allPatternAdapter
         allPatternAdapter.viewModel = viewModel
+        binding.recyclerViewPatterns?.addOnScrollListener(object :
+            PaginationScrollListener(gridLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true;
+                //you have to call loadmore items to get more data
+
+                if (CURRENT_PAGE < viewModel.totalPageCount) {
+                    CURRENT_PAGE++
+                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                       // bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
+                    }
+                } else {
+                    isLastPage = true
+                    isLoading = false
+                }
+
+            }
+        })
     }
 
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
@@ -246,7 +244,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             viewModel.resultMap.clear()
-            viewModel.getFilteredPatternsData(viewModel.createJson(CURRENT_PAGE))
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
@@ -258,7 +256,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
-           // open dialog
+            // open dialog
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)

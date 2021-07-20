@@ -46,6 +46,8 @@ class AllPatternsViewModel @Inject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
+    var patternArrayList=mutableListOf<ProdDomain>()
+    var patterns= MutableLiveData<ArrayList<ProdDomain>>()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
     val resultMap = hashMapOf<String, ArrayList<String>>()
@@ -82,7 +84,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
 
-    fun getFilteredPatternsData(request: MyLibraryFilterRequestData) {
+ /*   fun getFilteredPatternsData(request: MyLibraryFilterRequestData) {
         uiEvents.post(Event.OnShowProgress)
         disposable += getPatternsData.getFilteredPatterns(request)
             .delay(600, TimeUnit.MILLISECONDS)
@@ -90,13 +92,18 @@ class AllPatternsViewModel @Inject constructor(
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFilterResult(it) }
-    }
+    }*/
 
     private fun handleFilterResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
+                patternArrayList.clear()
                 patternList.value = result.data.prod
+                result.data.prod.forEach {
+                    patternArrayList.add(it)
+                }
+
                 AppState.setPatternCount(result.data.totalPatternCount)
                 uiEvents.post(Event.OnDataUpdated)
             }
@@ -112,6 +119,11 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
+
+                result.data.prod.forEach {
+                    patternArrayList.add(it)
+                }
+
                 AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount=result.data.totalPatternCount
                 totalPageCount=result.data.totalPageCount
@@ -235,7 +247,7 @@ class AllPatternsViewModel @Inject constructor(
                 "subscustomerOne@gmail.com",
                 true,
                 true
-            ),pageId = currentPageId,patternsPerPage = 12
+            ),pageId = currentPage,patternsPerPage = 12
         )
         val json1 = Gson().toJson(menuList)
         Log.d("JSON===", json1)
@@ -255,11 +267,13 @@ class AllPatternsViewModel @Inject constructor(
         }
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
+            patternArrayList.clear()
             var arraYlist = ArrayList<String>()
             for (result in value) {
                 arraYlist.add(result.title)
                 resultMap[key] = arraYlist
                 jsonProduct.put(key, arraYlist)
+
 
 
             }

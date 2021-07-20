@@ -12,7 +12,7 @@ abstract class PaginationScrollListener
  *
  * @param layoutManager
  */
-(var layoutManager: GridLayoutManager,totalCount:Int) : RecyclerView.OnScrollListener() {
+(var layoutManager: GridLayoutManager) : RecyclerView.OnScrollListener() {
 
     abstract fun isLastPage(): Boolean
 
