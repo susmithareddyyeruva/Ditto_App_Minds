@@ -85,6 +85,9 @@ dependencies {
     implementation project(':instructions-ui')
     implementation project(':home-ui')
     implementation project(':tutorial-ui')
+    implementation project(path: ':menuitems-ui')
+    implementation project(path: ':menuitems-domain')
+    implementation project(path: ':menuitems-data')
     implementation project(':logger')
     implementation project(path: ':howto-ui')
     // Storage modules

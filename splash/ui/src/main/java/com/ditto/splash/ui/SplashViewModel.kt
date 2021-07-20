@@ -102,7 +102,7 @@ class SplashViewModel @Inject constructor(
                 } else if (result.data.userName?.isNotEmpty()!! &&
                     !result.data.dndOnboarding!!
                 ) {
-                    uiEvents.post(Event.NavigateToOnBoarding)
+                    uiEvents.post(Event.NavigateToDashboard)
 
                 }
             }

@@ -60,7 +60,7 @@
             app:destination="@id/customerCareFragment" />
         <action
             android:id="@+id/action_fragment_to_FAQGlossaryfragment"
-            app:destination="@id/nav_graph_mainFaq" />
+            app:destination="@id/nav_graph_mainfaq" />
         <action
             android:id="@+id/action_homeFragment_to_aboutAppFragment"
             app:destination="@id/aboutAppFragment" />
@@ -99,7 +99,7 @@
         tools:layout="@layout/customer_care_fragment" />
 
     <fragment
-        android:id="@+id/nav_graph_mainFaq"
+        android:id="@+id/nav_graph_mainfaq"
         android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
         android:label="FAQ and Glossary"
         tools:layout="@layout/faq_glossary_mainfragment" >

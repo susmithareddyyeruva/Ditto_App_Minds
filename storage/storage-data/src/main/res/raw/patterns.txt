@@ -344,14 +344,14 @@
                      "id":1,
                      "row":0,
                      "column":0,
-                     "reference_splice":"m7987_36_c_4_splice_l",
+                     "reference_splice":"m7987_36_c_4_map_l",
                      "imagePath":"m7987_36_c_4_splice_l"
                   },
                   {
                      "id":2,
                      "row":0,
                      "column":1,
-                     "reference_splice":"m7987_36_c_4_splice_r",
+                     "reference_splice":"m7987_36_c_4_map_r",
                      "imagePath":"m7987_36_c_4_splice_r"
                   }
                ],
@@ -497,14 +497,14 @@
                      "id":1,
                      "row":0,
                      "column":0,
-                     "reference_splice":"m7987_36_c_10_splice_l",
+                     "reference_splice":"m7987_36_c_10_map_l",
                      "imagePath":"m7987_36_c_10_splice_l"
                   },
                   {
                      "id":2,
                      "row":0,
                      "column":1,
-                     "reference_splice":"m7987_36_c_10_splice_r",
+                     "reference_splice":"m7987_36_c_10_map_r",
                      "imagePath":"m7987_36_c_10_splice_r"
                   }
                ],

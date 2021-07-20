@@ -1,5 +1,6 @@
 package com.ditto.menuitems_ui.faq.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,9 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
 
     private val faqGlossaryfragmentViewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
     lateinit var binding: FaqGlossaryMainfragmentBinding
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,7 +49,10 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
 
         return binding.mainContainer
     }
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hideDrawerLayout()
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -76,7 +83,6 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
         bottomNavViewModel.visibility.set(false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        (activity as? BottomNavigationActivity)?.hidemenu()
         toolbarViewModel?.isShowActionMenu.set(false)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

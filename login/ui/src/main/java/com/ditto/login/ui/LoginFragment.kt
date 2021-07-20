@@ -69,7 +69,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
               }
 
                 findNavController().navigate(
-                    R.id.action_loginFragment_to_OnboardingFragment,
+                    R.id.action_loginFragment_to_HomeFragment,
                     bundle
                 )
             }

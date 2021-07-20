@@ -43,8 +43,8 @@
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
                     android:background="@color/white"
-                    app:contentInsetStartWithNavigation="0dp"
-                    app:menu="@menu/toolbar_menu">
+                    app:menu="@null"
+                    app:contentInsetStartWithNavigation="0dp">
 
                     <TextView
                         android:id="@+id/header_view_title"

@@ -4,8 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     android:layout_width="wrap_content"
-    android:textSize="15sp"
+    android:textSize="@dimen/tab_head_text"
     android:textColor="@color/disable"
+    android:fontFamily="@font/avenir_next_lt_pro_regular"
     android:gravity="center"
     android:layout_height="match_parent"
     />

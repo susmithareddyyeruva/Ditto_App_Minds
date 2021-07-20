@@ -29,7 +29,10 @@ class WSProSettingsFragment : BaseFragment() {
         }
         return binding.root
     }
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hideDrawerLayout()
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
@@ -76,7 +79,6 @@ class WSProSettingsFragment : BaseFragment() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarTitle("Workspace settings")
         (activity as BottomNavigationActivity).setToolbarIcon()
     }
