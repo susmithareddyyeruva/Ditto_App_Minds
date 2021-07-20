@@ -251,7 +251,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
-            // open dialog
+           // open dialog
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
@@ -338,6 +338,7 @@ class AllPatternsFragment : BaseFragment(),
             }
 
             override fun onDrawerStateChanged(newState: Int) {
+                logger.d("OnDarwerState changed")
             }
         })
 
