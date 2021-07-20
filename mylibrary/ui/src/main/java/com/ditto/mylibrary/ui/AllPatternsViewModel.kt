@@ -49,6 +49,9 @@ class AllPatternsViewModel @Inject constructor(
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
     val resultMap = hashMapOf<String, ArrayList<String>>()
+    var totalPageCount:Int=0
+    var totalPatternCount:Int=0
+    var currentPageId:Int=1
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -66,18 +69,11 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     //fetch data from repo (via usecase)
-    fun fetchOnPatternData() {
+    fun fetchOnPatternData(
+        createJson: MyLibraryFilterRequestData
+    ) {
         uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.invoke(
-            MyLibraryFilterRequestData(
-                OrderFilter(
-                    true,
-                    "subscustomerOne@gmail.com",
-                    true,
-                    true
-                ), ProductFilter = resultMap
-            )
-        )
+        disposable += getPatternsData.invoke(createJson)
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
@@ -101,7 +97,7 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
-                AppState.setPatternCount(result.data.totalCount)
+                AppState.setPatternCount(result.data.totalPatternCount)
                 uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> {
@@ -116,7 +112,10 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
-                AppState.setPatternCount(result.data.totalCount)
+                AppState.setPatternCount(result.data.totalPatternCount)
+                totalPatternCount=result.data.totalPatternCount
+                totalPageCount=result.data.totalPageCount
+                currentPageId=result.data.currentPageId
                 map = result.data.menuItem  //hashmap
                 setList()
                 uiEvents.post(Event.OnResultSuccess)
@@ -229,14 +228,14 @@ class AllPatternsViewModel @Inject constructor(
         object OnUpdateFilter : Event()
     }
 
-    fun createJson(): MyLibraryFilterRequestData {
+    fun createJson(currentPage: Int): MyLibraryFilterRequestData {
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
                 "subscustomerOne@gmail.com",
                 true,
                 true
-            )
+            ),pageId = currentPageId,patternsPerPage = 12
         )
         val json1 = Gson().toJson(menuList)
         Log.d("JSON===", json1)

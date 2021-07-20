@@ -13,7 +13,9 @@ fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
         locale = this.locale,
         prod = this.prod.map { it.toDomain() },
         queryString = this.queryString,
-        totalCount = this.totalCount,
+        currentPageId = this.currentPageId,
+        totalPageCount = this.totalPageCount,
+        totalPatternCount = this.totalPatternCount,
         filter = this.filter.toDomain()
     )
 }

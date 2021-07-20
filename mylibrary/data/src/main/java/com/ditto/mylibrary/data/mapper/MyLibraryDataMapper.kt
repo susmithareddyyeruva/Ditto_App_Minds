@@ -50,8 +50,11 @@ fun MyLibraryResult.toDomain(): AllPatternsDomain {
         locale = this.locale,
         prod = this.prod.map { it.toDomain() },
         queryString = this.queryString,
-        totalCount = this.totalCount,
+        totalPatternCount = this.totalPatternCount,
+        totalPageCount = this.totalPageCount,
+        currentPageId = this.currentPageId,
         menuItem = this.menu
+
     )
 }
 

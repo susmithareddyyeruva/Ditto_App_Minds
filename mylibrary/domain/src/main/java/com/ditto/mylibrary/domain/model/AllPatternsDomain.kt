@@ -7,6 +7,8 @@ data class AllPatternsDomain(
     var locale: String,
     var prod: List<ProdDomain>,
     var queryString: String,
-    val totalCount: Int,
+    val totalPatternCount: Int,
+    val totalPageCount: Int,
+    val currentPageId: Int,
     val menuItem: HashMap<String,List<String>>
 )

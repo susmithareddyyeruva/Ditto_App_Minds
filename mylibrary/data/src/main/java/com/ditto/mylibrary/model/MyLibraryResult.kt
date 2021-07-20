@@ -12,8 +12,12 @@ data class MyLibraryResult(
     val prod: List<Prod>,
     @SerializedName("queryString")
     val queryString: String,
-    @SerializedName("totalCount")
-    val totalCount: Int,
+    @SerializedName("totalPatternCount")
+    val totalPatternCount: Int,
+    @SerializedName("totalPageCount")
+    val totalPageCount: Int,
+    @SerializedName("currentPageId")
+    val currentPageId: Int,
     @SerializedName("filter")
     val menu: HashMap<String,List<String>>
 )

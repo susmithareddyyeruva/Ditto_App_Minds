@@ -138,7 +138,7 @@ class HomeViewModel @Inject constructor(
                     "subscustomerOne@gmail.com",
                     true,
                     true
-                ), ProductFilter = resultMap
+                ), ProductFilter = resultMap,patternsPerPage = 12,pageId = 1
             )
         )
             .subscribeOn(Schedulers.io())
@@ -158,7 +158,7 @@ class HomeViewModel @Inject constructor(
                 uiEvents.post(Event.OnHideProgress)
                 homeDataResponse.value = result.data
                 Log.d("Home Screen", "$homeDataResponse.value.prod.size")
-                productCount = homeDataResponse.value!!.totalCount
+                productCount = homeDataResponse.value!!.totalPatternCount
                 AppState.setPatternCount(productCount)
                 Log.d("Home Screen", "${productCount}")
                 setHomeItems()  //Preparing menu items
