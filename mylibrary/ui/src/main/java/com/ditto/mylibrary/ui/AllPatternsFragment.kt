@@ -64,7 +64,7 @@ class AllPatternsFragment : BaseFragment(),
     }
 
     override fun onDestroyView() {
-        CURRENT_PAGE=1
+        CURRENT_PAGE = 1
         isLastPage = false
         viewModel.patternArrayList.clear()
         viewModel.resultMap.clear()
@@ -90,7 +90,7 @@ class AllPatternsFragment : BaseFragment(),
              */
             if (AppState.getIsLogged()) {
                 if (!Utility.isTokenExpired()) {
-                    CURRENT_PAGE=1
+                    CURRENT_PAGE = 1
                     isLastPage = false
                     viewModel.patternArrayList.clear()
                     viewModel.resultMap.clear()
@@ -108,12 +108,15 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.resultMap.clear()
             viewModel.patternArrayList.clear()
             viewModel.setList()
-            CURRENT_PAGE=1
+            CURRENT_PAGE = 1
             isLastPage = false
             viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
         }
 
         binding.imageClearAll.setOnClickListener {
+            binding.clearFilter.performClick()
+        }
+        binding.textviewClear.setOnClickListener {
             binding.clearFilter.performClick()
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
@@ -209,13 +212,13 @@ class AllPatternsFragment : BaseFragment(),
 
                 if (CURRENT_PAGE <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                       // bottomNavViewModel.showProgress.set(true)
+                        // bottomNavViewModel.showProgress.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
                     }
                 } else {
                     isLastPage = true
                     isLoading = false
-                    CURRENT_PAGE=1
+                    CURRENT_PAGE = 1
                 }
 
             }
@@ -258,7 +261,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             isLastPage = false
-            CURRENT_PAGE=1
+            CURRENT_PAGE = 1
             viewModel.patternArrayList.clear()
             viewModel.resultMap.clear()
             viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
