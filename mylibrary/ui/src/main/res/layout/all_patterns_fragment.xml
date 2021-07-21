@@ -218,7 +218,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/blue"
                     android:visibility="@{viewModel.isFilterResult()}"
-                    app:constraint_referenced_ids="tv_filter_result,textview_clear" />
+                    app:constraint_referenced_ids="tv_filter_result,textview_clear,imageClearFilter" />
+
 
                 <TextView
                     android:id="@+id/tv_filter_result"
@@ -230,23 +231,45 @@
                     android:text="@string/text_filter_result"
                     android:textColor="@color/search_text_code"
                     android:textSize="@dimen/txt_filter_result"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="@id/guide_start_clear_text"
                     app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_bottom_clear_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.15" />
+
+                <ImageView
+                    android:id="@+id/imageClearFilter"
+                    android:layout_width="@dimen/close_filter1"
+                    android:layout_height="@dimen/close_filter1_h"
+                    android:layout_marginStart="@dimen/medium_padding"
+                    android:layout_marginTop="@dimen/clear_text_margin_top"
+                    android:baselineAlignBottom="true"
+                    android:paddingBottom="14dp"
+                    android:src="@drawable/ic_clear_result"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_clear"
+                    app:layout_constraintHorizontal_bias="0.815"
+                    app:layout_constraintStart_toEndOf="@id/tv_filter_result"
+                    app:layout_constraintTop_toTopOf="@+id/textview_clear">
+
+                </ImageView>
 
                 <TextView
                     android:id="@+id/textview_clear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10"
                     android:layout_marginTop="@dimen/clear_text_margin_top"
-                    android:drawableStart="@drawable/ic_clear_result"
-                    android:drawablePadding="@dimen/dimen_5"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:padding="@dimen/dimen_5"
                     android:text="@string/text_clear_filter"
                     android:textColor="@color/color_clear_filter"
                     android:textSize="@dimen/txt_clear_filter"
-                    app:layout_constraintStart_toEndOf="@id/tv_filter_result"
+                    app:layout_constraintStart_toEndOf="@id/imageClearFilter"
                     app:layout_constraintTop_toBottomOf="@id/topbar" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -259,12 +282,12 @@
                     android:clickable="true"
                     android:overScrollMode="never"
                     android:scrollbars="none"
-                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_clear"
                     app:spanCount="4"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     tools:listitem="@layout/my_library_patterns_item" />
 
 

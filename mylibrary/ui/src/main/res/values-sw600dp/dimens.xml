@@ -61,6 +61,8 @@
     <dimen name="toolbar_bottom_margin">21dp</dimen>
     <dimen name="close_image">25dp</dimen>
     <dimen name="close_filter">11dp</dimen>
+    <dimen name="close_filter1">12dp</dimen>
+    <dimen name="close_filter1_h">22dp</dimen>
     <dimen name="search_width1">17.94</dimen>
     <dimen name="clear_text_margin_top">10dp</dimen>
     <dimen name="recy_margin_top">5dp</dimen>

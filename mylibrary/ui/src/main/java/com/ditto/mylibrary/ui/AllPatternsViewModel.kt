@@ -55,6 +55,7 @@ class AllPatternsViewModel @Inject constructor(
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
 
+
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -257,7 +258,6 @@ class AllPatternsViewModel @Inject constructor(
             val filtered = value.filter { prod -> prod.isSelected }
             if (filtered.isNotEmpty()) {
                 filteredMap[key] = filtered.toTypedArray()
-                isFilterResult.set(true)
 
             }
         }
