@@ -259,7 +259,6 @@
                     android:clickable="true"
                     android:overScrollMode="never"
                     android:scrollbars="none"
-                    android:visibility="@{!viewModel.isLoading()}"
                     tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

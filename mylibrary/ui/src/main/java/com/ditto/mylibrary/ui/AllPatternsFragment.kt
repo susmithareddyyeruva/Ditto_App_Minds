@@ -107,10 +107,16 @@ class AllPatternsFragment : BaseFragment(),
         binding.clearFilter.setOnClickListener {
             viewModel.resultMap.clear()
             viewModel.patternArrayList.clear()
+            viewModel.menuList.clear()
             viewModel.setList()
             CURRENT_PAGE = 1
             isLastPage = false
             viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
+            if (binding?.rvActions.adapter != null) {
+                binding.rvActions.adapter?.notifyDataSetChanged()
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
+
         }
 
         binding.imageClearAll.setOnClickListener {
@@ -167,7 +173,7 @@ class AllPatternsFragment : BaseFragment(),
         }, viewModel.menuList, keys)
         binding.rvActions.adapter = filterDetailsAdapter
         filterDetailsAdapter.viewModel = viewModel
-        filterDetailsAdapter.updateList(keys)
+       // filterDetailsAdapter.updateList(keys)
 
     }
 
@@ -212,7 +218,7 @@ class AllPatternsFragment : BaseFragment(),
 
                 if (CURRENT_PAGE <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                        // bottomNavViewModel.showProgress.set(true)
+                        bottomNavViewModel.showProgress.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
                     }
                 } else {
@@ -317,7 +323,7 @@ class AllPatternsFragment : BaseFragment(),
                       viewModel.menuList[clikedMenu]?.toList() ?: emptyList()
                   )*/
                 binding.rvCategory.adapter?.notifyDataSetChanged()
-                binding.rvActions.adapter?.notifyDataSetChanged()
+               // binding.rvActions.adapter?.notifyDataSetChanged()
 
 
             }
