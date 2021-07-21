@@ -63,6 +63,14 @@ class AllPatternsFragment : BaseFragment(),
         return binding.root
     }
 
+    override fun onDestroyView() {
+        CURRENT_PAGE=1
+        isLastPage = false
+        viewModel.patternArrayList.clear()
+        viewModel.resultMap.clear()
+        super.onDestroyView()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
@@ -82,6 +90,9 @@ class AllPatternsFragment : BaseFragment(),
              */
             if (AppState.getIsLogged()) {
                 if (!Utility.isTokenExpired()) {
+                    CURRENT_PAGE=1
+                    isLastPage = false
+                    viewModel.patternArrayList.clear()
                     viewModel.resultMap.clear()
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
@@ -94,18 +105,20 @@ class AllPatternsFragment : BaseFragment(),
         }
 
         binding.clearFilter.setOnClickListener {
-            viewModel.menuList.clear()
+            viewModel.resultMap.clear()
+            viewModel.patternArrayList.clear()
             viewModel.setList()
+            CURRENT_PAGE=1
+            isLastPage = false
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
         }
 
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            if (viewModel.patternList.value == null) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))  //Initial API call
-            }
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))  //Initial API call
 
         }
 
@@ -191,10 +204,10 @@ class AllPatternsFragment : BaseFragment(),
 
             override fun loadMoreItems() {
                 isLoading = true;
+                CURRENT_PAGE++
                 //you have to call loadmore items to get more data
 
-                if (CURRENT_PAGE < viewModel.totalPageCount) {
-                    CURRENT_PAGE++
+                if (CURRENT_PAGE <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                        // bottomNavViewModel.showProgress.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
@@ -202,6 +215,7 @@ class AllPatternsFragment : BaseFragment(),
                 } else {
                     isLastPage = true
                     isLoading = false
+                    CURRENT_PAGE=1
                 }
 
             }
@@ -243,6 +257,9 @@ class AllPatternsFragment : BaseFragment(),
             // open dialog
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
+            isLastPage = false
+            CURRENT_PAGE=1
+            viewModel.patternArrayList.clear()
             viewModel.resultMap.clear()
             viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")

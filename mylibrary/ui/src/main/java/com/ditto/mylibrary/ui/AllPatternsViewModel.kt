@@ -126,6 +126,7 @@ class AllPatternsViewModel @Inject constructor(
 
                 AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount=result.data.totalPatternCount
+                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
                 totalPageCount=result.data.totalPageCount
                 currentPageId=result.data.currentPageId
                 map = result.data.menuItem  //hashmap
@@ -259,15 +260,17 @@ class AllPatternsViewModel @Inject constructor(
 
 
             }
+            else{
+                //TODO NO filter
+            }
         }
 
-        for ((key, value) in filteredMap) {
+      /*  for ((key, value) in filteredMap) {
             Log.d("FILTER MAP==", ":$key = $value")
 
-        }
+        }*/
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
-            patternArrayList.clear()
             var arraYlist = ArrayList<String>()
             for (result in value) {
                 arraYlist.add(result.title)
