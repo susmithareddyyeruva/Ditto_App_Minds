@@ -114,7 +114,7 @@
     <dimen name="pattern_name">18sp</dimen>
     <dimen name="text_width">140dp</dimen>
     <dimen name="close_filter1">10dp</dimen>
-    <dimen name="close_filter1_h">22dp</dimen>
+    <dimen name="close_filter1_h">24dp</dimen>
 
 
 </resources>

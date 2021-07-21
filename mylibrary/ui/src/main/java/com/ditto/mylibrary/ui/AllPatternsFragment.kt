@@ -142,6 +142,8 @@ class AllPatternsFragment : BaseFragment(),
         allPatternAdapter.setListData(items = viewModel.patternArrayList)
         binding.toolbar.header_view_title.text =
             getString(R.string.pattern_library_count, AppState.getPatternCount())
+        binding.tvFilterResult.text =
+            getString(R.string.text_filter_result, AppState.getPatternCount())
     }
 
 
@@ -173,7 +175,7 @@ class AllPatternsFragment : BaseFragment(),
         }, viewModel.menuList, keys)
         binding.rvActions.adapter = filterDetailsAdapter
         filterDetailsAdapter.viewModel = viewModel
-       // filterDetailsAdapter.updateList(keys)
+        // filterDetailsAdapter.updateList(keys)
 
     }
 
@@ -323,7 +325,7 @@ class AllPatternsFragment : BaseFragment(),
                       viewModel.menuList[clikedMenu]?.toList() ?: emptyList()
                   )*/
                 binding.rvCategory.adapter?.notifyDataSetChanged()
-               // binding.rvActions.adapter?.notifyDataSetChanged()
+                // binding.rvActions.adapter?.notifyDataSetChanged()
 
 
             }
