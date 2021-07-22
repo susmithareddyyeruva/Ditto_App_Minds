@@ -114,7 +114,7 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleInsertDataResult(it) }
     }
 
-    fun fetchWorkspaceSettingData(){
+    fun fetchWorkspaceSettingData() {
         disposable += getWorkspaceData.getUserDetails()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -170,6 +170,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun setWorkspaceView() {
         if (data.value?.workspaceItems?.size ?: 0 > 0) {
+//            data.value= getWorkspaceDimensions(data.value)
             uiEvents.post(Event.PopulateWorkspace)
         }
     }
@@ -290,7 +291,7 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun onPaternItemCheckboxClicked(){
+    fun onPaternItemCheckboxClicked() {
         cutType = core.ui.common.Utility.AlertType.CUT_COMPLETE
         uiEvents.post(Event.ShowCutBinDialog)
     }
@@ -325,8 +326,8 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun cutCheckBoxClicked(count: Int?, isChecked : Boolean) {
-        if (isChecked){
+    fun cutCheckBoxClicked(count: Int?, isChecked: Boolean) {
+        if (isChecked) {
             Utility.progressCount.set(Utility.progressCount.get() + count!!)
         } else {
             Utility.progressCount.set(Utility.progressCount.get() - count!!)
@@ -376,7 +377,37 @@ class WorkspaceViewModel @Inject constructor(
             "Coordinates",
             "toSavedProject : " + data.value?.workspaceItems
         )
-        insertData(data.value!!)
+        insertData(setWorkspaceDimensions(data.value!!))
+    }
+
+    // Set workspace Dimensions to Virtual
+    fun setWorkspaceDimensions(value: PatternsData): PatternsData {
+        val patternsData = value
+        val workspaceItems: List<WorkspaceItems> =
+            patternsData?.workspaceItems ?: emptyList()
+        for (workspaceItem in workspaceItems) {
+            workspaceItem.xcoordinate = workspaceItem.xcoordinate.times(scaleFactor.get().toFloat())
+            workspaceItem.ycoordinate = workspaceItem.ycoordinate.times(scaleFactor.get().toFloat())
+            workspaceItem.pivotX = workspaceItem.pivotX.times(scaleFactor.get().toFloat())
+            workspaceItem.pivotY = workspaceItem.pivotY.times(scaleFactor.get().toFloat())
+
+        }
+        return patternsData
+    }
+
+    // Set workspace Dimensions to Virtual
+    fun getWorkspaceDimensions(value: PatternsData?): PatternsData? {
+        val patternsData = value
+        val workspaceItems: List<WorkspaceItems> =
+            patternsData?.workspaceItems ?: emptyList()
+        for (workspaceItem in workspaceItems) {
+            workspaceItem.xcoordinate = workspaceItem.xcoordinate.div(scaleFactor.get().toFloat())
+            workspaceItem.ycoordinate = workspaceItem.ycoordinate.div(scaleFactor.get().toFloat())
+            workspaceItem.pivotX = workspaceItem.pivotX.div(scaleFactor.get().toFloat())
+            workspaceItem.pivotY = workspaceItem.pivotY.div(scaleFactor.get().toFloat())
+
+        }
+        return patternsData
     }
 
     fun overridePattern(
@@ -529,7 +560,7 @@ class WorkspaceViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun downloadPDF(url: String, filename: String, patternFolderName: String?) {
-        performtask(url, filename,patternFolderName)
+        performtask(url, filename, patternFolderName)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -554,14 +585,18 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, filename,patternFolderName)
+                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
         }
     }
 
-    private fun convertInputStreamToFile(inputStream: InputStream, filename: String, patternFolderName: String?): File? {
+    private fun convertInputStreamToFile(
+        inputStream: InputStream,
+        filename: String,
+        patternFolderName: String?
+    ): File? {
         var result: File? = null
         val outputFile: File? = null
         var dittofolder: File? = null
@@ -574,16 +609,17 @@ class WorkspaceViewModel @Inject constructor(
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-       /*
-       code to create foler with pattern name
-       val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
-        file.mkdirs()*/
+        /*
+        code to create foler with pattern name
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
+         file.mkdirs()*/
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
 
-        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}"
+        val filename =
+            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
 
         result = File(dittofolder, filename)
         if (!result.exists()) {
@@ -602,7 +638,7 @@ class WorkspaceViewModel @Inject constructor(
                 inputStream.copyTo(fileOut)
             }
         } catch (e: Exception) {
-            Log.d("Error","",e)
+            Log.d("Error", "", e)
         }
     }
 }
