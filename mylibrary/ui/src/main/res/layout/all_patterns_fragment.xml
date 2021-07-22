@@ -401,7 +401,7 @@
                         android:gravity="center_vertical"
                         android:paddingStart="@dimen/padding_small"
                         android:text="@string/clear_all"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/sign_in_blue"
                         android:textSize="@dimen/item_action_text_size" />
 
                     <TextView

@@ -12,14 +12,15 @@
     <string name="home_image">HomeImage</string>
     <string name="welcome_back">Welcome back,</string>
     <string name="welcome_message">What would you like to do today?</string>
-    <string name="more_patterns_available_at">More patterns available at</string>
+    <string name="more_patterns_available_at">More Patterns Available</string>
     <string name="ditto_patterns_site"><u>dittopatterns.com</u></string>
     <string name="for_fine_crafts_and_fabrics_visit_our_site">For fine crafts and fabrics\nvisit our site</string>
-    <string name="joann_site"><u>www.joann.com</u></string>
-    <string name="beam_setup_and_calibration">Beam setup and calibration</string>
-    <string name="view_tutorial">View tutorials</string>
+    <string name="shop_fabric_supplies">Shop Fabric &amp; Supplies</string>
+    <string name="joann_site"><u>joann.com</u></string>
+    <string name="beam_setup_and_calibration">Beam setup &amp; Calibration</string>
+    <string name="view_tutorial"><u>View Tutorials</u></string>
     <string name="pattern_library">Pattern Library</string>
-    <string name="all_your_patterns_in_one_place">All your patterns in one place</string>
+    <string name="all_your_patterns_in_one_place"><u>Browse My Library</u></string>
 
 
 </resources>

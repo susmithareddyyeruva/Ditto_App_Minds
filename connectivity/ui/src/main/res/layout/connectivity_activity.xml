@@ -262,8 +262,8 @@
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animationView"
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/progress_width"
+                        android:layout_height="@dimen/progress_heigth"
                         android:background="@android:color/transparent"
                         android:layout_centerInParent="true"
                         android:visibility="@{viewmodel.isProgressBar()}"
@@ -420,8 +420,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.airbnb.lottie.LottieAnimationView
-                        android:layout_width="150dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/progress_width"
+                        android:layout_height="@dimen/progress_heigth"
                         android:background="@android:color/transparent"
                         android:layout_centerInParent="true"
                         app:lottie_autoPlay="true"
@@ -464,8 +464,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="150dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/progress_width"
+                    android:layout_height="@dimen/progress_heigth"
                     android:background="@android:color/transparent"
                     android:layout_centerInParent="true"
                     app:lottie_autoPlay="true"
