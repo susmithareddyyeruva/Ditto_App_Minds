@@ -1076,16 +1076,30 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 return true
                             } else {
                                 if(viewModel.userData.value?.cSpliceReminder?: true) {
-                                    Utility.getCommonAlertDialogue(
-                                        requireActivity(),
-                                        resources.getString(R.string.splicing_required),
-                                        resources.getString(R.string.splicing_required_first_message),
-                                        resources.getString(R.string.empty_string),
-                                        resources.getString(R.string.ok),
-                                        this,
-                                        Utility.AlertType.CUT_BIN,
-                                        Utility.Iconype.NONE
-                                    )
+                                    if ((dragData?.patternPieces?.splicedImages?.size)!! > 2) {
+                                        Utility.getCommonAlertDialogue(
+                                            requireActivity(),
+                                            resources.getString(R.string.multiple_splicing_required),
+                                            resources.getString(R.string.splicing_required_multiple_message),
+                                            resources.getString(R.string.empty_string),
+                                            resources.getString(R.string.ok),
+                                            this,
+                                            Utility.AlertType.CUT_BIN,
+                                            Utility.Iconype.NONE
+                                        )
+                                    } else {
+
+                                        Utility.getCommonAlertDialogue(
+                                            requireActivity(),
+                                            resources.getString(R.string.splicing_required),
+                                            resources.getString(R.string.splicing_required_first_message),
+                                            resources.getString(R.string.empty_string),
+                                            resources.getString(R.string.ok),
+                                            this,
+                                            Utility.AlertType.CUT_BIN,
+                                            Utility.Iconype.NONE
+                                        )
+                                    }
                                 }
                             }
                             mWorkspaceEditor?.clearAllSelection()
@@ -1664,6 +1678,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
         private const val SPLICE_TOP_TO_BOTTOM = "Splice Top-to-Bottom"
+        private const val MULTIPLE_TO_MULTIPLE = "Splice Multiple-to-Multiple"
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
