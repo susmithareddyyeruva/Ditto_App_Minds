@@ -315,7 +315,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                     viewModel.selectedTab.set(view?.tag as Int)
                     //onTabSwitchAlert()
                     //switchTab()
-                    return true
+                    //return true
                 }
                 return false
             } else {
