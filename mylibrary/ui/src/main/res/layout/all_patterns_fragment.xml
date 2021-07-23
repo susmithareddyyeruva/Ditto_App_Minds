@@ -159,14 +159,7 @@
                             app:layout_constraintRight_toLeftOf="@id/tv_filter"
                             app:layout_constraintTop_toTopOf="@id/header_view_title" />
 
-                        <ImageView
-                            android:id="@+id/view_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_5"
-                            android:background="@drawable/blue_filter_circle"
-                            app:layout_constraintStart_toStartOf="@id/tv_filter"
-                            app:layout_constraintTop_toTopOf="@id/tv_filter" />
+
 
                         <TextView
                             android:id="@+id/tv_filter"
@@ -186,7 +179,14 @@
                             app:layout_constraintEnd_toStartOf="@id/guide_endn"
                             app:layout_constraintTop_toTopOf="@id/header_view_title" />
 
-
+                        <ImageView
+                            android:id="@+id/view_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/filter_width"
+                            android:background="@drawable/blue_filter_circle"
+                            app:layout_constraintStart_toStartOf="@id/tv_filter"
+                            app:layout_constraintTop_toTopOf="@id/tv_filter" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.appcompat.widget.Toolbar>

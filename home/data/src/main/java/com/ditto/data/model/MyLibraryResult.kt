@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 
 data class MyLibraryResult(
     @SerializedName("action")
-    val action: String,
+    val action: String?="",
     @SerializedName("locale")
-    val locale: String,
+    val locale: String?="",
     @SerializedName("prod")
-    val prod: List<Prod>,
+    val prod: List<Prod>?= emptyList(),
     @SerializedName("queryString")
-    val queryString: String,
+    val queryString: String?="",
     @SerializedName("totalPatternCount")
-    val totalPatternCount: Int,
+    val totalPatternCount: Int?=0,
     @SerializedName("totalPageCount")
-    val totalPageCount: Int,
+    val totalPageCount: Int?=0,
     @SerializedName("currentPageId")
-    val currentPageId: Int,
-    @SerializedName("filter")
-    val filter: HomeFilterMenu
+    val currentPageId: Int
+/*    @SerializedName("filter")
+    val filter: HomeFilterMenu*/
 )
