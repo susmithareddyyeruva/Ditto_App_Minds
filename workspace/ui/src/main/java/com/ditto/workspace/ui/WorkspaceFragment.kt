@@ -23,7 +23,6 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -143,7 +142,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 override fun onPageSelected(position: Int) {
                     logger.d("onPageSelected$position")
                     Utility.fragmentTabs.set(position)
-                    resetConnectButton()
+                    resetLayout()
                 }
 
             })
@@ -169,13 +168,14 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         viewModel.spliced_pices_visibility.set(false)
     }
 
-    private fun resetConnectButton() {
+    //  To reset connect buttton and pattern piece adapter
+    private fun resetLayout() {
         if (viewModel.selectedTab.get() == 0) {
-            fragmentGarment.setConnectButton()
+            fragmentGarment.resetWorkspaceUI()
         } else if (viewModel.selectedTab.get() == 1) {
-            fragmentLining.setConnectButton()
+            fragmentLining.resetWorkspaceUI()
         } else {
-            fragmentInterface.setConnectButton()
+            fragmentInterface.resetWorkspaceUI()
         }
     }
 
