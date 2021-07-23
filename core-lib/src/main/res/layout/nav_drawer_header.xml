@@ -72,12 +72,12 @@
             android:paddingStart="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
             android:singleLine="true"
-            android:text="@{bottomNavViewModel.menuDescription}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_desc"
             app:layout_constraintEnd_toStartOf="@+id/text_subscription"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() ->bottomNavViewModel.onClickSignin()}"
             app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
         <TextView

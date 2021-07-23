@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -18,6 +20,7 @@ import android.widget.ExpandableListView.OnGroupClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -55,7 +58,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     private lateinit var navController: NavController
     lateinit var expandableListView: NoScrollExListView
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
-
+    lateinit var navViewHeaderBinding: NavDrawerHeaderBinding
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +98,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.bottomNavViewModel?.visibility?.set(false)
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
+                navController.navigate(R.id.action_splashActivity_to_LoginFragment)
+            }
+            is BottomNavViewModel.Event.onClickSignIn -> {
+                Log.d("EVENT", "SIGNIN CLICKED")
+                binding.bottomNavViewModel?.visibility?.set(false)
+                binding.toolbarViewModel?.isShowActionBar?.set(false)
+                binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
 
@@ -221,8 +232,30 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     fun bindMenuHeader() {
         val viewHeader = binding.navSlideView.getHeaderView(0)
-        val navViewHeaderBinding: NavDrawerHeaderBinding = NavDrawerHeaderBinding.bind(viewHeader)
+        navViewHeaderBinding = NavDrawerHeaderBinding.bind(viewHeader)
         navViewHeaderBinding.bottomNavViewModel = binding.bottomNavViewModel
+    }
+
+     fun setEmaildesc() {
+        if (AppState.getIsLogged()){
+            val email = AppState.getEmail()
+            navViewHeaderBinding.textEmail.text = "$email"
+        }else{
+            setUnderlinestyle(navViewHeaderBinding)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setUnderlinestyle(navViewHeaderBinding: NavDrawerHeaderBinding) {
+
+        val text: String? = getString(R.string.sign_in_to_explore_more)
+        val spannable = SpannableString(text)
+
+        spannable.setSpan(
+            UnderlineSpan(),
+            0, 7,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        navViewHeaderBinding.textEmail.text = spannable
     }
 
     private fun setMenuItemColor(menu: MenuItem, color: Int) {
@@ -438,6 +471,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_signin))) {
             if (navController.currentDestination?.label?.equals("Home")!!) {
                 logoutUser(false)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.about_app_policies))) {
             if (navController.currentDestination?.label?.equals("Home")!!) {
