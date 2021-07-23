@@ -262,8 +262,8 @@
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animationView"
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/progress_width"
+                        android:layout_height="@dimen/progress_heigth"
                         android:background="@android:color/transparent"
                         android:layout_centerInParent="true"
                         android:visibility="@{viewmodel.isProgressBar()}"
@@ -421,8 +421,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.airbnb.lottie.LottieAnimationView
-                        android:layout_width="150dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/progress_width"
+                        android:layout_height="@dimen/progress_heigth"
                         android:background="@android:color/transparent"
                         android:layout_centerInParent="true"
                         app:lottie_autoPlay="true"
@@ -466,8 +466,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="150dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/progress_width"
+                    android:layout_height="@dimen/progress_heigth"
                     android:background="@android:color/transparent"
                     android:layout_centerInParent="true"
                     app:lottie_autoPlay="true"
@@ -605,6 +605,12 @@
                                     android:background="@android:color/white"
                                     android:text="Enter Wifi password" />
 
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:passwordToggleEnabled="true">
+
+
                                 <EditText
                                     android:id="@+id/wifipwd"
                                     android:singleLine="true"
@@ -617,12 +623,14 @@
                                     android:textCursorDrawable="@drawable/cursor"
                                     android:imeOptions="flagNoExtractUi"
                                     android:layout_marginBottom="10dp"
-                                    android:inputType="textVisiblePassword|textNoSuggestions"
+                                    android:inputType="textPassword"
                                     android:textSize="@dimen/size_14px"
                                     android:paddingLeft="5dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_gravity="center"
                                     android:background="@drawable/edit_text_border" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
 
                             </LinearLayout>
 

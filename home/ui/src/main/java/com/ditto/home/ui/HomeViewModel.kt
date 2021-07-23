@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
 
         val title = intArrayOf(
             R.string.beam_setup_and_calibration, R.string.pattern_library_count,
-            R.string.more_patterns_available_at, R.string.for_fine_crafts_and_fabrics_visit_our_site
+            R.string.more_patterns_available_at, R.string.shop_fabric_supplies
         )
 
         val description = intArrayOf(

@@ -98,7 +98,7 @@ class CustomerCareFragment : BaseFragment() {
 
         val spannable = SpannableString(text)
         spannable.setSpan(
-            ForegroundColorSpan(requireContext().getColor(R.color.emailblue)),
+            ForegroundColorSpan(requireContext().getColor(R.color.sign_in_blue)),
             6, 29,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 

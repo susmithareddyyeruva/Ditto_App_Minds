@@ -437,6 +437,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun showTransformSuccessPopup() {
+        baseViewModel.isCalibrated.set(true)
         showProgress(false)
         viewModel.isShowDialog.set(true)
         Utility.showAlertDialogue(
@@ -601,7 +602,10 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        baseViewModel.isCalibrated.set(true)
+        if (!baseViewModel.isCalibrated.get()){
+            baseViewModel.isCalibrated.set(true)
+            baseViewModel.isUserNeedCalibrated.set(false)
+        }
         if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
             if (arguments?.getBoolean("isFromPatternDescription")!!) {
                 if (arguments?.getBoolean("isRecalibrate") != null && arguments?.getBoolean("isRecalibrate")!!) {

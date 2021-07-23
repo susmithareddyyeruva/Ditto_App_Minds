@@ -243,8 +243,8 @@
 
                 <!--<com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/animationView"
-                    android:layout_width="@dimen/size_0dp"
-                    android:layout_height="@dimen/size_0dp"
+                    android:layout_width="@dimen/progress_width"
+                    android:layout_height="@dimen/progress_heigth"
                     app:layout_constraintBottom_toTopOf="@+id/loadingText"
                     app:layout_constraintEnd_toEndOf="@+id/loadingText"
                     app:layout_constraintStart_toStartOf="@+id/loadingText"

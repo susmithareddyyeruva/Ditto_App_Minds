@@ -23,7 +23,6 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -143,6 +142,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 override fun onPageSelected(position: Int) {
                     logger.d("onPageSelected$position")
                     Utility.fragmentTabs.set(position)
+                    resetLayout()
                 }
 
             })
@@ -166,6 +166,17 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentInterface.clearWorkspace()
         }
         viewModel.spliced_pices_visibility.set(false)
+    }
+
+    //  To reset connect buttton and pattern piece adapter
+    private fun resetLayout() {
+        if (viewModel.selectedTab.get() == 0) {
+            fragmentGarment.resetWorkspaceUI()
+        } else if (viewModel.selectedTab.get() == 1) {
+            fragmentLining.resetWorkspaceUI()
+        } else {
+            fragmentInterface.resetWorkspaceUI()
+        }
     }
 
     private fun setTabTouchListener() {
@@ -279,18 +290,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onPositiveButtonClicked(alertType: core.ui.common.Utility.AlertType) {
         if (alertType == core.ui.common.Utility.AlertType.TAB_SWITCH) {
-            if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch {
-                    core.ui.common.Utility.sendDittoImage(
-                        requireActivity(),
-                        "solid_black"
-                    )
-                }
-            }
-
-            clearWorkspace()
-            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
-
+            switchTab()
         }
 
     }
@@ -325,8 +325,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
                     viewModel.selectedTab.set(view?.tag as Int)
                     //onTabSwitchAlert()
-                    switchTab()
-                    return true
+                    //switchTab()
+                    //return true
                 }
                 return false
             } else {

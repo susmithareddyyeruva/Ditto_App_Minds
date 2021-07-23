@@ -314,7 +314,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:elevation="@dimen/elevation_card"
-                    android:visibility="@{!viewModel.isWorkspaceSocketConnection()}"
+                    android:visibility="@{(viewModel.isWorkspaceSocketConnection() &amp;&amp; viewModel.isWorkspaceIsCalibrated()) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_recalibrate"
                     app:layout_constraintEnd_toEndOf="@+id/txt_recalibrate"
                     app:layout_constraintStart_toStartOf="@+id/txt_recalibrate"
