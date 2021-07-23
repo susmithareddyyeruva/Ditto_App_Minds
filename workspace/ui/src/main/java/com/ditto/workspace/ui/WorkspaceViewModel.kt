@@ -85,6 +85,7 @@ class WorkspaceViewModel @Inject constructor(
     val isSpliceTopVisible: ObservableBoolean = ObservableBoolean(false)
     val isSpliceBottomVisible: ObservableBoolean = ObservableBoolean(false)
     val isWorkspaceSocketConnection: ObservableBoolean = ObservableBoolean(false)
+    val isWorkspaceIsCalibrated: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)

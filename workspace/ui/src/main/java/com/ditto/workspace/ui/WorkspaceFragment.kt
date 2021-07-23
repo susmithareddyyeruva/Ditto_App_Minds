@@ -143,6 +143,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 override fun onPageSelected(position: Int) {
                     logger.d("onPageSelected$position")
                     Utility.fragmentTabs.set(position)
+                    resetConnectButton()
                 }
 
             })
@@ -166,6 +167,16 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentInterface.clearWorkspace()
         }
         viewModel.spliced_pices_visibility.set(false)
+    }
+
+    private fun resetConnectButton() {
+        if (viewModel.selectedTab.get() == 0) {
+            fragmentGarment.setConnectButton()
+        } else if (viewModel.selectedTab.get() == 1) {
+            fragmentLining.setConnectButton()
+        } else {
+            fragmentInterface.setConnectButton()
+        }
     }
 
     private fun setTabTouchListener() {

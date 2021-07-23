@@ -126,7 +126,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 enableClear(false)
             }
         }
-        viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+        setConnectButton()
         setupWorkspace()
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -798,7 +798,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     showWaitingMessage(resources.getString(R.string.projection_progress))
                 } else {
                     if (baseViewModel.activeSocketConnection.get()) {
-                        showCalibrationDialog()
+                        if (baseViewModel.isUserNeedCalibrated.get()){
+                            sendBorderImage()
+                        } else {
+                            showCalibrationDialog()
+                        }
+
                     } else {
                         checkBluetoothWifiPermission()
                     }
@@ -1791,13 +1796,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val positive = layout.findViewById(R.id.textYes) as TextView
         positive.setOnClickListener {
             alertCalibration.dismiss()
-            sendBorderImage()
+            baseViewModel.isCalibrated.set(false)
+            viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
+            baseViewModel.isUserNeedCalibrated.set(true)
+            //sendBorderImage()
         }
         negative.setOnClickListener {
             alertCalibration.dismiss()
-            if (baseViewModel.activeSocketConnection.get()) {
+            baseViewModel.isCalibrated.set(true)
+            viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
+            baseViewModel.isUserNeedCalibrated.set(false)
+            /*if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
-            }
+            }*/
 
         }
     }
@@ -2123,6 +2134,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
 
         }
+    }
+     fun setConnectButton(){
+        viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+        viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
     }
 
 }

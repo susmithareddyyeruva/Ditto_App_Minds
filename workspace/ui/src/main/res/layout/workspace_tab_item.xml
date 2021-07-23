@@ -308,7 +308,7 @@
             android:id="@+id/button_send_to_projector"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@{viewModel.isWorkspaceSocketConnection?@drawable/button_rounded_red_bg:@drawable/button_rounded_grey_bg}"
+            android:background="@{(viewModel.isWorkspaceSocketConnection &amp;&amp; viewModel.isWorkspaceIsCalibrated())?@drawable/button_rounded_red_bg:@drawable/button_rounded_grey_bg}"
             android:elevation="@dimen/elevation_pieces_reference"
             android:enabled="true"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
