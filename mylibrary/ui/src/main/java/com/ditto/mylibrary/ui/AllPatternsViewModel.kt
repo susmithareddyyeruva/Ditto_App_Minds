@@ -240,6 +240,8 @@ class AllPatternsViewModel @Inject constructor(
         object OnResultFailed : Event()
         object NoInternet : Event()
         object OnUpdateFilter : Event()
+        object UpdateFilterImage : Event()
+        object UpdateDefaultFilter : Event()
     }
 
     fun createJson(currentPage: Int): MyLibraryFilterRequestData {
@@ -263,8 +265,10 @@ class AllPatternsViewModel @Inject constructor(
         }
         if (filteredMap.isEmpty()) {
             isFilterResult.set(false)
+            uiEvents.post(Event.UpdateDefaultFilter)
         } else {
             isFilterResult.set(true)
+            uiEvents.post(Event.UpdateFilterImage)
         }
 
         val jsonProduct = JSONObject()

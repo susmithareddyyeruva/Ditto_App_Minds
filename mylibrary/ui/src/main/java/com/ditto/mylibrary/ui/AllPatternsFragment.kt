@@ -331,6 +331,12 @@ class AllPatternsFragment : BaseFragment(),
             }
 
         }
+        AllPatternsViewModel.Event.UpdateFilterImage ->{
+            binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+        }
+        AllPatternsViewModel.Event.UpdateDefaultFilter -> {
+            binding.viewDot.setImageResource(R.drawable.ic_filter)
+        }
     }
 
     private fun showAlert() {
