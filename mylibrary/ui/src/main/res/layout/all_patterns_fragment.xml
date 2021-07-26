@@ -142,6 +142,7 @@
                             app:layout_constraintTop_toTopOf="@id/header_view_title_pattern_count" />
 
                         <TextView
+                            android:id="@+id/tvSearch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"

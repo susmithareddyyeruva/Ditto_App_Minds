@@ -51,7 +51,7 @@ class CompletedProjectsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
-        viewModel.fetchOnPatternData(viewModel.createJson(1))
+        viewModel.fetchOnPatternData(viewModel.createJson(1,value = ""))
     }
 
     private fun setUIEvents() {

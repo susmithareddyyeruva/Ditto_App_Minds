@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -95,7 +96,7 @@ class AllPatternsFragment : BaseFragment(),
                     viewModel.patternArrayList.clear()
                     viewModel.resultMap.clear()
                     bottomNavViewModel.showProgress.set(true)
-                    viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
+                    viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value =""))
 
 
                 }
@@ -111,7 +112,7 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.setList()
             CURRENT_PAGE = 1
             isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -127,7 +128,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))  //Initial API call
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))  //Initial API call
 
         }
 
@@ -221,7 +222,7 @@ class AllPatternsFragment : BaseFragment(),
                 if (CURRENT_PAGE <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                         bottomNavViewModel.showProgress.set(true)
-                        viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
+                        viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))
                     }
                 } else {
                     isLastPage = true
@@ -265,14 +266,19 @@ class AllPatternsFragment : BaseFragment(),
         is AllPatternsViewModel.Event.OnSearchClick -> {
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            // open dialog
+            if (findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+                findNavController().navigate(R.id.action_fragments_to_search)
+            } else {
+                Log.d("pattern", "OnSearchClick : ELSE")
+
+            }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             isLastPage = false
             CURRENT_PAGE = 1
             viewModel.patternArrayList.clear()
             viewModel.resultMap.clear()
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE))
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
@@ -331,7 +337,7 @@ class AllPatternsFragment : BaseFragment(),
             }
 
         }
-        AllPatternsViewModel.Event.UpdateFilterImage ->{
+        AllPatternsViewModel.Event.UpdateFilterImage -> {
             binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
         }
         AllPatternsViewModel.Event.UpdateDefaultFilter -> {
@@ -398,4 +404,17 @@ class AllPatternsFragment : BaseFragment(),
     ) {
         // TODO("Not yet implemented")
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode==100) {
+            if (data?.data.toString().equals("KEY_SEARCH")) {
+                Log.d("MAP  RESULT== ", "IF")
+                //Re directing to Video Screen
+
+                }
+        }
+    }
+
 }

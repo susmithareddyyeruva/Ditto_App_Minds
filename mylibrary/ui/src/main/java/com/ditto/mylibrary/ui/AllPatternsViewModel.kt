@@ -75,6 +75,7 @@ class AllPatternsViewModel @Inject constructor(
     fun fetchOnPatternData(
         createJson: MyLibraryFilterRequestData
     ) {
+
         uiEvents.post(Event.OnShowProgress)
         disposable += getPatternsData.invoke(createJson)
             .delay(600, TimeUnit.MILLISECONDS)
@@ -85,15 +86,19 @@ class AllPatternsViewModel @Inject constructor(
     }
 
 
-    /*   fun getFilteredPatternsData(request: MyLibraryFilterRequestData) {
-           uiEvents.post(Event.OnShowProgress)
-           disposable += getPatternsData.getFilteredPatterns(request)
-               .delay(600, TimeUnit.MILLISECONDS)
-               .subscribeOn(Schedulers.io())
-               .whileSubscribed { isLoading.set(it) }
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribeBy { handleFilterResult(it) }
-       }*/
+    fun getFilteredPatternsData(
+        request: MyLibraryFilterRequestData,
+        value: String
+    ) {
+        request.searchTerm = value
+        uiEvents.post(Event.OnShowProgress)
+        disposable += getPatternsData.getFilteredPatterns(request)
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFilterResult(it) }
+    }
 
     private fun handleFilterResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
@@ -244,14 +249,14 @@ class AllPatternsViewModel @Inject constructor(
         object UpdateDefaultFilter : Event()
     }
 
-    fun createJson(currentPage: Int): MyLibraryFilterRequestData {
+    fun createJson(currentPage: Int,value: String): MyLibraryFilterRequestData {
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
                 "subscustomerOne@gmail.com",
                 true,
                 true
-            ), pageId = currentPage, patternsPerPage = 12
+            ), pageId = currentPage, patternsPerPage = 12,searchTerm = value
         )
         val json1 = Gson().toJson(menuList)
         Log.d("JSON===", json1)

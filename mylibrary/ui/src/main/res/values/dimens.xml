@@ -115,6 +115,8 @@
     <dimen name="text_width">140dp</dimen>
     <dimen name="close_filter1">10dp</dimen>
     <dimen name="close_filter1_h">24dp</dimen>
+    <dimen name="margin_top">19dp</dimen>
+    <dimen name="search_view_height">32dp</dimen>
 
 
 </resources>

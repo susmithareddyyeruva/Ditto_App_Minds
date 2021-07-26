@@ -1,0 +1,88 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.mylibrary.ui.AllPatternsViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidlineSearchStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".15">
+
+        </androidx.constraintlayout.widget.Guideline>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidlineSearchEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".85">
+
+        </androidx.constraintlayout.widget.Guideline>
+
+        <RelativeLayout
+            android:id="@+id/relSearch"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/search_bg"
+            app:layout_constraintEnd_toEndOf="@+id/guidlineSearchEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidlineSearchStart"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_search_icon"
+                android:drawablePadding="@dimen/padding_x"
+                android:drawableTint="#000"
+                android:ellipsize="end"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="center_vertical"
+                android:hint="Search pattern library"
+                android:imeOptions="flagNoExtractUi|actionSearch"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/padding_x"
+                android:paddingVertical="@dimen/padding_x"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/size_12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvCAncelDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/search_view_height"
+            android:layout_marginStart="@dimen/padding_9"
+            android:layout_marginTop="@dimen/margin_top"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_small"
+            android:paddingStart="@dimen/medium_padding"
+            android:singleLine="true"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_12sp"
+            app:layout_constraintStart_toEndOf="@+id/guidlineSearchEnd"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
