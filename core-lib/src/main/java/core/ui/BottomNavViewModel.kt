@@ -1,6 +1,7 @@
 package core.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import core.appstate.AppState
@@ -44,11 +45,11 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         prepareMenuData()
         if (!AppState.getIsLogged()) {
             menuTitle.set(context?.getString(R.string.hi_there))
-            menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
+            //menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
 
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
-            menuDescription.set(userEmailBase.get())
+           // menuDescription.set(userEmailBase.get())
             if(subscriptionEndDateBase.get().toString().isEmpty() || subscriptionEndDateBase.get()==null){
                 menuNumberOfDaysForSubscription.set("0 days")
             }else{
@@ -110,12 +111,12 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         headerList.add(menuModel)
         childList.put(menuModel, childModelsList)
 
-       /* menuModel = MenuModel(
+        menuModel = MenuModel(
             "FAQ & Glossary",
             "ic_menu_faq",
             null
         )
-        headerList.add(menuModel)*/
+        headerList.add(menuModel)
 
         menuModel = MenuModel(
             "Customer Service",
@@ -150,7 +151,14 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     }
     sealed class Event {
         object NavigateToLogin : Event()
+        object onClickSignIn : Event()
     }
 
 
+    fun onClickSignin(){
+        Log.d("viewmodel","button click  ")
+            if (isGuestBase?.get() != false) {
+                uiEvents.post(Event.onClickSignIn)
+            }
+    }
 }

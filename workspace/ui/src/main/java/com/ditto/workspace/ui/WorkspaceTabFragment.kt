@@ -909,6 +909,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             clearWorkspace()
                         }
                     }
+                    viewModel.clickPatternReference(true)
                 } else Utility.showSnackBar(
                     getString(R.string.no_item_in_workspace), binding.topBorder
                 )
@@ -1114,6 +1115,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
                             enableClear(false)
+                            viewModel.clickPatternReference(false)
                             com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get() + 1
                             )
