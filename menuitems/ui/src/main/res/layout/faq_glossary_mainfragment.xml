@@ -62,22 +62,21 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutFaq"
-            style="@style/TabLayoutStyle"
-            app:tabTextAppearance="@style/TabLayoutStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/top_margin"
             android:layout_marginStart="@dimen/content_start"
+            android:layout_marginTop="@dimen/top_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/faq_appBar"
             app:tabIndicatorColor="#A4211F"
+            app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="bottom"
             app:tabMode="fixed"
-            app:tabIndicatorFullWidth="true"
-            app:tabPaddingStart="@dimen/tab_padding"
             app:tabPaddingEnd="@dimen/tab_padding"
+            app:tabPaddingStart="@dimen/tab_padding"
             app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="@color/black"
+            app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="#A8A7A8" />
 
         <View

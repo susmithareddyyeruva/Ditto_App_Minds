@@ -6,8 +6,13 @@
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/tab_title_text_size</item>
         <item name="android:fontFamily">@font/avenir_next_lt_pro_demi</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="MineCustomTabText">
+        <item name="android:textSize">@dimen/tab_title_text_size</item>
+        <item name="fontFamily">@font/avenir_next_lt_pro_demi</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>
