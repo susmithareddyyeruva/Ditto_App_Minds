@@ -30,7 +30,7 @@
     <string name="splicing_required_first_message">This is a spliced piece that is too large for the projection area and will be projected across two or more linked sections.</string><!-- // done splice notification-->
     <string name="splicing_required_message">This is a large piece which required splicing. This piece can\'t be projected at the same time as other pieces.</string> <!--//multiple-->
     <string name="multiple_splicing_required">Multi-Directional Splicing Required</string>
-    <string name="splicing_required_multiple_message">This piece is too large for the projection area and will be projected across 3+ linked sections.Tracing the entire piece first is recommended before cutting due to the complexity.</string> <!--//multiple-->
+    <string name="splicing_required_multiple_message"><![CDATA[This piece is too large for the projection area and will be projected across 3+ linked sections. <u><b>TRACING</b></u> the entire piece first is recommended before cutting due to the complexity.]]></string> <!--//multiple-->
     <string name="mirror">Mirror</string>
     <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string> <!--// mirror reminder done-->
     <string name="launch_camera">LAUNCH CAMERA</string>

@@ -103,6 +103,7 @@
             android:gravity="center"
             android:text="This app needs Bluetooth connectivity"
             android:layout_below="@+id/common_title"
+            android:lineSpacingMultiplier="1.25"
             android:layout_marginLeft="@dimen/xx_large_padding"
             android:layout_marginRight="@dimen/xx_large_padding"
             android:layout_marginTop="@dimen/medium_padding"

@@ -188,10 +188,10 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun clickSplice() {
-        clickedSplice.set(true)
-        clickedSize45.set(false)
-        clickedSize60.set(false)
-        if(enableSplice.get()) {
+        if (enableSplice.get()) {
+            clickedSplice.set(true)
+            clickedSize45.set(false)
+            clickedSize60.set(false)
             uiEvents.post(Event.OnClickInch)
         }
     }
