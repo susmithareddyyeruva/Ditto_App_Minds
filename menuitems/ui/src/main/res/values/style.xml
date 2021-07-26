@@ -7,6 +7,7 @@
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:fontFamily">@font/avenir_next_lt_pro_demi</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>
