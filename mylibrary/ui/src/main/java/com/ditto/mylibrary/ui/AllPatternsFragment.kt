@@ -64,7 +64,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterMenuItem("Customization", 9)
     )
     var categoryFilterList = arrayListOf(
-        FilterItems("SubScribed"),
+        FilterItems("Subscribed"),
         FilterItems("Purchased"),
         FilterItems("Trials"),
     )
