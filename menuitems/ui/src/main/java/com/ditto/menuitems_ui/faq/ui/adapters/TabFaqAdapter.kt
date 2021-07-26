@@ -16,7 +16,7 @@ class TabFaqAdapter(
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) {
 
-    private var tabdata = arrayListOf<String>("FAQ", "Glossary")
+    private var tabdata = arrayListOf<String>("FAQ", "Glossary","Videos")
     private lateinit var vm1: FAQGlossaryfragmentViewModel
 
     override fun getItem(position: Int): Fragment {
@@ -26,6 +26,9 @@ class TabFaqAdapter(
             }
             1 -> {
                 GlossaryFragment(data?.Glossary?: emptyList())
+            }
+            2 -> {
+                FAQFragment(data?.FAQ?: emptyList())
             }
             else -> getItem(position)
         }

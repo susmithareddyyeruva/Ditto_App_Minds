@@ -222,6 +222,7 @@
                         app:lottie_autoPlay="true"
                         android:layout_gravity="center"
                         app:lottie_loop="true"
+                        app:lottie_colorFilter="@color/sign_in_blue"
                         app:lottie_rawRes="@raw/ditto_loader" />
 
                     <TextView
@@ -250,6 +251,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
+                    app:lottie_colorFilter="@color/sign_in_blue"
                     app:lottie_rawRes="@raw/ditto_loader" />
 
                 <TextView

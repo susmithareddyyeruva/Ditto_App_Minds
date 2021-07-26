@@ -20,6 +20,7 @@ import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.appstate.AppState
 import core.network.NetworkUtility
 import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -74,6 +75,12 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 )
             }
         }
+    }
+
+    //for hiding the navigation drawer
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hideDrawerLayout()
     }
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
