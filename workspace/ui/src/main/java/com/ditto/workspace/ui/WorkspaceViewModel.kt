@@ -191,7 +191,9 @@ class WorkspaceViewModel @Inject constructor(
         clickedSplice.set(true)
         clickedSize45.set(false)
         clickedSize60.set(false)
-        uiEvents.post(Event.OnClickInch)
+        if(enableSplice.get()) {
+            uiEvents.post(Event.OnClickInch)
+        }
     }
 
     fun clickPatternReference(isPattern: Boolean) {
