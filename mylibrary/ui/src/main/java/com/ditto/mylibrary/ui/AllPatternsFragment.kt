@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
+import com.ditto.mylibrary.ui.util.getBackStackData
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -130,6 +132,20 @@ class AllPatternsFragment : BaseFragment(),
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))  //Initial API call
 
+        }
+        getBackStackData<String>("KEY_SEARCH",true) { it ->
+            logger.d("SEARCH TERM : $it")
+            viewModel.resultMap.clear()
+            viewModel.patternArrayList.clear()
+            viewModel.menuList.clear()
+            viewModel.setList()
+            CURRENT_PAGE = 1
+            isLastPage = false
+            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = it))
+            if (binding?.rvActions.adapter != null) {
+                binding.rvActions.adapter?.notifyDataSetChanged()
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
         }
 
 
@@ -408,7 +424,7 @@ class AllPatternsFragment : BaseFragment(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode==100) {
+        if (resultCode== Activity.RESULT_OK) {
             if (data?.data.toString().equals("KEY_SEARCH")) {
                 Log.d("MAP  RESULT== ", "IF")
                 //Re directing to Video Screen

@@ -2,14 +2,15 @@ package com.ditto.mylibrary.ui
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.ditto.mylibrary.ui.databinding.SearchDialogBinding
+import com.ditto.mylibrary.ui.util.setBackStackData
 import kotlinx.android.synthetic.main.search_dialog.view.*
 
 
@@ -29,15 +30,13 @@ class SearchDialogFragment : DialogFragment() {
         }
         view.editSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val bundle = bundleOf(
-                    "KEY_SEARCH" to mDataBinding.editSearch.text.toString()
-                )
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    100,
-                    activity?.intent?.putExtras(bundle)
-                );
-              dismiss()
+                if (mDataBinding.editSearch.text.toString().isNotEmpty()) {
+                    setBackStackData("KEY_SEARCH", mDataBinding.editSearch.text.toString(), true)
+                    dismiss()
+                } else
+                    dismiss()
+                //   targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK,  activity?.intent?.putExtras(bundle));
+
                 return@OnEditorActionListener true
             }
             false
@@ -48,6 +47,11 @@ class SearchDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreenDialog);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialog?.getWindow()?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            dialog?.getWindow()?.setStatusBarColor(Color.parseColor("#fff"));
+        }
+
 
     }
 
