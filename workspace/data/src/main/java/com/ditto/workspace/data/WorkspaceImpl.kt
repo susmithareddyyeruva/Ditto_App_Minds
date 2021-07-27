@@ -54,4 +54,8 @@ class WorkspaceImpl @Inject constructor(
         return workspaceRepository.updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData)
     }
 
+    override fun createWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+     return workspaceRepository.createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData)
+    }
+
 }

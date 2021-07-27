@@ -113,26 +113,19 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleFetchResultFromAPI(it) }
     }
 
-    private fun handleFetchResultFromAPI(result: Result<WorkspaceResultDomain>) {
-        Log.d("handleFethFromAPI", "is:\t ${result.toString()}")
-        when(result) {
-            is Result.OnSuccess -> {
-                Log.d("WorkspaceViewModel", "Success")
-
-            }
-
-            is Result.OnError -> {
-                Log.d("WorkspaceViewModel", "Failed")
-            }
-        }
-    }
-
 
     fun updateWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData){
         disposable += getWorkspaceData.updateWorkspaceData(cTraceWorkSpacePatternInputData)//calling update api
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy{handleWSUpdateResult(it)}
+    }
+
+    fun createWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData){
+        disposable += getWorkspaceData.createWorkspaceData(cTraceWorkSpacePatternInputData)//calling update api
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy{handleWSInsertResult(it)}
     }
 
     //todo
@@ -143,6 +136,22 @@ class WorkspaceViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleInsertDataResult(it) }
     }
+
+    private fun handleFetchResultFromAPI(result: Result<WorkspaceResultDomain>) {
+        Log.d("handleFethFromAPI", "is:\t ${result.toString()}")
+        when(result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel", "Success")
+
+            }
+
+            is Result.OnError -> {
+                // create workspace
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
+    }
+
 
     private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
@@ -157,10 +166,33 @@ class WorkspaceViewModel @Inject constructor(
                     c.patternPieces,c.garmetWorkspaceItems,
                     c.liningWorkspaceItems,c.interfaceWorkspaceItem)
 
-                //updateWSAPIDataToDB(wsData)//todo need to add tailernova details
                 updateWSPatternDataStorage(3,"UpdateTAB","DoneUpdate123",c.numberOfCompletedPiece,
                     c.patternPieces,c.garmetWorkspaceItems,
                     c.liningWorkspaceItems,c.interfaceWorkspaceItem)//todo need to add tailernova details
+            }
+
+            is Result.OnError -> {
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
+    }
+
+ private fun handleWSInsertResult(result: Result<WSUpdateResultDomain>) {
+        Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
+        when(result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel456", "Success>>>>>>>>>>>>>>>>>>> $result")
+
+                val c: CTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI()
+
+                val wsData = WorkspaceDataAPI(
+                    c.tailornaovaDesignId, c.selectedTab,
+                    c.status, c.numberOfCompletedPiece,
+                    c.patternPieces, c.garmetWorkspaceItems,
+                    c.liningWorkspaceItems, c.interfaceWorkspaceItem
+                )
+
+                insertWSAPIDataToDB(wsData)//todo need to add tailernova details
             }
 
             is Result.OnError -> {
@@ -198,14 +230,14 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun updateWSAPIDataToDB(value:WorkspaceDataAPI){
+    fun insertWSAPIDataToDB(value:WorkspaceDataAPI){
         disposable += getWorkspaceData.insertWorkspaceData(value)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy{handleWSUpdateResultDataToDB(it)}
+            .subscribeBy{handleWSInsertResultDataToDB(it)}
     }
 
-    private fun handleWSUpdateResultDataToDB(result: Any?) {
+    private fun handleWSInsertResultDataToDB(result: Any?) {
         when (result) {
             is Result.OnSuccess<*> -> {
                 Log.d("handleUpdateDataResult", "OnSuccess")
@@ -537,6 +569,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun clickSaveAndExit() {
         updateWSAPI(getWorkspaceInputDataToAPI())
+        //createWSAPI(getWorkspaceInputDataToAPI())
        // uiEvents.post(Event.OnClickSaveAndExit)
     }
 

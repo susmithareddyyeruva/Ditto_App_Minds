@@ -18,6 +18,7 @@ import com.ditto.workspace.data.model.WSInputData
 import com.ditto.workspace.domain.WorkspaceRepository
 import com.ditto.workspace.domain.model.*
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import core.CLIENT_ID_DEV
 import core.SITE_ID
 import core.appstate.AppState
@@ -149,6 +150,43 @@ class WorkspaceRepositoryImpl @Inject constructor(
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
             logger.d("*****update Workspace Success**")
+        }.map {
+            Result.withValue(it.toDomain())
+        }.onErrorReturn {
+            var errorMessage = "Error Fetching data"
+            try {
+                logger.d("try block")
+                val error = it as HttpException
+                if (error != null) {
+                    logger.d("Error update WorkspaceData")
+                }
+            } catch (e: Exception) {
+                Log.d("Catch", e.localizedMessage)
+                errorMessage = e.message.toString()
+            }
+            Result.withError(
+                UpdateWorkspaceApiFetchError(errorMessage, it)
+            )
+        }
+    }
+
+    override fun createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        val jsonobj = Gson().toJson(cTraceWorkSpacePatternInputData)
+        Log.d("WorkspaceRepositoryImpl", "json object is: $jsonobj")
+
+        val jsonString = jsonobj.toString()
+        Log.d("WorkspaceRepositoryImpl", "json string is: $jsonString")
+
+        val wsInputData = WSInputData(jsonString)
+
+        return getWorkspaceService.createWorkspaceDataFromApi(
+            CLIENT_ID_DEV, SITE_ID, wsInputData,
+            "Bearer "+AppState.getToken()!!
+        ).doOnSuccess {
+            logger.d("*****Create Workspace Success**")
         }.map {
             Result.withValue(it.toDomain())
         }.onErrorReturn {

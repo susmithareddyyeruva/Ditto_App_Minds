@@ -27,4 +27,5 @@ interface WorkspaceRepository {
     fun getUserData(): Single<Result<LoginUser>>
     fun getWorkspaceDataFromApi(): Single<Result<WorkspaceResultDomain>>
     fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
+    fun createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
 }
