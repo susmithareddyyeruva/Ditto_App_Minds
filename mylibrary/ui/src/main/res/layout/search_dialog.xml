@@ -11,6 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:id="@+id/rootSearch"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:fitsSystemWindows="true">
@@ -51,7 +52,6 @@
                 android:background="@null"
                 android:drawableStart="@drawable/ic_search_icon"
                 android:drawablePadding="@dimen/padding_x"
-                android:drawableTint="#000"
                 android:ellipsize="end"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:gravity="center_vertical"
@@ -61,21 +61,24 @@
                 android:paddingHorizontal="@dimen/padding_x"
                 android:paddingVertical="@dimen/padding_x"
                 android:singleLine="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
-                android:textSize="@dimen/size_12sp" />
+                android:textSize="@dimen/size_12sp" >
+                <requestFocus />
+            </androidx.appcompat.widget.AppCompatEditText>
         </RelativeLayout>
 
         <TextView
             android:id="@+id/tvCAncelDialog"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/search_view_height"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_9"
             android:layout_marginTop="@dimen/margin_top"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:gravity="center_vertical"
-            android:padding="@dimen/padding_small"
-            android:paddingStart="@dimen/medium_padding"
+            android:padding="@dimen/padding_x"
             android:singleLine="true"
             android:text="@string/cancel"
             android:textColor="@color/black"

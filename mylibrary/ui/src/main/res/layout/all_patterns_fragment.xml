@@ -152,6 +152,7 @@
                             android:drawablePadding="@dimen/distance_after_icon_sync"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
+                            android:padding="@dimen/padding_small"
                             android:onClick="@{() -> viewModel.onSearchClick()}"
                             android:text="@string/text_search"
                             android:textColor="@color/search_text_code"

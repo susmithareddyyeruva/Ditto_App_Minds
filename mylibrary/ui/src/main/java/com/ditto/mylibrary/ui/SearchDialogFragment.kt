@@ -2,9 +2,9 @@ package com.ditto.mylibrary.ui
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.databinding.DataBindingUtil
@@ -25,8 +25,11 @@ class SearchDialogFragment : DialogFragment() {
 
     private fun setupClickListeners(view: View) {
         view.tvCAncelDialog.setOnClickListener {
-            // TODO: Do some task here
+            requireActivity().getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             dismiss()
+
+
         }
         view.editSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -46,11 +49,7 @@ class SearchDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreenDialog);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialog?.getWindow()?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            dialog?.getWindow()?.setStatusBarColor(Color.parseColor("#fff"));
-        }
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreenDialog)
 
 
     }
@@ -71,9 +70,18 @@ class SearchDialogFragment : DialogFragment() {
             it.window?.requestFeature(Window.FEATURE_NO_TITLE)
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             it.setCancelable(true)
-
+            it.window?.setSoftInputMode(SOFT_INPUT_STATE_VISIBLE);
         }
+        mDataBinding.editSearch.requestFocus()
         return mDataBinding.root
+    }
+
+    override fun onDestroyView() {
+        requireActivity().getWindow()
+            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dismiss()
+        super.onDestroyView()
+
     }
 
 
