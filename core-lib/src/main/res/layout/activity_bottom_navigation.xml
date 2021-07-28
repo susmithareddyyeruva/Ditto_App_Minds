@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:gravity="end"
-                android:theme="@style/TransparentActionbarStyle"
+                android:theme="@style/WhiteActionbarStyle"
                 android:visibility="@{toolbarViewModel.isShowTransparentActionBar()}">
 
                 <androidx.appcompat.widget.Toolbar
@@ -113,6 +113,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:elevation="@dimen/cardview_default_elevation"
                     android:background="@color/semitransparent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
