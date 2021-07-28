@@ -5,4 +5,5 @@
     <color name="colorAccent">#000000</color>
     <color name="colorSplashBackground">#E5E5E5</color>
     <color name="nav_item_grey">#EEEEEE</color>
+    <color name="nav_item_grey2">#D9959494</color>
 </resources>

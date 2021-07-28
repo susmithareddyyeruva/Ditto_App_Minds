@@ -20,4 +20,5 @@
     <color name="white">#FFFFFF</color>
     <color name="text_disable2">#707070</color>
     <color name="semitransparent">#30000000</color>
+    <color name="nav_item_grey2">#80BAB9B9</color>
 </resources>
