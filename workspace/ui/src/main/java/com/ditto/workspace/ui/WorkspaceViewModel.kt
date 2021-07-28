@@ -15,6 +15,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.model.LoginUser
+import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.util.Utility
@@ -142,11 +143,10 @@ class WorkspaceViewModel @Inject constructor(
         when(result) {
             is Result.OnSuccess -> {
                 Log.d("WorkspaceViewModel", "Success")
-
             }
 
             is Result.OnError -> {
-                // create workspace
+                handleError(result.error)
                 Log.d("WorkspaceViewModel", "Failed")
             }
         }
@@ -295,6 +295,12 @@ class WorkspaceViewModel @Inject constructor(
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
+            is GetWorkspaceApiFetchError -> {
+                if(error.message.contains("key",true)){
+                    Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
+                    createWSAPI(getWorkspaceInputDataToAPI())
+                }
+            }
             else -> {
                 Log.d("handleError", "WorkspaceViewModel")
             }

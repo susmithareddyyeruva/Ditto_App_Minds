@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.data.api.LoginRepositoryImpl
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.database.PatternsDao
@@ -12,6 +11,7 @@ import com.ditto.storage.data.database.UserDao
 import com.ditto.storage.data.database.WorkspaceDataDao
 import com.ditto.workspace.data.api.GetWorkspaceService
 import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
+import com.ditto.workspace.data.error.GetWorkspaceApiResponseFetchError
 import com.ditto.workspace.data.error.UpdateWorkspaceApiFetchError
 import com.ditto.workspace.data.mapper.toDomain
 import com.ditto.workspace.data.model.WSInputData
@@ -43,7 +43,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     @Inject
     lateinit var context: Context
     val logger: Logger by lazy {
-        loggerFactory.create(LoginRepositoryImpl::class.java.simpleName)
+        loggerFactory.create(WorkspaceRepositoryImpl::class.java.simpleName)
     }
 
     /**
@@ -117,7 +117,13 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 logger.d("try block")
                 val error = it as HttpException
                 if (error != null) {
-                    logger.d("Error get WorkspaceData")
+                    val errorBody = error.response()!!.errorBody()!!.string()
+                    Log.d("GetWorkspace Error",errorBody)
+                    val gson = Gson()
+                    val type = object : TypeToken<GetWorkspaceApiResponseFetchError>(){}.type
+                    val errorResponse: GetWorkspaceApiResponseFetchError = gson.fromJson(errorBody, type)
+                    errorMessage = errorResponse?.fault.message
+                    logger.d("Error get WorkspaceData >>>>>>> $errorMessage")
                 }
             } catch (e: Exception) {
                 Log.d("Catch", e.localizedMessage)
