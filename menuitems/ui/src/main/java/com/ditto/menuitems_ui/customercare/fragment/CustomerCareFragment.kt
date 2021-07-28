@@ -3,20 +3,22 @@ package com.ditto.menuitems_ui.customercare.fragment
 
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.CustomerCareFragmentBinding
-import core.CUSTOMERCARE_EMAIL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -40,6 +42,7 @@ class CustomerCareFragment : BaseFragment() {
             it.lifecycleOwner = viewLifecycleOwner
         }
 
+
         return binding.ccContainer
     }
     @RequiresApi(Build.VERSION_CODES.M)
@@ -56,12 +59,16 @@ class CustomerCareFragment : BaseFragment() {
         // TODO: Use the ViewModel
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hideDrawerLayout()
+    }
     private fun handleEvent(event: CustomerCareViewModel.Event) =
         when (event) {
             CustomerCareViewModel.Event.OnPhoneClicked ->
                 makecall()
             CustomerCareViewModel.Event.OnEmailClicked ->
-               sendmail()
+                sendmail()
 
         }
 
@@ -72,8 +79,11 @@ class CustomerCareFragment : BaseFragment() {
     }
     fun sendmail(){
         val mailto = context?.getString(R.string.str_get_email)
-        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-            "mailto", mailto, null))
+        val emailIntent = Intent(
+            Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", mailto, null
+            )
+        )
         startActivity(Intent.createChooser(emailIntent, context?.getString(R.string.str_support)))
 
     }
@@ -82,7 +92,6 @@ class CustomerCareFragment : BaseFragment() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Customer Support")
     }
@@ -91,18 +100,30 @@ class CustomerCareFragment : BaseFragment() {
     private fun setemailteststyle(){
 
         val res: Resources = getResources()
-        val text: String = String.format(res.getString(R.string.str_email_text,viewModel.getEmailId()))
+        val text: String = String.format(
+            res.getString(
+                R.string.str_email_text,
+                viewModel.getEmailId()
+            )
+        )
 
         val spannable = SpannableString(text)
         spannable.setSpan(
-            ForegroundColorSpan(requireContext().getColor(R.color.emailblue)),
-            6, 29,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ForegroundColorSpan(requireContext().getColor(R.color.sign_in_blue)),
+            6, 28,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         spannable.setSpan(
             UnderlineSpan(),
-            6, 29,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            6, 28,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // TDP-35 : added font family for email id
+        val font = context?.let { ResourcesCompat.getFont(it, R.font.avenir_next_lt_pro_demi) }
+        spannable.setSpan(font?.getStyle()?.let { StyleSpan(it) }, 6, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
         binding.emailtext.text = spannable
     }
 }

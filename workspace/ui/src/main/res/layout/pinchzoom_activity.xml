@@ -92,10 +92,10 @@
 
                     <ImageView
                         android:id="@+id/ic_close_button"
-                        android:layout_width="@dimen/close_image"
-                        android:layout_height="@dimen/close_image"
+                        android:layout_width="@dimen/header_container_height"
+                        android:layout_height="@dimen/header_container_height"
                         android:layout_gravity="center"
-                        android:layout_margin="10dp"
+                        android:padding="10dp"
                         android:background="@android:color/white"
                         android:src="@drawable/ic_close"
                         app:tint="@android:color/black" />
@@ -108,14 +108,15 @@
                     android:layout_below="@+id/frame_close"
                     android:layout_centerInParent="true"
                     android:background="@android:color/white"
-                    android:padding="10dp"
+                    android:layout_margin="10dp"
                     android:visibility="visible"
+                    app:zoomage_doubleTapToZoom="true"
                     app:zoomage_animateOnReset="true"
-                    app:zoomage_autoCenter="false"
-                    app:zoomage_autoResetMode="NEVER"
+                    app:zoomage_autoCenter="true"
+                    app:zoomage_autoResetMode="UNDER"
                     app:zoomage_maxScale="3"
                     app:zoomage_minScale="1"
-                    app:zoomage_restrictBounds="false"
+                    app:zoomage_restrictBounds="true"
                     app:zoomage_translatable="true"
                     app:zoomage_zoomable="true" />
             </RelativeLayout>

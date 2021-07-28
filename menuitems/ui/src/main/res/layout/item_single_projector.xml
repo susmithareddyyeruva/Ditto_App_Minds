@@ -78,7 +78,7 @@
 
             <Button
                 android:id="@+id/btnConnect"
-                android:layout_width="@dimen/button_width"
+                android:layout_width="@dimen/button_scan_width"
                 android:layout_height="@dimen/button_height"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

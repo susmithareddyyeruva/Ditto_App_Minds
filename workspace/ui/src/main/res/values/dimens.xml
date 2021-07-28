@@ -50,4 +50,5 @@
     <dimen name="size_21sp">21sp</dimen>
     <dimen name="calibrate_alert_textsize">16sp</dimen>
     <dimen name="tab_title_heading">21dp</dimen>
+    <dimen name="tab_head_text">14sp</dimen>
 </resources>

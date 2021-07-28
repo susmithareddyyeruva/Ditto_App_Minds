@@ -57,13 +57,12 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        (activity as BottomNavigationActivity).hidemenu()
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarInstrctions)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_instrctions.setNavigationIcon(R.drawable.ic_back_button)
         setUIEvents()
-        loadPdf()
         patternFolderName = arguments?.getString("PatternName")
+        loadPdf()
     }
 
     companion object {
@@ -71,7 +70,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         private val REQUIRED_PERMISSIONS =
             arrayOf(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE
             )
 
     }
@@ -89,8 +88,10 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+        if (allPermissionsGranted() && requestCode == REQUEST_CODE_PERMISSIONS) {
             checkavailablefile()
+        }else{
+            showRedownload()
         }
     }
 
@@ -98,7 +99,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private fun checkavailablefile() {
         downloadFileName =
             PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }//shri
+        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }
         if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {
@@ -150,6 +151,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
     private fun showPdfFromUri(pdfName: Uri) {
         bottomNavViewModel.showProgress.set(false)
+        if(context == null) return
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(requireContext()))
@@ -163,6 +165,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     }
 
     private fun showPdfFromAssets(pdfName: String) {
+        if(context == null) return
         binding.pdfView.fromAsset(pdfName)
             .defaultPage(0)
             .scrollHandle(DefaultScrollHandle(requireContext()))// set the default page to open
@@ -191,7 +194,6 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
 
     private fun showRedownload(){
-
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
@@ -222,7 +224,14 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     ) {
        when (alertType) {
             Utility.AlertType.PDF -> {
-                pdfdownload()
+                if (allPermissionsGranted()) {
+                    pdfdownload()
+                }else{
+                    requestPermissions(
+                        REQUIRED_PERMISSIONS,
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                }
             }
         }
     }

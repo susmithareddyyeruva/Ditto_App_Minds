@@ -54,7 +54,8 @@ fun View.makeDraggable(
         )
 
     if (workspaceItem?.spliceDirection.equals("Splice Left-to-Right") ||
-        workspaceItem?.spliceDirection.equals("Splice Top-to-Bottom")
+        workspaceItem?.spliceDirection.equals("Splice Top-to-Bottom")||
+        workspaceItem?.spliceDirection.equals("Splice Multiple-to-Multiple")
     ) {
         splicedXdirection = workspaceItem?.xcoordinate ?: 0F
         splicedYdirection = workspaceItem?.ycoordinate ?: 0F

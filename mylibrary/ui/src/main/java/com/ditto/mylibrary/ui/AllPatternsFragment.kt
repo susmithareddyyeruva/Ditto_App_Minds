@@ -64,7 +64,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         FilterMenuItem("Customization", 9)
     )
     var categoryFilterList = arrayListOf(
-        FilterItems("SubScribed"),
+        FilterItems("Subscribed"),
         FilterItems("Purchased"),
         FilterItems("Trials"),
     )
@@ -298,8 +298,10 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         setFilterActionAdapter()
     }
 
+    private fun showProgress(toShow: Boolean) {
+        bottomNavViewModel.showProgress.set(toShow)
+    }
     private fun setUpToolbar() {
-        (activity as BottomNavigationActivity).hidemenu()
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
@@ -379,6 +381,10 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             //setPatternAdapter()
             Log.d("pattern","OnSyncClick : AllPatternsFragment")
             // open dialog
+        }is AllPatternsViewModel.Event.OnLoadingStarts -> {
+            showProgress(true)
+        }is AllPatternsViewModel.Event.OnLoadingCompleted -> {
+            showProgress(false)
         }
         else -> {
             logger.d("OnClickPattern")

@@ -24,15 +24,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.ditto.projector.ui.ProjectorConnectionActivity"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name="com.ditto.projector.ui.SplashActivity"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ditto.projector.ui.SplashActivity"
+            android:screenOrientation="sensorLandscape">
+
         </activity>
 
         <receiver

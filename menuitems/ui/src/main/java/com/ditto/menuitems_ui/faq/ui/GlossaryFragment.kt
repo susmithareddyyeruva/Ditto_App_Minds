@@ -48,7 +48,8 @@ class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
                 it,list,object :WatchVideoClickListener{
                     override fun onVideoClick(path: String) {
                         logger.d("path== " + path,)
-                        if (findNavController().currentDestination?.id == R.id.nav_graph_mainFaq  ){
+                        if (findNavController().currentDestination?.id == R.id.nav_graph_mainfaq ||
+                            findNavController().currentDestination?.id == R.id.destination_faq_glossary ){
                             val bundle =
                                 bundleOf(
                                     "videoPath" to path,
