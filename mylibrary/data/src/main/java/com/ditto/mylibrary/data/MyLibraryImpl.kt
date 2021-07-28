@@ -22,7 +22,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getUserData()
     }
 
-    override fun getPattern(get: Int): Single<Result<PatternIdData>> {
+    override fun getPattern(get: String): Single<Result<PatternIdData>> {
         return myLibraryRepository.getPatternData(get)
     }
 

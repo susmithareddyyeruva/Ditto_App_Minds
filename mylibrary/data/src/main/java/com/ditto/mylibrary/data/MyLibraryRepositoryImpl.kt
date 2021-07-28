@@ -19,6 +19,7 @@ import non_core.lib.Result
 import javax.inject.Inject
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import core.lib.BuildConfig
 import core.models.CommonApiFetchError
 import retrofit2.HttpException
 
@@ -60,8 +61,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(get:Int): Single<Result<PatternIdData>> {
-        return tailornovaApiService.getPatternDetailsByDesignId( get.toString())
+    override fun getPatternData(get:String): Single<Result<PatternIdData>> {
+        return tailornovaApiService.getPatternDetailsByDesignId(BuildConfig.TAILORNOVA_BASEURL+get)
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
             }.map {

@@ -13,7 +13,7 @@ import non_core.lib.Result
 interface MyLibraryRepository {
     fun getMyLibraryData(): Single<Result<List<MyLibraryData>>>
     fun getUserData(): Single<Result<LoginUser>>
-    fun getPatternData(get:Int): Single<Result<PatternIdData>>
+    fun getPatternData(get:String): Single<Result<PatternIdData>>
     fun completeProject(patternId:Int): Single<Any>
     fun removePattern(patternId: Int): Single<Any>
     //fun addProject(id : Int): Single<Any>

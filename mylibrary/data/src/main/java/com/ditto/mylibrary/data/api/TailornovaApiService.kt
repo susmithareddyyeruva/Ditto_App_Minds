@@ -5,12 +5,13 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 
 interface TailornovaApiService {
 
-    @GET("designId")
-    fun getPatternDetailsByDesignId(@Query("designId") designId : String? ) : Single<PatternIdData>
+    @GET
+    fun getPatternDetailsByDesignId(@Url url : String? ) : Single<PatternIdData>
 
 }
 

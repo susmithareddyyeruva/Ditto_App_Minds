@@ -42,7 +42,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedID: ObservableInt = ObservableInt(1)
+    val clickedID: ObservableField<String> = ObservableField("demo-design-id-1")
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
     val patternpdfuri: ObservableField<String> = ObservableField("")
@@ -59,6 +59,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     val showLine: ObservableBoolean = ObservableBoolean(false)
     val showResumButton: ObservableBoolean = ObservableBoolean(false)
     val showWorkspaceOrRenewSubscriptionButton: ObservableBoolean = ObservableBoolean(false)
+    val isDataReceived: ObservableBoolean = ObservableBoolean(false)
 
 
 
@@ -72,7 +73,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("error","Error undefined")
+                uiEvents.post(Event.OnDataloadFailed)
             }
         }
     }
@@ -87,7 +88,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
      }*/
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern(clickedID.get())
+        disposable += getPattern.getPattern("demo-design-id-1")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -142,6 +143,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         object OnDataUpdated : Event()
 
         object OnDownloadComplete : Event()
+
+        object OnDataloadFailed : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -159,9 +162,10 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             var result: File? = null
             val url: URL = URL(url)
             val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val basicAuth =
+            //If the pdf hosted site is to be authorized.
+            /*val basicAuth =
                 "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-            conn.setRequestProperty("Authorization", basicAuth)
+            conn.setRequestProperty("Authorization", basicAuth)*/
             conn.requestMethod = "GET"
             conn.connect()
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {

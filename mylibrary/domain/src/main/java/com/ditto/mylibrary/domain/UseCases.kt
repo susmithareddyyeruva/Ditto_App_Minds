@@ -10,7 +10,7 @@ import non_core.lib.Result
 interface GetMylibraryData {
     fun invoke() : Single<Result<List<MyLibraryData>>>
     fun getUser(): Single<Result<LoginUser>>
-    fun getPattern(get: Int): Single<Result<PatternIdData>>
+    fun getPattern(get: String): Single<Result<PatternIdData>>
     //fun addProject( id : Int): Single<Any>
     fun removeProject(patternId: Int): Single<Any>
     fun completeProject(patternId: Int): Single<Any>

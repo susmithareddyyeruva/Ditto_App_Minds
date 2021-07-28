@@ -5,6 +5,7 @@ data class PatternIdData(
     val brand: String,
     val customization: Boolean,
     val description: String,
+    val patternType: String,
     val designId: String,
     val dressType: String,
     val gender: String,

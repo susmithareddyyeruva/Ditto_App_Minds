@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import core.PDF_SAMPLE_URL
+import core.PDF_DOWNLOAD_URL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -116,7 +116,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
         downloadFileName =
-            PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
+            PDF_DOWNLOAD_URL?.substring(PDF_DOWNLOAD_URL!!.lastIndexOf('/'), PDF_DOWNLOAD_URL!!.length)
         val availableUri = downloadFileName?.let {
             Utility.isFileAvailable(
                 it,
@@ -140,7 +140,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
             GlobalScope.launch {
                 downloadFileName?.let {
                     viewModel.downloadPDF(
-                        PDF_SAMPLE_URL,
+                        PDF_DOWNLOAD_URL!!,
                         it,
                         patternFolderName
                     )
