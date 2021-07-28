@@ -27,6 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -189,8 +190,13 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         ?.menuName!!.equals(this.getString(R.string.str_menu_ws_pro_settings))
                 ) {
 
-                    if (navController.currentDestination?.label?.equals("Home")!!) {
-                        navController.navigate(R.id.action_homeFragment_to_wssettings_fragment)
+                    if (navController.currentDestination?.label?.equals("Home")!! ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+                        navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!)
+                            R.id.action_homeFragment_to_wssettings_fragment
+                        else
+                            R.id.action_pattern_description_to_wssettings_fragment)
                     }
                 }
 
@@ -202,8 +208,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     )?.get(childPosition)
                         ?.menuName.equals(this.getString(R.string.str_menu_manage_projector))
                 ) {
-                    if (navController.currentDestination?.label?.equals("Home")!!) {
-                        navController.navigate(R.id.action_homeFragment_to_nav_graph_manage)
+                    if (navController.currentDestination?.label?.equals("Home")!!||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+                        navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_nav_graph_manage
+                        else R.id.action_pattern_description_to_nav_graph_manage)
                     }
                 }
 
@@ -453,23 +462,33 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     private fun handlemenuClick(selectedmenu: String) {
         if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))) {
-            if (navController.currentDestination?.label?.equals("Home")!!) {
-                navController.navigate(R.id.action_fragments_to_customerCareFragment)
+            if (navController.currentDestination?.label?.equals("Home")!!||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+                navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragments_to_customerCareFragment
+                else R.id.action_pattern_description_to_customerCareFragment)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_faq))) {
-            if (navController.currentDestination?.label?.equals("Home")!!) {
-                navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
+            if (navController.currentDestination?.label?.equals("Home")!!||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+                navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragment_to_FAQGlossaryfragment
+                else R.id.action_pattern_description_to_FAQGlossaryfragment)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_logout))) {
-            if (navController.currentDestination?.label?.equals("Home")!!) {
+            if (navController.currentDestination?.label?.equals("Home")!!||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
                 logoutUser(true)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_signin))) {
-            if (navController.currentDestination?.label?.equals("Home")!!) {
+            if (navController.currentDestination?.label?.equals("Home")!!||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
                 logoutUser(false)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }

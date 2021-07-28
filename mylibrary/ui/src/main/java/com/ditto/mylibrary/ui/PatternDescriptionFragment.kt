@@ -90,7 +90,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarTitle("Pattern details")
-        toolbarViewModel.isShowTransparentActionBar.set(false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
@@ -537,6 +536,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     override fun onResume() {
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
+        toolbarViewModel.isShowTransparentActionBar.set(true)
+    }
+
+
+    override fun onPause() {
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        super.onPause()
     }
 
     private fun enterWorkspace() {
