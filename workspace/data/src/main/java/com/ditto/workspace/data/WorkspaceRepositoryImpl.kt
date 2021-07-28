@@ -19,7 +19,7 @@ import com.ditto.workspace.domain.WorkspaceRepository
 import com.ditto.workspace.domain.model.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.CLIENT_ID_DEV
+import core.CLIENT_ID
 import core.SITE_ID
 import core.appstate.AppState
 import core.network.NetworkUtility
@@ -106,7 +106,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
 
-        return getWorkspaceService.getWorkspceDataFromApi(CLIENT_ID_DEV).doOnSuccess {
+        return getWorkspaceService.getWorkspceDataFromApi(CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
             Log.d("WorkspaceRepositoryImpl","${it.toString()}")
@@ -152,7 +152,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.updateWorkspaceDataFromApi(
-            CLIENT_ID_DEV, SITE_ID, wsInputData,
+            CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
             logger.d("*****update Workspace Success**")
@@ -189,7 +189,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.createWorkspaceDataFromApi(
-            CLIENT_ID_DEV, SITE_ID, wsInputData,
+            CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
             logger.d("*****Create Workspace Success**")
