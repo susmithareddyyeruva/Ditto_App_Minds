@@ -26,6 +26,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
@@ -496,7 +497,10 @@ class Utility @Inject constructor(
                         message_common.visibility = View.GONE
                     } else {
                         title_common.text = title
-                        message_common.text = alertmessage
+                        message_common.text = HtmlCompat.fromHtml(
+                            alertmessage,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
                     }
 
                     if (alertType == AlertType.CUT_BIN) {

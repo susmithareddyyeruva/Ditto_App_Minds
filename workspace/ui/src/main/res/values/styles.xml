@@ -12,6 +12,7 @@
 
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">@dimen/tab_workspace</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_regular</item>
     </style>
 
     <style name="AppTheme_Popup" parent="Theme.AppCompat.Light.NoActionBar">

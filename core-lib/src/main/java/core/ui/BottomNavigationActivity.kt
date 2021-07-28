@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -18,6 +20,7 @@ import android.widget.ExpandableListView.OnGroupClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -53,10 +56,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
     private lateinit var binding: ActivityBottomNavigationBinding
     private lateinit var navController: NavController
-    var ishidemenu: Boolean = false
     lateinit var expandableListView: NoScrollExListView
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
-
+    lateinit var navViewHeaderBinding: NavDrawerHeaderBinding
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +98,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.bottomNavViewModel?.visibility?.set(false)
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
-                hidemenu()
+                navController.navigate(R.id.action_splashActivity_to_LoginFragment)
+            }
+            is BottomNavViewModel.Event.onClickSignIn -> {
+                Log.d("EVENT", "SIGNIN CLICKED")
+                binding.bottomNavViewModel?.visibility?.set(false)
+                binding.toolbarViewModel?.isShowActionBar?.set(false)
+                binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
 
@@ -223,8 +232,30 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     fun bindMenuHeader() {
         val viewHeader = binding.navSlideView.getHeaderView(0)
-        val navViewHeaderBinding: NavDrawerHeaderBinding = NavDrawerHeaderBinding.bind(viewHeader)
+        navViewHeaderBinding = NavDrawerHeaderBinding.bind(viewHeader)
         navViewHeaderBinding.bottomNavViewModel = binding.bottomNavViewModel
+    }
+
+     fun setEmaildesc() {
+        if (AppState.getIsLogged()){
+            val email = AppState.getEmail()
+            navViewHeaderBinding.textEmail.text = "$email"
+        }else{
+            setUnderlinestyle(navViewHeaderBinding)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setUnderlinestyle(navViewHeaderBinding: NavDrawerHeaderBinding) {
+
+        val text: String? = getString(R.string.sign_in_to_explore_more)
+        val spannable = SpannableString(text)
+
+        spannable.setSpan(
+            UnderlineSpan(),
+            0, 7,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        navViewHeaderBinding.textEmail.text = spannable
     }
 
     private fun setMenuItemColor(menu: MenuItem, color: Int) {
@@ -247,9 +278,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     override fun androidInjector(): AndroidInjector<Any> = fragmentInjector
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        var menuItem: MenuItem = menu!!.findItem(R.id.action_menu)
-        menuItem.isVisible = !ishidemenu
+//        menuInflater.inflate(R.menu.toolbar_menu, menu)
+//        var menuItem: MenuItem = menu!!.findItem(R.id.action_menu)
+//        menuItem.isVisible = !ishidemenu
         return true
     }
 
@@ -294,14 +325,9 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         return super.dispatchTouchEvent(event)
     }
 
-    fun hidemenu() {
-        ishidemenu = true
-        invalidateOptionsMenu()
-    }
-
-    fun showmenu() {
-        ishidemenu = false
-        invalidateOptionsMenu()
+    fun hideDrawerLayout() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
     }
 
     fun setToolbarTitle(title: String) {
@@ -310,6 +336,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     fun setToolbarIcon() {
         binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.drawerLayout.closeDrawer(Gravity.RIGHT)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -342,7 +373,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
             // This work only for android 4.4+
             if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-             window.decorView.systemUiVisibility = flags
+                window.decorView.systemUiVisibility = flags
                 // Code below is to handle presses of Volume up or Volume down.
                 // Without this, after pressing volume buttons, the navigation bar will
                 // show up and won't hide
@@ -354,12 +385,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 }
             }
         }
-     /*   window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)*/
+        /*   window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                   or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                   or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                   or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                   or View.SYSTEM_UI_FLAG_FULLSCREEN
+                   or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)*/
 
 
     }
@@ -383,7 +414,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                    navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)*/
                 true
             }
-            R.id.nav_graph_mainFaq -> {
+            R.id.nav_graph_mainfaq -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
                 navController.navigate(R.id.action_fragment_to_FAQGlossaryfragment)
                 true
@@ -440,6 +471,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_signin))) {
             if (navController.currentDestination?.label?.equals("Home")!!) {
                 logoutUser(false)
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.about_app_policies))) {
             if (navController.currentDestination?.label?.equals("Home")!!) {

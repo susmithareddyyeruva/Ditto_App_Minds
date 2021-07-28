@@ -329,7 +329,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     private fun transform() {
         logger.d("TRACE_ Projection : performTransform  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
+        val bitmap = Utility.getBitmapFromDrawable("calibration_check_pattern", requireContext())
 
         viewModel.disposable += Observable.fromCallable {
             performTransform(bitmap, context?.applicationContext, null, false)
@@ -437,6 +437,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun showTransformSuccessPopup() {
+        baseViewModel.isCalibrated.set(true)
         showProgress(false)
         viewModel.isShowDialog.set(true)
         Utility.showAlertDialogue(
@@ -589,7 +590,6 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity?)?.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-        (activity as BottomNavigationActivity).hidemenu()
         binding.toolbarCalibration.setNavigationOnClickListener {
             activity?.onBackPressed()
             /*if(baseViewModel.activeSocketConnection.get()) {
@@ -602,7 +602,10 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        baseViewModel.isCalibrated.set(true)
+        if (!baseViewModel.isCalibrated.get()){
+            baseViewModel.isCalibrated.set(true)
+            baseViewModel.isUserNeedCalibrated.set(false)
+        }
         if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
             if (arguments?.getBoolean("isFromPatternDescription")!!) {
                 if (arguments?.getBoolean("isRecalibrate") != null && arguments?.getBoolean("isRecalibrate")!!) {

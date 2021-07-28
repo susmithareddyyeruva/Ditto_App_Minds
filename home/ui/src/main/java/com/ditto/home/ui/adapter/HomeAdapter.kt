@@ -1,7 +1,6 @@
 package com.ditto.home.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.home.domain.model.HomeData
@@ -20,8 +19,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeHolder>(),
     lateinit var viewModel: HomeViewModel
     private var homeData: List<HomeData> = emptyList()
     val images = intArrayOf(
-        R.drawable.ic_home_pattern_library, R.drawable.ic_home_ditto,
-        R.drawable.ic_home_joann, R.drawable.ic_home_tutorial)
+        R.drawable.grey_background_rectangle,  R.drawable.ic_home_pattern_library_new_home_design, R.drawable.ic_home_ditto_com,
+        R.drawable.ic_home_joann_new_design)
 
     override fun setListData(items: List<HomeData>) {
         homeData = items

@@ -46,7 +46,7 @@ class PinchAndZoom : AppCompatActivity() {
         }
         if (imagepath != null) {
             try {
-                if (!imagepath.contains(".png")){
+                if (!imagepath.contains(".png",true)){
                     val drawable = core.ui.common.Utility.getDrawableFromString(this, imagepath)
                     myZoomageView?.setImageDrawable(drawable)
                 }else{

@@ -43,8 +43,8 @@
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
                     android:background="@color/white"
-                    app:contentInsetStartWithNavigation="0dp"
-                    app:menu="@menu/toolbar_menu">
+                    app:menu="@null"
+                    app:contentInsetStartWithNavigation="0dp">
 
                     <TextView
                         android:id="@+id/header_view_title"
@@ -126,6 +126,7 @@
                         android:layout_height="@dimen/progress_heigth"
                         app:lottie_autoPlay="true"
                         app:lottie_loop="true"
+                        app:lottie_colorFilter="@color/sign_in_blue"
                         app:lottie_rawRes="@raw/ditto_loader" />
 
                 </RelativeLayout>

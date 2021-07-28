@@ -46,8 +46,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
     override fun onBindViewHolder(holder: PatternPieceHolder, position: Int) {
         holder.patternsPiecesBinding.viewModel = viewModel
-        holder.patternsPiecesBinding.txtPieceName.text =
-            patternPieces.get(position).pieceDescription
+        holder.patternsPiecesBinding.txtPieceName.text = "#"+patternPieces.get(position).pieceNumber+" "+patternPieces.get(position).pieceDescription
         holder.patternsPiecesBinding.txtPieceCut.text = patternPieces.get(position).cutQuantity
         holder.patternsPiecesBinding.imageArrow.visibility = View.GONE
         println("ImagefromDB${patternPieces.get(position).imagePath}")
@@ -58,7 +57,13 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             )
             holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)
             if (patternPieces[position].splice == "YES") {
-                if (patternPieces[position].spliceDirection == "Splice Left-to-Right") {
+                if (patternPieces[position].spliceDirection == "Splice Multiple-to-Multiple") {
+                    val drawable = Utility.getDrawableFromString(
+                        viewGroup!!.context,
+                        patternPieces.get(position).imagePath+"_thumbnail"
+                    )
+                    holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)
+                }else if (patternPieces[position].spliceDirection == "Splice Left-to-Right") {
                     holder.patternsPiecesBinding.imageArrow.visibility = View.VISIBLE
                     val arrowDrawable = Utility.getDrawableFromString(
                         viewGroup!!.context,

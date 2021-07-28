@@ -66,6 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#80000000"
+            android:paddingStart="@dimen/medium_padding"
+            android:paddingEnd="@dimen/medium_padding"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="@dimen/small_padding"

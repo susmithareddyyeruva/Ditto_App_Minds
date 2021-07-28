@@ -23,7 +23,6 @@ import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -143,6 +142,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 override fun onPageSelected(position: Int) {
                     logger.d("onPageSelected$position")
                     Utility.fragmentTabs.set(position)
+                    resetLayout()
                 }
 
             })
@@ -151,20 +151,32 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
             binding.tabLayoutWorkspace.getTabAt(Utility.fragmentTabs.get())?.select()
+            disableNoItemTabs() // to fix the disable tab issue after coming back from calibration page
         }
 
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun clearWorkspace() {
-        if (viewModel.selectedTab.get() == 0){
+        if (viewModel.selectedTab.get() == 0) {
             fragmentGarment.clearWorkspace()
-        } else if (viewModel.selectedTab.get() == 1){
+        } else if (viewModel.selectedTab.get() == 1) {
             fragmentLining.clearWorkspace()
         } else {
             fragmentInterface.clearWorkspace()
         }
         viewModel.spliced_pices_visibility.set(false)
+    }
+
+    //  To reset connect buttton and pattern piece adapter
+    private fun resetLayout() {
+        if (viewModel.selectedTab.get() == 0) {
+            fragmentGarment.resetWorkspaceUI()
+        } else if (viewModel.selectedTab.get() == 1) {
+            fragmentLining.resetWorkspaceUI()
+        } else {
+            fragmentInterface.resetWorkspaceUI()
+        }
     }
 
     private fun setTabTouchListener() {
@@ -179,7 +191,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             .setOnTouchListener(this)
     }
 
-    private fun updateTab() {
+    private fun disableNoItemTabs() {
         if (viewModel.data.value?.patternPieces?.filter {
                 it.tabCategory == getString(
                     R.string.garments
@@ -222,24 +234,27 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             tv.tag = 2
             tv.setOnTouchListener(this)
         }
+    }
 
+    private fun updateTab() {
+        disableNoItemTabs()
         var position = 0
         if (viewModel.data.value?.selectedTab.equals("0")) {
             position = 0
-            binding.viewPager.setCurrentItem(position,false)
+            binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("1")) {
             position = 1
-            binding.viewPager.setCurrentItem(position,false)
+            binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("2")) {
             position = 2
-            binding.viewPager.setCurrentItem(position,false)
+            binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         } else {
             Log.d("updateTab", "undefined")
             position = 0
-            binding.viewPager.setCurrentItem(position,false)
+            binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         }
 
@@ -275,23 +290,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onPositiveButtonClicked(alertType: core.ui.common.Utility.AlertType) {
         if (alertType == core.ui.common.Utility.AlertType.TAB_SWITCH) {
-            if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch {
-                    core.ui.common.Utility.sendDittoImage(
-                        requireActivity(),
-                        "solid_black"
-                    )
-                }
-            }
-
-            clearWorkspace()
-            binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
-
+            switchTab()
         }
 
     }
 
-    private fun switchTab(){
+    private fun switchTab() {
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch {
                 core.ui.common.Utility.sendDittoImage(
@@ -321,8 +325,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
                     viewModel.selectedTab.set(view?.tag as Int)
                     //onTabSwitchAlert()
-                    switchTab()
-                    return true
+                    //switchTab()
+                    //return true
                 }
                 return false
             } else {

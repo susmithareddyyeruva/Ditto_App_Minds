@@ -51,11 +51,17 @@ class HomeFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
+        (activity as BottomNavigationActivity)?.setEmaildesc()
         if (AppState.getIsLogged()) {
              bottomNavViewModel.isGuestBase.set(false)
         } else {
@@ -96,7 +102,6 @@ class HomeFragment : BaseFragment() {
                 }
             }
             HomeViewModel.Event.OnClickTutorial -> {
-               (activity as BottomNavigationActivity).hidemenu()
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf("isFromHome" to true)
                     findNavController().navigate(R.id.action_home_to_tutorial,bundle)
