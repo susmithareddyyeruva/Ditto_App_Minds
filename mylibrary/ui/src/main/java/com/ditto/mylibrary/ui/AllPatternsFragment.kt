@@ -160,7 +160,7 @@ class AllPatternsFragment : BaseFragment(),
         binding.toolbar.header_view_title.text =
             getString(R.string.pattern_library_count, AppState.getPatternCount())
         binding.tvFilterResult.text =
-            getString(R.string.text_filter_result, AppState.getPatternCount())
+            getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
 
 
@@ -266,8 +266,8 @@ class AllPatternsFragment : BaseFragment(),
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-            binding.toolbar.header_view_title.text =
-                getString(R.string.pattern_library_count, AppState.getPatternCount())
+           /* binding.toolbar.header_view_title.text =
+                getString(R.string.pattern_library_count, viewModel.totalPatternCount)*/
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
@@ -358,6 +358,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             binding.viewDot.setImageResource(R.drawable.ic_filter)
+
         }
     }
 

@@ -14,7 +14,6 @@ import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
-import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -86,7 +85,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
 
-    fun getFilteredPatternsData(
+  /*  fun getFilteredPatternsData(
         request: MyLibraryFilterRequestData,
         value: String
     ) {
@@ -110,7 +109,7 @@ class AllPatternsViewModel @Inject constructor(
                     patternArrayList.add(it)
                 }
 
-                AppState.setPatternCount(result.data.totalPatternCount)
+               // AppState.setPatternCount(result.data.totalPatternCount)
                 uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> {
@@ -118,7 +117,7 @@ class AllPatternsViewModel @Inject constructor(
             }
         }
 
-    }
+    }*/
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
@@ -130,7 +129,7 @@ class AllPatternsViewModel @Inject constructor(
                     patternArrayList.add(it)
                 }
 
-                AppState.setPatternCount(result.data.totalPatternCount)
+                //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount
                 Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
                 totalPageCount = result.data.totalPageCount
@@ -268,14 +267,13 @@ class AllPatternsViewModel @Inject constructor(
 
             }
         }
-        if (filteredMap.isEmpty()) {
+        if (filteredMap.isEmpty()&&value.isEmpty()) {
             isFilterResult.set(false)
             uiEvents.post(Event.UpdateDefaultFilter)
-        } else {
+        }else {
             isFilterResult.set(true)
             uiEvents.post(Event.UpdateFilterImage)
         }
-
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()
