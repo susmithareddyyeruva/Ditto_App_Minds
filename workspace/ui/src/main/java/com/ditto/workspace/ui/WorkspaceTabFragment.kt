@@ -700,7 +700,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
 
 
-                    moveToLibrary()
+
                 } else {
                     showWaitingMessage("Projection is under process.. Please wait")
                 }
@@ -1838,10 +1838,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
             val map = getPatternPieceList()
 
-            if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 viewModel.prepareDowloadList(map)
+
             }
         }
+        moveToLibrary()
     }
 
     private fun showConnectivityPopup() {
