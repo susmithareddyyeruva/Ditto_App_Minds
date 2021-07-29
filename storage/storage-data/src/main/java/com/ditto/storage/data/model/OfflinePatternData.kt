@@ -40,10 +40,9 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "interfaceWorkspaceItems")
     @SerializedName("interfaceWorkspaceItems")
-    var interfaceWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList()
+    var interfaceWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList()/*,
 
     // tailernova response
-    /*@PrimaryKey
     @ColumnInfo(name = "designId")
     @SerializedName("designId")
     var id: Int = 0,
@@ -58,15 +57,15 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "numberOfPieces")
     @SerializedName("numberOfPieces")
-    var numberOfPieces:NumberOfPieces,
+    var numberOfPieces:NumberOfCompletedPiecesOffline,
 
     @ColumnInfo(name = "orderModificationDate")
     @SerializedName("orderModificationDate")
-    var orderModificationDate:Date,
+    var orderModificationDate: String="",
 
     @ColumnInfo(name = "orderCreationDate")
     @SerializedName("orderCreationDate")
-    var orderCreationDate:Date,
+    var orderCreationDate:String="",
 
     @ColumnInfo(name = "instructionFileName")
     @SerializedName("instructionFileName")
@@ -94,11 +93,11 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "selvages")
     @SerializedName("selvages")
-    var selvages: List<SelvagesApi> = emptyList(),
+    var selvages: List<SelvageData> = emptyList(),
 
-    @ColumnInfo(name = "patternPieces")
-    @SerializedName("patternPieces")
-    var patternPieces: List<PatternPiecesAPI> = emptyList(),
+    @ColumnInfo(name = "patternPiecesT")
+    @SerializedName("patternPiecesT")
+    var patternPieces: List<PatternPieceData> = emptyList(),
 
     @ColumnInfo(name="brand")
     @SerializedName("brand")

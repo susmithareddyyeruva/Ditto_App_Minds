@@ -152,4 +152,37 @@ class Converters {
         return Gson().toJson(someObjects)
     }
 
+    @TypeConverter
+    fun stringToSelvageDataList(data: String?): List<SelvageData> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<SelvageData>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun SelvageDataListToString(someObjects: List<SelvageData>): String {
+        return Gson().toJson(someObjects)
+    }
+
+
+
+    @TypeConverter
+    fun stringToPatternPieceDataList(data: String?): List<PatternPieceData> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<PatternPieceData>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun patternPieceDataListToString(someObjects: List<PatternPieceData>): String {
+        return Gson().toJson(someObjects)
+    }
 }

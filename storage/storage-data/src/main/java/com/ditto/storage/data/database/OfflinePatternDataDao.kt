@@ -10,7 +10,7 @@ import com.ditto.storage.data.model.PatternPiecesOffline
 import com.ditto.storage.data.model.WorkspaceItemOffline
 
 @Dao
-abstract class WorkspaceDataDao {
+abstract class OfflinePatternDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertOfflinePatternData(offlinePatternData: OfflinePatternData): Long

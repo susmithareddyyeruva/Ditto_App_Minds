@@ -6,9 +6,9 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
+import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
-import com.ditto.storage.data.database.WorkspaceDataDao
 import com.ditto.workspace.data.api.GetWorkspaceService
 import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
 import com.ditto.workspace.data.error.GetWorkspaceApiResponseFetchError
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class WorkspaceRepositoryImpl @Inject constructor(
     private val patternsDao: @JvmSuppressWildcards PatternsDao,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
-    private val workspcaeDataDao: @JvmSuppressWildcards WorkspaceDataDao,
+    private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val getWorkspaceService: @JvmSuppressWildcards GetWorkspaceService,
     private val loggerFactory: LoggerFactory
 ) : WorkspaceRepository {
@@ -65,7 +65,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
     override fun insertWorkspaceData(workspaceData: WorkspaceDataAPI): Single<Any> {
         return Single.fromCallable{
-            workspcaeDataDao.insertOfflinePatternData(workspaceData.toDomain())
+            offlinePatternDataDao.insertOfflinePatternData(workspaceData.toDomain())
         }
     }
 
@@ -80,7 +80,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any> {
         return Single.fromCallable{
-            workspcaeDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece.toDomain(),
+            offlinePatternDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece.toDomain(),
                 patternPieces.map { it.toDomain() },garmetWorkspaceItems.map { it.toDomain() },liningWorkspaceItems.map { it.toDomain() },interfaceWorkspaceItem.map { it.toDomain() })
         }
     }

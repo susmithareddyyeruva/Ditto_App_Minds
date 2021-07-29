@@ -32,8 +32,8 @@ class TraceDbModule {
 
     @Provides
     @Singleton
-    fun provideWorkspaceDataDao(db: TraceDataDatabase): WorkspaceDataDao {
-        return db.workspaceDataDao()
+    fun provideWorkspaceDataDao(db: TraceDataDatabase): OfflinePatternDataDao {
+        return db.offlinePatternDataDao()
     }
 
     @Provides

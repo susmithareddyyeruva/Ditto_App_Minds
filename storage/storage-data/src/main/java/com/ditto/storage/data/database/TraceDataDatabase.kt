@@ -32,7 +32,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
     abstract fun onBoardingDataDao(): OnBoardingDao
     abstract fun userDataDao(): UserDao
     abstract fun patternDataDao(): PatternsDao
-    abstract fun workspaceDataDao():WorkspaceDataDao
+    abstract fun offlinePatternDataDao():OfflinePatternDataDao
 
     companion object {
         val TAG = TraceDataDatabase::class.java.simpleName
