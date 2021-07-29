@@ -4,7 +4,7 @@ data class ProdDomain(
     val iD: String?="",
     val image: String?="",
     val prodName: String?="",
-    val longDescription: String?="",
+    val description: String?="",
     val creationDate: String?="",
     val patternType:String?="",
     val status: String?="",

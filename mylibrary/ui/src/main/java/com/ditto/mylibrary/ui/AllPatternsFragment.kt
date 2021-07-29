@@ -67,11 +67,11 @@ class AllPatternsFragment : BaseFragment(),
     }
 
     override fun onDestroyView() {
+        super.onDestroyView()
         CURRENT_PAGE = 1
         isLastPage = false
         viewModel.patternArrayList.clear()
         viewModel.resultMap.clear()
-        super.onDestroyView()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
