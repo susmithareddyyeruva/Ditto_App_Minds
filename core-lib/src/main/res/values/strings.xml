@@ -22,4 +22,5 @@
     <string name="pattern_library">Pattern Library</string>
     <string name="pattern_library_count">Pattern Library\u0020(11)</string>
     <string name="about_app_policies">About the app &amp; policies</string>
+    <string name="str_fetch_error">Error Fetching Data!!</string>
 </resources>

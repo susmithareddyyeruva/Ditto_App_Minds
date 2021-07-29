@@ -4,6 +4,7 @@ import core.lib.BuildConfig
 
 internal const val BASE_URL = BuildConfig.BASEURL
 internal const val TOKEN_BASE_URL = BuildConfig.TOKEN_ENDURL
+internal const val TAILONOVA_BASE_URL = BuildConfig.TAILORNOVA_BASEURL
 const val NO_NETWORK = "Network connection required !"
 internal const val MOCK_API_CERT = "mockapicert.crt"
 const val GUEST_SIGNED_IN = "GUEST"
@@ -14,6 +15,7 @@ const val SITE_ID = "JoAnn"
 const val PDF_USERNAME = "amrita.pattanaik@infosys.com"
 const val PDF_PASSWORD = "A@Mala3204"
 const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
+var PDF_DOWNLOAD_URL : String ?= "";
 
 //Shared Preference Keys
 const val USER_EMAIL = "USER_EMAIL"

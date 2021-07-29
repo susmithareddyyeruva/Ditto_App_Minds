@@ -31,6 +31,9 @@ android {
             minifyEnabled false
         }
     }
+    kapt {
+        correctErrorTypes true
+    }
 }
 
 dependencies {
@@ -41,6 +44,14 @@ dependencies {
     testImplementation "junit:junit:$junit_test_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_android_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+
+
+    //Retrofit Dependencies
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     /**
      * RX JAVA
@@ -68,5 +79,5 @@ dependencies {
 
     implementation project(':login-domain')
     implementation project(path: ':login-data')
-
+    implementation project(':logger')
 }

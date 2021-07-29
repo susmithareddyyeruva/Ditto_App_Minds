@@ -33,7 +33,8 @@ import javax.net.ssl.TrustManagerFactory
     includes = [
         WbBaseUrlModule::class,
         WbTokenBaseUrlModule::class,
-        WbSocketCertificateModule::class
+        WbSocketCertificateModule::class,
+        WbTailornovaBaseUrlModule :: class
     ]
 )
 class RetrofitModule {
@@ -98,6 +99,28 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
+
+    @Provides
+    @WbTailornovaApiRetrofit
+    fun provideTailornovaRetrofit(
+        @WbTailornovaBaseUrl baseUrl: String
+    ): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(logging)
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
+            .client(httpClient.build())
+            .build()
+    }
 }
 
 @Module
@@ -115,6 +138,14 @@ class WbTokenBaseUrlModule {
     @WbTokenBaseUrl
     fun providesTokenBaseUrl(): String {
         return BuildConfig.BASEURL
+    }
+}
+@Module
+class WbTailornovaBaseUrlModule {
+    @Provides
+    @WbTailornovaBaseUrl
+    fun providesTailornovaBaseUrl(): String {
+        return TAILONOVA_BASE_URL
     }
 }
 

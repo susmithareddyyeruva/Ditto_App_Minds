@@ -33,6 +33,8 @@ android {
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             /*buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
+            buildConfigField "String", "TAILORNOVA_BASEURL", "\"https://splicing.tailornova.com/api/v1/pattern/\""
+
         }
         debug {
             debuggable true
@@ -45,6 +47,8 @@ android {
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
           /*  buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
+            buildConfigField "String", "TAILORNOVA_BASEURL", "\"https://splicing.tailornova.com/api/v1/pattern/\""
+
         }
     }
 

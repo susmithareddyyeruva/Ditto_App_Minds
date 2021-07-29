@@ -4,6 +4,8 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.PatternIdResponse
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -20,7 +22,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getUserData()
     }
 
-    override fun getPattern(get: Int): Single<Result<MyLibraryData>> {
+    override fun getPattern(get: String): Single<Result<PatternIdData>> {
         return myLibraryRepository.getPatternData(get)
     }
 
