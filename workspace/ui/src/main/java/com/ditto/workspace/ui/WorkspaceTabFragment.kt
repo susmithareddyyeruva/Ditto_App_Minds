@@ -70,6 +70,7 @@ import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListener,
@@ -649,6 +650,26 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
     }
 
+    fun getPatternPieceList(): HashMap<String, String> {
+        var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap["M7987_36_C_1.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
+        hashMap["M7987_36_C_2.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_2.svg"
+        hashMap["M7987_36_C_4_with_dots.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_4_with_dots.svg"
+        hashMap["M7987_36_C_5.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_5.svg"
+        hashMap["M7987_36_C_6.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_6.svg"
+        hashMap["M7987_36_C_7.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_7.svg"
+        hashMap["M7987_36_C_8.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        return hashMap
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
@@ -661,6 +682,24 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (!baseViewModel.isProjecting.get()) {
                     binding.buttonSaveAndExit.isEnabled = false
                     //showSaveAndExitPopup()
+                    val map = getPatternPieceList()
+
+                    if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            viewModel.prepareDowloadList(map)
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
+
+                        }
+                    } else {
+                        //No Network Available for Download
+
+                    }
+
+
                     moveToLibrary()
                 } else {
                     showWaitingMessage("Projection is under process.. Please wait")
@@ -1382,7 +1421,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     override fun onExitButtonClicked() {
-        moveToLibrary()
+        /**
+         * Download the pattern pieces
+         */
+
+
     }
 
     private fun moveToLibrary() {
@@ -1691,9 +1734,24 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val SPLICE_TOP_TO_BOTTOM = "Splice Top-to-Bottom"
         private const val MULTIPLE_TO_MULTIPLE = "Splice Multiple-to-Multiple"
         private const val REQUEST_CODE_PERMISSIONS = 111
+        private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private val REQUIRED_PERMISSIONS_DOWNLOAD =
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
 
+
+    }
+
+    private fun dowloadPermissonGranted() = REQUIRED_PERMISSIONS_DOWNLOAD.all {
+        context?.let { it1 ->
+            ContextCompat.checkSelfPermission(
+                it1, it
+            )
+        } == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showBluetoothDialogue() {
@@ -1766,6 +1824,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 REQUIRED_PERMISSIONS,
                 REQUEST_CODE_PERMISSIONS
             )
+        }
+    }
+
+    /**
+     * [Function] Call back when user allow/deny the permission
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
+            val map = getPatternPieceList()
+
+            if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                viewModel.prepareDowloadList(map)
+            }
         }
     }
 
@@ -2144,7 +2219,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun resetWorkspaceUI() {
         setConnectButton()
-        if(com.ditto.workspace.ui.util.Utility.progressCount.get() == 0){
+        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
             resetPatternPiecesAdapter()
         }
     }
