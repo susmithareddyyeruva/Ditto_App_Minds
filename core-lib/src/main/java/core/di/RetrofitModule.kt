@@ -4,10 +4,8 @@ import android.content.Context
 import core.MOCK_API_CERT
 import core.OCAPI_PASSWORD
 import core.OCAPI_USERNAME
-import core.di.scope.WbApiRetrofit
-import core.di.scope.WbBaseUrl
-import core.di.scope.WbTokenApiRetrofit
-import core.di.scope.WbTokenBaseUrl
+import core.TAILONOVA_BASE_URL
+import core.di.scope.*
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
