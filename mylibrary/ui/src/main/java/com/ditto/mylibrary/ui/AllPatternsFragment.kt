@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -74,6 +75,7 @@ class AllPatternsFragment : BaseFragment(),
         viewModel.resultMap.clear()
     }
 
+    @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
@@ -83,7 +85,7 @@ class AllPatternsFragment : BaseFragment(),
 
 
         binding.closeFilter.setOnClickListener {
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            binding.drawerLayout.closeDrawer(Gravity.END)
             setFilterMenuAdapter(0)
         }
         binding.apply.setOnClickListener {
@@ -91,19 +93,15 @@ class AllPatternsFragment : BaseFragment(),
             /**
              * API call for getting filter Results....
              */
-            if (AppState.getIsLogged()) {
-                if (!Utility.isTokenExpired()) {
+            if (AppState.getIsLogged()&&!Utility.isTokenExpired()) {
                     currentPage = 1
                     isLastPage = false
                     viewModel.patternArrayList.clear()
                     viewModel.resultMap.clear()
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value =""))
-
-
-                }
             }
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            binding.drawerLayout.closeDrawer(Gravity.END)
             setFilterMenuAdapter(0)
         }
 
@@ -117,7 +115,7 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                binding.drawerLayout.closeDrawer(Gravity.END)
             }
 
         }
@@ -144,7 +142,7 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = it))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
-                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+                binding.drawerLayout.closeDrawer(Gravity.END)
             }
         }
 
@@ -393,7 +391,7 @@ class AllPatternsFragment : BaseFragment(),
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -426,7 +424,7 @@ class AllPatternsFragment : BaseFragment(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode== Activity.RESULT_OK) {
-            if (data?.data.toString().equals("KEY_SEARCH")) {
+            if (data?.data.toString() == "KEY_SEARCH") {
                 Log.d("MAP  RESULT== ", "IF")
                 //Re directing to Video Screen
 
