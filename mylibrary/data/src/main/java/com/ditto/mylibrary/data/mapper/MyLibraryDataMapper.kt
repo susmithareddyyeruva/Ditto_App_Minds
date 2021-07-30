@@ -51,7 +51,7 @@ fun MyLibraryResult.toDomain(): AllPatternsDomain {
         totalPatternCount = this.totalPatternCount?:0,
         totalPageCount = this.totalPageCount?:0,
         currentPageId = this.currentPageId?:0,
-        menuItem = this.menu
+        menuItem = this.menu?: hashMapOf()
 
     )
 }

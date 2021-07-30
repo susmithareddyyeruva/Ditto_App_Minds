@@ -1,5 +1,7 @@
 package com.ditto.mylibrary.domain.model
 
+import java.io.Serializable
+
 data class ProdDomain(
     val iD: String?="",
     val image: String?="",
@@ -19,4 +21,4 @@ data class ProdDomain(
     val prodSize: String?="",
     val prodGender: String?="",
     val prodBrand: String?="",
-)
+):Serializable

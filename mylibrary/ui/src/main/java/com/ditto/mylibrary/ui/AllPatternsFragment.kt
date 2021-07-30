@@ -287,7 +287,7 @@ class AllPatternsFragment : BaseFragment(),
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             if (findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                findNavController().navigate(R.id.action_fragments_to_search)
+               // findNavController().navigate(R.id.action_fragments_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
 

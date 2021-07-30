@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.domain.model
 
+import java.io.Serializable
 import java.util.*
 
 data class AllPatternsDomain(
@@ -11,4 +12,4 @@ data class AllPatternsDomain(
     val totalPageCount: Int,
     val currentPageId: Int,
     val menuItem: HashMap<String,List<String>>
-)
+):Serializable

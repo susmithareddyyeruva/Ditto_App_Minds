@@ -2,6 +2,7 @@ package com.ditto.mylibrary.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class MyLibraryResult(
     @SerializedName("action")
@@ -19,5 +20,5 @@ data class MyLibraryResult(
     @SerializedName("currentPageId")
     val currentPageId: Int?=0,
     @SerializedName("filter")
-    val menu: HashMap<String,List<String>>
-)
+    val menu: HashMap<String,List<String>>?= hashMapOf()
+): Serializable
