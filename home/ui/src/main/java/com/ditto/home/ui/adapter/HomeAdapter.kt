@@ -40,7 +40,11 @@ class HomeAdapter(private val context: Context) : RecyclerView.Adapter<HomeAdapt
         holder.rowHomeBinding.viewModel  = viewModel
         holder.rowHomeBinding.homeData  = homeData[position]
         holder.rowHomeBinding.imageView.setImageResource(images[position])
-        holder.rowHomeBinding.textPatternHeader.setText(context.getString(R.string.pattern_library_count1,viewModel.productCount))
+        if (homeData[position].id==1) {
+            holder.rowHomeBinding.textHeader.setText(context.getString(R.string.pattern_library_count1,viewModel.productCount))
+        }else{
+            holder.rowHomeBinding.textHeader.setText(homeData[position].title)
+        }
 
     }
 
