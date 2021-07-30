@@ -46,10 +46,10 @@ class AllPatternsFragment : BaseFragment(),
     lateinit var binding: AllPatternsFragmentBinding
     private var patternId: Int = 0
     private val allPatternAdapter = AllPatternsAdapter()
-    private var clikedMenu: String = ""
+    private var clickedMenu: String = ""
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
-    private var CURRENT_PAGE = 1
+    private var currentPage = 1
     lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
@@ -68,7 +68,7 @@ class AllPatternsFragment : BaseFragment(),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        CURRENT_PAGE = 1
+        currentPage = 1
         isLastPage = false
         viewModel.patternArrayList.clear()
         viewModel.resultMap.clear()
@@ -93,12 +93,12 @@ class AllPatternsFragment : BaseFragment(),
              */
             if (AppState.getIsLogged()) {
                 if (!Utility.isTokenExpired()) {
-                    CURRENT_PAGE = 1
+                    currentPage = 1
                     isLastPage = false
                     viewModel.patternArrayList.clear()
                     viewModel.resultMap.clear()
                     bottomNavViewModel.showProgress.set(true)
-                    viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value =""))
+                    viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value =""))
 
 
                 }
@@ -112,9 +112,9 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.patternArrayList.clear()
             viewModel.menuList.clear()
             viewModel.setList()
-            CURRENT_PAGE = 1
+            currentPage = 1
             isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -130,7 +130,7 @@ class AllPatternsFragment : BaseFragment(),
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))  //Initial API call
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))  //Initial API call
 
         }
         getBackStackData<String>("KEY_SEARCH",true) { it ->
@@ -139,9 +139,9 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.patternArrayList.clear()
             viewModel.menuList.clear()
             viewModel.setList()
-            CURRENT_PAGE = 1
+            currentPage = 1
             isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = it))
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = it))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -171,7 +171,7 @@ class AllPatternsFragment : BaseFragment(),
             FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
                 override fun onMenuSelected(menu: String) {
                     Log.d("CLICKED===", menu)
-                    clikedMenu = menu
+                    clickedMenu = menu
                     (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
 
                 }
@@ -232,18 +232,18 @@ class AllPatternsFragment : BaseFragment(),
 
             override fun loadMoreItems() {
                 isLoading = true;
-                CURRENT_PAGE++
+                currentPage++
                 //you have to call loadmore items to get more data
 
-                if (CURRENT_PAGE <= viewModel.totalPageCount) {
+                if (currentPage <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                         bottomNavViewModel.showProgress.set(true)
-                        viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))
+                        viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
                     }
                 } else {
                     isLastPage = true
                     isLoading = false
-                    CURRENT_PAGE = 1
+                    currentPage = 1
                 }
 
             }
@@ -291,10 +291,10 @@ class AllPatternsFragment : BaseFragment(),
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             isLastPage = false
-            CURRENT_PAGE = 1
+            currentPage = 1
             viewModel.patternArrayList.clear()
             viewModel.resultMap.clear()
-            viewModel.fetchOnPatternData(viewModel.createJson(CURRENT_PAGE,value = ""))
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
