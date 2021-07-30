@@ -96,8 +96,9 @@ class AllPatternsFragment : BaseFragment(),
             if (AppState.getIsLogged()&&!Utility.isTokenExpired()) {
                     currentPage = 1
                     isLastPage = false
-                    viewModel.patternArrayList.clear()
-                    viewModel.resultMap.clear()
+                viewModel.patternArrayList.clear()
+                   /* viewModel.patternArrayList.clear()
+                    viewModel.resultMap.clear()*/
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value =""))
             }

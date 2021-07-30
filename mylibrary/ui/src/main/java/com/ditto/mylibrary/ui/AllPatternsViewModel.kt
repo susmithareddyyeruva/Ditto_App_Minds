@@ -53,6 +53,7 @@ class AllPatternsViewModel @Inject constructor(
     var totalPageCount: Int = 0
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
+    var isFilter: Boolean? = false
 
 
     //error handler for data fetch related flow
@@ -85,39 +86,39 @@ class AllPatternsViewModel @Inject constructor(
     }
 
 
-  /*  fun getFilteredPatternsData(
-        request: MyLibraryFilterRequestData,
-        value: String
-    ) {
-        request.searchTerm = value
-        uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.getFilteredPatterns(request)
-            .delay(600, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFilterResult(it) }
-    }
+    /*  fun getFilteredPatternsData(
+          request: MyLibraryFilterRequestData,
+          value: String
+      ) {
+          request.searchTerm = value
+          uiEvents.post(Event.OnShowProgress)
+          disposable += getPatternsData.getFilteredPatterns(request)
+              .delay(600, TimeUnit.MILLISECONDS)
+              .subscribeOn(Schedulers.io())
+              .whileSubscribed { isLoading.set(it) }
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribeBy { handleFilterResult(it) }
+      }
 
-    private fun handleFilterResult(result: Result<AllPatternsDomain>) {
-        uiEvents.post(Event.OnHideProgress)
-        when (result) {
-            is Result.OnSuccess -> {
-                patternArrayList.clear()
-                patternList.value = result.data.prod
-                result.data.prod.forEach {
-                    patternArrayList.add(it)
-                }
+      private fun handleFilterResult(result: Result<AllPatternsDomain>) {
+          uiEvents.post(Event.OnHideProgress)
+          when (result) {
+              is Result.OnSuccess -> {
+                  patternArrayList.clear()
+                  patternList.value = result.data.prod
+                  result.data.prod.forEach {
+                      patternArrayList.add(it)
+                  }
 
-               // AppState.setPatternCount(result.data.totalPatternCount)
-                uiEvents.post(Event.OnDataUpdated)
-            }
-            is Result.OnError -> {
-                handleError(result.error)
-            }
-        }
+                 // AppState.setPatternCount(result.data.totalPatternCount)
+                  uiEvents.post(Event.OnDataUpdated)
+              }
+              is Result.OnError -> {
+                  handleError(result.error)
+              }
+          }
 
-    }*/
+      }*/
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
@@ -137,6 +138,13 @@ class AllPatternsViewModel @Inject constructor(
                 map = result.data.menuItem  //hashmap
                 setList()
                 uiEvents.post(Event.OnResultSuccess)
+                if (isFilter == false) {
+                    uiEvents.post(Event.UpdateDefaultFilter)
+                    isFilterResult.set(false)
+                } else {
+                    uiEvents.post(Event.UpdateFilterImage)
+                    isFilterResult.set(true)
+                }
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -248,14 +256,14 @@ class AllPatternsViewModel @Inject constructor(
         object UpdateDefaultFilter : Event()
     }
 
-    fun createJson(currentPage: Int,value: String): MyLibraryFilterRequestData {
+    fun createJson(currentPage: Int, value: String): MyLibraryFilterRequestData {
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
                 "subscustomerOne@gmail.com",
                 true,
                 true
-            ), pageId = currentPage, patternsPerPage = 12,searchTerm = value
+            ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
         val json1 = Gson().toJson(menuList)
         Log.d("JSON===", json1)
@@ -267,12 +275,14 @@ class AllPatternsViewModel @Inject constructor(
 
             }
         }
-        if (filteredMap.isEmpty()&&value.isEmpty()) {
-            isFilterResult.set(false)
-            uiEvents.post(Event.UpdateDefaultFilter)
-        }else {
-            isFilterResult.set(true)
-            uiEvents.post(Event.UpdateFilterImage)
+        if (filteredMap.isEmpty() && value.isEmpty()) {
+            isFilter = false
+            /* uiEvents.post(Event.UpdateDefaultFilter)
+             isFilterResult.set(false)*/
+        } else {
+            isFilter = true
+            /* uiEvents.post(Event.UpdateFilterImage)
+             isFilterResult.set(true)*/
         }
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
