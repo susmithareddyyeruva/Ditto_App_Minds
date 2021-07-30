@@ -1,10 +1,11 @@
 package com.ditto.home.domain.model
 
+import java.io.Serializable
+
 data class ProdDomain(
     val iD: Int = 0,
     val image: String = "",
-    val prodName: String = "",
-    val longDescription: String = "",
+    val name: String = "",
     val creationDate: String = "",
     val patternType: String = "",
     val status: String = "",
@@ -19,4 +20,4 @@ data class ProdDomain(
     val prodSize: String = "",
     val prodGender: String = "",
     val prodBrand: String = ""
-)
+):Serializable

@@ -131,11 +131,11 @@ class AllPatternsViewModel @Inject constructor(
                 }
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
-                totalPatternCount = result.data.totalPatternCount
+                totalPatternCount = result.data.totalPatternCount?:0
                 Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
-                totalPageCount = result.data.totalPageCount
-                currentPageId = result.data.currentPageId
-                map = result.data.menuItem  //hashmap
+                totalPageCount = result.data.totalPageCount?:0
+                currentPageId = result.data.currentPageId?:0
+                map = result.data.menuItem?: hashMapOf() //hashmap
                 uiEvents.post(Event.OnResultSuccess)
                 if (isFilter == false) {
                     setList()  // For Displaying menu item without any filter applied

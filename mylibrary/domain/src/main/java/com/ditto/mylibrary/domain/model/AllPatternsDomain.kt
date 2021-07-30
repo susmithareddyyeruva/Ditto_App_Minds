@@ -4,12 +4,12 @@ import java.io.Serializable
 import java.util.*
 
 data class AllPatternsDomain(
-    var action: String,
-    var locale: String,
+    var action: String?="",
+    var locale: String?="",
     var prod: List<ProdDomain>,
-    var queryString: String,
-    val totalPatternCount: Int,
-    val totalPageCount: Int,
-    val currentPageId: Int,
-    val menuItem: HashMap<String,List<String>>
+    var queryString: String?="",
+    val totalPatternCount: Int?=0,
+    val totalPageCount: Int?=0,
+    val currentPageId: Int?=0,
+    val menuItem: HashMap<String,List<String>>?= hashMapOf()
 ):Serializable

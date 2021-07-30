@@ -2,12 +2,12 @@ package com.ditto.data.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Prod(
     @SerializedName("ID") val iD : Int=0,
     @SerializedName("image") val image : String?="",
-    @SerializedName("prodName") val prodName : String?="",
-    @SerializedName("longDescription") val longDescription : String?="",
+    @SerializedName("name") val prodName : String?="",
     @SerializedName("creationDate") val creationDate : String?="",
     @SerializedName("patternType") val patternType : String?="",
     @SerializedName("status") val status : String?="",
@@ -22,4 +22,4 @@ data class Prod(
     @SerializedName("size") val prodSize : String?="",
     @SerializedName("gender") val prodGender : String?="",
     @SerializedName("brand") val prodBrand : String?=""
-)
+): Serializable

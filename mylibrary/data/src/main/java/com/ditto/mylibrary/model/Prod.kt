@@ -1,11 +1,9 @@
 package com.ditto.mylibrary.model
 
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
-@Parcelize
 data class Prod(
     @SerializedName("ID") val iD : String?="",
     @SerializedName("image") val image : String?="",
@@ -24,4 +22,4 @@ data class Prod(
     @SerializedName("size") val prodSize : String?="",
     @SerializedName("gender") val prodGender : String?="",
     @SerializedName("brand") val prodBrand : String?=""
-):Parcelable
+):Serializable
