@@ -87,6 +87,8 @@ class AllPatternsFragment : BaseFragment(),
         binding.closeFilter.setOnClickListener {
             binding.drawerLayout.closeDrawer(Gravity.END)
             setFilterMenuAdapter(0)
+            binding.rvCategory.smoothScrollToPosition(0)
+            binding.rvActions.smoothScrollToPosition(0)
         }
         binding.apply.setOnClickListener {
             //  viewModel.createJson()
@@ -97,8 +99,6 @@ class AllPatternsFragment : BaseFragment(),
                 currentPage = 1
                 isLastPage = false
                 viewModel.patternArrayList.clear()
-                /* viewModel.patternArrayList.clear()
-                 viewModel.resultMap.clear()*/
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
             }

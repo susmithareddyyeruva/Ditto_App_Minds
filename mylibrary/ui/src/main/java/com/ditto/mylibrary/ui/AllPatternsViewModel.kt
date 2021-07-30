@@ -136,9 +136,9 @@ class AllPatternsViewModel @Inject constructor(
                 totalPageCount = result.data.totalPageCount
                 currentPageId = result.data.currentPageId
                 map = result.data.menuItem  //hashmap
-                setList()
                 uiEvents.post(Event.OnResultSuccess)
                 if (isFilter == false) {
+                    setList()  // For Displaying menu item without any filter applied
                     uiEvents.post(Event.UpdateDefaultFilter)
                     isFilterResult.set(false)
                 } else {
@@ -275,15 +275,7 @@ class AllPatternsViewModel @Inject constructor(
 
             }
         }
-        if (filteredMap.isEmpty() && value.isEmpty()) {
-            isFilter = false
-            /* uiEvents.post(Event.UpdateDefaultFilter)
-             isFilterResult.set(false)*/
-        } else {
-            isFilter = true
-            /* uiEvents.post(Event.UpdateFilterImage)
-             isFilterResult.set(true)*/
-        }
+        isFilter = !(filteredMap.isEmpty() && value.isEmpty())
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()
