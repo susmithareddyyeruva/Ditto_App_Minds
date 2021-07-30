@@ -61,6 +61,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
+        (activity as BottomNavigationActivity)?.setEmaildesc()
         if (AppState.getIsLogged()) {
             bottomNavViewModel.isGuestBase.set(false)
         } else {

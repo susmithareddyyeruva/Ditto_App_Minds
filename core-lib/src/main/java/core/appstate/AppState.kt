@@ -2,6 +2,8 @@ package core.appstate
 
 import android.content.Context
 import core.*
+import core.*
+import core.CUST_ID
 import core.models.Nsdservicedata
 
 object AppState {
@@ -49,6 +51,15 @@ object AppState {
     fun getCustID(): String? {
         val custid = pref?.getString(CUST_ID)
         return custid
+    }
+
+    fun getEmail(): String? {
+        val email = pref?.getString(USER_EMAIL)
+        return email
+    }
+
+    fun setEmail(email: String) {
+        pref?.saveString(USER_EMAIL, email)
     }
     fun saveCurrentService(service : Nsdservicedata){
         pref?.saveString(CONNECTED_SERVICE_NAME,service.nsdServiceName)

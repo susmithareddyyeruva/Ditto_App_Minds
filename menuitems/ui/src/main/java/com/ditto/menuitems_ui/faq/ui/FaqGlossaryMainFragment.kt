@@ -141,40 +141,40 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
             }
         })
 
-        try {
-            val tabLayout =
-                ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(0) as LinearLayout
-            val tabTextView = tabLayout.getChildAt(1) as TextView
-            val typeface = ResourcesCompat.getFont(requireContext(), R.font.avenir_next_lt_pro_demi)
-            tabTextView.setTypeface(typeface)
-        } catch (e: Exception) {
-            Log.d("Error",e.localizedMessage)
-        }
-        binding.tabLayoutFaq.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                Log.d("onTabSelection", "onTabSelected")
-                val tabLayout =
-                    ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
-                val tabTextView = tabLayout.getChildAt(1) as TextView
-                val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_next_lt_pro_demi)
-                tabTextView.setTypeface(typeface)
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-                Log.d("onTabSelection", "onTabUnselected")
-                val tabLayout =
-                    ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
-                val tabTextView = tabLayout.getChildAt(1) as TextView
-                val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_next_lt_pro_regular)
-                tabTextView.setTypeface(typeface)
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-                Log.d("onTabSelection", "onTabReselected")
-            }
-        })
+//        try {
+//            val tabLayout =
+//                ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(0) as LinearLayout
+//            val tabTextView = tabLayout.getChildAt(1) as TextView
+//            val typeface = ResourcesCompat.getFont(requireContext(), R.font.avenir_next_lt_pro_demi)
+//            tabTextView.setTypeface(typeface)
+//        } catch (e: Exception) {
+//            Log.d("Error",e.localizedMessage)
+//        }
+//        binding.tabLayoutFaq.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//                Log.d("onTabSelection", "onTabSelected")
+//                val tabLayout =
+//                    ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+//                val tabTextView = tabLayout.getChildAt(1) as TextView
+//                val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_next_lt_pro_demi)
+//                tabTextView.setTypeface(typeface)
+//
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab) {
+//                Log.d("onTabSelection", "onTabUnselected")
+//                val tabLayout =
+//                    ( binding.tabLayoutFaq.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+//                val tabTextView = tabLayout.getChildAt(1) as TextView
+//                val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_next_lt_pro_regular)
+//                tabTextView.setTypeface(typeface)
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab) {
+//                Log.d("onTabSelection", "onTabReselected")
+//            }
+//        })
     }
 
     override fun onCustomPositiveButtonClicked(

@@ -451,7 +451,7 @@
                         android:paddingStart="@dimen/padding_small"
                         android:paddingBottom="@dimen/dimen_2"
                         android:text="@string/clear_all"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/sign_in_blue"
                         android:textSize="@dimen/item_action_text_size" />
 
                     <TextView

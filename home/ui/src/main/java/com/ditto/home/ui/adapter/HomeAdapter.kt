@@ -20,8 +20,8 @@ class HomeAdapter(private val context: Context) : RecyclerView.Adapter<HomeAdapt
     lateinit var viewModel: HomeViewModel
     private var homeData: List<HomeData> = emptyList()
     val images = intArrayOf(
-        R.drawable.ic_home_tutorial,  R.drawable.ic_home_pattern_library, R.drawable.ic_home_ditto,
-        R.drawable.ic_home_joann)
+        R.drawable.grey_background_rectangle,  R.drawable.ic_home_pattern_library_new_home_design, R.drawable.ic_home_ditto_com,
+        R.drawable.ic_home_joann_new_design)
 
     override fun setListData(items: List<HomeData>) {
         homeData = items

@@ -61,8 +61,8 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_instrctions.setNavigationIcon(R.drawable.ic_back_button)
         setUIEvents()
-        loadPdf()
         patternFolderName = arguments?.getString("PatternName")
+        loadPdf()
     }
 
     companion object {
@@ -99,7 +99,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     private fun checkavailablefile() {
         downloadFileName =
             PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
-        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }//shri
+        val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }
         if (availableUri != null) {
             showPdfFromUri(availableUri)
         } else {

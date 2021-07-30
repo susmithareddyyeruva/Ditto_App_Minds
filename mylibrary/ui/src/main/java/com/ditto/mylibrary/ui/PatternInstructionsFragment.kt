@@ -77,9 +77,9 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         (activity as BottomNavigationActivity).setToolbarIcon()
         toolbarViewModel.isShowActionMenu.set(false)
         setUIEvents()
-        loadPdf()
-        Log.d("instruction123", "prev pattern name: ${arguments?.getString("PatternName")}")
         patternFolderName = arguments?.getString("PatternName")
+        Log.d("instruction123", "prev pattern name: ${arguments?.getString("PatternName")}")
+        loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }
 
