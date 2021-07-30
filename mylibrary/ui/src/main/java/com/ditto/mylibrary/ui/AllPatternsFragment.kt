@@ -93,14 +93,14 @@ class AllPatternsFragment : BaseFragment(),
             /**
              * API call for getting filter Results....
              */
-            if (AppState.getIsLogged()&&!Utility.isTokenExpired()) {
-                    currentPage = 1
-                    isLastPage = false
+            if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                currentPage = 1
+                isLastPage = false
                 viewModel.patternArrayList.clear()
-                   /* viewModel.patternArrayList.clear()
-                    viewModel.resultMap.clear()*/
-                    bottomNavViewModel.showProgress.set(true)
-                    viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value =""))
+                /* viewModel.patternArrayList.clear()
+                 viewModel.resultMap.clear()*/
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
             }
             binding.drawerLayout.closeDrawer(Gravity.END)
             setFilterMenuAdapter(0)
@@ -113,7 +113,7 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.setList()
             currentPage = 1
             isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
                 binding.drawerLayout.closeDrawer(Gravity.END)
@@ -129,10 +129,15 @@ class AllPatternsFragment : BaseFragment(),
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))  //Initial API call
+            viewModel.fetchOnPatternData(
+                viewModel.createJson(
+                    currentPage,
+                    value = ""
+                )
+            )  //Initial API call
 
         }
-        getBackStackData<String>("KEY_SEARCH",true) { it ->
+        getBackStackData<String>("KEY_SEARCH", true) { it ->
             logger.d("SEARCH TERM : $it")
             viewModel.resultMap.clear()
             viewModel.patternArrayList.clear()
@@ -140,7 +145,7 @@ class AllPatternsFragment : BaseFragment(),
             viewModel.setList()
             currentPage = 1
             isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = it))
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
             if (binding?.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
                 binding.drawerLayout.closeDrawer(Gravity.END)
@@ -237,7 +242,7 @@ class AllPatternsFragment : BaseFragment(),
                 if (currentPage <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                         bottomNavViewModel.showProgress.set(true)
-                        viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
+                        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
                     }
                 } else {
                     isLastPage = true
@@ -265,8 +270,8 @@ class AllPatternsFragment : BaseFragment(),
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-           /* binding.toolbar.header_view_title.text =
-                getString(R.string.pattern_library_count, viewModel.totalPatternCount)*/
+            /* binding.toolbar.header_view_title.text =
+                 getString(R.string.pattern_library_count, viewModel.totalPatternCount)*/
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
@@ -293,7 +298,7 @@ class AllPatternsFragment : BaseFragment(),
             currentPage = 1
             viewModel.patternArrayList.clear()
             viewModel.resultMap.clear()
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage,value = ""))
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
@@ -424,12 +429,12 @@ class AllPatternsFragment : BaseFragment(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode== Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (data?.data.toString() == "KEY_SEARCH") {
                 Log.d("MAP  RESULT== ", "IF")
                 //Re directing to Video Screen
 
-                }
+            }
         }
     }
 
