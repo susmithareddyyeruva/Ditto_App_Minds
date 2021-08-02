@@ -664,7 +664,45 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_6.svg"
         hashMap["M7987_36_C_7.svg"] =
             "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_7.svg"
-        hashMap["M7987_36_C_8.svg"] =
+        hashMap["M7987_36_C_11.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_12.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_13.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_14.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_15.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_16.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_17.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_18.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_19.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_20.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_21.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_22.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_23.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_24.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_25.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_26.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_27.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_28.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_29.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_30.svg"] =
             "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
         return hashMap
     }
@@ -686,7 +724,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
                     if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
                             viewModel.prepareDowloadList(map)
+
                         } else {
                             requestPermissions(
                                 REQUIRED_PERMISSIONS_DOWNLOAD,
@@ -954,6 +994,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
+                /**
+                 * All Pattern Pieces Downloaded Successfully
+                 */
+                if (viewModel.temp.size==getPatternPieceList().size) {
+                    bottomNavViewModel.showProgress.set(false)
+                    Log.d("DOWNLOAD","ENDED")
+                    moveToLibrary()
+                }else{
+
+                }
 
             }
             is WorkspaceViewModel.Event.OnClickTutorial -> {
@@ -1839,11 +1889,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             val map = getPatternPieceList()
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
+                bottomNavViewModel.showProgress.set(true)
                 viewModel.prepareDowloadList(map)
 
             }
         }
-        moveToLibrary()
+
     }
 
     private fun showConnectivityPopup() {

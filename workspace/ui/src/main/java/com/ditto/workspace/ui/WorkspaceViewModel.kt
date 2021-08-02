@@ -42,6 +42,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class WorkspaceViewModel @Inject constructor(
     private val context: Context,
@@ -92,6 +93,7 @@ class WorkspaceViewModel @Inject constructor(
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val patternUri: ObservableField<String> = ObservableField("")
+    val temp=ArrayList<String>()
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -508,6 +510,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
+        Log.d("DOWLOAD", "COMPLETED")
     }
 
     sealed class Event {
@@ -712,6 +715,8 @@ class WorkspaceViewModel @Inject constructor(
             val path = Uri.fromFile(result)
             patternUri.set(path.toString())
             Log.d("PATTERN", patternUri.get() ?: "")
+
+            temp.add(path.toString())
             onFinished()
         }
     }
@@ -728,11 +733,16 @@ class WorkspaceViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
+        Log.d("DOWNLOAD","STARTED")
+
+        //
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
                 downloadPatterns(url = value, filename = key, patternFolderName = "PatternPieces")
             }
         }
+
+
     }
 
 }
