@@ -67,9 +67,38 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+
         <action
-            android:id="@+id/action_fragments_to_customerCareFragment"
+            android:id="@+id/action_splashActivity_to_LoginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
+        <action
+            android:id="@+id/action_pattern_description_to_FAQGlossaryfragment"
+            app:destination="@id/nav_graph_mainfaq" />
+        <action
+            android:id="@+id/action_pattern_description_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_wssettings_fragment"
+            app:destination="@id/nav_graph_settings_destination" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_nav_graph_manage"
+            app:destination="@id/manageDeviceFragment" />
+        <action
+            android:id="@+id/action_pattern_description_to_privacyAndSettingFragment"
+            app:destination="@id/privacyAndSettingFragment" />
 
     </fragment>
     <fragment
@@ -82,5 +111,39 @@
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
         tools:layout="@layout/customer_care_fragment"
         android:label="Customer Support" />
+
+    <fragment
+        android:id="@+id/nav_graph_mainfaq"
+        android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
+        android:label="FAQ and Glossary"
+        tools:layout="@layout/faq_glossary_mainfragment" >
+        <action
+            android:id="@+id/action_destination_faq_to_nav_graph_id_video"
+            app:destination="@id/nav_graph_id_video"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/aboutAppFragment"
+        android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
+        android:label="AboutAppFragment" />
+
+    <fragment
+        android:id="@+id/nav_graph_settings_destination"
+        android:name="com.ditto.menuitems_ui.settings.WSProSettingsFragment"
+        android:label="WsSettings"/>
+
+    <fragment
+        android:id="@+id/manageDeviceFragment"
+        android:name="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment"
+        android:label="ManageDeviceFragment" />
+
+    <fragment
+        android:id="@+id/privacyAndSettingFragment"
+        android:name="com.ditto.menuitems_ui.privacyandsettings.ui.PrivacyAndSettingFragment"
+        android:label="PrivacyAndSettingFragment" />
 
 </navigation>
