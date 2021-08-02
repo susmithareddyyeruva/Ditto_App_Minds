@@ -93,7 +93,7 @@ class WorkspaceViewModel @Inject constructor(
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val patternUri: ObservableField<String> = ObservableField("")
-    val temp=ArrayList<String>()
+    val temp = ArrayList<String>()
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -663,7 +663,7 @@ class WorkspaceViewModel @Inject constructor(
         subFolder = File(dittofolder, "/PatternPieces")
 
         if (!dittofolder.exists()) {
-           // dittofolder.mkdir()
+            // dittofolder.mkdir()
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             }
@@ -733,7 +733,8 @@ class WorkspaceViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("DOWNLOAD","STARTED")
+        Log.d("DOWNLOAD", "STARTED")
+        temp.clear()
 
         //
         GlobalScope.launch {
