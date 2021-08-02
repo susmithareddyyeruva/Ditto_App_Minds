@@ -60,6 +60,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var expandableListView: NoScrollExListView
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
     lateinit var navViewHeaderBinding: NavDrawerHeaderBinding
+
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -192,11 +193,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
                     if (navController.currentDestination?.label?.equals("Home")!! ||
                         (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
-                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-                        navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!)
-                            R.id.action_homeFragment_to_wssettings_fragment
-                        else
-                            R.id.action_pattern_description_to_wssettings_fragment)
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        navController.navigate(
+                            if (navController.currentDestination?.label?.equals("Home")!!)
+                                R.id.action_homeFragment_to_wssettings_fragment
+                            else
+                                R.id.action_pattern_description_to_wssettings_fragment
+                        )
                     }
                 }
 
@@ -208,11 +212,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     )?.get(childPosition)
                         ?.menuName.equals(this.getString(R.string.str_menu_manage_projector))
                 ) {
-                    if (navController.currentDestination?.label?.equals("Home")!!||
+                    if (navController.currentDestination?.label?.equals("Home")!! ||
                         (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
-                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-                        navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_nav_graph_manage
-                        else R.id.action_pattern_description_to_nav_graph_manage)
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        navController.navigate(
+                            if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_nav_graph_manage
+                            else R.id.action_pattern_description_to_nav_graph_manage
+                        )
                     }
                 }
 
@@ -245,11 +252,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         navViewHeaderBinding.bottomNavViewModel = binding.bottomNavViewModel
     }
 
-     fun setEmaildesc() {
-        if (AppState.getIsLogged()){
+    fun setEmaildesc() {
+        if (AppState.getIsLogged()) {
             val email = AppState.getEmail()
             navViewHeaderBinding.textEmail.text = "$email"
-        }else{
+        } else {
             setUnderlinestyle(navViewHeaderBinding)
         }
     }
@@ -263,7 +270,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         spannable.setSpan(
             UnderlineSpan(),
             0, 7,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         navViewHeaderBinding.textEmail.text = spannable
     }
 
@@ -462,40 +470,54 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     private fun handlemenuClick(selectedmenu: String) {
         if (selectedmenu.equals(this.getString(R.string.str_menu_customersupport))) {
-            if (navController.currentDestination?.label?.equals("Home")!!||
+            if (navController.currentDestination?.label?.equals("Home")!! ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
-                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-                navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragments_to_customerCareFragment
-                else R.id.action_pattern_description_to_customerCareFragment)
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                navController.navigate(
+                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragments_to_customerCareFragment
+                    else R.id.action_pattern_description_to_customerCareFragment
+                )
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_faq))) {
-            if (navController.currentDestination?.label?.equals("Home")!!||
+            if (navController.currentDestination?.label?.equals("Home")!! ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
-                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
-                navController.navigate(if(navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragment_to_FAQGlossaryfragment
-                else R.id.action_pattern_description_to_FAQGlossaryfragment)
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                navController.navigate(
+                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragment_to_FAQGlossaryfragment
+                    else R.id.action_pattern_description_to_FAQGlossaryfragment
+                )
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_logout))) {
-            if (navController.currentDestination?.label?.equals("Home")!!||
+            if (navController.currentDestination?.label?.equals("Home")!! ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
-                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
                 logoutUser(true)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_signin))) {
-            if (navController.currentDestination?.label?.equals("Home")!!||
+            if (navController.currentDestination?.label?.equals("Home")!! ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
-                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
                 logoutUser(false)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.about_app_policies))) {
-            if (navController.currentDestination?.label?.equals("Home")!!) {
-                /*  navController.navigate(R.id.action_homeFragment_to_aboutAppFragment)
-                  binding.drawerLayout.closeDrawer(Gravity.RIGHT)*/
+            if (navController.currentDestination?.label?.equals("Home")!! ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                navController.navigate(
+                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_aboutAppFragment
+                    else R.id.action_pattern_description_to_aboutAppFragment
+                )
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
