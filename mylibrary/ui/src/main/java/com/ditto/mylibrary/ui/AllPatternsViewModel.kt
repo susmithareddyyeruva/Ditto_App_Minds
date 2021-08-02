@@ -84,42 +84,6 @@ class AllPatternsViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
-
-
-    /*  fun getFilteredPatternsData(
-          request: MyLibraryFilterRequestData,
-          value: String
-      ) {
-          request.searchTerm = value
-          uiEvents.post(Event.OnShowProgress)
-          disposable += getPatternsData.getFilteredPatterns(request)
-              .delay(600, TimeUnit.MILLISECONDS)
-              .subscribeOn(Schedulers.io())
-              .whileSubscribed { isLoading.set(it) }
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribeBy { handleFilterResult(it) }
-      }
-
-      private fun handleFilterResult(result: Result<AllPatternsDomain>) {
-          uiEvents.post(Event.OnHideProgress)
-          when (result) {
-              is Result.OnSuccess -> {
-                  patternArrayList.clear()
-                  patternList.value = result.data.prod
-                  result.data.prod.forEach {
-                      patternArrayList.add(it)
-                  }
-
-                 // AppState.setPatternCount(result.data.totalPatternCount)
-                  uiEvents.post(Event.OnDataUpdated)
-              }
-              is Result.OnError -> {
-                  handleError(result.error)
-              }
-          }
-
-      }*/
-
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {

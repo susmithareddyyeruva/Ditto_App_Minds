@@ -69,10 +69,10 @@ class AllPatternsFragment : BaseFragment(),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        currentPage = 1
+   /*     currentPage = 1
         isLastPage = false
         viewModel.patternArrayList.clear()
-        viewModel.resultMap.clear()
+        viewModel.resultMap.clear()*/
     }
 
     @SuppressLint("WrongConstant")
@@ -128,13 +128,23 @@ class AllPatternsFragment : BaseFragment(),
             binding.clearFilter.performClick()
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnPatternData(
-                viewModel.createJson(
-                    currentPage,
-                    value = ""
-                )
-            )  //Initial API call
+            if (viewModel.resultMap.isEmpty()) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.fetchOnPatternData(
+                    viewModel.createJson(
+                        currentPage,
+                        value = ""
+                    )
+                )  //Initial API call
+            } else {
+                updatePatterns()
+                setFilterMenuAdapter(0)
+               if (viewModel.isFilter==true){
+                   binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+               }else
+                   binding.viewDot.setImageResource(R.drawable.ic_filter)
+            }
+
 
         }
         getBackStackData<String>("KEY_SEARCH", true) { it ->
@@ -147,7 +157,8 @@ class AllPatternsFragment : BaseFragment(),
             isLastPage = false
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
             if (binding?.rvActions.adapter != null) {
-                binding.rvActions.adapter?.notifyDataSetChanged()
+               // binding.rvActions.adapter?.notifyDataSetChanged()
+                setFilterMenuAdapter(0)
                 binding.drawerLayout.closeDrawer(Gravity.END)
             }
         }
@@ -287,7 +298,7 @@ class AllPatternsFragment : BaseFragment(),
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             if (findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-               // findNavController().navigate(R.id.action_fragments_to_search)
+                findNavController().navigate(R.id.action_fragments_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
 
