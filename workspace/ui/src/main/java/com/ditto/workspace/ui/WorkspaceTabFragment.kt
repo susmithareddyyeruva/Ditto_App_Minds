@@ -958,7 +958,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun onUpdateProgressCount() {
         binding.seekbarStatus.progress = 0
-        binding.seekbarStatus.max = viewModel.data?.value?.totalPieces!!
+        binding.seekbarStatus.max = viewModel.data?.value?.totalPieces ?: 0
         binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
     }
 
@@ -1472,7 +1472,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             binding.seekbarStatus.progress = 0
-            binding.seekbarStatus.max = viewModel.data?.value?.totalPieces!!
+            binding.seekbarStatus.max = viewModel.data?.value?.totalPieces ?: 0
             binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
             logger.d("TRACE: Fetched progress count " + com.ditto.workspace.ui.util.Utility.progressCount.get())
         }

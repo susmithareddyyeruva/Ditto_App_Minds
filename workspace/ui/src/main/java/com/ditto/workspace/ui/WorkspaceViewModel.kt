@@ -171,7 +171,7 @@ class WorkspaceViewModel @Inject constructor(
                     )
 
                     updateWSPatternDataStorage(
-                        3, "UpdateTAB", "DoneUpdate123", c.numberOfCompletedPiece,
+                        "demo-design-id-3", "UpdateTAB", "DoneUpdate123", c.numberOfCompletedPiece,
                         c.patternPieces, c.garmetWorkspaceItems,
                         c.liningWorkspaceItems, c.interfaceWorkspaceItem
                     )//todo need to add tailernova details
@@ -208,7 +208,7 @@ class WorkspaceViewModel @Inject constructor(
         }
 
         fun updateWSPatternDataStorage(
-            tailornaovaDesignId: Int,
+            tailornaovaDesignId: String,
             selectedTab: String,
             status: String,
             numberOfCompletedPiece: NumberOfPieces,
@@ -805,7 +805,7 @@ class WorkspaceViewModel @Inject constructor(
 
        private fun getWorkspaceInputDataToAPI(): CTraceWorkSpacePatternInputData {
             val numberOfCompletedPiece =
-                NumberOfPieces(garment = 400, lining = 13, interfacee = 13)
+                NumberOfPieces(garment = 400, lining = 13, `interface` = 13)
 
             var patternPieces = mutableListOf<PatternPieceDomain>()
             val patternInputData = PatternPieceDomain(id = 11, isCompleted = "true")
@@ -893,7 +893,7 @@ class WorkspaceViewModel @Inject constructor(
             interfaceWorkspaceItem.add(interfaceWorkspaceItemInputData)
 
             val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(
-                tailornaovaDesignId = 3,
+                tailornaovaDesignId = "1",
                 selectedTab = "ABC",
                 status = "DONE",
                 numberOfCompletedPiece = numberOfCompletedPiece,

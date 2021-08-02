@@ -21,7 +21,7 @@ class WorkspaceImpl @Inject constructor(
     }
 
     override fun updateOfflineStorageData(
-        tailornaovaDesignId: Int,
+        tailornaovaDesignId: String,
         selectedTab: String,
         status: String,
         numberOfCompletedPiece: NumberOfPieces,

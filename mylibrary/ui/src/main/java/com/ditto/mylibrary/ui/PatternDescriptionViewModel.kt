@@ -9,12 +9,9 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.model.PatternIdData
-import com.ditto.mylibrary.domain.model.PatternIdResponse
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents

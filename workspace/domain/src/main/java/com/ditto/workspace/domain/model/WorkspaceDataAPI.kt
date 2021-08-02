@@ -2,7 +2,7 @@ package com.ditto.workspace.domain.model
 data class WorkspaceDataAPI (
 
     //getWorkspace data response
-    var tailornaovaDesignId: Int? = 0,
+    var tailornaovaDesignId: String? = "",
     var selectedTab: String? ="",
     var status:String="",
     var numberOfPieces: NumberOfPieces,

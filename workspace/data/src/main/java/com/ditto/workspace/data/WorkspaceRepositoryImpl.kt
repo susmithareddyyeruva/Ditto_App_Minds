@@ -65,12 +65,12 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
     override fun insertWorkspaceData(workspaceData: WorkspaceDataAPI): Single<Any> {
         return Single.fromCallable{
-            offlinePatternDataDao.insertOfflinePatternData(workspaceData.toDomain())
+            //offlinePatternDataDao.insertOfflinePatternData(workspaceData.toDomain())
         }
     }
 
     override fun updateOfflineStorageData(
-        tailornaovaDesignId: Int,
+        tailornaovaDesignId: String,
         selectedTab: String,
         status: String,
         numberOfCompletedPiece: NumberOfPieces,

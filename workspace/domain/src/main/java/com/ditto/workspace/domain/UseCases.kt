@@ -9,7 +9,7 @@ interface GetWorkspaceData {
     fun invoke(): Single<Result<List<PatternsData>>>
     fun insert(patternsData: PatternsData): Single<Any>//follow same
     fun updateOfflineStorageData(
-        tailornaovaDesignId: Int,
+        tailornaovaDesignId: String,
         selectedTab: String,
         status: String,
         numberOfCompletedPiece: NumberOfPieces,

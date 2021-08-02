@@ -73,7 +73,7 @@ fun WSUpdateResult.toDomain(): WSUpdateResultDomain {
         c_traceWorkSpacePattern = this.c_traceWorkSpacePattern
     )
 }
-
+/*
 fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
     return OfflinePatternData(
         tailornaovaDesignId = this.tailornaovaDesignId,
@@ -85,7 +85,7 @@ fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItems.map { it.toDomain() }
     )
-}
+}*/
 
 fun OfflinePatternData.toDomain(): WorkspaceDataAPI {
     return WorkspaceDataAPI(
@@ -107,7 +107,7 @@ fun NumberOfPieces.toDomain(): com.ditto.storage.data.model.NumberOfCompletedPie
     return com.ditto.storage.data.model.NumberOfCompletedPiecesOffline(
         garment = this.garment,
         lining = this.lining,
-        interfacee = this.interfacee
+        `interface` = this.`interface`
     )
 }
 
@@ -115,7 +115,7 @@ fun com.ditto.storage.data.model.NumberOfCompletedPiecesOffline.toDomain(): Numb
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        interfacee = this.interfacee
+        `interface` = this.`interface`
     )
 }
 

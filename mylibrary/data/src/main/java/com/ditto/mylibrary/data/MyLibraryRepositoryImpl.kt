@@ -1,6 +1,8 @@
 package com.ditto.mylibrary.data
 
 import android.util.Log
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
@@ -9,19 +11,15 @@ import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.model.PatternIdData
-import com.ditto.mylibrary.domain.model.PatternIdResponse
+import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
-import core.CLIENT_ID
-import core.appstate.AppState
-import io.reactivex.Single
-import non_core.lib.Result
-import javax.inject.Inject
-import com.ditto.logger.Logger
-import com.ditto.logger.LoggerFactory
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
+import io.reactivex.Single
+import non_core.lib.Result
 import retrofit2.HttpException
+import javax.inject.Inject
 
 /**
  * Concrete class of MyLibraryRepository to expose MyLibrary Data from various sources (API, DB)
@@ -30,6 +28,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
     private val tailornovaApiService: @JvmSuppressWildcards TailornovaApiService,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
     private val patternsDao: @JvmSuppressWildcards PatternsDao,
+    private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val loggerFactory: LoggerFactory
 ) : MyLibraryRepository {
 
@@ -65,6 +64,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         return tailornovaApiService.getPatternDetailsByDesignId(BuildConfig.TAILORNOVA_BASEURL+get)
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
+                // patternType!= trial >> delete it
+                offlinePatternDataDao.deleteDemoPattern("trial")
+                offlinePatternDataDao.insertOfflinePatternData(it.toDomain())
+                //insert to db
             }.map {
                 Result.withValue(it)
             }
@@ -74,7 +77,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     logger.d("try block")
                     val error = it as HttpException
                     if (error != null) {
-                        logger.d("Error Onboarding")
+                        logger.d("Error Tailornova")
                     }
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)

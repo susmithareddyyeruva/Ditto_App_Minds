@@ -14,7 +14,7 @@ interface WorkspaceRepository {
     fun insertWorkspaceData(patternsData: WorkspaceDataAPI): Single<Any>
     //fun updateOfflineStorageData(tailornaovaDesignId:Int,selectedTab: String,status:String): Single<Any>
     fun updateOfflineStorageData(
-        tailornaovaDesignId: Int,
+        tailornaovaDesignId: String,
         selectedTab: String,
         status: String,
         numberOfCompletedPiece: NumberOfPieces,

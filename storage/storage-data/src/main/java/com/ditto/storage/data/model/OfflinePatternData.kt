@@ -4,15 +4,16 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "offline_pattern_data")
 data class OfflinePatternData(
 
     //getWorkspace data response
-    @PrimaryKey
+
     @ColumnInfo(name="tailornaovaDesignId")
     @SerializedName("tailornaovaDesignId")
-    var tailornaovaDesignId: Int? = 0,
+    var tailornaovaDesignId: String? = "",
 
     @ColumnInfo(name="selectedTab")
     @SerializedName("selectedTab")
@@ -40,20 +41,26 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "interfaceWorkspaceItems")
     @SerializedName("interfaceWorkspaceItems")
-    var interfaceWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList()/*,
+    var interfaceWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList(),
 
     // tailernova response
+    @PrimaryKey
     @ColumnInfo(name = "designId")
     @SerializedName("designId")
-    var id: Int = 0,
+    @NotNull
+    var id: String,
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
-    var name:String="",
+    var name:String?="",
 
     @ColumnInfo(name = "description")
     @SerializedName("description")
-    var description:String="",
+    var description:String?="",
+
+    @ColumnInfo(name = "patternType")
+    @SerializedName("patternType")
+    var patternType:String?="",
 
     @ColumnInfo(name = "numberOfPieces")
     @SerializedName("numberOfPieces")
@@ -61,35 +68,35 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "orderModificationDate")
     @SerializedName("orderModificationDate")
-    var orderModificationDate: String="",
+    var orderModificationDate: String?="",
 
     @ColumnInfo(name = "orderCreationDate")
     @SerializedName("orderCreationDate")
-    var orderCreationDate:String="",
+    var orderCreationDate:String?="",
 
     @ColumnInfo(name = "instructionFileName")
     @SerializedName("instructionFileName")
-    var instructionFileName:String="",
+    var instructionFileName:String?="",
 
     @ColumnInfo(name="instructionUrl")
     @SerializedName("instructionUrl")
-    var instructionUrl:String="",
+    var instructionUrl:String?="",
 
     @ColumnInfo(name="thumbnailImageUrl")
     @SerializedName("thumbnailImageUrl")
-    var thumbnailImageUrl:String="",
+    var thumbnailImageUrl:String?="",
 
     @ColumnInfo(name="thumbnailImageName")
     @SerializedName("thumbnailImageName")
-    var thumbnailImageName:String="",
+    var thumbnailImageName:String?="",
 
     @ColumnInfo(name="thumbnailEnlargedImageName")
     @SerializedName("thumbnailEnlargedImageName")
-    var thumbnailEnlargedImageName:String="",
+    var thumbnailEnlargedImageName:String?="",
 
     @ColumnInfo(name="patternDescriptionImageUrl")
     @SerializedName("patternDescriptionImageUrl")
-    var patternDescriptionImageUrl:String="",
+    var patternDescriptionImageUrl:String?="",
 
     @ColumnInfo(name = "selvages")
     @SerializedName("selvages")
@@ -101,29 +108,29 @@ data class OfflinePatternData(
 
     @ColumnInfo(name="brand")
     @SerializedName("brand")
-    var brand:String="",
+    var brand:String?="",
 
     @ColumnInfo(name="size")
     @SerializedName("size")
-    var size:String="",
+    var size:Int=0,
 
     @ColumnInfo(name="gender")
     @SerializedName("gender")
-    var gender:String="",
+    var gender:String?="",
 
     @ColumnInfo(name="customization")
     @SerializedName("customization")
-    var customization:Boolean=false,
+    var customization:Boolean?=false,
 
     @ColumnInfo(name="dressType")
     @SerializedName("dressType")
-    var dressType:String="",
+    var dressType:String?="",
 
     @ColumnInfo(name="suitableFor")
     @SerializedName("suitableFor")
-    var suitableFor:String="",
+    var suitableFor:String?="",
 
     @ColumnInfo(name="occasion")
     @SerializedName("occasion")
-    var occasion:String=""*/
+    var occasion:String?=""
 )
