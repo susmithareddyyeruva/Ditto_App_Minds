@@ -1975,10 +1975,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToCalibration() {
-
-        // for showing the calibration animation again
-        baseViewModel.isCalibrated.set(false)
-        viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
         // Moving to calibration fragment
         findNavController().navigate(
             R.id.action_workspace_to_calibration,

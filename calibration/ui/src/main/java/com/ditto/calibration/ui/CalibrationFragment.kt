@@ -316,6 +316,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun calibrateImage() {
+        // for showing the calibration animation again
+        baseViewModel.isCalibrated.set(false)
+
         logger.d("TRACE_ Projection : performCalibration  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
         viewModel.disposable += Observable.fromCallable {
