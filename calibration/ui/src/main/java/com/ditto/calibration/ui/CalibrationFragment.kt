@@ -602,9 +602,10 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        baseViewModel.isSetUpError.set(false)
         if (!baseViewModel.isCalibrated.get()){
             baseViewModel.isCalibrated.set(true)
-            baseViewModel.isUserNeedCalibrated.set(false)
+//            baseViewModel.isUserNeedCalibrated.set(false)
         }
         if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
             if (arguments?.getBoolean("isFromPatternDescription")!!) {
@@ -636,7 +637,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
             Utility.AlertType.CALIBRATION -> {
-                sendCalibrationPattern() //Sent Pattern Image
+                if(baseViewModel.isSetUpError.get()){
+                    activity?.onBackPressed()
+                }else{
+                    sendCalibrationPattern() //Sent Pattern Image
+                }
             }
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
@@ -677,6 +682,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
 
     override fun OnCalibrationReponse(calibrationResponse: Util.CalibrationType) {
+        baseViewModel.isSetUpError.set(false)
         logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar.getInstance().timeInMillis)
         showProgress(false)
         when (calibrationResponse) {
@@ -689,6 +695,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             }
 
             Util.CalibrationType.FailExtractingFeaturePoints -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_fail_extracting))
             }
 

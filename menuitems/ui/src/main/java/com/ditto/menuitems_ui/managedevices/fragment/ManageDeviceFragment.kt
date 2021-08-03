@@ -99,7 +99,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             ManageDeviceViewModel.Event.OnHideprogress -> bottomNavViewModel.showProgress.set(false)
             ManageDeviceViewModel.Event.OnSocketDisconnect -> {
                 viewModel.clearAppstate()
-                baseViewModel.isUserNeedCalibrated.set(false)
+//                baseViewModel.isUserNeedCalibrated.set(false)
                 baseViewModel.isCalibrated.set(false)
                 resetAdapter(false)
             }

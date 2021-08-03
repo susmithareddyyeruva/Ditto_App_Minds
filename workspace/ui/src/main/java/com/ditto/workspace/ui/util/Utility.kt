@@ -39,7 +39,6 @@ class Utility {
 
         val mPatternPieceList: MutableList<Int> = ArrayList()
         val dragData: ObservableField<DragData> = ObservableField()
-        val isMovedtoCalibration: ObservableBoolean = ObservableBoolean(false)
         var alert: AlertDialog? = null
         fun getAlertDialogSaveAndExit(
             context: Context,
