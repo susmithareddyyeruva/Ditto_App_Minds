@@ -71,7 +71,7 @@
             app:tabIndicatorColor="#A4211F"
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="bottom"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabPaddingEnd="@dimen/tab_padding"
             app:tabPaddingStart="@dimen/tab_padding"
             app:tabRippleColor="@android:color/transparent"
