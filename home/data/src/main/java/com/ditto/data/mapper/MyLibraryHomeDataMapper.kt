@@ -19,7 +19,7 @@ fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
 
 fun Prod.toDomain(): ProdDomain {
     return ProdDomain(
-        iD = this.iD,
+        iD = this.iD?:"",
         prodBrand = this.prodBrand?:"",
         prodGender = this.prodGender?:"",
         name = this.prodName?:"",

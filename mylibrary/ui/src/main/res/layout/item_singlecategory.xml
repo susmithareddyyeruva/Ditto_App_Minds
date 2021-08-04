@@ -10,19 +10,20 @@
         android:id="@+id/itemCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:fontFamily="@font/avenir_next_lt_pro_regular"
-        android:lines="2"
+        android:maxLength="15"
         android:maxLines="2"
-        android:maxLength="10"
         android:paddingStart="@dimen/menu_text_start"
         android:paddingTop="@dimen/item_cell_margin_top"
         android:paddingBottom="@dimen/item_cell_margin_top"
-        tools:text="E Commerce Type"
+        android:singleLine="false"
         android:textColor="@color/black"
         android:textSize="@dimen/item_action_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="E Commerce Type" />
 
     <ImageView
         android:id="@+id/imgNext"
