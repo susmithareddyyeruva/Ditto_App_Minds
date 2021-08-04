@@ -44,7 +44,7 @@ class VideosFragment(var list: List<VideosDomain>) :BaseFragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val videosADapter = context?.let {
+        val videosAdapter = context?.let {
             VideosAdapter(
                 it,list,object :WatchVideoClickListener{
                     override fun onVideoClick(path: String) {
@@ -77,7 +77,7 @@ class VideosFragment(var list: List<VideosDomain>) :BaseFragment(){
                 }
             )
         }
-        binding.recyclerVideos.adapter = videosADapter
+        binding.recyclerVideos.adapter = videosAdapter
         binding.recyclerVideos.layoutManager = LinearLayoutManager(context)
 
 
