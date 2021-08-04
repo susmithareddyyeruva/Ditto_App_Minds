@@ -7,6 +7,7 @@ import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
 import com.ditto.menuitems_ui.faq.ui.FAQFragment
 import com.ditto.menuitems_ui.faq.ui.FAQGlossaryfragmentViewModel
 import com.ditto.menuitems_ui.faq.ui.GlossaryFragment
+import com.ditto.menuitems_ui.faq.ui.VideosFragment
 
 class TabFaqAdapter(
     fm: FragmentManager,
@@ -28,7 +29,7 @@ class TabFaqAdapter(
                 GlossaryFragment(data?.Glossary?: emptyList())
             }
             2 -> {
-                FAQFragment(data?.FAQ?: emptyList())
+                VideosFragment(data?.Videos?: emptyList())
             }
             else -> getItem(position)
         }
