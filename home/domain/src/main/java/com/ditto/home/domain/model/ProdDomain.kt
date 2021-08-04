@@ -3,7 +3,7 @@ package com.ditto.home.domain.model
 import java.io.Serializable
 
 data class ProdDomain(
-    val iD: Int = 0,
+    val iD: String = "",
     val image: String = "",
     val name: String = "",
     val creationDate: String = "",

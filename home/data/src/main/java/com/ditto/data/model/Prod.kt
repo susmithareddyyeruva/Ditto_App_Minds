@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Prod(
-    @SerializedName("ID") val iD : Int=0,
+    @SerializedName("ID") val iD : String?="",
     @SerializedName("image") val image : String?="",
     @SerializedName("name") val prodName : String?="",
     @SerializedName("creationDate") val creationDate : String?="",
