@@ -181,18 +181,20 @@ class AllPatternsFragment : BaseFragment(),
 
     private fun setFilterMenuAdapter(position: Int) {
         val result = viewModel.menuList.keys.toList()   //setting menus
-        binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCategory.adapter =
-            FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
-                override fun onMenuSelected(menu: String) {
-                    Log.d("CLICKED===", menu)
-                    clickedMenu = menu
-                    (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
+        if (result.isNotEmpty()) {
+            binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCategory.adapter =
+                FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
+                    override fun onMenuSelected(menu: String) {
+                        Log.d("CLICKED===", menu)
+                        clickedMenu = menu
+                        (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
 
-                }
+                    }
 
-            })
-        setFilterActionAdapter(result[0])  //set menu items
+                })
+            setFilterActionAdapter(result[0])  //set menu items
+        }
     }
 
     private fun setFilterActionAdapter(keys: String) {
@@ -305,11 +307,13 @@ class AllPatternsFragment : BaseFragment(),
             }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-            isLastPage = false
+            binding.clearFilter.performClick()
+       /*     isLastPage = false
             currentPage = 1
             viewModel.patternArrayList.clear()
             viewModel.resultMap.clear()
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+            viewModel.map.clear()
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))*/
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
@@ -317,10 +321,6 @@ class AllPatternsFragment : BaseFragment(),
         }
         is AllPatternsViewModel.Event.OnSearchClick -> {
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            // open dialog
-        }
-        is AllPatternsViewModel.Event.OnSyncClick -> {
-            Log.d("pattern", "OnSyncClick : AllPatternsFragment")
             // open dialog
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {
