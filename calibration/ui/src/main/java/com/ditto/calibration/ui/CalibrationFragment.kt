@@ -713,6 +713,43 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             Util.CalibrationType.FailSavingCalibrationResult -> {
                 showAlert(resources.getString(R.string.calibrationerror_fail_save))
             }
+
+            Util.CalibrationType.CameraPixelsTooLow -> {
+                showAlert(resources.getString(R.string.calibrationerror_camera_pixel_too_low))
+            }
+
+            Util.CalibrationType.IncorrectImageOrientation -> {
+                showAlert(resources.getString(R.string.calibrationerror_incorrect_image_orientation))
+            }
+
+            Util.CalibrationType.UnableToDetectObjects -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_unable_to_detect_objects))
+            }
+
+            Util.CalibrationType.PatternImageIsCropped -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_pattern_image_is_cropped))
+            }
+
+            Util.CalibrationType.ProjectedRegionNotProper -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_projected_region_not_proper))
+            }
+
+            Util.CalibrationType.ImageTakenFromProjectorSide -> {
+                showAlert(resources.getString(R.string.calibrationerror_image_taken_from_projector_side))
+            }
+
+            Util.CalibrationType.MatIsRotated180Degrees -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_mat_is_rotated_180_degrees))
+            }
+
+            Util.CalibrationType.Else -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_else))
+            }
         }
     }
 
