@@ -46,15 +46,15 @@ class VideosFragment(var list: List<VideosDomain>) :BaseFragment(){
         super.onActivityCreated(savedInstanceState)
         val videosAdapter = context?.let {
             VideosAdapter(
-                it,list,object :WatchVideoClickListener{
-                    override fun onVideoClick(path: String) {
+                it,list,object :WatchVideoItemClickListener{
+                    override fun onVideoClick(tittle: String, path: String) {
                         logger.d("path== " + path,)
                         if (findNavController().currentDestination?.id == R.id.nav_graph_mainfaq ||
                             findNavController().currentDestination?.id == R.id.destination_faq_glossary ){
                             val bundle =
                                 bundleOf(
                                     "videoPath" to path,
-                                    "title" to "Glossary",
+                                    "title" to tittle,
                                     "from" to "tutorial"
                                 )
 
