@@ -380,7 +380,8 @@ class WorkspaceViewModel @Inject constructor(
             "Coordinates",
             "toSavedProject : " + data.value?.workspaceItems
         )
-        insertData(setWorkspaceDimensions(data.value!!))
+        insertData(setWorkspaceDimensions(data.value!!)) // for converting device workspace to virtul
+//        insertData(data.value!!)
     }
 
     // Set workspace Dimensions to Virtual
@@ -393,7 +394,6 @@ class WorkspaceViewModel @Inject constructor(
             workspaceItem.ycoordinate = workspaceItem.ycoordinate.times(scaleFactor.get().toFloat())
             workspaceItem.pivotX = workspaceItem.pivotX.times(scaleFactor.get().toFloat())
             workspaceItem.pivotY = workspaceItem.pivotY.times(scaleFactor.get().toFloat())
-
         }
         return patternsData
     }
@@ -408,7 +408,6 @@ class WorkspaceViewModel @Inject constructor(
             workspaceItem.ycoordinate = workspaceItem.ycoordinate.div(scaleFactor.get().toFloat())
             workspaceItem.pivotX = workspaceItem.pivotX.div(scaleFactor.get().toFloat())
             workspaceItem.pivotY = workspaceItem.pivotY.div(scaleFactor.get().toFloat())
-
         }
         return patternsData
     }
