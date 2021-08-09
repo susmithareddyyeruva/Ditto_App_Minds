@@ -6,7 +6,7 @@ import com.joann.fabrictracetransform.calibrate.CalibrationErrorCode
 class Util {
     companion object {
         internal fun handleResult(calibrationResponse: CalibrationErrorCode, callback: Callback) {
-            //logger.d("calibration - $calibrationResponse")
+            Log.d("Calibration", "Calibration handleResult - $calibrationResponse")
             when (calibrationResponse) {
                 CalibrationErrorCode.Success -> {
                     Log.d("Calibration", "Success")
@@ -38,6 +38,50 @@ class Util {
                     callback.OnCalibrationReponse(CalibrationType.FailSavingCalibrationResult)
                     // what to do?
                 }
+                CalibrationErrorCode.FailSavingCalibrationResult -> {
+                    Log.d("Calibration", "FailSavingCalibrationResult")
+                    callback.OnCalibrationReponse(CalibrationType.FailSavingCalibrationResult)
+                    // what to do?
+                }
+                CalibrationErrorCode.CameraPixelsTooLow -> {
+                    Log.d("Calibration", "CameraPixelsTooLow")
+                    callback.OnCalibrationReponse(CalibrationType.CameraPixelsTooLow)
+                }
+
+                CalibrationErrorCode.IncorrectImageOrientation -> {
+                    Log.d("Calibration", "IncorrectImageOrientation")
+                    callback.OnCalibrationReponse(CalibrationType.IncorrectImageOrientation)
+                }
+
+                CalibrationErrorCode.UnableToDetectObjects -> {
+                    Log.d("Calibration", "UnableToDetectObjects")
+                    callback.OnCalibrationReponse(CalibrationType.UnableToDetectObjects)
+                }
+
+                CalibrationErrorCode.PatternImageIsCropped -> {
+                    Log.d("Calibration", "PatternImageIsCropped")
+                    callback.OnCalibrationReponse(CalibrationType.PatternImageIsCropped)
+                }
+
+                CalibrationErrorCode.ProjectedRegionNotProper -> {
+                    Log.d("Calibration", "ProjectedRegionNotProper")
+                    callback.OnCalibrationReponse(CalibrationType.ProjectedRegionNotProper)
+                }
+
+                CalibrationErrorCode.ImageTakenFromProjectorSide -> {
+                    Log.d("Calibration", "ImageTakenFromProjectorSide")
+                    callback.OnCalibrationReponse(CalibrationType.ImageTakenFromProjectorSide)
+                }
+
+                CalibrationErrorCode.MatIsRotated180Degrees -> {
+                    Log.d("Calibration", "MatIsRotated180Degrees")
+                    callback.OnCalibrationReponse(CalibrationType.MatIsRotated180Degrees)
+                }
+
+                else->{
+                    Log.d("Calibration", "CalibrationErrorCode Else - $calibrationResponse")
+                    callback.OnCalibrationReponse(CalibrationType.Else)
+                }
             }
         }
     }
@@ -57,6 +101,22 @@ class Util {
 
         TooManyImages,
 
-        FailSavingCalibrationResult
+        FailSavingCalibrationResult,
+
+        CameraPixelsTooLow,
+
+        IncorrectImageOrientation,
+
+        UnableToDetectObjects,
+
+        PatternImageIsCropped,
+
+        ProjectedRegionNotProper,
+
+        ImageTakenFromProjectorSide,
+
+        MatIsRotated180Degrees,
+
+        Else
     }
 }
