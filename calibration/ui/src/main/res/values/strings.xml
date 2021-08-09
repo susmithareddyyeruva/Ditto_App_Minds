@@ -9,6 +9,14 @@
     <string name="calibrationerror_fail_calibration">Fail Calibration. Please try again.</string>
     <string name="calibrationerror_toomany_images">Too Many Images. Please try again.</string>
     <string name="calibrationerror_fail_save">Fail Saving Calibration Result. Please try again.</string>
+    <string name="calibrationerror_camera_pixel_too_low">Camera Pixels Too Low. Please try again.</string>
+    <string name="calibrationerror_incorrect_image_orientation">Incorrect Image Orientation. Please try again.</string>
+    <string name="calibrationerror_unable_to_detect_objects">Unable To Detect Objects. Please try again.</string>
+    <string name="calibrationerror_pattern_image_is_cropped">Pattern Image Is Cropped. Please try again.</string>
+    <string name="calibrationerror_projected_region_not_proper">Projected Region Not Proper. Please try again.</string>
+    <string name="calibrationerror_image_taken_from_projector_side">Image Taken From Projector Side. Please try again.</string>
+    <string name="calibrationerror_mat_is_rotated_180_degrees">Mat Is Rotated 180 Degrees. Please try again.</string>
+    <string name="calibrationerror_else">Calibration failed. Please try again.</string>
     <string name="back">Back</string>
     <string name="processing">Processing….</string>
     <string name="calibration_success">Calibration success!</string>
