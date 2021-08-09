@@ -73,7 +73,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     }
                 }
 
-
+                logger.d(it.localizedMessage)
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
@@ -143,7 +143,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         }
                     }
                 }
-
+                logger.d(it.localizedMessage)
 
                 Result.withError(
                     FilterError(errorMessage, it)
