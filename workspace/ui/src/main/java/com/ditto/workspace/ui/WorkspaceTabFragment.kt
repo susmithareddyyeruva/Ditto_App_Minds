@@ -2099,6 +2099,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     mWorkspaceEditor?.flipVertical()
                 }
             }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+//                showConnectivityPopup()
+            }
         }
 
     }

@@ -655,6 +655,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
         if (alertType == Utility.AlertType.CALIBRATION) {
+            baseViewModel.isSetUpError.set(false)
             if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
                 val bundle = bundleOf("isFromHome" to true)
                 findNavController().navigate(R.id.action_workspace_to_tutorial,bundle)
