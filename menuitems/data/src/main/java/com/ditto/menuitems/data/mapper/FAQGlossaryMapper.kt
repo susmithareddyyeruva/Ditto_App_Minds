@@ -16,7 +16,8 @@ fun FAqGlossaryResultClass.toDomain():FAQGlossaryResultDomain{
 fun FaqGlossaryResponse.toDomain():FaqGlossaryResponseDomain{
     return FaqGlossaryResponseDomain(
         FAQ = this.fAQ?.map { it.toDomain() },
-        Glossary = this.glossary?.map { it.toDomain() }
+        Glossary = this.glossary?.map { it.toDomain()},
+        Videos = this.videos?.map { it.toDomain() }
 
 
     )
@@ -25,6 +26,18 @@ fun FaqGlossaryResponse.toDomain():FaqGlossaryResponseDomain{
 
 fun FAQ.toDomain():FAQDomain{
     return  FAQDomain(
+        Answ= this.answ,
+        Ques = this.ques,
+        video_url = this.videoUrl,
+        web_url = this.webUrl,
+        SubAnsw = this.subAnsw.map { it.toDomain() }
+
+
+    )
+
+}
+fun Videos.toDomain():VideosDomain{
+    return  VideosDomain(
         Answ= this.answ,
         Ques = this.ques,
         video_url = this.videoUrl,
