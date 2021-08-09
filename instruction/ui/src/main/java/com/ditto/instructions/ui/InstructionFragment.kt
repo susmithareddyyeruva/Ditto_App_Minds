@@ -509,7 +509,7 @@ class InstructionFragment constructor(
         }
     }
 
-    override fun onNeutralButtonClicked() {
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
         TODO("Not yet implemented")
     }
 

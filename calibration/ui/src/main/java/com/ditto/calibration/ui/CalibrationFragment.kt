@@ -602,7 +602,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        if (!baseViewModel.isCalibrated.get()){
+        if (!baseViewModel.isCalibrated.get()) {
             baseViewModel.isCalibrated.set(true)
             baseViewModel.isUserNeedCalibrated.set(false)
         }
@@ -645,8 +645,13 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
     }
 
-    override fun onNeutralButtonClicked() {
-        Log.d("event", "onNeutralButtonClicked")
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
+        if (alertType == Utility.AlertType.CALIBRATION) {
+            if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
+                val bundle = bundleOf("isFromHome" to true)
+                findNavController().navigate(R.id.action_workspace_to_tutorial,bundle)
+            }
+        }
     }
 
     private fun restartCamera() {
@@ -712,6 +717,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             requireContext(),
             R.drawable.ic_calibration_failure,
             String.format(getString(R.string.calibration_failure), message),
+            "TUTORIAL",
             "RETRY",
             "SKIP CALIBRATION",
             this,

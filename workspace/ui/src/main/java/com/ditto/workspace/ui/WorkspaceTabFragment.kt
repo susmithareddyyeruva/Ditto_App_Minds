@@ -1336,7 +1336,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    override fun onNeutralButtonClicked() {
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
         //      TODO("Not yet implemented")
         // No navigation when SKIP button clicked
         //initiateprojection()

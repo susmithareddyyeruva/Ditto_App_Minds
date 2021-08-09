@@ -36,6 +36,22 @@
 
 
     <TextView
+        android:id="@+id/nutral_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/large_padding"
+        android:text="dismiss"
+        android:visibility="invisible"
+        android:layout_marginTop="34dp"
+        android:fontFamily="@font/avenir_next_lt_pro_demi"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/alert_options_Text"
+        android:layout_marginEnd="@dimen/end_margin_yes"
+        app:layout_constraintEnd_toStartOf="@+id/neg_text"
+       app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alert_message" />
+
+    <TextView
         android:id="@+id/neg_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,9 +61,8 @@
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
-        android:layout_marginEnd="@dimen/end_margin_yes"
         app:layout_constraintEnd_toStartOf="@+id/pos_txt"
-       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintStart_toEndOf="@+id/nutral_text"
         app:layout_constraintTop_toBottomOf="@+id/alert_message" />
 
 
