@@ -316,6 +316,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     private fun calibrateImage() {
+        // for showing the calibration animation again
+        baseViewModel.isCalibrated.set(false)
+
         logger.d("TRACE_ Projection : performCalibration  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
         viewModel.disposable += Observable.fromCallable {
@@ -602,9 +605,10 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        if (!baseViewModel.isCalibrated.get()) {
+        baseViewModel.isSetUpError.set(false)
+        if (!baseViewModel.isCalibrated.get()){
             baseViewModel.isCalibrated.set(true)
-            baseViewModel.isUserNeedCalibrated.set(false)
+//            baseViewModel.isUserNeedCalibrated.set(false)
         }
         if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
             if (arguments?.getBoolean("isFromPatternDescription")!!) {
@@ -636,7 +640,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
             Utility.AlertType.CALIBRATION -> {
-                sendCalibrationPattern() //Sent Pattern Image
+                if(baseViewModel.isSetUpError.get()){
+                    activity?.onBackPressed()
+                }else{
+                    sendCalibrationPattern() //Sent Pattern Image
+                }
             }
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
@@ -682,6 +690,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
 
     override fun OnCalibrationReponse(calibrationResponse: Util.CalibrationType) {
+        baseViewModel.isSetUpError.set(false)
         logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar.getInstance().timeInMillis)
         showProgress(false)
         when (calibrationResponse) {
@@ -690,23 +699,68 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             }
 
             Util.CalibrationType.InvalidImageFormat -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_invalid_image))
             }
 
             Util.CalibrationType.FailExtractingFeaturePoints -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_fail_extracting))
             }
 
             Util.CalibrationType.FailCalibration -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_fail_calibration))
             }
 
             Util.CalibrationType.TooManyImages -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_toomany_images))
             }
 
             Util.CalibrationType.FailSavingCalibrationResult -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_fail_save))
+            }
+
+            Util.CalibrationType.CameraPixelsTooLow -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_camera_pixel_too_low))
+            }
+
+            Util.CalibrationType.IncorrectImageOrientation -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_incorrect_image_orientation))
+            }
+
+            Util.CalibrationType.UnableToDetectObjects -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_unable_to_detect_objects))
+            }
+
+            Util.CalibrationType.PatternImageIsCropped -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_pattern_image_is_cropped))
+            }
+
+            Util.CalibrationType.ProjectedRegionNotProper -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_projected_region_not_proper))
+            }
+
+            Util.CalibrationType.ImageTakenFromProjectorSide -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_image_taken_from_projector_side))
+            }
+
+            Util.CalibrationType.MatIsRotated180Degrees -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_mat_is_rotated_180_degrees))
+            }
+
+            Util.CalibrationType.Else -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_else))
             }
         }
     }

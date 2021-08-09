@@ -384,7 +384,7 @@ class Utility @Inject constructor(
                         println("*****bytes.length = " + bytes?.size)
                         dataOutputStream.close()
                     } else {
-                        println("Projector Connection Failed")
+                        println("Projector Connection failed")
                         /*withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
@@ -394,7 +394,7 @@ class Utility @Inject constructor(
                         }*/
                     }
                 } catch (e: Exception) {
-                    println("Projector Connection Failed")
+                    println("Projector Connection failed")
                    /* withContext(Dispatchers.Main) {
                         Toast.makeText(
                             context,

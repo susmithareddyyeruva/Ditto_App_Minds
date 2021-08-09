@@ -798,11 +798,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     showWaitingMessage(resources.getString(R.string.projection_progress))
                 } else {
                     if (baseViewModel.activeSocketConnection.get()) {
-                        if (baseViewModel.isUserNeedCalibrated.get()) {
-                            sendBorderImage()
-                        } else {
-                            showCalibrationDialog()
-                        }
+                        sendBorderImage()
+//                        if (baseViewModel.isUserNeedCalibrated.get()) {
+//                            sendBorderImage()
+//                        } else {
+//                            showCalibrationDialog()
+//                        }
 
                     } else {
                         checkBluetoothWifiPermission()
@@ -971,9 +972,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         requireActivity().getWindow()
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
-        if (com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.get()) {
-            com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.set(false)
-        }
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get() != true) {
             viewModel.showDoubleTouchToZoom.set(false)
             // Hide double tap to zoom text after showing
@@ -1804,14 +1802,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             alertCalibration.dismiss()
             baseViewModel.isCalibrated.set(false)
             viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
-            baseViewModel.isUserNeedCalibrated.set(true)
+//            baseViewModel.isUserNeedCalibrated.set(true)
             //sendBorderImage()
         }
         negative.setOnClickListener {
             alertCalibration.dismiss()
             baseViewModel.isCalibrated.set(true)
             viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
-            baseViewModel.isUserNeedCalibrated.set(false)
+//            baseViewModel.isUserNeedCalibrated.set(false)
             /*if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }*/
@@ -1881,8 +1879,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
-
-
         }
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
@@ -1979,7 +1975,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToCalibration() {
-        com.ditto.workspace.ui.util.Utility.isMovedtoCalibration.set(true)
+        // Moving to calibration fragment
         findNavController().navigate(
             R.id.action_workspace_to_calibration,
             bundleOf(
@@ -2026,7 +2022,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         Utility.getCommonAlertDialogue(
             requireActivity(),
             "",
-            "Projector connection failed",
+            "Projector Connection failed",
             "CANCEL",
             "RETRY",
             this,
@@ -2152,6 +2148,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun setConnectButton() {
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
+        if(baseViewModel.isSetUpError.get()){
+            baseViewModel.isSetUpError.set(false)
+            viewModel.onClickRecalibrate()
+        }
     }
 
     private fun resetPatternPiecesAdapter() {
