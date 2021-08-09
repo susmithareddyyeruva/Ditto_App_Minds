@@ -352,8 +352,9 @@ class WorkspaceViewModel @Inject constructor(
 
     fun saveProject(projectName: String, isCompleted: Boolean?) {
         if (data.value?.status.equals("New")) {
-            data.value?.status = "Active"
-            data.value?.id = System.currentTimeMillis().toInt()
+//            TODO Commented the below lines for new Save Functionality
+//            data.value?.status = "Active"
+//            data.value?.id = System.currentTimeMillis().toInt()
             data.value?.patternName = projectName
             data.value?.completedPieces = Utility.progressCount.get()
             data.value?.selectedTab = Utility.fragmentTabs.get().toString()

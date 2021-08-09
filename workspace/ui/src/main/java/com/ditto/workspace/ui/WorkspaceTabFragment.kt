@@ -1423,33 +1423,34 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSaveAndExitPopup() {
         baseViewModel.isSaveExitButtonClicked.set(false)
-        val layout =
-            activity?.layoutInflater?.inflate(R.layout.workspace_save_and_exit_dialog, null)
-        if (viewModel.data.value?.status.equals("Completed") ||
-            (com.ditto.workspace.ui.util.Utility.progressCount.get() == viewModel.data.value?.totalPieces)
-        ) {
-            val checkbox = layout?.findViewById(R.id.complete_checkbox) as CheckBox
-            checkbox.visibility = View.GONE
-        }
-        layout?.let {
-            getAlertDialogSaveAndExit(
-                requireActivity(),
-                resources.getString(R.string.save_and_exit_dialog_title),
-                viewModel.data.value?.patternName
-                    ?: resources.getString(R.string.save_and_exit_dialog_message),
-                it,
-                resources.getString(R.string.exit),
-                resources.getString(R.string.save),
-                this,
-                Utility.AlertType.DEFAULT
-            )
-        }
+        onSaveButtonClicked(viewModel.data.value?.patternName.toString(),false)
+//        val layout =
+//            activity?.layoutInflater?.inflate(R.layout.workspace_save_and_exit_dialog, null)
+//        if (viewModel.data.value?.status.equals("Completed") ||
+//            (com.ditto.workspace.ui.util.Utility.progressCount.get() == viewModel.data.value?.totalPieces)
+//        ) {
+//            val checkbox = layout?.findViewById(R.id.complete_checkbox) as CheckBox
+//            checkbox.visibility = View.GONE
+//        }
+//        layout?.let {
+//            getAlertDialogSaveAndExit(
+//                requireActivity(),
+//                resources.getString(R.string.save_and_exit_dialog_title),
+//                viewModel.data.value?.patternName
+//                    ?: resources.getString(R.string.save_and_exit_dialog_message),
+//                it,
+//                resources.getString(R.string.exit),
+//                resources.getString(R.string.save),
+//                this,
+//                Utility.AlertType.DEFAULT
+//            )
+//        }
     }
 
     private fun getScaleFactor() {
         val width: Int = binding.includeWorkspacearea.layoutWorkspace.width ?: 1
-        val virtualWidth: Int = 2520
-//            binding.includeWorkspacearea.virtualWorkspaceDimension.width ?: 1
+        val virtualWidth: Int =
+            binding.includeWorkspacearea.virtualWorkspaceDimension.width ?: 2520
         val x: Double = (virtualWidth.toDouble().div(width.toDouble()))
         viewModel.scaleFactor.set(x)
         Log.d("TAG", "scalefactor : " + viewModel.scaleFactor.get())
@@ -1518,32 +1519,43 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             viewModel.spliced_pices_visibility.set(true)
         }
-
-        var theBitmap: Bitmap? = null
-        GlobalScope.launch {
-            try {
-                showProgress(toShow = true)
-                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
-//                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
-                theBitmap = imagename?.let { getBitmapFromSvgPngDrawable(it) }
-                withContext(Dispatchers.Main) {
-                    if (imagename != null) {
-                        mWorkspaceEditor?.addImage(
-                            theBitmap,
-                            viewModel.workspacedata,
-                            viewModel.scaleFactor.get(),
-                            showProjection,
-                            isDraggedPiece,
-                            this@WorkspaceTabFragment
-                        )
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }finally {
-                showProgress(toShow = false)
-            }
+        var theBitmap: Bitmap? = imagename?.let { getBitmapFromSvgPngDrawable(it) }
+        if (imagename != null) {
+            mWorkspaceEditor?.addImage(
+                theBitmap,
+                viewModel.workspacedata,
+                viewModel.scaleFactor.get(),
+                showProjection,
+                isDraggedPiece,
+                this@WorkspaceTabFragment
+            )
         }
+        // TODO To be included when using API images
+//        var theBitmap: Bitmap? = null
+//        GlobalScope.launch {
+//            try {
+//                showProgress(toShow = true)
+////                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
+////                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
+//                theBitmap = imagename?.let { getBitmapFromSvgPngDrawable(it) }
+//                withContext(Dispatchers.Main) {
+//                    if (imagename != null) {
+//                        mWorkspaceEditor?.addImage(
+//                            theBitmap,
+//                            viewModel.workspacedata,
+//                            viewModel.scaleFactor.get(),
+//                            showProjection,
+//                            isDraggedPiece,
+//                            this@WorkspaceTabFragment
+//                        )
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }finally {
+//                showProgress(toShow = false)
+//            }
+//        }
 
     }
 
@@ -1670,25 +1682,38 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
         val canvas = Canvas(bigBitmap)
         for (workspaceItem in workspaceItems) {
-            val myIcon: Drawable?
-            if (workspaceItem.splice.equals(SPLICE_YES) == true) {
-                myIcon = getDrawableFromString(
-                    context,
-                    getSplicePiece(
-                        workspaceItem.currentSplicedPieceRow,
-                        workspaceItem.currentSplicedPieceColumn,
-                        workspaceItem.splicedImages
-                    )?.imagePath
-                )
-            } else {
-                myIcon = getDrawableFromString(context, workspaceItem.imagePath)
-            }
+//            val myIcon: Drawable?
+//            if (workspaceItem.splice.equals(SPLICE_YES) == true) {
+//                myIcon = getDrawableFromString(
+//                    context,
+//                    getSplicePiece(
+//                        workspaceItem.currentSplicedPieceRow,
+//                        workspaceItem.currentSplicedPieceColumn,
+//                        workspaceItem.splicedImages
+//                    )?.imagePath
+//                )
+//            } else {
+//                myIcon = getDrawableFromString(context, workspaceItem.imagePath)
+//            }
+//
+//            val bitmap = getBitmap(
+//                myIcon as VectorDrawable,
+//                workspaceItem.isMirrorV,
+//                workspaceItem.isMirrorH
+//            )
 
-            val bitmap = getBitmap(
-                myIcon as VectorDrawable,
-                workspaceItem.isMirrorV,
-                workspaceItem.isMirrorH
-            )
+            val imagename: String?
+            if (workspaceItem.splice.equals(SPLICE_YES) == true) {
+                imagename = getSplicePiece(
+                    workspaceItem.currentSplicedPieceRow,
+                    workspaceItem.currentSplicedPieceColumn,
+                    workspaceItem.splicedImages
+                )?.imagePath
+            } else {
+                imagename  = workspaceItem.imagePath
+            }
+            var bitmap: Bitmap? = imagename?.let { getBitmapFromSvgPngDrawable(it) }
+
 
             val matrix = Matrix()
             matrix.preTranslate(
