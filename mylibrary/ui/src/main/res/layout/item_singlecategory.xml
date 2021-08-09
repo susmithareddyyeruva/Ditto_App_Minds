@@ -8,22 +8,22 @@
 
     <TextView
         android:id="@+id/itemCategoryName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/avenir_next_lt_pro_regular"
-        android:maxLength="15"
         android:maxLines="2"
         android:paddingStart="@dimen/menu_text_start"
         android:paddingTop="@dimen/item_cell_margin_top"
         android:paddingBottom="@dimen/item_cell_margin_top"
-        android:singleLine="false"
         android:textColor="@color/black"
         android:textSize="@dimen/item_action_text_size"
+        android:gravity="start"
+        app:layout_constraintEnd_toStartOf="@+id/imgNext"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="E Commerce Type" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="E Commerce Typewdvewegwegegwegqegqegsfqfqefqfwegwegwgwgwgwgwgwgwgwgewg" />
 
     <ImageView
         android:id="@+id/imgNext"
@@ -35,9 +35,10 @@
         android:baselineAlignBottom="true"
         android:src="@drawable/ic_right_arrow"
         android:visibility="visible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/itemCategoryName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toBottomOf="@+id/itemCategoryName"
+        app:layout_constraintTop_toTopOf="@id/itemCategoryName">
+
 
     </ImageView>
 
