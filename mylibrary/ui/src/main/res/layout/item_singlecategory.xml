@@ -35,10 +35,9 @@
         android:baselineAlignBottom="true"
         android:src="@drawable/ic_right_arrow"
         android:visibility="visible"
+        app:layout_constraintBaseline_toBaselineOf="@+id/itemCategoryName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/itemCategoryName"
-        app:layout_constraintTop_toTopOf="@id/itemCategoryName">
-
+        app:layout_constraintTop_toTopOf="parent">
 
     </ImageView>
 
