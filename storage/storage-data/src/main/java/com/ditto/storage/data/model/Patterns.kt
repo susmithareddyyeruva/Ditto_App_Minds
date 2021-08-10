@@ -44,7 +44,18 @@ data class Patterns(
     @ColumnInfo(name = "patternPieces")
     @SerializedName("patternPieces")
     var patternPieces: List<PatternPieces> = emptyList(),
-    @ColumnInfo(name = "workspaceItems")
+    /*@ColumnInfo(name = "workspaceItems")
     @SerializedName("workspaceItems")
-    var workspaceItems: MutableList<WorkspaceItems>? = ArrayList()
+    var workspaceItems: MutableList<WorkspaceItems>? = ArrayList(),*/
+    @ColumnInfo(name = "garmetWorkspaceItems")
+    @SerializedName("garmetWorkspaceItems")
+    var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+
+    @ColumnInfo(name = "liningWorkspaceItems")
+    @SerializedName("liningWorkspaceItems")
+    var liningWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+
+    @ColumnInfo(name = "interfaceWorkspaceItems")
+    @SerializedName("interfaceWorkspaceItems")
+    var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
 )

@@ -19,7 +19,12 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             descriptionImages = it.descriptionImages.map { it.toDomain() },
             selvages = it.selvages.map { it.toDomain() },
             patternPieces = it.patternPieces.map { it.toDomain() },
-            workspaceItems = it.workspaceItems?.map { it.toDomain() }?.toMutableList()
+            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines?.map { it.toDomain() }
+                ?.toMutableList(),
+            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines?.map { it.toDomain() }
+                ?.toMutableList(),
+            interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+                ?.toMutableList()
         )
     }
 }
@@ -36,7 +41,9 @@ internal fun Patterns.toDomain(): PatternsData {
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
-        workspaceItems = this.workspaceItems?.map { it.toDomain() }?.toMutableList()
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
     )
 }
 
@@ -122,7 +129,7 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
-
+//todo check below
 internal fun PatternsData.toDomain(): Patterns {
     return Patterns(
         id = this.id,
@@ -136,7 +143,9 @@ internal fun PatternsData.toDomain(): Patterns {
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
-        workspaceItems = this.workspaceItems?.map { it.toDomain() }?.toMutableList()
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        interfaceWorkspaceItemOfflines= this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
     )
 }
 

@@ -1,7 +1,7 @@
 package com.ditto.workspace.domain
 
 import com.ditto.login.domain.model.LoginUser
-import com.ditto.workspace.domain.model.PatternsData
+import com.ditto.workspace.domain.model.*
 import io.reactivex.Single
 import non_core.lib.Result
 
@@ -11,6 +11,22 @@ import non_core.lib.Result
 interface WorkspaceRepository {
     fun getWorkspaceData(): Single<Result<List<PatternsData>>>
     fun insertData(patternsData: PatternsData): Single<Any>
+    fun insertWorkspaceData(patternsData: WorkspaceDataAPI): Single<Any>
+    //fun updateOfflineStorageData(tailornaovaDesignId:Int,selectedTab: String,status:String): Single<Any>
+    fun updateOfflineStorageData(
+        tailornaovaDesignId: String,
+        selectedTab: String,
+        status: String,
+        numberOfCompletedPiece: NumberOfPieces,
+        patternPieces: List<PatternPieceDomain>,
+        garmetWorkspaceItems: List<WorkspaceItemDomain>,
+        liningWorkspaceItems: List<WorkspaceItemDomain>,
+        interfaceWorkspaceItem: List<WorkspaceItemDomain>
+    ): Single<Any>
     fun deleteAndInsert(id:Int, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>
+    fun getPatternDataByID(id:Int):Single<Result<PatternsData>>
+    fun getWorkspaceDataFromApi(): Single<Result<WorkspaceResultDomain>>
+    fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
+    fun createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
 }

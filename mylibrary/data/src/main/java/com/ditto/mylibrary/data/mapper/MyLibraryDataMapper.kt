@@ -1,7 +1,7 @@
 package com.ditto.mylibrary.data.mapper
 
-import com.ditto.storage.data.model.Patterns
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.storage.data.model.Patterns
 
 internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
     return this.map {
@@ -16,7 +16,9 @@ internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
             descriptionImages = it.descriptionImages,
             selvages = it.selvages,
             patternPieces = it.patternPieces,
-            workspaceItems = it.workspaceItems
+            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines,
+            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines,
+            interfaceWorkspaceItemOfflines =it.interfaceWorkspaceItemOfflines
         )
     }
 }
@@ -36,6 +38,8 @@ internal fun Patterns.toDomain(): MyLibraryData {
         descriptionImages = this.descriptionImages,
         selvages = this.selvages,
         patternPieces = this.patternPieces,
-        workspaceItems = this.workspaceItems
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines,
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines,
+        interfaceWorkspaceItemOfflines =this.interfaceWorkspaceItemOfflines
     )
 }

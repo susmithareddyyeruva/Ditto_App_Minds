@@ -1,14 +1,11 @@
 package core.di
 
 import android.content.Context
-import core.*
-import core.BASE_URL
 import core.MOCK_API_CERT
-import core.TOKEN_BASE_URL
-import core.di.scope.WbApiRetrofit
-import core.di.scope.WbBaseUrl
-import core.di.scope.WbTokenApiRetrofit
-import core.di.scope.WbTokenBaseUrl
+import core.OCAPI_PASSWORD
+import core.OCAPI_USERNAME
+import core.TAILONOVA_BASE_URL
+import core.di.scope.*
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
@@ -28,14 +25,14 @@ import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
-import kotlin.jvm.Throws
 
 
 @Module(
     includes = [
         WbBaseUrlModule::class,
+        WbTokenBaseUrlModule::class,
         WbSocketCertificateModule::class,
-        WbTokenBaseUrlModule :: class
+        WbTailornovaBaseUrlModule :: class
     ]
 )
 class RetrofitModule {
@@ -50,6 +47,15 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
+
+
+       /* httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+            val hv: HostnameVerifier =
+                HttpsURLConnection.getDefaultHostnameVerifier()
+            hv.verify("demandware.net", session)
+        })*/
+
+
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -75,7 +81,34 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
+       /* httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+            val hv: HostnameVerifier =
+                HttpsURLConnection.getDefaultHostnameVerifier()
+            hv.verify("demandware.net", session)
+        })*/
         // add logging interceptor only for DEBUG builds
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(logging)
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
+            .client(httpClient.build())
+            .build()
+    }
+
+    @Provides
+    @WbTailornovaApiRetrofit
+    fun provideTailornovaRetrofit(
+        @WbTailornovaBaseUrl baseUrl: String
+    ): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
 
@@ -93,7 +126,7 @@ class WbBaseUrlModule {
     @Provides
     @WbBaseUrl
     fun providesBaseUrl(): String {
-        return BASE_URL
+        return BuildConfig.BASEURL
     }
 }
 
@@ -102,7 +135,15 @@ class WbTokenBaseUrlModule {
     @Provides
     @WbTokenBaseUrl
     fun providesTokenBaseUrl(): String {
-        return TOKEN_BASE_URL
+        return BuildConfig.BASEURL
+    }
+}
+@Module
+class WbTailornovaBaseUrlModule {
+    @Provides
+    @WbTailornovaBaseUrl
+    fun providesTailornovaBaseUrl(): String {
+        return TAILONOVA_BASE_URL
     }
 }
 

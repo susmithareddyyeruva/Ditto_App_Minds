@@ -69,6 +69,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
             viewModel.fetchWorkspaceData()
+            viewModel.fetchWorkspaceDataFromAPI()
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -323,10 +324,19 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (action == MotionEvent.ACTION_UP) {
             if (!baseViewModel.isProjecting.get()) {
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
-                    viewModel.selectedTab.set(view?.tag as Int)
                     //onTabSwitchAlert()
+                    if (viewModel.selectedTab.get() == 0) {
+                        fragmentGarment.onSaveButtonClicked()
+                    } else if (viewModel.selectedTab.get() == 1) {
+                        fragmentLining.onSaveButtonClicked()
+                    } else {
+                        fragmentInterface.onSaveButtonClicked()
+                    }
+                    viewModel.selectedTab.set(view?.tag as Int)
+                    binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+
                     //switchTab()
-                    //return true
+                    return true
                 }
                 return false
             } else {

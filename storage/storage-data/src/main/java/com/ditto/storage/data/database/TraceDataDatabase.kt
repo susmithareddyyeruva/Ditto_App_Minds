@@ -6,6 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.ditto.storage.data.model.OfflinePatternData
 import com.ditto.storage.data.model.OnBoarding
 import com.ditto.storage.data.model.Patterns
 import com.ditto.storage.data.model.User
@@ -24,13 +25,14 @@ import java.util.concurrent.Executors
 /**
  * The Room database for this app
  */
-@Database(entities = [OnBoarding::class, User::class, Patterns::class], version = 1, exportSchema = false)
+@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatternData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TraceDataDatabase : RoomDatabase() {
 
     abstract fun onBoardingDataDao(): OnBoardingDao
     abstract fun userDataDao(): UserDao
     abstract fun patternDataDao(): PatternsDao
+    abstract fun offlinePatternDataDao():OfflinePatternDataDao
 
     companion object {
         val TAG = TraceDataDatabase::class.java.simpleName

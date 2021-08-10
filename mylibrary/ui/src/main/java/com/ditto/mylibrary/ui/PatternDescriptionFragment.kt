@@ -5,10 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -24,6 +21,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
@@ -31,6 +29,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.PDF_DOWNLOAD_URL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -96,7 +95,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         //baseViewModel.activeSocketConnection.set(false)
 
         if (viewModel.data.value == null) {
-            arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
+            arguments?.getInt("clickedID").toString()?.let { viewModel.clickedID.set(it) }
+            bottomNavViewModel.showProgress.set(true)
             viewModel.fetchPattern()
             setUIEvents()
         } else {
@@ -117,6 +117,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         } else {
             setUIForLoggedInUser()
         }
+        viewModel.isDataReceived.set(true)
     }
 
     private fun setUpUiForGuestUser(){
@@ -143,7 +144,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         setData()
-        when(viewModel.clickedID.get()){
+        when(viewModel.clickedID.get()?.toInt()){
              1-> setVisibilityForViews("RESUME",true,false,true,false, false,true,false)
             4-> setVisibilityForViews("WORKSPACE",true,false,false,true, false,false,true)
             8-> setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
@@ -157,9 +158,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setData(){
-        viewModel.patternName.set(viewModel.data.value?.patternName)
+        viewModel.patternName.set(viewModel.data.value?.name)
         viewModel.patternDescription.set(viewModel.data.value?.description)
-        viewModel.patternStatus.set(viewModel.data.value?.status)
+        //viewModel.patternStatus.set(viewModel.data.value?.status)
+        viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
 
 
@@ -433,6 +435,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
+                bottomNavViewModel.showProgress.set(false)
                 setUpUiBasedOnLoggedIn()
             }
 
@@ -445,8 +448,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                 ) {
+                    PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternPieces?.get(0)?.parentPattern)
+                        bundleOf("PatternName" to viewModel.data.value?.name)
                     findNavController().navigate(
                         R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -455,6 +459,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     Unit
             }
             PatternDescriptionViewModel.Event.OnDownloadComplete -> TODO()
+            PatternDescriptionViewModel.Event.OnDataloadFailed -> showDataFailedAlert()
         }
 
 
@@ -470,19 +475,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun setPatternImage() {
-
-        val res: Resources = requireActivity().resources
-        println("ImagefromDB${viewModel.data.value?.descriptionImages?.get(0)?.imagePath}")
-        if (!viewModel.data.value?.descriptionImages?.get(0)?.imagePath.equals("")) {
-            val resID: Int = res.getIdentifier(
-                viewModel.data.value?.descriptionImages?.get(0)?.imagePath,
-                "drawable",
-                requireContext().packageName
-            )
-            val drawable: Drawable = res.getDrawable(resID)
-            val bitmap = (drawable as BitmapDrawable).bitmap
-            image_pattern_desc.setImageBitmap(bitmap)
-        }
+        Glide.with(requireContext())
+            .load(viewModel.data.value?.patternDescriptionImageUrl)
+            .placeholder(R.drawable.ic_placeholder)
+            .into(binding.imagePatternDesc)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -549,7 +545,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
-        val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
+        //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
+        val bundle = bundleOf("PatternId" to 1) // todo shri see the pattern pieces
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
                 R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
@@ -726,6 +723,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.WIFI -> {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
             }
+            Utility.AlertType.NETWORK -> {
+                activity?.onBackPressed()
+            }
             Utility.AlertType.CALIBRATION -> {
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
@@ -740,7 +740,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-        }    }
+        }
+    }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
@@ -764,5 +765,20 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-        }    }
+        }
+    }
+
+    private fun showDataFailedAlert() {
+        bottomNavViewModel.showProgress.set(false)
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            getString(R.string.str_fetch_error),
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
+    }
 }

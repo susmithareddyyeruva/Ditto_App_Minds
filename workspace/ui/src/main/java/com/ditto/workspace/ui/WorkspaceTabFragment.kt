@@ -120,6 +120,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
         if (viewModel.data.value == null) {
             viewModel.fetchWorkspaceData()
+            viewModel.fetchWorkspaceDataFromAPI()
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
@@ -847,7 +848,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 //-----------------------------------------------------------------------------//
                 if (workspaceTab == viewModel.tabCategory) {
                     logger.d(" Duplicate Loading  ")
-                    val workspaceItems = viewModel.data.value?.workspaceItems
+                    val workspaceItems = viewModel.data.value?.garmetWorkspaceItemOfflines
+
                     // set id of workspace item to the oldest large value
                     com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
                         workspaceItems?.maxBy { it.id }?.id ?: 0
@@ -961,7 +963,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun onUpdateProgressCount() {
         binding.seekbarStatus.progress = 0
-        binding.seekbarStatus.max = viewModel.data?.value?.totalPieces!!
+        binding.seekbarStatus.max = viewModel.data?.value?.totalPieces ?: 0
         binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
     }
 
@@ -1344,7 +1346,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     override fun onSaveButtonClicked(projectName: String, isCompleted: Boolean?) {
-        viewModel.data.value?.workspaceItems = mWorkspaceEditor?.views?.toMutableList()
+
+        val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
+            if(a.equals("0")){
+                viewModel.data.value?.garmetWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
+                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+            }else if(a.equals("1")){
+                viewModel.data.value?.liningWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
+                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+            }else if(a.equals("2")){
+                viewModel.data.value?.interfaceWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
+                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+            }
         this.isCompleted = isCompleted
         val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
         if (pattern != null) {
@@ -1359,9 +1372,42 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
             }
-            viewModel.saveProject(projectName, isCompleted)
+            viewModel.saveProject(projectName, isCompleted,true)
         }
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+    }
+
+     fun onSaveButtonClicked() {
+        val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
+         val b= viewModel.selectedTab.get()
+            if(a.equals("0")){
+                viewModel.data.value?.garmetWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
+                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+            }else if(a.equals("1")){
+                viewModel.data.value?.liningWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
+                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+            }else if(a.equals("2")){
+                viewModel.data.value?.interfaceWorkspaceItemOfflines= mWorkspaceEditor?.views?.toMutableList()
+                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+            }
+        this.isCompleted = isCompleted
+       // val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
+       /* if (pattern != null) {
+            matchedPattern = pattern
+            showSameNameAlert()
+        } else {
+            if (baseViewModel.activeSocketConnection.get()) {
+                GlobalScope.launch {
+                    Utility.sendDittoImage(
+                        requireActivity(),
+                        "ditto_project"
+                    )
+                }
+            }
+        }*/
+         viewModel.saveProject("projectName", isCompleted,false)
+
+         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
     private fun checkProjectName(projectName: String, id: Int): PatternsData? {
@@ -1473,7 +1519,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             binding.seekbarStatus.progress = 0
-            binding.seekbarStatus.max = viewModel.data?.value?.totalPieces!!
+            binding.seekbarStatus.max = viewModel.data?.value?.totalPieces ?: 0
             binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
             logger.d("TRACE: Fetched progress count " + com.ditto.workspace.ui.util.Utility.progressCount.get())
         }
