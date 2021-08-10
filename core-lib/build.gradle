@@ -104,8 +104,8 @@ dependencies {
     */
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+//    implementation "com.github.bumptech.glide:glide:$glideVersion"
+//    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
     implementation project(':non-core-lib')
     implementation project(':nav-graph')

@@ -352,8 +352,9 @@ class WorkspaceViewModel @Inject constructor(
 
     fun saveProject(projectName: String, isCompleted: Boolean?) {
         if (data.value?.status.equals("New")) {
-            data.value?.status = "Active"
-            data.value?.id = System.currentTimeMillis().toInt()
+//            TODO Commented the below lines for new Save Functionality
+//            data.value?.status = "Active"
+//            data.value?.id = System.currentTimeMillis().toInt()
             data.value?.patternName = projectName
             data.value?.completedPieces = Utility.progressCount.get()
             data.value?.selectedTab = Utility.fragmentTabs.get().toString()
@@ -380,7 +381,8 @@ class WorkspaceViewModel @Inject constructor(
             "Coordinates",
             "toSavedProject : " + data.value?.workspaceItems
         )
-        insertData(setWorkspaceDimensions(data.value!!))
+        insertData(setWorkspaceDimensions(data.value!!)) // for converting device workspace to virtul
+//        insertData(data.value!!)
     }
 
     // Set workspace Dimensions to Virtual
@@ -393,7 +395,6 @@ class WorkspaceViewModel @Inject constructor(
             workspaceItem.ycoordinate = workspaceItem.ycoordinate.times(scaleFactor.get().toFloat())
             workspaceItem.pivotX = workspaceItem.pivotX.times(scaleFactor.get().toFloat())
             workspaceItem.pivotY = workspaceItem.pivotY.times(scaleFactor.get().toFloat())
-
         }
         return patternsData
     }
@@ -408,7 +409,6 @@ class WorkspaceViewModel @Inject constructor(
             workspaceItem.ycoordinate = workspaceItem.ycoordinate.div(scaleFactor.get().toFloat())
             workspaceItem.pivotX = workspaceItem.pivotX.div(scaleFactor.get().toFloat())
             workspaceItem.pivotY = workspaceItem.pivotY.div(scaleFactor.get().toFloat())
-
         }
         return patternsData
     }

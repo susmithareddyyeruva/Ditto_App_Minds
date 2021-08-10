@@ -322,8 +322,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         val adapter = PatternAdapter()
         binding.recyclerViewPatterns.adapter = adapter
         adapter.viewModel = viewModel
-        val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
-
+        val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" || it.status=="Active" }
         //for sorting
         Collections.sort(patternData,
             Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.patternName.compareTo(rhs!!.patternName) })

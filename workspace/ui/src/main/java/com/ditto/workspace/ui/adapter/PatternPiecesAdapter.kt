@@ -2,6 +2,7 @@ package com.ditto.workspace.ui.adapter
 
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -132,17 +133,25 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             }
 
         }
-        holder.patternsPiecesBinding.imageView.setOnLongClickListener {
-            val state = DragData(
-                Draggable.SELECT_TO_WORKSPACE,
-                position,
-                it.getWidth(),
-                it.getHeight(),
-                patternPieces.get(position),
-                null
-            )
-            val shadow = View.DragShadowBuilder(it)
-            ViewCompat.startDragAndDrop(it, null, shadow, state, 0)
+        holder.patternsPiecesBinding.imageView.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+            when (motionEvent?.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val state = DragData(
+                        Draggable.SELECT_TO_WORKSPACE,
+                        position,
+                        view.getWidth(),
+                        view.getHeight(),
+                        patternPieces.get(position),
+                        null
+                    )
+                    val shadow = View.DragShadowBuilder(view)
+                    ViewCompat.startDragAndDrop(view, null, shadow, state, 0)
+                }
+                else -> {
+                    false
+                }
+            }
+            true
         }
 
     }
