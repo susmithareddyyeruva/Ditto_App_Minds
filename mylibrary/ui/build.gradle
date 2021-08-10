@@ -103,7 +103,7 @@ dependencies {
     implementation project(path: ':menuitems-ui')
 
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    //annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 }
 
 repositories {
