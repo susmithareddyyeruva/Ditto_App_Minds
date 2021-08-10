@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.ui.R
+import com.ditto.mylibrary.ui.util.StringUtil
 import kotlinx.android.synthetic.main.item_singlecategory.view.*
 
 class FilterRvAdapter(
@@ -54,11 +55,12 @@ class FilterRvAdapter(
             )
             val typeface = ResourcesCompat.getFont(context, R.font.avenir_next_lt_pro_regular)
             holder.itemView.itemCategoryName.setTypeface(typeface)
-            holder.itemView.imgNext.visibility = View.GONE
+            holder.itemView.imgNext.visibility = View.INVISIBLE
         }
         val keyName = items[position].capitalize()
+        val resultString=StringUtil.formatCategory(keyName)
 
-        holder.itemView.itemCategoryName.text = keyName
+        holder.itemView.itemCategoryName.text = resultString
         holder.itemView.setOnClickListener {
             currentPos = position
             clickListener.onMenuSelected(items[position])
