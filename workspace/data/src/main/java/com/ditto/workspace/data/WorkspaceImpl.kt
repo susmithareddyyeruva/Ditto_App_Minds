@@ -38,6 +38,10 @@ class WorkspaceImpl @Inject constructor(
        return workspaceRepository.insertWorkspaceData(workspaceData)
     }
 
+    override fun getPatternDataByID(id: Int):Single<Result<PatternsData>>  {
+        return workspaceRepository.getPatternDataByID(id)
+    }
+
     override fun getUserDetails(): Single<Result<LoginUser>> {
         return workspaceRepository.getUserData()
     }

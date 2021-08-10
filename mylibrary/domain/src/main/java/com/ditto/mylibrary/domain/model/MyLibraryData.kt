@@ -16,5 +16,8 @@ data class MyLibraryData(
     var descriptionImages: List<DescriptionImages>,
     var selvages: List<Selvages>,
     var patternPieces: List<PatternPieces>,
-    var workspaceItems: MutableList<WorkspaceItems>? = ArrayList()
+   // var workspaceItems: MutableList<WorkspaceItems>? = ArrayList()
+    var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+    var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+    var liningWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList()
 )

@@ -19,6 +19,7 @@ interface GetWorkspaceData {
         interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any>
     fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
+    fun getPatternDataByID(id: Int):Single<Result<PatternsData>>
     fun getUserDetails():Single<Result<LoginUser>>
     fun deleteAndInsert(id: Int, patternsData: PatternsData): Single<Any>
     fun getWorkspaceData() : Single<Result<WorkspaceResultDomain>>

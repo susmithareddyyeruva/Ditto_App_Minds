@@ -12,5 +12,7 @@ data class PatternsData(
     var descriptionImages: List<DescriptionImages> = emptyList(),
     var selvages: List<Selvages> = emptyList(),
     var patternPieces: List<PatternPieces> = emptyList(),
-    var workspaceItems: MutableList<WorkspaceItems>? = ArrayList()
+    var liningWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+    var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+    var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList()
 )

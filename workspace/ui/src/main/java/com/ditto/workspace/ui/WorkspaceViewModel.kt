@@ -131,12 +131,12 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     //todo
-    fun insertData(value: PatternsData) {
+    fun insertData(value: PatternsData,closeScreen:Boolean) {
         disposable += getWorkspaceData.insert(value)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleInsertDataResult(it) }
+            .subscribeBy { handleInsertDataResult(it,closeScreen) }
     }
 
 
@@ -281,13 +281,15 @@ class WorkspaceViewModel @Inject constructor(
             }
         }
 
-        private fun handleInsertDataResult(result: Any) {
+        private fun handleInsertDataResult(result: Any, closeScreen: Boolean) {
             when (result) {
                 is Result.OnSuccess<*> -> {
                     Log.d("handleInsertDataResult", "OnSuccess")
                 }
             }
-            uiEvents.post(Event.CloseScreen)
+            if (closeScreen) {
+                uiEvents.post(Event.CloseScreen)
+            }
         }
 
        private fun handleFetchResult(result: Result<List<PatternsData>>) {
@@ -322,7 +324,7 @@ class WorkspaceViewModel @Inject constructor(
         }
 
         fun setWorkspaceView() {
-            if (data.value?.workspaceItems?.size ?: 0 > 0) {
+            if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0) {
 //            data.value= getWorkspaceDimensions(data.value)
                 uiEvents.post(Event.PopulateWorkspace)
             }
@@ -502,15 +504,15 @@ class WorkspaceViewModel @Inject constructor(
             uiEvents.post(Event.OnResetClicked)
         }
 
-        fun saveProject(projectName: String, isCompleted: Boolean?) {
+        fun saveProject(projectName: String, isCompleted: Boolean?, closeScreen: Boolean) {
             if (data.value?.status.equals("New")) {
-                data.value?.status = "Active"
-                data.value?.id = System.currentTimeMillis().toInt()
-                data.value?.patternName = projectName
+                //data.value?.status = "Active"
+                //data.value?.id = System.currentTimeMillis().toInt()
+                //data.value?.patternName = projectName
                 data.value?.completedPieces = Utility.progressCount.get()
                 data.value?.selectedTab = Utility.fragmentTabs.get().toString()
             } else {
-                data.value?.patternName = projectName
+                //data.value?.patternName = projectName
                 data.value?.completedPieces = Utility.progressCount.get()
                 data.value?.selectedTab = Utility.fragmentTabs.get().toString()
             }
@@ -530,16 +532,32 @@ class WorkspaceViewModel @Inject constructor(
             }
             Log.d(
                 "Coordinates",
-                "toSavedProject : " + data.value?.workspaceItems
+                "toSavedProject : " + data.value?.garmetWorkspaceItemOfflines
             )
-            insertData(setWorkspaceDimensions(data.value!!))
+            insertData(setWorkspaceDimensions(data.value!!),closeScreen)
         }
 
-        // Set workspace Dimensions to Virtual
+    // Set workspace Dimensions to Virtual
         fun setWorkspaceDimensions(value: PatternsData): PatternsData {
             val patternsData = value
-            val workspaceItems: List<WorkspaceItems> =
-                patternsData?.workspaceItems ?: emptyList()
+            var workspaceItems: List<WorkspaceItems> = emptyList()
+
+            val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
+
+            if(a.equals("0")){
+                workspaceItems =
+                    patternsData?.garmetWorkspaceItemOfflines
+                        ?: emptyList()
+            }else if(a.equals("1")){
+                workspaceItems =
+                    patternsData?.liningWorkspaceItemOfflines
+                        ?: emptyList()
+            }else if(a.equals("2")){
+                workspaceItems =
+                    patternsData?.interfaceWorkspaceItemOfflines
+                        ?: emptyList()
+            }
+
             for (workspaceItem in workspaceItems) {
                 workspaceItem.xcoordinate =
                     workspaceItem.xcoordinate.times(scaleFactor.get().toFloat())
@@ -556,7 +574,7 @@ class WorkspaceViewModel @Inject constructor(
         fun getWorkspaceDimensions(value: PatternsData?): PatternsData? {
             val patternsData = value
             val workspaceItems: List<WorkspaceItems> =
-                patternsData?.workspaceItems ?: emptyList()
+                patternsData?.garmetWorkspaceItemOfflines ?: emptyList()
             for (workspaceItem in workspaceItems) {
                 workspaceItem.xcoordinate =
                     workspaceItem.xcoordinate.div(scaleFactor.get().toFloat())
@@ -588,7 +606,7 @@ class WorkspaceViewModel @Inject constructor(
                 .whileSubscribed { it }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleInsertDataResult(it) }
+                .subscribeBy { handleInsertDataResult(it, true) }
         }
 
         fun checkMirroring() {
@@ -624,9 +642,9 @@ class WorkspaceViewModel @Inject constructor(
         }
 
         fun clickSaveAndExit() {
-            updateWSAPI(getWorkspaceInputDataToAPI())
+            //updateWSAPI(getWorkspaceInputDataToAPI())
             //createWSAPI(getWorkspaceInputDataToAPI())
-            // uiEvents.post(Event.OnClickSaveAndExit)
+             uiEvents.post(Event.OnClickSaveAndExit)
         }
 
         fun onClickInstructions() {

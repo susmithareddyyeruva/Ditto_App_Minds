@@ -101,6 +101,17 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getPatternDataByID(id: Int): Single<Result<PatternsData>> {
+
+        return Single.fromCallable {
+            val patternsData = patternsDao.getPatternDataByID(id)
+            if(patternsData!= null)
+                Result.withValue(patternsData.toDomain())
+            else
+                Result.withError(GetWorkspaceApiFetchError(""))
+        }
+    }
+
     override fun getWorkspaceDataFromApi(): Single<Result<WorkspaceResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
