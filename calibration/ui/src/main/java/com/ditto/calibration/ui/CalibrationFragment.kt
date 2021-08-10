@@ -606,7 +606,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
         baseViewModel.isSetUpError.set(false)
-        if (!baseViewModel.isCalibrated.get()){
+        if (!baseViewModel.isCalibrated.get()) {
             baseViewModel.isCalibrated.set(true)
 //            baseViewModel.isUserNeedCalibrated.set(false)
         }
@@ -640,9 +640,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
             Utility.AlertType.CALIBRATION -> {
-                if(baseViewModel.isSetUpError.get()){
+                if (baseViewModel.isSetUpError.get()) {
                     activity?.onBackPressed()
-                }else{
+                } else {
                     sendCalibrationPattern() //Sent Pattern Image
                 }
             }
@@ -655,10 +655,17 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
         if (alertType == Utility.AlertType.CALIBRATION) {
+            // Added black image while navigating to tutorial
+            GlobalScope.launch {
+                Utility.sendDittoImage(
+                    requireContext(),
+                    "solid_black"
+                )
+            }
             baseViewModel.isSetUpError.set(false)
             if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
                 val bundle = bundleOf("isFromHome" to true)
-                findNavController().navigate(R.id.action_workspace_to_tutorial,bundle)
+                findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
             }
         }
     }
