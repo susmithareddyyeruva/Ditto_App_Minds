@@ -2,13 +2,9 @@ package com.ditto.mylibrary.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
@@ -27,7 +23,6 @@ import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.ClickListener
 import com.ditto.mylibrary.ui.util.RecyclerTouchListener
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -124,7 +119,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
-        setUpToolbar()
+       // setUpToolbar()
         setUpNavigationDrawer()
         setFilterMenuAdapter(0)
         viewModel.fetchOnPatternData()
@@ -301,13 +296,13 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private fun showProgress(toShow: Boolean) {
         bottomNavViewModel.showProgress.set(toShow)
     }
-    private fun setUpToolbar() {
+ /*   private fun setUpToolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
+    }*/
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events

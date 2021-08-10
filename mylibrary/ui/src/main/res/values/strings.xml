@@ -6,7 +6,7 @@
     <string name="active_projects">Active Projects</string>
     <string name="completed_projects">Completed Projects</string>
     <string name="all_patterns">All Patterns</string>
-
+    <string name="my_folders">My Folders</string>
     <string name="connectivity">Connectivity</string>
     <string name="ble_wifi_connectivity">This app needs Bluetooth and WiFi connectivity.</string>
     <string name="later">Later</string>

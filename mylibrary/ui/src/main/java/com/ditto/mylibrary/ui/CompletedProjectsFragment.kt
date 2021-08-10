@@ -107,8 +107,8 @@ class CompletedProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnLoadingStarts -> {TODO()}
-            is AllPatternsViewModel.Event.OnLoadingCompleted -> {TODO()}
+            is AllPatternsViewModel.Event.OnLoadingStarts -> {}
+            is AllPatternsViewModel.Event.OnLoadingCompleted -> {}
         }
 
 }

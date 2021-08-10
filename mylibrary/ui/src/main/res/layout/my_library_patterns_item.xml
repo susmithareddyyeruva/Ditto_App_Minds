@@ -23,7 +23,7 @@
         android:layout_marginEnd="@dimen/margin_card_end"
         android:elevation="@dimen/elevation_card"
         android:onClick="@{() -> viewModel.onItemClick(patternValue.id)}"
-        app:cardBackgroundColor="@color/cardColor">
+        app:cardBackgroundColor="@color/white">
 
 
         <ImageView

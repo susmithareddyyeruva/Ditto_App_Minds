@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -52,6 +52,7 @@ class MyLibraryFragment : BaseFragment() {
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         toolbarViewModel.visibility.set(false)
         bottomNavViewModel.visibility.set(true)
+        setUpToolbar()
         setTabsAdapter()
 
         toolbarViewModel.isShowActionBar.set(false)
@@ -64,23 +65,24 @@ class MyLibraryFragment : BaseFragment() {
             }
 
     }
-
+    private fun setUpToolbar() {
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(false)
+        binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
     private fun setTabsAdapter() {
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
         adapter.addFragment(
-            ActiveProjectsFragment(), getString(
-                R.string.active_projects
+            AllPatternsFragment(), getString(
+                R.string.all_patterns
             )
         )
         adapter.addFragment(
             CompletedProjectsFragment(), getString(
-                R.string.completed_projects
-            )
-        )
-        adapter.addFragment(
-            AllPatternsFragment(), getString(
-                R.string.all_patterns
+                R.string.my_folders
             )
         )
         view_pager.adapter = adapter

@@ -76,7 +76,6 @@
             app:tabMinWidth="132dp"
             app:tabPaddingEnd="@dimen/dimen_0"
             app:tabPaddingStart="@dimen/dimen_0"
-            app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="@color/black"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="#A8A7A8" />
