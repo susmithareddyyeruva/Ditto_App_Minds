@@ -332,7 +332,7 @@ class InstructionFragment constructor(
      * [Function] Watch video click
      */
     private fun showVideoPopup() {
-        val position = Common.currentSelectedTab.get()
+//        val position = Common.currentSelectedTab.get()
         if (position < (viewModel.data.value?.instructions?.size ?: 0)) {
             val filePath = if (viewModel.instructionID.get() == 1) {
                 viewModel.data.value?.instructions?.get(position)?.instructions?.get(
