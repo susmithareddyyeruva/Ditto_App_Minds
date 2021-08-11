@@ -159,7 +159,7 @@ class Utility @Inject constructor(
 
                     .setNeutralButton(neutralButton, DialogInterface.OnClickListener { dialog, id ->
                         dialog.dismiss()
-                        callbackDialogListener.onNeutralButtonClicked()
+                        callbackDialogListener.onNeutralButtonClicked(alertType)
                     })
 
                 val alert = dialogBuilder.create()
@@ -384,7 +384,7 @@ class Utility @Inject constructor(
                         println("*****bytes.length = " + bytes?.size)
                         dataOutputStream.close()
                     } else {
-                        println("Projector Connection Failed")
+                        println("Projector Connection failed")
                         /*withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
@@ -394,7 +394,7 @@ class Utility @Inject constructor(
                         }*/
                     }
                 } catch (e: Exception) {
-                    println("Projector Connection Failed")
+                    println("Projector Connection failed")
                    /* withContext(Dispatchers.Main) {
                         Toast.makeText(
                             context,
@@ -602,6 +602,52 @@ class Utility @Inject constructor(
             }
         }
 
+        @SuppressLint("ResourceType")
+        fun showAlertDialogue(
+            context: Context?,
+            resourceDrawable : Int,
+            alertmessage: String,
+            nutralButton: String,
+            negativeButton: String,
+            positiveButton: String,
+            callbackDialogListener: CallbackDialogListener,
+            alertType:AlertType
+        ) {
+            if (context != null) {
+                val mDialogView =
+                    LayoutInflater.from(context).inflate(R.layout.custom_alert_calibration, null)
+                val dialogBuilder = AlertDialog.Builder(context)
+                dialogBuilder.setView(mDialogView)
+                val alert = dialogBuilder.create()
+                alert.setCancelable(false)
+                alert.show()
+                alert.window?.setBackgroundDrawable(null)
+                val image = mDialogView.findViewById(R.id.img_icon) as ImageView
+                image.setImageResource(resourceDrawable)
+                val message = mDialogView.findViewById(R.id.alert_message) as TextView
+                message.text = alertmessage
+                val nutral = mDialogView.findViewById(R.id.nutral_text) as TextView
+                nutral.text = nutralButton
+                nutral.visibility = View.VISIBLE
+                val negative = mDialogView.findViewById(R.id.neg_text) as TextView
+                negative.text = negativeButton
+                val positive = mDialogView.findViewById(R.id.pos_txt) as TextView
+                positive.text = positiveButton
+                nutral.setOnClickListener {
+                    alert.dismiss()
+                    callbackDialogListener.onNeutralButtonClicked(alertType)
+                }
+                negative.setOnClickListener {
+                    alert.dismiss()
+                    callbackDialogListener.onNegativeButtonClicked(alertType)
+                }
+                positive.setOnClickListener {
+                    alert.dismiss()
+                    callbackDialogListener.onPositiveButtonClicked(alertType)
+                }
+            }
+        }
+
          fun getTotalNumberOfDays(endDate:String?):String{
              val formatter = SimpleDateFormat("dd/MM/yyyy")
             val date = Date()
@@ -638,7 +684,7 @@ class Utility @Inject constructor(
     interface CallbackDialogListener {
         fun onPositiveButtonClicked(alertType: AlertType)
         fun onNegativeButtonClicked(alertType: AlertType)
-        fun onNeutralButtonClicked()
+        fun onNeutralButtonClicked(alertType: AlertType)
     }
 
     interface CustomCallbackDialogListener {
