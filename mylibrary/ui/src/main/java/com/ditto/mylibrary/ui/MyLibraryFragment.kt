@@ -32,6 +32,8 @@ class MyLibraryFragment : BaseFragment() {
 
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
+    private lateinit var allPatternsFragment: AllPatternsFragment
+    private lateinit var myFolderFragment: MyFolderFragment
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -50,11 +52,10 @@ class MyLibraryFragment : BaseFragment() {
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
-        toolbarViewModel.visibility.set(false)
-        bottomNavViewModel.visibility.set(true)
         setUpToolbar()
         setTabsAdapter()
-
+        toolbarViewModel.visibility.set(false)
+        bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
 
@@ -73,16 +74,17 @@ class MyLibraryFragment : BaseFragment() {
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
     private fun setTabsAdapter() {
+        allPatternsFragment= AllPatternsFragment()
+        myFolderFragment=MyFolderFragment()
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
-        val fr=AllPatternsFragment()
         adapter.addFragment(
-            AllPatternsFragment(), getString(
+           allPatternsFragment, getString(
                 R.string.all_patterns
             )
         )
         adapter.addFragment(
-            CompletedProjectsFragment(), getString(
+          myFolderFragment, getString(
                 R.string.my_folders
             )
         )
