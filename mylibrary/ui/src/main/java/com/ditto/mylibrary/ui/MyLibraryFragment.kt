@@ -75,6 +75,7 @@ class MyLibraryFragment : BaseFragment() {
     private fun setTabsAdapter() {
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
+        val fr=AllPatternsFragment()
         adapter.addFragment(
             AllPatternsFragment(), getString(
                 R.string.all_patterns
@@ -97,6 +98,7 @@ class MyLibraryFragment : BaseFragment() {
             }
             else -> {
                 Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
+
             }
 
         }

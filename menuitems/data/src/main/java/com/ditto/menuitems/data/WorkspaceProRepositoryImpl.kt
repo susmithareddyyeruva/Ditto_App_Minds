@@ -13,7 +13,7 @@ import com.ditto.menuitems.domain.WorkspaceProRepository
 import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import com.ditto.storage.data.database.UserDao
-import core.CLIENT_ID
+import core.CLIENT_ID_DEV
 import core.appstate.AppState
 import io.reactivex.Single
 import non_core.lib.Result
@@ -61,7 +61,7 @@ class WorkspaceProRepositoryImpl @Inject constructor(
 
     override fun postSwitchData(data: WSSettingsInputData): Single<Result<WSProSettingDomain>> {
 
-        return ws_settings.postSettingRequest( AppState.getCustID(),CLIENT_ID,
+        return ws_settings.postSettingRequest( AppState.getCustID(), CLIENT_ID_DEV,
             data,
             "Bearer "+AppState.getToken()!!)
             .doOnSuccess {

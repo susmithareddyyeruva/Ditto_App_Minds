@@ -7,7 +7,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import com.ditto.mylibrary.ui.*
 
 /**
  * Dagger module to provide LoginViewModel functionality.
@@ -49,5 +48,7 @@ interface MyLibraryFragmentModule {
 
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun patternInstructionsFragment(): PatternInstructionsFragment
+    @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
+    fun SearchDialogFragment(): SearchDialogFragment
 
 }
