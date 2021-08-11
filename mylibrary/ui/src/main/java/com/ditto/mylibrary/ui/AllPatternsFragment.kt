@@ -1,5 +1,8 @@
 package com.ditto.mylibrary.ui
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,30 +12,27 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.mylibrary.domain.model.Filter
-import com.ditto.mylibrary.domain.model.FilterItems
-import com.ditto.mylibrary.domain.model.FilterMenuItem
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
+import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
+import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
-import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
-import com.ditto.mylibrary.ui.util.ClickListener
-import com.ditto.mylibrary.ui.util.RecyclerTouchListener
+import com.ditto.mylibrary.ui.util.PaginationScrollListener
+import com.ditto.mylibrary.ui.util.getBackStackData
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import java.util.*
 import javax.inject.Inject
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener {
+class AllPatternsFragment : BaseFragment(),
+    Utility.CustomCallbackDialogListener {
 
 
     @Inject
@@ -44,63 +44,12 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     private val viewModel: AllPatternsViewModel by ViewModelDelegate()
     lateinit var binding: AllPatternsFragmentBinding
     private var patternId: Int = 0
-    private var isOpen = true
-    private var selectedItemsList = ArrayList<String>()
-    private lateinit var adapter: FilterRvAdapter
-    var menuItems = arrayListOf(
-        FilterMenuItem("Category", 1),
-        FilterMenuItem("Gender", 2),
-        FilterMenuItem("Brand", 3),
-        FilterMenuItem("Size", 4),
-        FilterMenuItem("Type", 5),
-        FilterMenuItem("Season", 6),
-        FilterMenuItem("Occasion", 7),
-        FilterMenuItem("Age Group", 8),
-        FilterMenuItem("Customization", 9)
-    )
-    var categoryFilterList = arrayListOf(
-        FilterItems("Subscribed"),
-        FilterItems("Purchased"),
-        FilterItems("Trials"),
-    )
-    val genderList = arrayListOf(
-        FilterItems("Male"),
-        FilterItems("Female")
-    )
-    val brandList = arrayListOf(
-        FilterItems("Lee"),
-        FilterItems("Addidas")
-    )
-    val sizeList = arrayListOf(
-        FilterItems("32"),
-        FilterItems("34"),
-        FilterItems("36"),
-        FilterItems("38")
-    )
-    val typeList = arrayListOf(
-        FilterItems("Dress"),
-        FilterItems("Skirt"),
-        FilterItems("Blouse")
-    )
-    val occasionList = arrayListOf(
-        FilterItems("Sleepwear"),
-        FilterItems("Lounge"),
-        FilterItems("Formal"),
-        FilterItems("Sport")
-    )
-    val suitableList = arrayListOf(
-        FilterItems("Children"),
-        FilterItems("Men"),
-        FilterItems("Women"),
-    )
-    val customizationList = arrayListOf(
-        FilterItems("Yes"),
-        FilterItems("No")
-    )
-    val seasonList = arrayListOf(
-        FilterItems("Winter"),
-        FilterItems("Summer")
-    )
+    private val allPatternAdapter = AllPatternsAdapter()
+    private var clickedMenu: String = ""
+    var isLastPage: Boolean = false
+    var isLoading: Boolean = false
+    private var currentPage = 1
+    lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -116,195 +65,163 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        /*     currentPage = 1
+             isLastPage = false
+             viewModel.patternArrayList.clear()
+             viewModel.resultMap.clear()*/
+    }
+
+    @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
-       // setUpToolbar()
+        // setUpToolbar()
         setUpNavigationDrawer()
-        setFilterMenuAdapter(0)
-        viewModel.fetchOnPatternData()
-        setList()
+        initializeAdapter()
 
 
-        // Add Item Touch Listener
-        binding.rvCategory.addOnItemTouchListener(RecyclerTouchListener(requireContext(), object :
-            ClickListener {
-            override fun onClick(view: View, position: Int) {
-                setFilterMenuAdapter(position)
-                when (position) {
-                    0 -> {//category
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            categoryFilterList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    1 -> {//Gender
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            genderList,
-                            menuItems[position].menuItem
-                        )
-                    }
-                    2 -> {//Brand
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            brandList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    3 -> {//Size
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            sizeList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    4 -> {//Type
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            typeList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    5 -> {//Season
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            seasonList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    6 -> {//Occasion
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            occasionList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    7 -> {//Suitable
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            suitableList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    8 -> {//Customization
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            customizationList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                }
-
-
-            }
-        }))
         binding.closeFilter.setOnClickListener {
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            binding.drawerLayout.closeDrawer(Gravity.END)
             setFilterMenuAdapter(0)
+            binding.rvCategory.smoothScrollToPosition(0)
+            binding.rvActions.smoothScrollToPosition(0)
         }
         binding.apply.setOnClickListener {
-            viewModel.createJson()
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            //  viewModel.createJson()
+            /**
+             * API call for getting filter Results....
+             */
+            if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                currentPage = 1
+                isLastPage = false
+                viewModel.patternArrayList.clear()
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+            }
+            binding.drawerLayout.closeDrawer(Gravity.END)
             setFilterMenuAdapter(0)
         }
 
         binding.clearFilter.setOnClickListener {
-            Filter.clearAll()
-            setAsDefault()
-            setList()
-            (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
+            viewModel.resultMap.clear()
+            viewModel.patternArrayList.clear()
+            viewModel.menuList.clear()
+            viewModel.setList()
+            currentPage = 1
+            isLastPage = false
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+            if (binding?.rvActions.adapter != null) {
+                binding.rvActions.adapter?.notifyDataSetChanged()
+                binding.drawerLayout.closeDrawer(Gravity.END)
+            }
 
         }
 
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
+        binding.textviewClear.setOnClickListener {
+            binding.clearFilter.performClick()
+        }
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            if (viewModel.resultMap.isEmpty()) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.fetchOnPatternData(
+                    viewModel.createJson(
+                        currentPage,
+                        value = ""
+                    )
+                )  //Initial API call
+            } else {
+                updatePatterns()
+                setFilterMenuAdapter(0)
+                /*            if (viewModel.isFilter == true) {
+                                binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+                            } else
+                                binding.viewDot.setImageResource(R.drawable.ic_filter)*/
+            }
+
+
+        }
+        getBackStackData<String>("KEY_SEARCH", true) { it ->
+            logger.d("SEARCH TERM : $it")
+            viewModel.resultMap.clear()
+            viewModel.patternArrayList.clear()
+            viewModel.menuList.clear()
+            viewModel.setList()
+            currentPage = 1
+            isLastPage = false
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
+            if (binding?.rvActions.adapter != null) {
+                // binding.rvActions.adapter?.notifyDataSetChanged()
+                setFilterMenuAdapter(0)
+                binding.drawerLayout.closeDrawer(Gravity.END)
+            }
+        }
+
+
     }
 
-    private fun setAsDefault() {
-        categoryFilterList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        brandList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        genderList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        seasonList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        occasionList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        suitableList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        typeList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        customizationList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        sizeList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
+    private fun updatePatterns() {// Updating the adapter
+
+        /*  viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
+              allPatternAdapter.setListData(items = list)
+          })*/
+        allPatternAdapter.setListData(items = viewModel.patternArrayList)
+        //  binding.toolbar.header_view_title.text =
+        getString(R.string.pattern_library_count, AppState.getPatternCount())
+        binding.tvFilterResult.text =
+            getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
 
-    private fun setList() {
-        Filter.genderList.addAll(genderList)
-        Filter.brandList.addAll(brandList)
-        Filter.categoryList.addAll(categoryFilterList)
-        Filter.sizeList.addAll(sizeList)
-        Filter.typeList.addAll(typeList)
-        Filter.occasionList.addAll(occasionList)
-        Filter.seasonList.addAll(seasonList)
-        Filter.suitableList.addAll(suitableList)
-        Filter.customizationList.addAll(customizationList)
-    }
-
-    private fun setFilterActionAdapter() {
-        binding.rvActions.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvActions.adapter = FilterActionsAdapter(categoryFilterList, this)
-    }
 
     private fun setFilterMenuAdapter(position: Int) {
-        binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCategory.adapter = FilterRvAdapter(menuItems, position)
-        setFilterActionAdapter()
+        val result = viewModel.menuList.keys.toList()   //setting menus
+        if (result.isNotEmpty()) {
+            binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCategory.adapter =
+                FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
+                    override fun onMenuSelected(menu: String) {
+                        Log.d("CLICKED===", menu)
+                        clickedMenu = menu
+                        (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
+
+                    }
+
+                })
+            setFilterActionAdapter(result[0])  //set menu items
+        }
     }
 
-    private fun showProgress(toShow: Boolean) {
-        bottomNavViewModel.showProgress.set(toShow)
-    }
- /*   private fun setUpToolbar() {
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(false)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }*/
+    private fun setFilterActionAdapter(keys: String) {
+        val filterDetailsAdapter = FilterDetailsAdapter(object :
+            FilterDetailsAdapter.SelectedItemsListener {
+            override fun onItemsSelected(title: String, isSelected: Boolean) {
+                logger.d("Items==" + title)
+                for ((key, value) in viewModel.menuList) {
+                    logger.d("After  clik selection : $key = $value")
+                }
+            }
+        }, viewModel.menuList, keys)
+        binding.rvActions.adapter = filterDetailsAdapter
+        filterDetailsAdapter.viewModel = viewModel
+        // filterDetailsAdapter.updateList(keys)
 
-    private fun setUIEvents() {
+    }
+    /*   private fun setUpToolbar() {
+
+         toolbarViewModel.isShowTransparentActionBar.set(false)
+           toolbarViewModel.isShowActionBar.set(false)
+           binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
+           binding.toolbar.header_view_title.text =
+               getString(R.string.pattern_library_count, AppState.getPatternCount())
+           (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+           (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+       }*/
+
+     fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -313,23 +230,45 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
     }
 
 
-    private fun setPatternAdapter() {
-        val adapter = PatternAdapter()
-        binding.recyclerViewPatterns.adapter = adapter
-        adapter.viewModel = viewModel
-        val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
+    private fun initializeAdapter() {
+        gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        binding.recyclerViewPatterns.layoutManager = gridLayoutManager
+        binding.recyclerViewPatterns.adapter = allPatternAdapter
+        allPatternAdapter.viewModel = viewModel
+        binding.recyclerViewPatterns?.addOnScrollListener(object :
+            PaginationScrollListener(gridLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
 
-        //for sorting
-        Collections.sort(patternData,
-            Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.patternName.compareTo(rhs!!.patternName) })
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
 
-        patternData?.let { adapter.setListData(it) }
+            override fun loadMoreItems() {
+                isLoading = true;
+                currentPage++
+                //you have to call loadmore items to get more data
+
+                if (currentPage <= viewModel.totalPageCount) {
+                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+                    }
+                } else {
+                    isLastPage = true
+                    isLoading = false
+                    currentPage = 1
+                }
+
+            }
+        })
     }
 
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment ||findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
@@ -341,7 +280,9 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
-            setPatternAdapter()
+            bottomNavViewModel.showProgress.set(false)
+            /* binding.toolbar.header_view_title.text =
+                 getString(R.string.pattern_library_count, viewModel.totalPatternCount)*/
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
@@ -351,39 +292,102 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         is AllPatternsViewModel.Event.OnFilterClick -> {
 
             binding.drawerLayout.openDrawer(Gravity.RIGHT)
-            //setPatternAdapter()
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
-            // setDrawerList()
-            // open dialog
         }
         is AllPatternsViewModel.Event.OnSearchClick -> {
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            // open dialog
+            if (findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+                findNavController().navigate(R.id.action_fragments_to_search)
+            } else {
+                Log.d("pattern", "OnSearchClick : ELSE")
+
+            }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-            //setPatternAdapter()
+            binding.clearFilter.performClick()
+            /*     isLastPage = false
+                 currentPage = 1
+                 viewModel.patternArrayList.clear()
+                 viewModel.resultMap.clear()
+                 viewModel.map.clear()
+                 viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))*/
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
-            //setPatternAdapter()
-            Log.d("pattern","onFilterClick : AllPatternsFragment")
+            Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // open dialog
-        }is AllPatternsViewModel.Event.OnSearchClick -> {
-            //setPatternAdapter()
-            Log.d("pattern","OnSearchClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnSyncClick -> {
-            //setPatternAdapter()
-            Log.d("pattern","OnSyncClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnLoadingStarts -> {
-            showProgress(true)
-        }is AllPatternsViewModel.Event.OnLoadingCompleted -> {
-            showProgress(false)
         }
-        else -> {
-            logger.d("OnClickPattern")
+        is AllPatternsViewModel.Event.OnSearchClick -> {
+            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
+            // open dialog
         }
+        AllPatternsViewModel.Event.OnResultSuccess -> {
+            bottomNavViewModel.showProgress.set(false)
+            /**
+             * Getting ALL PATTERNS LIST
+             */
+            isLoading = false
+            updatePatterns()
+        }
+        AllPatternsViewModel.Event.OnShowProgress -> {
+            bottomNavViewModel.showProgress.set(true)
+        }
+        AllPatternsViewModel.Event.OnHideProgress -> {
+            bottomNavViewModel.showProgress.set(false)
+        }
+        AllPatternsViewModel.Event.OnResultFailed -> {
+            bottomNavViewModel.showProgress.set(false)
+            showAlert()
+        }
+        AllPatternsViewModel.Event.NoInternet -> {
+            bottomNavViewModel.showProgress.set(false)
+            showAlert()
+        }
+        /* else -> {
+             Log.d("event", "Add project")
+         }*/
+        AllPatternsViewModel.Event.OnAddProjectClick -> {
+            Log.d("event", "Add project")
+        }
+        AllPatternsViewModel.Event.OnUpdateFilter -> {
+
+            if (binding?.rvCategory?.adapter == null || binding?.rvActions.adapter == null) {
+                Log.d("MAP  RESULT== ", "IF")
+                setFilterMenuAdapter(0)   //Setting Menu Items
+            } else {
+                Log.d("MAP  RESULT== ", "ELSE")
+                /*  (binding.rvActions.adapter as FilterDetailsAdapter).setListData(
+                      viewModel.menuList[clikedMenu]?.toList() ?: emptyList()
+                  )*/
+                binding.rvCategory.adapter?.notifyDataSetChanged()
+                // binding.rvActions.adapter?.notifyDataSetChanged()
+
+
+            }
+
+        }
+        AllPatternsViewModel.Event.UpdateFilterImage -> {
+            //  binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+        }
+        AllPatternsViewModel.Event.UpdateDefaultFilter -> {
+            // binding.viewDot.setImageResource(R.drawable.ic_filter)
+
+        }
+    }
+
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK
+            ,
+            Utility.Iconype.FAILED
+        )
     }
 
     private fun showPopupMenu(view: View, patternId: Int) {
@@ -402,7 +406,7 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -410,13 +414,37 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             }
 
             override fun onDrawerStateChanged(newState: Int) {
+                logger.d("OnDarwerState changed")
             }
         })
 
     }
 
-    override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
-        logger.d("Items==" + title)
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        // TODO("Not yet implemented")
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (data?.data.toString() == "KEY_SEARCH") {
+                Log.d("MAP  RESULT== ", "IF")
+                //Re directing to Video Screen
+
+            }
+        }
     }
 
 }

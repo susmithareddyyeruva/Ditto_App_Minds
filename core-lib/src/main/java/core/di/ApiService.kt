@@ -1,20 +1,20 @@
 package core.di
 
 
-import core.CLIENT_ID
-import core.OCAPI_PASSWORD
-import core.data.TokenRequest
-import core.data.TokenResultDomain
+import core.CLIENT_ID_DEV
 import core.data.model.TokenResult
+import core.lib.BuildConfig
 import io.reactivex.Single
-import retrofit2.http.*
-import non_core.lib.Result
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 interface ApiService {
 
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    @POST("oauth2/access_token?client_id=$CLIENT_ID")
+    @POST(BuildConfig.TOKEN_ENDURL+"?client_id=$CLIENT_ID_DEV")
     fun refreshToken(@FieldMap req : Map<String, String> ): Single <TokenResult>
 
 }
