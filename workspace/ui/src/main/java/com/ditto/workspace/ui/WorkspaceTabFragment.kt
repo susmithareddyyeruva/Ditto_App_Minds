@@ -843,39 +843,33 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
 
                 var workspaceItems: MutableList<WorkspaceItems>? = null
-                if (workspaceTab == viewModel.tabCategory) {
-                    logger.d(" Duplicate Loading  ")
+                if (viewModel.tabCategory.equals("Garment")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.garmetWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                    //workspaceItems = viewModel.data.value?.garmetWorkspaceItemOfflines!!
+                } else if (viewModel.tabCategory.equals("Lining")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.liningWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
 
-                    if(workspaceTab.equals("Garment")) {
-                        workspaceItems =
-                            viewModel.getWorkspaceDimensions(viewModel.data.value?.garmetWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
-                        //workspaceItems = viewModel.data.value?.garmetWorkspaceItemOfflines!!
-                    }else if(workspaceTab.equals("Lining")) {
-                        workspaceItems =
-                            viewModel.getWorkspaceDimensions(viewModel.data.value?.liningWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
-
-                        //workspaceItems = viewModel.data.value?.liningWorkspaceItemOfflines!!
-                    }else if(workspaceTab.equals("Interfacing")) {
-                        workspaceItems =
-                            viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
-                        //workspaceItems = viewModel.data.value?.interfaceWorkspaceItemOfflines!!
-                    }
-                    // set id of workspace item to the oldest large value
-                    com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
-                        workspaceItems?.maxBy { it.id }?.id ?: 0
-                    )
-                    var i = 0
-                    if (workspaceItems != null) {
-                        for (workspaceItem in workspaceItems) {
-                            i++
-                            viewModel.workspacedata = workspaceItem
-                            showToWorkspace(i == workspaceItems.size, false)
-                        }
-                    } else {
-                        logger.d("workspace item is null")
+                    //workspaceItems = viewModel.data.value?.liningWorkspaceItemOfflines!!
+                } else if (viewModel.tabCategory.equals("Interfacing")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                    //workspaceItems = viewModel.data.value?.interfaceWorkspaceItemOfflines!!
+                }
+                // set id of workspace item to the oldest large value
+                com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
+                    workspaceItems?.maxBy { it.id }?.id ?: 0
+                )
+                var i = 0
+                if (workspaceItems != null) {
+                    for (workspaceItem in workspaceItems) {
+                        i++
+                        viewModel.workspacedata = workspaceItem
+                        showToWorkspace(i == workspaceItems.size, false)
                     }
                 } else {
-                    logger.d(" Duplicate Loading  Else")
+                    logger.d("workspace item is null")
                 }
             }
             is WorkspaceViewModel.Event.onProject -> {
