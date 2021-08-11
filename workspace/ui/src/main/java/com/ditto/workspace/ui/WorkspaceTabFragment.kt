@@ -1,7 +1,6 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
-import android.R.attr.fragment
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -9,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -19,7 +17,6 @@ import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
@@ -45,7 +42,6 @@ import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
-import com.ditto.workspace.ui.util.Utility.Companion.getAlertDialogSaveAndExit
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.appstate.AppState
@@ -833,8 +829,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 activity?.onBackPressed()
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
-                // For converting vertual dimension to device coordinates
-                viewModel.data?.value = viewModel.getWorkspaceDimensions(viewModel.data?.value)
                 //Loading only the current tab while populating
                 //----------------Code change should be done for getting the saved tab------------//
                 var workspaceTab: String
@@ -846,10 +840,26 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
                 //-----------------------------------------------------------------------------//
+
+
+                var workspaceItems: MutableList<WorkspaceItems>? = null
                 if (workspaceTab == viewModel.tabCategory) {
                     logger.d(" Duplicate Loading  ")
-                    val workspaceItems = viewModel.data.value?.garmetWorkspaceItemOfflines
 
+                    if(workspaceTab.equals("Garment")) {
+                        workspaceItems =
+                            viewModel.getWorkspaceDimensions(viewModel.data.value?.garmetWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                        //workspaceItems = viewModel.data.value?.garmetWorkspaceItemOfflines!!
+                    }else if(workspaceTab.equals("Lining")) {
+                        workspaceItems =
+                            viewModel.getWorkspaceDimensions(viewModel.data.value?.liningWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+
+                        //workspaceItems = viewModel.data.value?.liningWorkspaceItemOfflines!!
+                    }else if(workspaceTab.equals("Interfacing")) {
+                        workspaceItems =
+                            viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                        //workspaceItems = viewModel.data.value?.interfaceWorkspaceItemOfflines!!
+                    }
                     // set id of workspace item to the oldest large value
                     com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
                         workspaceItems?.maxBy { it.id }?.id ?: 0

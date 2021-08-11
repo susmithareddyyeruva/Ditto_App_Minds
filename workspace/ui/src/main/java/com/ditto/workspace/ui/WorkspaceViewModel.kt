@@ -323,12 +323,12 @@ class WorkspaceViewModel @Inject constructor(
             }
         }
 
-        fun setWorkspaceView() {
-            if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0) {
-//            data.value= getWorkspaceDimensions(data.value)
-                uiEvents.post(Event.PopulateWorkspace)
-            }
+    fun setWorkspaceView() {
+
+        if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.liningWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.interfaceWorkspaceItemOfflines?.size ?: 0 > 0) {
+            uiEvents.post(Event.PopulateWorkspace)
         }
+    }
 
         fun projectWorkspace() {
             uiEvents.post(Event.onProject)
@@ -571,20 +571,28 @@ class WorkspaceViewModel @Inject constructor(
         }
 
         // Set workspace Dimensions to Virtual
-        fun getWorkspaceDimensions(value: PatternsData?): PatternsData? {
-            val patternsData = value
-            val workspaceItems: List<WorkspaceItems> =
-                patternsData?.garmetWorkspaceItemOfflines ?: emptyList()
-            for (workspaceItem in workspaceItems) {
-                workspaceItem.xcoordinate =
-                    workspaceItem.xcoordinate.div(scaleFactor.get().toFloat())
-                workspaceItem.ycoordinate =
-                    workspaceItem.ycoordinate.div(scaleFactor.get().toFloat())
-                workspaceItem.pivotX = workspaceItem.pivotX.div(scaleFactor.get().toFloat())
-                workspaceItem.pivotY = workspaceItem.pivotY.div(scaleFactor.get().toFloat())
+        fun getWorkspaceDimensions(workspaceItems: List<WorkspaceItems>?): List<WorkspaceItems>? {
 
+
+            /*if (workspaceTab.equals("Garment")) {
+                workspaceItems = patternsData?.garmetWorkspaceItemOfflines ?: emptyList()
+            } else if (workspaceTab.equals("Lining")) {
+                workspaceItems = patternsData?.liningWorkspaceItemOfflines ?: emptyList()
+            } else if (workspaceTab.equals("Interfacing")) {
+                workspaceItems = patternsData?.interfaceWorkspaceItemOfflines ?: emptyList()
+            }*/
+            if (workspaceItems != null) {
+                for (workspaceItem in workspaceItems) {
+                    workspaceItem.xcoordinate =
+                        workspaceItem.xcoordinate.div(scaleFactor.get().toFloat())
+                    workspaceItem.ycoordinate =
+                        workspaceItem.ycoordinate.div(scaleFactor.get().toFloat())
+                    workspaceItem.pivotX = workspaceItem.pivotX.div(scaleFactor.get().toFloat())
+                    workspaceItem.pivotY = workspaceItem.pivotY.div(scaleFactor.get().toFloat())
+
+                }
             }
-            return patternsData
+            return workspaceItems
         }
 
         fun overridePattern(
