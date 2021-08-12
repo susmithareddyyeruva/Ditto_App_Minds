@@ -4,7 +4,6 @@ import android.content.Context
 import core.MOCK_API_CERT
 import core.OCAPI_PASSWORD
 import core.OCAPI_USERNAME
-import core.TAILONOVA_BASE_URL
 import core.di.scope.*
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
@@ -140,7 +139,7 @@ class WbTailornovaBaseUrlModule {
     @Provides
     @WbTailornovaBaseUrl
     fun providesTailornovaBaseUrl(): String {
-        return TAILONOVA_BASE_URL
+        return BuildConfig.TAILORNOVA_ENDURL
     }
 }
 

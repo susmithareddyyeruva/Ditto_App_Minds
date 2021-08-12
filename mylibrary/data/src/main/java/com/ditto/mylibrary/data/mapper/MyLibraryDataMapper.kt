@@ -6,7 +6,7 @@ import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.model.MyLibraryResult
 import com.ditto.mylibrary.model.Prod
 import com.ditto.storage.data.model.Patterns
-import com.ditto.storage.data.model.Patterns
+
 
 internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
     return this.map {

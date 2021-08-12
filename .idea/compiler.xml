@@ -2,6 +2,45 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
+      <module name="ditto-android-new2.app" target="11" />
+      <module name="ditto-android-new2.calibration-data" target="11" />
+      <module name="ditto-android-new2.calibration-domain" target="11" />
+      <module name="ditto-android-new2.calibration-ui" target="11" />
+      <module name="ditto-android-new2.connectivity-ui" target="11" />
+      <module name="ditto-android-new2.core-lib" target="11" />
+      <module name="ditto-android-new2.dittoProjectorApp" target="11" />
+      <module name="ditto-android-new2.home-data" target="11" />
+      <module name="ditto-android-new2.home-domain" target="11" />
+      <module name="ditto-android-new2.home-ui" target="11" />
+      <module name="ditto-android-new2.howto-data" target="11" />
+      <module name="ditto-android-new2.howto-domain" target="11" />
+      <module name="ditto-android-new2.howto-ui" target="11" />
+      <module name="ditto-android-new2.instructions-data" target="11" />
+      <module name="ditto-android-new2.instructions-domain" target="11" />
+      <module name="ditto-android-new2.instructions-ui" target="11" />
+      <module name="ditto-android-new2.logger" target="11" />
+      <module name="ditto-android-new2.login-data" target="11" />
+      <module name="ditto-android-new2.login-domain" target="11" />
+      <module name="ditto-android-new2.login-ui" target="11" />
+      <module name="ditto-android-new2.menuitems-data" target="11" />
+      <module name="ditto-android-new2.menuitems-domain" target="11" />
+      <module name="ditto-android-new2.menuitems-ui" target="11" />
+      <module name="ditto-android-new2.mylibrary-data" target="11" />
+      <module name="ditto-android-new2.mylibrary-domain" target="11" />
+      <module name="ditto-android-new2.mylibrary-ui" target="11" />
+      <module name="ditto-android-new2.nav-graph" target="11" />
+      <module name="ditto-android-new2.onboarding-data" target="11" />
+      <module name="ditto-android-new2.onboarding-domain" target="11" />
+      <module name="ditto-android-new2.onboarding-ui" target="11" />
+      <module name="ditto-android-new2.splash-data" target="11" />
+      <module name="ditto-android-new2.splash-domain" target="11" />
+      <module name="ditto-android-new2.splash-ui" target="11" />
+      <module name="ditto-android-new2.storage-data" target="11" />
+      <module name="ditto-android-new2.tutorial-ui" target="11" />
+      <module name="ditto-android-new2.videoplayer" target="11" />
+      <module name="ditto-android-new2.workspace-data" target="11" />
+      <module name="ditto-android-new2.workspace-domain" target="11" />
+      <module name="ditto-android-new2.workspace-ui" target="11" />
       <module name="ditto-android.app" target="1.8" />
       <module name="ditto-android.calibration-data" target="1.8" />
       <module name="ditto-android.calibration-domain" target="1.8" />
