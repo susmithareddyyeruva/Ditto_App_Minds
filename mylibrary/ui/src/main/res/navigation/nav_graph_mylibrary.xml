@@ -14,7 +14,10 @@
         android:name="com.ditto.mylibrary.ui.MyLibraryFragment"
         android:label="my_library_fragment"
         tools:layout="@layout/my_library_fragment">
-
+        <action
+            android:id="@+id/action_fragments_to_search"
+            app:popUpTo="@id/allPatternsFragment"
+            app:destination="@id/searchFragment" />
         <action
             android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
             app:destination="@id/patternDescriptionFragment"
@@ -37,10 +40,10 @@
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
-        <action
+      <!--  <action
             android:id="@+id/action_fragments_to_search"
             app:popUpTo="@id/allPatternsFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/patternDescriptionFragment"

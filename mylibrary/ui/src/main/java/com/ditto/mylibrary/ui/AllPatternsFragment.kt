@@ -297,7 +297,7 @@ class AllPatternsFragment : BaseFragment(),
         is AllPatternsViewModel.Event.OnSearchClick -> {
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            if (findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
                 findNavController().navigate(R.id.action_fragments_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
@@ -315,10 +315,6 @@ class AllPatternsFragment : BaseFragment(),
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
-            // open dialog
-        }
-        is AllPatternsViewModel.Event.OnSearchClick -> {
-            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             // open dialog
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {

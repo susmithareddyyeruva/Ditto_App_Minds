@@ -57,7 +57,7 @@
     <dimen name="clear_text_margin_top">20dp</dimen>
     <dimen name="recy_margin_top">15dp</dimen>
     <dimen name="guidline_clear_text">.039</dimen>
-    <dimen name="guidline_top">.09</dimen>
+    <dimen name="guidline_top">0</dimen>c
     <dimen name="distance_after_icon_sync">5dp</dimen>
     <dimen name="size_34sp">34sp</dimen>
     <dimen name="size_12sp">12sp</dimen>

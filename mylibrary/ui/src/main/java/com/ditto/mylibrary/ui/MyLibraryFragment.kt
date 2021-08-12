@@ -104,13 +104,29 @@ class MyLibraryFragment : BaseFragment() {
                 Toast.makeText(context, "adadjhf", Toast.LENGTH_SHORT).show()
             }
             MyLibraryViewModel.Event.OnFilterClick -> {
-                allPatternsFragment.onFilterClick()
+                val tabPosition = binding.tabLayout.selectedTabPosition
+                if (tabPosition == 0)
+                    allPatternsFragment.onFilterClick()
+                else {
+
+                }
             }
             MyLibraryViewModel.Event.OnSyncClick -> {
-                allPatternsFragment.onSyncClick()
+                val tabPosition = binding.tabLayout.selectedTabPosition
+                if (tabPosition == 0)
+                    allPatternsFragment.onSyncClick()
+                else {
+
+                }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
-                allPatternsFragment.onSearchClick()
+                val tabPosition = binding.tabLayout.selectedTabPosition
+                if (tabPosition == 0)
+                    allPatternsFragment.onSearchClick()
+                else {
+
+                }
+
             }
             else -> {
                 Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")

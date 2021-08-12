@@ -179,7 +179,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".10" />
+            app:layout_constraintGuide_percent=".09" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
