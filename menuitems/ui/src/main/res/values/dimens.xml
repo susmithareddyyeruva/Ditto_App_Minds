@@ -18,6 +18,7 @@
     <dimen name="button_width">133dp</dimen>
     <dimen name="button_scan_width">146dp</dimen>
     <dimen name="padding_9">9dp</dimen>
+    <dimen name="padding_x">10dp</dimen>
     <dimen name="padding_11">11dp</dimen>
     <dimen name="button_end_margin">9dp</dimen>
     <dimen name="size_14sp">14sp</dimen>
@@ -45,4 +46,6 @@
     <dimen name="item_bottom_margin">10dp</dimen>
     <dimen name="ble_icon_width">8.271dp</dimen>
     <dimen name="ble_icon_height">14dp</dimen>
+    <dimen name="margin_x">12dp</dimen>
+    <dimen name="search_height">32dp</dimen>
 </resources>

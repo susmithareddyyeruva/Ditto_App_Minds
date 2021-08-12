@@ -89,6 +89,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             .subscribe {
                 handleEvent(it)
             }
+        window.navigationBarColor = resources.getColor(R.color.nav_item_grey2);
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
     }
 
     private fun handleEvent(

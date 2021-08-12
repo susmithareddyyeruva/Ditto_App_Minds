@@ -54,7 +54,7 @@ class ActiveProjectsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
-        viewModel.fetchOnPatternData()
+        viewModel.fetchOnPatternData( viewModel.createJson(1,value = ""))
     }
 
     private fun setUIEvents() {
@@ -85,6 +85,7 @@ class ActiveProjectsFragment : BaseFragment() {
 
     private fun handleEvent(event: AllPatternsViewModel.Event) =
         when (event) {
+
             is AllPatternsViewModel.Event.OnItemClick -> {
                 if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
                     val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
@@ -111,8 +112,9 @@ class ActiveProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnLoadingStarts -> {TODO()}
-            is AllPatternsViewModel.Event.OnLoadingCompleted -> {TODO()}
+            else -> {
+
+            }
         }
 
     private fun showPopupMenu(view: View, patternId: Int) {

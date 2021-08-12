@@ -22,16 +22,14 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.*
 
 
 @Module(
     includes = [
         WbBaseUrlModule::class,
         WbTokenBaseUrlModule::class,
-        WbSocketCertificateModule::class,
+        /*WbSocketCertificateModule::class,*/
         WbTailornovaBaseUrlModule :: class
     ]
 )
@@ -49,11 +47,11 @@ class RetrofitModule {
             .writeTimeout(60, TimeUnit.SECONDS)
 
 
-       /* httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
             val hv: HostnameVerifier =
                 HttpsURLConnection.getDefaultHostnameVerifier()
             hv.verify("demandware.net", session)
-        })*/
+        })
 
 
         // add logging interceptor only for DEBUG builds
@@ -67,7 +65,6 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
-
     @Provides
     @WbTokenApiRetrofit
     fun provideTokenRetrofit(
@@ -81,11 +78,11 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-       /* httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
             val hv: HostnameVerifier =
                 HttpsURLConnection.getDefaultHostnameVerifier()
             hv.verify("demandware.net", session)
-        })*/
+        })
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)

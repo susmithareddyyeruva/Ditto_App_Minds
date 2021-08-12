@@ -37,6 +37,10 @@
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
+        <action
+            android:id="@+id/action_fragments_to_search"
+            app:popUpTo="@id/allPatternsFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/patternDescriptionFragment"
@@ -111,6 +115,11 @@
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
         tools:layout="@layout/customer_care_fragment"
         android:label="Customer Support" />
+    <dialog
+        android:id="@+id/searchFragment"
+        android:name="com.ditto.mylibrary.ui.SearchDialogFragment"
+        tools:layout="@layout/search_dialog"
+        android:label="Search View" />
 
     <fragment
         android:id="@+id/nav_graph_mainfaq"

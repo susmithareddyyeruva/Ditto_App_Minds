@@ -13,7 +13,7 @@ const val GOOGLE_SIGNED_IN = "LOGGED IN : GOOGLE"
 const val CLIENT_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 const val SITE_ID = "JoAnn"
 const val PDF_USERNAME = "amrita.pattanaik@infosys.com"
-const val PDF_PASSWORD = "A@Mala3204"
+const val PDF_PASSWORD = "A@Mala4204"
 const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
 var PDF_DOWNLOAD_URL : String ?= "";
 
@@ -24,6 +24,8 @@ const val USER_FIRST_NAME = "USER_FIRST_NAME"
 const val USER_LAST_NAME = "USER_LAST_NAME"
 const val OCAPI_USERNAME = "nikhil.tyagi01@infosys.com"
 const val OCAPI_PASSWORD = "Develop!695583:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+/*const val OCAPI_USERNAME = "amrita.pattanaik@infosys.com"
+const val OCAPI_PASSWORD = "A@Mala3204:9xgMezNBFSP@"*/
 const val TOKEN_BODY = "urn:demandware:params:oauth:grant-type:client-id:dwsid:dwsecuretoken"
 const val MIRROR_REMINDER = "MIRROR_REMINDER"
 const val RECIEVER_EMAIL = "RECIEVER_EMAIL"
@@ -51,6 +53,9 @@ const val SUBSCRIPTION_START_DATE = "startdate"
 const val SUBSCRIPTION_END_DATE = "enddate"
 const val SUBSCRIPTION_PLAN_PRICE = "planprice"
 const val SUBSCRIPTION_PLAN_NAME = "planname"
+const val PATTERN_COUNT = "COUNT"
+
+
 
 
 

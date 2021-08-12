@@ -4,21 +4,33 @@ import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
+import android.content.Context
+import android.util.Log
+import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.TailornovaApiService
+import com.ditto.mylibrary.data.api.MyLibraryFilterService
+import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.storage.data.database.OfflinePatternDataDao
+import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
+import core.appstate.AppState
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import retrofit2.HttpException
+import non_core.lib.error.NoNetworkError
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 /**
@@ -29,23 +41,57 @@ class MyLibraryRepositoryImpl @Inject constructor(
     private val dbDataDao: @JvmSuppressWildcards UserDao,
     private val patternsDao: @JvmSuppressWildcards PatternsDao,
     private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
+    private val myLibraryService: @JvmSuppressWildcards MyLibraryFilterService,
     private val loggerFactory: LoggerFactory
 ) : MyLibraryRepository {
-
-    val logger: Logger by lazy {
-        loggerFactory.create(LoginRepositoryImpl::class.java.simpleName)
+    @Inject
+    lateinit var context: Context
+    val logger: com.ditto.logger.Logger by lazy {
+        loggerFactory.create(MyLibraryRepositoryImpl::class.java.simpleName)
     }
 
     /**
      * fetches data from local store first. if not available locally, fetches from server
      */
-    override fun getMyLibraryData(): Single<Result<List<MyLibraryData>>> {
-        return Single.fromCallable {
-            //fetch from local DB
-            val data = patternsDao.getPatternsData()
-            Result.withValue(data.toDomain())
+    override fun getMyLibraryData(request: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
         }
+        return myLibraryService.getAllPatternsPatterns(request, "Bearer " + AppState.getToken()!!)
+            .doOnSuccess {
+                logger.d("*****FETCH FILTER SUCCESS**")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
+                }
+
+                logger.d(it.localizedMessage)
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
     }
+
 
     /**
      * creates user data to local store.
@@ -95,6 +141,49 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun removePattern(patternId: Int): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+    override fun getFilteredPatterns(request: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return myLibraryService.getFilterredPatterns(
+            request, "Bearer " + AppState.getToken()!!
+        )
+            .doOnSuccess {
+                logger.d("*****FETCH FILTER SUCCESS**")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
+                }
+                logger.d(it.localizedMessage)
+
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
+
     }
 
 

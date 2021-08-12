@@ -15,7 +15,6 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
@@ -30,7 +29,7 @@ class MyLibraryViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        fetchOnBoardingData()
+       // fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -40,13 +39,13 @@ class MyLibraryViewModel @Inject constructor(
     }
 
     //fetch data from repo (via usecase)
-    private fun fetchOnBoardingData() {
+/*    private fun fetchOnBoardingData() {
         disposable += getMylibraryData.invoke()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
-    }
+    }*/
 
     private fun fetchDbUser() {
         dbLoadError.set(false)
