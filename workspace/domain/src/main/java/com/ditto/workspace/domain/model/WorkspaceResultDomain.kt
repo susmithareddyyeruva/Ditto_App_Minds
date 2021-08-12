@@ -5,5 +5,5 @@ data class WorkspaceResultDomain(
     val type: String?,
     val key_property: String?,
     val object_type: String?,
-    val c_traceWorkSpacePattern: CTraceWorkSpacePatternDomain
+    val c_traceWorkSpacePattern: CTraceWorkSpacePatternDomain?
 )

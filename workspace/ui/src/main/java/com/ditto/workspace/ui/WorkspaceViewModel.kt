@@ -140,19 +140,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-        private fun handleFetchResultFromAPI(result: Result<WorkspaceResultDomain>) {
-            Log.d("handleFethFromAPI", "is:\t ${result.toString()}")
-            when (result) {
-                is Result.OnSuccess -> {
-                    Log.d("WorkspaceViewModel", "Success")
-                }
 
-                is Result.OnError -> {
-                    handleError(result.error)
-                    Log.d("WorkspaceViewModel", "Failed")
-                }
-            }
-        }
 
 
         private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
@@ -307,6 +295,20 @@ class WorkspaceViewModel @Inject constructor(
             }
         }
 
+
+    private fun handleFetchResultFromAPI(result: Result<CTraceWorkSpacePatternDomain>) {
+        Log.d("handleFethFromAPI", "is:\t ${result.toString()}")
+        when (result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel1234", "Success")
+            }
+
+            is Result.OnError -> {
+                handleError(result.error)
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
+    }
         //error handler for data fetch related flow
         fun handleError(error: Error) {
             when (error) {

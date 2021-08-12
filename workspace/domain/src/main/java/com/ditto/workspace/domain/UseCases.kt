@@ -22,7 +22,7 @@ interface GetWorkspaceData {
     fun getPatternDataByID(id: Int):Single<Result<PatternsData>>
     fun getUserDetails():Single<Result<LoginUser>>
     fun deleteAndInsert(id: Int, patternsData: PatternsData): Single<Any>
-    fun getWorkspaceData() : Single<Result<WorkspaceResultDomain>>
+    fun getWorkspaceData() : Single<Result<CTraceWorkSpacePatternDomain>>
     fun updateWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
     fun createWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
 }

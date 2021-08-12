@@ -3,15 +3,15 @@ package com.ditto.workspace.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CTraceWorkSpacePattern (
+data class CTraceWorkSpacePattern(
     @SerializedName("tailornaovaDesignId")
-    val tailornaovaDesignId:String?,
+    val tailornaovaDesignId: String? = "",
     @SerializedName("selectedTab")
-    val selectedTab:String?,
+    val selectedTab: String? = "",
     @SerializedName("status")
-    val status:String?,
+    val status: String? = "",
     @SerializedName("numberOfCompletedPieces")
-    val numberOfCompletedPiece:NumberOfCompletedPiece,
+    val numberOfCompletedPiece: NumberOfCompletedPiece?,
     @SerializedName("patternPieces")
     var patternPieces: List<PatternPiece> = emptyList(),
     @SerializedName("garmetWorkspaceItems")
@@ -19,6 +19,6 @@ data class CTraceWorkSpacePattern (
     @SerializedName("liningWorkspaceItems")
     var liningWorkspaceItems: List<WorkspaceItem> = emptyList(),
     @SerializedName("interfaceWorkspaceItems")
-    var interfaceWorkspaceItem: List<WorkspaceItem> = emptyList()
+    var interfaceWorkspaceItems: List<WorkspaceItem> = emptyList()
 )
 

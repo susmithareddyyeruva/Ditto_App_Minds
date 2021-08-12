@@ -10,7 +10,7 @@ fun WorkspaceResult.toDomain(): WorkspaceResultDomain {
         type = this.type,
         key_property = this.key_property,
         object_type = this.object_type,
-        c_traceWorkSpacePattern = this.c_traceWorkSpacePattern.toDomain()
+        c_traceWorkSpacePattern = this.c_traceWorkSpacePattern?.toDomain()
     )
 }
 
@@ -19,11 +19,11 @@ fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternDomain {
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,
-        numberOfCompletedPieces = this.numberOfCompletedPiece.toDomain(),
+        numberOfCompletedPieces = this.numberOfCompletedPiece?.toDomain(),
         patternPieces = this.patternPieces?.map { it.toDomain() },
         garmetWorkspaceItems = this.garmetWorkspaceItems?.map { it.toDomain() },
         liningWorkspaceItems = this.liningWorkspaceItems?.map { it.toDomain() },
-        interfaceWorkspaceItem = this.interfaceWorkspaceItem?.map { it.toDomain() },
+        interfaceWorkspaceItems = this.interfaceWorkspaceItems?.map { it.toDomain() },
     )
 
 }

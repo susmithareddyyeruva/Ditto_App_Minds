@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface GetWorkspaceService {
     @Headers("Content-Type: application/json")
-    @GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/1_1_122?")
+    @GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/1_1_22?")
     fun getWorkspceDataFromApi(@Query("client_id") client_id:String):Single<WorkspaceResult>
 
     @Headers("Content-Type: application/json")

@@ -2,33 +2,33 @@ package com.ditto.workspace.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class WorkspaceItem (
+data class WorkspaceItem(
     @SerializedName("id")
-    val id:Int,
+    val id: Int? = 0,
     @SerializedName("patternPiecesId")
-    val patternPiecesId:Int,
+    val patternPiecesId: Int? = 0,
     @SerializedName("isCompleted")
-    val isCompleted:String?,
+    val isCompleted: String? = "",
     @SerializedName("xcoordinate")
-    val xcoordinate:String?,
+    val xcoordinate: String? = "",
     @SerializedName("ycoordinate")
-    val ycoordinate:String?,
+    val ycoordinate: String? = "",
     @SerializedName("pivotX")
-    val pivotX:String?,
+    val pivotX: String? = "",
     @SerializedName("pivotY")
-    val pivotY:String?,
+    val pivotY: String? = "",
     @SerializedName("transformA")
-    val transformA:String?,
+    val transformA: String? = "",
     @SerializedName("transformD")
-    val transformD:String?,
+    val transformD: String? = "",
     @SerializedName("rotationAngle")
-    val rotationAngle:String?,
+    val rotationAngle: String? = "",
     @SerializedName("isMirrorH")
-    val isMirrorH:String?,
+    val isMirrorH: String? = "",
     @SerializedName("isMirrorV")
-    val isMirrorV:String?,
+    val isMirrorV: String? = "",
     @SerializedName("showMirrorDialog")
-    val showMirrorDialog:String?,
+    val showMirrorDialog: String? = "",
     @SerializedName("currentSplicedPieceNo")
-    val currentSplicedPieceNo:String?
+    val currentSplicedPieceNo: String? = ""
 )

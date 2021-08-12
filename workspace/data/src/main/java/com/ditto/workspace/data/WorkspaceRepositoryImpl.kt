@@ -112,7 +112,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getWorkspaceDataFromApi(): Single<Result<WorkspaceResultDomain>> {
+    override fun getWorkspaceDataFromApi(): Single<Result<CTraceWorkSpacePatternDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -120,8 +120,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
         return getWorkspaceService.getWorkspceDataFromApi(CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
-            Log.d("WorkspaceRepositoryImpl","${it.toString()}")
-            Result.withValue(it.toDomain())
+            Log.d("WorkspaceRepositoryImpl","${it.c_traceWorkSpacePattern.toString()}")
+            Result.withValue(it.c_traceWorkSpacePattern?.toDomain())
         }.onErrorReturn {
             var errorMessage = "Error Fetching data"
             try {

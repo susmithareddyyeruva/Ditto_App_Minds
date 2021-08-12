@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class NumberOfCompletedPiece(
     @SerializedName("garment")
-    val garment:Int?,
+    val garment: Int? = 0,
     @SerializedName("lining")
-    val lining:Int?,
+    val lining: Int? = 0,
     @SerializedName("interface")
-    val interfacee:Int?
+    val interfacee: Int? = 0
 )

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PatternPiece(
     @SerializedName("id")
-    val id: Int,
+    val id: Int? = 0,
     @SerializedName("isCompleted")
-    val isCompleted: String?
+    val isCompleted: String? = ""
 )

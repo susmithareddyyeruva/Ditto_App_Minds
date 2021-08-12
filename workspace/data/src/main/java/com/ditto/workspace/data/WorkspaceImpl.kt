@@ -50,7 +50,7 @@ class WorkspaceImpl @Inject constructor(
         return workspaceRepository.deleteAndInsert(id, patternsData)
     }
 
-    override fun getWorkspaceData(): Single<Result<WorkspaceResultDomain>> {
+    override fun getWorkspaceData(): Single<Result<CTraceWorkSpacePatternDomain>> {
         return workspaceRepository.getWorkspaceDataFromApi()
     }
 

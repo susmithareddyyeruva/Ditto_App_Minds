@@ -1,8 +1,8 @@
 package com.ditto.workspace.domain.model
 
 data class WorkspaceItemDomain (
-    val id:Int=0,
-    val patternPiecesId:Int=0,
+    val id:Int?=0,
+    val patternPiecesId:Int?=0,
     val isCompleted:String?="",
     val xcoordinate:String?="",
     val ycoordinate:String?="",
