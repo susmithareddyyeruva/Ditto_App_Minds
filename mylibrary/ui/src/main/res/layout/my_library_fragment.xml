@@ -191,7 +191,7 @@
             app:tabIndicatorColor="#A4211F"
             app:tabIndicatorGravity="bottom"
             app:tabMode="fixed"
-            app:tabMinWidth="100dp"
+            app:tabMinWidth="@dimen/tab_min_width"
             app:tabPaddingEnd="@dimen/dimen_0"
             app:tabPaddingStart="@dimen/dimen_0"
             app:tabSelectedTextColor="@color/black"

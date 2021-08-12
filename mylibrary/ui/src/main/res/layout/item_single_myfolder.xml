@@ -39,19 +39,20 @@
 
         <FrameLayout
             android:id="@+id/layoutDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/large_paddingxx"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/imgBg"
             app:layout_constraintEnd_toEndOf="@id/imgBg"
             app:layout_constraintStart_toStartOf="@id/imgBg"
             app:layout_constraintTop_toTopOf="@id/imgBg">
 
             <RelativeLayout
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/large_paddingxx"
+                android:layout_gravity="bottom|center_horizontal"
                 android:background="@color/white">
 
                 <ImageView

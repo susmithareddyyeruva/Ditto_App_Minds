@@ -118,6 +118,6 @@
     <dimen name="close_filter1_h">24dp</dimen>
     <dimen name="margin_top">19dp</dimen>
     <dimen name="search_view_height">32dp</dimen>
-
+    <dimen name="tab_min_width">100dp</dimen>
 
 </resources>
