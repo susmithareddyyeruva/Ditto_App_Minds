@@ -52,6 +52,7 @@ class MyLibraryFragment : BaseFragment() {
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
+        setUIEvents()
         setUpToolbar()
         setTabsAdapter()
         toolbarViewModel.visibility.set(false)
@@ -59,13 +60,16 @@ class MyLibraryFragment : BaseFragment() {
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
 
+    }
+
+    fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                Log.d("handleEvent", "handle event")
+                handleEvent(it)
             }
-
     }
+
     private fun setUpToolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
@@ -73,18 +77,19 @@ class MyLibraryFragment : BaseFragment() {
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
     private fun setTabsAdapter() {
-        allPatternsFragment= AllPatternsFragment()
-        myFolderFragment=MyFolderFragment()
+        allPatternsFragment = AllPatternsFragment()
+        myFolderFragment = MyFolderFragment()
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
         adapter.addFragment(
-           allPatternsFragment, getString(
+            allPatternsFragment, getString(
                 R.string.all_patterns
             )
         )
         adapter.addFragment(
-          myFolderFragment, getString(
+            myFolderFragment, getString(
                 R.string.my_folders
             )
         )
@@ -98,11 +103,19 @@ class MyLibraryFragment : BaseFragment() {
             is MyLibraryViewModel.Event.completedProjects -> {
                 Toast.makeText(context, "adadjhf", Toast.LENGTH_SHORT).show()
             }
+            MyLibraryViewModel.Event.OnFilterClick -> {
+                allPatternsFragment.onFilterClick()
+            }
+            MyLibraryViewModel.Event.OnSyncClick -> {
+                allPatternsFragment.onSyncClick()
+            }
+            MyLibraryViewModel.Event.OnSearchClick -> {
+                allPatternsFragment.onSearchClick()
+            }
             else -> {
                 Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
 
             }
-
         }
 
 }

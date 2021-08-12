@@ -5,6 +5,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.MyFolderData
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -29,7 +30,7 @@ class MyLibraryViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-       // fetchOnBoardingData()
+        // fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -70,19 +71,21 @@ class MyLibraryViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("MyLibraryViewModel","handleError")
+                Log.d("MyLibraryViewModel", "handleError")
             }
         }
     }
 
-    fun activeProjects(){
-        Log.d("uiEvents","activeProjects")
+    fun activeProjects() {
+        Log.d("uiEvents", "activeProjects")
     }
-    fun completedProjects(){
+
+    fun completedProjects() {
         uiEvents.post(Event.completedProjects)
     }
-    fun allPatterns(){
-        Log.d("uiEvents","allPatterns")
+
+    fun allPatterns() {
+        Log.d("uiEvents", "allPatterns")
     }
 
     /**
@@ -92,5 +95,46 @@ class MyLibraryViewModel @Inject constructor(
         object activeProjects : Event()
         object completedProjects : Event()
         object allPatterns : Event()
+        object OnFilterClick : Event()
+        object OnSyncClick : Event()
+        object OnSearchClick : Event()
     }
+
+    fun onFilterClick() {
+        Log.d("pattern", "onFilterClick : viewModel")
+        uiEvents.post(Event.OnFilterClick)
+    }
+
+    fun onSyncClick() {
+        Log.d("pattern", "onSyncClick : viewModel")
+        uiEvents.post(Event.OnSyncClick)
+    }
+
+    fun onSearchClick() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        uiEvents.post(Event.OnSearchClick)
+    }
+
+    fun getList(): List<MyFolderData> {
+        val list = listOf<MyFolderData>(
+            MyFolderData("",
+                "Add Folder",
+                false
+            ),
+            MyFolderData("",
+                "Owned",
+                false
+            ),
+            MyFolderData("",
+                "Favourite",
+                false
+            ),
+            MyFolderData("",
+                "Emma's Patterns",
+                true
+            )
+        )
+        return list
+    }
+
 }

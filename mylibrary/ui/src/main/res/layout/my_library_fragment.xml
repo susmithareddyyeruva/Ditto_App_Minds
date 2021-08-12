@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -62,6 +63,7 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent=".98" />
 
+
                     <TextView
                         android:id="@+id/header_view_title"
                         android:layout_width="wrap_content"
@@ -83,12 +85,13 @@
                         android:layout_marginStart="@dimen/margin_start_pattern_liabry_count"
                         android:fontFamily="@font/avenir_next_it_pro_bold"
                         android:gravity="center"
-                        android:text="(11)"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/size_pattern_lib_text"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/header_view_title"
                         app:layout_constraintLeft_toRightOf="@id/header_view_title"
-                        app:layout_constraintTop_toTopOf="@id/header_view_title" />
+                        app:layout_constraintTop_toTopOf="@id/header_view_title"
+                        tools:text="(11)" />
 
                     <View
                         android:id="@+id/view_vertical"
@@ -110,6 +113,7 @@
                         android:drawablePadding="@dimen/distance_after_icon_sync"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
+                        android:onClick="@{() -> viewModel.onSyncClick()}"
                         android:text="@string/text_sync"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
@@ -118,6 +122,7 @@
                         app:layout_constraintTop_toTopOf="@id/header_view_title_pattern_count" />
 
                     <TextView
+                        android:id="@+id/tvSearch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -127,6 +132,8 @@
                         android:drawablePadding="@dimen/distance_after_icon_sync"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
+                        android:padding="@dimen/padding_small"
+                        android:onClick="@{() -> viewModel.onSearchClick()}"
                         android:text="@string/text_search"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
@@ -138,10 +145,12 @@
                         android:id="@+id/view_dot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_5"
-                        android:background="@drawable/blue_filter_circle"
-                        app:layout_constraintStart_toStartOf="@id/tv_filter"
-                        app:layout_constraintTop_toTopOf="@id/tv_filter" />
+                        android:layout_marginEnd="@dimen/dimen_5"
+                        android:src="@drawable/ic_filter"
+                        android:onClick="@{() -> viewModel.onFilterClick()}"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_filter"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_filter"
+                        app:layout_constraintTop_toTopOf="@+id/tv_filter" />
 
                     <TextView
                         android:id="@+id/tv_filter"
@@ -149,10 +158,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginEnd="@dimen/margin_card_end"
-                        android:drawableStart="@drawable/ic_filter"
-                        android:drawablePadding="@dimen/distance_after_icon_sync"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center"
+                        android:onClick="@{() -> viewModel.onFilterClick()}"
                         android:text="@string/filter"
                         android:textColor="@color/search_text_code"
                         android:textSize="@dimen/size_search"
@@ -182,7 +190,7 @@
             app:layout_constraintTop_toBottomOf="@+id/guideline_top"
             app:tabIndicatorColor="#A4211F"
             app:tabIndicatorGravity="bottom"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabMinWidth="100dp"
             app:tabPaddingEnd="@dimen/dimen_0"
             app:tabPaddingStart="@dimen/dimen_0"

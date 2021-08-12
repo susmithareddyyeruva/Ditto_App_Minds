@@ -447,4 +447,20 @@ class AllPatternsFragment : BaseFragment(),
         }
     }
 
+    //public function for accesing from MyLibrary Fragment
+    fun onFilterClick() {
+        Log.d("pattern", "onFilterClick : viewModel")
+        viewModel.onFilterClick()
+    }
+
+    fun onSyncClick() {
+        Log.d("pattern", "onSyncClick : viewModel")
+        viewModel.onSyncClick()
+    }
+
+    fun onSearchClick() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        viewModel.onSearchClick()
+    }
+
 }

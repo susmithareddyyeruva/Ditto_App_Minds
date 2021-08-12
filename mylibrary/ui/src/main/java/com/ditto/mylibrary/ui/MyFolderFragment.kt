@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.ui.adapter.MyFolderAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderfragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -42,8 +44,18 @@ class MyFolderFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setAdapter()
 
     }
+
+    private fun setAdapter() {
+        val  gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        binding.rvMyFolder.layoutManager = gridLayoutManager
+        val adapter=MyFolderAdapter(requireContext(), viewModel.getList())
+        binding.rvMyFolder.adapter = adapter
+        adapter.viewModel = viewModel
+    }
+
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyLibraryViewModel.Event) =
         when (event) {
