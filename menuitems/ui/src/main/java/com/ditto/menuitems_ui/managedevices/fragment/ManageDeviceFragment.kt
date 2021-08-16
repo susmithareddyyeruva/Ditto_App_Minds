@@ -69,6 +69,10 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         setuptoolbar()
         setUIEvents()
         viewModel.mode.set(MODE_SERVICE)
+    }
+
+    override fun onResume() {
+        super.onResume()
         checkBluetoothWifiPermission()
     }
 
@@ -223,6 +227,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      * [Function] Starting connectivity module
      */
     private fun showConnectivityPopup() {
+        viewModel.numberOfProjectors.set("")
+        viewModel.isServiceNotFound.set(false)
         GlobalScope.launch {
             delay(100)
             val intent = Intent(requireContext(), ConnectivityActivity::class.java)
