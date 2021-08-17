@@ -14,11 +14,13 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
+import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
+import kotlinx.android.synthetic.main.my_library_fragment.view.*
 import javax.inject.Inject
 
 class MyLibraryFragment : BaseFragment() {
@@ -95,6 +97,21 @@ class MyLibraryFragment : BaseFragment() {
         )
         view_pager.adapter = adapter
         tabLayout.setupWithViewPager(view_pager)
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 0) {
+                    binding.toolbar.header_view_title.text = getString(R.string.pattern_library)
+                } else {
+                    binding.toolbar.header_view_title.text = getString(R.string.my_folders)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
