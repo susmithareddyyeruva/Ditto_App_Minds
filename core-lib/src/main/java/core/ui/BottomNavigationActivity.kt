@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
@@ -22,12 +23,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -75,6 +76,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         bindMenuHeader()
         populateExpandableList()
 
+
         if (!isTaskRoot
             && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
             && intent.action != null
@@ -84,11 +86,83 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             finish()
             return
         }
+        /**
+         * Deeplinking
+         */
+        handleIntent(intent)
         binding.bottomNavViewModel!!.disposable += binding.bottomNavViewModel!!.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 handleEvent(it)
             }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val appLinkAction = intent.action
+        val appLinkData: Uri? = intent.data
+        if (Intent.ACTION_VIEW == appLinkAction) {
+            appLinkData?.lastPathSegment?.also { segmentId ->
+                Log.d("DEEPLINK", segmentId)
+                when {
+                    segmentId.endsWith("Sites-ditto-Site") -> {
+                        // HOME
+                        if (navController.currentDestination?.id == R.id.nav_graph_id_home) {
+                            val bundle = bundleOf(
+                                "DEEPLINK" to "HOME"
+                            )
+                            navController.navigate(
+                                R.id.action_splashActivity_to_HomeFragment,
+                                bundle
+                            )
+                        }
+                        return
+
+                    }
+                    segmentId.endsWith("MyPatternLibrary-MyLibrary") -> {
+                        // PATTERN LIBRARY
+                        val bundle = bundleOf(
+                            "DEEPLINK" to "LIBRARY"
+                        )
+                        navController.navigate(
+                            R.id.action_splashActivity_to_HomeFragment,
+                            bundle
+                        )
+                        return
+
+                    }
+                    segmentId.endsWith("SubscriptionLibrary-MySubscriptionLibrary") -> {
+                        // PATTERN MySubscriptionLibrary
+                        val bundle = bundleOf(
+                            "DEEPLINK" to "MySubscriptionLibrary"
+                        )
+                        navController.navigate(
+                            R.id.action_splashActivity_to_HomeFragment,
+                            bundle
+                        )
+                        return
+
+                    }
+                    appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
+                        // PATTERN DETAIL
+                        val bundle = bundleOf(
+                            "DEEPLINK" to "DETAIL"
+                        )
+                        navController.navigate(
+                            R.id.action_splashActivity_to_HomeFragment,
+                            bundle
+                        )
+                        return
+
+                    }
+                }
+
+            }
+        }
     }
 
     private fun handleEvent(

@@ -110,6 +110,7 @@ dependencies {
     implementation project(':splash-domain')
     implementation project(':splash-data')
     implementation project(':logger')
+   /* implementation project(path: ':home-ui')*/
 
 
 

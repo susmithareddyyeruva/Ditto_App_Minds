@@ -18,6 +18,13 @@
              app:popUpTo="@+id/nav_graph"
              app:popUpToInclusive="true" />-->
         <action
+            android:id="@+id/action_deeplink_to_patternDescriptionFragment"
+            app:destination="@id/patternDescriptionFragment"
+            app:popUpTo="@id/allPatternsFragment"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"
+            />
+        <action
             android:id="@+id/action_splashActivity_to_LoginFragment"
             app:destination="@id/nav_graph_id_login"
             app:enterAnim="@anim/slide_in_right"
@@ -39,12 +46,9 @@
         <action
             android:id="@+id/action_home_to_my_library"
             app:destination="@id/nav_graph_mylibrary"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/nav_graph_mylibrary"
-            app:popUpToInclusive="true" />
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"  />
 
         <action
             android:id="@+id/action_home_to_tutorial"
@@ -52,9 +56,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
+            app:popUpTo="@id/nav_graph_id_home"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true" />
-
+     <!--   <action
+            android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
+            app:destination="@id/allPatternsFragment" />-->
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
@@ -75,8 +82,6 @@
         <action
             android:id="@+id/action_homeFragment_to_privacyAndSettingFragment"
             app:destination="@id/privacyAndSettingFragment" />
-
-
     </fragment>
 
     <fragment
@@ -130,5 +135,9 @@
         android:name="com.ditto.menuitems_ui.privacyandsettings.ui.PrivacyAndSettingFragment"
         android:label="PrivacyAndSettingFragment" />
 
+    <fragment
+        android:id="@+id/patternDescriptionFragment"
+        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
+        android:label="PatternDescriptionFragment" />
 
 </navigation>

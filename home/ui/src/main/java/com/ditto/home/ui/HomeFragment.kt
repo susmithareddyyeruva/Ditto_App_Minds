@@ -1,6 +1,7 @@
 package com.ditto.home.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,18 +64,47 @@ class HomeFragment : BaseFragment() {
         (activity as BottomNavigationActivity)?.refreshMenuItem()
         (activity as BottomNavigationActivity)?.setEmaildesc()
         if (AppState.getIsLogged()) {
-             bottomNavViewModel.isGuestBase.set(false)
+            bottomNavViewModel.isGuestBase.set(false)
         } else {
-             bottomNavViewModel.isGuestBase.set(true)
+            bottomNavViewModel.isGuestBase.set(true)
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
         setHomeAdapter()
+        setEventForDeeplink()
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 handleEvent(it)
             }
+    }
+
+    private fun setEventForDeeplink() {
+        arguments?.getString("DEEPLINK")?.let {
+
+            when (it) {
+                "HOME" -> {
+
+                }
+                "LIBRARY" -> {
+                    Log.d("DEEPLINK","HOMESCREEN  :LIBRARY")
+                    if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        this.arguments?.clear();
+                        findNavController().navigate(R.id.action_home_to_my_library)
+                    }
+
+                }
+                "DETAIL"->{
+                    Log.d("DEEPLINK","HOMESCREEN  :DETAIL")
+                    if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        this.arguments?.clear();
+                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment)
+                    }
+
+                }
+            }
+
+        }
     }
 
     private fun handleEvent(event: HomeViewModel.Event) =
@@ -95,8 +125,11 @@ class HomeFragment : BaseFragment() {
             }
             is HomeViewModel.Event.OnClickMyPatterns -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                        val bundle = bundleOf("clickedID" to context?.let { Utility.getSharedPref(it) },"isFrom" to "RESUME_RECENT")
-                        findNavController().navigate(R.id.action_home_to_my_library,bundle)
+                    val bundle = bundleOf(
+                        "clickedID" to context?.let { Utility.getSharedPref(it) },
+                        "isFrom" to "RESUME_RECENT"
+                    )
+                    findNavController().navigate(R.id.action_home_to_my_library, bundle)
                 } else {
                     logger.d("OnClickResumeRecent failed")
                 }
@@ -104,7 +137,7 @@ class HomeFragment : BaseFragment() {
             HomeViewModel.Event.OnClickTutorial -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf("isFromHome" to true)
-                    findNavController().navigate(R.id.action_home_to_tutorial,bundle)
+                    findNavController().navigate(R.id.action_home_to_tutorial, bundle)
                 } else {
                     logger.d("OnClickJoann failed")
                 }
