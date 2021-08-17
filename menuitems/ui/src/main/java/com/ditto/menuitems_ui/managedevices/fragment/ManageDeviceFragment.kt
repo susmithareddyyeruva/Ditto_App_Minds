@@ -68,8 +68,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
         setUIEvents()
-        viewModel.mode.set(MODE_SERVICE)
-        checkBluetoothWifiPermission()
+        //viewModel.mode.set(MODE_SERVICE)
+        //checkBluetoothWifiPermission()
     }
 
     override fun onResume() {
@@ -260,6 +260,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        viewModel.isFromBackground = false
         receivedServiceList = Utility.searchServieList
         if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
             when {
@@ -496,4 +497,17 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.isFromBackground) {
+            viewModel.mode.set(MODE_SERVICE)
+            checkBluetoothWifiPermission()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.isFromBackground = true
+    }
 }
