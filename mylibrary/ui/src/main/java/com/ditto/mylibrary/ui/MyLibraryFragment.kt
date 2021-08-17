@@ -16,17 +16,21 @@ import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
+import core.ui.BaseViewModel
 import core.ui.ViewModelDelegate
+import core.ui.ViewModelScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
 import kotlinx.android.synthetic.main.my_library_fragment.view.*
 import javax.inject.Inject
 
-class MyLibraryFragment : BaseFragment() {
+class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
+
+    val baseViewModel1: BaseViewModel by ViewModelDelegate(ViewModelScope.ACTIVITY)
 
     val logger: Logger by lazy {
         loggerFactory.create(MyLibraryFragment::class.java.simpleName)
@@ -81,19 +85,19 @@ class MyLibraryFragment : BaseFragment() {
     }
 
     private fun setTabsAdapter() {
-        allPatternsFragment = AllPatternsFragment()
+        allPatternsFragment = AllPatternsFragment(this)
         myFolderFragment = MyFolderFragment()
         val cfManager: FragmentManager = childFragmentManager
-        val adapter = MyLibraryAdapter(cfManager)
+        val adapter = MyLibraryAdapter(cfManager,this)
         adapter.addFragment(
             allPatternsFragment, getString(
                 R.string.all_patterns
-            )
+            ),this
         )
         adapter.addFragment(
             myFolderFragment, getString(
                 R.string.my_folders
-            )
+            ),this
         )
         view_pager.adapter = adapter
         tabLayout.setupWithViewPager(view_pager)
@@ -150,5 +154,11 @@ class MyLibraryFragment : BaseFragment() {
 
             }
         }
+
+
+    override fun onSetCount(totalPatternCount: Int) {
+        binding.toolbar.header_view_title.text =
+            getString(R.string.pattern_library_count, baseViewModel1.totalCount)
+    }
 
 }

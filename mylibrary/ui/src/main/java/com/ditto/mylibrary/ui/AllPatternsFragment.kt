@@ -31,7 +31,7 @@ import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 
-class AllPatternsFragment : BaseFragment(),
+class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFragment(),
     Utility.CustomCallbackDialogListener {
 
 
@@ -171,7 +171,7 @@ class AllPatternsFragment : BaseFragment(),
           })*/
         allPatternAdapter.setListData(items = viewModel.patternArrayList)
         //  binding.toolbar.header_view_title.text =
-        getString(R.string.pattern_library_count, AppState.getPatternCount())
+       // getString(R.string.pattern_library_count, AppState.getPatternCount())
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
@@ -319,6 +319,9 @@ class AllPatternsFragment : BaseFragment(),
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
+            baseViewModel.totalCount=viewModel.totalPatternCount
+            setPatternCount.onSetCount(viewModel.totalPatternCount)
+
             /**
              * Getting ALL PATTERNS LIST
              */
@@ -431,7 +434,6 @@ class AllPatternsFragment : BaseFragment(),
         // TODO("Not yet implemented")
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -457,6 +459,9 @@ class AllPatternsFragment : BaseFragment(),
     fun onSearchClick() {
         Log.d("pattern", "onSearchClick : viewModel")
         viewModel.onSearchClick()
+    }
+    interface SetPatternCount{
+        fun onSetCount(totalPatternCount: Int)
     }
 
 }
