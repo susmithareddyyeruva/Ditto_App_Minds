@@ -72,23 +72,6 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         //checkBluetoothWifiPermission()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.numberOfProjectors.set(
-            getString(
-                R.string.str_projectorsfound,
-                receivedServiceList?.size.toString() ?:0
-            )
-        )
-        viewModel.isServiceNotFound.set(receivedServiceList?.size == 0)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.numberOfProjectors.set("")
-        viewModel.isServiceNotFound.set(false)
-    }
-
     private fun setAdapter() {
         val adapter = ManageDeviceAdapter(requireContext(), receivedServiceList!!, viewModel)
         binding.rvManageDevice.adapter = adapter
@@ -504,10 +487,20 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             viewModel.mode.set(MODE_SERVICE)
             checkBluetoothWifiPermission()
         }
+        viewModel.numberOfProjectors.set(
+            getString(
+                R.string.str_projectorsfound,
+                receivedServiceList?.size.toString() ?:0
+            )
+        )
+        viewModel.isServiceNotFound.set(receivedServiceList?.size == 0)
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.isFromBackground = true
+        viewModel.numberOfProjectors.set("")
+        viewModel.isServiceNotFound.set(false)
     }
+
 }
