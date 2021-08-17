@@ -12,4 +12,6 @@
     <dimen name="progress_loading">50dp</dimen>
     <dimen name="progress_text">16dp</dimen>
     <dimen name="bottom_camera_text_size">16sp</dimen>
+    <dimen name="calibration_dialog_image_width">60dp</dimen>
+    <dimen name="calibration_dialog_image_height">53dp</dimen>
 </resources>
