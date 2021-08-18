@@ -101,7 +101,7 @@
                 android:layout_centerVertical="true"
                 android:backgroundTint="@color/app_red"
                 android:gravity="center_vertical"
-                android:src="@drawable/plus" />
+                android:src="@android:drawable/ic_menu_add" />
 
 
         </RelativeLayout>
