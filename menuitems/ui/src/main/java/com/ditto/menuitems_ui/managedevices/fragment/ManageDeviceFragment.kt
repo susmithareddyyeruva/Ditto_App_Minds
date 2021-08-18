@@ -59,10 +59,12 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         }
         return binding.root
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as BottomNavigationActivity).hideDrawerLayout()
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -195,14 +197,15 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
 
     /**
-        }
+    }
      * [Function] Filtering list to change to connection status of alredy connected wifi if any
      */
     private fun filterServiceList() {
         if (NetworkUtility.nsdSericeHostName != null) {
             for (item in receivedServiceList!!.indices) {
                 if (NetworkUtility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress &&
-                        NetworkUtility.nsdSericePortName == receivedServiceList!![item].nsdServicePort) {
+                    NetworkUtility.nsdSericePortName == receivedServiceList!![item].nsdServicePort
+                ) {
                     viewModel.clickedPosition.set(item)
                     resetAdapter(true)
                     break
@@ -270,6 +273,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         (activity as BottomNavigationActivity).setToolbarIcon()
 
     }
+
     companion object {
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
         private const val REQUEST_CODE_PERMISSIONS = 111
@@ -434,7 +438,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     ) {
 
         when (alertType) {
-            Utility.AlertType.SOC_CONNECT ->{
+            Utility.AlertType.SOC_CONNECT -> {
                 viewModel.sendWaitingImage()
                 viewModel.connectToProjector(
                     receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
@@ -490,7 +494,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
-                receivedServiceList?.size.toString() ?:0
+                receivedServiceList?.size ?: 0.toString()
             )
         )
         viewModel.isServiceNotFound.set(receivedServiceList?.size == 0)
