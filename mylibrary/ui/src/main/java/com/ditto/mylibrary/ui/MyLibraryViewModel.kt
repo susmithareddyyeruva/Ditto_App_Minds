@@ -126,7 +126,7 @@ class MyLibraryViewModel @Inject constructor(
                 false
             ),
             MyFolderData("",
-                "Favourite",
+                "Favorites",
                 false
             ),
             MyFolderData("",

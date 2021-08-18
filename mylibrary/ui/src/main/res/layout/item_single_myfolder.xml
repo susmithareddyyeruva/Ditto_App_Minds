@@ -88,7 +88,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
                     android:lineSpacingExtra="3dp"
-                    android:text="RenameFolder"
+                    android:text="@string/rename_folder"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/size_12px">
 
@@ -121,7 +121,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
                     android:lineSpacingExtra="3dp"
-                    android:text="Delete Folder"
+                    android:text="@string/delete_folder"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/size_12px"
                     app:layout_constraintBottom_toBottomOf="parent"
