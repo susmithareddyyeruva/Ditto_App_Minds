@@ -31,7 +31,10 @@ import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 
-class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFragment(),
+class AllPatternsFragment(
+    private val setPatternCount: SetPatternCount,
+    private val filterIcons: setFilterIcons
+) : BaseFragment(),
     Utility.CustomCallbackDialogListener {
 
 
@@ -63,14 +66,6 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
             it.lifecycleOwner = viewLifecycleOwner
         }
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        /*     currentPage = 1
-             isLastPage = false
-             viewModel.patternArrayList.clear()
-             viewModel.resultMap.clear()*/
     }
 
     @SuppressLint("WrongConstant")
@@ -137,10 +132,10 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
             } else {
                 updatePatterns()
                 setFilterMenuAdapter(0)
-                /*            if (viewModel.isFilter == true) {
-                                binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
-                            } else
-                                binding.viewDot.setImageResource(R.drawable.ic_filter)*/
+                if (viewModel.isFilter == true) {
+                    filterIcons.onFilterApplied(true)
+                } else
+                    filterIcons.onFilterApplied(false)
             }
 
 
@@ -164,14 +159,9 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
 
     }
 
-    private fun updatePatterns() {// Updating the adapter
-
-        /*  viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
-              allPatternAdapter.setListData(items = list)
-          })*/
+    private fun updatePatterns() {
+        // Updating the adapter
         allPatternAdapter.setListData(items = viewModel.patternArrayList)
-        //  binding.toolbar.header_view_title.text =
-       // getString(R.string.pattern_library_count, AppState.getPatternCount())
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
@@ -210,18 +200,8 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
         // filterDetailsAdapter.updateList(keys)
 
     }
-    /*   private fun setUpToolbar() {
 
-         toolbarViewModel.isShowTransparentActionBar.set(false)
-           toolbarViewModel.isShowActionBar.set(false)
-           binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-           binding.toolbar.header_view_title.text =
-               getString(R.string.pattern_library_count, AppState.getPatternCount())
-           (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-           (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-       }*/
-
-     fun setUIEvents() {
+    private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -281,8 +261,8 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-            /* binding.toolbar.header_view_title.text =
-                 getString(R.string.pattern_library_count, viewModel.totalPatternCount)*/
+            setPatternCount.onSetCount(viewModel.totalPatternCount)
+
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
@@ -319,7 +299,7 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
         }
         AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
-            baseViewModel.totalCount=viewModel.totalPatternCount
+            baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(viewModel.totalPatternCount)
 
             /**
@@ -366,10 +346,10 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
 
         }
         AllPatternsViewModel.Event.UpdateFilterImage -> {
-            //  binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+            filterIcons.onFilterApplied(true)
         }
         AllPatternsViewModel.Event.UpdateDefaultFilter -> {
-            // binding.viewDot.setImageResource(R.drawable.ic_filter)
+            filterIcons.onFilterApplied(false)
 
         }
     }
@@ -460,8 +440,12 @@ class AllPatternsFragment(private val setPatternCount: SetPatternCount) : BaseFr
         Log.d("pattern", "onSearchClick : viewModel")
         viewModel.onSearchClick()
     }
-    interface SetPatternCount{
+
+    interface SetPatternCount {
         fun onSetCount(totalPatternCount: Int)
     }
 
+    interface setFilterIcons {
+        fun onFilterApplied(isApplied: Boolean)
+    }
 }

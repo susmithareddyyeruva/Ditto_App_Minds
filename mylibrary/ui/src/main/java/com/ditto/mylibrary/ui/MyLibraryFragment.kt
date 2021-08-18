@@ -15,6 +15,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BaseViewModel
 import core.ui.ViewModelDelegate
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.my_library_fragment.*
 import kotlinx.android.synthetic.main.my_library_fragment.view.*
 import javax.inject.Inject
 
-class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount {
+class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount ,AllPatternsFragment.setFilterIcons{
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -68,7 +69,7 @@ class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount {
 
     }
 
-    fun setUIEvents() {
+    private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -82,29 +83,33 @@ class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount {
         binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.header_view_title.text =
+            getString(R.string.pattern_library_count, AppState.getPatternCount())
     }
 
     private fun setTabsAdapter() {
-        allPatternsFragment = AllPatternsFragment(this)
+        allPatternsFragment = AllPatternsFragment(this,this)
         myFolderFragment = MyFolderFragment()
         val cfManager: FragmentManager = childFragmentManager
-        val adapter = MyLibraryAdapter(cfManager,this)
+        val adapter = MyLibraryAdapter(cfManager)
         adapter.addFragment(
             allPatternsFragment, getString(
                 R.string.all_patterns
-            ),this
+            ),this,this
         )
         adapter.addFragment(
             myFolderFragment, getString(
                 R.string.my_folders
-            ),this
+            ),this,this
         )
         view_pager.adapter = adapter
         tabLayout.setupWithViewPager(view_pager)
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+
                 if (tab?.position == 0) {
-                    binding.toolbar.header_view_title.text = getString(R.string.pattern_library)
+                    binding.toolbar.header_view_title.text =
+                        getString(R.string.pattern_library_count, AppState.getPatternCount())
                 } else {
                     binding.toolbar.header_view_title.text = getString(R.string.my_folders)
                 }
@@ -158,7 +163,14 @@ class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount {
 
     override fun onSetCount(totalPatternCount: Int) {
         binding.toolbar.header_view_title.text =
-            getString(R.string.pattern_library_count, baseViewModel1.totalCount)
+            getString(R.string.pattern_library_count, totalPatternCount)
+    }
+
+    override fun onFilterApplied(isApplied: Boolean) {
+        if (isApplied) {
+            binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+        } else
+            binding.viewDot.setImageResource(R.drawable.ic_filter)
     }
 
 }
