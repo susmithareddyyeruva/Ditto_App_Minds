@@ -121,7 +121,7 @@ class AllPatternsFragment(
             binding.clearFilter.performClick()
         }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            if (viewModel.resultMap.isEmpty()) {
+            if (viewModel.patternArrayList.isEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(
                     viewModel.createJson(
@@ -270,7 +270,6 @@ class AllPatternsFragment(
         }
 
         is AllPatternsViewModel.Event.OnFilterClick -> {
-
             binding.drawerLayout.openDrawer(Gravity.RIGHT)
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
         }
@@ -353,6 +352,7 @@ class AllPatternsFragment(
 
         }
     }
+
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""

@@ -44,42 +44,68 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
             .load(patterns.get(position).image)
             .placeholder(R.drawable.ic_placeholder)
             .into( holder.patternsItemBinding.imagePattern)
-        if (AppState.getIsLogged()) {
-            if (position == 0 ) {
-                holder.patternsItemBinding.textviewPatternType.text = "NEW"
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
-            } else if (position == 1 ) {
-                holder.patternsItemBinding.textviewPatternType.text = "OWNED"
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
-            } else if (position == 2) {
-                holder.patternsItemBinding.textviewPatternType.text = "EXPIRED"
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_expired
-                    ))
-                )
-            }else if (position == 3 ) {
-                holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
-            }else{
-                holder.patternsItemBinding.textviewPatternType.text = "NEW"
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
-            }
+
+      if (AppState.getIsLogged()) {
+          holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+          if (patterns[position].status?.toUpperCase().equals("NEW")||patterns[position].status?.toUpperCase().equals("OWNED")){
+              holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                  (ContextCompat.getColor(
+                      holder.patternsItemBinding.textviewPatternType.context,
+                      R.color.text_new
+                  )))
+
+              holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+              holder.patternsItemBinding.textviewPatternType.text=patterns[position].status?.toUpperCase()
+          }
+          else if (patterns[position].status?.toUpperCase().equals("EXPIRED")){
+              holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+              holder.patternsItemBinding.textviewPatternType.text = patterns[position].status?.toUpperCase()
+              holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                  (ContextCompat.getColor(
+                      holder.patternsItemBinding.textviewPatternType.context,
+                      R.color.text_expired
+                  ))
+              )
+          }else{
+              holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
+
+          }
+
+          /* if (position == 0 ) {
+             holder.patternsItemBinding.textviewPatternType.text = "NEW"
+             holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                 (ContextCompat.getColor(
+                     holder.patternsItemBinding.textviewPatternType.context,
+                     R.color.text_new
+                 ))
+             )
+         } else if (position == 1 ) {
+             holder.patternsItemBinding.textviewPatternType.text = "OWNED"
+             holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                 (ContextCompat.getColor(
+                     holder.patternsItemBinding.textviewPatternType.context,
+                     R.color.text_new
+                 ))
+             )
+         } else if (position == 2) {
+             holder.patternsItemBinding.textviewPatternType.text = "EXPIRED"
+             holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                 (ContextCompat.getColor(
+                     holder.patternsItemBinding.textviewPatternType.context,
+                     R.color.text_expired
+                 ))
+             )
+         }else if (position == 3 ) {
+             holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
+         }else{
+             holder.patternsItemBinding.textviewPatternType.text = "NEW"
+             holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                 (ContextCompat.getColor(
+                     holder.patternsItemBinding.textviewPatternType.context,
+                     R.color.text_new
+                 ))
+             )
+         }*/
 
         } else { //Guest User
 
