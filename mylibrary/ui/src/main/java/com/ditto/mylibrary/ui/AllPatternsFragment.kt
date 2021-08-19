@@ -26,6 +26,7 @@ import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
@@ -64,13 +65,16 @@ class AllPatternsFragment(
         ).also {
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
+
         }
         return binding.root
+
     }
 
     @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        AndroidInjection.inject(requireActivity())
         setUIEvents()
         // setUpToolbar()
         setUpNavigationDrawer()
@@ -251,7 +255,7 @@ class AllPatternsFragment(
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                 findNavController().navigate(
-                    R.id.action_allPatternsFragment_to_patternDescriptionFragment,
+                    R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
                 )
             } else {
@@ -277,7 +281,7 @@ class AllPatternsFragment(
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                findNavController().navigate(R.id.action_fragments_to_search)
+                findNavController().navigate(R.id.action_mylibrary_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
 
@@ -427,18 +431,24 @@ class AllPatternsFragment(
 
     //public function for accesing from MyLibrary Fragment
     fun onFilterClick() {
-        Log.d("pattern", "onFilterClick : viewModel")
-        viewModel.onFilterClick()
+        if (viewModel != null) {
+            Log.d("pattern", "onFilterClick : viewModel")
+            viewModel.onFilterClick()
+        }
     }
 
     fun onSyncClick() {
-        Log.d("pattern", "onSyncClick : viewModel")
-        viewModel.onSyncClick()
+        if (viewModel != null) {
+            Log.d("pattern", "onSyncClick : viewModel")
+            viewModel.onSyncClick()
+        }
     }
 
     fun onSearchClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
-        viewModel.onSearchClick()
+        if (viewModel != null) {
+            Log.d("pattern", "onSearchClick : viewModel")
+            viewModel.onSearchClick()
+        }
     }
 
     interface SetPatternCount {
@@ -448,4 +458,6 @@ class AllPatternsFragment(
     interface setFilterIcons {
         fun onFilterApplied(isApplied: Boolean)
     }
+
+
 }

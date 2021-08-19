@@ -10,6 +10,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
@@ -17,30 +18,27 @@ import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
 import core.appstate.AppState
 import core.ui.BaseFragment
-import core.ui.BaseViewModel
 import core.ui.ViewModelDelegate
-import core.ui.ViewModelScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
 import kotlinx.android.synthetic.main.my_library_fragment.view.*
 import javax.inject.Inject
 
-class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount ,AllPatternsFragment.setFilterIcons{
+
+class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
+    AllPatternsFragment.setFilterIcons {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
-
-    val baseViewModel1: BaseViewModel by ViewModelDelegate(ViewModelScope.ACTIVITY)
-
     val logger: Logger by lazy {
         loggerFactory.create(MyLibraryFragment::class.java.simpleName)
     }
 
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
-    private lateinit var allPatternsFragment: AllPatternsFragment
-    private lateinit var myFolderFragment: MyFolderFragment
+    private var allPatternsFragment: AllPatternsFragment= AllPatternsFragment(this,this)
+    private var myFolderFragment: MyFolderFragment = MyFolderFragment()
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -59,13 +57,13 @@ class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount ,Al
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
-        setUIEvents()
-        setUpToolbar()
         setTabsAdapter()
+        setUpToolbar()
         toolbarViewModel.visibility.set(false)
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
+        setUIEvents()
 
     }
 
@@ -88,23 +86,23 @@ class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount ,Al
     }
 
     private fun setTabsAdapter() {
-        allPatternsFragment = AllPatternsFragment(this,this)
-        myFolderFragment = MyFolderFragment()
+       /* allPatternsFragment = AllPatternsFragment(this, this)
+        myFolderFragment = MyFolderFragment()*/
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
         adapter.addFragment(
             allPatternsFragment, getString(
                 R.string.all_patterns
-            ),this,this
+            ), this, this
         )
         adapter.addFragment(
             myFolderFragment, getString(
                 R.string.my_folders
-            ),this,this
+            ), this, this
         )
-        view_pager.adapter = adapter
-        tabLayout.setupWithViewPager(view_pager)
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.viewPager.adapter = adapter
+        binding.tabLayout.setupWithViewPager(view_pager)
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                 if (tab?.position == 0) {
@@ -131,17 +129,19 @@ class MyLibraryFragment : BaseFragment(),AllPatternsFragment.SetPatternCount ,Al
             }
             MyLibraryViewModel.Event.OnFilterClick -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
-                if (tabPosition == 0)
+                if (tabPosition == 0) {
+                    findNavController().currentDestination
                     allPatternsFragment.onFilterClick()
-                else {
+                } else {
 
                 }
             }
             MyLibraryViewModel.Event.OnSyncClick -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
-                if (tabPosition == 0)
+                if (tabPosition == 0) {
+
                     allPatternsFragment.onSyncClick()
-                else {
+                } else {
 
                 }
             }

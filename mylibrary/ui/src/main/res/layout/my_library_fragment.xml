@@ -192,7 +192,7 @@
             app:tabBackground="@android:color/white"
             app:tabIndicatorGravity="bottom"
             app:tabMode="fixed"
-            app:tabRippleColor="@null"
+            app:tabRippleColor="@android:color/transparent"
             app:tabMinWidth="@dimen/tab_min_width"
             app:tabPaddingEnd="@dimen/dimen_0"
             app:tabPaddingStart="@dimen/dimen_0"

@@ -15,18 +15,13 @@
         android:label="my_library_fragment"
         tools:layout="@layout/my_library_fragment">
         <action
-            android:id="@+id/action_fragments_to_search"
-            app:popUpTo="@id/allPatternsFragment"
+            android:id="@+id/action_mylibrary_to_search"
             app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
-            app:destination="@id/patternDescriptionFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            android:id="@+id/action_mylibrary_to_patternDescriptionFragment"
+            app:destination="@id/patternDescriptionFragment" />
         <action
-            android:id="@+id/action_fragments_to_customerCareFragment"
+            android:id="@+id/action_mylibray_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
     </fragment>
     <fragment
