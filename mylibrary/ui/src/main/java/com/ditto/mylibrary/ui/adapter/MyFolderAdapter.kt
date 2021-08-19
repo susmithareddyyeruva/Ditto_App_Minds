@@ -61,6 +61,8 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
                     R.color.owned_color
                 )
             )
+        }else{
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundResource(R.drawable.ic_mens_pant_desc_img)
         }
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
