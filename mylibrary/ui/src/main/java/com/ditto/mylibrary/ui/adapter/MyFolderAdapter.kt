@@ -62,7 +62,7 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
                 )
             )
         }else{
-            holder.itemSingleMyfolderBinding.imgBg.setBackgroundResource(R.drawable.ic_mens_pant_desc_img)
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundResource(R.drawable.ic_placeholder)
         }
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
