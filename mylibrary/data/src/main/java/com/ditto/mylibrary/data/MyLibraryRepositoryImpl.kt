@@ -133,11 +133,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun completeProject(patternId: Int): Single<Any> {
+    override fun completeProject(patternId: String): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun removePattern(patternId: Int): Single<Any> {
+    override fun removePattern(patternId: String): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

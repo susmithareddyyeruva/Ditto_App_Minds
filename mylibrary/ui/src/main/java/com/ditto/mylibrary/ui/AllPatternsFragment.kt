@@ -45,7 +45,7 @@ class AllPatternsFragment : BaseFragment(),
 
     private val viewModel: AllPatternsViewModel by ViewModelDelegate()
     lateinit var binding: AllPatternsFragmentBinding
-    private var patternId: Int = 0
+    private var patternId: String = "0"
     private val allPatternAdapter = AllPatternsAdapter()
     private var clickedMenu: String = ""
     var isLastPage: Boolean = false
@@ -271,7 +271,7 @@ class AllPatternsFragment : BaseFragment(),
 
         is AllPatternsViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                val bundle = bundleOf("clickedID" to viewModel.clickedIdS.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
                     bundle
@@ -392,7 +392,7 @@ class AllPatternsFragment : BaseFragment(),
         )
     }
 
-    private fun showPopupMenu(view: View, patternId: Int) {
+    private fun showPopupMenu(view: View, patternId: String) {
         this.patternId = patternId
         val popup = PopupMenu(requireContext(), view)
         val inflater: MenuInflater = popup.menuInflater

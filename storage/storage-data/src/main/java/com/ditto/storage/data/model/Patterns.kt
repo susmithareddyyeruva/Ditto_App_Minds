@@ -13,7 +13,7 @@ data class Patterns(
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("id")
-    var id: Int = 0,
+    var id: String,
     @ColumnInfo(name = "patternName")
     @SerializedName("patternName")
     var patternName: String = "",
@@ -44,6 +44,18 @@ data class Patterns(
     @ColumnInfo(name = "patternPieces")
     @SerializedName("patternPieces")
     var patternPieces: List<PatternPieces> = emptyList(),
+
+    @ColumnInfo(name = "numberOfCompletedPieces")
+    @SerializedName("numberOfCompletedPieces")
+    var numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
+
+    @ColumnInfo(name = "numberOfPieces")
+    @SerializedName("numberOfPieces")
+    var numberOfPieces:NumberOfCompletedPiecesOffline?,
+
+    @ColumnInfo(name="thumbnailImageName")
+    @SerializedName("thumbnailImageName")
+    var thumbnailImageName:String="",
     /*@ColumnInfo(name = "workspaceItems")
     @SerializedName("workspaceItems")
     var workspaceItems: MutableList<WorkspaceItems>? = ArrayList(),*/

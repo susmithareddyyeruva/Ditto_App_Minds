@@ -23,9 +23,10 @@ interface WorkspaceRepository {
         liningWorkspaceItems: List<WorkspaceItemDomain>,
         interfaceWorkspaceItem: List<WorkspaceItemDomain>
     ): Single<Any>
-    fun deleteAndInsert(id:Int, patternsData: PatternsData): Single<Any>
+    fun deleteAndInsert(id:String, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>
     fun getPatternDataByID(id:Int):Single<Result<PatternsData>>
+    fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
     fun getWorkspaceDataFromApi(): Single<Result<CTraceWorkSpacePatternDomain>>
     fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
     fun createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>

@@ -7,9 +7,9 @@ data class CTraceWorkSpacePattern(
     @SerializedName("tailornaovaDesignId")
     val tailornaovaDesignId: String? = "",
     @SerializedName("selectedTab")
-    val selectedTab: String? = "",
+    val selectedTab: String = "",
     @SerializedName("status")
-    val status: String? = "",
+    val status: String = "",
     @SerializedName("numberOfCompletedPieces")
     val numberOfCompletedPiece: NumberOfCompletedPiece?,
     @SerializedName("patternPieces")

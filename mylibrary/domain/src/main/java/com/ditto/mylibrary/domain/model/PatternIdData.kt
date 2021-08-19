@@ -4,14 +4,14 @@ package com.ditto.mylibrary.domain.model
 data class PatternIdData(
     val brand: String? ="",
     val customization: Boolean? = false,
-    val description: String? ="",
+    val description: String ="",
     val patternType: String? ="",
     val designId: String,
     val dressType: String? ="",
     val gender: String? ="",
     val instructionFileName: String? ="",
     val instructionUrl: String? ="",
-    val name: String? ="",
+    val name: String ="",
     val numberOfPieces: NumberOfPiecesData,
     val occasion: String? ="",
     val orderCreationDate: String? ="",
@@ -23,19 +23,19 @@ data class PatternIdData(
     val size: Int,
     val suitableFor: String? ="",
     val thumbnailEnlargedImageName: String? ="",
-    val thumbnailImageName: String? ="",
-    val thumbnailImageUrl: String? =""
+    val thumbnailImageName: String ="",
+    val thumbnailImageUrl: String =""
 )
 
 data class NumberOfPiecesData(
-    val garment: Int,
-    val `interface`: Int,
-    val lining: Int
+    val garment: Int?,
+    val `interface`: Int?,
+    val lining: Int?
 )
 
 data class PatternPieceData(
     val cutOnFold: Boolean,
-    val cutQuantity: String? ="",
+    val cutQuantity: String ="",
     val description: String? ="",
     val id: Int,
     val imageName: String? ="",

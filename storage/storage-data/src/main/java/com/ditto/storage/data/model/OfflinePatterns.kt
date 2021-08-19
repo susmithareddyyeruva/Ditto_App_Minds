@@ -7,13 +7,13 @@ import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "offline_pattern_data")
-data class OfflinePatternData(
+data class OfflinePatterns(
 
     //getWorkspace data response
 
     @ColumnInfo(name="tailornaovaDesignId")
     @SerializedName("tailornaovaDesignId")
-    var tailornaovaDesignId: String? = "",
+    var tailornaovaDesignId: String,
 
     @ColumnInfo(name="selectedTab")
     @SerializedName("selectedTab")
@@ -33,15 +33,15 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "garmetWorkspaceItems")
     @SerializedName("garmetWorkspaceItems")
-    var garmetWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList(),
+    var garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
     @ColumnInfo(name = "liningWorkspaceItems")
     @SerializedName("liningWorkspaceItems")
-    var liningWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList(),
+    var liningWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
     @ColumnInfo(name = "interfaceWorkspaceItems")
     @SerializedName("interfaceWorkspaceItems")
-    var interfaceWorkspaceItemOfflines: List<WorkspaceItemOffline> = emptyList(),
+    var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
     // tailernova response
     @PrimaryKey
@@ -52,11 +52,11 @@ data class OfflinePatternData(
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
-    var name:String?="",
+    var name:String ="",
 
     @ColumnInfo(name = "description")
     @SerializedName("description")
-    var description:String?="",
+    var description:String="",
 
     @ColumnInfo(name = "patternType")
     @SerializedName("patternType")
@@ -84,11 +84,11 @@ data class OfflinePatternData(
 
     @ColumnInfo(name="thumbnailImageUrl")
     @SerializedName("thumbnailImageUrl")
-    var thumbnailImageUrl:String?="",
+    var thumbnailImageUrl:String="",
 
     @ColumnInfo(name="thumbnailImageName")
     @SerializedName("thumbnailImageName")
-    var thumbnailImageName:String?="",
+    var thumbnailImageName:String="",
 
     @ColumnInfo(name="thumbnailEnlargedImageName")
     @SerializedName("thumbnailEnlargedImageName")

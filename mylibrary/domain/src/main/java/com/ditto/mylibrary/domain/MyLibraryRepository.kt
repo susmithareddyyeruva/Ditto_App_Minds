@@ -16,8 +16,8 @@ interface MyLibraryRepository {
     fun getMyLibraryData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getUserData(): Single<Result<LoginUser>>
     fun getPatternData(get:String): Single<Result<PatternIdData>>
-    fun completeProject(patternId:Int): Single<Any>
-    fun removePattern(patternId: Int): Single<Any>
+    fun completeProject(patternId:String): Single<Any>
+    fun removePattern(patternId: String): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
 
 

@@ -4,17 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ditto.storage.data.model.NumberOfCompletedPiecesOffline
-import com.ditto.storage.data.model.OfflinePatternData
-import com.ditto.storage.data.model.PatternPiecesOffline
-import com.ditto.storage.data.model.WorkspaceItemOffline
+import com.ditto.storage.data.model.*
 
 @Dao
 abstract class OfflinePatternDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertOfflinePatternData(offlinePatternData: OfflinePatternData): Long
+    abstract fun insertOfflinePatternData(offlinePatterns: OfflinePatterns): Long
 
+
+    @Query("SELECT * FROM offline_pattern_data WHERE tailornaovaDesignId = :id")
+    abstract fun getTailernovaDataByID(id: String): OfflinePatterns
     //updateing where tairlnova id == 1
 
     @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPieces = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItem WHERE tailornaovaDesignId = :tailornaovaDesignId")

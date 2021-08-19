@@ -28,11 +28,11 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getPatternData(get)
     }
 
-    override fun removeProject(patternId: Int): Single<Any> {
+    override fun removeProject(patternId: String): Single<Any> {
         return myLibraryRepository.removePattern(patternId)
     }
 
-    override fun completeProject(patternId: Int): Single<Any> {
+    override fun completeProject(patternId: String): Single<Any> {
         return myLibraryRepository.completeProject(patternId)
     }
 

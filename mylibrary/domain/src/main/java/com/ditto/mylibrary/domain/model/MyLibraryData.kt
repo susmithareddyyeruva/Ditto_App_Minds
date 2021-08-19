@@ -6,13 +6,14 @@ import com.ditto.storage.data.model.Selvages
 import com.ditto.storage.data.model.WorkspaceItems
 
 data class MyLibraryData(
-    val id: Int,
+    val id: String,
     var patternName: String,
     val description: String,
     val totalPieces: Int,
     val completedPieces: Int,
     val status: String,
     var thumbnailImagePath: String,
+    var thumbnailImageName: String,
     var descriptionImages: List<DescriptionImages>,
     var selvages: List<Selvages>,
     var patternPieces: List<PatternPieces>,

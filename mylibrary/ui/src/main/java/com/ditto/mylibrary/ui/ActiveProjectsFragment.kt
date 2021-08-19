@@ -35,7 +35,7 @@ class ActiveProjectsFragment : BaseFragment() {
 
     private val viewModel: AllPatternsViewModel by ViewModelDelegate()
     lateinit var binding: ActiveProjectsFragmentBinding
-    private var patternId: Int = 0
+    private var patternId: String = "0"
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -88,7 +88,7 @@ class ActiveProjectsFragment : BaseFragment() {
 
             is AllPatternsViewModel.Event.OnItemClick -> {
                 if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                    val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                    val bundle = bundleOf("clickedID" to viewModel.clickedIdS.get())
                     findNavController().navigate(
                         R.id.action_allPatternsFragment_to_patternDescriptionFragment,
                         bundle
@@ -117,7 +117,7 @@ class ActiveProjectsFragment : BaseFragment() {
             }
         }
 
-    private fun showPopupMenu(view: View, patternId: Int) {
+    private fun showPopupMenu(view: View, patternId: String) {
         this.patternId = patternId
         val popup = PopupMenu(requireContext(), view)
         val inflater: MenuInflater = popup.menuInflater

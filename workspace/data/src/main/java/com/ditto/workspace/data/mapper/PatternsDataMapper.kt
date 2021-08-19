@@ -1,6 +1,8 @@
 package com.ditto.workspace.data.mapper
 
 import com.ditto.storage.data.model.*
+import com.ditto.workspace.domain.model.NumberOfCompletedPieceDomain
+import com.ditto.workspace.domain.model.NumberOfPieces
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
@@ -16,6 +18,9 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             selectedTab = it.selectedTab,
             status = it.status,
             thumbnailImagePath = it.thumbnailImagePath,
+            thumbnailImageName=it.thumbnailImageName,
+            numberOfCompletedPieces = it.numberOfCompletedPieces?.toDomainn(),
+            totalNumberOfPieces=it.numberOfPieces?.toDomainn(),
             descriptionImages = it.descriptionImages.map { it.toDomain() },
             selvages = it.selvages.map { it.toDomain() },
             patternPieces = it.patternPieces.map { it.toDomain() },
@@ -38,6 +43,9 @@ internal fun Patterns.toDomain(): PatternsData {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
+        thumbnailImageName=this.thumbnailImageName,
+        numberOfCompletedPieces = this.numberOfCompletedPieces?.toDomainn(),
+        totalNumberOfPieces=this.numberOfPieces?.toDomainn(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
@@ -46,7 +54,6 @@ internal fun Patterns.toDomain(): PatternsData {
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
     )
 }
-
 
 internal fun DescriptionImages.toDomain(): com.ditto.workspace.domain.model.DescriptionImages {
     return com.ditto.workspace.domain.model.DescriptionImages(
@@ -61,7 +68,8 @@ internal fun SpliceImages.toDomain(): com.ditto.workspace.domain.model.SpliceIma
         row = this.row,
         column = this.column,
         reference_splice = this.reference_splice,
-        imagePath = this.imagePath
+        imagePath = this.imagePath,
+        imageName = this.imagePath
     )
 }
 
@@ -113,7 +121,7 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         splice = this.splice,
         spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.mirrorOption,
         xcoordinate = this.xcoordinate,
@@ -140,6 +148,8 @@ internal fun PatternsData.toDomain(): Patterns {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
+        numberOfCompletedPieces= this.numberOfCompletedPieces?.toDomainn(),
+        numberOfPieces= this.totalNumberOfPieces?.toDomainn(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
@@ -149,6 +159,21 @@ internal fun PatternsData.toDomain(): Patterns {
     )
 }
 
+fun NumberOfCompletedPiecesOffline.toDomainn(): NumberOfCompletedPieceDomain {
+    return NumberOfCompletedPieceDomain(
+        garment=this.garment,
+        lining=this.lining,
+        `interface` = this.`interface`
+    )
+}
+
+fun NumberOfCompletedPieceDomain.toDomainn(): NumberOfCompletedPiecesOffline {
+    return NumberOfCompletedPiecesOffline(
+        garment=this.garment,
+        lining=this.lining,
+        `interface` = this.`interface`
+    )
+}
 
 internal fun com.ditto.workspace.domain.model.DescriptionImages.toDomain(): DescriptionImages {
     return DescriptionImages(
@@ -215,7 +240,7 @@ internal fun com.ditto.workspace.domain.model.WorkspaceItems.toDomain(): Workspa
         splice = this.splice,
         spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.mirrorOption,
         xcoordinate = this.xcoordinate,
@@ -231,8 +256,3 @@ internal fun com.ditto.workspace.domain.model.WorkspaceItems.toDomain(): Workspa
         currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
-
-
-
-
-

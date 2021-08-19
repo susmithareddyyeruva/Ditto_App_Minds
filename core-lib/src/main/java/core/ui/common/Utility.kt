@@ -303,18 +303,18 @@ class Utility @Inject constructor(
             )
         }
 
-        fun setSharedPref(context: Context, id: Int) {
+        fun setSharedPref(context: Context, id: String) {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
             var editor = sharedPreference.edit()
-            editor.putInt("PATTERN_ID", id)
+            editor.putString("PATTERN_ID", id)
             editor.commit()
         }
 
-        fun getSharedPref(context: Context): Int {
+        fun getSharedPref(context: Context): String? {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
-            return sharedPreference.getInt("PATTERN_ID", 0)
+            return sharedPreference.getString("PATTERN_ID", "")
         }
 
         fun getOutputDirectory(context: Context): File {

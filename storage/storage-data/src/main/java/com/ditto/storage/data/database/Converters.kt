@@ -75,7 +75,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun stringToWorkspaceItemsList(data: String?): List<WorkspaceItems> {
+    fun stringToWorkspaceItemsList(data: String?): List<WorkspaceItems>? {
         if (data == null) {
             return emptyList()
         }
@@ -148,7 +148,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun workspaceItemsListToString(someObjects: List<WorkspaceItems>): String {
+    fun workspaceItemsListToString(someObjects: List<WorkspaceItems>?): String? {
         return Gson().toJson(someObjects)
     }
 

@@ -1,6 +1,6 @@
 package com.ditto.workspace.data.mapper
 
-import com.ditto.storage.data.model.OfflinePatternData
+import com.ditto.storage.data.model.*
 import com.ditto.workspace.data.model.*
 import com.ditto.workspace.domain.model.*
 
@@ -32,7 +32,7 @@ fun NumberOfCompletedPiece.toDomain(): NumberOfCompletedPieceDomain {
     return NumberOfCompletedPieceDomain(
         garment = this.garment,
         lining = this.lining,
-        interfacee = this.interfacee
+        `interface` = this.`interface`
     )
 }
 
@@ -87,7 +87,7 @@ fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
     )
 }*/
 
-fun OfflinePatternData.toDomain(): WorkspaceDataAPI {
+fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
     return WorkspaceDataAPI(
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
@@ -98,8 +98,6 @@ fun OfflinePatternData.toDomain(): WorkspaceDataAPI {
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
         interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }
     )
-
-
 }
 
 
@@ -169,5 +167,154 @@ fun WorkspaceItemDomain.toDomain(): com.ditto.storage.data.model.WorkspaceItemOf
         isMirrorV = this.isMirrorV,
         showMirrorDialog = this.showMirrorDialog,
         currentSplicedPieceNo = this.currentSplicedPieceNo,
+    )
+}
+
+//OfflinePatterns(DB table)>>OfflinePatternData(model)
+fun OfflinePatterns.toDomainn(): OfflinePatternData {
+    return OfflinePatternData(
+        tailornaovaDesignId = this.tailornaovaDesignId,
+        selectedTab = this.selectedTab,
+        status = this.status,
+        numberOfCompletedPieces = this.numberOfCompletedPieces.toDomainOfflinePicecs(),
+        patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain1() },
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain1() }
+            .toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain1() }
+            .toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
+            ?.toMutableList(),
+        id = this.id,
+        name = this.name,
+        description = this.description,
+        patternType = this.patternType,
+        numberOfPieces = this.numberOfCompletedPieces.toDomainOfflinePicecs(),
+        orderModificationDate = this.orderModificationDate,
+        orderCreationDate = this.orderCreationDate,
+        instructionFileName = this.instructionFileName,
+        instructionUrl = this.instructionUrl,
+        thumbnailImageUrl = this.thumbnailImageUrl,
+        thumbnailImageName = this.thumbnailImageName,
+        thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
+        patternDescriptionImageUrl = this.patternDescriptionImageUrl,
+        selvages = this.selvages.map { it.toDomainStorage() },
+        patternPieces = this.patternPieces.map { it.toDomainn() },
+        brand = this.brand,
+        size = this.size,
+        gender = this.gender,
+        customization = this.customization,
+        dressType = this.dressType,
+        suitableFor = this.suitableFor,
+        occasion = this.occasion
+    )
+}
+
+fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
+    return PatternPieceData(
+        cutOnFold = this.cutOnFold,
+        cutQuantity = this.cutQuantity,
+        description = this.description,
+        id = this.id,
+        imageName = this.imageName,
+        imageUrl = this.imageUrl,
+        isSpliced = this.isSpliced,
+        pieceNumber = this.pieceNumber,
+        positionInTab = this.positionInTab,
+        size = this.size,
+        spliceDirection = this.spliceDirection,
+        spliceScreenQuantity = this.spliceScreenQuantity,
+        splicedImages = this.splicedImages.map { it.toDomain() },
+        tabCategory = this.tabCategory
+    )
+}
+
+fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
+    return PatternPieceDataDomain(
+        cutOnFold = this.cutOnFold,
+        cutQuantity = this.cutQuantity,
+        description = this.description,
+        id = this.id,
+        imageName = this.imageName,
+        imageUrl = this.imageUrl,
+        isSpliced = this.isSpliced,
+        pieceNumber = this.pieceNumber,
+        positionInTab = this.positionInTab,
+        size = this.size,
+        view=this.view,
+        spliceDirection = this.spliceDirection,
+        spliceScreenQuantity = this.spliceScreenQuantity,
+        splicedImages = this.splicedImages.map { it.toDomain() },
+        tabCategory = this.tabCategory
+    )
+}
+
+fun SplicedImageData.toDomain(): SplicedImageDomain {
+    return SplicedImageDomain(
+        column = this.column,
+        designId = this.designId,
+        id = this.id,
+        imageName = this.imageName,
+        imageUrl
+        = this.imageUrl,
+        mapImageName = this.mapImageName,
+        pieceId = this.pieceId,
+        row = this.row
+    )
+}
+fun SplicedImageDomain.toDomain(): SplicedImageData {
+    return SplicedImageData(
+        column = this.column,
+        designId = this.designId,
+        id = this.id,
+        imageName = this.imageName,
+        imageUrl
+        = this.imageUrl,
+        mapImageName = this.mapImageName,
+        pieceId = this.pieceId,
+        row = this.row
+    )
+}
+
+fun SelvageData.toDomainStorage(): SelvageDomain {
+    return SelvageDomain(
+        fabricLength = this.fabricLength,
+        id = this.id,
+        imageName = this.imageName,
+        imageUrl = this.imageUrl,
+        tabCategory = this.tabCategory
+    )
+}
+
+fun WorkspaceItemOffline.toDomain1(): WorkspaceItemOfflineDomain {
+    return WorkspaceItemOfflineDomain(
+        id = this.id,
+        patternPiecesId = this.patternPiecesId,
+        isCompleted = this.isCompleted,
+        xcoordinate = this.xcoordinate,
+        ycoordinate = this.ycoordinate,
+        pivotX = this.pivotX,
+        pivotY = this.pivotY,
+        transformA = this.transformA,
+        transformD = this.transformD,
+        rotationAngle = this.rotationAngle,
+        isMirrorV = this.isMirrorV,
+        isMirrorH = this.isMirrorH,
+        showMirrorDialog = this.showMirrorDialog,
+        currentSplicedPieceNo = this.currentSplicedPieceNo
+    )
+}
+
+fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): NumberOfCompletedPieceDomain {
+    return NumberOfCompletedPieceDomain(
+        garment = this.garment,
+        lining = this.lining,
+        `interface` = this.`interface`
+    )
+}
+
+fun PatternPiecesOffline.toDomain1(): PatternPiecesOfflineDomain {
+    return PatternPiecesOfflineDomain(
+        id = this.id,
+        isCompleted = this.isCompleted
     )
 }

@@ -37,6 +37,7 @@ class AllPatternsViewModel @Inject constructor(
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
+    var clickedIdS: ObservableField<String> = ObservableField("")//todo
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -131,20 +132,20 @@ class AllPatternsViewModel @Inject constructor(
 
     }
 
-    fun onItemClick(id: Int) {
-        clickedId.set(id)
+    fun onItemClick(id: String) {
+        clickedIdS.set(id)
         uiEvents.post(Event.OnItemClick)
     }
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
-            clickedId.set(1)
+            clickedIdS.set("1")
         } else if (id == "10544781") {
-            clickedId.set(2)
+            clickedIdS.set("2")
         } else if (id == "10140606") {
-            clickedId.set(3)
+            clickedIdS.set("3")
         } else {
-            clickedId.set(4)
+            clickedIdS.set("4")
         }
         uiEvents.post(Event.OnItemClick)
     }
@@ -153,7 +154,7 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnAddProjectClick)
     }
 
-    fun onOptionsClicked(view: View, patternId: Int) {
+    fun onOptionsClicked(view: View, patternId: String) {
         uiEvents.post(
             Event.OnOptionsClicked(
                 view,
@@ -162,7 +163,7 @@ class AllPatternsViewModel @Inject constructor(
         )
     }
 
-    fun updateProjectComplete(patternId: Int) {
+    fun updateProjectComplete(patternId: String) {
         disposable += getPatternsData.completeProject(patternId)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -170,7 +171,7 @@ class AllPatternsViewModel @Inject constructor(
             .subscribeBy { uiEvents.post(Event.OnDataUpdated) }
     }
 
-    fun removePattern(patternId: Int) {
+    fun removePattern(patternId: String) {
         Log.d("pattern", "Removed")
     }
 
@@ -204,7 +205,7 @@ class AllPatternsViewModel @Inject constructor(
 
         class OnOptionsClicked(
             val view: View,
-            val patternId: Int
+            val patternId: String
         ) : Event()
 
         object OnFilterClick : Event()

@@ -4,25 +4,25 @@ import com.google.gson.annotations.SerializedName
 
 data class WorkspaceItem(
     @SerializedName("id")
-    val id: Int? = 0,
+    val id: Int = 0,
     @SerializedName("patternPiecesId")
-    val patternPiecesId: Int? = 0,
+    val patternPiecesId: Int = 0,
     @SerializedName("isCompleted")
     val isCompleted: String? = "",
     @SerializedName("xcoordinate")
-    val xcoordinate: String? = "",
+    val xcoordinate: String = "",
     @SerializedName("ycoordinate")
-    val ycoordinate: String? = "",
+    val ycoordinate: String = "",
     @SerializedName("pivotX")
-    val pivotX: String? = "",
+    val pivotX: String = "",
     @SerializedName("pivotY")
-    val pivotY: String? = "",
+    val pivotY: String = "",
     @SerializedName("transformA")
     val transformA: String? = "",
     @SerializedName("transformD")
     val transformD: String? = "",
     @SerializedName("rotationAngle")
-    val rotationAngle: String? = "",
+    val rotationAngle: String = "",
     @SerializedName("isMirrorH")
     val isMirrorH: String? = "",
     @SerializedName("isMirrorV")

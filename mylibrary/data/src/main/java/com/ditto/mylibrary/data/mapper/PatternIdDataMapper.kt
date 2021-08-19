@@ -3,7 +3,7 @@ package com.ditto.mylibrary.data.mapper
 import com.ditto.mylibrary.domain.model.NumberOfPiecesData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.SplicedImageData
-import com.ditto.storage.data.model.OfflinePatternData
+import com.ditto.storage.data.model.OfflinePatterns
 import com.ditto.storage.data.model.PatternPieceData
 import com.ditto.storage.data.model.SelvageData
 
@@ -18,8 +18,8 @@ internal fun PatternIdResponse.toDomain() : PatternIdData{
 
 //PatternIdData>>OfflinePatternData
 
-internal fun PatternIdData.toDomain(): OfflinePatternData {
-    return OfflinePatternData(
+internal fun PatternIdData.toDomain(): OfflinePatterns {
+    return OfflinePatterns(
         id = this.designId,
         tailornaovaDesignId = this.designId,
         name = this.name,

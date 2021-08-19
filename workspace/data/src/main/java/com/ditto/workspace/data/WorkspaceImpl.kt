@@ -42,11 +42,15 @@ class WorkspaceImpl @Inject constructor(
         return workspaceRepository.getPatternDataByID(id)
     }
 
+    override fun getTailernovaDataByID(id: String): Single<Result<OfflinePatternData>> {
+        return workspaceRepository.getTailernovaDataByID(id)
+    }
+
     override fun getUserDetails(): Single<Result<LoginUser>> {
         return workspaceRepository.getUserData()
     }
 
-    override fun deleteAndInsert(id: Int, patternsData: PatternsData): Single<Any> {
+    override fun deleteAndInsert(id: String, patternsData: PatternsData): Single<Any> {
         return workspaceRepository.deleteAndInsert(id, patternsData)
     }
 

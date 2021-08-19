@@ -10,10 +10,9 @@ import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.workspace.data.api.GetWorkspaceService
-import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
-import com.ditto.workspace.data.error.GetWorkspaceApiResponseFetchError
-import com.ditto.workspace.data.error.UpdateWorkspaceApiFetchError
+import com.ditto.workspace.data.error.*
 import com.ditto.workspace.data.mapper.toDomain
+import com.ditto.workspace.data.mapper.toDomainn
 import com.ditto.workspace.data.model.WSInputData
 import com.ditto.workspace.domain.WorkspaceRepository
 import com.ditto.workspace.domain.model.*
@@ -85,7 +84,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteAndInsert(id: Int, patternsData: PatternsData): Single<Any> {
+    override fun deleteAndInsert(id: String, patternsData: PatternsData): Single<Any> {
         return Single.fromCallable {
             patternsDao.deletePatternsData(id)
         }.flatMap { patternsDao.insertPatternsData(patternsData.toDomain()) }
@@ -108,7 +107,18 @@ class WorkspaceRepositoryImpl @Inject constructor(
             if(patternsData!= null)
                 Result.withValue(patternsData.toDomain())
             else
-                Result.withError(GetWorkspaceApiFetchError(""))
+                Result.withError(GetPatternDataError(""))
+        }
+    }
+
+    override fun getTailernovaDataByID(id: String): Single<Result<OfflinePatternData>> {
+        return Single.fromCallable{
+
+            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id)
+            if(offlinePatternData != null)
+                Result.withValue(offlinePatternData.toDomainn())
+            else
+                Result.withError(GetOfflinePatternDataError(""))
         }
     }
 
