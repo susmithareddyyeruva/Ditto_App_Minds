@@ -117,19 +117,19 @@ class MyLibraryViewModel @Inject constructor(
 
     fun getList(): List<MyFolderData> {
         val list = listOf<MyFolderData>(
-            MyFolderData("",
+            MyFolderData(R.drawable.ic_newfolder,
                 "Add Folder",
                 false
             ),
-            MyFolderData("",
+            MyFolderData(R.drawable.ic_owned,
                 "Owned",
                 false
             ),
-            MyFolderData("",
+            MyFolderData(0,
                 "Favorites",
-                false
+                true
             ),
-            MyFolderData("",
+            MyFolderData(0,
                 "Emma's Patterns",
                 true
             )

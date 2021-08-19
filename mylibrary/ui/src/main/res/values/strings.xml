@@ -63,5 +63,7 @@
     <string name="myfolder">My Folders</string>
     <string name="rename_folder">Rename folder</string>
     <string name="delete_folder">Delete folder</string>
+    <string name="addfolder">Add Folder</string>
+    <string name="owned">Owned</string>
 
 </resources>

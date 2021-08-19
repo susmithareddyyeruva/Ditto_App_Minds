@@ -4,10 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.ditto.mylibrary.domain.model.MyFolderData
 import com.ditto.mylibrary.ui.MyLibraryViewModel
+import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemSingleMyfolderBinding
 
 class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
@@ -15,6 +16,7 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
     lateinit var viewModel: MyLibraryViewModel
     private var items: List<MyFolderData>? = data
     private var inflater: LayoutInflater = LayoutInflater.from(context)
+    private var clickedPostion = -1
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,30 +34,48 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
 
     override fun onBindViewHolder(holder: MyFolderHolder, position: Int) {
         holder.itemSingleMyfolderBinding.viewModel = viewModel
-        Glide.with(holder.itemSingleMyfolderBinding?.imgBg.context)
-            .load(items?.get(position)?.url)
-            .placeholder(com.ditto.mylibrary.ui.R.drawable.ic_placeholder)
-            .into(holder.itemSingleMyfolderBinding.imgBg)
+        holder.itemSingleMyfolderBinding.data = items?.get(position)
+        val data = items?.get(position)
+        /*  Glide.with(holder.itemSingleMyfolderBinding?.itemImage.context)
+              .load(items?.get(position)?.url)
+              .placeholder(com.ditto.mylibrary.ui.R.drawable.ic_placeholder)
+              .into(holder.itemSingleMyfolderBinding.itemImage)*/
 
-        holder.itemSingleMyfolderBinding.prodName.text = items?.get(position)?.title
-        /*      if (items?.get(position)?.isAction == true){
-                  holder.itemSingleMyfolderBinding.proAction.visibility=View.VISIBLE
-              }else
-                  holder.itemSingleMyfolderBinding.proAction.visibility=View.GONE*/
+        holder.itemSingleMyfolderBinding.prodName.text = data?.title
+        if (data?.url != 0) {
+            holder.itemSingleMyfolderBinding.itemImage.setImageResource(
+                data?.url ?: 0
+            )
+        }
+        if (position == 0) {
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemSingleMyfolderBinding.imgBg.context,
+                    R.color.add_folder_color
+                )
+            )
+        } else if (position == 1) {
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemSingleMyfolderBinding.imgBg.context,
+                    R.color.owned_color
+                )
+            )
+        }
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
-            items?.get(position)?.isAction=!(items?.get(position)?.isAction?:false)
-            if (items?.get(position)?.isAction == true) {
-
-                holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.VISIBLE
-            } else {
-                holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
-            }
-
+            //  data?.isAction = !(data?.isAction ?: false)
+            clickedPostion = position
+            data?.clicked = clickedPostion == position
+            notifyDataSetChanged()
         }
-        holder.itemSingleMyfolderBinding.imgIcon.setOnClickListener {
+        if (clickedPostion!=position){
+            data?.clicked=false
+        }
+        holder.itemSingleMyfolderBinding.imgIconClose.setOnClickListener {
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
         }
+
 
     }
 

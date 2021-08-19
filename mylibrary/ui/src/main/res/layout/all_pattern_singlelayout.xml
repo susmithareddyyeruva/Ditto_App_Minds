@@ -27,10 +27,10 @@
 
         <ImageView
             android:id="@+id/likeImage"
-            android:layout_width="@dimen/sync_width"
-            android:layout_height="@dimen/sync_width"
-            android:layout_margin="@dimen/dimen_15"
-            android:src="@drawable/heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/like_btn_margin"
+            android:src="@drawable/ic_fav_bgred"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -96,14 +96,13 @@
 
             <ImageView
                 android:id="@+id/imageAdd"
-                android:layout_width="@dimen/sync_height"
-                android:layout_height="@dimen/sync_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/small_padding"
                 android:layout_centerVertical="true"
-                android:backgroundTint="@color/app_red"
                 android:gravity="center_vertical"
-                android:src="@android:drawable/ic_menu_add" />
+                android:src="@drawable/ic_addicon" />
 
 
         </RelativeLayout>

@@ -10,9 +10,13 @@
             type="com.ditto.mylibrary.ui.MyLibraryViewModel" />
 
         <variable
-            name="product"
-            type="com.ditto.mylibrary.domain.model.MyFolderData" />
+            name="position"
+            type="Integer" />
 
+        <variable
+            name="data"
+            type="com.ditto.mylibrary.domain.model.MyFolderData" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +32,7 @@
             android:id="@+id/imgBg"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:src="@drawable/ic_placeholder"
+            android:background="#FAFAFA"
             app:layout_constraintBottom_toTopOf="@+id/linear_layout_title"
             app:layout_constraintDimensionRatio="157:121"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,13 +40,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/itemImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_newfolder">
+
+        </ImageView>
+
 
         <FrameLayout
             android:id="@+id/layoutDialog"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/large_paddingxx"
-            android:visibility="gone"
+            android:visibility="@{data.clicked? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/imgBg"
             app:layout_constraintEnd_toEndOf="@id/imgBg"
             app:layout_constraintStart_toStartOf="@id/imgBg"
@@ -56,55 +72,56 @@
                 android:background="@color/white">
 
                 <ImageView
-                    android:id="@+id/img_icon"
-                    android:layout_width="@dimen/sync_width"
-                    android:layout_height="@dimen/sync_width"
+                    android:id="@+id/img_iconClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/medium_padding"
+                    android:layout_marginTop="@dimen/close_icon_bottom"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="@dimen/medium_padding"
-                    android:src="@drawable/ic_close"
+                    android:padding="@dimen/padding_9"
+                    android:src="@drawable/ic_close_black"
                     app:tint="@android:color/black" />
 
                 <ImageView
                     android:id="@+id/imgRename"
-                    android:layout_width="@dimen/sync_width"
-                    android:layout_height="@dimen/sync_width"
-                    android:layout_below="@+id/img_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_iconClose"
                     android:layout_alignBottom="@+id/renameText"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/medium_padding"
+                    android:layout_marginStart="@dimen/icon_padding_start"
                     android:baselineAlignBottom="true"
-                    android:src="@drawable/ic_home_black_24dp" />
+                    android:src="@drawable/ic_edit" />
 
                 <TextView
                     android:id="@+id/renameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_icon"
-                    android:layout_marginStart="@dimen/small_padding"
+                    android:layout_below="@+id/img_iconClose"
+                    android:layout_marginStart="@dimen/text_paddind_start"
                     android:layout_toEndOf="@+id/imgRename"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="center"
                     android:lineSpacingExtra="3dp"
                     android:text="@string/rename_folder"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/size_12px">
 
                 </TextView>
 
                 <ImageView
                     android:id="@+id/imgDelete"
-                    android:layout_width="@dimen/sync_width"
-                    android:layout_height="@dimen/sync_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/renameText"
                     android:layout_alignBottom="@+id/deleteText"
                     android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/icon_padding_start"
+                    android:layout_marginTop="@dimen/text_margin_between"
                     android:baselineAlignBottom="true"
-                    android:layout_marginStart="@dimen/medium_padding"
-                    android:layout_marginTop="@dimen/large_padding"
-                    android:src="@drawable/ic_home_black_24dp"
+                    android:src="@drawable/ic_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -114,15 +131,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/renameText"
-                    android:layout_marginStart="@dimen/small_padding"
-                    android:layout_marginTop="@dimen/large_padding"
-                    android:layout_marginBottom="@dimen/large_padding"
+                    android:layout_marginStart="@dimen/text_paddind_start"
+                    android:layout_marginTop="@dimen/text_margin_between"
+                    android:layout_marginBottom="@dimen/text_delete_margin_bottom"
                     android:layout_toEndOf="@+id/imgDelete"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="center"
                     android:lineSpacingExtra="3dp"
                     android:text="@string/delete_folder"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/size_12px"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -134,13 +151,11 @@
 
         </FrameLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linear_layout_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:weightSum="10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent=".12"
@@ -151,30 +166,28 @@
                 android:id="@+id/prodName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="8"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/padding_small_3"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
-                android:gravity="center|left"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_14sp"
                 tools:text="Owned" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/proAction"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:fontFamily="@font/avenir_next_it_pro_bold"
-                android:gravity="center_vertical|right"
-                android:singleLine="true"
-                android:text="\u2022 \u2022 \u2022"
-                android:textColor="@color/black"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_dot"
+                android:visibility="@{data.isAction ? View.VISIBLE : View.GONE}"
+                android:paddingEnd="@dimen/padding_small_3"
                 android:textSize="@dimen/size_14sp" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
