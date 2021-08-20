@@ -190,7 +190,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 .load(imagePath)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_placeholder)
                 .imageDecoder(SvgBitmapDecoder(context))
                 .into(imageView)
 
@@ -200,7 +200,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 .load(imagePath)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_placeholder)
                 .into(imageView)
         } else {
              imageView.setImageDrawable(

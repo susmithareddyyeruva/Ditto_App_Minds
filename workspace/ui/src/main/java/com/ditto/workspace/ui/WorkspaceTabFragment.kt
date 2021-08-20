@@ -59,10 +59,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -464,10 +461,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
                     logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage.imagePath}")
                     selvage.imagePath.let {
-                       /* binding.imageSelvageHorizontal.setImageDrawable(
-                            getDrawableFromString(context, it)
-                        )*/
-                        getBitmapFromSvgPngDrawable(selvage.imagePath,binding.imageSelvageHorizontal.context,binding.imageSelvageHorizontal)
+                        /* binding.imageSelvageHorizontal.setImageDrawable(
+                             getDrawableFromString(context, it)
+                         )*/
+                        getBitmapFromSvgPngDrawable(
+                            selvage.imagePath,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
 
                     }
                     viewModel.clickedSize45.set(true)
@@ -477,10 +478,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (viewModel.clickedSize60.get()) {
                     val selvage = garments.filter { it.fabricLength == "60" }[0]
                     selvage.imagePath.let {
-                       /* binding.imageSelvageHorizontal.setImageDrawable(
-                            getDrawableFromString(context, it)
-                        )*/
-                        getBitmapFromSvgPngDrawable(selvage.imagePath,binding.imageSelvageHorizontal.context,binding.imageSelvageHorizontal)
+                        /* binding.imageSelvageHorizontal.setImageDrawable(
+                             getDrawableFromString(context, it)
+                         )*/
+                        getBitmapFromSvgPngDrawable(
+                            selvage.imagePath,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
 
                     }
                     viewModel.clickedSize45.set(false)
@@ -501,7 +506,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     binding.imageSelvageHorizontal.setImageDrawable(
                         getDrawableFromString(context, it)
                     )
-                    getBitmapFromSvgPngDrawable(garments[0].imagePath,binding.imageSelvageHorizontal.context,binding.imageSelvageHorizontal)
+                    getBitmapFromSvgPngDrawable(
+                        garments[0].imagePath,
+                        binding.imageSelvageHorizontal.context,
+                        binding.imageSelvageHorizontal
+                    )
                 }
                 viewModel.referenceImage.set(garments[0].imagePath)
             }
@@ -524,7 +533,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
 */
 
-                getBitmapFromSvgPngDrawable(lining?.get(0)?.imagePath,binding.imageSelvageHorizontal.context,binding.imageSelvageHorizontal)
+                getBitmapFromSvgPngDrawable(
+                    lining?.get(0)?.imagePath,
+                    binding.imageSelvageHorizontal.context,
+                    binding.imageSelvageHorizontal
+                )
 
             }
             binding.txtSize45.isEnabled = lining?.get(0)?.fabricLength == "45"
@@ -555,7 +568,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     getDrawableFromString(context, it)
                 )*/
 
-                getBitmapFromSvgPngDrawable(interfacing?.get(0)?.imagePath,binding.imageSelvageHorizontal.context,binding.imageSelvageHorizontal)
+                getBitmapFromSvgPngDrawable(
+                    interfacing?.get(0)?.imagePath,
+                    binding.imageSelvageHorizontal.context,
+                    binding.imageSelvageHorizontal
+                )
 
             }
             binding.txtSize45.isEnabled = interfacing?.get(0)?.fabricLength == "45"
@@ -1368,16 +1385,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onSaveButtonClicked(projectName: String, isCompleted: Boolean?) {
 
         val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
-            if(a.equals("0")){
-                viewModel.data.value?.garmetWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
-                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
-            }else if(a.equals("1")){
-                viewModel.data.value?.liningWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
-                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
-            }else if(a.equals("2")){
-                viewModel.data.value?.interfaceWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
-                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
-            }
+        if (a.equals("0")) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+        } else if (a.equals("1")) {
+            viewModel.data.value?.liningWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+        } else if (a.equals("2")) {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+        }
         this.isCompleted = isCompleted
         val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
         if (pattern != null) {
@@ -1392,42 +1412,45 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
             }
-            viewModel.saveProject(projectName, isCompleted,true)
+            viewModel.saveProject(projectName, isCompleted, true)
         }
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
-     fun onSaveButtonClicked() {
+    fun onSaveButtonClicked() {
         val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
-         val b= viewModel.selectedTab.get()
-            if(a.equals("0")){
-                viewModel.data.value?.garmetWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
-                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
-            }else if(a.equals("1")){
-                viewModel.data.value?.liningWorkspaceItemOfflines = mWorkspaceEditor?.views?.toMutableList()
-                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
-            }else if(a.equals("2")){
-                viewModel.data.value?.interfaceWorkspaceItemOfflines= mWorkspaceEditor?.views?.toMutableList()
-                logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
-            }
+        val b = viewModel.selectedTab.get()
+        if (a.equals("0")) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+        } else if (a.equals("1")) {
+            viewModel.data.value?.liningWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+        } else if (a.equals("2")) {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+        }
         this.isCompleted = isCompleted
-       // val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
-       /* if (pattern != null) {
-            matchedPattern = pattern
-            showSameNameAlert()
-        } else {
-            if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch {
-                    Utility.sendDittoImage(
-                        requireActivity(),
-                        "ditto_project"
-                    )
-                }
-            }
-        }*/
-         viewModel.saveProject("projectName", isCompleted,false)
+        // val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
+        /* if (pattern != null) {
+             matchedPattern = pattern
+             showSameNameAlert()
+         } else {
+             if (baseViewModel.activeSocketConnection.get()) {
+                 GlobalScope.launch {
+                     Utility.sendDittoImage(
+                         requireActivity(),
+                         "ditto_project"
+                     )
+                 }
+             }
+         }*/
+        viewModel.saveProject("projectName", isCompleted, false)
 
-         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+        context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
     private fun checkProjectName(projectName: String, id: String): PatternsData? {
@@ -1489,7 +1512,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSaveAndExitPopup() {
         baseViewModel.isSaveExitButtonClicked.set(false)
-        onSaveButtonClicked(viewModel.data.value?.patternName.toString(),false)
+        onSaveButtonClicked(viewModel.data.value?.patternName.toString(), false)
 //        val layout =
 //            activity?.layoutInflater?.inflate(R.layout.workspace_save_and_exit_dialog, null)
 //        if (viewModel.data.value?.status.equals("Completed") ||
@@ -1516,7 +1539,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun getScaleFactor() {
         val width: Int = binding.includeWorkspacearea.layoutWorkspace.width ?: 1
         val virtualWidth: Int = 2520
-            //binding.includeWorkspacearea.virtualWorkspaceDimension.width ?: 2520
+        //binding.includeWorkspacearea.virtualWorkspaceDimension.width ?: 2520
         val x: Double = (virtualWidth.toDouble().div(width.toDouble()))
         viewModel.scaleFactor.set(x)
         Log.d("TAG", "scalefactor : " + viewModel.scaleFactor.get())
@@ -1557,7 +1580,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.selectAllText.set(getString(R.string.select_all))
         mWorkspaceEditor?.clearAllSelection()
         var imagename = viewModel.workspacedata?.imagePath
-            if (viewModel.workspacedata?.splice ?: false) {
+        if (viewModel.workspacedata?.splice ?: false) {
             showSpliceArrows(
                 viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
                 viewModel.workspacedata?.currentSplicedPieceColumn ?: 0
@@ -1585,18 +1608,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             viewModel.spliced_pices_visibility.set(true)
         }
-       /* var theBitmap: Bitmap? = imagename?.let { getBitmapFromSvgPngDrawable(it) }
-        if (imagename != null) {
-            mWorkspaceEditor?.addImage(
-                theBitmap,
-                viewModel.workspacedata,
-                viewModel.scaleFactor.get(),
-                showProjection,
-                isDraggedPiece,
-                this@WorkspaceTabFragment
-            )
-        }*/
-         //TODO To be included when using API images
+        /* var theBitmap: Bitmap? = imagename?.let { getBitmapFromSvgPngDrawable(it) }
+         if (imagename != null) {
+             mWorkspaceEditor?.addImage(
+                 theBitmap,
+                 viewModel.workspacedata,
+                 viewModel.scaleFactor.get(),
+                 showProjection,
+                 isDraggedPiece,
+                 this@WorkspaceTabFragment
+             )
+         }*/
+        //TODO To be included when using API images
         var theBitmap: Bitmap? = null
         GlobalScope.launch {
             try {
@@ -1618,7 +1641,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-            }finally {
+            } finally {
                 showProgress(toShow = false)
             }
         }
@@ -1653,10 +1676,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
         spliceImages?.imagePath.let {
-           /* binding.imageSelvageHorizontal.setImageDrawable(
-                getDrawableFromString(context, it)
-            )*/
-            getBitmapFromSvgPngDrawable(spliceImages?.imagePath,binding.imageSelvageHorizontal.context,binding.imageSelvageHorizontal)
+            /* binding.imageSelvageHorizontal.setImageDrawable(
+                 getDrawableFromString(context, it)
+             )*/
+            getBitmapFromSvgPngDrawable(
+                spliceImages?.imagePath,
+                binding.imageSelvageHorizontal.context,
+                binding.imageSelvageHorizontal
+            )
 
         }
         viewModel.referenceImage.set(spliceImages?.reference_splice)
@@ -1737,10 +1764,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     fun getVirtualWorkspace(): Bitmap {
         val workspaceItems: List<WorkspaceItems> =
             mWorkspaceEditor?.views ?: emptyList()
-        // added +5 inorder to fix the right and bottom cut in projection
         val bitmapWidth =
             Math.ceil(
-                layout_workspace?.measuredWidth?.plus(5)?.times(viewModel.scaleFactor.get())
+                layout_workspace?.measuredWidth?.times(viewModel.scaleFactor.get())
                     ?: 0.0
             ).toInt()
         val bitmapHeight = bitmapWidth / 14 * 9
@@ -1750,26 +1776,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
         val canvas = Canvas(bigBitmap)
         for (workspaceItem in workspaceItems) {
-//            val myIcon: Drawable?
-//            if (workspaceItem.splice.equals(SPLICE_YES) == true) {
-//                myIcon = getDrawableFromString(
-//                    context,
-//                    getSplicePiece(
-//                        workspaceItem.currentSplicedPieceRow,
-//                        workspaceItem.currentSplicedPieceColumn,
-//                        workspaceItem.splicedImages
-//                    )?.imagePath
-//                )
-//            } else {
-//                myIcon = getDrawableFromString(context, workspaceItem.imagePath)
-//            }
-//
-//            val bitmap = getBitmap(
-//                myIcon as VectorDrawable,
-//                workspaceItem.isMirrorV,
-//                workspaceItem.isMirrorH
-//            )
-
             val imagename: String?
             if (workspaceItem.splice ?: false) {
                 imagename = getSplicePiece(
@@ -1778,86 +1784,56 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     workspaceItem.splicedImages
                 )?.imagePath
             } else {
-                imagename  = workspaceItem.imagePath
+                imagename = workspaceItem.imagePath
             }
+            var bitmap: Bitmap? = null
+            runBlocking {
+                 val job : Job = GlobalScope.launch {
+                    try {
+                        bitmap =
+                            imagename?.let { getBitmapFromSvgPngDrawable(it) }
+                        withContext(Dispatchers.Main) {
+                            if (imagename != null) {
+                                val matrix = Matrix()
+                                matrix.preTranslate(
+                                    workspaceItem.xcoordinate.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    ),
+                                    workspaceItem.ycoordinate.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    )
+                                )
+                                val pivotx =
+                                    (bitmap?.width)?.toFloat()?.div(2)
+                                val pivoty =
+                                    bitmap?.height?.toFloat()?.div(2)
 
-            GlobalScope.launch {
-                try {
-                    //showProgress(toShow = true)
-//                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
-//                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
-                    var bitmap: Bitmap? = imagename?.let { getBitmapFromSvgPngDrawable(it) }
-                    withContext(Dispatchers.Main) {
-                        if (imagename != null) {
-                            val matrix = Matrix()
-                            matrix.preTranslate(
-                                workspaceItem.xcoordinate.times(
-                                    viewModel.scaleFactor.get().toFloat()
-                                ),
-                                workspaceItem.ycoordinate.times(
-                                    viewModel.scaleFactor.get().toFloat()
+                                matrix.preRotate(
+                                    workspaceItem.rotationAngle,
+                                    pivotx ?: workspaceItem.pivotX.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    ),
+                                    pivoty ?: workspaceItem.pivotY.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    )
                                 )
-                            )
-                            val pivotx =
-                                (bitmap?.width)?.toFloat()?.div(2)
-                            val pivoty =
-                                bitmap?.height?.toFloat()?.div(2)
-
-                            matrix.preRotate(
-                                workspaceItem.rotationAngle,
-                                pivotx ?: workspaceItem.pivotX.times(
-                                    viewModel.scaleFactor.get().toFloat()
-                                ),
-                                pivoty ?: workspaceItem.pivotY.times(
-                                    viewModel.scaleFactor.get().toFloat()
-                                )
-                            )
-                            //**********************
-                            bitmap?.let {
-                                canvas.drawBitmap(
-                                    it,
-                                    matrix,
-                                    null
-                                )
+                                //**********************
+                                bitmap?.let {
+                                    canvas.drawBitmap(
+                                        it,
+                                        matrix,
+                                        null
+                                    )
+                                }
+                                matrix.reset()
                             }
-                            matrix.reset()
                         }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }finally {
-                    showProgress(toShow = false)
                 }
+                job.join()
             }
-
-//            var bitmap: Bitmap? = imagename?.let { getBitmapFromSvgPngDrawable(it) }
-//
-//
-//            val matrix = Matrix()
-//            matrix.preTranslate(
-//                workspaceItem.xcoordinate.times(viewModel.scaleFactor.get().toFloat()),
-//                workspaceItem.ycoordinate.times(viewModel.scaleFactor.get().toFloat())
-//            )
-//            val pivotx =
-//                (bitmap?.width)?.toFloat()?.div(2)
-//            val pivoty =
-//                bitmap?.height?.toFloat()?.div(2)
-//
-//            matrix.preRotate(
-//                workspaceItem.rotationAngle,
-//                pivotx ?: workspaceItem.pivotX.times(viewModel.scaleFactor.get().toFloat()),
-//                pivoty ?: workspaceItem.pivotY.times(viewModel.scaleFactor.get().toFloat())
-//            )
-//            //**********************
-//            bitmap?.let {
-//                canvas.drawBitmap(
-//                    it,
-//                    matrix,
-//                    null
-//                )
-//            }
-//            matrix.reset()
-            //******************************
         }
         return bigBitmap
     }
@@ -2356,7 +2332,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 .load(imagePath)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_placeholder)
                 .imageDecoder(SvgBitmapDecoder(context))
                 .into(imageView)
 
@@ -2366,7 +2342,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 .load(imagePath)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_placeholder)
                 .into(imageView)
         } else {
             imageView.setImageDrawable(

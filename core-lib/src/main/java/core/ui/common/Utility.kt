@@ -222,7 +222,7 @@ class Utility @Inject constructor(
                 context?.getPackageName()
             )
             var drawable =
-                context?.let { ContextCompat.getDrawable(it, resID ?: R.drawable.joann_logo) }
+                context?.let { ContextCompat.getDrawable(it, resID ?: R.drawable.ic_placeholder) }
             drawable = (drawable?.let { DrawableCompat.wrap(it) })?.mutate()
             return drawable
         }
