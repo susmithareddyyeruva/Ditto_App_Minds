@@ -16,6 +16,7 @@
         <variable
             name="data"
             type="com.ditto.mylibrary.domain.model.MyFolderData" />
+
         <import type="android.view.View" />
     </data>
 
@@ -77,9 +78,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/close_icon_bottom"
+                    android:layout_marginTop="@dimen/close_icon_top"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="@dimen/medium_padding"
+                    android:layout_marginBottom="@dimen/close_icon_bottom"
                     android:padding="@dimen/padding_9"
                     android:src="@drawable/ic_close_black"
                     app:tint="@android:color/black" />
