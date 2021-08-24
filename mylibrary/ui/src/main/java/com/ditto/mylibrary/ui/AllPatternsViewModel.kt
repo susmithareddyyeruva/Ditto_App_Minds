@@ -174,10 +174,6 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("pattern", "Removed")
     }
 
-    fun onFilterClick() {
-        Log.d("pattern", "onFilterClick : viewModel")
-        uiEvents.post(Event.OnFilterClick)
-    }
 
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
@@ -207,7 +203,6 @@ class AllPatternsViewModel @Inject constructor(
             val patternId: Int
         ) : Event()
 
-        object OnFilterClick : Event()
         object OnSyncClick : Event()
         object OnSearchClick : Event()
         object OnResultSuccess : Event()

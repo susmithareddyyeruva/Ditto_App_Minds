@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.domain.model.FilterItems
-import com.ditto.mylibrary.ui.AllPatternsViewModel
+import com.ditto.mylibrary.ui.MyLibraryViewModel
 import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemFilterdetailsBinding
 
@@ -16,7 +16,7 @@ class FilterDetailsAdapter(
 ) :
     RecyclerView.Adapter<FilterDetailsAdapter.FilterCategoriesHolder>() {
 
-    lateinit var viewModel: AllPatternsViewModel
+    lateinit var viewModel: MyLibraryViewModel
     private var viewGroup: ViewGroup? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterCategoriesHolder {

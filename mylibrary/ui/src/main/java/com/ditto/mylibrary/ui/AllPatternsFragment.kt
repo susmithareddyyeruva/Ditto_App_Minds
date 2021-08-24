@@ -5,20 +5,20 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
-import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
-import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
 import com.ditto.mylibrary.ui.util.getBackStackData
@@ -67,7 +67,7 @@ class AllPatternsFragment(
             it.lifecycleOwner = viewLifecycleOwner
 
         }
-        return binding.root
+        return binding.container
 
     }
 
@@ -76,54 +76,7 @@ class AllPatternsFragment(
         super.onActivityCreated(savedInstanceState)
         AndroidInjection.inject(requireActivity())
         setUIEvents()
-        // setUpToolbar()
-        setUpNavigationDrawer()
         initializeAdapter()
-
-
-        binding.closeFilter.setOnClickListener {
-            binding.drawerLayout.closeDrawer(Gravity.END)
-            setFilterMenuAdapter(0)
-            binding.rvCategory.smoothScrollToPosition(0)
-            binding.rvActions.smoothScrollToPosition(0)
-        }
-        binding.apply.setOnClickListener {
-            //  viewModel.createJson()
-            /**
-             * API call for getting filter Results....
-             */
-            if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                currentPage = 1
-                isLastPage = false
-                viewModel.patternArrayList.clear()
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
-            }
-            binding.drawerLayout.closeDrawer(Gravity.END)
-            setFilterMenuAdapter(0)
-        }
-
-        binding.clearFilter.setOnClickListener {
-            viewModel.resultMap.clear()
-            viewModel.patternArrayList.clear()
-            viewModel.menuList.clear()
-            viewModel.setList()
-            currentPage = 1
-            isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
-            if (binding?.rvActions.adapter != null) {
-                binding.rvActions.adapter?.notifyDataSetChanged()
-                binding.drawerLayout.closeDrawer(Gravity.END)
-            }
-
-        }
-
-        binding.imageClearAll.setOnClickListener {
-            binding.clearFilter.performClick()
-        }
-        binding.textviewClear.setOnClickListener {
-            binding.clearFilter.performClick()
-        }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             if (viewModel.patternArrayList.isEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
@@ -135,7 +88,7 @@ class AllPatternsFragment(
                 )  //Initial API call
             } else {
                 updatePatterns()
-                setFilterMenuAdapter(0)
+                //  setFilterMenuAdapter(0)
                 if (viewModel.isFilter == true) {
                     filterIcons.onFilterApplied(true)
                 } else
@@ -153,14 +106,31 @@ class AllPatternsFragment(
             currentPage = 1
             isLastPage = false
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
-            if (binding?.rvActions.adapter != null) {
-                // binding.rvActions.adapter?.notifyDataSetChanged()
-                setFilterMenuAdapter(0)
-                binding.drawerLayout.closeDrawer(Gravity.END)
-            }
         }
 
 
+    }
+
+    fun cleaFilterData() {
+        viewModel.resultMap.clear()
+        viewModel.patternArrayList.clear()
+        viewModel.menuList.clear()
+        viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+    }
+
+    fun applyFilter() {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            currentPage = 1
+            isLastPage = false
+            viewModel.patternArrayList.clear()
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        }
+        // binding.drawerLayout.closeDrawer(Gravity.END)
+        // setFilterMenuAdapter(0)
     }
 
     private fun updatePatterns() {
@@ -168,41 +138,6 @@ class AllPatternsFragment(
         allPatternAdapter.setListData(items = viewModel.patternArrayList)
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
-    }
-
-
-    private fun setFilterMenuAdapter(position: Int) {
-        val result = viewModel.menuList.keys.toList()   //setting menus
-        if (result.isNotEmpty()) {
-            binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-            binding.rvCategory.adapter =
-                FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
-                    override fun onMenuSelected(menu: String) {
-                        Log.d("CLICKED===", menu)
-                        clickedMenu = menu
-                        (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
-
-                    }
-
-                })
-            setFilterActionAdapter(result[0])  //set menu items
-        }
-    }
-
-    private fun setFilterActionAdapter(keys: String) {
-        val filterDetailsAdapter = FilterDetailsAdapter(object :
-            FilterDetailsAdapter.SelectedItemsListener {
-            override fun onItemsSelected(title: String, isSelected: Boolean) {
-                logger.d("Items==" + title)
-                for ((key, value) in viewModel.menuList) {
-                    logger.d("After  clik selection : $key = $value")
-                }
-            }
-        }, viewModel.menuList, keys)
-        binding.rvActions.adapter = filterDetailsAdapter
-        filterDetailsAdapter.viewModel = viewModel
-        // filterDetailsAdapter.updateList(keys)
-
     }
 
     private fun setUIEvents() {
@@ -273,10 +208,6 @@ class AllPatternsFragment(
             showPopupMenu(event.view, event.patternId)
         }
 
-        is AllPatternsViewModel.Event.OnFilterClick -> {
-            binding.drawerLayout.openDrawer(Gravity.RIGHT)
-            Log.d("pattern", "onFilterClick : AllPatternsFragment")
-        }
         is AllPatternsViewModel.Event.OnSearchClick -> {
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
@@ -288,7 +219,6 @@ class AllPatternsFragment(
             }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-            binding.clearFilter.performClick()
             /*     isLastPage = false
                  currentPage = 1
                  viewModel.patternArrayList.clear()
@@ -332,20 +262,7 @@ class AllPatternsFragment(
             Log.d("event", "Add project")
         }
         AllPatternsViewModel.Event.OnUpdateFilter -> {
-
-            if (binding?.rvCategory?.adapter == null || binding?.rvActions.adapter == null) {
-                Log.d("MAP  RESULT== ", "IF")
-                setFilterMenuAdapter(0)   //Setting Menu Items
-            } else {
-                Log.d("MAP  RESULT== ", "ELSE")
-                /*  (binding.rvActions.adapter as FilterDetailsAdapter).setListData(
-                      viewModel.menuList[clikedMenu]?.toList() ?: emptyList()
-                  )*/
-                binding.rvCategory.adapter?.notifyDataSetChanged()
-                // binding.rvActions.adapter?.notifyDataSetChanged()
-
-
-            }
+            Log.d("event", "OnUpdateFilter")
 
         }
         AllPatternsViewModel.Event.UpdateFilterImage -> {
@@ -353,6 +270,9 @@ class AllPatternsFragment(
         }
         AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIcons.onFilterApplied(false)
+
+        }
+        else ->{
 
         }
     }
@@ -381,29 +301,6 @@ class AllPatternsFragment(
         popup.show()
     }
 
-
-    private fun setUpNavigationDrawer() {
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            }
-
-            override fun onDrawerOpened(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            }
-
-            override fun onDrawerClosed(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            }
-
-            override fun onDrawerStateChanged(newState: Int) {
-                logger.d("OnDarwerState changed")
-            }
-        })
-
-    }
-
-
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -429,14 +326,6 @@ class AllPatternsFragment(
         }
     }
 
-    //public function for accesing from MyLibrary Fragment
-    fun onFilterClick() {
-        if (viewModel != null) {
-            Log.d("pattern", "onFilterClick : viewModel")
-            viewModel.onFilterClick()
-        }
-    }
-
     fun onSyncClick() {
         if (viewModel != null) {
             Log.d("pattern", "onSyncClick : viewModel")
@@ -459,5 +348,8 @@ class AllPatternsFragment(
         fun onFilterApplied(isApplied: Boolean)
     }
 
-
+    fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
+        val item = viewModel.menuList
+        return item
+    }
 }

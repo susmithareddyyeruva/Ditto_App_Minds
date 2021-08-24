@@ -2,6 +2,7 @@ package com.ditto.mylibrary.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,13 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
+import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
@@ -37,7 +41,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
-    private var allPatternsFragment: AllPatternsFragment= AllPatternsFragment(this,this)
+    private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     private var myFolderFragment: MyFolderFragment = MyFolderFragment()
 
     override fun onCreateView(
@@ -59,11 +63,66 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         setTabsAdapter()
         setUpToolbar()
+        setUpNavigationDrawer()
         toolbarViewModel.visibility.set(false)
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
         setUIEvents()
+        binding.closeFilter?.setOnClickListener {
+            binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            //  setFilterMenuAdapter(0)
+            binding.rvCategory?.smoothScrollToPosition(0)
+            binding.rvActions?.smoothScrollToPosition(0)
+        }
+        binding.apply?.setOnClickListener {
+            //  viewModel.createJson()
+            /**
+             * API call for getting filter Results....
+             */
+            applyFilter()
+        }
+
+        binding.clearFilter?.setOnClickListener {
+            allPatternsFragment.cleaFilterData()
+            if (binding?.rvActions?.adapter != null) {
+                binding.rvActions?.adapter?.notifyDataSetChanged()
+                binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            }
+
+        }
+
+        binding.imageClearAll?.setOnClickListener {
+            binding.clearFilter?.performClick()
+        }
+
+
+    }
+
+    private fun applyFilter() {
+        allPatternsFragment.applyFilter()
+        binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+        setFilterMenuAdapter(0)
+    }
+
+    private fun setUpNavigationDrawer() {
+        binding.drawerLayoutMylib?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.drawerLayoutMylib?.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                binding.drawerLayoutMylib?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                binding.drawerLayoutMylib?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+                logger.d("OnDarwerState changed")
+            }
+        })
 
     }
 
@@ -75,6 +134,16 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
     }
 
+    private fun hideFilterComponents() {
+        binding.tvFilter.visibility = View.INVISIBLE
+        binding.tvSearch.visibility = View.INVISIBLE
+        binding.viewDot.visibility = View.INVISIBLE
+    }
+    private fun showFilterComponents() {
+        binding.tvFilter.visibility = View.VISIBLE
+        binding.tvSearch.visibility = View.VISIBLE
+        binding.viewDot.visibility = View.VISIBLE
+    }
     private fun setUpToolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
@@ -86,8 +155,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun setTabsAdapter() {
-       /* allPatternsFragment = AllPatternsFragment(this, this)
-        myFolderFragment = MyFolderFragment()*/
+        /* allPatternsFragment = AllPatternsFragment(this, this)
+         myFolderFragment = MyFolderFragment()*/
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
         adapter.addFragment(
@@ -106,9 +175,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                 if (tab?.position == 0) {
+                    showFilterComponents()
                     binding.toolbar.header_view_title.text =
                         getString(R.string.pattern_library_count, AppState.getPatternCount())
                 } else {
+                    hideFilterComponents()
                     binding.toolbar.header_view_title.text = getString(R.string.my_folders)
                 }
             }
@@ -130,8 +201,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             MyLibraryViewModel.Event.OnFilterClick -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
-                    findNavController().currentDestination
-                    allPatternsFragment.onFilterClick()
+                    setFilterMenuAdapter(0)
+                    binding.drawerLayoutMylib?.openDrawer(Gravity.RIGHT)
+                    Log.d("pattern", "onFilterClick : AllPatternsFragment")
+                    /*  findNavController().currentDestination
+                      allPatternsFragment.onFilterClick()*/
                 } else {
 
                 }
@@ -173,4 +247,38 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.viewDot.setImageResource(R.drawable.ic_filter)
     }
 
+    private fun setFilterMenuAdapter(position: Int) {
+        val menulist = allPatternsFragment.getMenuListItems()
+        val result = menulist.keys.toList()   //setting menus
+        if (result.isNotEmpty()) {
+            binding.rvCategory?.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCategory?.adapter =
+                FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
+                    override fun onMenuSelected(menu: String) {
+                        Log.d("CLICKED===", menu)
+                        (binding.rvActions?.adapter as FilterDetailsAdapter).updateList(menu)
+
+                    }
+
+                })
+            setFilterActionAdapter(result[0])  //set menu items
+        }
+    }
+
+    private fun setFilterActionAdapter(keys: String) {
+        val menulist = allPatternsFragment.getMenuListItems()
+        val filterDetailsAdapter = FilterDetailsAdapter(object :
+            FilterDetailsAdapter.SelectedItemsListener {
+            override fun onItemsSelected(title: String, isSelected: Boolean) {
+                logger.d("Items==" + title)
+                for ((key, value) in menulist) {
+                    logger.d("After  clik selection : $key = $value")
+                }
+            }
+        }, menulist, keys)
+        binding.rvActions?.adapter = filterDetailsAdapter
+        filterDetailsAdapter.viewModel = viewModel
+        // filterDetailsAdapter.updateList(keys)
+
+    }
 }
