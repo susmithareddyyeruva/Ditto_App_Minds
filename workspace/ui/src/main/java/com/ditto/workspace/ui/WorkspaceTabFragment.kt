@@ -2101,7 +2101,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.CONNECTIVITY -> {
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
-//                showConnectivityPopup()
+                showConnectivityPopup()
             }
         }
 
