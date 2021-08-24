@@ -91,5 +91,11 @@
     <dimen name="margin_left_button">27dp</dimen>
     <dimen name="margin_start_pattern_liabry_count">18dp</dimen>
     <dimen name="tab_min_width">140dp</dimen>
-
+    <dimen name="ic_edit">13dp</dimen>
+    <dimen name="ic_delete_w">10dp</dimen>
+    <dimen name="ic_delete_h">12dp</dimen>
+    <dimen name="ic_close">13.426dp</dimen>
+    <dimen name="hear_w">18.333dp</dimen>
+    <dimen name="hear_h">17.49dp</dimen>
+    <dimen name="add">19.125dp</dimen>
 </resources>

@@ -121,12 +121,19 @@
     <dimen name="search_view_height">32dp</dimen>
     <dimen name="tab_min_width">100dp</dimen>
     <dimen name="like_btn_margin">12dp</dimen>
-    <dimen name="close_icon_top">11dp</dimen>
-    <dimen name="close_icon_bottom">15dp</dimen>
+    <dimen name="close_icon_top">5dp</dimen>
+    <dimen name="close_icon_bottom">8dp</dimen>
     <dimen name="text_delete_marginbottom">16.5dp</dimen>
     <dimen name="icon_padding_start">15dp</dimen>
     <dimen name="text_paddind_start">11dp</dimen>
     <dimen name="text_margin_between">18dp</dimen>
     <dimen name="text_delete_margin_bottom">16.5dp</dimen>
+    <dimen name="ic_edit">7dp</dimen>
+    <dimen name="ic_delete_w">7dp</dimen>
+    <dimen name="ic_delete_h">9dp</dimen>
+    <dimen name="ic_close">7.426dp</dimen>
+    <dimen name="hear_w">13.333dp</dimen>
+    <dimen name="hear_h">12.49dp</dimen>
+    <dimen name="add">14.125dp</dimen>
 
 </resources>

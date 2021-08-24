@@ -185,6 +185,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/padding_small"
                 android:src="@drawable/ic_dot"
                 android:visibility="@{data.isAction ? View.VISIBLE : View.GONE}"
                 android:paddingEnd="@dimen/padding_small_3"
