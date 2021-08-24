@@ -190,6 +190,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun refreshPatternPiecesAdapter() {
         com.ditto.workspace.ui.util.Utility.progressCount.set(0)
+        viewModel.completedPieces.set(0)
         binding.recyclerViewPieces.adapter?.notifyDataSetChanged()
     }
 
@@ -596,7 +597,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.showDoubleTouchToZoom.set(false)
         binding.invalidateAll()
 
-        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
+//        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
+//            viewModel.clickReset()
+//        }
+        if (viewModel.completedPieces.get() == 0) {
             viewModel.clickReset()
         }
 //        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
@@ -724,7 +728,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnDataUpdated -> {
                 setSelvageImage()
                 getScaleFactor()
-                //setInitialProgressCount() //todo uncomment
+                setInitialProgressCount() //todo uncomment
             }
             is WorkspaceViewModel.Event.OnClickInch -> {
                 setSelvageImage()
@@ -1546,25 +1550,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun setInitialProgressCount() {
-        var workspaceTab: String
-        if (viewModel.data?.value?.selectedTab?.length ?: 0 > 1) {
-            workspaceTab = viewModel.data?.value?.selectedTab.toString()
-        } else {
-            workspaceTab = resources.getStringArray(R.array.workspace_tabs).get(
-                viewModel.data?.value?.selectedTab?.toInt() ?: 0
-            )
-        }
-        //-----------------------------------------------------------------------------//
-        if (workspaceTab == viewModel.tabCategory) {
-            viewModel.data.value?.completedPieces?.let {
-                com.ditto.workspace.ui.util.Utility.progressCount.set(
-                    it
-                )
-            }
-            binding.seekbarStatus.progress = 0
-            binding.seekbarStatus.max = viewModel.data?.value?.totalPieces ?: 0
-            binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
-            logger.d("TRACE: Fetched progress count " + com.ditto.workspace.ui.util.Utility.progressCount.get())
+        if (viewModel.tabCategory.equals("Garment")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.garment ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPieces?.garment ?: 0)
+        } else if (viewModel.tabCategory.equals("Lining")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.lining ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPieces?.lining ?: 0)
+        } else if (viewModel.tabCategory.equals("Interfacing")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.`interface` ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPieces?.`interface` ?: 0)
         }
     }
 
@@ -2302,7 +2296,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun resetWorkspaceUI() {
         setConnectButton()
-        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
+//        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
+//            resetPatternPiecesAdapter()
+//        }
+        if (viewModel.completedPieces.get() == 0) {
             resetPatternPiecesAdapter()
         }
     }

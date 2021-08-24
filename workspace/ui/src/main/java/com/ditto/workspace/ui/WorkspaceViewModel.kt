@@ -50,6 +50,8 @@ class WorkspaceViewModel @Inject constructor(
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var patternId: ObservableInt = ObservableInt(1)
+    var totalPieces: ObservableInt = ObservableInt(0)
+    var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
     var tabCategory: String = ""
     var selectedTab: ObservableInt = ObservableInt(0)
@@ -360,7 +362,6 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun setWorkspaceView() {
-
         if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.liningWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.interfaceWorkspaceItemOfflines?.size ?: 0 > 0) {
             uiEvents.post(Event.PopulateWorkspace)
         }
@@ -422,11 +423,23 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun setCompletedCount(progress: Int) {
-        val totalCount = Utility.progressCount.get() + progress
-        data.value?.completedPieces = totalCount
-        Log.d("TRACE", "Setting progress")
-        Utility.progressCount.set(totalCount)
+        completedPieces.set(completedPieces.get().plus(progress))
+        setCompletePieceCount()
+//        val totalCount = Utility.progressCount.get() + progress
+//        data.value?.completedPieces = totalCount
+//        Log.d("TRACE", "Setting progress")
+//        Utility.progressCount.set(totalCount)
         uiEvents.post(Event.updateProgressCount)
+    }
+
+    fun setCompletePieceCount() {
+        if (tabCategory.equals("Garment")) {
+            data.value?.numberOfCompletedPieces?.garment = completedPieces.get()
+        } else if (tabCategory.equals("Lining")) {
+            data.value?.numberOfCompletedPieces?.lining = completedPieces.get()
+        } else if (tabCategory.equals("Interfacing")) {
+            data.value?.numberOfCompletedPieces?.`interface` = completedPieces.get()
+        }
     }
 
     fun clickScrollLeft() {
@@ -493,7 +506,9 @@ class WorkspaceViewModel @Inject constructor(
     fun cutIndividualPiecesConfirmed(workspaceItems: WorkspaceItems, cutCount: Int) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
+//        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
+        completedPieces.set(completedPieces.get() + cutCount)
+        setCompletePieceCount()
         if (!data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
             data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }
                 ?.isCompleted = true
@@ -505,7 +520,9 @@ class WorkspaceViewModel @Inject constructor(
     fun cutAllPiecesConfirmed(workspaceItems: List<WorkspaceItems>?) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
+//        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
+        completedPieces.set(completedPieces.get() + cutCount)
+        setCompletePieceCount()
         workspaceItems?.forEach { workspaceItem ->
             if (!workspaceItem?.isCompleted) {
                 data.value?.patternPieces?.find { it.id == workspaceItem.parentPatternId }
@@ -521,9 +538,13 @@ class WorkspaceViewModel @Inject constructor(
 
     fun cutCheckBoxClicked(count: Int?, isChecked: Boolean) {
         if (isChecked) {
-            Utility.progressCount.set(Utility.progressCount.get() + count!!)
+//            Utility.progressCount.set(Utility.progressCount.get() + count!!)
+            completedPieces.set(completedPieces.get() + count!!)
+            setCompletePieceCount()
         } else {
-            Utility.progressCount.set(Utility.progressCount.get() - count!!)
+//            Utility.progressCount.set(Utility.progressCount.get() - count!!)
+            completedPieces.set(completedPieces.get() - count!!)
+            setCompletePieceCount()
         }
     }
 
