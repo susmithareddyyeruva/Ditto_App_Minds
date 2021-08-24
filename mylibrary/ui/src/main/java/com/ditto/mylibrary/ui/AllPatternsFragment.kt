@@ -97,6 +97,8 @@ class AllPatternsFragment(
 
 
         }
+
+
         getBackStackData<String>("KEY_SEARCH", true) { it ->
             logger.d("SEARCH TERM : $it")
             viewModel.resultMap.clear()
@@ -107,7 +109,19 @@ class AllPatternsFragment(
             isLastPage = false
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
         }
+        binding.imageClearFilter.setOnClickListener {
+            viewModel.resultMap.clear()
+            viewModel.patternArrayList.clear()
+            viewModel.menuList.clear()
+            viewModel.setList()
+            currentPage = 1
+            isLastPage = false
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        }
 
+        binding.textviewClear.setOnClickListener {
+            cleaFilterData()
+        }
 
     }
 
@@ -129,8 +143,7 @@ class AllPatternsFragment(
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
-        // binding.drawerLayout.closeDrawer(Gravity.END)
-        // setFilterMenuAdapter(0)
+
     }
 
     private fun updatePatterns() {
@@ -219,12 +232,7 @@ class AllPatternsFragment(
             }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-            /*     isLastPage = false
-                 currentPage = 1
-                 viewModel.patternArrayList.clear()
-                 viewModel.resultMap.clear()
-                 viewModel.map.clear()
-                 viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))*/
+              cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
@@ -272,7 +280,7 @@ class AllPatternsFragment(
             filterIcons.onFilterApplied(false)
 
         }
-        else ->{
+        else -> {
 
         }
     }
@@ -325,6 +333,7 @@ class AllPatternsFragment(
             }
         }
     }
+
 
     fun onSyncClick() {
         if (viewModel != null) {

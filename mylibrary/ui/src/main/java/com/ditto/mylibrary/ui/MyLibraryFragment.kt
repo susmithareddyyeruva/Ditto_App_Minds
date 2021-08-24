@@ -139,11 +139,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.tvSearch.visibility = View.INVISIBLE
         binding.viewDot.visibility = View.INVISIBLE
     }
+
     private fun showFilterComponents() {
         binding.tvFilter.visibility = View.VISIBLE
         binding.tvSearch.visibility = View.VISIBLE
         binding.viewDot.visibility = View.VISIBLE
     }
+
     private fun setUpToolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
