@@ -122,7 +122,7 @@
     <dimen name="tab_min_width">100dp</dimen>
     <dimen name="like_btn_margin">12dp</dimen>
     <dimen name="close_icon_top">11dp</dimen>
-    <dimen name="close_icon_bottom">15.5dp</dimen>
+    <dimen name="close_icon_bottom">15dp</dimen>
     <dimen name="text_delete_marginbottom">16.5dp</dimen>
     <dimen name="icon_padding_start">15dp</dimen>
     <dimen name="text_paddind_start">11dp</dimen>
