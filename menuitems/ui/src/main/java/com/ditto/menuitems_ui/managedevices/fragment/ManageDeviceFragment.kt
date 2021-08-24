@@ -122,7 +122,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             viewModel.numberOfProjectors.set(
                 getString(
                     R.string.str_projectorsfound,
-                    receivedServiceList!!.size.toString()
+                    (receivedServiceList?.size ?: 0).toString()
                 )
             )
             viewModel.isServiceNotFound.set(true)
@@ -141,7 +141,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             viewModel.numberOfProjectors.set(
                 getString(
                     R.string.str_projectorsfound,
-                    receivedServiceList!!.size.toString()
+                    (receivedServiceList?.size ?: 0).toString()
                 )
             )
             viewModel.isServiceNotFound.set(true)
@@ -170,7 +170,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
-                receivedServiceList!!.size.toString()
+                (receivedServiceList?.size ?: 0).toString()
             )
         )
         viewModel.isServiceNotFound.set(false)
@@ -215,7 +215,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
-                receivedServiceList!!.size.toString()
+                (receivedServiceList?.size ?: 0).toString()
             )
         )
         viewModel.isServiceNotFound.set(false)
@@ -494,7 +494,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
-                receivedServiceList?.size ?: 0.toString()
+                (receivedServiceList?.size ?: 0).toString()
             )
         )
         viewModel.isServiceNotFound.set(receivedServiceList?.size == 0)
