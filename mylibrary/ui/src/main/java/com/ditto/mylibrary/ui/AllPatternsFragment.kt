@@ -2,13 +2,13 @@ package com.ditto.mylibrary.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.PopupMenu
@@ -21,7 +21,6 @@ import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
-import com.ditto.mylibrary.ui.util.getBackStackData
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -29,6 +28,7 @@ import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.search_dialog.*
 import javax.inject.Inject
 
 
@@ -99,16 +99,11 @@ class AllPatternsFragment(
         }
 
 
-        getBackStackData<String>("KEY_SEARCH", true) { it ->
+      /*  getBackStackData<String>("KEY_SEARCH", true) { it ->
             logger.d("SEARCH TERM : $it")
-            viewModel.resultMap.clear()
-            viewModel.patternArrayList.clear()
-            viewModel.menuList.clear()
-            viewModel.setList()
-            currentPage = 1
-            isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
-        }
+            callSearchResult()
+        }*/
+
         binding.imageClearFilter.setOnClickListener {
             viewModel.resultMap.clear()
             viewModel.patternArrayList.clear()
@@ -133,6 +128,16 @@ class AllPatternsFragment(
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+    }
+
+    private fun callSearchResult(terms: String) {
+        viewModel.resultMap.clear()
+        viewModel.patternArrayList.clear()
+        viewModel.menuList.clear()
+        viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
     }
 
     fun applyFilter() {
@@ -225,14 +230,49 @@ class AllPatternsFragment(
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                findNavController().navigate(R.id.action_mylibrary_to_search)
+                val alertDialog = Dialog(
+                    requireContext(),
+                    R.style.DialogTheme
+                )
+                alertDialog.setContentView(R.layout.search_dialog);
+                alertDialog.window?.setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                alertDialog.show()
+                alertDialog.tvCAncelDialog.setOnClickListener {
+                    requireActivity().window
+                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    alertDialog.cancel()
+
+
+                }
+                alertDialog.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if (alertDialog.editSearch.text.toString().isNotEmpty()) {
+                            requireActivity().getWindow()
+                                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            callSearchResult(  alertDialog.editSearch.text.toString())
+                         /*   setBackStackData(
+                                "KEY_SEARCH",
+                                alertDialog.editSearch.text.toString(),
+                                true
+                            )*/
+                            alertDialog.cancel()
+                        } else
+                            alertDialog.cancel()
+                        //   targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK,  activity?.intent?.putExtras(bundle));
+
+                        return@OnEditorActionListener true
+                    }
+                    false
+                })
+                //  findNavController().navigate(R.id.action_mylibrary_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
 
             }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-              cleaFilterData()
+            cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
