@@ -97,6 +97,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         if (viewModel.data.value == null) {
             arguments?.getInt("clickedID")?.let { viewModel.clickedID.set(it) }
+            val id= arguments?.getInt("clickedID")
+            Log.d("DEEPLINK","$id")
             viewModel.fetchPattern()
             setUIEvents()
         } else {

@@ -97,8 +97,13 @@ class HomeFragment : BaseFragment() {
                 "DETAIL"->{
                     Log.d("DEEPLINK","HOMESCREEN  :DETAIL")
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        val id=  arguments?.getInt("clickedID")
+                        Log.d("HOME CLICKED ID","$id")
+                        val bundle = bundleOf(
+                           "clickedID" to id
+                        )
                         this.arguments?.clear();
-                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment)
+                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment,bundle)
                     }
 
                 }

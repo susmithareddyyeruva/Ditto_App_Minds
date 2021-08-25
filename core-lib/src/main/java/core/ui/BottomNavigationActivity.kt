@@ -149,9 +149,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     }
                     appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
                         // PATTERN DETAIL
+                        val ip=appLinkData.lastPathSegment
+                        Log.d("DEEPLINK","$ip")
+                        val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
+                        val ClickedId=id?.toInt()
                         val bundle = bundleOf(
-                            "DEEPLINK" to "DETAIL"
+                            "DEEPLINK" to "DETAIL","clickedID" to ClickedId
                         )
+                        Log.d("DEEPLINK","$ClickedId")
                         navController.navigate(
                             R.id.action_splashActivity_to_HomeFragment,
                             bundle
