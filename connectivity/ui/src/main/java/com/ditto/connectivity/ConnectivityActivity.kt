@@ -356,7 +356,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     AppState.saveCurrentService(mClickedService)
                     viewModel.isServiceError.set(false)
                     viewModel.isWifiError.set(false)
-                    GlobalScope.launch { Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected") }
+                    GlobalScope.launch {
+                        delay(200)
+                        Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected") }
                     showLayouts(false, false, false, true, false,"Successfully connected!")
 
                 } else {
