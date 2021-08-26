@@ -1,7 +1,6 @@
 package com.ditto.home.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,7 +86,7 @@ class HomeFragment : BaseFragment() {
 
                 }
                 "LIBRARY" -> {
-                    Log.d("DEEPLINK","HOMESCREEN  :LIBRARY")
+                   logger.d("HOMESCREEN  :LIBRARY")
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
                         this.arguments?.clear();
                         findNavController().navigate(R.id.action_home_to_my_library)
@@ -95,10 +94,10 @@ class HomeFragment : BaseFragment() {
 
                 }
                 "DETAIL"->{
-                    Log.d("DEEPLINK","HOMESCREEN  :DETAIL")
+                    logger.d("HOMESCREEN  :DETAIL")
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
                         val id=  arguments?.getInt("clickedID")
-                        Log.d("HOME CLICKED ID","$id")
+                        logger.d("HOME PATTERN ID =$id")
                         val bundle = bundleOf(
                            "clickedID" to id
                         )

@@ -149,18 +149,20 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     }
                     appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
                         // PATTERN DETAIL
-                        val ip=appLinkData.lastPathSegment
-                        Log.d("DEEPLINK","$ip")
+                        val ip = appLinkData.lastPathSegment
+                        Log.d("DEEPLINK", "$ip")
                         val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
-                        val ClickedId=id?.toInt()
-                        val bundle = bundleOf(
-                            "DEEPLINK" to "DETAIL","clickedID" to ClickedId
-                        )
-                        Log.d("DEEPLINK","$ClickedId")
-                        navController.navigate(
-                            R.id.action_splashActivity_to_HomeFragment,
-                            bundle
-                        )
+                        if (isNumber(id)){
+                            val ClickedId = id?.toInt()
+                            val bundle = bundleOf(
+                                "DEEPLINK" to "DETAIL", "clickedID" to ClickedId
+                            )
+                            Log.d("PATTERN ID", "$ClickedId")
+                            navController.navigate(
+                                R.id.action_splashActivity_to_HomeFragment,
+                                bundle
+                            )
+                        }
                         return
 
                     }
@@ -168,6 +170,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
             }
         }
+    }
+
+    private fun isNumber(s: String?): Boolean {
+        return if (s.isNullOrEmpty()) false else s.all { Character.isDigit(it) }
     }
 
     private fun handleEvent(
