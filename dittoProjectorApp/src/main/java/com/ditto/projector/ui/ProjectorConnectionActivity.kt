@@ -78,8 +78,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         img_receivedimage.setImageResource(R.drawable.setup_pattern_waiting)
         startBLE()
         initapp()
-        deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
-        title_proj.text = "Ditto Projector "+"( ID : DITTO_"+deviceid+" )"
+//        deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+        deviceid = BluetoothAdapter.getDefaultAdapter().name
+        title_proj.text = "Ditto Projector " + "( ID : " + deviceid + " )"
     }
 
     /**
@@ -158,7 +159,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                     registerListener()
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     viewModel.isBleConnected.set(false)
-                    if (viewModel.isConnectionFromiOS.get()){
+                    if (viewModel.isConnectionFromiOS.get()) {
                         viewModel.bleconnectionstatus.set(getString(R.string.connected))
                     } else {
                         viewModel.bleconnectionstatus.set(getString(R.string.disconnect))
@@ -192,7 +193,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             it
                         )
                     }
-                    if (viewModel.wificredentials!!.equals(getString(R.string.BLEconnectionrequestIOS))){
+                    if (viewModel.wificredentials!!.equals(getString(R.string.BLEconnectionrequestIOS))) {
                         viewModel.isConnectionFromiOS.set(true)
                     } else {
                         viewModel.isConnectionFromiOS.set(false)
@@ -208,7 +209,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                         + ", "+viewModel.splitwificredentials?.get(1)?.let { Utility.decrypt(it) }+ ", "
                         + viewModel.splitwificredentials?.get(2)?.let { Utility.decrypt(it) }
                         )*/
-                        if (viewModel.splitwificredentials!![2] == "IOS"){
+                        if (viewModel.splitwificredentials!![2] == "IOS") {
                             viewModel.bleconnectionstatus.set(getString(R.string.connected))
                         }
                         /*// Store wifi name in preference
@@ -319,7 +320,11 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         val serviceInfo = NsdServiceInfo()
         serviceInfo.port = port
         //viewModel.mServiceName.set("DITTO_"+viewModel.mBluetoothManager!!.adapter.address)
-        viewModel.mServiceName.set("DITTO_" + deviceid)
+//        viewModel.mServiceName.set("DITTO_" + deviceid)
+        if(deviceid.isNullOrEmpty()){
+            deviceid = Settings.System.getString(getContentResolver(), "device_name")
+        }
+        viewModel.mServiceName.set(deviceid)
         serviceInfo.serviceName = viewModel.mServiceName.get()
         serviceInfo.serviceType = viewModel.SERVICE_TYPE
         Log.d("CONNECTIVITY_PROJECTOR", "register Service- $serviceInfo")
@@ -384,9 +389,9 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     }
 
     fun showToast() {
-       /* this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
-            Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_SHORT).show()
-        })*/
+        /* this@ProjectorConnectionActivity.runOnUiThread(java.lang.Runnable {
+             Toast.makeText(this, viewModel.samplestring.get(), Toast.LENGTH_SHORT).show()
+         })*/
     }
 
     /**
@@ -496,8 +501,10 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                             withContext(Dispatchers.Main) {
                                 viewModel.samplestring.set("Receving Request from Socket")
                                 showToast()
-                                println("TRACE_APP_CONNECTIONS   imageBytes *******  : " + imageBytes.size+
-                                " : "+mConnectionSocket.getInputStream().read())
+                                println(
+                                    "TRACE_APP_CONNECTIONS   imageBytes *******  : " + imageBytes.size +
+                                            " : " + mConnectionSocket.getInputStream().read()
+                                )
                                 if (imageBytes.isNotEmpty()) {
                                     println("TRACE_APP_CONNECTIONS  imageBytes not null")
                                     showImage(imageBytes)
@@ -703,11 +710,12 @@ class ProjectorConnectionActivity : AppCompatActivity(),
             wifiInfo = wifiManager.connectionInfo
             if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
                 viewModel.wifiName.set(wifiInfo.ssid.replace("\"", ""))
-                if (viewModel.wifiName.get()!!.toLowerCase()!!.contains("unknown")){
+                if (viewModel.wifiName.get()!!.toLowerCase()!!.contains("unknown")) {
                     viewModel.wifiName.set("N/A")
                 }
             }
-            val wifi: WifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val wifi: WifiManager =
+                applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
             val networkList: List<ScanResult> = wifi.scanResults
             if (networkList != null) {
                 for (network in networkList) {

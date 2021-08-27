@@ -1334,7 +1334,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    override fun onNeutralButtonClicked() {
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
         //      TODO("Not yet implemented")
         // No navigation when SKIP button clicked
         //initiateprojection()
@@ -2022,7 +2022,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         Utility.getCommonAlertDialogue(
             requireActivity(),
             "",
-            "Projector connection failed",
+            "Projector Connection failed",
             "CANCEL",
             "RETRY",
             this,
@@ -2098,6 +2098,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 } else {
                     mWorkspaceEditor?.flipVertical()
                 }
+            }
+            Utility.AlertType.CONNECTIVITY -> {
+                viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
+                showConnectivityPopup()
             }
         }
 

@@ -38,7 +38,7 @@
     <string name="tittle_calibrate">Calibrate</string>
     <string name="str_scan">SCAN VIA BLUETOOTH</string>
     <string name="str_conn_success">Successfully connected!</string>
-    <string name="str_conn_failed">Projector connection failed</string>
+    <string name="str_conn_failed">Projector Connection failed</string>
     <string name="select_projector">Select projector</string>
     <string name="no_projector">No projectors found!!</string>
     <string name="connect_projector_to_wifi">CONNECT PROJECTOR TO WIFI</string>

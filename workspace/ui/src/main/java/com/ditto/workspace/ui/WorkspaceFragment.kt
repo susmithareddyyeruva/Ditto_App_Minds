@@ -313,7 +313,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         return
     }
 
-    override fun onNeutralButtonClicked() {
+    override fun onNeutralButtonClicked(alertType: core.ui.common.Utility.AlertType) {
         Log.d("alert", "onNeutralButtonClicked")
     }
 

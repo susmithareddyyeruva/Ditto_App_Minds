@@ -21,7 +21,7 @@
     <string name="scan">Scan for devices</string>
     <string name="disconnect">Disconnect</string>
     <string name="str_projectorsfound">%1$s projectors found</string>
-    <string name="str_connection_failed">Projector connection failed!</string>
+    <string name="str_connection_failed">Projector Connection failed!</string>
     <string name="str_ok">OK</string>
     <string name="str_switch_projector">Do you want to switch the projector?</string>
     <string name="str_no">No</string>
