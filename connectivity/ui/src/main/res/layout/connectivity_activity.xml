@@ -384,7 +384,7 @@
                             android:divider="@android:color/transparent"
                             android:nestedScrollingEnabled="true"
                             app:layout_constraintHeight_default="percent"
-                            app:layout_constraintHeight_percent=".70"
+                            app:layout_constraintHeight_percent=".60"
                             app:layout_constraintTop_toBottomOf="@+id/toplistbar"
                             tools:ignore="MissingConstraints">
 
