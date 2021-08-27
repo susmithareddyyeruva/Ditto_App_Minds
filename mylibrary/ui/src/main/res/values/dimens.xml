@@ -135,5 +135,6 @@
     <dimen name="hear_w">13.333dp</dimen>
     <dimen name="hear_h">12.49dp</dimen>
     <dimen name="add">14.125dp</dimen>
+    <dimen name="search_close">13dp</dimen>
 
 </resources>

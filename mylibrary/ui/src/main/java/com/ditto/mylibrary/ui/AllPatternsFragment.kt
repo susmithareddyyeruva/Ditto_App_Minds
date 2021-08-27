@@ -5,6 +5,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -99,10 +101,10 @@ class AllPatternsFragment(
         }
 
 
-      /*  getBackStackData<String>("KEY_SEARCH", true) { it ->
-            logger.d("SEARCH TERM : $it")
-            callSearchResult()
-        }*/
+        /*  getBackStackData<String>("KEY_SEARCH", true) { it ->
+              logger.d("SEARCH TERM : $it")
+              callSearchResult()
+          }*/
 
         binding.imageClearFilter.setOnClickListener {
             viewModel.resultMap.clear()
@@ -234,10 +236,41 @@ class AllPatternsFragment(
                     requireContext(),
                     R.style.DialogTheme
                 )
+
                 alertDialog.setContentView(R.layout.search_dialog);
+                binding.viewModel=viewModel
                 alertDialog.window?.setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+                );
                 alertDialog.show()
+                val watcher = alertDialog.editSearch.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        logger.d("afterTextChanged")
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                        logger.d("beforeTextChanged")
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        logger.d("onTextChanged")
+                        if (s.toString().isNotEmpty()) {
+                            alertDialog.imageCloseSearch.visibility = View.VISIBLE
+                        } else {
+                            alertDialog.imageCloseSearch.visibility = View.GONE
+                        }
+                    }
+                })
                 alertDialog.tvCAncelDialog.setOnClickListener {
                     requireActivity().window
                         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -245,17 +278,18 @@ class AllPatternsFragment(
 
 
                 }
+
                 alertDialog.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         if (alertDialog.editSearch.text.toString().isNotEmpty()) {
                             requireActivity().getWindow()
                                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                            callSearchResult(  alertDialog.editSearch.text.toString())
-                         /*   setBackStackData(
-                                "KEY_SEARCH",
-                                alertDialog.editSearch.text.toString(),
-                                true
-                            )*/
+                            callSearchResult(alertDialog.editSearch.text.toString())
+                            /*   setBackStackData(
+                                   "KEY_SEARCH",
+                                   alertDialog.editSearch.text.toString(),
+                                   true
+                               )*/
                             alertDialog.cancel()
                         } else
                             alertDialog.cancel()
@@ -265,6 +299,9 @@ class AllPatternsFragment(
                     }
                     false
                 })
+                alertDialog.imageCloseSearch.setOnClickListener {
+                    alertDialog.editSearch.text?.clear()
+                }
                 //  findNavController().navigate(R.id.action_mylibrary_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
