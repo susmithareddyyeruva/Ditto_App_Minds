@@ -283,4 +283,9 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         // filterDetailsAdapter.updateList(keys)
 
     }
+    fun switchtoMyFolderFragmentTab(){
+        val tabPosition = binding.tabLayout.selectedTabPosition
+        binding.viewPager.currentItem = 1
+
+    }
 }

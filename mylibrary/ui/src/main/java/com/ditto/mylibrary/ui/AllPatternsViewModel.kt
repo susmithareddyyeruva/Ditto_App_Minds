@@ -198,6 +198,10 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnCreateFolder)
     }
+    fun onCreateFoldersSuccess() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        uiEvents.post(Event.OnFolderCreated)
+    }
 
     /**
      * Events for this view model
@@ -222,6 +226,7 @@ class AllPatternsViewModel @Inject constructor(
         object OnSyncClick : Event()
         object OnSearchClick : Event()
         object OnCreateFolder : Event()
+        object OnFolderCreated : Event()
         object OnResultSuccess : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()

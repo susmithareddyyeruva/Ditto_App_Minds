@@ -362,7 +362,7 @@ class AllPatternsFragment(
                     requireActivity(),
                    "",
                     "",
-                    it,
+                    it,viewModel,
                    "CANCEL",
                   "CREATE FOLDER",
                     object : com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener{
@@ -377,6 +377,10 @@ class AllPatternsFragment(
                     Utility.AlertType.DEFAULT
                 )
             }
+        }
+        AllPatternsViewModel.Event.OnFolderCreated -> {
+            (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
+
         }
         AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIcons.onFilterApplied(false)

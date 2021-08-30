@@ -110,6 +110,7 @@ class Utility {
             title: String,
             hintName: String,
             view: View,
+            viewmodel: AllPatternsViewModel,
             negativeButton: String,
             positiveButton: String,
             callback: CallbackCreateFolderDialogListener,
@@ -152,6 +153,9 @@ class Utility {
                     )
                     Utility.alert?.dismiss()
                     callback.onCreateClicked(edittext.text.toString())
+                    viewmodel.onCreateFoldersSuccess()
+
+
                 } else {
                     edittext.setError("Project Name can't be empty")
                 }

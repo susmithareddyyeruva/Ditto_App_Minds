@@ -60,6 +60,13 @@
         android:layout_marginBottom="35dp"
         android:background="@drawable/bg_createfolder"
         android:padding="@dimen/dimen_10"
+        android:cursorVisible="true"
+        android:hint="@string/save_and_exit_dialog_message"
+        android:imeOptions="flagNoExtractUi"
+        android:inputType="text"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textname" />
