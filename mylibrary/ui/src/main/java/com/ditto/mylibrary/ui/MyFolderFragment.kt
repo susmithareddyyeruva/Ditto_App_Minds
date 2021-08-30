@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,8 +12,11 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.MyFolderAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderfragmentBinding
+import com.ditto.mylibrary.ui.util.Utility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
 class MyFolderFragment : BaseFragment() {
@@ -44,24 +46,57 @@ class MyFolderFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setUIEvents()
         setAdapter()
 
     }
 
+    private fun setUIEvents() {
+        viewModel.disposable += viewModel.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+            }
+    }
+
     private fun setAdapter() {
-        val  gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.rvMyFolder.layoutManager = gridLayoutManager
-        val adapter=MyFolderAdapter(requireContext(), viewModel.getList())
+        val adapter = MyFolderAdapter(requireContext(), viewModel.getList())
         binding.rvMyFolder.adapter = adapter
         adapter.viewModel = viewModel
     }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    private fun handleEvent(event: MyLibraryViewModel.Event) =
+    private fun handleEvent(event: MyFolderViewModel.Event) =
         when (event) {
-            is MyLibraryViewModel.Event.completedProjects -> {
-                Toast.makeText(context, "adadjhf", Toast.LENGTH_SHORT).show()
+            is MyFolderViewModel.Event.OnCreateFolderClicked -> {
+                val layout =
+                    activity?.layoutInflater?.inflate(R.layout.create_folder, null)
+                layout?.let {
+                    Utility.createFolderAlertDialogForMyFolder(
+                        requireActivity(),
+                        "",
+                        "",
+                        it, viewModel,
+                        "CANCEL",
+                        "CREATE FOLDER",
+                        object :
+                            com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
+                            override fun onCreateClicked(foldername: String) {
+
+                            }
+
+                            override fun onCancelClicked() {
+
+                            }
+                        },
+                        core.ui.common.Utility.AlertType.DEFAULT
+                    )
+                }
+
             }
+
             else -> {
                 Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
 

@@ -71,6 +71,11 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
             data?.clicked = clickedPostion == position
             notifyDataSetChanged()
         }
+        holder.itemSingleMyfolderBinding.rootView.setOnClickListener {
+            if (position==0){
+               viewModel.createFolderEvent()
+            }
+        }
         if (clickedPostion!=position){
             data?.clicked=false
         }

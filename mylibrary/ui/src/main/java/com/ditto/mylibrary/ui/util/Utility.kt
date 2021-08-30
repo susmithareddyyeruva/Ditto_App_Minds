@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.domain.model.MyFolderList
 import com.ditto.mylibrary.ui.AllPatternsViewModel
+import com.ditto.mylibrary.ui.MyFolderViewModel
 import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.adapter.MyFolderListAdapter
 import com.ditto.workspace.ui.util.Utility
@@ -111,6 +112,64 @@ class Utility {
             hintName: String,
             view: View,
             viewmodel: AllPatternsViewModel,
+            negativeButton: String,
+            positiveButton: String,
+            callback: CallbackCreateFolderDialogListener,
+            alertType: core.ui.common.Utility.AlertType
+        ) {
+            val edittext = view.findViewById(R.id.edFolderName) as EditText
+            edittext.setSelection(edittext.text.length)
+            edittext.setSelection(edittext.length())
+            val dpi: Float = context.resources.displayMetrics.density
+            val dialogBuilder = AlertDialog.Builder(context)
+            dialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
+
+                    Log.d("Alert event", "save and Exit")
+                })
+                .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
+                    Utility.hidekyboard(
+                        context,
+                        view
+                    )
+                    dialog.dismiss()
+                    callback.onCancelClicked()
+                })
+
+            Utility.alert = dialogBuilder.create()
+            Utility.alert?.setView(
+                view,
+                ((27 * dpi).toInt()),
+                ((19 * dpi).toInt()),
+                ((28 * dpi).toInt()),
+                ((30 * dpi).toInt())
+            )
+            Utility.alert?.show()
+            Utility.alert?.getButton(DialogInterface.BUTTON_POSITIVE)?.setOnClickListener {
+                if (edittext.text.toString().isNotEmpty()) {
+                    Utility.hidekyboard(
+                        context,
+                        view
+                    )
+                    Utility.alert?.dismiss()
+                    callback.onCreateClicked(edittext.text.toString())
+                    viewmodel.onCreateFoldersSuccess()
+
+
+                } else {
+                    edittext.setError("Project Name can't be empty")
+                }
+            }
+
+
+        }
+        fun createFolderAlertDialogForMyFolder(
+            context: Context,
+            title: String,
+            hintName: String,
+            view: View,
+            viewmodel: MyFolderViewModel,
             negativeButton: String,
             positiveButton: String,
             callback: CallbackCreateFolderDialogListener,

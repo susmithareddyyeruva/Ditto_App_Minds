@@ -316,7 +316,7 @@ class AllPatternsFragment(
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // open dialog
         }
-        AllPatternsViewModel.Event.OnResultSuccess -> {
+        is AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(viewModel.totalPatternCount)
@@ -327,34 +327,34 @@ class AllPatternsFragment(
             isLoading = false
             updatePatterns()
         }
-        AllPatternsViewModel.Event.OnShowProgress -> {
+        is  AllPatternsViewModel.Event.OnShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
         }
-        AllPatternsViewModel.Event.OnHideProgress -> {
+        is  AllPatternsViewModel.Event.OnHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        AllPatternsViewModel.Event.OnResultFailed -> {
+        is  AllPatternsViewModel.Event.OnResultFailed -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
-        AllPatternsViewModel.Event.NoInternet -> {
+        is AllPatternsViewModel.Event.NoInternet -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
         /* else -> {
              Log.d("event", "Add project")
          }*/
-        AllPatternsViewModel.Event.OnAddProjectClick -> {
+        is AllPatternsViewModel.Event.OnAddProjectClick -> {
             Log.d("event", "Add project")
         }
-        AllPatternsViewModel.Event.OnUpdateFilter -> {
+        is  AllPatternsViewModel.Event.OnUpdateFilter -> {
             Log.d("event", "OnUpdateFilter")
 
         }
-        AllPatternsViewModel.Event.UpdateFilterImage -> {
+        is   AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIcons.onFilterApplied(true)
         }
-        AllPatternsViewModel.Event.OnCreateFolder -> {
+        is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.create_folder, null)
             layout?.let {
@@ -378,11 +378,11 @@ class AllPatternsFragment(
                 )
             }
         }
-        AllPatternsViewModel.Event.OnFolderCreated -> {
+        is  AllPatternsViewModel.Event.OnFolderCreated -> {
             (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
 
         }
-        AllPatternsViewModel.Event.UpdateDefaultFilter -> {
+        is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIcons.onFilterApplied(false)
 
         }
