@@ -12,11 +12,11 @@ interface GetWorkspaceData {
         tailornaovaDesignId: String,
         selectedTab: String,
         status: String,
-        numberOfCompletedPiece: NumberOfPieces,
+        numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemDomain>,
-        liningWorkspaceItems: List<WorkspaceItemDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemDomain>
+        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>?
     ): Single<Any>
     fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
     fun getPatternDataByID(id: Int):Single<Result<PatternsData>>

@@ -17,11 +17,11 @@ interface WorkspaceRepository {
         tailornaovaDesignId: String,
         selectedTab: String,
         status: String,
-        numberOfCompletedPiece: NumberOfPieces,
+        numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemDomain>,
-        liningWorkspaceItems: List<WorkspaceItemDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemDomain>
+        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>?
     ): Single<Any>
     fun deleteAndInsert(id:String, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>

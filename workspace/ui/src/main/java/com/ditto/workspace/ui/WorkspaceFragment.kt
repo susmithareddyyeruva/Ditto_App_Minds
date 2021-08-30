@@ -68,8 +68,9 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.progressCount.set(0)
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
-            viewModel.fetchWorkspaceData()
-            viewModel.fetchWorkspaceDataFromAPI()
+            //viewModel.fetchWorkspaceData()
+            //viewModel.fetchWorkspaceDataFromAPI()
+            viewModel.fetchTailernovaDataByID("demo-design-id-png")
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

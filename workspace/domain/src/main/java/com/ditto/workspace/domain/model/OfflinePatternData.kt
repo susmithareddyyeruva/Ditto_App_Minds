@@ -37,18 +37,20 @@ data class OfflinePatternData(
 data class WorkspaceItemOfflineDomain(
     val id: Int = 0,
     val patternPiecesId: Int = 0,
-    val isCompleted: String? = "",
-    val xcoordinate: String = "",
-    val ycoordinate: String = "",
-    val pivotX: String = "",
-    val pivotY: String = "",
+    val isCompleted: Boolean = false,
+    val xcoordinate: Float = 0.0f,
+    val ycoordinate: Float = 0.0f,
+    val pivotX: Float = 0.0f,
+    val pivotY: Float = 0.0f,
     val transformA: String? = "",
     val transformD: String? = "",
-    val rotationAngle: String = "",
-    val isMirrorH: String? = "",
-    val isMirrorV: String? = "",
-    val showMirrorDialog: String? = "",
-    val currentSplicedPieceNo: String? = ""
+    val rotationAngle: Float = 0.0f,
+    val isMirrorH: Boolean = false,
+    val isMirrorV: Boolean = false,
+    val showMirrorDialog: Boolean = false,
+    val currentSplicedPieceNo: String? = "",
+    var currentSplicedPieceRow:Int = 0,
+    var currentSplicedPieceColumn:Int = 0
 )
 
 data class SelvageDomain(
@@ -62,7 +64,7 @@ data class SelvageDomain(
 data class PatternPieceDataDomain(
     val cutOnFold: Boolean,
     val cutQuantity: String = "",
-    val description: String? = "",
+    val pieceDescription: String? = "",
     val id: Int,
     val imageName: String? = "",
     val imageUrl: String? = "",

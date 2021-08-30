@@ -113,8 +113,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.fetchWorkspaceSettingData()
         }
         if (viewModel.data.value == null) {
-            viewModel.fetchWorkspaceData()
-            viewModel.fetchWorkspaceDataFromAPI() // SFCC
+            //viewModel.fetchWorkspaceData()
+            //viewModel.fetchWorkspaceDataFromAPI(result) // SFCC
+            viewModel.fetchTailernovaDataByID("demo-design-id-png")
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
@@ -867,32 +868,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
-                //----------------Code change should be done for getting the saved tab------------//
-                var workspaceTab: String
-                if (viewModel.data?.value?.selectedTab?.length ?: 0 > 1) {
-                    workspaceTab = viewModel.data?.value?.selectedTab.toString()
-                } else {
-                    workspaceTab = resources.getStringArray(R.array.workspace_tabs).get(
-                        viewModel.data?.value?.selectedTab?.toInt() ?: 0
-                    )
-                }
-                //-----------------------------------------------------------------------------//
-
 
                 var workspaceItems: MutableList<WorkspaceItems>? = null
                 if (viewModel.tabCategory.equals("Garment")) {
                     workspaceItems =
                         viewModel.getWorkspaceDimensions(viewModel.data.value?.garmetWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
-                    //workspaceItems = viewModel.data.value?.garmetWorkspaceItemOfflines!!
                 } else if (viewModel.tabCategory.equals("Lining")) {
                     workspaceItems =
                         viewModel.getWorkspaceDimensions(viewModel.data.value?.liningWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
-
-                    //workspaceItems = viewModel.data.value?.liningWorkspaceItemOfflines!!
                 } else if (viewModel.tabCategory.equals("Interfacing")) {
                     workspaceItems =
                         viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
-                    //workspaceItems = viewModel.data.value?.interfaceWorkspaceItemOfflines!!
                 }
                 // set id of workspace item to the oldest large value
                 com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
@@ -1403,7 +1389,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
-        val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
+        /*val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
         if (pattern != null) {
             matchedPattern = pattern
             showSameNameAlert()
@@ -1416,26 +1402,25 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
             }
-            viewModel.saveProject(projectName, isCompleted, true)
-        }
+        }*/
+        viewModel.saveProject(projectName, isCompleted, true)
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
     fun onSaveButtonClicked() {
         val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
-        val b = viewModel.selectedTab.get()
         if (a.equals("0")) {
             viewModel.data.value?.garmetWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
-            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         } else if (a.equals("1")) {
             viewModel.data.value?.liningWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
-            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         } else if (a.equals("2")) {
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
-            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a>>>>>>>$b")
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $")
         }
         this.isCompleted = isCompleted
         // val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
