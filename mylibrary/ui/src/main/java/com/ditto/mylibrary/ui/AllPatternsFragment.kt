@@ -360,13 +360,13 @@ class AllPatternsFragment(
             layout?.let {
                 com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialog(
                     requireActivity(),
-                    resources.getString(com.ditto.workspace.ui.R.string.save_and_exit_dialog_title),
+                   "",
                     "",
                     it,
                    "CANCEL",
                   "CREATE FOLDER",
                     object : com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener{
-                        override fun onCreateClicked(projectName: String, isCompleted: Boolean?) {
+                        override fun onCreateClicked(foldername: String) {
 
                         }
 

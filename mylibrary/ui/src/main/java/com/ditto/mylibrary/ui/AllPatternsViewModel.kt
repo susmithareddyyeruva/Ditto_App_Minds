@@ -150,10 +150,10 @@ class AllPatternsViewModel @Inject constructor(
 
     fun onDialogPopupClick() {
         folderMainList = arrayListOf<MyFolderList>(
-            MyFolderList("New folder"),
-            MyFolderList("Summer clothes"),
-            MyFolderList("Winter wear"),
-            MyFolderList("Emma’s patterns")
+            MyFolderList(1,"New folder"),
+            MyFolderList(2,"Summer clothes"),
+            MyFolderList(3,"Winter wear"),
+            MyFolderList(4,"Emma’s patterns")
         )
         uiEvents.post(Event.OnPopupClick)
     }

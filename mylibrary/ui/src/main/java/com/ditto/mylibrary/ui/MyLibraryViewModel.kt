@@ -5,7 +5,6 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.MyFolderData
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -115,26 +114,6 @@ class MyLibraryViewModel @Inject constructor(
         uiEvents.post(Event.OnSearchClick)
     }
 
-    fun getList(): List<MyFolderData> {
-        val list = listOf<MyFolderData>(
-            MyFolderData(R.drawable.ic_newfolder,
-                "Add Folder",
-                false
-            ),
-            MyFolderData(R.drawable.ic_owned,
-                "Owned",
-                false
-            ),
-            MyFolderData(0,
-                "Favorites",
-                true
-            ),
-            MyFolderData(0,
-                "Emma's Patterns",
-                true
-            )
-        )
-        return list
-    }
+
 
 }

@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.domain.model.MyFolderData
-import com.ditto.mylibrary.ui.MyLibraryViewModel
+import com.ditto.mylibrary.ui.MyFolderViewModel
 import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemSingleMyfolderBinding
 
 class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
     RecyclerView.Adapter<MyFolderAdapter.MyFolderHolder>() {
-    lateinit var viewModel: MyLibraryViewModel
+    lateinit var viewModel: MyFolderViewModel
     private var items: List<MyFolderData>? = data
     private var inflater: LayoutInflater = LayoutInflater.from(context)
     private var clickedPostion = -1

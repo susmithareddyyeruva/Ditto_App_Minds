@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,6 +69,7 @@ class Utility {
             callback: Utility.CallbackDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+            val dpi: Float = context.resources.displayMetrics.density
             val mDialogView =
                 LayoutInflater.from(context).inflate(R.layout.dialog_addfolder, null)
             val dialogBuilder = AlertDialog.Builder(context)
@@ -77,11 +77,24 @@ class Utility {
             val alert = dialogBuilder.create()
             alert.setCancelable(false)
             alert.show()
+            alert?.setView(
+                mDialogView,
+                ((27 * dpi).toInt()),
+                ((19 * dpi).toInt()),
+                ((28 * dpi).toInt()),
+                ((30 * dpi).toInt())
+            )
+            //alert?.getWindow()?.setLayout(1200, 600);
             alert.window?.setBackgroundDrawable(null)
             val negative = mDialogView.findViewById(R.id.imageCloseDialog) as ImageView
             val rvFolder = mDialogView.findViewById(R.id.rvfolders) as RecyclerView
             rvFolder.layoutManager = LinearLayoutManager(mDialogView.context)
-            val adapter = MyFolderListAdapter(mDialogView.context, list)
+            val adapter = MyFolderListAdapter(mDialogView.context, list,object :MyFolderListAdapter.CreateFolderListener{
+                override fun onNewFolderClicked() {
+                    alert.dismiss()
+                    viewmodel.onCreateFolderClick()
+                }
+            })
             rvFolder.adapter = adapter
             adapter.viewModel = viewmodel
             dialogBuilder
@@ -102,10 +115,8 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
-            val edittext = view.findViewById(com.ditto.workspace.ui.R.id.project_name) as EditText
+            val edittext = view.findViewById(R.id.edFolderName) as EditText
             edittext.setSelection(edittext.text.length)
-            val checkbox = view.findViewById(com.ditto.workspace.ui.R.id.complete_checkbox) as CheckBox
-            edittext.setText(hintName)
             edittext.setSelection(edittext.length())
             val dpi: Float = context.resources.displayMetrics.density
             val dialogBuilder = AlertDialog.Builder(context)
@@ -125,13 +136,12 @@ class Utility {
                 })
 
             Utility.alert = dialogBuilder.create()
-            Utility.alert?.setTitle(title)
             Utility.alert?.setView(
                 view,
+                ((27 * dpi).toInt()),
                 ((19 * dpi).toInt()),
-                ((0 * dpi).toInt()),
-                ((14 * dpi).toInt()),
-                ((0 * dpi).toInt())
+                ((28 * dpi).toInt()),
+                ((30 * dpi).toInt())
             )
             Utility.alert?.show()
             Utility.alert?.getButton(DialogInterface.BUTTON_POSITIVE)?.setOnClickListener {
@@ -141,7 +151,7 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString(), checkbox.isChecked)
+                    callback.onCreateClicked(edittext.text.toString())
                 } else {
                     edittext.setError("Project Name can't be empty")
                 }
@@ -156,7 +166,7 @@ class Utility {
         fun onNegativeButtonClicked()
     }
     interface CallbackCreateFolderDialogListener {
-        fun onCreateClicked(projectName: String, isCompleted: Boolean?)
+        fun onCreateClicked(folderName: String)
         fun onCancelClicked()
     }
 

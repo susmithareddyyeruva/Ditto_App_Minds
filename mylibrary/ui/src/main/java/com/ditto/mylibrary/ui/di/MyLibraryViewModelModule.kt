@@ -25,6 +25,12 @@ interface  MyLibraryViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(MyFolderViewModel::class)
+    fun bindMyFolderViewModel(viewModel: MyFolderViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
     @ViewModelKey(PatternDescriptionViewModel::class)
     fun bindPatternDescriptionViewModel(viewModel: PatternDescriptionViewModel): ViewModel
 }

@@ -26,7 +26,7 @@ class MyFolderFragment : BaseFragment() {
         loggerFactory.create(MyLibraryFragment::class.java.simpleName)
     }
 
-    private val viewModel: MyLibraryViewModel by ViewModelDelegate()
+    private val viewModel: MyFolderViewModel by ViewModelDelegate()
     lateinit var binding: MyfolderfragmentBinding
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,

@@ -10,7 +10,11 @@ import com.ditto.mylibrary.ui.AllPatternsViewModel
 import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemFoldersBinding
 
-class MyFolderListAdapter(context: Context, data: List<MyFolderList>?) :
+class MyFolderListAdapter(
+    context: Context,
+    data: List<MyFolderList>?,
+    private val createFolderListener: CreateFolderListener
+) :
     RecyclerView.Adapter<MyFolderListAdapter.MyFolderListHolder>() {
     lateinit var viewModel: AllPatternsViewModel
     private var items: List<MyFolderList>? = data
@@ -33,13 +37,28 @@ class MyFolderListAdapter(context: Context, data: List<MyFolderList>?) :
         holder.itemFoldersBinding.viewModel = viewModel
         holder.itemFoldersBinding.data = items?.get(position)
         val data = items?.get(position)
-        holder.itemFoldersBinding.textdialogHeading.text=data?.folderName
-        if (position==0) {
-            holder.itemFoldersBinding.textdialogHeading.setTextColor(ContextCompat.getColor(holder.itemFoldersBinding.dialogHeading.context,R.color.app_red))
+        holder.itemFoldersBinding.textdialogHeading.text = data?.folderName
+        if (position == 0) {
+            holder.itemFoldersBinding.textdialogHeading.setTextColor(
+                ContextCompat.getColor(
+                    holder.itemFoldersBinding.dialogHeading.context,
+                    R.color.app_red
+                )
+            )
             holder.itemFoldersBinding.folderStatus.setImageResource(R.drawable.ic_red_new)
-        }else{
-            holder.itemFoldersBinding.textdialogHeading.setTextColor(ContextCompat.getColor(holder.itemFoldersBinding.dialogHeading.context,R.color.black))
+        } else {
+            holder.itemFoldersBinding.textdialogHeading.setTextColor(
+                ContextCompat.getColor(
+                    holder.itemFoldersBinding.dialogHeading.context,
+                    R.color.black
+                )
+            )
             holder.itemFoldersBinding.folderStatus.setImageResource(R.drawable.ic_folder_grey)
+        }
+        holder.itemFoldersBinding.dialogHeading.setOnClickListener {
+            if (position == 0) {
+                createFolderListener.onNewFolderClicked()
+            }
         }
 
     }
@@ -49,6 +68,10 @@ class MyFolderListAdapter(context: Context, data: List<MyFolderList>?) :
         viewType: Int
     ) :
         RecyclerView.ViewHolder(itemFoldersBinding.root) {
+    }
+
+    interface CreateFolderListener {
+        fun onNewFolderClicked()
     }
 
 
