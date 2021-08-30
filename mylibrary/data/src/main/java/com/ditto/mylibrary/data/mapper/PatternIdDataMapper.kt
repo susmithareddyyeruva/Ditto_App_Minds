@@ -51,7 +51,7 @@ fun PatternPieceData.toDomain(): com.ditto.mylibrary.domain.model.PatternPieceDa
     return com.ditto.mylibrary.domain.model.PatternPieceData(
         cutOnFold = this.cutOnFold,
         cutQuantity = this.cutQuantity,
-        description = this.description,
+        pieceDescription = this.pieceDescription,
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
@@ -72,7 +72,7 @@ fun com.ditto.mylibrary.domain.model.PatternPieceData.toDomain(): PatternPieceDa
     return PatternPieceData(
         cutOnFold = this.cutOnFold,
         cutQuantity = this.cutQuantity,
-        description = this.description,
+        pieceDescription = this.pieceDescription,
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,

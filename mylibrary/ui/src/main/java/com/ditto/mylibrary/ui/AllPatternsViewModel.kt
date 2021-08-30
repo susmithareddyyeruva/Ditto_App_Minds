@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
@@ -36,8 +35,7 @@ class AllPatternsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
-    val clickedId: ObservableInt = ObservableInt(-1)
-    var clickedIdS: ObservableField<String> = ObservableField("")//todo
+    var clickedId: ObservableField<String> = ObservableField("")//todo
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -133,19 +131,19 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onItemClick(id: String) {
-        clickedIdS.set(id)
+        clickedId.set(id)
         uiEvents.post(Event.OnItemClick)
     }
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
-            clickedIdS.set("1")
+            clickedId.set("1")
         } else if (id == "10544781") {
-            clickedIdS.set("2")
+            clickedId.set("2")
         } else if (id == "10140606") {
-            clickedIdS.set("3")
+            clickedId.set("3")
         } else {
-            clickedIdS.set("4")
+            clickedId.set("4")
         }
         uiEvents.post(Event.OnItemClick)
     }

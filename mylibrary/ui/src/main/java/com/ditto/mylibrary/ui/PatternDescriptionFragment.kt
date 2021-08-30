@@ -95,7 +95,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         //baseViewModel.activeSocketConnection.set(false)
 
         if (viewModel.data.value == null) {
-            arguments?.getInt("clickedID").toString()?.let { viewModel.clickedID.set(it) }
+            arguments?.getString("clickedID").toString()?.let { viewModel.clickedID.set(it) }
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchPattern()
             setUIEvents()

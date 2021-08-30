@@ -36,7 +36,7 @@ data class NumberOfPiecesData(
 data class PatternPieceData(
     val cutOnFold: Boolean,
     val cutQuantity: String ="",
-    val description: String? ="",
+    val pieceDescription: String? ="",
     val id: Int,
     val imageName: String? ="",
     val imageUrl: String? ="",
