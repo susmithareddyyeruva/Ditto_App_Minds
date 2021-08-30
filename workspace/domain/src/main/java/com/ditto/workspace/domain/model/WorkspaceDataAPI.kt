@@ -5,11 +5,11 @@ data class WorkspaceDataAPI (
     var tailornaovaDesignId: String? = "",
     var selectedTab: String? ="",
     var status:String="",
-    var numberOfPieces: NumberOfPieces,
+    var numberOfPieces: NumberOfPieces?,
     var patternPiecesFromApi: List<PatternPieceDomain> = emptyList(),
-    var garmetWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
-    var liningWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
-    var interfaceWorkspaceItems: List<WorkspaceItemDomain> = emptyList()
+    var garmetWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
+    var liningWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
+    var interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>? = ArrayList()
 
     // tailernova response
     /*var id: Int = 0,
