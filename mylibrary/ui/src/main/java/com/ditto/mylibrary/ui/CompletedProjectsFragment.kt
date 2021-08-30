@@ -114,6 +114,9 @@ class CompletedProjectsFragment : BaseFragment() {
             AllPatternsViewModel.Event.OnUpdateFilter ->{}
             AllPatternsViewModel.Event.UpdateFilterImage -> {}
             AllPatternsViewModel.Event.UpdateDefaultFilter ->{}
+            else ->{
+
+            }
         }
 
 }

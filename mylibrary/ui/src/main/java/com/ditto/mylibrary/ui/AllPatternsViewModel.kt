@@ -7,10 +7,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.FilterItems
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
@@ -49,6 +46,7 @@ class AllPatternsViewModel @Inject constructor(
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
+     var folderMainList = ArrayList<MyFolderList>()
     val resultMap = hashMapOf<String, ArrayList<String>>()
     var totalPageCount: Int = 0
     var totalPatternCount: Int = 0
@@ -84,6 +82,7 @@ class AllPatternsViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
+
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
@@ -95,11 +94,11 @@ class AllPatternsViewModel @Inject constructor(
                 }
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
-                totalPatternCount = result.data.totalPatternCount?:0
+                totalPatternCount = result.data.totalPatternCount ?: 0
                 Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
-                totalPageCount = result.data.totalPageCount?:0
-                currentPageId = result.data.currentPageId?:0
-                map = result.data.menuItem?: hashMapOf() //hashmap
+                totalPageCount = result.data.totalPageCount ?: 0
+                currentPageId = result.data.currentPageId ?: 0
+                map = result.data.menuItem ?: hashMapOf() //hashmap
                 uiEvents.post(Event.OnResultSuccess)
                 if (isFilter == false) {
                     setList()  // For Displaying menu item without any filter applied
@@ -149,6 +148,16 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnItemClick)
     }
 
+    fun onDialogPopupClick() {
+        folderMainList = arrayListOf<MyFolderList>(
+            MyFolderList("New folder"),
+            MyFolderList("Summer clothes"),
+            MyFolderList("Winter wear"),
+            MyFolderList("Emma’s patterns")
+        )
+        uiEvents.post(Event.OnPopupClick)
+    }
+
     fun navigateToAllPatterns() {
         uiEvents.post(Event.OnAddProjectClick)
     }
@@ -185,6 +194,11 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnSearchClick)
     }
 
+    fun onCreateFolderClick() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        uiEvents.post(Event.OnCreateFolder)
+    }
+
     /**
      * Events for this view model
      */
@@ -198,6 +212,8 @@ class AllPatternsViewModel @Inject constructor(
 
         object OnAddProjectClick : Event()
 
+        object OnPopupClick : Event()
+
         class OnOptionsClicked(
             val view: View,
             val patternId: Int
@@ -205,6 +221,7 @@ class AllPatternsViewModel @Inject constructor(
 
         object OnSyncClick : Event()
         object OnSearchClick : Event()
+        object OnCreateFolder : Event()
         object OnResultSuccess : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()

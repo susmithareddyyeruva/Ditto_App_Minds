@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginEnd="@dimen/folder_margin_end"
+    android:layout_marginTop="@dimen/folder_margin_top"
+    android:layout_marginStart="@dimen/folder_margin_top"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textNewfolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_lt_pro_demi"
+        android:paddingStart="@dimen/folder_margin_icons"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_14sp"
+        tools:text="New folder" />
+
+    <TextView
+        android:id="@+id/textname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/textNewfolder"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:paddingStart="@dimen/folder_margin_icons"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_12sp"
+        tools:text="Folder name" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6.75dp"
+        android:padding="17dp"
+        android:layout_marginBottom="35dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_createfolder"/>
+</LinearLayout>

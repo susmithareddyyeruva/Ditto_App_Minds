@@ -22,7 +22,6 @@
         android:layout_marginTop="@dimen/margin_card_top"
         android:layout_marginEnd="@dimen/margin_card_end"
         android:elevation="@dimen/elevation_card"
-        android:onClick="@{() -> viewModel.onItemClickPattern(product.ID)}"
         app:cardBackgroundColor="@color/cardColor">
 
         <ImageView
@@ -38,6 +37,7 @@
             android:id="@+id/image_pattern"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
+            android:onClick="@{() -> viewModel.onItemClickPattern(product.ID)}"
             app:layout_constraintDimensionRatio="157:121"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/small_padding"
+                android:onClick="@{() -> viewModel.onDialogPopupClick()}"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:src="@drawable/ic_addicon" />

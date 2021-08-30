@@ -23,6 +23,7 @@ import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
+import com.ditto.mylibrary.ui.util.Utility.Companion.getAlertDialogFolder
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -203,7 +204,7 @@ class AllPatternsFragment(
             }
         })
     }
-
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
@@ -238,7 +239,7 @@ class AllPatternsFragment(
                 )
 
                 alertDialog.setContentView(R.layout.search_dialog);
-                binding.viewModel=viewModel
+                binding.viewModel = viewModel
                 alertDialog.window?.setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
                 );
@@ -353,8 +354,58 @@ class AllPatternsFragment(
         AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIcons.onFilterApplied(true)
         }
+        AllPatternsViewModel.Event.OnCreateFolder -> {
+            val layout =
+                activity?.layoutInflater?.inflate(R.layout.create_folder, null)
+            layout?.let {
+                com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialog(
+                    requireActivity(),
+                    resources.getString(com.ditto.workspace.ui.R.string.save_and_exit_dialog_title),
+                    "",
+                    it,
+                   "CANCEL",
+                  "CREATE FOLDER",
+                    object : com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener{
+                        override fun onCreateClicked(projectName: String, isCompleted: Boolean?) {
+
+                        }
+
+                        override fun onCancelClicked() {
+
+                        }
+                    },
+                    Utility.AlertType.DEFAULT
+                )
+            }
+        }
         AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIcons.onFilterApplied(false)
+
+        }
+        is AllPatternsViewModel.Event.OnPopupClick -> {
+
+
+            // open dialog
+            val layout =
+                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, null)
+            layout?.let {
+                getAlertDialogFolder(
+                    requireActivity(),viewModel.folderMainList,viewModel,
+                    object : com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
+                        override fun onSaveButtonClicked(
+                            projectName: String,
+                            isCompleted: Boolean?
+                        ) {
+                            Log.d("onSaveButtonClicked", "Allpattern")
+
+                        }
+                        override fun onExitButtonClicked() {
+                            Log.d("onExitButtonClicked", "Allpattern")
+                        }
+                    },
+                    Utility.AlertType.DEFAULT
+                )
+            }
 
         }
         else -> {
@@ -438,4 +489,6 @@ class AllPatternsFragment(
         val item = viewModel.menuList
         return item
     }
+
+
 }
