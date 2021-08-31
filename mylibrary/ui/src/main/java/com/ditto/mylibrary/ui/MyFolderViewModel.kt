@@ -1,44 +1,244 @@
 package com.ditto.mylibrary.ui
 
 import android.util.Log
-import com.ditto.mylibrary.domain.model.MyFolderData
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.OrderFilter
+import com.google.gson.Gson
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import non_core.lib.Result
+import non_core.lib.error.Error
+import non_core.lib.error.NoNetworkError
+import non_core.lib.whileSubscribed
+import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class MyFolderViewModel @Inject constructor() : BaseViewModel() {
+class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMylibraryData) :
+    BaseViewModel() {
     private val uiEvents = UiEvents<MyFolderViewModel.Event>()
     val events = uiEvents.stream()
+    val clickedId: ObservableInt = ObservableInt(-1)
+    var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
+    var errorString: ObservableField<String> = ObservableField("")
+    var userId: Int = 0
+    val isLoading: ObservableBoolean = ObservableBoolean(false)
+    val isFilterResult: ObservableBoolean = ObservableBoolean(false)
+    var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
+    var patternArrayList = mutableListOf<ProdDomain>()
+    var patterns = MutableLiveData<ArrayList<ProdDomain>>()
+    var map = HashMap<String, List<String>>()
+    val menuList = hashMapOf<String, ArrayList<FilterItems>>()
+    val resultMap = hashMapOf<String, ArrayList<String>>()
+    var totalPageCount: Int = 0
+    var totalPatternCount: Int = 0
+    var currentPageId: Int = 1
+    var isFilter: Boolean? = false
+
+    fun onItemClickPattern(id: String) {
+        if (id == "10140549") {
+            clickedId.set(1)
+        } else if (id == "10544781") {
+            clickedId.set(2)
+        } else if (id == "10140606") {
+            clickedId.set(3)
+        } else {
+            clickedId.set(4)
+        }
+        uiEvents.post(Event.OnItemClick)
+    }
+    //error handler for data fetch related flow
+    private fun handleError(error: Error) {
+        when (error) {
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                errorString.set(error.message)
+                uiEvents.post(Event.NoInternet)
+            }
+            else -> {
+                errorString.set(error.message)
+                uiEvents.post(Event.OnResultFailed)
+            }
+        }
+    }
+
+    //fetch data from repo (via usecase)
+    fun fetchOnPatternData(
+        createJson: MyLibraryFilterRequestData
+    ) {
+
+        uiEvents.post(Event.OnShowProgress)
+        disposable += getPatternsData.invoke(createJson)
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }
+    }
+
+    private fun handleFetchResult(result: Result<AllPatternsDomain>) {
+        uiEvents.post(Event.OnHideProgress)
+        when (result) {
+            is Result.OnSuccess -> {
+                patternList.value = result.data.prod
+
+                result.data.prod.forEach {
+                    patternArrayList.add(it)
+                }
+
+                //AppState.setPatternCount(result.data.totalPatternCount)
+                totalPatternCount = result.data.totalPatternCount ?: 0
+                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
+                totalPageCount = result.data.totalPageCount ?: 0
+                currentPageId = result.data.currentPageId ?: 0
+                map = result.data.menuItem ?: hashMapOf() //hashmap
+                uiEvents.post(Event.OnResultSuccess)
+                if (isFilter == false) {
+                    setList()  // For Displaying menu item without any filter applied
+                    uiEvents.post(Event.UpdateDefaultFilter)
+                    isFilterResult.set(false)
+                } else {
+                    uiEvents.post(Event.UpdateFilterImage)
+                    isFilterResult.set(true)
+                }
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+
+    fun setList() {
+
+        for ((key, value) in map) {
+            var menuValues: ArrayList<FilterItems> = ArrayList()
+            for (aString in value) {
+                menuValues?.add(FilterItems(aString))
+
+            }
+            //  Filter.menuItemListFilter[key] = menuValues
+            menuList[key] = menuValues
+        }
+
+        Log.d("MAP  RESULT== ", menuList.size.toString())
+        uiEvents.post(Event.OnUpdateFilter)
+
+    }
+
     fun getList(): List<MyFolderData> {
         val list = listOf<MyFolderData>(
-            MyFolderData(R.drawable.ic_newfolder,
+            MyFolderData(
+                R.drawable.ic_newfolder,
                 "Add Folder",
                 false
             ),
-            MyFolderData(R.drawable.ic_owned,
+            MyFolderData(
+                R.drawable.ic_owned,
                 "Owned",
                 false
             ),
-            MyFolderData(0,
+            MyFolderData(
+                0,
                 "Favorites",
                 true
             ),
-            MyFolderData(0,
+            MyFolderData(
+                0,
                 "Emma's Patterns",
                 true
             )
         )
         return list
     }
+
     fun onCreateFoldersSuccess() {
         Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(MyFolderViewModel.Event.OnFolderCreated)
+        uiEvents.post(Event.OnFolderCreated)
     }
-    fun createFolderEvent(){
-      uiEvents.post(MyFolderViewModel.Event.OnCreateFolderClicked)
+
+    fun createFolderEvent() {
+        uiEvents.post(Event.OnCreateFolderClicked)
     }
-   sealed class Event{
-       object OnCreateFolderClicked : MyFolderViewModel.Event()
-       object OnFolderCreated : MyFolderViewModel.Event()
-   }
+    fun navigateToFolderDetails() {
+        uiEvents.post(Event.OnNavigtaionToFolderDetail)
+    }
+
+    fun createJson(currentPage: Int, value: String): MyLibraryFilterRequestData {
+        val filterCriteria = MyLibraryFilterRequestData(
+            OrderFilter(
+                true,
+                "subscustomerOne@gmail.com",
+                true,
+                true
+            ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
+        )
+        val json1 = Gson().toJson(menuList)
+        Log.d("JSON===", json1)
+        val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
+        menuList.forEach { (key, value) ->
+            val filtered = value.filter { prod -> prod.isSelected }
+            if (filtered.isNotEmpty()) {
+                filteredMap[key] = filtered.toTypedArray()
+
+            }
+        }
+        isFilter = !(filteredMap.isEmpty() && value.isEmpty())
+        val jsonProduct = JSONObject()
+        for ((key, value) in filteredMap) {
+            var arraYlist = ArrayList<String>()
+            for (result in value) {
+                arraYlist.add(result.title)
+                resultMap[key] = arraYlist
+                jsonProduct.put(key, arraYlist)
+
+
+            }
+
+
+        }
+        filterCriteria.ProductFilter = resultMap
+        val resultJson = Gson().toJson(resultMap)
+        Log.d("JSON===", resultJson)
+
+        val jsonString: String = resultJson
+
+        val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
+        Log.d("RESULT STRING===", resultString)
+        return filterCriteria
+    }
+    fun onSyncClick() {
+        Log.d("pattern", "onSyncClick : viewModel")
+        uiEvents.post(Event.OnSyncClick)
+    }
+
+    fun onSearchClick() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        uiEvents.post(Event.OnSearchClick)
+    }
+    sealed class Event {
+        object OnItemClick : MyFolderViewModel.Event()
+        object OnDataUpdated : MyFolderViewModel.Event()
+        object OnCreateFolderClicked : MyFolderViewModel.Event()
+        object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
+        object OnFolderCreated : MyFolderViewModel.Event()
+        object OnSyncClick : MyFolderViewModel.Event()
+        object OnSearchClick : MyFolderViewModel.Event()
+        object OnCreateFolder : MyFolderViewModel.Event()
+        object OnResultSuccess : MyFolderViewModel.Event()
+        object OnShowProgress : MyFolderViewModel.Event()
+        object OnHideProgress : MyFolderViewModel.Event()
+        object OnResultFailed : MyFolderViewModel.Event()
+        object NoInternet : MyFolderViewModel.Event()
+        object OnUpdateFilter : MyFolderViewModel.Event()
+        object UpdateFilterImage : MyFolderViewModel.Event()
+        object UpdateDefaultFilter : MyFolderViewModel.Event()
+    }
 }

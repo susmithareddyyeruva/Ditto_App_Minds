@@ -19,7 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
-class MyFolderFragment : BaseFragment() {
+class MyFolderFragment(val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment() {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -42,6 +42,10 @@ class MyFolderFragment : BaseFragment() {
             it.lifecycleOwner = viewLifecycleOwner
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -94,6 +98,19 @@ class MyFolderFragment : BaseFragment() {
                         core.ui.common.Utility.AlertType.DEFAULT
                     )
                 }
+
+            }
+            is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
+                // Begin the transaction
+               parentFragmentManager
+                    // 3
+                    .beginTransaction()
+                    // 4
+                    .add(binding.parentFragmentContainer.id, myFolderDetailFragment)
+                    .addToBackStack("Detail")
+                    // 5
+                    .commit()
+
 
             }
 

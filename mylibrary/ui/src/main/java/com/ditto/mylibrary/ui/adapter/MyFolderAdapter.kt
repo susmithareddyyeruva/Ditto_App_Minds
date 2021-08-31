@@ -74,6 +74,8 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
         holder.itemSingleMyfolderBinding.rootView.setOnClickListener {
             if (position==0){
                viewModel.createFolderEvent()
+            }else{
+                viewModel.navigateToFolderDetails()
             }
         }
         if (clickedPostion!=position){
