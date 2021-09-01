@@ -75,7 +75,7 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
             if (position==0){
                viewModel.createFolderEvent()
             }else{
-                viewModel.navigateToFolderDetails()
+                viewModel.navigateToFolderDetails(data?.title?:"")
             }
         }
         if (clickedPostion!=position){

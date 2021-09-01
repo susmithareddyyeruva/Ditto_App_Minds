@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -104,6 +101,9 @@ class MyFolderFragment(val myFolderDetailFragment: MyFolderDetailFragment) : Bas
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
+                val args = Bundle()
+                args.putString("TITTLE", viewModel.clickedFolderName)
+                myFolderDetailFragment.setArguments(args)
                 //Begin the transaction
                 parentFragmentManager
                     // 3

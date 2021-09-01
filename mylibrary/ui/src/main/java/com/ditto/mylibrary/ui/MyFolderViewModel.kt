@@ -44,6 +44,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
     var isFilterApplied: Boolean? = false
+    var clickedFolderName: String? = ""
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -167,7 +168,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     fun createFolderEvent() {
         uiEvents.post(Event.OnCreateFolderClicked)
     }
-    fun navigateToFolderDetails() {
+    fun navigateToFolderDetails(title: String) {
+        clickedFolderName=title
         uiEvents.post(Event.OnNavigtaionToFolderDetail)
     }
 

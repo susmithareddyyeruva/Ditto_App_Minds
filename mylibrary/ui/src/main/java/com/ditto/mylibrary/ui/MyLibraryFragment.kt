@@ -98,13 +98,14 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.clearFilter?.performClick()
         }
         binding.toolbar.setNavigationOnClickListener {
+          setToolbarTittle(getString(R.string.my_folders))
             requireActivity().onBackPressed()
         }
 
 
     }
 
-    fun setToolbarTittleForDetail(tittle: String) {
+    fun setToolbarTittle(tittle: String) {
         binding.toolbar.header_view_title.text = tittle
     }
 
