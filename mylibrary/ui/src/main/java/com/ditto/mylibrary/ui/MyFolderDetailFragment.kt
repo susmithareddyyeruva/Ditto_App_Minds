@@ -192,7 +192,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
         is MyFolderViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-            (parentFragment as MyLibraryFragment?)?.onSetCount(viewModel.totalPatternCount)
+            (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
 
         }
 
@@ -282,7 +282,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-            (parentFragment as MyLibraryFragment?)?.onSetCount(viewModel.totalPatternCount)
+            (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
 
             /**
              * Getting ALL PATTERNS LIST
@@ -393,14 +393,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             Log.d("pattern", "onSearchClick : viewModel")
             viewModel.onSearchClick()
         }
-    }
-
-    interface SetPatternCount {
-        fun onSetCount(totalPatternCount: Int)
-    }
-
-    interface setFilterIcons {
-        fun onFilterApplied(isApplied: Boolean)
     }
 
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {

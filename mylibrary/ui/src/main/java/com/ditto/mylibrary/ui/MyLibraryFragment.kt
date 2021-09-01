@@ -43,7 +43,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
-    private var myfolderDetail: MyFolderDetailFragment= MyFolderDetailFragment()
+    private var myfolderDetail: MyFolderDetailFragment = MyFolderDetailFragment()
     private var myFolderFragment: MyFolderFragment = MyFolderFragment(myfolderDetail)
 
     override fun onCreateView(
@@ -103,12 +103,14 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
 
     }
+
     fun setToolbarTittleForDetail(tittle: String) {
-        binding.toolbar.header_view_title.text =tittle
+        binding.toolbar.header_view_title.text = tittle
     }
+
     private fun applyFilter() {
         val tabPosition = binding.tabLayout.selectedTabPosition
-        if (tabPosition==0) {
+        if (tabPosition == 0) {
             allPatternsFragment.applyFilter()
             binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
@@ -148,13 +150,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
     }
 
-     fun hideFilterComponents() {
+    fun hideFilterComponents() {
         binding.tvFilter.visibility = View.INVISIBLE
         binding.tvSearch.visibility = View.INVISIBLE
         binding.viewDot.visibility = View.INVISIBLE
     }
 
-     fun showFilterComponents() {
+    fun showFilterComponents() {
         binding.tvFilter.visibility = View.VISIBLE
         binding.tvSearch.visibility = View.VISIBLE
         binding.viewDot.visibility = View.VISIBLE
@@ -250,9 +252,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
 
 
-    override fun onSetCount(totalPatternCount: Int) {
-        binding.toolbar.header_view_title.text =
-            getString(R.string.pattern_library_count, totalPatternCount)
+    override fun onSetCount(tittle: String) {
+        binding.toolbar.header_view_title.text = tittle
     }
 
     override fun onFilterApplied(isApplied: Boolean) {
@@ -281,11 +282,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun setFilterActionAdapter(keys: String) {
-        val menuList:HashMap<String, ArrayList<FilterItems>>
+        val menuList: HashMap<String, ArrayList<FilterItems>>
         val tabPosition = binding.tabLayout.selectedTabPosition
-        if (tabPosition==0){
+        if (tabPosition == 0) {
             menuList = allPatternsFragment.getMenuListItems()
-        }else{
+        } else {
             menuList = myfolderDetail.getMenuListItems()
         }
         val filterDetailsAdapter = FilterDetailsAdapter(object :
@@ -302,7 +303,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         // filterDetailsAdapter.updateList(keys)
 
     }
-    fun switchtoMyFolderFragmentTab(){
+
+    fun switchtoMyFolderFragmentTab() {
         val tabPosition = binding.tabLayout.selectedTabPosition
         binding.viewPager.currentItem = 1
 

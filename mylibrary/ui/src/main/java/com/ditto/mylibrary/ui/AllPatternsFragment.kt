@@ -221,7 +221,7 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-            setPatternCount.onSetCount(viewModel.totalPatternCount)
+            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
 
         }
 
@@ -319,7 +319,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-            setPatternCount.onSetCount(viewModel.totalPatternCount)
+            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
 
             /**
              * Getting ALL PATTERNS LIST
@@ -482,7 +482,7 @@ class AllPatternsFragment(
     }
 
     interface SetPatternCount {
-        fun onSetCount(totalPatternCount: Int)
+        fun onSetCount(tittle:String)
     }
 
     interface setFilterIcons {
