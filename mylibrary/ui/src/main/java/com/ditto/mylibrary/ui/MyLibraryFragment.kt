@@ -101,9 +101,16 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun applyFilter() {
-        allPatternsFragment.applyFilter()
-        binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
-        setFilterMenuAdapter(0)
+        val tabPosition = binding.tabLayout.selectedTabPosition
+        if (tabPosition==0) {
+            allPatternsFragment.applyFilter()
+            binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            setFilterMenuAdapter(0)
+        } else {
+            myfolderDetail.applyFilter()
+            binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            setFilterMenuAdapter(0)
+        }
     }
 
     private fun setUpNavigationDrawer() {
@@ -208,19 +215,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     setFilterMenuAdapter(0)
                     binding.drawerLayoutMylib?.openDrawer(Gravity.RIGHT)
                     Log.d("pattern", "onFilterClick : AllPatternsFragment")
-                    /*  findNavController().currentDestination
-                      allPatternsFragment.onFilterClick()*/
                 } else {
-
+                    setFilterMenuAdapter(0)
+                    binding.drawerLayoutMylib?.openDrawer(Gravity.RIGHT)
+                    Log.d("pattern", "onFilterClick : MyFolder Detail")
                 }
             }
             MyLibraryViewModel.Event.OnSyncClick -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
-
                     allPatternsFragment.onSyncClick()
                 } else {
-
                     myfolderDetail.onSyncClick()
                 }
             }

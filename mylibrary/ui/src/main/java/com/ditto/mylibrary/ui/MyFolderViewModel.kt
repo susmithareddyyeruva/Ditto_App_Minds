@@ -29,21 +29,21 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     private val uiEvents = UiEvents<MyFolderViewModel.Event>()
     val events = uiEvents.stream()
     val clickedId: ObservableInt = ObservableInt(-1)
-    var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
+    var mutableLiveData: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var errorString: ObservableField<String> = ObservableField("")
     var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
-    var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
-    var patternArrayList = mutableListOf<ProdDomain>()
+    var myfolderList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
+    var myfolderArryList = mutableListOf<ProdDomain>()
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
-    var map = HashMap<String, List<String>>()
-    val menuList = hashMapOf<String, ArrayList<FilterItems>>()
-    val resultMap = hashMapOf<String, ArrayList<String>>()
+    var myfolderMap = HashMap<String, List<String>>()
+    val myfolderMenu = hashMapOf<String, ArrayList<FilterItems>>()
+    val resultmapFolder = hashMapOf<String, ArrayList<String>>()
     var totalPageCount: Int = 0
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
-    var isFilter: Boolean? = false
+    var isFilterApplied: Boolean? = false
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -90,10 +90,10 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                patternList.value = result.data.prod
+                myfolderList.value = result.data.prod
 
                 result.data.prod.forEach {
-                    patternArrayList.add(it)
+                    myfolderArryList.add(it)
                 }
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
@@ -101,9 +101,9 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
                 totalPageCount = result.data.totalPageCount ?: 0
                 currentPageId = result.data.currentPageId ?: 0
-                map = result.data.menuItem ?: hashMapOf() //hashmap
+                myfolderMap = result.data.menuItem ?: hashMapOf() //hashmap
                 uiEvents.post(Event.OnResultSuccess)
-                if (isFilter == false) {
+                if (isFilterApplied == false) {
                     setList()  // For Displaying menu item without any filter applied
                     uiEvents.post(Event.UpdateDefaultFilter)
                     isFilterResult.set(false)
@@ -118,17 +118,17 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
     fun setList() {
 
-        for ((key, value) in map) {
+        for ((key, value) in myfolderMap) {
             var menuValues: ArrayList<FilterItems> = ArrayList()
             for (aString in value) {
                 menuValues?.add(FilterItems(aString))
 
             }
             //  Filter.menuItemListFilter[key] = menuValues
-            menuList[key] = menuValues
+            myfolderMenu[key] = menuValues
         }
 
-        Log.d("MAP  RESULT== ", menuList.size.toString())
+        Log.d("MAP  RESULT== ", myfolderMenu.size.toString())
         uiEvents.post(Event.OnUpdateFilter)
 
     }
@@ -180,23 +180,23 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 true
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
-        val json1 = Gson().toJson(menuList)
+        val json1 = Gson().toJson(myfolderMenu)
         Log.d("JSON===", json1)
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
-        menuList.forEach { (key, value) ->
+        myfolderMenu.forEach { (key, value) ->
             val filtered = value.filter { prod -> prod.isSelected }
             if (filtered.isNotEmpty()) {
                 filteredMap[key] = filtered.toTypedArray()
 
             }
         }
-        isFilter = !(filteredMap.isEmpty() && value.isEmpty())
+        isFilterApplied = !(filteredMap.isEmpty() && value.isEmpty())
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()
             for (result in value) {
                 arraYlist.add(result.title)
-                resultMap[key] = arraYlist
+                resultmapFolder[key] = arraYlist
                 jsonProduct.put(key, arraYlist)
 
 
@@ -204,8 +204,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
 
         }
-        filterCriteria.ProductFilter = resultMap
-        val resultJson = Gson().toJson(resultMap)
+        filterCriteria.ProductFilter = resultmapFolder
+        val resultJson = Gson().toJson(resultmapFolder)
         Log.d("JSON===", resultJson)
 
         val jsonString: String = resultJson

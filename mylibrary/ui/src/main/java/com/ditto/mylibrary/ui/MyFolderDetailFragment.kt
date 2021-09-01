@@ -66,7 +66,7 @@ class MyFolderDetailFragment :BaseFragment(), Utility.CustomCallbackDialogListen
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            if (viewModel.patternArrayList.isEmpty()) {
+            if (viewModel.myfolderArryList.isEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(
                     viewModel.createJson(
@@ -77,7 +77,7 @@ class MyFolderDetailFragment :BaseFragment(), Utility.CustomCallbackDialogListen
             } else {
                 updatePatterns()
                 //  setFilterMenuAdapter(0)
-                if (viewModel.isFilter == true) {
+                if (viewModel.isFilterApplied == true) {
                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
                 } else{
                     (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
@@ -89,9 +89,9 @@ class MyFolderDetailFragment :BaseFragment(), Utility.CustomCallbackDialogListen
         }
 
         binding.imageClearFilter.setOnClickListener {
-            viewModel.resultMap.clear()
-            viewModel.patternArrayList.clear()
-            viewModel.menuList.clear()
+            viewModel.resultmapFolder.clear()
+            viewModel.myfolderArryList.clear()
+            viewModel.myfolderMenu.clear()
             viewModel.setList()
             currentPage = 1
             isLastPage = false
@@ -103,21 +103,45 @@ class MyFolderDetailFragment :BaseFragment(), Utility.CustomCallbackDialogListen
         }
 
     }
-    private fun updatePatterns() {
-        // Updating the adapter
-        myFolderDetailListAdapter.setListData(items = viewModel.patternArrayList)
-        binding.tvFilterResult.text =
-            getString(R.string.text_filter_result, viewModel.totalPatternCount)
-    }
-    private fun cleaFilterData() {
-        viewModel.resultMap.clear()
-        viewModel.patternArrayList.clear()
-        viewModel.menuList.clear()
+
+    fun cleaFilterData() {
+        viewModel.resultmapFolder.clear()
+        viewModel.myfolderArryList.clear()
+        viewModel.myfolderMenu.clear()
         viewModel.setList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
+
+    private fun callSearchResult(terms: String) {
+        viewModel.resultmapFolder.clear()
+        viewModel.myfolderArryList.clear()
+        viewModel.myfolderMenu.clear()
+        viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
+    }
+
+    fun applyFilter() {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            currentPage = 1
+            isLastPage = false
+            viewModel.myfolderArryList.clear()
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        }
+
+    }
+
+    private fun updatePatterns() {
+        // Updating the adapter
+        myFolderDetailListAdapter.setListData(items = viewModel.myfolderArryList)
+        binding.tvFilterResult.text =
+            getString(R.string.text_filter_result, viewModel.totalPatternCount)
+    }
+
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -323,15 +347,7 @@ class MyFolderDetailFragment :BaseFragment(), Utility.CustomCallbackDialogListen
 
         }
     }
-    private fun callSearchResult(terms: String) {
-        viewModel.resultMap.clear()
-        viewModel.patternArrayList.clear()
-        viewModel.menuList.clear()
-        viewModel.setList()
-        currentPage = 1
-        isLastPage = false
-        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
-    }
+
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
@@ -385,7 +401,7 @@ class MyFolderDetailFragment :BaseFragment(), Utility.CustomCallbackDialogListen
     }
 
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
-        val item = viewModel.menuList
+        val item = viewModel.myfolderMenu
         return item
     }
 }

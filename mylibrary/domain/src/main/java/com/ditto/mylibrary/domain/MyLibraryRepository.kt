@@ -17,6 +17,7 @@ interface MyLibraryRepository {
     fun completeProject(patternId:Int): Single<Any>
     fun removePattern(patternId: Int): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
+    fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
 
 
     //fun addProject(id : Int): Single<Any>
