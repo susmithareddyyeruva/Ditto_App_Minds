@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
@@ -103,26 +104,15 @@ class MyFolderFragment(val myFolderDetailFragment: MyFolderDetailFragment) : Bas
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-                // Begin the transaction
-                /* parentFragmentManager
-                      // 3
-                      .beginTransaction()
-                      // 4
-                      .add(binding.parentFragmentContainer.id, myFolderDetailFragment)
-                      .addToBackStack("Detail")
-                      // 5
-                      .commit()
-  */
-                if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
-                    val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
-                    //findNavController().navigate(binding.parentFragmentContainer.id)
-                    findNavController().navigate(
-                        R.id.action_destination_myfolder_detail,
-                        bundle
-                    )
-                } else {
-
-                }
+                //Begin the transaction
+                parentFragmentManager
+                    // 3
+                    .beginTransaction()
+                    // 4
+                    .add(R.id.detail_nav_fragment, myFolderDetailFragment)
+                    .addToBackStack("Detail")
+                    // 5
+                    .commit()
             }
 
             else -> {

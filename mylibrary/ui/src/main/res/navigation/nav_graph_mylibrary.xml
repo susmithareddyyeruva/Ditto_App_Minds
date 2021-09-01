@@ -25,24 +25,9 @@
             app:destination="@id/nav_graph_id_folderdetail" />
     </fragment>
     <fragment
-        android:id="@+id/nav_graph_id_folderdetail"
-        app:popUpTo="@id/myLibraryFragment"
-        android:name="com.ditto.mylibrary.ui.MyFolderDetailFragment"
-        android:label="MyFolderDetailFragment">
-
-
-    </fragment>
-    <fragment
         android:id="@+id/myfolderFragment"
         android:name="com.ditto.mylibrary.ui.MyFolderFragment"
         android:label="MyFolderFragment">
-        <action
-            android:id="@+id/action_destination_myfolder_detail"
-            app:destination="@id/nav_graph_id_folderdetail" />
-        <action
-            android:id="@+id/myfolderdetail"
-            app:destination="@id/nav_graph_id_folderdetail"
-            app:popUpTo="@id/myLibraryFragment" />
     </fragment>
     <fragment
         android:id="@+id/allPatternsFragment"

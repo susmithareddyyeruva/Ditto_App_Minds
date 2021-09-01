@@ -32,10 +32,15 @@
             tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/item_single_myfolder" />
 
-        <FrameLayout
-            android:id="@+id/parent_fragment_container"
+        <fragment
+            android:id="@+id/detail_nav_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:defaultNavHost="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+          />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

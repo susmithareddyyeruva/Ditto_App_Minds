@@ -60,6 +60,7 @@
     <string name="pattern_instructions">Pattern Instructions</string>
     <string name="pattern_details">Pattern details</string>
     <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
+    <string name="myfolder_detail_count">My Folder Details\u0020(%1$d)</string>
     <string name="myfolder">My Folders</string>
     <string name="rename_folder">Rename folder</string>
     <string name="delete_folder">Delete folder</string>

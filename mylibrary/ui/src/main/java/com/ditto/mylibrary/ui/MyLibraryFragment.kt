@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
@@ -96,10 +97,15 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.imageClearAll?.setOnClickListener {
             binding.clearFilter?.performClick()
         }
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
 
     }
-
+    fun setToolbarTittleForDetail(tittle: String) {
+        binding.toolbar.header_view_title.text =tittle
+    }
     private fun applyFilter() {
         val tabPosition = binding.tabLayout.selectedTabPosition
         if (tabPosition==0) {
@@ -166,8 +172,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     private fun setTabsAdapter() {
         showFilterComponents()
-        /* allPatternsFragment = AllPatternsFragment(this, this)
-         myFolderFragment = MyFolderFragment()*/
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
         adapter.addFragment(
@@ -277,16 +281,22 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun setFilterActionAdapter(keys: String) {
-        val menulist = allPatternsFragment.getMenuListItems()
+        val menuList:HashMap<String, ArrayList<FilterItems>>
+        val tabPosition = binding.tabLayout.selectedTabPosition
+        if (tabPosition==0){
+            menuList = allPatternsFragment.getMenuListItems()
+        }else{
+            menuList = myfolderDetail.getMenuListItems()
+        }
         val filterDetailsAdapter = FilterDetailsAdapter(object :
             FilterDetailsAdapter.SelectedItemsListener {
             override fun onItemsSelected(title: String, isSelected: Boolean) {
                 logger.d("Items==" + title)
-                for ((key, value) in menulist) {
+                for ((key, value) in menuList) {
                     logger.d("After  clik selection : $key = $value")
                 }
             }
-        }, menulist, keys)
+        }, menuList, keys)
         binding.rvActions?.adapter = filterDetailsAdapter
         filterDetailsAdapter.viewModel = viewModel
         // filterDetailsAdapter.updateList(keys)
@@ -297,4 +307,5 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.viewPager.currentItem = 1
 
     }
+
 }
