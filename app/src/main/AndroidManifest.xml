@@ -33,7 +33,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="development.na03.joann.demandware.net"
+                    android:host="dev01.na03.joann.demandware.net"
                     android:pathPrefix="/on/demandware.store/Sites-ditto-Site" />
             </intent-filter>
             <intent-filter>
@@ -44,7 +44,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="dev01-na03-joann.demandware.net"
+                    android:host="dev01.na03.joann.demandware.net"
                     android:pathPrefix="/on/demandware.store/Sites-JoAnn-Site/default/MyPatternLibrary-MyLibrary" />
             </intent-filter>
             <intent-filter>
@@ -55,7 +55,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="dev01-na03-joann.demandware.net"
+                    android:host="dev01.na03.joann.demandware.net"
                     android:pathPrefix="/on/demandware.store/Sites-ditto-Site/default/SubscriptionLibrary-MySubscriptionLibrary" />
             </intent-filter>
         </activity>
