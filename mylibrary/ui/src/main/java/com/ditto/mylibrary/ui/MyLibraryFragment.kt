@@ -206,7 +206,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                      * To Show My Folders screen always  While Switching tab between all pattern and myfolder
                      * without showing My Folder Detail Screen
                      */
-                    childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
+                    childFragmentManager.fragments[1]?.fragmentManager?.popBackStackImmediate()
                     showFilterComponents()
                     binding.toolbar.header_view_title.text =
                         getString(R.string.pattern_library_count, AppState.getPatternCount())
