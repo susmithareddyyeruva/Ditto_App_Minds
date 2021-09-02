@@ -19,7 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
-class MyFolderFragment(val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment() {
+class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment() {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory

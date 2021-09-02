@@ -68,5 +68,7 @@
     <string name="owned">Owned</string>
     <string name="cancel_search">Cancel</string>
     <string name="addto">Add to folder</string>
+    <string name="folder_name">Folder name</string>
+    <string name="new_folder">New folder</string>
 
 </resources>

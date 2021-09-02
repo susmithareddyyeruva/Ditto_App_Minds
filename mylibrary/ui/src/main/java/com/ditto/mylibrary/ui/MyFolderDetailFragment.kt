@@ -255,6 +255,9 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                         if (alertDialog.editSearch.text.toString().isNotEmpty()) {
                             requireActivity().getWindow()
                                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            alertDialog.window?.setSoftInputMode(
+                                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+                            )
                             callSearchResult(alertDialog.editSearch.text.toString())
                             alertDialog.cancel()
                         } else
