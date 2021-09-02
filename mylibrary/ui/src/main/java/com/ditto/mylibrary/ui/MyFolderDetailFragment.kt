@@ -57,6 +57,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
         return binding.folderdetailRoot
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment as MyLibraryFragment)?.hideFilterComponents()
+    }
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()

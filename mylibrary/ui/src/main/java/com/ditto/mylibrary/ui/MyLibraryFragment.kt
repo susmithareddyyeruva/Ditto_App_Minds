@@ -103,8 +103,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.clearFilter?.performClick()
         }
         binding.toolbar.setNavigationOnClickListener {
-            setToolbarTittle(getString(R.string.my_folders))
+            val tabPosition = binding.tabLayout.selectedTabPosition
+            if (tabPosition==1) {
+                setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+            }
             requireActivity().onBackPressed()
+
         }
 
 
@@ -198,10 +202,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                 if (tab?.position == 0) {
+                    /**
+                     * To Show My Folders screen always  While Switching tab between all pattern and myfolder
+                     * without showing My Folder Detail Screen
+                     */
+                    childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
                     showFilterComponents()
                     binding.toolbar.header_view_title.text =
                         getString(R.string.pattern_library_count, AppState.getPatternCount())
+
                 } else {
+                    val currentFragment = fragmentManager?.fragments?.last()
                     hideFilterComponents()
                     binding.toolbar.header_view_title.text = getString(R.string.my_folders)
                 }
