@@ -45,6 +45,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxjava2_android_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
 
+
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
 
