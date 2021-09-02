@@ -86,7 +86,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
 
         binding.clearFilter?.setOnClickListener {
-            allPatternsFragment.cleaFilterData()
+            val tabPosition = binding.tabLayout.selectedTabPosition
+            if (tabPosition == 0)
+                allPatternsFragment.cleaFilterData()
+            else
+                myfolderDetail.cleaFilterData()
+
             if (binding?.rvActions?.adapter != null) {
                 binding.rvActions?.adapter?.notifyDataSetChanged()
                 binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
@@ -98,7 +103,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.clearFilter?.performClick()
         }
         binding.toolbar.setNavigationOnClickListener {
-          setToolbarTittle(getString(R.string.my_folders))
+            setToolbarTittle(getString(R.string.my_folders))
             requireActivity().onBackPressed()
         }
 
