@@ -1,9 +1,9 @@
 package core.di
 
 import android.content.Context
+import core.*
 import core.MOCK_API_CERT
-import core.OCAPI_PASSWORD
-import core.OCAPI_USERNAME
+import core.TAILORNOVA_API_KEY
 import core.di.scope.*
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
@@ -101,7 +101,9 @@ class RetrofitModule {
     ): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
+        val head_auth = AuthInterceptor(TAILORNOVA_API_KEY, TAILORNOVA_API_KEY_VALUE)
         val httpClient = OkHttpClient.Builder()
+            .addInterceptor(head_auth)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -218,5 +220,16 @@ class BasicAuthInterceptor(user: String?, password: String?) :
 
     init {
         credentials = Credentials.basic(user!!, password!!)
+    }
+}
+
+class AuthInterceptor(tailornovaApiKey: String, tailornovaApiKeyValue: String) :Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        val authRequest: Request = request.newBuilder()
+            .addHeader(TAILORNOVA_API_KEY, TAILORNOVA_API_KEY_VALUE)
+            .method(request.method, request.body)
+            .build()
+        return chain.proceed(authRequest)
     }
 }

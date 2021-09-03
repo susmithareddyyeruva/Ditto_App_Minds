@@ -115,7 +115,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (viewModel.data.value == null) {
             //viewModel.fetchWorkspaceData()
             //viewModel.fetchWorkspaceDataFromAPI(result) // SFCC
-            viewModel.fetchTailernovaDataByID("demo-design-id-png")
+            viewModel.fetchTailernovaDataByID("demo-design-id-png", "WorkspaceTABFragment")
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)

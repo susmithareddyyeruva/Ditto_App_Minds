@@ -271,7 +271,7 @@ class AllPatternsFragment : BaseFragment(),
 
         is AllPatternsViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get(),"clickedOrderNumber" to viewModel.clickedOrderNumber.get())
                 findNavController().navigate(
                     R.id.action_allPatternsFragment_to_patternDescriptionFragment,
                     bundle

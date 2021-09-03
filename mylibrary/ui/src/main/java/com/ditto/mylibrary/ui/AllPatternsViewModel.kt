@@ -35,7 +35,8 @@ class AllPatternsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
-    var clickedId: ObservableField<String> = ObservableField("")//todo
+    var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -131,19 +132,23 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onItemClick(id: String) {
-        clickedId.set(id)
+        clickedTailornovaID.set(id)
         uiEvents.post(Event.OnItemClick)
     }
 
-    fun onItemClickPattern(id: String) {
+    fun onItemClickPattern(id: String,orderNumber: String) {
         if (id == "10140549") {
-            clickedId.set("1")
+            clickedTailornovaID.set("1")
+            clickedOrderNumber.set(orderNumber)
         } else if (id == "10544781") {
-            clickedId.set("2")
+            clickedTailornovaID.set("2")
+            clickedOrderNumber.set(orderNumber)
         } else if (id == "10140606") {
-            clickedId.set("3")
+            clickedTailornovaID.set("3")
+            clickedOrderNumber.set(orderNumber)
         } else {
-            clickedId.set("4")
+            clickedTailornovaID.set("4")
+            clickedOrderNumber.set(orderNumber)
         }
         uiEvents.post(Event.OnItemClick)
     }

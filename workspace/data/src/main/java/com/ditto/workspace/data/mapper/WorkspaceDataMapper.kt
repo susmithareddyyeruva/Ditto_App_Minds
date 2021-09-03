@@ -23,7 +23,7 @@ fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternDomain {
         patternPieces = this.patternPieces?.map { it.toDomain() },
         garmetWorkspaceItems = this.garmetWorkspaceItems?.map { it.toDomain() },
         liningWorkspaceItems = this.liningWorkspaceItems?.map { it.toDomain() },
-        interfaceWorkspaceItems = this.interfaceWorkspaceItems?.map { it.toDomain() },
+        interfaceWorkspaceItem = this.interfaceWorkspaceItem?.map { it.toDomain() },
     )
 
 }
@@ -83,7 +83,7 @@ fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItems.map { it.toDomain() },
         liningWorkspaceItemOfflines = this.liningWorkspaceItems.map { it.toDomain() },
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
-        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItems.map { it.toDomain() }
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItem.map { it.toDomain() }
     )
 }*/
 
@@ -93,10 +93,10 @@ fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
         selectedTab = this.selectedTab,
         status = this.status,
         numberOfPieces = this.numberOfCompletedPieces.toDomain(),
-        garmetWorkspaceItems = this.garmetWorkspaceItemOfflines.map { it.toDomain() },
-        liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() },
+        garmetWorkspaceItems = this.garmetWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
+        liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
-        interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }
+        interfaceWorkspaceItem = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }.toMutableList()
     )
 }
 
@@ -148,6 +148,8 @@ fun com.ditto.storage.data.model.WorkspaceItemOffline.toDomain(): WorkspaceItemD
         isMirrorV = this.isMirrorV,
         showMirrorDialog = this.showMirrorDialog,
         currentSplicedPieceNo = this.currentSplicedPieceNo,
+        currentSplicedPieceRow=this.currentSplicedPieceRow,
+        currentSplicedPieceColumn=this.currentSplicedPieceColumn
     )
 }
 
@@ -213,7 +215,7 @@ fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
     return PatternPieceData(
         cutOnFold = this.cutOnFold,
         cutQuantity = this.cutQuantity,
-        description = this.description,
+        pieceDescription = this.pieceDescription,
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
@@ -232,7 +234,7 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
     return PatternPieceDataDomain(
         cutOnFold = this.cutOnFold,
         cutQuantity = this.cutQuantity,
-        description = this.description,
+        pieceDescription = this.pieceDescription,
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
@@ -300,7 +302,9 @@ fun WorkspaceItemOffline.toDomain1(): WorkspaceItemOfflineDomain {
         isMirrorV = this.isMirrorV,
         isMirrorH = this.isMirrorH,
         showMirrorDialog = this.showMirrorDialog,
-        currentSplicedPieceNo = this.currentSplicedPieceNo
+        currentSplicedPieceNo = this.currentSplicedPieceNo,
+        currentSplicedPieceRow = this.currentSplicedPieceRow,
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
 

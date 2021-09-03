@@ -39,7 +39,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedID: ObservableField<String> = ObservableField("demo-design-id-png")
+    val clickedTailornovaID: ObservableField<String> = ObservableField("demo-design-id-png")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
     val patternpdfuri: ObservableField<String> = ObservableField("")

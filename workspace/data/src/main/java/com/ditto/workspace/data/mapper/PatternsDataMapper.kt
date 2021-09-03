@@ -2,7 +2,6 @@ package com.ditto.workspace.data.mapper
 
 import com.ditto.storage.data.model.*
 import com.ditto.workspace.domain.model.NumberOfCompletedPieceDomain
-import com.ditto.workspace.domain.model.NumberOfPieces
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
@@ -18,9 +17,9 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             selectedTab = it.selectedTab,
             status = it.status,
             thumbnailImagePath = it.thumbnailImagePath,
-            thumbnailImageName=it.thumbnailImageName,
+            thumbnailImageName =it.thumbnailImageName,
             numberOfCompletedPieces = it.numberOfCompletedPieces?.toDomainn(),
-            totalNumberOfPieces=it.numberOfPieces?.toDomainn(),
+            totalNumberOfPieces =it.numberOfPieces?.toDomainn(),
             descriptionImages = it.descriptionImages.map { it.toDomain() },
             selvages = it.selvages.map { it.toDomain() },
             patternPieces = it.patternPieces.map { it.toDomain() },
@@ -43,9 +42,9 @@ internal fun Patterns.toDomain(): PatternsData {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
-        thumbnailImageName=this.thumbnailImageName,
+        thumbnailImageName =this.thumbnailImageName,
         numberOfCompletedPieces = this.numberOfCompletedPieces?.toDomainn(),
-        totalNumberOfPieces=this.numberOfPieces?.toDomainn(),
+        totalNumberOfPieces =this.numberOfPieces?.toDomainn(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },

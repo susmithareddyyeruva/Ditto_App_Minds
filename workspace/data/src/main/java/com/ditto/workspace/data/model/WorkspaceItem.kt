@@ -8,27 +8,27 @@ data class WorkspaceItem(
     @SerializedName("patternPiecesId")
     val patternPiecesId: Int = 0,
     @SerializedName("isCompleted")
-    val isCompleted: String? = "",
+    val isCompleted: Boolean = false,
     @SerializedName("xcoordinate")
-    val xcoordinate: String = "",
+    val xcoordinate:Float= 0.0f,
     @SerializedName("ycoordinate")
-    val ycoordinate: String = "",
+    val ycoordinate:Float= 0.0f,
     @SerializedName("pivotX")
-    val pivotX: String = "",
+    val pivotX: Float = 0.0f,
     @SerializedName("pivotY")
-    val pivotY: String = "",
+    val pivotY:Float= 0.0f,
     @SerializedName("transformA")
     val transformA: String? = "",
     @SerializedName("transformD")
     val transformD: String? = "",
     @SerializedName("rotationAngle")
-    val rotationAngle: String = "",
+    val rotationAngle:Float= 0.0f,
     @SerializedName("isMirrorH")
-    val isMirrorH: String? = "",
+    val isMirrorH: Boolean = false,
     @SerializedName("isMirrorV")
-    val isMirrorV: String? = "",
+    val isMirrorV: Boolean = false,
     @SerializedName("showMirrorDialog")
-    val showMirrorDialog: String? = "",
+    val showMirrorDialog: Boolean = false,
     @SerializedName("currentSplicedPieceNo")
     val currentSplicedPieceNo: String? = ""
 )

@@ -9,6 +9,7 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
+import com.ditto.storage.data.model.WorkspaceItemOffline
 import com.ditto.workspace.data.api.GetWorkspaceService
 import com.ditto.workspace.data.error.*
 import com.ditto.workspace.data.mapper.toDomain
@@ -70,17 +71,20 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
     override fun updateOfflineStorageData(
         tailornaovaDesignId: String,
-        selectedTab: String,
-        status: String,
-        numberOfCompletedPiece: NumberOfPieces,
+        selectedTab: String?,
+        status: String?,
+        numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemDomain>,
-        liningWorkspaceItems: List<WorkspaceItemDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemDomain>
+        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>?
     ): Single<Any> {
         return Single.fromCallable{
-            offlinePatternDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece.toDomain(),
-                patternPieces.map { it.toDomain() },garmetWorkspaceItems.map { it.toDomain() },liningWorkspaceItems.map { it.toDomain() },interfaceWorkspaceItem.map { it.toDomain() })
+            offlinePatternDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece?.toDomain(),
+                patternPieces.map { it.toDomain() },
+                garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
+                liningWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
+                interfaceWorkspaceItem?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>)
         }
     }
 
@@ -122,12 +126,12 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getWorkspaceDataFromApi(): Single<Result<CTraceWorkSpacePatternDomain>> {
+    override fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
 
-        return getWorkspaceService.getWorkspceDataFromApi(CLIENT_ID).doOnSuccess {
+        return getWorkspaceService.getWorkspceDataFromApi(/*id,*/CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
             Log.d("WorkspaceRepositoryImpl","${it.c_traceWorkSpacePattern.toString()}")
@@ -135,7 +139,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }.onErrorReturn {
             var errorMessage = "Error Fetching data"
             try {
-                logger.d("try block")
+                logger.d("try block123")
                 val error = it as HttpException
                 if (error != null) {
                     val errorBody = error.response()!!.errorBody()!!.string()
@@ -156,7 +160,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+    override fun updateWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -173,6 +177,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.updateWorkspaceDataFromApi(
+            /*id,*/
             CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
@@ -197,7 +202,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+    override fun createWorkspaceDataFromApi(id:String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -210,6 +215,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.createWorkspaceDataFromApi(
+            /*id,*/
             CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {

@@ -28,10 +28,10 @@ data class Patterns(
     var completedPieces: Int = 0,
     @ColumnInfo(name = "selectedTab")
     @SerializedName("selectedTab")
-    var selectedTab: String = "",
+    var selectedTab: String? = "",
     @ColumnInfo(name = "status")
     @SerializedName("status")
-    var status: String = "",
+    var status: String? = "",
     @ColumnInfo(name = "thumbnailImagePath")
     @SerializedName("thumbnailImagePath")
     var thumbnailImagePath: String = "",

@@ -19,7 +19,7 @@ abstract class OfflinePatternDataDao {
 
     @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPieces = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItem = :interfaceWorkspaceItem WHERE tailornaovaDesignId = :tailornaovaDesignId")
     abstract fun updateOfflinePatternData(
-        tailornaovaDesignId: String, selectedTab: String, status:String,
+        tailornaovaDesignId: String, selectedTab: String?, status:String?,
         numberOfCompletedPiece: NumberOfCompletedPiecesOffline?,
         patternPieces: List<PatternPiecesOffline>,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,

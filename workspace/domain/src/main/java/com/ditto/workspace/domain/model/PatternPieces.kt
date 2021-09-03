@@ -16,6 +16,6 @@ data class PatternPieces(
     var spliceScreenQuantity: String?,
     var splicedImages: List<SpliceImages> = emptyList(),
     var cutOnFold: String?,
-    var mirrorOption: String?,
+    var mirrorOption: Boolean?,
     var isCompleted: Boolean
 )

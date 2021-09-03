@@ -10,8 +10,8 @@ interface GetWorkspaceData {
     fun insert(patternsData: PatternsData): Single<Any>//follow same
     fun updateOfflineStorageData(
         tailornaovaDesignId: String,
-        selectedTab: String,
-        status: String,
+        selectedTab: String?,
+        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceDomain>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
@@ -23,8 +23,8 @@ interface GetWorkspaceData {
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
     fun getUserDetails():Single<Result<LoginUser>>
     fun deleteAndInsert(id: String, patternsData: PatternsData): Single<Any>
-    fun getWorkspaceData() : Single<Result<CTraceWorkSpacePatternDomain>>
-    fun updateWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
-    fun createWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
+    fun getWorkspaceData(id: String): Single<Result<CTraceWorkSpacePatternDomain>>
+    fun updateWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
+    fun createWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
 }
 

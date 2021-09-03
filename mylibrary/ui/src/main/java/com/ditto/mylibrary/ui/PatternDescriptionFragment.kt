@@ -95,7 +95,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         //baseViewModel.activeSocketConnection.set(false)
 
         if (viewModel.data.value == null) {
-            arguments?.getString("clickedID").toString()?.let { viewModel.clickedID.set(it) }
+            arguments?.getString("clickedTailornovaID").toString()?.let { viewModel.clickedTailornovaID.set(it) }
+            arguments?.getString("clickedOrderNumber").toString()?.let { viewModel.clickedOrderNumber.set(it) }
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchPattern()
             setUIEvents()
@@ -144,7 +145,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         setData()
-        when(viewModel.clickedID.get()?.toInt()){
+        when(viewModel.clickedTailornovaID.get()?.toInt()){
              1-> setVisibilityForViews("RESUME",true,false,true,false, false,true,false)
             4-> setVisibilityForViews("WORKSPACE",true,false,false,true, false,false,true)
             8-> setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
@@ -546,7 +547,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
-        val bundle = bundleOf("PatternId" to 1) // todo shri see the pattern pieces
+        val bundle = bundleOf("PatternId" to 1,"clickedOrderNumber" to 2) // todo shri see the pattern pieces
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
                 R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
@@ -698,7 +699,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             findNavController().navigate(
                 R.id.action_pattern_description_to_calibration,
                 bundleOf(
-                    "PatternId" to viewModel.clickedID.get(),
+                    "PatternId" to viewModel.clickedTailornovaID.get(),
                     "isFromPatternDescription" to true
                 )
             )

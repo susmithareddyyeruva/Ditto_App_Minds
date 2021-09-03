@@ -22,13 +22,13 @@ class WorkspaceImpl @Inject constructor(
 
     override fun updateOfflineStorageData(
         tailornaovaDesignId: String,
-        selectedTab: String,
-        status: String,
-        numberOfCompletedPiece: NumberOfPieces,
+        selectedTab: String?,
+        status: String?,
+        numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: List<WorkspaceItemDomain>,
-        liningWorkspaceItems: List<WorkspaceItemDomain>,
-        interfaceWorkspaceItem: List<WorkspaceItemDomain>
+        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItem:MutableList<WorkspaceItemDomain>?
     ): Single<Any> {
         return workspaceRepository.updateOfflineStorageData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece,patternPieces,
         garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItem)
@@ -54,16 +54,16 @@ class WorkspaceImpl @Inject constructor(
         return workspaceRepository.deleteAndInsert(id, patternsData)
     }
 
-    override fun getWorkspaceData(): Single<Result<CTraceWorkSpacePatternDomain>> {
-        return workspaceRepository.getWorkspaceDataFromApi()
+    override fun getWorkspaceData(id: String): Single<Result<CTraceWorkSpacePatternDomain>> {
+        return workspaceRepository.getWorkspaceDataFromApi(id)
     }
 
-    override fun updateWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
-        return workspaceRepository.updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData)
+    override fun updateWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+        return workspaceRepository.updateWorkspaceDataFromApi(id,cTraceWorkSpacePatternInputData)
     }
 
-    override fun createWorkspaceData(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
-     return workspaceRepository.createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData)
+    override fun createWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+     return workspaceRepository.createWorkspaceDataFromApi(id,cTraceWorkSpacePatternInputData)
     }
 
 }

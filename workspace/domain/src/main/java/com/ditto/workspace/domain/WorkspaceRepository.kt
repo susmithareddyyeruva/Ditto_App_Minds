@@ -15,8 +15,8 @@ interface WorkspaceRepository {
     //fun updateOfflineStorageData(tailornaovaDesignId:Int,selectedTab: String,status:String): Single<Any>
     fun updateOfflineStorageData(
         tailornaovaDesignId: String,
-        selectedTab: String,
-        status: String,
+        selectedTab: String?,
+        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceDomain>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
@@ -27,7 +27,7 @@ interface WorkspaceRepository {
     fun getUserData(): Single<Result<LoginUser>>
     fun getPatternDataByID(id:Int):Single<Result<PatternsData>>
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
-    fun getWorkspaceDataFromApi(): Single<Result<CTraceWorkSpacePatternDomain>>
-    fun updateWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
-    fun createWorkspaceDataFromApi(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
+    fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternDomain>>
+    fun updateWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
+    fun createWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
 }

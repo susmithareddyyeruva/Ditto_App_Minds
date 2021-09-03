@@ -11,7 +11,7 @@ data class MyLibraryData(
     val description: String,
     val totalPieces: Int,
     val completedPieces: Int,
-    val status: String,
+    val status: String?,
     var thumbnailImagePath: String,
     var thumbnailImageName: String,
     var descriptionImages: List<DescriptionImages>,

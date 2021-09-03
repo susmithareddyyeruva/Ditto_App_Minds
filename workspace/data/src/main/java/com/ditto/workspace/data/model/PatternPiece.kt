@@ -6,5 +6,5 @@ data class PatternPiece(
     @SerializedName("id")
     val id: Int? = 0,
     @SerializedName("isCompleted")
-    val isCompleted: String? = ""
+    val isCompleted: Boolean? = false
 )

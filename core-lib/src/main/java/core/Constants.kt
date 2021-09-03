@@ -48,7 +48,8 @@ const val SUBSCRIPTION_END_DATE = "enddate"
 const val SUBSCRIPTION_PLAN_PRICE = "planprice"
 const val SUBSCRIPTION_PLAN_NAME = "planname"
 const val PATTERN_COUNT = "COUNT"
-
+const val TAILORNOVA_API_KEY_VALUE = "FA872702-6396-45DC-89F0-FC1BE900591B"
+const val TAILORNOVA_API_KEY = "X-Api-Key"
 
 
 

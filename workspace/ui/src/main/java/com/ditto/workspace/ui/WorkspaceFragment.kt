@@ -54,6 +54,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 inflater
             ).also {
                 arguments?.getInt("PatternId")?.let { viewModel.patternId.set(it) }
+                arguments?.getInt("clickedOrderNumber")?.let { viewModel.clickedOrderNumber.set(it) }
+
             }
         }
         return binding.root
@@ -70,7 +72,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.isDoubleTapTextVisible.set(true)
             //viewModel.fetchWorkspaceData()
             //viewModel.fetchWorkspaceDataFromAPI()
-            viewModel.fetchTailernovaDataByID("demo-design-id-png")
+            viewModel.fetchTailernovaDataByID("demo-design-id-png","WorkspaceFragment")
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

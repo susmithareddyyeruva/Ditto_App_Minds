@@ -18,7 +18,7 @@ data class WorkspaceItems (
     var spliceScreenQuantity: String? = "",
     var splicedImages: List<SpliceImages>?= emptyList(),
     var cutOnFold: String? = "",
-    var mirrorOption: String = "",
+    var mirrorOption: Boolean? = false,
     var xcoordinate: Float = 0.0f,
     var ycoordinate: Float = 0.0f,
     var pivotX: Float = 0.0f,
