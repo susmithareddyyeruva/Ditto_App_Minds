@@ -275,7 +275,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     override fun onFilterApplied(isApplied: Boolean) {
         if (isApplied) {
-            binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
+            binding.viewDot.setImageResource(R.drawable.ic_filter_tab)
         } else
             binding.viewDot.setImageResource(R.drawable.ic_filter)
     }

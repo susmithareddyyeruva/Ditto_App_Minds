@@ -10,18 +10,16 @@
             type="com.ditto.mylibrary.ui.MyLibraryViewModel" />
 
     </data>
-
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout_mylib"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="right">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topbar1"
@@ -138,8 +136,8 @@
                             android:drawablePadding="@dimen/distance_after_icon_sync"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
-                            android:onClick="@{() -> viewModel.onSearchClick()}"
                             android:padding="@dimen/padding_small"
+                            android:onClick="@{() -> viewModel.onSearchClick()}"
                             android:text="@string/text_search"
                             android:textColor="@color/search_text_code"
                             android:textSize="@dimen/size_search"
@@ -152,8 +150,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dimen_5"
-                            android:onClick="@{() -> viewModel.onFilterClick()}"
                             android:src="@drawable/ic_filter"
+                            android:onClick="@{() -> viewModel.onFilterClick()}"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_filter"
                             app:layout_constraintEnd_toStartOf="@+id/tv_filter"
                             app:layout_constraintTop_toTopOf="@+id/tv_filter" />
@@ -194,16 +192,13 @@
                 android:layout_marginEnd="@dimen/content_start"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline_top1"
-                app:tabBackground="@android:color/white"
                 app:tabIndicatorColor="#A4211F"
-                app:tabIndicatorFullWidth="false"
                 app:tabIndicatorGravity="bottom"
-                app:tabMinWidth="@dimen/tab_min_width"
                 app:tabMode="fixed"
-                app:tabPaddingBottom="-18dp"
+                app:tabRippleColor="@null"
+                app:tabMinWidth="@dimen/tab_min_width"
                 app:tabPaddingEnd="@dimen/dimen_0"
                 app:tabPaddingStart="@dimen/dimen_0"
-                app:tabRippleColor="@android:color/transparent"
                 app:tabSelectedTextColor="@color/black"
                 app:tabTextAppearance="@style/MineCustomTabText"
                 app:tabTextColor="#A8A7A8" />
@@ -220,7 +215,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="@dimen/drawer_width"
