@@ -99,7 +99,7 @@ core.ui.common.Utility.CustomCallbackDialogListener{
                     requireContext(),
                     "",
                     getString(R.string.are_you_sure_delete),
-                    "",
+                    getString(R.string.cancel_dialog),
                     getString(R.string.str_ok),
                     this@MyFolderFragment,
                     core.ui.common.Utility.AlertType.DELETE
