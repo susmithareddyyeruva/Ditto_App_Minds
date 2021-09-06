@@ -281,7 +281,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun setFilterMenuAdapter(position: Int) {
-        val menulist = allPatternsFragment.getMenuListItems()
+        val tabPosition = binding.tabLayout.selectedTabPosition
+        val menulist = if (tabPosition==0) {
+            allPatternsFragment.getMenuListItems()
+        } else {
+            myfolderDetail.getMenuListItems()
+        }
         val result = menulist.keys.toList()   //setting menus
         if (result.isNotEmpty()) {
             binding.rvCategory?.layoutManager = LinearLayoutManager(requireContext())
