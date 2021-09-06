@@ -40,7 +40,7 @@
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             app:layout_constraintStart_toStartOf="@+id/guide_start_text"
             app:layout_constraintTop_toBottomOf="@+id/guide_top_text"
-             />
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_start_tile"
@@ -57,11 +57,11 @@
             android:orientation="vertical"/>
 
         <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_start_second_tile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".510"
-        android:orientation="vertical"/>
+            android:id="@+id/guide_start_second_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".510"
+            android:orientation="vertical"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_end_second_tile"
@@ -121,8 +121,8 @@
                 android:fontFamily="@font/avenir_next_it_pro_bold"
                 app:layout_constraintStart_toEndOf="@+id/email_icon"
                 app:layout_constraintTop_toTopOf="@+id/email_icon"
-               android:layout_marginLeft="20dp"
-               />
+                android:layout_marginLeft="20dp"
+                />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_view_top"
@@ -331,9 +331,6 @@
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

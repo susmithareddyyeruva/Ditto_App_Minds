@@ -10,6 +10,7 @@
             type="com.ditto.menuitems_ui.settings.WSProSettingViewModel" />
 
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
@@ -311,8 +312,8 @@
 
             </LinearLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
