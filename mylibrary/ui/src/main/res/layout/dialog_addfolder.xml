@@ -25,6 +25,7 @@
             android:id="@+id/imageCloseDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_close_folder">
