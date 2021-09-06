@@ -38,6 +38,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
     override fun onBindViewHolder(holder: PatternHolder, position: Int) {
         holder.patternsItemBinding.product = patterns[position]
         holder.patternsItemBinding.viewModel = viewModel
+       // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
 
         val res: Resources = viewGroup!!.resources
         Glide.with(holder.patternsItemBinding?.imagePattern.context)

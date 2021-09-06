@@ -42,6 +42,8 @@ private val deleteClicked: OnDeleteClicked) :
               .placeholder(com.ditto.mylibrary.ui.R.drawable.ic_placeholder)
               .into(holder.itemSingleMyfolderBinding.itemImage)*/
 
+      //  Utility.increaseTouch(holder.itemSingleMyfolderBinding.imgIconClose,10f)
+
         holder.itemSingleMyfolderBinding.prodName.text = data?.title
         if (data?.url != 0) {
             holder.itemSingleMyfolderBinding.itemImage.setImageResource(
@@ -71,6 +73,8 @@ private val deleteClicked: OnDeleteClicked) :
             clickedPostion = position
             data?.clicked = clickedPostion == position
             notifyDataSetChanged()
+            holder.itemSingleMyfolderBinding.rootView.isClickable =false
+            holder.itemSingleMyfolderBinding.rootView.isFocusable =false
         }
         holder.itemSingleMyfolderBinding.renameText.setOnClickListener {
             renameListener.onRenameClicked()
@@ -92,7 +96,10 @@ private val deleteClicked: OnDeleteClicked) :
         }
         holder.itemSingleMyfolderBinding.imgIconClose.setOnClickListener {
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
+            holder.itemSingleMyfolderBinding.rootView.isClickable =true
+            holder.itemSingleMyfolderBinding.rootView.isFocusable =true
         }
+      //  holder.itemSingleMyfolderBinding.rootView.isClickable = !holder.itemSingleMyfolderBinding.layoutDialog.isVisible
 
 
     }

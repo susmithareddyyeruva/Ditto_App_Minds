@@ -279,6 +279,7 @@ class Utility {
 
 
         }
+
     }
 
     interface CallbackDialogListener {
@@ -289,5 +290,6 @@ class Utility {
         fun onCreateClicked(folderName: String)
         fun onCancelClicked()
     }
+
 
 }
