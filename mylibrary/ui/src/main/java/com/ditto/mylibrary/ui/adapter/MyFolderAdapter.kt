@@ -77,10 +77,12 @@ private val deleteClicked: OnDeleteClicked) :
             holder.itemSingleMyfolderBinding.rootView.isFocusable =false
         }
         holder.itemSingleMyfolderBinding.renameText.setOnClickListener {
+            holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
             renameListener.onRenameClicked()
 
         }
         holder.itemSingleMyfolderBinding.deleteText.setOnClickListener {
+            holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
             deleteClicked.onDeleteClicked()
 
         }
