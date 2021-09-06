@@ -19,7 +19,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
-class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment() {
+class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment() ,
+core.ui.common.Utility.CustomCallbackDialogListener{
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -66,7 +67,47 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     private fun setAdapter() {
         val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.rvMyFolder.layoutManager = gridLayoutManager
-        val adapter = MyFolderAdapter(requireContext(), viewModel.getList())
+        val adapter = MyFolderAdapter(requireContext(), viewModel.getList(),object :MyFolderAdapter.OnRenameListener{
+            override fun onRenameClicked() {
+                val layout =
+                    activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
+                layout?.let {
+                    Utility.renameFolderAlertDialog(
+                        requireActivity(),
+                        it,
+                        viewModel,
+                        "CANCEL",
+                        "RENAME FOLDER",
+                        object :
+                           Utility.CallbackCreateFolderDialogListener {
+                            override fun onCreateClicked(foldername: String) {
+
+                            }
+
+                            override fun onCancelClicked() {
+
+                            }
+                        },
+                        core.ui.common.Utility.AlertType.DEFAULT
+                    )
+                }
+            }
+
+        },object :MyFolderAdapter.OnDeleteClicked{
+            override fun onDeleteClicked() {
+                core.ui.common.Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    getString(R.string.are_you_sure_delete),
+                    "",
+                    getString(R.string.str_ok),
+                    this@MyFolderFragment,
+                    core.ui.common.Utility.AlertType.DELETE
+                    ,
+                    core.ui.common.Utility.Iconype.FAILED
+                )
+            }
+        })
         binding.rvMyFolder.adapter = adapter
         adapter.viewModel = viewModel
     }
@@ -125,5 +166,19 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             }
 
         }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: core.ui.common.Utility.Iconype,
+        alertType: core.ui.common.Utility.AlertType
+    ) {
+
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: core.ui.common.Utility.Iconype,
+        alertType: core.ui.common.Utility.AlertType
+    ) {
+
+    }
 
 }

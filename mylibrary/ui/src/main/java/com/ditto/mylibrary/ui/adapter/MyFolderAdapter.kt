@@ -11,7 +11,8 @@ import com.ditto.mylibrary.ui.MyFolderViewModel
 import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemSingleMyfolderBinding
 
-class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
+class MyFolderAdapter(context: Context, data: List<MyFolderData>?,private val renameListener: OnRenameListener,
+private val deleteClicked: OnDeleteClicked) :
     RecyclerView.Adapter<MyFolderAdapter.MyFolderHolder>() {
     lateinit var viewModel: MyFolderViewModel
     private var items: List<MyFolderData>? = data
@@ -71,6 +72,14 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
             data?.clicked = clickedPostion == position
             notifyDataSetChanged()
         }
+        holder.itemSingleMyfolderBinding.renameText.setOnClickListener {
+            renameListener.onRenameClicked()
+
+        }
+        holder.itemSingleMyfolderBinding.deleteText.setOnClickListener {
+            deleteClicked.onDeleteClicked()
+
+        }
         holder.itemSingleMyfolderBinding.rootView.setOnClickListener {
             if (position==0){
                viewModel.createFolderEvent()
@@ -93,5 +102,11 @@ class MyFolderAdapter(context: Context, data: List<MyFolderData>?) :
         viewType: Int
     ) :
         RecyclerView.ViewHolder(itemSingleMyfolderBinding.root) {
+    }
+    interface OnRenameListener{
+        fun onRenameClicked()
+    }
+    interface OnDeleteClicked{
+        fun onDeleteClicked()
     }
 }
