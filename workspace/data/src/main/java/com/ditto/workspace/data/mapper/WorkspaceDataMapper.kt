@@ -23,7 +23,7 @@ fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternDomain {
         patternPieces = this.patternPieces?.map { it.toDomain() },
         garmetWorkspaceItems = this.garmetWorkspaceItems?.map { it.toDomain() },
         liningWorkspaceItems = this.liningWorkspaceItems?.map { it.toDomain() },
-        interfaceWorkspaceItem = this.interfaceWorkspaceItem?.map { it.toDomain() },
+        interfaceWorkspaceItems = this.interfaceWorkspaceItems?.map { it.toDomain() },
     )
 
 }
@@ -83,7 +83,7 @@ fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItems.map { it.toDomain() },
         liningWorkspaceItemOfflines = this.liningWorkspaceItems.map { it.toDomain() },
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
-        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItem.map { it.toDomain() }
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItems.map { it.toDomain() }
     )
 }*/
 
@@ -93,10 +93,10 @@ fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
         selectedTab = this.selectedTab,
         status = this.status,
         numberOfPieces = this.numberOfCompletedPieces.toDomain(),
+        patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
         garmetWorkspaceItems = this.garmetWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
         liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
-        patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
-        interfaceWorkspaceItem = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }.toMutableList()
+        interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }.toMutableList()
     )
 }
 

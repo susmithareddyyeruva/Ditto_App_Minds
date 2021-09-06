@@ -18,7 +18,7 @@ data class CTraceWorkSpacePattern(
     var garmetWorkspaceItems: List<WorkspaceItem> = emptyList(),
     @SerializedName("liningWorkspaceItems")
     var liningWorkspaceItems: List<WorkspaceItem> = emptyList(),
-    @SerializedName("interfaceWorkspaceItem")
-    var interfaceWorkspaceItem: List<WorkspaceItem> = emptyList()
+    @SerializedName("interfaceWorkspaceItems")
+    var interfaceWorkspaceItems: List<WorkspaceItem> = emptyList()
 )
 

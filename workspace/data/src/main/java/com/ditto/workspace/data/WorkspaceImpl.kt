@@ -28,10 +28,10 @@ class WorkspaceImpl @Inject constructor(
         patternPieces: List<PatternPieceDomain>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItem:MutableList<WorkspaceItemDomain>?
-    ): Single<Any> {
+        interfaceWorkspaceItems:MutableList<WorkspaceItemDomain>?
+    ): Single<Int> {
         return workspaceRepository.updateOfflineStorageData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece,patternPieces,
-        garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItem)
+        garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItems)
     }
 
     override fun insertWorkspaceData(workspaceData: WorkspaceDataAPI): Single<Any> {

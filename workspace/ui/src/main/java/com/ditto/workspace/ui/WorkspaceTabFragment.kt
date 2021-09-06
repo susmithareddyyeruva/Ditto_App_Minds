@@ -115,7 +115,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (viewModel.data.value == null) {
             //viewModel.fetchWorkspaceData()
             //viewModel.fetchWorkspaceDataFromAPI(result) // SFCC
-            viewModel.fetchTailernovaDataByID("demo-design-id-png", "WorkspaceTABFragment")
+            //viewModel.fetchTailernovaDataByID("demo-design-id-png", "WorkspaceTABFragment")
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
@@ -592,6 +592,39 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
+    // todo
+    fun fetchWorkspaceData(): MutableList<WorkspaceItems>? {
+
+        if (viewModel.selectedTab.get() == 0) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            viewModel.data.value?.garmetWorkspaceItemOfflines?.toList()?.let {
+                viewModel.setWorkspaceVirtualDimensions(
+                    it
+                )
+            }
+            return viewModel.data.value?.garmetWorkspaceItemOfflines
+        } else if (viewModel.selectedTab.get() == 1) {
+            viewModel.data.value?.liningWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            viewModel.data.value?.liningWorkspaceItemOfflines?.toList()?.let {
+                viewModel.setWorkspaceVirtualDimensions(
+                    it
+                )
+            }
+            return viewModel.data.value?.liningWorkspaceItemOfflines
+        } else {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            viewModel.data.value?.interfaceWorkspaceItemOfflines?.toList()?.let {
+                viewModel.setWorkspaceVirtualDimensions(
+                    it
+                )
+            }
+            return viewModel.data.value?.interfaceWorkspaceItemOfflines
+        }
+    }
+
     fun clearWorkspace() {
         disableInchTabs()
         setSelvageImage()
@@ -729,7 +762,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnDataUpdated -> {
                 setSelvageImage()
                 getScaleFactor()
-                setInitialProgressCount() //todo uncomment
+                setInitialProgressCount()
             }
             is WorkspaceViewModel.Event.OnClickInch -> {
                 setSelvageImage()
@@ -972,6 +1005,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 enableSelectAll(true)
             }
         }
+
+    fun updateTabData(patternsData: PatternsData?) {
+        viewModel.data.value = patternsData
+    }
+
+    fun updateTabDataAndShowToUI(patternsData: PatternsData?){
+        viewModel.data.value = patternsData
+        viewModel.setWorkspaceView()
+    }
+
 
     private fun onUpdateFont() {
         binding.txtPatternPieces.setTypeface(

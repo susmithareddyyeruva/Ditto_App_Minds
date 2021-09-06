@@ -9,7 +9,7 @@ data class WorkspaceDataAPI (
     var patternPiecesFromApi: List<PatternPieceDomain> = emptyList(),
     var garmetWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var liningWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
-    var interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>? = ArrayList()
+    var interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList()
 
     // tailernova response
     /*var id: Int = 0,

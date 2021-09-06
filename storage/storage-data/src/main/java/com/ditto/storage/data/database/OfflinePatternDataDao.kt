@@ -17,14 +17,14 @@ abstract class OfflinePatternDataDao {
     abstract fun getTailernovaDataByID(id: String): OfflinePatterns
     //updateing where tairlnova id == 1
 
-    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPieces = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItem = :interfaceWorkspaceItem WHERE tailornaovaDesignId = :tailornaovaDesignId")
+    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPieces = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId")
     abstract fun updateOfflinePatternData(
         tailornaovaDesignId: String, selectedTab: String?, status:String?,
         numberOfCompletedPiece: NumberOfCompletedPiecesOffline?,
         patternPieces: List<PatternPiecesOffline>,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItems: MutableList<WorkspaceItemOffline>,
-        interfaceWorkspaceItem: MutableList<WorkspaceItemOffline> )
+        interfaceWorkspaceItems: MutableList<WorkspaceItemOffline> ): Int
 
     //if patternType!= trial >> delete it
     @Query("DELETE from offline_pattern_data where patternType  != :patternType ")

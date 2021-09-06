@@ -161,7 +161,7 @@ class WorkspaceViewModel @Inject constructor(
                 updateWSPatternDataStorage(
                     "demo-design-id-png", c.selectedTab, c.status, c.numberOfCompletedPiece,
                     c.patternPieces, c.garmetWorkspaceItems,
-                    c.liningWorkspaceItems, c.interfaceWorkspaceItem,closeScreen
+                    c.liningWorkspaceItems, c.interfaceWorkspaceItems,closeScreen
                 )
             }
 
@@ -192,7 +192,7 @@ class WorkspaceViewModel @Inject constructor(
         patternPieces: List<PatternPieceDomain>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         closeScreen: Boolean
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
@@ -203,7 +203,7 @@ class WorkspaceViewModel @Inject constructor(
             patternPieces,
             garmetWorkspaceItems,
             liningWorkspaceItems,
-            interfaceWorkspaceItem
+            interfaceWorkspaceItems
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -211,12 +211,17 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     private fun handleWSPatternDataStorage(result: Any?, closeScreen: Boolean) {
-        when (result) {
+        Log.d("handlWSPattenDtaStorage", "${result.toString()}")
+        if (result == 1) {
+            Log.d("handlWSPattenDtaStorage", "OnSuccess iside ifff ")
+            uiEvents.post(Event.CloseScreen)
+        }
+       /* when (result) {
             is Result.OnSuccess<*> -> {
                 Log.d("handlWSPattenDtaStorage", "OnSuccess")
 
-                if(closeScreen){
-                    uiEvents.post(Event.OnClickSaveAndExit)
+                if (closeScreen) {
+                    uiEvents.post(Event.CloseScreen)
                 }
 
             }
@@ -224,7 +229,8 @@ class WorkspaceViewModel @Inject constructor(
                 handleError(result.error)
                 Log.d("handlWSPattenDtaStorage", "onError")
             }
-        }
+        }*/
+
     }
 
 
@@ -312,8 +318,6 @@ class WorkspaceViewModel @Inject constructor(
                 data.value = patternsData
                 Log.d("handleFetchResultAPI", "Combine patternsData: data.value >>${data.value} ")
                 activeInternetConnection.set(true)
-                uiEvents.post(Event.CalculateScrollButtonVisibility)
-                uiEvents.post(Event.OnDataUpdated)
                 setWorkspaceView()
             }
 
@@ -328,7 +332,6 @@ class WorkspaceViewModel @Inject constructor(
         id: String,
         WorkspaceFragment: String
     ) {
-        Log.d("fetchTailernovaDataByID", "calling >>>> $WorkspaceFragment ")
         disposable += getWorkspaceData.getTailernovaDataByID(id)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -365,6 +368,8 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun setWorkspaceView() {
+        uiEvents.post(Event.CalculateScrollButtonVisibility)
+        uiEvents.post(Event.OnDataUpdated)
         if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.liningWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.interfaceWorkspaceItemOfflines?.size ?: 0 > 0) {
             uiEvents.post(Event.PopulateWorkspace)
         }
@@ -620,6 +625,25 @@ class WorkspaceViewModel @Inject constructor(
                     ?: emptyList()
         }
 
+        setWorkspaceVirtualDimensions(workspaceItems)
+
+        /*for (workspaceItem in workspaceItems) {
+            workspaceItem.xcoordinate =
+                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat())
+            workspaceItem.ycoordinate =
+                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat())
+            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat())
+            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat())
+
+        }*/
+        return patternsData
+    }
+
+
+
+  // Set workspace Dimensions to Virtual
+    fun setWorkspaceVirtualDimensions(workspaceItems:  List<WorkspaceItems>): List<WorkspaceItems> {
+
         for (workspaceItem in workspaceItems) {
             workspaceItem.xcoordinate =
                 workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat())
@@ -629,7 +653,7 @@ class WorkspaceViewModel @Inject constructor(
             workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat())
 
         }
-        return patternsData
+        return workspaceItems
     }
 
     // Set workspace Dimensions to Virtual
@@ -893,12 +917,12 @@ class WorkspaceViewModel @Inject constructor(
             numberOfCompletedPiece = patternData.numberOfCompletedPieces?.toDomain(),
             patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
 
-            garmetWorkspaceItems = patternData.garmetWorkspaceItemOfflines?.map {
+            garmetWorkspaceItems =/*ArrayList(),*/ patternData.garmetWorkspaceItemOfflines?.map {
                 it.toWorkspaceItemDomain()
             }?.toMutableList(),
-            liningWorkspaceItems = /*ArrayList(),*/patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+            liningWorkspaceItems =patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
                 ?.toMutableList(),
-            interfaceWorkspaceItem = /*ArrayList()*/patternData.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+            interfaceWorkspaceItems = patternData.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
                 ?.toMutableList()
         )
         Log.d(
@@ -923,7 +947,7 @@ class WorkspaceViewModel @Inject constructor(
 
         val garmetWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
         val liningWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
-        val interfaceWorkspaceItem: ArrayList<WorkspaceItemDomain> = ArrayList()
+        val interfaceWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
 
 
         val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(
@@ -934,7 +958,7 @@ class WorkspaceViewModel @Inject constructor(
             patternPieces,
             garmetWorkspaceItems = garmetWorkspaceItems,
             liningWorkspaceItems = liningWorkspaceItems,
-            interfaceWorkspaceItem = interfaceWorkspaceItem
+            interfaceWorkspaceItems = interfaceWorkspaceItems
         )
 
         return cTraceWorkSpacePatternInputData
@@ -972,7 +996,7 @@ class WorkspaceViewModel @Inject constructor(
                     resultTailernova.data.patternPieces
                 )
             }.toMutableList(),
-            interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItem.map {
+            interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems.map {
                 it.toOldModel(
                     resultTailernova.data.patternPieces
                 )

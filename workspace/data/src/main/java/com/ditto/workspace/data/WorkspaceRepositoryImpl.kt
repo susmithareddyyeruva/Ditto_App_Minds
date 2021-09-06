@@ -77,14 +77,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
         patternPieces: List<PatternPieceDomain>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>?
-    ): Single<Any> {
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
+    ): Single<Int> {
         return Single.fromCallable{
             offlinePatternDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece?.toDomain(),
                 patternPieces.map { it.toDomain() },
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 liningWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
-                interfaceWorkspaceItem?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>)
+                interfaceWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>)
         }
     }
 

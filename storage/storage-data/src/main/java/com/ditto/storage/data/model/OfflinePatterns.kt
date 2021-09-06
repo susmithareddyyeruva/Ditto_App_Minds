@@ -39,8 +39,8 @@ data class OfflinePatterns(
     @SerializedName("liningWorkspaceItems")
     var liningWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
-    @ColumnInfo(name = "interfaceWorkspaceItem")
-    @SerializedName("interfaceWorkspaceItem")
+    @ColumnInfo(name = "interfaceWorkspaceItems")
+    @SerializedName("interfaceWorkspaceItems")
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
     // tailernova response

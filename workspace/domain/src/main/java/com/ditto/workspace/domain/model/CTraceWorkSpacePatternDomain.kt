@@ -8,5 +8,5 @@ data class CTraceWorkSpacePatternDomain (
     var patternPieces: List<PatternPieceDomain> = emptyList(),
     var garmetWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
     var liningWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
-    var interfaceWorkspaceItem: List<WorkspaceItemDomain> = emptyList()
+    var interfaceWorkspaceItems: List<WorkspaceItemDomain> = emptyList()
 )

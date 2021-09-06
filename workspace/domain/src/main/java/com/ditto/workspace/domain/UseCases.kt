@@ -16,8 +16,8 @@ interface GetWorkspaceData {
         patternPieces: List<PatternPieceDomain>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>?
-    ): Single<Any>
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
+    ): Single<Int>
     fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
     fun getPatternDataByID(id: Int):Single<Result<PatternsData>>
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>

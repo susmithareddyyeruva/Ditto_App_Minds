@@ -9,5 +9,5 @@ data class CTraceWorkSpacePatternInputData (
     var patternPieces: List<PatternPieceDomain> = emptyList(),
     var garmetWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var liningWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
-    var interfaceWorkspaceItem: MutableList<WorkspaceItemDomain>? = ArrayList()
+    var interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList()
 )

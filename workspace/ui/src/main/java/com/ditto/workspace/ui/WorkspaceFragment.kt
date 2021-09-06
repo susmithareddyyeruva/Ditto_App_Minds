@@ -172,6 +172,21 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         viewModel.spliced_pices_visibility.set(false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun updateData() {
+        if (viewModel.selectedTab.get() == 0) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines = fragmentGarment.fetchWorkspaceData()
+        } else if (viewModel.selectedTab.get() == 1) {
+            viewModel.data.value?.liningWorkspaceItemOfflines = fragmentLining.fetchWorkspaceData()
+        } else {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines = fragmentInterface.fetchWorkspaceData()
+        }
+
+        fragmentGarment.updateTabData(viewModel.data.value)
+        fragmentLining.updateTabData(viewModel.data.value)
+        fragmentInterface.updateTabData(viewModel.data.value)
+    }
+
     //  To reset connect buttton and pattern piece adapter
     private fun resetLayout() {
         if (viewModel.selectedTab.get() == 0) {
@@ -269,6 +284,14 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             is WorkspaceViewModel.Event.OnDataUpdated -> {
                 clearWorkspace()
                 updateTab()
+
+                fragmentGarment.updateTabDataAndShowToUI(viewModel.data.value)
+                fragmentLining.updateTabDataAndShowToUI(viewModel.data.value)
+                fragmentInterface.updateTabDataAndShowToUI(viewModel.data.value)
+            }
+
+            is WorkspaceViewModel.Event.onApiSucess->{
+                logger.d("onApiSucess")
             }
             else -> logger.d("Invalid Event")
         }
@@ -327,17 +350,21 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (action == MotionEvent.ACTION_UP) {
             if (!baseViewModel.isProjecting.get()) {
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
+                    updateData()
                     //onTabSwitchAlert()
-                    if (viewModel.selectedTab.get() == 0) {
-                        fragmentGarment.onSaveButtonClicked()
+                   /* if (viewModel.selectedTab.get() == 0) {
+                       // fragmentGarment.onSaveButtonClicked()
                     } else if (viewModel.selectedTab.get() == 1) {
-                        fragmentLining.onSaveButtonClicked()
+
+                      //  fragmentLining.onSaveButtonClicked()
                     } else {
-                        fragmentInterface.onSaveButtonClicked()
-                    }
+                       // fragmentInterface.onSaveButtonClicked()
+                    }*/
                     viewModel.selectedTab.set(view?.tag as Int)
                     binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
 
+                    // todo
+                    viewModel.selectedTab
                     //switchTab()
                     return true
                 }
