@@ -28,7 +28,7 @@
             android:padding="@dimen/padding_small"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_close_folder">
+            android:src="@drawable/close_tab_black">
 
         </ImageView>
     </RelativeLayout>

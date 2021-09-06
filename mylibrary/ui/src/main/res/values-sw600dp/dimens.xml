@@ -99,6 +99,6 @@
     <dimen name="hear_h">17.49dp</dimen>
     <dimen name="add">19.125dp</dimen>
     <dimen name="search_close">17dp</dimen>
-    <dimen name="close_dialog_w">14.42dp</dimen>
-    <dimen name="close_dialog_h">14.143dp</dimen>
+    <dimen name="close_dialog_w">15dp</dimen>
+    <dimen name="close_dialog_h">15dp</dimen>
 </resources>

@@ -92,17 +92,16 @@
 
             <ImageView
                 android:id="@+id/imageClearFilter"
-                android:layout_width="@dimen/close_filter1"
-                android:layout_height="@dimen/close_filter1_h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/medium_padding"
-                android:layout_marginTop="@dimen/clear_text_margin_top"
+                android:paddingBottom="@dimen/dimen_8"
                 android:baselineAlignBottom="true"
-                android:paddingBottom="15dp"
-                android:src="@drawable/ic_clear_result"
+                android:src="@drawable/ic_close_tab"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/textview_clear"
                 app:layout_constraintStart_toEndOf="@id/tv_filter_result"
-                app:layout_constraintTop_toTopOf="@+id/textview_clear">
+          >
 
             </ImageView>
 

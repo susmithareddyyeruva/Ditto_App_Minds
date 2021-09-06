@@ -142,6 +142,6 @@
     <dimen name="folder_margin_icons">12.6dp</dimen>
     <dimen name="edit_text_bottom">35dp</dimen>
     <dimen name="edit_text_top">10dp</dimen>
-    <dimen name="close_dialog_w">7.43dp</dimen>
-    <dimen name="close_dialog_h">7.42dp</dimen>
+    <dimen name="close_dialog_w">8dp</dimen>
+    <dimen name="close_dialog_h">8dp</dimen>
 </resources>
