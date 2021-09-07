@@ -290,9 +290,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 fragmentInterface.updateTabDataAndShowToUI(viewModel.data.value)
             }
 
-            is WorkspaceViewModel.Event.onApiSucess->{
-                logger.d("onApiSucess")
-            }
             else -> logger.d("Invalid Event")
         }
 
