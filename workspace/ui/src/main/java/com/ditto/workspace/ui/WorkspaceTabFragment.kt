@@ -19,6 +19,7 @@ import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -593,34 +594,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     // todo
-    fun fetchWorkspaceData(): MutableList<WorkspaceItems>? {
+    fun fetchWorkspaceData(selectedTab:Int): MutableList<WorkspaceItems>? {
 
-        if (viewModel.selectedTab.get() == 0) {
+        if ( selectedTab == 0) {
             viewModel.data.value?.garmetWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
-            viewModel.data.value?.garmetWorkspaceItemOfflines?.toList()?.let {
-                viewModel.setWorkspaceVirtualDimensions(
-                    it
-                )
-            }
             return viewModel.data.value?.garmetWorkspaceItemOfflines
-        } else if (viewModel.selectedTab.get() == 1) {
+        } else if (selectedTab == 1) {
             viewModel.data.value?.liningWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
-            viewModel.data.value?.liningWorkspaceItemOfflines?.toList()?.let {
-                viewModel.setWorkspaceVirtualDimensions(
-                    it
-                )
-            }
             return viewModel.data.value?.liningWorkspaceItemOfflines
         } else {
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
-            viewModel.data.value?.interfaceWorkspaceItemOfflines?.toList()?.let {
-                viewModel.setWorkspaceVirtualDimensions(
-                    it
-                )
-            }
             return viewModel.data.value?.interfaceWorkspaceItemOfflines
         }
     }
@@ -760,6 +746,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 setSelvageImage()
                 getScaleFactor()
                 setInitialProgressCount()
@@ -1646,11 +1633,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         GlobalScope.launch {
             try {
                 showProgress(toShow = true)
+
 //                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
 //                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
                 theBitmap = imagename?.let { getBitmapFromSvgPngDrawable(it) }
                 withContext(Dispatchers.Main) {
                     if (imagename != null) {
+                       Log.d("image890",imagename )
                         mWorkspaceEditor?.addImage(
                             theBitmap,
                             viewModel.workspacedata,

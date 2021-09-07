@@ -175,11 +175,11 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun updateData() {
         if (viewModel.selectedTab.get() == 0) {
-            viewModel.data.value?.garmetWorkspaceItemOfflines = fragmentGarment.fetchWorkspaceData()
+            viewModel.data.value?.garmetWorkspaceItemOfflines = fragmentGarment.fetchWorkspaceData(0)
         } else if (viewModel.selectedTab.get() == 1) {
-            viewModel.data.value?.liningWorkspaceItemOfflines = fragmentLining.fetchWorkspaceData()
+            viewModel.data.value?.liningWorkspaceItemOfflines = fragmentLining.fetchWorkspaceData(1)
         } else {
-            viewModel.data.value?.interfaceWorkspaceItemOfflines = fragmentInterface.fetchWorkspaceData()
+            viewModel.data.value?.interfaceWorkspaceItemOfflines = fragmentInterface.fetchWorkspaceData(2)
         }
 
         fragmentGarment.updateTabData(viewModel.data.value)
@@ -282,6 +282,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDataUpdated -> {
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 clearWorkspace()
                 updateTab()
 

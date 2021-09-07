@@ -607,25 +607,14 @@ class WorkspaceViewModel @Inject constructor(
     // Set workspace Dimensions to Virtual
     fun setWorkspaceDimensions(value: PatternsData): PatternsData {
         val patternsData = value
-        var workspaceItems: List<WorkspaceItems> = emptyList()
 
-        val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
+            setWorkspaceVirtualDimensions(patternsData?.garmetWorkspaceItemOfflines
+                ?: emptyList())
+            setWorkspaceVirtualDimensions(patternsData?.liningWorkspaceItemOfflines
+                ?: emptyList())
+            setWorkspaceVirtualDimensions(patternsData?.interfaceWorkspaceItemOfflines
+                ?: emptyList())
 
-        if (a.equals("0")) {
-            workspaceItems =
-                patternsData?.garmetWorkspaceItemOfflines
-                    ?: emptyList()
-        } else if (a.equals("1")) {
-            workspaceItems =
-                patternsData?.liningWorkspaceItemOfflines
-                    ?: emptyList()
-        } else if (a.equals("2")) {
-            workspaceItems =
-                patternsData?.interfaceWorkspaceItemOfflines
-                    ?: emptyList()
-        }
-
-        setWorkspaceVirtualDimensions(workspaceItems)
 
         /*for (workspaceItem in workspaceItems) {
             workspaceItem.xcoordinate =

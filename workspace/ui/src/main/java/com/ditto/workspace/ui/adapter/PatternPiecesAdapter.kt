@@ -55,7 +55,6 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         holder.patternsPiecesBinding.txtPieceName.text = "#"+patternPieces.get(position).pieceNumber+" "+patternPieces.get(position).pieceDescription
         holder.patternsPiecesBinding.txtPieceCut.text = patternPieces.get(position).cutQuantity
         holder.patternsPiecesBinding.imageArrow.visibility = View.GONE
-        println("ImagefromDB123 ${patternPieces.get(position).imagePath}")
         if (!patternPieces.get(position).imagePath.equals("")) {
             /*val drawable = Utility.getDrawableFromString(
                 viewGroup!!.context,
