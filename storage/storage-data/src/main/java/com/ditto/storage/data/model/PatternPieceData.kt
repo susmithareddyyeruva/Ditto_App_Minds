@@ -7,6 +7,8 @@ data class PatternPieceData (
     val id: Int,
     val imageName: String?="",
     val imageUrl: String?="",
+    val thumbnailImageUrl: String? = "",
+    val thumbnailImageName: String? = "",
     val isSpliced: Boolean,
     val pieceNumber: String?="",
     val positionInTab: String?="",

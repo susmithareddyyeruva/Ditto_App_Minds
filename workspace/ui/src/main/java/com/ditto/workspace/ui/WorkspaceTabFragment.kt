@@ -19,7 +19,6 @@ import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -37,10 +36,7 @@ import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.workspace.domain.model.DragData
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.SpliceImages
-import com.ditto.workspace.domain.model.WorkspaceItems
+import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
@@ -1686,12 +1682,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
-        spliceImages?.imagePath.let {
+        Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageUrl} ")
+        spliceImages?.mapImageUrl.let {
             /* binding.imageSelvageHorizontal.setImageDrawable(
                  getDrawableFromString(context, it)
              )*/
             getBitmapFromSvgPngDrawable(
-                spliceImages?.imagePath,
+                spliceImages?.mapImageUrl,
                 binding.imageSelvageHorizontal.context,
                 binding.imageSelvageHorizontal
             )

@@ -71,6 +71,10 @@ data class PatternPiece(
     val imageName: String = "",
     @SerializedName("imageUrl")
     val imageUrl: String = "",
+    @SerializedName("thumbnailImageName")
+    val thumbnailImageName: String = "",
+    @SerializedName("thumbnailImageUrl")
+    val thumbnailImageUrl: String = "",
     @SerializedName("isSpliced")
     val isSpliced: Boolean = false,
     @SerializedName("pieceNumber")
@@ -117,6 +121,8 @@ data class SplicedImage(
     val imageUrl: String = "",
     @SerializedName("mapImageName")
     val mapImageName: String = "",
+    @SerializedName("mapImageUrl")
+    val mapImageUrl: String = "",
     @SerializedName("pieceId")
     val pieceId: Int = 0,
     @SerializedName("row")

@@ -68,7 +68,8 @@ internal fun SpliceImages.toDomain(): com.ditto.workspace.domain.model.SpliceIma
         column = this.column,
         reference_splice = this.reference_splice,
         imagePath = this.imagePath,
-        imageName = this.imagePath
+        imageName = this.imagePath,
+        mapImageUrl = this.mapImageUrl
     )
 }
 
@@ -87,6 +88,8 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         id = this.id,
         parentPattern = this.parentPattern,
         imagePath = this.imagePath,
+        thumbnailImageUrl= this.thumbnailImageUrl,
+        thumbnailImageName=this.thumbnailImageName,
         size = this.size,
         view = this.view,
         pieceNumber = this.pieceNumber,

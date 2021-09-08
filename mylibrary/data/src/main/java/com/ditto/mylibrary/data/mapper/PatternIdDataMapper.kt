@@ -55,6 +55,8 @@ fun PatternPieceData.toDomain(): com.ditto.mylibrary.domain.model.PatternPieceDa
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
+        thumbnailImageName=this.thumbnailImageName,
+        thumbnailImageUrl=this.thumbnailImageUrl,
         isSpliced = this.isSpliced,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
@@ -76,6 +78,8 @@ fun com.ditto.mylibrary.domain.model.PatternPieceData.toDomain(): PatternPieceDa
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
+        thumbnailImageUrl=this.thumbnailImageUrl,
+        thumbnailImageName=this.thumbnailImageName,
         isSpliced = this.isSpliced,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
@@ -99,6 +103,7 @@ fun com.ditto.storage.data.model.SplicedImageData.toDomain(): SplicedImageData {
         imageName = this.imageName,
         imageUrl = this.imageUrl,
         mapImageName = this.mapImageName,
+        mapImageUrl = this.mapImageUrl,
         pieceId = this.pieceId,
         row = this.row
     )
@@ -112,6 +117,7 @@ fun SplicedImageData.toDomain(): com.ditto.storage.data.model.SplicedImageData {
         imageName = this.imageName,
         imageUrl = this.imageUrl,
         mapImageName = this.mapImageName,
+        mapImageUrl = this.mapImageUrl,
         pieceId = this.pieceId,
         row = this.row
     )

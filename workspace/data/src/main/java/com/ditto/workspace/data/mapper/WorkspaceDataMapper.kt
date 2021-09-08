@@ -219,6 +219,8 @@ fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
+        thumbnailImageName=this.thumbnailImageName,
+        thumbnailImageUrl=this.thumbnailImageUrl,
         isSpliced = this.isSpliced,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
@@ -238,6 +240,8 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
+        thumbnailImageName=this.thumbnailImageName,
+        thumbnailImageUrl=this.thumbnailImageUrl,
         isSpliced = this.isSpliced,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
@@ -259,6 +263,7 @@ fun SplicedImageData.toDomain(): SplicedImageDomain {
         imageUrl
         = this.imageUrl,
         mapImageName = this.mapImageName,
+        mapImageUrl = this.mapImageUrl,
         pieceId = this.pieceId,
         row = this.row
     )
@@ -272,6 +277,7 @@ fun SplicedImageDomain.toDomain(): SplicedImageData {
         imageUrl
         = this.imageUrl,
         mapImageName = this.mapImageName,
+        mapImageUrl = this.mapImageUrl,
         pieceId = this.pieceId,
         row = this.row
     )

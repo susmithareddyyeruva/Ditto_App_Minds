@@ -6,5 +6,6 @@ data class SpliceImages(
     var column: Int = 0,
     var reference_splice: String?,// todo remove no need
     var imageName: String?,
-    var imagePath: String?
+    var imagePath: String?,
+    var mapImageUrl: String?
 )

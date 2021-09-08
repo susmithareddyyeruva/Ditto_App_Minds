@@ -7,6 +7,7 @@ data class SplicedImageData(
     val imageName: String?="",
     val imageUrl: String?="",
     val mapImageName: String?="",
+    val mapImageUrl: String?="",
     val pieceId: Int,
     val row: Int
 )

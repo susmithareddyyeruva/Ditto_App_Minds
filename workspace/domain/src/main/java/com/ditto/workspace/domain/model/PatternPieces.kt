@@ -4,6 +4,8 @@ data class PatternPieces(
     var id: Int = 0,
     var parentPattern: String,
     var imagePath: String?,
+    var thumbnailImageUrl: String?,
+    var thumbnailImageName: String?,
     var size: String?,
     var view: String?,
     var pieceNumber: String?,

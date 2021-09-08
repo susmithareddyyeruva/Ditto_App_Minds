@@ -58,6 +58,7 @@ fun SplicedImageDomain.toOldModel(): SpliceImages {
         reference_splice = this.mapImageName,
         imagePath = this.imageUrl,
         imageName = this.imageName,
+        mapImageUrl = this.mapImageUrl
     )
 }
 
@@ -66,6 +67,8 @@ fun PatternPieceDataDomain.toOldModel(): PatternPieces {
         id = this.id,
         parentPattern = "parentPattern", // todo
         imagePath = this.imageUrl,
+        thumbnailImageUrl = this.thumbnailImageUrl,
+        thumbnailImageName=this.thumbnailImageName,
         size = this.size,
         view = this.view,
         pieceNumber = this.pieceNumber,
@@ -92,7 +95,8 @@ fun SplicedImageDomain.toOldModelSpliceImage(): SpliceImages {
         column = this.column,
         reference_splice = this.mapImageName,
         imageName = this.imageName,
-        imagePath = this.imageUrl
+        imagePath = this.imageUrl,
+        mapImageUrl=this.mapImageUrl
     )
 }
 

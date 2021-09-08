@@ -68,6 +68,8 @@ data class PatternPieceDataDomain(
     val id: Int,
     val imageName: String? = "",
     val imageUrl: String? = "",
+    val thumbnailImageUrl: String? = "",
+    val thumbnailImageName: String? = "",
     val isSpliced: Boolean,
     val pieceNumber: String? = "",
     val positionInTab: String? = "",
@@ -86,6 +88,7 @@ data class SplicedImageDomain(
     val imageName: String? = "",
     val imageUrl: String? = "",
     val mapImageName: String? = "",
+    val mapImageUrl: String? = "",
     val pieceId: Int,
     val row: Int
 )

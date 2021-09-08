@@ -3,6 +3,7 @@ package com.ditto.workspace.ui.adapter
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.VectorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -170,7 +171,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         RecyclerView.ViewHolder(patternsPiecesBinding.root) {
     }
 
-    private fun getBitmapFromSvgPngDrawable(
+    private fun setImageFromSvgPngDrawable(
         imagePath: String?,
         context: Context,
         imageView: ImageView

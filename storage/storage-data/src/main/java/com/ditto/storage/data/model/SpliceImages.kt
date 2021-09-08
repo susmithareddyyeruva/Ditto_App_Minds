@@ -5,5 +5,6 @@ data class SpliceImages(
     var row: Int = 0,
     var column: Int = 0,
     var reference_splice:String? = "",
-    var imagePath: String? = ""
+    var imagePath: String? = "",
+    var mapImageUrl: String? = ""
 )
