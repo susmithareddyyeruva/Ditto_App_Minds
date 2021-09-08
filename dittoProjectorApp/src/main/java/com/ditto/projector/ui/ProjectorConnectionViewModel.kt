@@ -111,7 +111,7 @@ class ProjectorConnectionViewModel : ViewModel() {
                 }
             }
             GlobalScope.launch {
-                delay(2000)
+                delay(1000)
                 connectWifiUsingCred(context)
             }
         } else {
