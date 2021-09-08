@@ -62,8 +62,9 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 patternPieces.get(position).imagePath
             )
             holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)*/
-            getBitmapFromSvgPngDrawable(patternPieces.get(position).imagePath,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
-            if (patternPieces[position].splice ?: false) {
+                Log.d("image123", " thumbnailImageUrl: ${patternPieces.get(position).thumbnailImageUrl}")
+            setImageFromSvgPngDrawable(patternPieces.get(position).thumbnailImageUrl,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
+           /* if (patternPieces[position].splice ?: false) {
                 if (patternPieces[position].spliceDirection == "Splice Multiple-to-Multiple") {
                     val drawable = Utility.getDrawableFromString(
                         viewGroup!!.context,
@@ -85,7 +86,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                     )
                     holder.patternsPiecesBinding.imageArrow.setImageDrawable(arrowDrawable)
                 }
-            }
+            }*/
             if (patternPieces[position].isCompleted) {
                 holder.patternsPiecesBinding.imageArrow?.setColorFilter(
                     ContextCompat.getColor(

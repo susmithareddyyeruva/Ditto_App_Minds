@@ -111,6 +111,14 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleFetchResult(it) }
     }
 
+    fun fetchTailernovaDataByID(id: String) {
+        disposable += getWorkspaceData.getTailernovaDataByID(id)
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleTailernovaResult(it) }
+    }
+
     //fetch data from API repo (via usecase)  //CustomerID_OrderNumebr_PatternID
     fun fetchWorkspaceDataFromAPI(result: Result.OnSuccess<OfflinePatternData>) {
         disposable += getWorkspaceData.getWorkspaceData("${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}")
@@ -328,16 +336,6 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun fetchTailernovaDataByID(
-        id: String,
-        WorkspaceFragment: String
-    ) {
-        disposable += getWorkspaceData.getTailernovaDataByID(id)
-            .whileSubscribed { it }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleTailernovaResult(it) }
-    }
 
     private fun handleTailernovaResult(
         result: Result<OfflinePatternData>?,

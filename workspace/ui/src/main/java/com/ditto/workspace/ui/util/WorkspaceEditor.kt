@@ -358,6 +358,12 @@ class WorkspaceEditor private constructor(builder: Builder) {
                     ?: 0F
             }
         }
+
+        //todo testing pending
+        /*if(image?.splicedImages?.size ?:0 > 1){
+            image?.xcoordinate = 0F
+            image?.ycoordinate = 0F
+        }*/
         //
         rootView?.let { addedViews.add(it) }
         image?.let { addedViewsModel.add(it) }

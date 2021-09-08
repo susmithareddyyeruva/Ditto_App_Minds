@@ -72,7 +72,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.isDoubleTapTextVisible.set(true)
             //viewModel.fetchWorkspaceData()
             //viewModel.fetchWorkspaceDataFromAPI()
-            viewModel.fetchTailernovaDataByID("demo-design-id-png","WorkspaceFragment")
+            showProgress(true)
+            viewModel.fetchTailernovaDataByID("demo-design-id-png")
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -381,5 +382,9 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     companion object {
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
+    }
+
+    private fun showProgress(toShow: Boolean) {
+        bottomNavViewModel.showProgress.set(toShow)
     }
 }

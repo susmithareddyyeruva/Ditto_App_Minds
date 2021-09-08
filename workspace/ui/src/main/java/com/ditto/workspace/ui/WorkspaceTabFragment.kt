@@ -786,7 +786,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata)
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -804,7 +804,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -821,7 +821,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -838,7 +838,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata)
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -878,6 +878,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 clearWorkspace()
             }
             is WorkspaceViewModel.Event.CloseScreen -> {
+                showProgress(false)
                 baseViewModel.isSaveExitButtonClicked.set(true)
                 findNavController().popBackStack(R.id.patternDescriptionFragment, false)
                 activity?.onBackPressed()
@@ -905,7 +906,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     for (workspaceItem in workspaceItems) {
                         i++
                         viewModel.workspacedata = workspaceItem
-                        showToWorkspace(i == workspaceItems.size, false)
+                        showToWorkspace(i == workspaceItems.size, false,workspaceItem)
                     }
                 } else {
                     logger.d("workspace item is null")
@@ -1122,7 +1123,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true)
+                            showToWorkspace(true, true,viewModel.workspacedata)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1179,7 +1180,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true)
+                            showToWorkspace(true, true,viewModel.workspacedata)
                         }
                     }
                 }
@@ -1399,7 +1400,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     override fun onSaveButtonClicked(projectName: String, isCompleted: Boolean?) {
-
+        showProgress(true)
         val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
         if (a.equals("0")) {
             viewModel.data.value?.garmetWorkspaceItemOfflines =
@@ -1576,7 +1577,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     /*
     Displaying pieces in Workspace
      */
-    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean) {
+    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
@@ -1584,17 +1585,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
         viewModel.selectAllText.set(getString(R.string.select_all))
         mWorkspaceEditor?.clearAllSelection()
-        var imagename = viewModel.workspacedata?.imagePath
-        if (viewModel.workspacedata?.splice ?: false) {
+        var imagename = workspaceItem?.imagePath
+        if (workspaceItem?.splice ?: false) {
             showSpliceArrows(
-                viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
-                viewModel.workspacedata?.currentSplicedPieceColumn ?: 0
+                workspaceItem?.currentSplicedPieceRow ?: 0,
+                workspaceItem?.currentSplicedPieceColumn ?: 0
             )
 
             val splicePiece = getSplicePiece(
-                viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
-                viewModel.workspacedata?.currentSplicedPieceColumn ?: 0,
-                viewModel.workspacedata?.splicedImages
+                workspaceItem?.currentSplicedPieceRow ?: 0,
+                workspaceItem?.currentSplicedPieceColumn ?: 0,
+                workspaceItem?.splicedImages
             )
 
             // Setting splice reference layout
@@ -1606,7 +1607,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.clickedSize60.set(false)
 
             imagename = splicePiece?.imagePath
-            viewModel.workspacedata?.splicedImages?.size?.let {
+            workspaceItem?.splicedImages?.size?.let {
                 viewModel.splice_pices_count.set(
                     it
                 )
@@ -1617,7 +1618,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
          if (imagename != null) {
              mWorkspaceEditor?.addImage(
                  theBitmap,
-                 viewModel.workspacedata,
+                 workspaceItem,
                  viewModel.scaleFactor.get(),
                  showProjection,
                  isDraggedPiece,
@@ -1625,23 +1626,31 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
              )
          }*/
         //TODO To be included when using API images
-        var theBitmap: Bitmap? = null
+        //var theBitmap: Bitmap? = null
         GlobalScope.launch {
             try {
                 showProgress(toShow = true)
 
 //                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
 //                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
-                theBitmap = imagename?.let { getBitmapFromSvgPngDrawable(it) }
+
+                var workSpaceImageData = WorkspaceImageData(
+                    imagename?.let { getBitmapFromSvgPngDrawable(it) },
+                    workspaceItem,
+                    viewModel.scaleFactor.get(),
+                    showProjection,
+                    isDraggedPiece
+                )
+
+
                 withContext(Dispatchers.Main) {
                     if (imagename != null) {
-                       Log.d("image890",imagename )
                         mWorkspaceEditor?.addImage(
-                            theBitmap,
-                            viewModel.workspacedata,
-                            viewModel.scaleFactor.get(),
-                            showProjection,
-                            isDraggedPiece,
+                            workSpaceImageData.bitmap,
+                            workSpaceImageData.workspaceItem,
+                            workSpaceImageData.scaleFactor,
+                            workSpaceImageData.showProjection,
+                            workSpaceImageData.isDraggedPiece,
                             this@WorkspaceTabFragment
                         )
                     }
