@@ -134,10 +134,13 @@ class AllPatternsFragment(
     }
 
     private fun callSearchResult(terms: String) {
-        viewModel.resultMap.clear()
+        /**
+         * Search is Happened only in filtered results
+         */
+      //  viewModel.resultMap.clear()
         viewModel.patternArrayList.clear()
-        viewModel.menuList.clear()
-        viewModel.setList()
+        //viewModel.menuList.clear()
+       // viewModel.setList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))

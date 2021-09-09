@@ -123,10 +123,10 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     }
 
     private fun callSearchResult(terms: String) {
-        viewModel.resultmapFolder.clear()
+     //   viewModel.resultmapFolder.clear()
         viewModel.myfolderArryList.clear()
-        viewModel.myfolderMenu.clear()
-        viewModel.setList()
+       // viewModel.myfolderMenu.clear()
+       // viewModel.setList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
