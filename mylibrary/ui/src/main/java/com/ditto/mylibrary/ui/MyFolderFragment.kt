@@ -1,6 +1,8 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +21,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
-class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment() ,
-core.ui.common.Utility.CustomCallbackDialogListener{
+class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment(),
+    core.ui.common.Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -52,8 +54,25 @@ core.ui.common.Utility.CustomCallbackDialogListener{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
-        setAdapter()
+        bottomNavViewModel.showProgress.set(true)
+        Handler(Looper.getMainLooper()).postDelayed({
+           setAdapter()
+        }, 2000) //millis
 
+
+
+    }
+
+    fun onSyncClick() {
+        if (viewModel != null) {
+            Log.d("MyFolder", "Sync")
+            bottomNavViewModel.showProgress.set(true)
+            Handler(Looper.getMainLooper()).postDelayed({
+                setAdapter()
+            }, 3500) //millis
+
+
+        }
     }
 
     private fun setUIEvents() {
@@ -65,49 +84,54 @@ core.ui.common.Utility.CustomCallbackDialogListener{
     }
 
     private fun setAdapter() {
+        bottomNavViewModel.showProgress.set(false)
         val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.rvMyFolder.layoutManager = gridLayoutManager
-        val adapter = MyFolderAdapter(requireContext(), viewModel.getList(),object :MyFolderAdapter.OnRenameListener{
-            override fun onRenameClicked() {
-                val layout =
-                    activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
-                layout?.let {
-                    Utility.renameFolderAlertDialog(
-                        requireActivity(),
-                        it,
-                        viewModel,
-                        "CANCEL",
-                        "RENAME FOLDER",
-                        object :
-                           Utility.CallbackCreateFolderDialogListener {
-                            override fun onCreateClicked(foldername: String) {
+        val adapter = MyFolderAdapter(
+            requireContext(),
+            viewModel.getList(),
+            object : MyFolderAdapter.OnRenameListener {
+                override fun onRenameClicked() {
+                    val layout =
+                        activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
+                    layout?.let {
+                        Utility.renameFolderAlertDialog(
+                            requireActivity(),
+                            it,
+                            viewModel,
+                            "CANCEL",
+                            "RENAME FOLDER",
+                            object :
+                                Utility.CallbackCreateFolderDialogListener {
+                                override fun onCreateClicked(foldername: String) {
 
-                            }
+                                }
 
-                            override fun onCancelClicked() {
+                                override fun onCancelClicked() {
 
-                            }
-                        },
-                        core.ui.common.Utility.AlertType.DEFAULT
+                                }
+                            },
+                            core.ui.common.Utility.AlertType.DEFAULT
+                        )
+                    }
+                }
+
+            },
+            object : MyFolderAdapter.OnDeleteClicked {
+                override fun onDeleteClicked() {
+                    core.ui.common.Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        "",
+                        getString(R.string.are_you_sure_delete),
+                        getString(R.string.cancel_dialog),
+                        getString(R.string.str_ok),
+                        this@MyFolderFragment,
+                        core.ui.common.Utility.AlertType.DELETE
+                        ,
+                        core.ui.common.Utility.Iconype.FAILED
                     )
                 }
-            }
-
-        },object :MyFolderAdapter.OnDeleteClicked{
-            override fun onDeleteClicked() {
-                core.ui.common.Utility.getCommonAlertDialogue(
-                    requireContext(),
-                    "",
-                    getString(R.string.are_you_sure_delete),
-                    getString(R.string.cancel_dialog),
-                    getString(R.string.str_ok),
-                    this@MyFolderFragment,
-                    core.ui.common.Utility.AlertType.DELETE
-                    ,
-                    core.ui.common.Utility.Iconype.FAILED
-                )
-            }
-        })
+            })
         binding.rvMyFolder.adapter = adapter
         adapter.viewModel = viewModel
     }
@@ -142,7 +166,7 @@ core.ui.common.Utility.CustomCallbackDialogListener{
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-                if (myFolderDetailFragment!=null) {
+                if (myFolderDetailFragment != null) {
                     val args = Bundle()
                     args?.putString("TITTLE", viewModel?.clickedFolderName)
                     myFolderDetailFragment?.setArguments(args)
@@ -155,7 +179,7 @@ core.ui.common.Utility.CustomCallbackDialogListener{
                         ?.addToBackStack("Detail")
                         // 5
                         ?.commit()
-                }else{
+                } else {
 
                 }
             }

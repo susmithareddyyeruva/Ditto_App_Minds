@@ -104,7 +104,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
         binding.toolbar.setNavigationOnClickListener {
             val tabPosition = binding.tabLayout.selectedTabPosition
-            if (tabPosition==1) {
+            if (tabPosition == 1) {
                 setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
             }
             requireActivity().onBackPressed()
@@ -248,8 +248,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
                     allPatternsFragment.onSyncClick()
-                } else {
-                    myfolderDetail.onSyncClick()
+                } else { //tab postion 1
+                    if (childFragmentManager.fragments.size == 2) {
+                        myFolderFragment.onSyncClick()
+                    } else
+                        myfolderDetail.onSyncClick()
                 }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
@@ -282,7 +285,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     private fun setFilterMenuAdapter(position: Int) {
         val tabPosition = binding.tabLayout.selectedTabPosition
-        val menulist = if (tabPosition==0) {
+        val menulist = if (tabPosition == 0) {
             allPatternsFragment.getMenuListItems()
         } else {
             myfolderDetail.getMenuListItems()
