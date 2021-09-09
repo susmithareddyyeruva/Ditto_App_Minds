@@ -174,6 +174,7 @@ class WorkspaceViewModel @Inject constructor(
             }
 
             is Result.OnError -> {
+                uiEvents.post(Event.HideProgressLoader)
                 Log.d("WorkspaceViewModel", "Failed")
             }
         }
@@ -326,10 +327,12 @@ class WorkspaceViewModel @Inject constructor(
                 data.value = patternsData
                 Log.d("handleFetchResultAPI", "Combine patternsData: data.value >>${data.value} ")
                 activeInternetConnection.set(true)
+                uiEvents.post(Event.HideProgressLoader)
                 setWorkspaceView()
             }
 
             is Result.OnError -> {
+                uiEvents.post(Event.HideProgressLoader)
                 handleError(fetchWorkspaceResult.error)
                 Log.d("handleFetchResultAPI", "Failed")
             }
@@ -807,6 +810,8 @@ class WorkspaceViewModel @Inject constructor(
         object RemoveAllPatternPieces : Event()
         object updateProgressCount : Event()
         object OnDownloadComplete : Event()
+        object HideProgressLoader : Event()
+        object ShowProgressLoader : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -971,7 +976,7 @@ class WorkspaceViewModel @Inject constructor(
             thumbnailImageName = resultTailernova.data.thumbnailImageName,
             //descriptionImages TODO will come from tailernova in next sprints
             selvages = resultTailernova.data.selvages.map { it.toOldModel() },
-            patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel() },
+            patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
             garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems.map {
                 it.toOldModel(
                     resultTailernova.data.patternPieces

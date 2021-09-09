@@ -30,6 +30,7 @@ fun WorkspaceItems.toWorkspaceItemDomain(): WorkspaceItemDomain {
         transformA = "transformA", // todo check need IOS stuff
         transformD = "transformD", // todo check need IOS stuff
         rotationAngle = this.rotationAngle,
+        mirrorOption=this.mirrorOption,
         isMirrorH = this.isMirrorH,
         isMirrorV = this.isMirrorV,
         showMirrorDialog = this.showMirrorDialog,
@@ -62,7 +63,10 @@ fun SplicedImageDomain.toOldModel(): SpliceImages {
     )
 }
 
-fun PatternPieceDataDomain.toOldModel(): PatternPieces {
+fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceDomain>): PatternPieces {
+
+    val patternPiece = getIsComplete(this.id, patternPieces)
+
     return PatternPieces(
         id = this.id,
         parentPattern = "parentPattern", // todo
@@ -84,7 +88,7 @@ fun PatternPieceDataDomain.toOldModel(): PatternPieces {
         },
         cutOnFold = this.cutOnFold.toString(),
         mirrorOption = true,//Todo mirror
-        isCompleted = false // TODO
+        isCompleted = patternPiece!!.isCompleted // TODO check by default is false
     )
 }
 
@@ -121,7 +125,7 @@ fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>):
         spliceDirection = patternPiece?.spliceDirection,
         spliceScreenQuantity = patternPiece?.spliceScreenQuantity,
         cutOnFold = patternPiece?.cutOnFold.toString(),
-        mirrorOption = false,//todo check should come from tailornova
+        mirrorOption = true,//todo check should come from tailornova
         splicedImages = patternPiece?.splicedImages?.map { it.toOldModelSpliceImage() },
         xcoordinate = this.xcoordinate,
         ycoordinate = this.ycoordinate,
@@ -142,6 +146,13 @@ private fun getSpliedImges(
     patternPiecesId: Int?,
     patternPieces: List<PatternPieceDataDomain>
 ): PatternPieceDataDomain? {
+    return patternPieces.find { it.id == patternPiecesId }
+}
+
+private fun getIsComplete(
+    patternPiecesId: Int?,
+    patternPieces: List<PatternPieceDomain>
+): PatternPieceDomain? {
     return patternPieces.find { it.id == patternPiecesId }
 }
 

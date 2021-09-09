@@ -11,6 +11,7 @@ data class WorkspaceItemDomain(
     val transformA: String? = "",
     val transformD: String? = "",
     val rotationAngle: Float = 0.0f,
+    var mirrorOption: Boolean? = false,
     val isMirrorH: Boolean = false,
     val isMirrorV: Boolean = false,
     val showMirrorDialog: Boolean = false,

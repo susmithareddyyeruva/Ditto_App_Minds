@@ -62,7 +62,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 patternPieces.get(position).imagePath
             )
             holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)*/
-                Log.d("image123", " thumbnailImageUrl: ${patternPieces.get(position).thumbnailImageUrl}")
+                //Log.d("image123", " thumbnailImageUrl: ${patternPieces.get(position).thumbnailImageUrl}")
             setImageFromSvgPngDrawable(patternPieces.get(position).thumbnailImageUrl,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
            /* if (patternPieces[position].splice ?: false) {
                 if (patternPieces[position].spliceDirection == "Splice Multiple-to-Multiple") {

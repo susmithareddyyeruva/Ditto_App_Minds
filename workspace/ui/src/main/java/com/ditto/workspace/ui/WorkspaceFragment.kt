@@ -291,6 +291,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 fragmentLining.updateTabDataAndShowToUI(viewModel.data.value)
                 fragmentInterface.updateTabDataAndShowToUI(viewModel.data.value)
             }
+            is WorkspaceViewModel.Event.ShowProgressLoader -> {
+                showProgress(true)
+            }
+            is WorkspaceViewModel.Event.HideProgressLoader -> {
+                showProgress(false)
+            }
 
             else -> logger.d("Invalid Event")
         }

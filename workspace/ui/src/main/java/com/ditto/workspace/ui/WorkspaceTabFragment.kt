@@ -988,6 +988,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.EnableSelectAll -> {
                 enableSelectAll(true)
             }
+            is WorkspaceViewModel.Event.ShowProgressLoader -> {
+                showProgress(true)
+            }
+            is WorkspaceViewModel.Event.HideProgressLoader -> {
+                showProgress(false)
+            }
         }
 
     fun updateTabData(patternsData: PatternsData?) {
