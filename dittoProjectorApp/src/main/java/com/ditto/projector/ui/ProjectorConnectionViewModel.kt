@@ -23,6 +23,9 @@ import com.ditto.projector.common.Utility.Companion.getSharedPref
 import com.ditto.projector.common.Utility.Companion.getWificred
 import com.ditto.projector.core.UiEvents
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ProjectorConnectionViewModel : ViewModel() {
     var disposable: CompositeDisposable = CompositeDisposable()
@@ -96,57 +99,65 @@ class ProjectorConnectionViewModel : ViewModel() {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     fun checkCurrentWifiConnection(context: Context) {
-        if (Utility.isWifiConnected(context)){
+        if (Utility.isWifiConnected(context)) {
             isWifiAlreadyConnected.set(true)
-            getSharedPref(context)?.let { getWificred(context)?.let { it1 -> disConnectToWifi(it, it1,context) } }
-        }
-            wificonnectionstatus.set(context?.getString(R.string.checking))
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-
-                context?.getString(R.string.failedrequest)?.let {
-                    sendResponseToClient(
-                        context,it
-                    )
-                }
-
-            } else {
-
-                decryptedssid = splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
-                decryptedpwd = splitwificredentials?.get(1)?.let { Utility.decrypt(it) }
-                if (decryptedssid.equals("") || decryptedpwd.equals("")){
-                    decryptedssid = splitwificredentials?.get(0)
-                    decryptedpwd = splitwificredentials?.get(1)
-                }
-                // Store wifi name in preference
-                decryptedssid?.let {
-                    Utility.setSharedPref(
-                        context,
-                        it
-                    )
-                }
-                decryptedpwd?.let {
-                    Utility.setWificred(
-                        context,
-                        it
-                    )
-                }
-                recievedWifiName.set(decryptedssid)
-                decryptedssid?.let {
-                    connectToWifi(
+            getSharedPref(context)?.let {
+                getWificred(context)?.let { it1 ->
+                    disConnectToWifi(
                         it,
-                        decryptedpwd!!, context!!
+                        it1,
+                        context
                     )
                 }
-                /*splitwificredentials?.get(0)?.let {
-                    connectToWifi(
-                        it,
-                        splitwificredentials?.get(1)!!, context!!
-                    )
-                }*/
-                uiEvents.post(Event.onWaitForConnection)
             }
+            GlobalScope.launch {
+                delay(1000)
+                connectWifiUsingCred(context)
+            }
+        } else {
+            connectWifiUsingCred(context)
+        }
+        wificonnectionstatus.set(context.getString(R.string.checking))
 
     }
+
+    private fun connectWifiUsingCred(context: Context) {
+
+        decryptedssid = splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
+        decryptedpwd = splitwificredentials?.get(1)?.let { Utility.decrypt(it) }
+        if (decryptedssid.equals("") || decryptedpwd.equals("")){
+            decryptedssid = splitwificredentials?.get(0)
+            decryptedpwd = splitwificredentials?.get(1)
+        }
+        // Store wifi name in preference
+        decryptedssid?.let {
+            Utility.setSharedPref(
+                context,
+                it
+            )
+        }
+        decryptedpwd?.let {
+            Utility.setWificred(
+                context,
+                it
+            )
+        }
+        recievedWifiName.set(decryptedssid)
+        decryptedssid?.let {
+            connectToWifi(
+                it,
+                decryptedpwd!!, context!!
+            )
+        }
+        /*splitwificredentials?.get(0)?.let {
+            connectToWifi(
+                it,
+                splitwificredentials?.get(1)!!, context!!
+            )
+        }*/
+        uiEvents.post(Event.onWaitForConnection)
+    }
+
 
     /**
      *  [Function] Sending response to the client via BLE and starting the connection
