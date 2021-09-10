@@ -12,6 +12,7 @@ import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.google.gson.Gson
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -24,7 +25,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AllPatternsViewModel @Inject constructor(
-    private val getPatternsData: GetMylibraryData
+    private val getPatternsData: GetMylibraryData,
+    val utility: Utility
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
@@ -37,6 +39,9 @@ class AllPatternsViewModel @Inject constructor(
     val isFilterResult : ObservableBoolean = ObservableBoolean(false)
 
     init {
+        if (Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
     }
 
     //error handler for data fetch related flow

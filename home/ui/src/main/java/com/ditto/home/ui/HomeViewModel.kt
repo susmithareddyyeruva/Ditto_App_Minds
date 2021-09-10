@@ -8,9 +8,11 @@ import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(val storageManager: StorageManager) : BaseViewModel() {
+class HomeViewModel @Inject constructor(val storageManager: StorageManager,
+val utility: Utility) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val homeItem: ArrayList<HomeData> = ArrayList()
@@ -24,6 +26,9 @@ class HomeViewModel @Inject constructor(val storageManager: StorageManager) : Ba
     }
 
     init {
+        if (Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
         setHomeHeader()
         setHomeItems()
     }
