@@ -455,6 +455,30 @@ class Utility @Inject constructor(
             return path
         }
 
+        fun isImageFileAvailable(filename: String?, context: Context, patternFolderName: String?) : Uri? {
+
+            val directory = File(
+                Environment.getExternalStorageDirectory()
+                    .toString() + "/Ditto/PatternPieces"
+            )
+
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
+            val svgFile = File(directory, filename)
+
+            var path : Uri? = null
+            if (svgFile.exists()){
+                path = Uri.fromFile(svgFile)
+            } else {
+                path = null
+            }
+
+            return path
+        }
+
 
 
         @SuppressLint("ResourceType")

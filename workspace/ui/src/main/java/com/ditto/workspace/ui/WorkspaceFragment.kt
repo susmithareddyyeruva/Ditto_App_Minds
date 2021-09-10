@@ -18,6 +18,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.workspace.ui.adapter.WorkspaceAdapter
 import com.ditto.workspace.ui.databinding.FragmentWorkspaceBinding
 import com.ditto.workspace.ui.util.Utility
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -64,6 +65,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         if (viewModel.data.value == null) {
             Utility.fragmentTabs.set(0)
             logger.d("TRACE: Setting progress")

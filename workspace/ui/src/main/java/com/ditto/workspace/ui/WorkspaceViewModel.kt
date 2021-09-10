@@ -24,6 +24,7 @@ import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.appstate.AppState
 import core.event.UiEvents
+import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -54,6 +55,7 @@ class WorkspaceViewModel @Inject constructor(
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
+    val isOnline: ObservableBoolean = ObservableBoolean(false)
     var patternId: ObservableInt = ObservableInt(1)
     var clickedOrderNumber: ObservableInt = ObservableInt(1)
     var totalPieces: ObservableInt = ObservableInt(0)
@@ -130,7 +132,7 @@ class WorkspaceViewModel @Inject constructor(
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultFromAPI(it,result) }
+            .subscribeBy { handleFetchResultFromAPI(it, result) }
     }
 
 
@@ -138,15 +140,21 @@ class WorkspaceViewModel @Inject constructor(
         cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData,
         closeScreen: Boolean
     ) {
-        disposable += getWorkspaceData.updateWorkspaceData("${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",cTraceWorkSpacePatternInputData)
+        disposable += getWorkspaceData.updateWorkspaceData(
+            "${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",
+            cTraceWorkSpacePatternInputData
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSUpdateResult(it,closeScreen,cTraceWorkSpacePatternInputData) }
+            .subscribeBy { handleWSUpdateResult(it, closeScreen, cTraceWorkSpacePatternInputData) }
     }
 
     fun createWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
-        disposable += getWorkspaceData.createWorkspaceData("${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()
-        }",cTraceWorkSpacePatternInputData)
+        disposable += getWorkspaceData.createWorkspaceData(
+            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
+                patternId.get()
+            }", cTraceWorkSpacePatternInputData
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleWSCreateResult(it) }
@@ -172,14 +180,20 @@ class WorkspaceViewModel @Inject constructor(
                 Log.d("handleWSUpdateResult", "Success>>>>>>>>>>>>>>>>>>> $result")
 
 
-               /* val c: CTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(
-                    setWorkspaceDimensions(data.value!!)
-                )*/
+                /* val c: CTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(
+                     setWorkspaceDimensions(data.value!!)
+                 )*/
 
                 updateWSPatternDataStorage(
-                    "demo-design-id-png", cTraceWorkSpacePatternInputData.selectedTab, cTraceWorkSpacePatternInputData.status, cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
-                    cTraceWorkSpacePatternInputData.patternPieces, cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
-                    cTraceWorkSpacePatternInputData.liningWorkspaceItems, cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,closeScreen
+                    "demo-design-id-png",
+                    cTraceWorkSpacePatternInputData.selectedTab,
+                    cTraceWorkSpacePatternInputData.status,
+                    cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
+                    cTraceWorkSpacePatternInputData.patternPieces,
+                    cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
+                    cTraceWorkSpacePatternInputData.liningWorkspaceItems,
+                    cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
+                    closeScreen
                 )
             }
 
@@ -226,7 +240,7 @@ class WorkspaceViewModel @Inject constructor(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSPatternDataStorage(it,closeScreen) }
+            .subscribeBy { handleWSPatternDataStorage(it, closeScreen) }
     }
 
     private fun handleWSPatternDataStorage(result: Any?, closeScreen: Boolean) {
@@ -235,20 +249,20 @@ class WorkspaceViewModel @Inject constructor(
             Log.d("handlWSPattenDtaStorage", "OnSuccess iside ifff ")
             uiEvents.post(Event.CloseScreen)
         }
-       /* when (result) {
-            is Result.OnSuccess<*> -> {
-                Log.d("handlWSPattenDtaStorage", "OnSuccess")
+        /* when (result) {
+             is Result.OnSuccess<*> -> {
+                 Log.d("handlWSPattenDtaStorage", "OnSuccess")
 
-                if (closeScreen) {
-                    uiEvents.post(Event.CloseScreen)
-                }
+                 if (closeScreen) {
+                     uiEvents.post(Event.CloseScreen)
+                 }
 
-            }
-            is Result.OnError<*> -> {
-                handleError(result.error)
-                Log.d("handlWSPattenDtaStorage", "onError")
-            }
-        }*/
+             }
+             is Result.OnError<*> -> {
+                 handleError(result.error)
+                 Log.d("handlWSPattenDtaStorage", "onError")
+             }
+         }*/
 
     }
 
@@ -331,7 +345,8 @@ class WorkspaceViewModel @Inject constructor(
         when (fetchWorkspaceResult) {
             is Result.OnSuccess -> {
 
-                val patternsData :PatternsData = getPatternDataFromSFCC_Tailernova(tailornovaResult,fetchWorkspaceResult)
+                val patternsData: PatternsData =
+                    getPatternDataFromSFCC_Tailernova(tailornovaResult, fetchWorkspaceResult)
                 Log.d("handleFetchResultAPI", "Combine patternsData >>>>${patternsData} ")
 
                 data.value = patternsData
@@ -428,7 +443,7 @@ class WorkspaceViewModel @Inject constructor(
             dragData.patternPieces?.spliceScreenQuantity ?: "",
             dragData.patternPieces?.splicedImages ?: emptyList(),
             dragData.patternPieces?.cutOnFold ?: "",
-            dragData.patternPieces?.mirrorOption ?:false,
+            dragData.patternPieces?.mirrorOption ?: false,
             dragEvent.x,
             dragEvent.y,
             view.pivotX,
@@ -612,19 +627,25 @@ class WorkspaceViewModel @Inject constructor(
         )
         val patternData: PatternsData = setWorkspaceDimensions(data.value!!)
         //insertData(patternData, closeScreen) // inserting inside DB
-        updateWSAPI(getWorkspaceInputDataToAPI(patternData),closeScreen)
+        updateWSAPI(getWorkspaceInputDataToAPI(patternData), closeScreen)
     }
 
     // Set workspace Dimensions to Virtual
     fun setWorkspaceDimensions(value: PatternsData): PatternsData {
         val patternsData = value
 
-            setWorkspaceVirtualDimensions(patternsData?.garmetWorkspaceItemOfflines
-                ?: emptyList())
-            setWorkspaceVirtualDimensions(patternsData?.liningWorkspaceItemOfflines
-                ?: emptyList())
-            setWorkspaceVirtualDimensions(patternsData?.interfaceWorkspaceItemOfflines
-                ?: emptyList())
+        setWorkspaceVirtualDimensions(
+            patternsData?.garmetWorkspaceItemOfflines
+                ?: emptyList()
+        )
+        setWorkspaceVirtualDimensions(
+            patternsData?.liningWorkspaceItemOfflines
+                ?: emptyList()
+        )
+        setWorkspaceVirtualDimensions(
+            patternsData?.interfaceWorkspaceItemOfflines
+                ?: emptyList()
+        )
 
 
         /*for (workspaceItem in workspaceItems) {
@@ -640,9 +661,8 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-
-  // Set workspace Dimensions to Virtual
-    fun setWorkspaceVirtualDimensions(workspaceItems:  List<WorkspaceItems>): List<WorkspaceItems> {
+    // Set workspace Dimensions to Virtual
+    fun setWorkspaceVirtualDimensions(workspaceItems: List<WorkspaceItems>): List<WorkspaceItems> {
 
         for (workspaceItem in workspaceItems) {
             workspaceItem.xcoordinate =
@@ -942,12 +962,12 @@ class WorkspaceViewModel @Inject constructor(
         return result
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     suspend fun downloadPatterns(url: String, filename: String, patternFolderName: String?) {
         performtaskForPatternDownloads(url, filename, patternFolderName)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     suspend fun performtaskForPatternDownloads(
         imageUrl: String,
         filename: String,
@@ -1003,7 +1023,7 @@ class WorkspaceViewModel @Inject constructor(
             garmetWorkspaceItems =/*ArrayList(),*/ patternData.garmetWorkspaceItemOfflines?.map {
                 it.toWorkspaceItemDomain()
             }?.toMutableList(),
-            liningWorkspaceItems =patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+            liningWorkspaceItems = patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
                 ?.toMutableList(),
             interfaceWorkspaceItems = patternData.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
                 ?.toMutableList()
@@ -1047,7 +1067,6 @@ class WorkspaceViewModel @Inject constructor(
         return cTraceWorkSpacePatternInputData
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
         Log.d("DOWNLOAD", "STARTED")
         temp.clear()
@@ -1064,43 +1083,43 @@ class WorkspaceViewModel @Inject constructor(
 
 }
 
-    // mapping WorkspaceAPI response model to PatternData model
-    private fun getPatternDataFromSFCC_Tailernova(
-        resultTailernova: Result.OnSuccess<OfflinePatternData>,
-        fetchWorkspaceResult: Result.OnSuccess<CTraceWorkSpacePatternDomain>
-    ): PatternsData {
+// mapping WorkspaceAPI response model to PatternData model
+private fun getPatternDataFromSFCC_Tailernova(
+    resultTailernova: Result.OnSuccess<OfflinePatternData>,
+    fetchWorkspaceResult: Result.OnSuccess<CTraceWorkSpacePatternDomain>
+): PatternsData {
 
-        return PatternsData(
-            id = resultTailernova.data.id,
-            patternName = resultTailernova.data.name,
-            description = resultTailernova.data.description,
-            totalPieces = 0,
-            completedPieces = 0,
-            numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPieces,
-            totalNumberOfPieces = resultTailernova.data.numberOfPieces,
-            selectedTab = fetchWorkspaceResult.data.selectedTab,
-            status = fetchWorkspaceResult.data.status,
-            thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
-            thumbnailImageName = resultTailernova.data.thumbnailImageName,
-            //descriptionImages TODO will come from tailernova in next sprints
-            selvages = resultTailernova.data.selvages.map { it.toOldModel() },
-            patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
-            garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems.map {
-                it.toOldModel(
-                    resultTailernova.data.patternPieces
-                )
-            }.toMutableList(),
+    return PatternsData(
+        id = resultTailernova.data.id,
+        patternName = resultTailernova.data.name,
+        description = resultTailernova.data.description,
+        totalPieces = 0,
+        completedPieces = 0,
+        numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPieces,
+        totalNumberOfPieces = resultTailernova.data.numberOfPieces,
+        selectedTab = fetchWorkspaceResult.data.selectedTab,
+        status = fetchWorkspaceResult.data.status,
+        thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
+        thumbnailImageName = resultTailernova.data.thumbnailImageName,
+        //descriptionImages TODO will come from tailernova in next sprints
+        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
+        patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
+        garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems.map {
+            it.toOldModel(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList(),
 
-            liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems.map {
-                it.toOldModel(
-                    resultTailernova.data.patternPieces
-                )
-            }.toMutableList(),
-            interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems.map {
-                it.toOldModel(
-                    resultTailernova.data.patternPieces
-                )
-            }.toMutableList()
-        )
-    }
+        liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems.map {
+            it.toOldModel(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList(),
+        interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems.map {
+            it.toOldModel(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList()
+    )
 }
+

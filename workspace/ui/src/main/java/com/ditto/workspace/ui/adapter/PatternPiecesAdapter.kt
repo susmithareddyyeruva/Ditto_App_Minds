@@ -3,9 +3,9 @@ package com.ditto.workspace.ui.adapter
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.VectorDrawable
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.target.Target
 import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.PatternPieces
 import com.ditto.workspace.ui.R
@@ -63,8 +62,12 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             )
             holder.patternsPiecesBinding.imageView.setImageDrawable(drawable)*/
                 //Log.d("image123", " thumbnailImageUrl: ${patternPieces.get(position).thumbnailImageUrl}")
-            setImageFromSvgPngDrawable(patternPieces.get(position).thumbnailImageUrl,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
-           /* if (patternPieces[position].splice ?: false) {
+
+            //holder.patternsPiecesBinding.imageView.setImageURI(availableUri)
+            //setOfflineImage(holder.patternsPiecesBinding.imageView,availableUri,holder.patternsPiecesBinding.imageArrow.context)
+
+            setImageFromSvgPngDrawable(if(viewModel.isOnline.get()) patternPieces.get(position).thumbnailImageUrl else patternPieces.get(position).thumbnailImageName,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
+            /* if (patternPieces[position].splice ?: false) {
                 if (patternPieces[position].spliceDirection == "Splice Multiple-to-Multiple") {
                     val drawable = Utility.getDrawableFromString(
                         viewGroup!!.context,
@@ -177,10 +180,17 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         context: Context,
         imageView: ImageView
     ) {
+
+        var availableUri:Uri? = null
+        //val imagePath = "M7987_36_C_29.svg"
+        if((viewModel.isOnline.get())){
+            availableUri = Utility.isImageFileAvailable(imagePath,context,"/Ditto/PatternPieces")
+            Log.d("imageUri123", " availableUri: $availableUri")
+        }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide
                 .with(context)
-                .load(imagePath)
+                .load(if(viewModel.isOnline.get()) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
@@ -190,7 +200,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         } else if (imagePath.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(imagePath)
+                .load(if(viewModel.isOnline.get()) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
@@ -200,6 +210,17 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 Utility.getDrawableFromString(context, imagePath) as VectorDrawable,
             )
         }
+    }
+
+    private fun setOfflineImage(imageView: ImageView, availableUri: Uri?, context: Context) {
+        Glide
+            .with(context)
+            .load(availableUri)
+            .asBitmap()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.ic_placeholder)
+            .imageDecoder(SvgBitmapDecoder(context))
+            .into(imageView)
     }
 }
 

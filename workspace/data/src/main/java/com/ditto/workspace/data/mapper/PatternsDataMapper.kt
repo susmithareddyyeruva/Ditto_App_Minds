@@ -88,6 +88,7 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         id = this.id,
         parentPattern = this.parentPattern,
         imagePath = this.imagePath,
+        imageName=this.imageName,
         thumbnailImageUrl= this.thumbnailImageUrl,
         thumbnailImageName=this.thumbnailImageName,
         size = this.size,

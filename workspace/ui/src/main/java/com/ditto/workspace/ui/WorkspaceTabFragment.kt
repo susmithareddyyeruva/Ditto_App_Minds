@@ -43,6 +43,7 @@ import com.ditto.workspace.ui.util.*
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
@@ -105,6 +106,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
@@ -704,7 +706,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun getPatternPieceList(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-        hashMap["M7987_36_C_1.svg"] =
+
+        for (patternItem in viewModel.data.value?.patternPieces!!) {
+            hashMap[patternItem.thumbnailImageName.toString()] = patternItem.thumbnailImageUrl.toString()
+            hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
+        }
+
+        Log.d("hashmap",hashMap.toString())
+
+        /*hashMap["M7987_36_C_1.svg"] =
             "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
         hashMap["M7987_36_C_2.svg"] =
             "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_2.svg"
@@ -755,11 +765,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         hashMap["M7987_36_C_29.svg"] =
             "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
         hashMap["M7987_36_C_30.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"*/
         return hashMap
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
@@ -771,7 +780,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.OnClickSaveAndExit -> {
                 if (!baseViewModel.isProjecting.get()) {
                     binding.buttonSaveAndExit.isEnabled = false
-                    showSaveAndExitPopup()
+                    //showSaveAndExitPopup()
                     //moveToLibrary()
                     //todo livin code
                     //showSaveAndExitPopup()
@@ -1054,7 +1063,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (viewModel.temp.size==getPatternPieceList().size) {
                     bottomNavViewModel.showProgress.set(false)
                     Log.d("DOWNLOAD","ENDED")
-                    moveToLibrary()
+                    //moveToLibrary()
+                    showSaveAndExitPopup()
                 }else{
 
                 }
@@ -1534,11 +1544,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
-    private fun checkProjectName(projectName: String, id: Int): PatternsData? {
+    /*private fun checkProjectName(projectName: String, id: Int): PatternsData? {
         return viewModel.allPatterns.value?.filter {
             (it.status == "Active").or(it.status == "Completed")
-        }?.firstOrNull { it.patternName == projectName && it.id != id }
-    }
+        }?.firstOrNull { it.patternName == projectName && it.id == id }
+    }*/
 
     private fun showSameNameAlert() {
         getAlertDialogue(

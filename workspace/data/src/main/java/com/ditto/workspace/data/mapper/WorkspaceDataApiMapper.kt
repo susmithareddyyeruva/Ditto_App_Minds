@@ -71,6 +71,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceDomain>): 
         id = this.id,
         parentPattern = "parentPattern", // todo
         imagePath = this.imageUrl,
+        imageName=this.imageName,
         thumbnailImageUrl = this.thumbnailImageUrl,
         thumbnailImageName=this.thumbnailImageName,
         size = this.size,
