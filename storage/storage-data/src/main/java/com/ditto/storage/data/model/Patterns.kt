@@ -45,8 +45,8 @@ data class Patterns(
     @SerializedName("patternPieces")
     var patternPieces: List<PatternPieces> = emptyList(),
 
-    @ColumnInfo(name = "numberOfCompletedPieces")
-    @SerializedName("numberOfCompletedPieces")
+    @ColumnInfo(name = "numberOfCompletedPiece")
+    @SerializedName("numberOfCompletedPiece")
     var numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
 
     @ColumnInfo(name = "numberOfPieces")

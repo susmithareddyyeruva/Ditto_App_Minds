@@ -5,7 +5,7 @@ data class PatternsData(
     var patternName: String,
     var description: String,
     var totalPieces: Int,
-    var numberOfCompletedPieces:NumberOfCompletedPieceDomain?,
+    var numberOfCompletedPiece:NumberOfCompletedPieceDomain?,
     var completedPieces: Int,
     var totalNumberOfPieces:NumberOfCompletedPieceDomain?,
     var selectedTab: String?,

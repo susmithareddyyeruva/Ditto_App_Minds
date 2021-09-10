@@ -136,7 +136,7 @@ class WorkspaceViewModel @Inject constructor(
         disposable += getWorkspaceData.updateWorkspaceData("${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",cTraceWorkSpacePatternInputData)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSUpdateResult(it,closeScreen) }
+            .subscribeBy { handleWSUpdateResult(it,closeScreen,cTraceWorkSpacePatternInputData) }
     }
 
     fun createWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
@@ -156,20 +156,25 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>,closeScreen: Boolean) {
+    private fun handleWSUpdateResult(
+        result: Result<WSUpdateResultDomain>,
+        closeScreen: Boolean,
+        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData
+    ) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
         when (result) {
             is Result.OnSuccess -> {
                 Log.d("handleWSUpdateResult", "Success>>>>>>>>>>>>>>>>>>> $result")
 
-                val c: CTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(
+
+               /* val c: CTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(
                     setWorkspaceDimensions(data.value!!)
-                )
+                )*/
 
                 updateWSPatternDataStorage(
-                    "demo-design-id-png", c.selectedTab, c.status, c.numberOfCompletedPiece,
-                    c.patternPieces, c.garmetWorkspaceItems,
-                    c.liningWorkspaceItems, c.interfaceWorkspaceItems,closeScreen
+                    "demo-design-id-png", cTraceWorkSpacePatternInputData.selectedTab, cTraceWorkSpacePatternInputData.status, cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
+                    cTraceWorkSpacePatternInputData.patternPieces, cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
+                    cTraceWorkSpacePatternInputData.liningWorkspaceItems, cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,closeScreen
                 )
             }
 
@@ -443,11 +448,11 @@ class WorkspaceViewModel @Inject constructor(
 
     fun setCompletePieceCount() {
         if (tabCategory.equals("Garment")) {
-            data.value?.numberOfCompletedPieces?.garment = completedPieces.get()
+            data.value?.numberOfCompletedPiece?.garment = completedPieces.get()
         } else if (tabCategory.equals("Lining")) {
-            data.value?.numberOfCompletedPieces?.lining = completedPieces.get()
+            data.value?.numberOfCompletedPiece?.lining = completedPieces.get()
         } else if (tabCategory.equals("Interfacing")) {
-            data.value?.numberOfCompletedPieces?.`interface` = completedPieces.get()
+            data.value?.numberOfCompletedPiece?.`interface` = completedPieces.get()
         }
     }
 
@@ -906,7 +911,7 @@ class WorkspaceViewModel @Inject constructor(
             tailornaovaDesignId = patternData.id,
             selectedTab = patternData.selectedTab,
             status = patternData.status,
-            numberOfCompletedPiece = patternData.numberOfCompletedPieces?.toDomain(),
+            numberOfCompletedPiece = patternData.numberOfCompletedPiece?.toDomain(),
             patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
 
             garmetWorkspaceItems =/*ArrayList(),*/ patternData.garmetWorkspaceItemOfflines?.map {
@@ -968,7 +973,7 @@ class WorkspaceViewModel @Inject constructor(
             description = resultTailernova.data.description,
             totalPieces = 0,
             completedPieces = 0,
-            numberOfCompletedPieces = resultTailernova.data.numberOfCompletedPieces,
+            numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPieces,
             totalNumberOfPieces = resultTailernova.data.numberOfPieces,
             selectedTab = fetchWorkspaceResult.data.selectedTab,
             status = fetchWorkspaceResult.data.status,

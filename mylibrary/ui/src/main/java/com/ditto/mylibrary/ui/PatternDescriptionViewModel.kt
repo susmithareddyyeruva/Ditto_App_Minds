@@ -39,7 +39,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedTailornovaID: ObservableField<String> = ObservableField("demo-design-id-10")
+    val clickedTailornovaID: ObservableField<String> = ObservableField("demo-design-id-png")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -86,7 +86,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
      }*/
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern("demo-design-id-10")
+        disposable += getPattern.getPattern("demo-design-id-png")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

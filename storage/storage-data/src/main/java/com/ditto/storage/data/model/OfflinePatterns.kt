@@ -23,8 +23,8 @@ data class OfflinePatterns(
     @SerializedName("status")
     var status:String="",
 
-    @ColumnInfo(name = "numberOfCompletedPieces")
-    @SerializedName("numberOfCompletedPieces")
+    @ColumnInfo(name = "numberOfCompletedPiece")
+    @SerializedName("numberOfCompletedPiece")
     var numberOfCompletedPieces: NumberOfCompletedPiecesOffline,
 
     @ColumnInfo(name = "patternPieces")

@@ -1571,13 +1571,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun setInitialProgressCount() {
         if (viewModel.tabCategory.equals("Garment")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.garment ?: 0)
-            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPieces?.garment ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.garment ?: 0)
         } else if (viewModel.tabCategory.equals("Lining")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.lining ?: 0)
-            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPieces?.lining ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.lining ?: 0)
         } else if (viewModel.tabCategory.equals("Interfacing")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.`interface` ?: 0)
-            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPieces?.`interface` ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.`interface` ?: 0)
         }
     }
 
