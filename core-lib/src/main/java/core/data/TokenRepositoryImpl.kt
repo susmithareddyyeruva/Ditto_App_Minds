@@ -1,8 +1,10 @@
 package core.data
 
 import android.content.Context
+import android.util.Log
 import core.data.mapper.toTokenDomain
 import core.data.model.TokenFetchError
+import core.data.model.TokenResultDomain
 import core.di.ApiService
 import core.domain.GetTokenRepository
 import core.network.NetworkUtility
@@ -24,7 +26,7 @@ class TokenRepositoryImpl @Inject constructor(
         val currentTimestamp = System.currentTimeMillis()
         return apiService.refreshToken()
             .doOnSuccess {
-
+                Log.d("TOKEN", it.response.access_token?:"")
             }
             .map {
 
