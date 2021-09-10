@@ -38,16 +38,17 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
     override fun onBindViewHolder(holder: PatternHolder, position: Int) {
         holder.patternsItemBinding.product = patterns[position]
         holder.patternsItemBinding.viewModel = viewModel
+        val data=patterns[position]
        // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
 
         val res: Resources = viewGroup!!.resources
-        Glide.with(holder.patternsItemBinding?.imagePattern.context)
+        Glide.with(holder.patternsItemBinding.imagePattern.context)
             .load(patterns.get(position).image)
             .placeholder(R.drawable.ic_placeholder)
             .into(holder.patternsItemBinding.imagePattern)
 
         if (AppState.getIsLogged()) {
-            if (position == 0) {
+            if (data.isFavourite == true) {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_like)
             } else {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_fav_bgred)
@@ -91,7 +92,6 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         val patternsItemBinding: AllPatternSinglelayoutBinding,
         viewType: Int
     ) :
-        RecyclerView.ViewHolder(patternsItemBinding.root) {
-    }
+        RecyclerView.ViewHolder(patternsItemBinding.root)
 }
 

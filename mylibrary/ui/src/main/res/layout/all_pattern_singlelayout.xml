@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/like_btn_margin"
-            android:src="@drawable/ic_fav_bgred"
+            tools:src="@drawable/ic_fav_bgred"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="@id/image_pattern"
             app:layout_constraintTop_toTopOf="@id/image_pattern" />

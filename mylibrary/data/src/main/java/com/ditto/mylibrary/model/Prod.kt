@@ -21,5 +21,6 @@ data class Prod(
     @SerializedName("tailornovaDesignId") val tailornovaDesignId : String?="",
     @SerializedName("size") val prodSize : String?="",
     @SerializedName("gender") val prodGender : String?="",
-    @SerializedName("brand") val prodBrand : String?=""
+    @SerializedName("brand") val prodBrand : String?="",
+    @SerializedName("isFavourite") val isFavourite : Boolean?=false
 ):Serializable
