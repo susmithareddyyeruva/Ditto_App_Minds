@@ -146,5 +146,7 @@
     <dimen name="close_dialog_w">8dp</dimen>
     <dimen name="close_dialog_h">8dp</dimen>
     <dimen name="dimen_25">25dp</dimen>
+    <dimen name="selected_filter_width">15.32dp</dimen>
+    <dimen name="selected_filter_height">17.13dp</dimen>
 
 </resources>

@@ -2,15 +2,13 @@ package com.ditto.mylibrary.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.*
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.PopupMenu
@@ -31,7 +29,6 @@ import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.search_dialog.*
 import javax.inject.Inject
 
 
@@ -133,7 +130,7 @@ class AllPatternsFragment(
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
-    private fun callSearchResult(terms: String) {
+     fun callSearchResult(terms: String) {
         /**
          * Search is Happened only in filtered results
          */
@@ -233,9 +230,8 @@ class AllPatternsFragment(
         }
 
         is AllPatternsViewModel.Event.OnSearchClick -> {
-            //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
+           /* if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
                 val alertDialog = Dialog(
                     requireContext(),
                     R.style.DialogTheme
@@ -289,11 +285,11 @@ class AllPatternsFragment(
                             requireActivity().getWindow()
                                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                             callSearchResult(alertDialog.editSearch.text.toString())
-                            /*   setBackStackData(
+                            *//*   setBackStackData(
                                    "KEY_SEARCH",
                                    alertDialog.editSearch.text.toString(),
                                    true
-                               )*/
+                               )*//*
                             alertDialog.cancel()
                         } else
                             alertDialog.cancel()
@@ -310,7 +306,7 @@ class AllPatternsFragment(
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
 
-            }
+            }*/
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             cleaFilterData()
