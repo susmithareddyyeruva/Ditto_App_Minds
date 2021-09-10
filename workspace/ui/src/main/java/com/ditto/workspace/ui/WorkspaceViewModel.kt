@@ -30,6 +30,8 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import non_core.lib.Result
 import non_core.lib.error.Error
@@ -41,6 +43,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class WorkspaceViewModel @Inject constructor(
     private val context: Context,
@@ -93,6 +96,8 @@ class WorkspaceViewModel @Inject constructor(
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
+    val patternUri: ObservableField<String> = ObservableField("")
+    val temp = ArrayList<String>()
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -761,6 +766,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
+        Log.d("DOWLOAD", "COMPLETED")
     }
 
     sealed class Event {
@@ -893,6 +899,86 @@ class WorkspaceViewModel @Inject constructor(
         return result
     }
 
+    private fun convertInputStreamToFileForPatterns(
+        inputStream: InputStream,
+        filename: String,
+        patternFolderName: String?
+    ): File? {
+        var result: File? = null
+        val outputFile: File? = null
+        var dittofolder: File? = null
+        var subFolder: File? = null
+        dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+        )
+
+        // uncomment following line to save file in internal app memory
+        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+        /*
+        code to create foler with pattern name
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
+         file.mkdirs()*/
+        subFolder = File(dittofolder, "/PatternPieces")
+
+        if (!dittofolder.exists()) {
+            // dittofolder.mkdir()
+            if (!subFolder.exists()) {
+                subFolder.mkdirs()
+            }
+        } else {
+            Log.d("Ditto Folder", "PRESENT IN DIRECTORY")
+
+        }
+
+
+        result = File(subFolder, filename)
+        if (!result.exists()) {
+            try {
+                result.createNewFile()
+            } catch (e: Exception) {
+            }
+        }
+        result.copyInputStreamToFile(inputStream)
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun downloadPatterns(url: String, filename: String, patternFolderName: String?) {
+        performtaskForPatternDownloads(url, filename, patternFolderName)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun performtaskForPatternDownloads(
+        imageUrl: String,
+        filename: String,
+        patternFolderName: String?
+    ) {
+
+        withContext(Dispatchers.IO) {
+            val inputStream: InputStream
+            var result: File? = null
+            val url: URL = URL(imageUrl)
+            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connect()
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                patternpdfuri.set("")
+                onFinished()
+                return@withContext
+            }
+            inputStream = conn.inputStream
+            if (inputStream != null)
+                result =
+                    convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
+            val path = Uri.fromFile(result)
+            patternUri.set(path.toString())
+            Log.d("PATTERN", patternUri.get() ?: "")
+
+            temp.add(path.toString())
+            onFinished()
+        }
+    }
+
     private fun File.copyInputStreamToFile(inputStream: InputStream) {
         try {
             this.outputStream().use { fileOut ->
@@ -960,6 +1046,23 @@ class WorkspaceViewModel @Inject constructor(
 
         return cTraceWorkSpacePatternInputData
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun prepareDowloadList(hashMap: HashMap<String, String>) {
+        Log.d("DOWNLOAD", "STARTED")
+        temp.clear()
+
+        //
+        GlobalScope.launch {
+            hashMap.forEach { (key, value) ->
+                downloadPatterns(url = value, filename = key, patternFolderName = "PatternPieces")
+            }
+        }
+
+
+    }
+
+}
 
     // mapping WorkspaceAPI response model to PatternData model
     private fun getPatternDataFromSFCC_Tailernova(

@@ -62,6 +62,7 @@ import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -701,6 +702,64 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
     }
 
+    fun getPatternPieceList(): HashMap<String, String> {
+        var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap["M7987_36_C_1.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
+        hashMap["M7987_36_C_2.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_2.svg"
+        hashMap["M7987_36_C_4_with_dots.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_4_with_dots.svg"
+        hashMap["M7987_36_C_5.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_5.svg"
+        hashMap["M7987_36_C_6.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_6.svg"
+        hashMap["M7987_36_C_7.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_7.svg"
+        hashMap["M7987_36_C_11.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_12.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_13.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_14.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_15.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_16.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_17.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_18.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_19.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_20.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_21.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_22.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_23.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_24.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_25.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_26.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_27.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_28.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_29.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        hashMap["M7987_36_C_30.svg"] =
+            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
+        return hashMap
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
@@ -714,6 +773,30 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     binding.buttonSaveAndExit.isEnabled = false
                     showSaveAndExitPopup()
                     //moveToLibrary()
+                    //todo livin code
+                    //showSaveAndExitPopup()
+                    val map = getPatternPieceList()
+
+                    if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(map)
+
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
+
+                        }
+                    } else {
+                        //No Network Available for Download
+
+                    }
+                    //todo livin code
+
+
+
                 } else {
                     showWaitingMessage("Projection is under process.. Please wait")
                 }
@@ -965,6 +1048,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
+                /**
+                 * All Pattern Pieces Downloaded Successfully
+                 */
+                if (viewModel.temp.size==getPatternPieceList().size) {
+                    bottomNavViewModel.showProgress.set(false)
+                    Log.d("DOWNLOAD","ENDED")
+                    moveToLibrary()
+                }else{
+
+                }
 
             }
             is WorkspaceViewModel.Event.OnClickTutorial -> {
@@ -1441,42 +1534,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
-    fun onSaveButtonClicked() {
-        val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
-        if (a.equals("0")) {
-            viewModel.data.value?.garmetWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
-            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
-        } else if (a.equals("1")) {
-            viewModel.data.value?.liningWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
-            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
-        } else if (a.equals("2")) {
-            viewModel.data.value?.interfaceWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
-            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $")
-        }
-        this.isCompleted = isCompleted
-        // val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
-        /* if (pattern != null) {
-             matchedPattern = pattern
-             showSameNameAlert()
-         } else {
-             if (baseViewModel.activeSocketConnection.get()) {
-                 GlobalScope.launch {
-                     Utility.sendDittoImage(
-                         requireActivity(),
-                         "ditto_project"
-                     )
-                 }
-             }
-         }*/
-        viewModel.saveProject("projectName", isCompleted, false)
-
-        context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
-    }
-
-    private fun checkProjectName(projectName: String, id: String): PatternsData? {
+    private fun checkProjectName(projectName: String, id: Int): PatternsData? {
         return viewModel.allPatterns.value?.filter {
             (it.status == "Active").or(it.status == "Completed")
         }?.firstOrNull { it.patternName == projectName && it.id != id }
@@ -1496,6 +1554,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     override fun onExitButtonClicked() {
         moveToLibrary()
+        /**
+         * Download the pattern pieces
+         */
+
+
     }
 
     private fun moveToLibrary() {
@@ -1876,9 +1939,24 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val SPLICE_TOP_TO_BOTTOM = "Splice Top-to-Bottom"
         private const val MULTIPLE_TO_MULTIPLE = "Splice Multiple-to-Multiple"
         private const val REQUEST_CODE_PERMISSIONS = 111
+        private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private val REQUIRED_PERMISSIONS_DOWNLOAD =
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
 
+
+    }
+
+    private fun dowloadPermissonGranted() = REQUIRED_PERMISSIONS_DOWNLOAD.all {
+        context?.let { it1 ->
+            ContextCompat.checkSelfPermission(
+                it1, it
+            )
+        } == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showBluetoothDialogue() {
@@ -1952,6 +2030,26 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 REQUEST_CODE_PERMISSIONS
             )
         }
+    }
+
+    /**
+     * [Function] Call back when user allow/deny the permission
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
+            val map = getPatternPieceList()
+
+            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.prepareDowloadList(map)
+
+            }
+        }
+
     }
 
     private fun showConnectivityPopup() {
@@ -2066,6 +2164,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
+
+
         }
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
