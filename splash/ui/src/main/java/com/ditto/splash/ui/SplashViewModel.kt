@@ -38,10 +38,13 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        /*if (Utility.isTokenExpired()){
+        if (AppState.getToken().isNullOrEmpty()) {
             utility.refreshToken()
-        }*/
-        utility.refreshToken()
+        } else {
+            if (Utility.isTokenExpired()) {
+                utility.refreshToken()
+            }
+        }
         getUserDetails()
         GlobalScope.launch {
             delay(3000)
@@ -55,13 +58,14 @@ class SplashViewModel @Inject constructor(
         /**
          * getting patterns data
          */
-       updateDb()
+        updateDb()
     }
 
-    fun callToken(){
+    fun callToken() {
         utility.refreshToken()
 
     }
+
     private fun updateDb() {
         disposable += updateDbUseCase.invoke()
             .subscribeOn(Schedulers.io())
@@ -75,7 +79,7 @@ class SplashViewModel @Inject constructor(
         userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
         userLastName = storageManager.getStringValue(USER_LAST_NAME)
 
-        subscriptionEndDate=storageManager.getStringValue(SUBSCRIPTION_END_DATE)
+        subscriptionEndDate = storageManager.getStringValue(SUBSCRIPTION_END_DATE)
     }
 
     private fun fetchDbUser() {

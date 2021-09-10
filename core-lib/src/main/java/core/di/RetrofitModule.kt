@@ -1,10 +1,10 @@
 package core.di
 
 import android.content.Context
-import core.*
-import core.BASE_URL
 import core.MOCK_API_CERT
-import core.TOKEN_BASE_URL
+import core.OCAPI_PASSWORD
+import core.OCAPI_USERNAME
+import core.TRACKING_ID
 import core.di.scope.WbApiRetrofit
 import core.di.scope.WbBaseUrl
 import core.di.scope.WbTokenApiRetrofit
@@ -20,22 +20,23 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
+import java.security.InvalidKeyException
 import java.security.KeyStore
+import java.security.NoSuchAlgorithmException
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 import javax.inject.Singleton
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.TrustManagerFactory
-import kotlin.jvm.Throws
+import javax.net.ssl.*
 
 
 @Module(
     includes = [
         WbBaseUrlModule::class,
-        WbSocketCertificateModule::class,
-        WbTokenBaseUrlModule :: class
+        WbTokenBaseUrlModule::class/*,
+        WbSocketCertificateModule::class*/
     ]
 )
 class RetrofitModule {
@@ -50,6 +51,16 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
+
+
+
+        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+            val hv: HostnameVerifier =
+                HttpsURLConnection.getDefaultHostnameVerifier()
+            hv.verify("demandware.net", session)
+        })
+
+
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -61,7 +72,6 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
-
     @Provides
     @WbTokenApiRetrofit
     fun provideTokenRetrofit(
@@ -71,10 +81,15 @@ class RetrofitModule {
         val head_auth = BasicAuthInterceptor(OCAPI_USERNAME, OCAPI_PASSWORD)
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
-            .addInterceptor(head_auth)
+            .addInterceptor(HmacSignatureInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
+        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+            val hv: HostnameVerifier =
+                HttpsURLConnection.getDefaultHostnameVerifier()
+            hv.verify("handmadewithjoann.com", session)
+        })
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -85,6 +100,8 @@ class RetrofitModule {
             .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
             .client(httpClient.build())
             .build()
+
+
     }
 }
 
@@ -93,7 +110,7 @@ class WbBaseUrlModule {
     @Provides
     @WbBaseUrl
     fun providesBaseUrl(): String {
-        return BASE_URL
+        return BuildConfig.BASEURL
     }
 }
 
@@ -102,7 +119,7 @@ class WbTokenBaseUrlModule {
     @Provides
     @WbTokenBaseUrl
     fun providesTokenBaseUrl(): String {
-        return TOKEN_BASE_URL
+        return BuildConfig.TOKEN_BASEURL
     }
 }
 
@@ -181,5 +198,73 @@ class BasicAuthInterceptor(user: String?, password: String?) :
 
     init {
         credentials = Credentials.basic(user!!, password!!)
+    }
+}
+class HmacSignatureInterceptor : Interceptor {
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val accessKeyId =
+            java.lang.String.format("ANDROID%s", BuildConfig.VERSION_NAME)
+        val timestamp = "" + System.currentTimeMillis() / 1000
+        val signature = generateSignature(chain.request(), accessKeyId, timestamp)
+        val userAgent = java.lang.String.format(
+            "JOANN/%s %s",
+            BuildConfig.VERSION_NAME,
+            System.getProperty("http.agent")
+        )
+        var request = chain.request()
+        val httpUrl = request.url.newBuilder()
+            .addQueryParameter("AccessKeyId", accessKeyId)
+            .addQueryParameter("Timestamp", timestamp)
+            .addQueryParameter("Signature", signature)
+            .build()
+        request = request.newBuilder().url(httpUrl)
+            .addHeader("User-Agent", userAgent)
+            .build()
+        return chain.proceed(request)
+    }
+
+    private fun generateSignature(
+        request: Request,
+        accessKeyId: String,
+        timestamp: String
+    ): String {
+        val emptyString = ""
+        val method = request.method
+        val domain = request.url.host
+        val path = request.url.encodedPath
+        val paramsUrl = request.url.newBuilder()
+            .addQueryParameter("AccessKeyId", accessKeyId)
+            .addQueryParameter("Timestamp", timestamp)
+            .build()
+        val params = paramsUrl.encodedQuery
+        val stringToHash =
+            """
+            $emptyString
+            $method
+            $domain
+            $path
+            $params
+            """.trimIndent()
+        //Log.d("generateSignature", stringToHash);
+        val trackingId: String = TRACKING_ID
+        var sha256_HMAC: Mac? = null
+        try {
+            sha256_HMAC = Mac.getInstance("HmacSHA256")
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        }
+        val secretKey =
+            SecretKeySpec(trackingId.toByteArray(), "HmacSHA256")
+        try {
+            sha256_HMAC?.init(secretKey)
+        } catch (e: InvalidKeyException) {
+            e.printStackTrace()
+        }
+        return Hex.encodeHex(
+            if (sha256_HMAC != null) sha256_HMAC.doFinal(stringToHash.toByteArray()) else ByteArray(
+                0
+            )
+        ).toLowerCase()
     }
 }
