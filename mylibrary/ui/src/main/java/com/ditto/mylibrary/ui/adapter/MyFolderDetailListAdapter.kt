@@ -38,6 +38,7 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
     override fun onBindViewHolder(holder: FolderHolder, position: Int) {
         holder.patternsItemBinding.product = patterns[position]
         holder.patternsItemBinding.viewModel = viewModel
+        val data=patterns[position]
 
         val res: Resources = viewGroup!!.resources
         Glide.with(holder.patternsItemBinding?.imagePattern.context)
@@ -46,7 +47,7 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
             .into(holder.patternsItemBinding.imagePattern)
 
         if (AppState.getIsLogged()) {
-            if (position == 0) {
+            if (data.isFavourite == true) {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_like)
             } else {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_fav_bgred)
