@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
@@ -198,7 +199,17 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyFolderViewModel.Event) = when (event) {
-
+        is MyFolderViewModel.Event.OnItemClick -> {
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
+                val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                findNavController().navigate(
+                    R.id.action_mylibrary_to_patternDescriptionFragment,
+                    bundle
+                )
+            } else {
+                logger.d("OnClickPatternDesc failed")
+            }
+        }
         is MyFolderViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
            // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
