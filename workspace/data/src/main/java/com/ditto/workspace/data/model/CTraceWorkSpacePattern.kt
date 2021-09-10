@@ -10,7 +10,7 @@ data class CTraceWorkSpacePattern(
     val selectedTab: String? = "",
     @SerializedName("status")
     val status: String? = "",
-    @SerializedName("numberOfCompletedPieces")
+    @SerializedName("numberOfCompletedPiece")
     val numberOfCompletedPiece: NumberOfCompletedPiece?,
     @SerializedName("patternPieces")
     var patternPieces: List<PatternPiece> = emptyList(),

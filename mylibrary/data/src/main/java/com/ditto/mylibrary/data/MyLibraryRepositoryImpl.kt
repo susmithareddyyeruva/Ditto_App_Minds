@@ -1,9 +1,7 @@
 package com.ditto.mylibrary.data
 
 import android.util.Log
-import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.data.api.LoginRepositoryImpl
 import android.content.Context
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
@@ -13,7 +11,6 @@ import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.lib.BuildConfig
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.storage.data.database.OfflinePatternDataDao
@@ -109,7 +106,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deleteDemoPattern("trial")
+                offlinePatternDataDao.deletePatternsExceptTrial("trial") //todo
                 offlinePatternDataDao.insertOfflinePatternData(it.toDomain())
                 //insert to db
             }.map {

@@ -73,7 +73,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             //viewModel.fetchWorkspaceData()
             //viewModel.fetchWorkspaceDataFromAPI()
             showProgress(true)
-            viewModel.fetchTailernovaDataByID("demo-design-id-png")
+            viewModel.fetchTailernovaDataByID("demo-design-id-10") // fetching from internal DB
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

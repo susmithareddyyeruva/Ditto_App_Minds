@@ -26,7 +26,7 @@ abstract class OfflinePatternDataDao {
         liningWorkspaceItems: MutableList<WorkspaceItemOffline>,
         interfaceWorkspaceItems: MutableList<WorkspaceItemOffline> ): Int
 
-    //if patternType!= trial >> delete it
+    //if patternType!= trial >> delete it (keeping trial patterns only )
     @Query("DELETE from offline_pattern_data where patternType  != :patternType ")
-    abstract fun deleteDemoPattern(patternType:String)
+    abstract fun deletePatternsExceptTrial(patternType:String)
 }

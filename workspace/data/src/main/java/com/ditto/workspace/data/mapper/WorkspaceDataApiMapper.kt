@@ -88,7 +88,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceDomain>): 
         },
         cutOnFold = this.cutOnFold.toString(),
         mirrorOption = true,//Todo mirror
-        isCompleted = patternPiece!!.isCompleted // TODO check by default is false
+        isCompleted = patternPiece?.isCompleted ?: false
     )
 }
 

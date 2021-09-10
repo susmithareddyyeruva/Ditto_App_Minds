@@ -1248,6 +1248,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
+        enableSelectAll(true)
         enableClear(true)
         viewModel.workspacedata = workspaceItem
         viewModel.checkMirroring()
@@ -1590,6 +1591,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.showDoubleTouchToZoom.set(true)
         }
         viewModel.selectAllText.set(getString(R.string.select_all))
+        enableSelectAll(true)
         mWorkspaceEditor?.clearAllSelection()
         var imagename = workspaceItem?.imagePath
         if (workspaceItem?.splice ?: false) {
