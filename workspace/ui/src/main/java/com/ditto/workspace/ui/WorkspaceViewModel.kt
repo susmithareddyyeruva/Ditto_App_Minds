@@ -24,7 +24,6 @@ import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.appstate.AppState
 import core.event.UiEvents
-import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -938,16 +937,21 @@ class WorkspaceViewModel @Inject constructor(
         code to create foler with pattern name
         val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
          file.mkdirs()*/
-        subFolder = File(dittofolder, "/PatternPieces")
+        subFolder = File(dittofolder, "/${patternFolderName}")
 
         if (!dittofolder.exists()) {
-            // dittofolder.mkdir()
+             dittofolder.mkdir()
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             }
         } else {
             Log.d("Ditto Folder", "PRESENT IN DIRECTORY")
 
+            if (!subFolder.exists()) {
+                subFolder.mkdirs()
+            }else{
+                Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
+            }
         }
 
 
@@ -1074,7 +1078,8 @@ class WorkspaceViewModel @Inject constructor(
         //
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
-                downloadPatterns(url = value, filename = key, patternFolderName = "PatternPieces")
+                //downloadPatterns(url = value, filename = key, patternFolderName = data.value?.patternName ?: "Pattern Piece")
+                performtaskForPatternDownloads(imageUrl = value, filename = key, patternFolderName = data.value?.patternName ?: "Pattern Piece")
             }
         }
 

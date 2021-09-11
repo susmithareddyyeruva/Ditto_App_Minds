@@ -182,9 +182,8 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
     ) {
 
         var availableUri:Uri? = null
-        //val imagePath = "M7987_36_C_29.svg"
-        if((viewModel.isOnline.get())){
-            availableUri = Utility.isImageFileAvailable(imagePath,context,"/Ditto/PatternPieces")
+        if(!(viewModel.isOnline.get())){
+            availableUri = Utility.isImageFileAvailable(imagePath,context,"${viewModel.data.value?.patternName}")
             Log.d("imageUri123", " availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {

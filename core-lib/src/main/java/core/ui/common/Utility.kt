@@ -459,7 +459,7 @@ class Utility @Inject constructor(
 
             val directory = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto/PatternPieces"
+                    .toString() + "/Ditto/$patternFolderName"
             )
 
 
