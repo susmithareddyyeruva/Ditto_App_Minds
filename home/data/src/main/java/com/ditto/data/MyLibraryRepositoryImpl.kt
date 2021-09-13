@@ -2,7 +2,7 @@ package com.ditto.data
 
 import android.content.Context
 import android.util.Log
-import com.ditto.data.api.MyLibraryService
+import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.toDomain
 import com.ditto.home.domain.GetMyLibraryRepository
@@ -20,7 +20,7 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 class MyLibraryRepositoryImpl @Inject constructor(
-    private val homeService: @JvmSuppressWildcards MyLibraryService,
+    private val homeService: @JvmSuppressWildcards HomeApiService,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
     private val loggerFactory: LoggerFactory
 

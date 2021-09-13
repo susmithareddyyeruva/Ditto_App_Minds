@@ -3,7 +3,7 @@ package com.ditto.base.core.di
 import android.content.Context
 import com.ditto.base.DittoApplication
 import com.ditto.calibration.di.CalibrationFragmentModule
-import com.ditto.data.di.MyLibraryApiModule
+import com.ditto.data.di.HomeApiModule
 import com.ditto.data.di.MyLibraryDetailsDataModule
 import com.ditto.home.di.HomeFragmentModule
 import com.ditto.howto.di.HowToModule
@@ -61,15 +61,8 @@ import javax.inject.Singleton
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, VideoPlayerFragmentModule::class, OnboardingApiModule::class,
         CustomerCareFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
-        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class,
-        GetWorkspcaeDataApiModule::class,MyLibraryApiModule::class, MyLibraryDetailsDataModule::class,MyLibraryFilterModule::class,VideosFragmentModule::class]
-/*
-<<<<<<<<< Temporary merge branch 1
-        MyLibraryApiModule::class, MyLibraryDetailsDataModule::class,MyLibraryFilterModule::class]
-=========
-        VideosFragmentModule::class]
->>>>>>>>> Temporary merge branch 2
-*/
+        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
+        PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class]
 
 )
 @Singleton
