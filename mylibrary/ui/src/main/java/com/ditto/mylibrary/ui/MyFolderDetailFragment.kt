@@ -123,7 +123,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
-    private fun callSearchResult(terms: String) {
+     fun callSearchResult(terms: String) {
      //   viewModel.resultmapFolder.clear()
         viewModel.myfolderArryList.clear()
        // viewModel.myfolderMenu.clear()

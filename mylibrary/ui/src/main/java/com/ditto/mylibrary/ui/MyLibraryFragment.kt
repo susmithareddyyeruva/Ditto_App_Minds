@@ -1,11 +1,15 @@
 package com.ditto.mylibrary.ui
 
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -152,6 +156,18 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
+    fun hideToolbar() {
+     //  binding.tvSearch.visibility = View.GONE
+        binding.patternLibraryAppBar.visibility = View.INVISIBLE
+        binding.searchContainer?.visibility = View.VISIBLE
+    }
+
+    fun showToolbar() {
+       // binding.tvSearch.visibility = View.VISIBLE
+        binding.patternLibraryAppBar.visibility = View.VISIBLE
+        binding.searchContainer?.visibility = View.GONE
+    }
+
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -249,13 +265,89 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 if (tabPosition == 0) {
                     allPatternsFragment.onSyncClick()
                 } else { //tab postion 1
-                    if (childFragmentManager.fragments.size == 2) {
+                    if (childFragmentManager?.fragments?.size == 2) {
                         myFolderFragment.onSyncClick()
                     } else
                         myfolderDetail.onSyncClick()
                 }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
+                hideToolbar()
+                binding.editSearch?.requestFocus()
+                val imgr: InputMethodManager =
+                   requireActivity()?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imgr.showSoftInput( binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
+
+                val watcher = binding.editSearch?.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        logger.d("afterTextChanged")
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                        logger.d("beforeTextChanged")
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        logger.d("onTextChanged")
+                        if (s.toString().isNotEmpty()) {
+                            binding?.imageCloseSearch?.visibility = View.VISIBLE
+                        } else {
+                            binding?.imageCloseSearch?.visibility = View.GONE
+                        }
+                    }
+                })
+                binding?.tvCAncelDialog?.setOnClickListener {
+                    showToolbar()
+                    requireActivity().window
+                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+                    if (binding?.editSearch?.text.toString().isNotEmpty()) {
+                        binding?.editSearch?.text?.clear()
+                        allPatternsFragment.cleaFilterData()
+                    }
+
+
+                }
+
+                binding?.editSearch?.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if (binding?.editSearch?.text.toString().isNotEmpty()) {
+                            val imm =
+                                requireActivity()?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(binding?.editSearch?.getWindowToken(), 0)
+                            val tabPosition = binding.tabLayout.selectedTabPosition
+                            if (tabPosition == 0) {
+                                allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
+                            }else{
+                                myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
+                            }
+
+
+                            /*   setBackStackData(
+                                   "KEY_SEARCH",
+                                   alertDialog.editSearch.text.toString(),
+                                   true
+                               )*/
+
+                        } else
+
+
+                            return@OnEditorActionListener true
+                    }
+                    false
+                })
+                binding?.editSearch?.imageCloseSearch?.setOnClickListener {
+                    binding?.editSearch?.editSearch?.text?.clear()
+                }
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0)
                     allPatternsFragment.onSearchClick()
@@ -271,14 +363,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
         }
 
-
     override fun onSetCount(tittle: String) {
         binding.toolbar.header_view_title.text = tittle
     }
 
     override fun onFilterApplied(isApplied: Boolean) {
         if (isApplied) {
-            binding.viewDot.setImageResource(R.drawable.ic_filter_tab)
+            binding.viewDot.setImageResource(R.drawable.ic_tabfilter)
         } else
             binding.viewDot.setImageResource(R.drawable.ic_filter)
     }
