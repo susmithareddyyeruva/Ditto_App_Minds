@@ -46,7 +46,7 @@ class AllPatternsViewModel @Inject constructor(
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
-     var folderMainList = ArrayList<MyFolderList>()
+    var folderMainList = ArrayList<MyFolderList>()
     val resultMap = hashMapOf<String, ArrayList<String>>()
     var totalPageCount: Int = 0
     var totalPatternCount: Int = 0
@@ -154,10 +154,10 @@ class AllPatternsViewModel @Inject constructor(
 
     fun onDialogPopupClick() {
         folderMainList = arrayListOf<MyFolderList>(
-            MyFolderList(1,"New folder"),
-            MyFolderList(2,"Summer clothes"),
-            MyFolderList(3,"Winter wear"),
-            MyFolderList(4,"Emma’s patterns")
+            MyFolderList(1, "New folder"),
+            MyFolderList(2, "Summer clothes"),
+            MyFolderList(3, "Winter wear"),
+            MyFolderList(4, "Emma’s patterns")
         )
         uiEvents.post(Event.OnPopupClick)
     }
@@ -202,6 +202,7 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnCreateFolder)
     }
+
     fun onCreateFoldersSuccess() {
         Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnFolderCreated)
@@ -260,7 +261,24 @@ class AllPatternsViewModel @Inject constructor(
 
             }
         }
-        isFilter = (filteredMap.isNotEmpty() || value.isNotEmpty())
+       // isFilter = (filteredMap.isNotEmpty())
+        if (filteredMap.isNotEmpty() && value.isNotEmpty()) {
+            isFilter = true
+        }
+        else if (filteredMap.isEmpty()&&value.isEmpty()) {
+            isFilter = false
+        }
+        else if (filteredMap.isNotEmpty()&&value.isEmpty()) {
+            isFilter = true
+        }
+
+        else if (filteredMap.isNotEmpty()) {
+            isFilter = true
+        }
+        else if (filteredMap.isEmpty()&&value.isNotEmpty()) {
+            isFilter = false
+        }
+
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()

@@ -147,10 +147,10 @@
 
                         <ImageView
                             android:id="@+id/view_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/selected_filter_width"
+                            android:layout_height="@dimen/selected_filter_height"
                             android:layout_marginEnd="@dimen/dimen_5"
-                            android:src="@drawable/ic_filter"
+                            android:src="@drawable/ic_filter_default"
                             android:onClick="@{() -> viewModel.onFilterClick()}"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_filter"
                             app:layout_constraintEnd_toStartOf="@+id/tv_filter"
@@ -213,6 +213,103 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/searchContainer"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topbar1">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidlineSearchStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".15">
+
+                </androidx.constraintlayout.widget.Guideline>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidlineSearchEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".85" />
+
+                <RelativeLayout
+                    android:id="@+id/relSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_top"
+                    android:background="@drawable/search_bg"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintEnd_toStartOf="@+id/tvCAncelDialog"
+                    app:layout_constraintStart_toStartOf="@+id/guidlineSearchStart"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/imageCloseSearch"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ic_search_icon"
+                        android:drawablePadding="@dimen/padding_x"
+                        android:ellipsize="end"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:gravity="center_vertical"
+                        android:hint="Search pattern library"
+                        android:imeOptions="flagNoExtractUi|actionSearch"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/padding_x"
+                        android:paddingVertical="@dimen/padding_x"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@android:color/black"
+                        android:textSize="@dimen/size_12sp">
+
+                        <requestFocus />
+                    </androidx.appcompat.widget.AppCompatEditText>
+
+                    <ImageView
+                        android:id="@+id/imageCloseSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/padding_small"
+                        android:layout_marginEnd="@dimen/search_close"
+                        android:src="@drawable/ic_close_search"
+                        android:visibility="gone">
+
+                    </ImageView>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvCAncelDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_9"
+                    android:layout_marginTop="@dimen/margin_top"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_x"
+                    android:singleLine="true"
+                    android:text="@string/cancel_search"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_12sp"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintEnd_toEndOf="@id/guidlineSearchEnd"
+                    app:layout_constraintStart_toEndOf="@+id/relSearch"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.navigation.NavigationView
@@ -391,6 +488,7 @@
                     android:visibility="visible"
                     app:layout_constraintGuide_percent=".93"
                     app:layout_constraintStart_toEndOf="@+id/guideline_center" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.navigation.NavigationView>

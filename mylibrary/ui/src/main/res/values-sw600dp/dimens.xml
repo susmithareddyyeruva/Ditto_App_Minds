@@ -101,4 +101,7 @@
     <dimen name="search_close">17dp</dimen>
     <dimen name="close_dialog_w">15dp</dimen>
     <dimen name="close_dialog_h">15dp</dimen>
+    <dimen name="selected_filter_width">37dp</dimen>
+    <dimen name="selected_filter_height">35dp</dimen>
+    <dimen name="close_filter_text">13dp</dimen>
 </resources>
