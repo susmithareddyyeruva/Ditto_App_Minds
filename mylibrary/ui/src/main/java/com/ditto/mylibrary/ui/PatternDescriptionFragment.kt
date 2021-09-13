@@ -686,7 +686,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
     }
 
-    override fun onNeutralButtonClicked() {
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
         // to clear out workspace projection
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }

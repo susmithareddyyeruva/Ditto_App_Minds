@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.ditto.menuitems_ui.faq.ui.GlossaryViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

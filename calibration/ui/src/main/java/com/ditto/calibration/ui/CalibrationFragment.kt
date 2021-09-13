@@ -606,7 +606,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
         baseViewModel.isSetUpError.set(false)
-        if (!baseViewModel.isCalibrated.get()){
+        if (!baseViewModel.isCalibrated.get()) {
             baseViewModel.isCalibrated.set(true)
 //            baseViewModel.isUserNeedCalibrated.set(false)
         }
@@ -640,9 +640,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
         when (alertType) {
             Utility.AlertType.CALIBRATION -> {
-                if(baseViewModel.isSetUpError.get()){
+                if (baseViewModel.isSetUpError.get()) {
                     activity?.onBackPressed()
-                }else{
+                } else {
                     sendCalibrationPattern() //Sent Pattern Image
                 }
             }
@@ -653,8 +653,21 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
     }
 
-    override fun onNeutralButtonClicked() {
-        Log.d("event", "onNeutralButtonClicked")
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
+        if (alertType == Utility.AlertType.CALIBRATION) {
+            // Added black image while navigating to tutorial
+            GlobalScope.launch {
+                Utility.sendDittoImage(
+                    requireContext(),
+                    "solid_black"
+                )
+            }
+            baseViewModel.isSetUpError.set(false)
+            if (findNavController().currentDestination?.id == R.id.destination_calibrationFragment) {
+                val bundle = bundleOf("isFromHome" to true)
+                findNavController().navigate(R.id.action_workspace_to_tutorial, bundle)
+            }
+        }
     }
 
     private fun restartCamera() {
@@ -694,6 +707,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             }
 
             Util.CalibrationType.InvalidImageFormat -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_invalid_image))
             }
 
@@ -703,22 +717,27 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             }
 
             Util.CalibrationType.FailCalibration -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_fail_calibration))
             }
 
             Util.CalibrationType.TooManyImages -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_toomany_images))
             }
 
             Util.CalibrationType.FailSavingCalibrationResult -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_fail_save))
             }
 
             Util.CalibrationType.CameraPixelsTooLow -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_camera_pixel_too_low))
             }
 
             Util.CalibrationType.IncorrectImageOrientation -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_incorrect_image_orientation))
             }
 
@@ -738,6 +757,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             }
 
             Util.CalibrationType.ImageTakenFromProjectorSide -> {
+                baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_image_taken_from_projector_side))
             }
 
@@ -759,6 +779,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             requireContext(),
             R.drawable.ic_calibration_failure,
             String.format(getString(R.string.calibration_failure), message),
+            "TUTORIAL",
             "RETRY",
             "SKIP CALIBRATION",
             this,

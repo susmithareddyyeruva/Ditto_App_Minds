@@ -3,6 +3,8 @@ plugins {
     id('kotlin-android')
     id('kotlin-android-extensions')
     id('kotlin-kapt')
+    id('com.google.gms.google-services')
+    id('com.google.firebase.crashlytics')
   //  id "org.sonarqube" version "3.1.1"
 }
 
@@ -28,11 +30,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ditto"
+        applicationId "com.joann.ditto"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName "2.11(SVG)"
+        versionName "2.12(02)"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -46,6 +48,7 @@ android {
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
+            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
             signingConfig signingConfigs.release
         }
         debug {
@@ -55,6 +58,7 @@ android {
 //            buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
 //          buildConfigField "String", "APP_CENTER_KEY", "\"d6e41159-e327-4f58-86fb-1d37d2878b77\""  //--- DEV
             buildConfigField "String", "APP_CENTER_KEY", "\"965a12cd-7f40-45ed-88de-6432d3d40155\""  // -- QA
+            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
     }
 
@@ -163,6 +167,14 @@ dependencies {
      */
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
+    /**
+     * Firebase
+     */
+    implementation platform("com.google.firebase:firebase-bom:${firebase_version}")
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation project(path: ':nav-graph')
     implementation project(path: ':non-core-lib')
