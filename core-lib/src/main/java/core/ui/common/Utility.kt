@@ -455,7 +455,7 @@ class Utility @Inject constructor(
             return path
         }
 
-        fun isImageFileAvailable(filename: String?, context: Context, patternFolderName: String?) : Uri? {
+        fun isImageFileAvailable(filename: String?, patternFolderName: String?) : Uri? {
 
             val directory = File(
                 Environment.getExternalStorageDirectory()

@@ -4,6 +4,7 @@ data class WorkspaceItems (
     var id: Int = 0,
     var parentPattern: String = "",
     var imagePath: String? = "",
+    var imageName: String? = "",
     var size: String? = "",
     var view: String? = "",
     var pieceNumber: String? = "",

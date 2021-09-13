@@ -356,9 +356,14 @@ class WorkspaceViewModel @Inject constructor(
             }
 
             is Result.OnError -> {
-                uiEvents.post(Event.HideProgressLoader)
                 handleError(fetchWorkspaceResult.error)
                 Log.d("handleFetchResultAPI", "Failed")
+                val patternsData: PatternsData =
+                    getPatternDataFromSFCC_Tailernova(tailornovaResult) // todo create new function without fetchWorkspaceResult for offline
+                data.value = patternsData
+                setWorkspaceView()
+                uiEvents.post(Event.HideProgressLoader)
+
             }
         }
     }
@@ -430,6 +435,7 @@ class WorkspaceViewModel @Inject constructor(
             id,
             dragData.patternPieces?.parentPattern ?: "",
             dragData.patternPieces?.imagePath ?: "",
+            dragData.patternPieces?.imageName ?: "",
             dragData.patternPieces?.size ?: "",
             dragData.patternPieces?.view ?: "",
             dragData.patternPieces?.pieceNumber ?: "",
@@ -940,7 +946,7 @@ class WorkspaceViewModel @Inject constructor(
         subFolder = File(dittofolder, "/${patternFolderName}")
 
         if (!dittofolder.exists()) {
-             dittofolder.mkdir()
+            dittofolder.mkdir()
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             }
@@ -949,7 +955,7 @@ class WorkspaceViewModel @Inject constructor(
 
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
-            }else{
+            } else {
                 Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
             }
         }
@@ -1079,7 +1085,11 @@ class WorkspaceViewModel @Inject constructor(
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
                 //downloadPatterns(url = value, filename = key, patternFolderName = data.value?.patternName ?: "Pattern Piece")
-                performtaskForPatternDownloads(imageUrl = value, filename = key, patternFolderName = data.value?.patternName ?: "Pattern Piece")
+                performtaskForPatternDownloads(
+                    imageUrl = value,
+                    filename = key,
+                    patternFolderName = data.value?.patternName ?: "Pattern Piece"
+                )
             }
         }
 
@@ -1128,3 +1138,46 @@ private fun getPatternDataFromSFCC_Tailernova(
     )
 }
 
+
+// mapping WorkspaceAPI response model to PatternData model for offline
+private fun getPatternDataFromSFCC_Tailernova(
+    resultTailernova: Result.OnSuccess<OfflinePatternData>
+): PatternsData {
+
+    return PatternsData(
+        id = resultTailernova.data.id,
+        patternName = resultTailernova.data.name,
+        description = resultTailernova.data.description,
+        totalPieces = 0,
+        completedPieces = 0,
+        numberOfCompletedPiece = resultTailernova.data.numberOfCompletedPieces,
+        totalNumberOfPieces = resultTailernova.data.numberOfPieces,
+        selectedTab = resultTailernova.data.selectedTab,
+        status = resultTailernova.data.status,
+        thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
+        thumbnailImageName = resultTailernova.data.thumbnailImageName,
+        //descriptionImages TODO will come from tailernova in next sprints
+        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
+        patternPieces = resultTailernova.data.patternPieces.map {
+            it.toOldModelOffline(
+                resultTailernova
+                    .data
+                    .patternPiecesFromApi
+            )
+        },
+        garmetWorkspaceItemOfflines = resultTailernova.data.garmetWorkspaceItemOfflines.map {
+            it.toOldModelOffline(resultTailernova.data.patternPieces)
+        }.toMutableList(),
+
+        liningWorkspaceItemOfflines = resultTailernova.data.liningWorkspaceItemOfflines.map {
+            it.toOldModelOffline(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList(),
+        interfaceWorkspaceItemOfflines = resultTailernova.data.interfaceWorkspaceItemOfflines.map {
+            it.toOldModelOffline(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList()
+    )
+}

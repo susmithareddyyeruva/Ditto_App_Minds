@@ -183,7 +183,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
         var availableUri:Uri? = null
         if(!(viewModel.isOnline.get())){
-            availableUri = Utility.isImageFileAvailable(imagePath,context,"${viewModel.data.value?.patternName}")
+            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
             Log.d("imageUri123", " availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {
@@ -211,15 +211,5 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         }
     }
 
-    private fun setOfflineImage(imageView: ImageView, availableUri: Uri?, context: Context) {
-        Glide
-            .with(context)
-            .load(availableUri)
-            .asBitmap()
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .placeholder(R.drawable.ic_placeholder)
-            .imageDecoder(SvgBitmapDecoder(context))
-            .into(imageView)
-    }
 }
 

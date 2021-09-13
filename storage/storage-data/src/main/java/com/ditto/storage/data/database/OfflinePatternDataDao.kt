@@ -9,7 +9,7 @@ import com.ditto.storage.data.model.*
 @Dao
 abstract class OfflinePatternDataDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) //todo need to check for using REPLACE
     abstract fun insertOfflinePatternData(offlinePatterns: OfflinePatterns): Long
 
 

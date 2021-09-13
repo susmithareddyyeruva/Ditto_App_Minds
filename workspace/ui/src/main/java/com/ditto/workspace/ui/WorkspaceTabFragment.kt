@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.VectorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -1667,6 +1668,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         enableSelectAll(true)
         mWorkspaceEditor?.clearAllSelection()
         var imagename = workspaceItem?.imagePath
+        var imagenameOffline = workspaceItem?.imageName
         if (workspaceItem?.splice ?: false) {
             showSpliceArrows(
                 workspaceItem?.currentSplicedPieceRow ?: 0,
@@ -1688,6 +1690,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.clickedSize60.set(false)
 
             imagename = splicePiece?.imagePath
+            imagenameOffline = splicePiece?.imageName
             workspaceItem?.splicedImages?.size?.let {
                 viewModel.splice_pices_count.set(
                     it
@@ -1716,7 +1719,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
 
                 var workSpaceImageData = WorkspaceImageData(
-                    imagename?.let { getBitmapFromSvgPngDrawable(it) },
+                    if(viewModel.isOnline.get()) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) },
                     workspaceItem,
                     viewModel.scaleFactor.get(),
                     showProjection,
@@ -1747,10 +1750,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
 
     private fun getBitmapFromSvgPngDrawable(imagePath: String): Bitmap? {
+        var availableUri: Uri? = null
+        if(!(viewModel.isOnline.get())){
+            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
+            Log.d("imageUri123", " availableUri: $availableUri")
+        }
         return if (imagePath.endsWith(".svg", true)) {
             Glide
                 .with(context)
-                .load(imagePath)
+                .load((if(viewModel.isOnline.get()) imagePath else availableUri))
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -1760,7 +1768,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else if (imagePath.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(imagePath)
+                .load((if(viewModel.isOnline.get()) imagePath else availableUri))
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -1875,21 +1883,29 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val canvas = Canvas(bigBitmap)
         for (workspaceItem in workspaceItems) {
             val imagename: String?
+            val imagenameOffline: String?
             if (workspaceItem.splice ?: false) {
                 imagename = getSplicePiece(
                     workspaceItem.currentSplicedPieceRow,
                     workspaceItem.currentSplicedPieceColumn,
                     workspaceItem.splicedImages
                 )?.imagePath
+                imagenameOffline =getSplicePiece(
+                    workspaceItem.currentSplicedPieceRow,
+                    workspaceItem.currentSplicedPieceColumn,
+                    workspaceItem.splicedImages
+                )?.imageName
             } else {
                 imagename = workspaceItem.imagePath
+                imagenameOffline = workspaceItem.imageName
             }
             var bitmap: Bitmap? = null
             runBlocking {
                  val job : Job = GlobalScope.launch {
                     try {
                         bitmap =
-                            imagename?.let { getBitmapFromSvgPngDrawable(it) }
+                           // imagename?.let { getBitmapFromSvgPngDrawable(it) }
+                        if(viewModel.isOnline.get()) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
                         withContext(Dispatchers.Main) {
                             if (imagename != null) {
                                 val matrix = Matrix()

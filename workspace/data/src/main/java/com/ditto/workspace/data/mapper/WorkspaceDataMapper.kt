@@ -190,7 +190,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         name = this.name,
         description = this.description,
         patternType = this.patternType,
-        numberOfPieces = this.numberOfCompletedPieces.toDomainOfflinePicecs(),
+        numberOfPieces = this.numberOfPieces.toDomainOfflinePicecs(),
         orderModificationDate = this.orderModificationDate,
         orderCreationDate = this.orderCreationDate,
         instructionFileName = this.instructionFileName,
