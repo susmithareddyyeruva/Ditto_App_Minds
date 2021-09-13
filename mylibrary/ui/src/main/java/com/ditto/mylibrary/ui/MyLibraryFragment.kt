@@ -371,7 +371,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         if (isApplied) {
             binding.viewDot.setImageResource(R.drawable.ic_tabfilter)
         } else
-            binding.viewDot.setImageResource(R.drawable.ic_filter_applied)
+            binding.viewDot.setImageResource(R.drawable.ic_filter_default)
     }
 
     private fun setFilterMenuAdapter(position: Int) {

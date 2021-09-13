@@ -258,7 +258,7 @@
                             android:layout_height="@dimen/selected_filter_height"
                             android:layout_marginEnd="@dimen/dimen_5"
                             android:onClick="@{() -> viewModel.onFilterClick()}"
-                            android:src="@drawable/ic_filter_applied"
+                            android:src="@drawable/ic_filter_default"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_filter"
                             app:layout_constraintEnd_toStartOf="@+id/tv_filter"
                             app:layout_constraintTop_toTopOf="@+id/tv_filter" />
