@@ -345,7 +345,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     }
                     false
                 })
-                binding?.editSearch?.imageCloseSearch?.setOnClickListener {
+                binding?.imageCloseSearch?.setOnClickListener {
                     binding?.editSearch?.editSearch?.text?.clear()
                 }
                 val tabPosition = binding.tabLayout.selectedTabPosition
@@ -371,7 +371,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         if (isApplied) {
             binding.viewDot.setImageResource(R.drawable.ic_tabfilter)
         } else
-            binding.viewDot.setImageResource(R.drawable.ic_filter)
+            binding.viewDot.setImageResource(R.drawable.ic_filter_applied)
     }
 
     private fun setFilterMenuAdapter(position: Int) {

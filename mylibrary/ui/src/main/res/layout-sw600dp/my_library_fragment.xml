@@ -147,10 +147,10 @@
 
                         <ImageView
                             android:id="@+id/view_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/selected_filter_width"
+                            android:layout_height="@dimen/selected_filter_height"
                             android:layout_marginEnd="@dimen/dimen_5"
-                            android:src="@drawable/ic_filter"
+                            android:src="@drawable/ic_filter_applied"
                             android:onClick="@{() -> viewModel.onFilterClick()}"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_filter"
                             app:layout_constraintEnd_toStartOf="@+id/tv_filter"
