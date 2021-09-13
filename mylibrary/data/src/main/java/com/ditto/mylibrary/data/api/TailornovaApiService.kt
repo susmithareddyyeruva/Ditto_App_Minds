@@ -11,7 +11,7 @@ import retrofit2.http.Url
 interface TailornovaApiService {
 
     @GET
-    fun getPatternDetailsByDesignId(@Url url : String?) : Single<PatternIdData>
+    fun getPatternDetailsByDesignId(@Url url : String?, @Query("os") one: String? ) : Single<PatternIdData>
 
 }
 

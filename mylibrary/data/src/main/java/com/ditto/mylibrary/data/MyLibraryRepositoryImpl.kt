@@ -3,6 +3,7 @@ package com.ditto.mylibrary.data
 import android.util.Log
 import com.ditto.logger.LoggerFactory
 import android.content.Context
+import android.provider.SyncStateContract
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.TailornovaApiService
@@ -17,6 +18,7 @@ import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
+import core.OS
 import core.models.CommonApiFetchError
 import core.appstate.AppState
 import core.network.NetworkUtility
@@ -102,7 +104,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
     override fun getPatternData(get:String): Single<Result<PatternIdData>> {
-        return tailornovaApiService.getPatternDetailsByDesignId(BuildConfig.TAILORNOVA_ENDURL+get)
+        return tailornovaApiService.getPatternDetailsByDesignId(BuildConfig.TAILORNOVA_ENDURL+get, OS)
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
