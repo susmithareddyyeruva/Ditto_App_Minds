@@ -79,6 +79,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 bottomNavViewModel.showProgress.set(true)
                 homeViewModel.fetchData()
             }
+        }else{
+            homeViewModel.setHomeItems()
+            if (recycler_view!=null) {
+                (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
+                (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
+            }
         }
 
         homeViewModel.disposable += homeViewModel.events
@@ -116,7 +122,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 }
             }
             is HomeViewModel.Event.OnClickMyPatterns -> {
-                val list=homeViewModel.homeDataResponse.value!!.prod
+                val list=homeViewModel.homeDataResponse.value?.prod
 
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf(

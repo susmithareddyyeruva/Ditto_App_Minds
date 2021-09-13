@@ -39,4 +39,8 @@ class MyLibraryImpl @Inject constructor(
     override fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         return myLibraryRepository.getFilteredPatterns(createJson)
     }
+
+    override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        return myLibraryRepository.getMyLibraryFolderData(createJson)
+    }
 }

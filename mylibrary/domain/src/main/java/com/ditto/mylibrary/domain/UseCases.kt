@@ -17,5 +17,6 @@ interface GetMylibraryData {
     fun removeProject(patternId: String): Single<Any>
     fun completeProject(patternId: String): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
+    fun invokeFolderList(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
 }
 

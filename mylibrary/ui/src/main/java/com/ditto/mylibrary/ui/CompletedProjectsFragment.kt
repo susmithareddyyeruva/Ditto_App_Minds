@@ -81,7 +81,6 @@ class CompletedProjectsFragment : BaseFragment() {
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) =
         when (event) {
-
             is AllPatternsViewModel.Event.OnItemClick -> {
                 if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
                     val bundle = bundleOf("clickedID" to viewModel.clickedTailornovaID.get())
@@ -105,10 +104,17 @@ class CompletedProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnOptionsClicked -> {
                 Log.d("error","instruction error")
             }
-            is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
-            else -> {
+            is AllPatternsViewModel.Event.OnSyncClick -> {}
+            is AllPatternsViewModel.Event.OnSearchClick -> {}
+            AllPatternsViewModel.Event.OnResultSuccess ->{}
+            AllPatternsViewModel.Event.OnShowProgress -> {}
+            AllPatternsViewModel.Event.OnHideProgress -> {}
+            AllPatternsViewModel.Event.OnResultFailed -> {}
+            AllPatternsViewModel.Event.NoInternet ->{}
+            AllPatternsViewModel.Event.OnUpdateFilter ->{}
+            AllPatternsViewModel.Event.UpdateFilterImage -> {}
+            AllPatternsViewModel.Event.UpdateDefaultFilter ->{}
+            else ->{
 
             }
         }

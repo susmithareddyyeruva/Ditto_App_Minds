@@ -84,7 +84,8 @@ fun Prod.toDomain(): ProdDomain {
         status = this.status?:"",
         subscriptionExpiryDate = this.subscriptionExpiryDate?:"",
         suitableFor = this.suitableFor?:"",
-        type = this.type?:""
+        type = this.type?:"",
+        isFavourite = this.isFavourite?:false
 
     )
 }

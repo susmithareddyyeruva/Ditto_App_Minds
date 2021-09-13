@@ -10,9 +10,10 @@ const val CLIENT_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 const val SITE_ID = "JoAnn"
 const val PDF_USERNAME = "amrita.pattanaik@infosys.com"
 const val PDF_PASSWORD = "A@Mala4204"
-const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
+const val PDF_SAMPLE_URL =
+    "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
+//const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
 var PDF_DOWNLOAD_URL : String ?= "";
-
 //Shared Preference Keys
 const val USER_EMAIL = "USER_EMAIL"
 const val USER_PHONE = "USER_PHONE"

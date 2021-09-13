@@ -135,6 +135,7 @@ class Utility {
                 mContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(mView?.windowToken, 0)
         }
+
     }
 
     interface CallbackDialogListener {

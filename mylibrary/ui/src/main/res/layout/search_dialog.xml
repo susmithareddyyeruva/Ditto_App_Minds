@@ -5,7 +5,7 @@
         <variable
             name="viewModel"
             type="com.ditto.mylibrary.ui.AllPatternsViewModel" />
-
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,6 +67,7 @@
                     android:paddingHorizontal="@dimen/padding_x"
                     android:paddingVertical="@dimen/padding_x"
                     android:singleLine="true"
+                    android:layout_toStartOf="@+id/imageCloseSearch"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:textColor="@android:color/black"
@@ -75,6 +76,18 @@
 
                     <requestFocus />
                 </androidx.appcompat.widget.AppCompatEditText>
+                <ImageView
+                    android:id="@+id/imageCloseSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:layout_marginEnd="@dimen/search_close"
+                    android:layout_marginStart="@dimen/padding_small"
+                    android:src="@drawable/ic_close_search"
+                    android:layout_alignParentEnd="true">
+
+                </ImageView>
             </RelativeLayout>
 
             <TextView
@@ -86,8 +99,9 @@
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:gravity="center_vertical"
                 android:padding="@dimen/padding_x"
+                android:textAllCaps="false"
                 android:singleLine="true"
-                android:text="@string/cancel"
+                android:text="@string/cancel_search"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_12sp"
                 app:layout_constraintStart_toEndOf="@+id/guidlineSearchEnd"

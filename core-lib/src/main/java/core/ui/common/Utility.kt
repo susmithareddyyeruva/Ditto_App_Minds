@@ -40,7 +40,6 @@ import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -72,7 +71,8 @@ class Utility @Inject constructor(
         PDF,
         CUT_COMPLETE,
         CONNECTIVITY,
-        SOC_CONNECT
+        SOC_CONNECT,
+        DELETE
     }
 
     enum class Iconype {
@@ -505,7 +505,7 @@ class Utility @Inject constructor(
                 val lay_withoutimage =
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
-                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
+                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN ||alertType == AlertType.DELETE
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE

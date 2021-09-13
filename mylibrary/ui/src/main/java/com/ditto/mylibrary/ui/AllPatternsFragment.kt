@@ -2,38 +2,43 @@ package com.ditto.mylibrary.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
-import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
-import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
-import com.ditto.mylibrary.ui.util.getBackStackData
+import com.ditto.mylibrary.ui.util.Utility.Companion.getAlertDialogFolder
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.all_patterns_fragment.view.*
+import kotlinx.android.synthetic.main.search_dialog.*
 import javax.inject.Inject
 
 
-class AllPatternsFragment : BaseFragment(),
+class AllPatternsFragment(
+    private val setPatternCount: SetPatternCount,
+    private val filterIcons: setFilterIcons
+) : BaseFragment(),
     Utility.CustomCallbackDialogListener {
 
 
@@ -63,72 +68,20 @@ class AllPatternsFragment : BaseFragment(),
         ).also {
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
-        }
-        return binding.root
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-   /*     currentPage = 1
-        isLastPage = false
-        viewModel.patternArrayList.clear()
-        viewModel.resultMap.clear()*/
+        }
+        return binding.container
+
     }
 
     @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        AndroidInjection.inject(requireActivity())
         setUIEvents()
-        setUpToolbar()
-        setUpNavigationDrawer()
         initializeAdapter()
-
-
-        binding.closeFilter.setOnClickListener {
-            binding.drawerLayout.closeDrawer(Gravity.END)
-            setFilterMenuAdapter(0)
-            binding.rvCategory.smoothScrollToPosition(0)
-            binding.rvActions.smoothScrollToPosition(0)
-        }
-        binding.apply.setOnClickListener {
-            //  viewModel.createJson()
-            /**
-             * API call for getting filter Results....
-             */
-            if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                currentPage = 1
-                isLastPage = false
-                viewModel.patternArrayList.clear()
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
-            }
-            binding.drawerLayout.closeDrawer(Gravity.END)
-            setFilterMenuAdapter(0)
-        }
-
-        binding.clearFilter.setOnClickListener {
-            viewModel.resultMap.clear()
-            viewModel.patternArrayList.clear()
-            viewModel.menuList.clear()
-            viewModel.setList()
-            currentPage = 1
-            isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
-            if (binding?.rvActions.adapter != null) {
-                binding.rvActions.adapter?.notifyDataSetChanged()
-                binding.drawerLayout.closeDrawer(Gravity.END)
-            }
-
-        }
-
-        binding.imageClearAll.setOnClickListener {
-            binding.clearFilter.performClick()
-        }
-        binding.textviewClear.setOnClickListener {
-            binding.clearFilter.performClick()
-        }
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            if (viewModel.resultMap.isEmpty()) {
+            if (viewModel.patternArrayList.isEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(
                     viewModel.createJson(
@@ -138,89 +91,77 @@ class AllPatternsFragment : BaseFragment(),
                 )  //Initial API call
             } else {
                 updatePatterns()
-                setFilterMenuAdapter(0)
-               if (viewModel.isFilter==true){
-                   binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
-               }else
-                   binding.viewDot.setImageResource(R.drawable.ic_filter)
+                //  setFilterMenuAdapter(0)
+                if (viewModel.isFilter == true) {
+                    filterIcons.onFilterApplied(true)
+                } else
+                    filterIcons.onFilterApplied(false)
             }
 
 
         }
-        getBackStackData<String>("KEY_SEARCH", true) { it ->
-            logger.d("SEARCH TERM : $it")
+
+
+        /*  getBackStackData<String>("KEY_SEARCH", true) { it ->
+              logger.d("SEARCH TERM : $it")
+              callSearchResult()
+          }*/
+
+        binding.imageClearFilter.setOnClickListener {
             viewModel.resultMap.clear()
             viewModel.patternArrayList.clear()
             viewModel.menuList.clear()
             viewModel.setList()
             currentPage = 1
             isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = it))
-            if (binding?.rvActions.adapter != null) {
-               // binding.rvActions.adapter?.notifyDataSetChanged()
-                setFilterMenuAdapter(0)
-                binding.drawerLayout.closeDrawer(Gravity.END)
-            }
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
 
+        binding.textviewClear.setOnClickListener {
+            cleaFilterData()
+        }
 
     }
 
-    private fun updatePatterns() {// Updating the adapter
+    fun cleaFilterData() {
+        viewModel.resultMap.clear()
+        viewModel.patternArrayList.clear()
+        viewModel.menuList.clear()
+        viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+    }
 
-        /*  viewModel.patternList.observe(viewLifecycleOwner, Observer { list ->
-              allPatternAdapter.setListData(items = list)
-          })*/
+    private fun callSearchResult(terms: String) {
+        /**
+         * Search is Happened only in filtered results
+         */
+      //  viewModel.resultMap.clear()
+        viewModel.patternArrayList.clear()
+        //viewModel.menuList.clear()
+       // viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
+    }
+
+    fun applyFilter() {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            currentPage = 1
+            isLastPage = false
+            viewModel.patternArrayList.clear()
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        }
+
+    }
+
+    private fun updatePatterns() {
+        // Updating the adapter
         allPatternAdapter.setListData(items = viewModel.patternArrayList)
-        binding.toolbar.header_view_title.text =
-            getString(R.string.pattern_library_count, AppState.getPatternCount())
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
-    }
-
-
-    private fun setFilterMenuAdapter(position: Int) {
-        val result = viewModel.menuList.keys.toList()   //setting menus
-        if (result.isNotEmpty()) {
-            binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-            binding.rvCategory.adapter =
-                FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
-                    override fun onMenuSelected(menu: String) {
-                        Log.d("CLICKED===", menu)
-                        clickedMenu = menu
-                        (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
-
-                    }
-
-                })
-            setFilterActionAdapter(result[0])  //set menu items
-        }
-    }
-
-    private fun setFilterActionAdapter(keys: String) {
-        val filterDetailsAdapter = FilterDetailsAdapter(object :
-            FilterDetailsAdapter.SelectedItemsListener {
-            override fun onItemsSelected(title: String, isSelected: Boolean) {
-                logger.d("Items==" + title)
-                for ((key, value) in viewModel.menuList) {
-                    logger.d("After  clik selection : $key = $value")
-                }
-            }
-        }, viewModel.menuList, keys)
-        binding.rvActions.adapter = filterDetailsAdapter
-        filterDetailsAdapter.viewModel = viewModel
-        // filterDetailsAdapter.updateList(keys)
-
-    }
-
-    private fun setUpToolbar() {
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(false)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        binding.toolbar.header_view_title.text =
-            getString(R.string.pattern_library_count, AppState.getPatternCount())
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setUIEvents() {
@@ -266,14 +207,14 @@ class AllPatternsFragment : BaseFragment(),
             }
         })
     }
-
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get(),"clickedOrderNumber" to viewModel.clickedOrderNumber.get())
                 findNavController().navigate(
-                    R.id.action_allPatternsFragment_to_patternDescriptionFragment,
+                    R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
                 )
             } else {
@@ -283,99 +224,202 @@ class AllPatternsFragment : BaseFragment(),
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-            /* binding.toolbar.header_view_title.text =
-                 getString(R.string.pattern_library_count, viewModel.totalPatternCount)*/
+            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
+
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
             showPopupMenu(event.view, event.patternId)
         }
 
-        is AllPatternsViewModel.Event.OnFilterClick -> {
-
-            binding.drawerLayout.openDrawer(Gravity.RIGHT)
-            Log.d("pattern", "onFilterClick : AllPatternsFragment")
-        }
         is AllPatternsViewModel.Event.OnSearchClick -> {
             //setPatternAdapter()
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            if (findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                findNavController().navigate(R.id.action_fragments_to_search)
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
+                val alertDialog = Dialog(
+                    requireContext(),
+                    R.style.DialogTheme
+                )
+
+                alertDialog.setContentView(R.layout.search_dialog);
+                binding.viewModel = viewModel
+                alertDialog.window?.setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+                );
+                alertDialog.show()
+                val watcher = alertDialog.editSearch.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        logger.d("afterTextChanged")
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                        logger.d("beforeTextChanged")
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        logger.d("onTextChanged")
+                        if (s.toString().isNotEmpty()) {
+                            alertDialog.imageCloseSearch.visibility = View.VISIBLE
+                        } else {
+                            alertDialog.imageCloseSearch.visibility = View.GONE
+                        }
+                    }
+                })
+                alertDialog.tvCAncelDialog.setOnClickListener {
+                    requireActivity().window
+                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    alertDialog.cancel()
+
+
+                }
+
+                alertDialog.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if (alertDialog.editSearch.text.toString().isNotEmpty()) {
+                            requireActivity().getWindow()
+                                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            callSearchResult(alertDialog.editSearch.text.toString())
+                            /*   setBackStackData(
+                                   "KEY_SEARCH",
+                                   alertDialog.editSearch.text.toString(),
+                                   true
+                               )*/
+                            alertDialog.cancel()
+                        } else
+                            alertDialog.cancel()
+                        //   targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK,  activity?.intent?.putExtras(bundle));
+
+                        return@OnEditorActionListener true
+                    }
+                    false
+                })
+                alertDialog.imageCloseSearch.setOnClickListener {
+                    alertDialog.editSearch.text?.clear()
+                }
+                //  findNavController().navigate(R.id.action_mylibrary_to_search)
             } else {
                 Log.d("pattern", "OnSearchClick : ELSE")
 
             }
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
-            binding.clearFilter.performClick()
-       /*     isLastPage = false
-            currentPage = 1
-            viewModel.patternArrayList.clear()
-            viewModel.resultMap.clear()
-            viewModel.map.clear()
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))*/
+            cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // open dialog
         }
-        is AllPatternsViewModel.Event.OnSearchClick -> {
-            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            // open dialog
-        }
-        AllPatternsViewModel.Event.OnResultSuccess -> {
+        is AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
+            baseViewModel.totalCount = viewModel.totalPatternCount
+            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
+
             /**
              * Getting ALL PATTERNS LIST
              */
             isLoading = false
             updatePatterns()
         }
-        AllPatternsViewModel.Event.OnShowProgress -> {
+        is  AllPatternsViewModel.Event.OnShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
         }
-        AllPatternsViewModel.Event.OnHideProgress -> {
+        is  AllPatternsViewModel.Event.OnHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        AllPatternsViewModel.Event.OnResultFailed -> {
+        is  AllPatternsViewModel.Event.OnResultFailed -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
-        AllPatternsViewModel.Event.NoInternet -> {
+        is AllPatternsViewModel.Event.NoInternet -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
         /* else -> {
              Log.d("event", "Add project")
          }*/
-        AllPatternsViewModel.Event.OnAddProjectClick -> {
+        is AllPatternsViewModel.Event.OnAddProjectClick -> {
             Log.d("event", "Add project")
         }
-        AllPatternsViewModel.Event.OnUpdateFilter -> {
+        is  AllPatternsViewModel.Event.OnUpdateFilter -> {
+            Log.d("event", "OnUpdateFilter")
 
-            if (binding?.rvCategory?.adapter == null || binding?.rvActions.adapter == null) {
-                Log.d("MAP  RESULT== ", "IF")
-                setFilterMenuAdapter(0)   //Setting Menu Items
-            } else {
-                Log.d("MAP  RESULT== ", "ELSE")
-                /*  (binding.rvActions.adapter as FilterDetailsAdapter).setListData(
-                      viewModel.menuList[clikedMenu]?.toList() ?: emptyList()
-                  )*/
-                binding.rvCategory.adapter?.notifyDataSetChanged()
-                // binding.rvActions.adapter?.notifyDataSetChanged()
+        }
+        is   AllPatternsViewModel.Event.UpdateFilterImage -> {
+            filterIcons.onFilterApplied(true)
+        }
+        is AllPatternsViewModel.Event.OnCreateFolder -> {
+            val layout =
+                activity?.layoutInflater?.inflate(R.layout.create_folder, null)
+            layout?.let {
+                com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialog(
+                    requireActivity(),
+                   "",
+                    "",
+                    it,viewModel,
+                   "CANCEL",
+                  "CREATE FOLDER",
+                    object : com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener{
+                        override fun onCreateClicked(foldername: String) {
+
+                        }
+
+                        override fun onCancelClicked() {
+
+                        }
+                    },
+                    Utility.AlertType.DEFAULT
+                )
+            }
+        }
+        is  AllPatternsViewModel.Event.OnFolderCreated -> {
+            (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
+
+        }
+        is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
+            filterIcons.onFilterApplied(false)
+
+        }
+        is AllPatternsViewModel.Event.OnPopupClick -> {
 
 
+            // open dialog
+            val layout =
+                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, null)
+            layout?.let {
+                getAlertDialogFolder(
+                    requireActivity(),viewModel.folderMainList,viewModel,
+                    object : com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
+                        override fun onSaveButtonClicked(
+                            projectName: String,
+                            isCompleted: Boolean?
+                        ) {
+                            Log.d("onSaveButtonClicked", "Allpattern")
+
+                        }
+                        override fun onExitButtonClicked() {
+                            Log.d("onExitButtonClicked", "Allpattern")
+                        }
+                    },
+                    Utility.AlertType.DEFAULT
+                )
             }
 
         }
-        AllPatternsViewModel.Event.UpdateFilterImage -> {
-            binding.viewDot.setImageResource(R.drawable.ic_filter_selected)
-        }
-        AllPatternsViewModel.Event.UpdateDefaultFilter -> {
-            binding.viewDot.setImageResource(R.drawable.ic_filter)
+        else -> {
 
         }
     }
+
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
@@ -400,29 +444,6 @@ class AllPatternsFragment : BaseFragment(),
         popup.show()
     }
 
-
-    private fun setUpNavigationDrawer() {
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            }
-
-            override fun onDrawerOpened(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            }
-
-            override fun onDrawerClosed(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            }
-
-            override fun onDrawerStateChanged(newState: Int) {
-                logger.d("OnDarwerState changed")
-            }
-        })
-
-    }
-
-
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -437,7 +458,6 @@ class AllPatternsFragment : BaseFragment(),
         // TODO("Not yet implemented")
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -448,5 +468,34 @@ class AllPatternsFragment : BaseFragment(),
             }
         }
     }
+
+
+    fun onSyncClick() {
+        if (viewModel != null) {
+            Log.d("pattern", "onSyncClick : viewModel")
+            viewModel.onSyncClick()
+        }
+    }
+
+    fun onSearchClick() {
+        if (viewModel != null) {
+            Log.d("pattern", "onSearchClick : viewModel")
+            viewModel.onSearchClick()
+        }
+    }
+
+    interface SetPatternCount {
+        fun onSetCount(tittle:String)
+    }
+
+    interface setFilterIcons {
+        fun onFilterApplied(isApplied: Boolean)
+    }
+
+    fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
+        val item = viewModel.menuList
+        return item
+    }
+
 
 }

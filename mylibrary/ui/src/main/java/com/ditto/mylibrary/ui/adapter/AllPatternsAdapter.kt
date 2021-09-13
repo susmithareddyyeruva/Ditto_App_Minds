@@ -19,7 +19,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 
     lateinit var viewModel: AllPatternsViewModel
     private var patterns: List<ProdDomain> = emptyList()
-    private var viewGroup: ViewGroup? =null
+    private var viewGroup: ViewGroup? = null
 
     override fun setListData(items: List<ProdDomain>) {
         patterns = items
@@ -30,7 +30,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         viewGroup = parent
         val inflater = LayoutInflater.from(parent.context)
         val binding = AllPatternSinglelayoutBinding.inflate(inflater, parent, false)
-        return PatternHolder(binding,viewType)
+        return PatternHolder(binding, viewType)
     }
 
     override fun getItemCount() = patterns.size
@@ -38,56 +38,60 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
     override fun onBindViewHolder(holder: PatternHolder, position: Int) {
         holder.patternsItemBinding.product = patterns[position]
         holder.patternsItemBinding.viewModel = viewModel
+        val data=patterns[position]
+       // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
 
         val res: Resources = viewGroup!!.resources
-        Glide.with( holder.patternsItemBinding?.imagePattern.context)
+        Glide.with(holder.patternsItemBinding.imagePattern.context)
             .load(patterns.get(position).image)
             .placeholder(R.drawable.ic_placeholder)
-            .into( holder.patternsItemBinding.imagePattern)
+            .into(holder.patternsItemBinding.imagePattern)
+
         if (AppState.getIsLogged()) {
-            if (position == 0 ) {
-                holder.patternsItemBinding.textviewPatternType.text = "NEW"
+            if (data.isFavourite == true) {
+                holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_like)
+            } else {
+                holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_fav_bgred)
+            }
+            holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+            if (patterns[position].status?.toUpperCase()
+                    .equals("NEW") || patterns[position].status?.toUpperCase().equals("OWNED")
+            ) {
                 holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
                     (ContextCompat.getColor(
                         holder.patternsItemBinding.textviewPatternType.context,
                         R.color.text_new
                     ))
                 )
-            } else if (position == 1 ) {
-                holder.patternsItemBinding.textviewPatternType.text = "OWNED"
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
-            } else if (position == 2) {
-                holder.patternsItemBinding.textviewPatternType.text = "EXPIRED"
+
+                holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+                holder.patternsItemBinding.textviewPatternType.text =
+                    patterns[position].status?.toUpperCase()
+            } else if (patterns[position].status?.toUpperCase().equals("EXPIRED")) {
+                holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+                holder.patternsItemBinding.textviewPatternType.text =
+                    patterns[position].status?.toUpperCase()
                 holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
                     (ContextCompat.getColor(
                         holder.patternsItemBinding.textviewPatternType.context,
                         R.color.text_expired
                     ))
                 )
-            }else if (position == 3 ) {
+            } else {
                 holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
-            }else{
-                holder.patternsItemBinding.textviewPatternType.text = "NEW"
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
+
             }
+
 
         } else { //Guest User
 
         }
     }
 
-    inner class PatternHolder(val patternsItemBinding: AllPatternSinglelayoutBinding, viewType: Int) :
-        RecyclerView.ViewHolder(patternsItemBinding.root) {
-    }
+    inner class PatternHolder(
+        val patternsItemBinding: AllPatternSinglelayoutBinding,
+        viewType: Int
+    ) :
+        RecyclerView.ViewHolder(patternsItemBinding.root)
 }
 

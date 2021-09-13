@@ -109,7 +109,6 @@ class ActiveProjectsFragment : BaseFragment() {
 
             is AllPatternsViewModel.Event.OnOptionsClicked ->
                 showPopupMenu(event.view, event.patternId)
-            is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
             is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
             else -> {

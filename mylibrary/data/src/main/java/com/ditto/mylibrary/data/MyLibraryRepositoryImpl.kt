@@ -181,6 +181,45 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     }
 
+    override fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return myLibraryService.getFoldersList(createJson, "Bearer " + AppState.getToken()!!)
+            .doOnSuccess {
+                logger.d("*****FETCH FILTER SUCCESS**")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
+                }
+
+                logger.d(it.localizedMessage)
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
+    }
+
 
 //    override fun addProject(
 //        id: Int,

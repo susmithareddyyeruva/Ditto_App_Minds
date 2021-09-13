@@ -17,4 +17,6 @@
     <color name="color_clear_filter">#A4211F</color>
     <color name="instruction_content_text">#4A4A4A</color>
     <color name="item_devider">#1F707070</color>
+    <color name="owned_color">#FFF6DE</color>
+    <color name="add_folder_color">#FAFAFA</color>
 </resources>

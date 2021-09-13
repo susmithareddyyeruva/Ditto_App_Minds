@@ -63,7 +63,9 @@ class HomeViewModel @Inject constructor(
 
             }
             1 -> {
-                uiEvents.post(Event.OnClickMyPatterns)
+                if (AppState.getIsLogged()) {
+                    uiEvents.post(Event.OnClickMyPatterns)
+                }
 
             }
             2 -> {
