@@ -149,7 +149,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         // Updating the adapter
         myFolderDetailListAdapter.setListData(items = viewModel.myfolderArryList)
         binding.tvFilterResult.text =
-            getString(R.string.text_filter_result, viewModel.totalPatternCount)
+            context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
 
     private fun setUIEvents() {
@@ -201,7 +201,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     private fun handleEvent(event: MyFolderViewModel.Event) = when (event) {
         is MyFolderViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
-                val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get())
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -303,15 +304,18 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             // open dialog
         }
         is MyFolderViewModel.Event.OnResultSuccess -> {
-            bottomNavViewModel.showProgress.set(false)
-            baseViewModel.totalCount = viewModel.totalPatternCount
-           // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
+            if(isAdded){
+                baseViewModel.totalCount = viewModel.totalPatternCount
+                // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
 
-            /**
-             * Getting ALL PATTERNS LIST
-             */
-            isLoading = false
-            updatePatterns()
+                /**
+                 * Getting ALL PATTERNS LIST
+                 */
+                isLoading = false
+                updatePatterns()
+            }
+            bottomNavViewModel.showProgress.set(false)
+
         }
         is MyFolderViewModel.Event.OnShowProgress -> {
             bottomNavViewModel.showProgress.set(true)

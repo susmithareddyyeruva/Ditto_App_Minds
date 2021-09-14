@@ -28,7 +28,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     BaseViewModel() {
     private val uiEvents = UiEvents<MyFolderViewModel.Event>()
     val events = uiEvents.stream()
-    val clickedId: ObservableInt = ObservableInt(-1)
+    var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var mutableLiveData: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var errorString: ObservableField<String> = ObservableField("")
     var userId: Int = 0
@@ -46,18 +47,23 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var isFilterApplied: Boolean? = false
     var clickedFolderName: String? = ""
 
-    fun onItemClickPattern(id: String) {
+    fun onItemClickPattern(id: String,orderNumber: String) {
         if (id == "10140549") {
-            clickedId.set(1)
+            clickedTailornovaID.set("1")
+            clickedOrderNumber.set(orderNumber)
         } else if (id == "10544781") {
-            clickedId.set(2)
+            clickedTailornovaID.set("2")
+            clickedOrderNumber.set(orderNumber)
         } else if (id == "10140606") {
-            clickedId.set(3)
+            clickedTailornovaID.set("3")
+            clickedOrderNumber.set(orderNumber)
         } else {
-            clickedId.set(4)
+            clickedTailornovaID.set("4")
+            clickedOrderNumber.set(orderNumber)
         }
         uiEvents.post(Event.OnItemClick)
     }
+
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {

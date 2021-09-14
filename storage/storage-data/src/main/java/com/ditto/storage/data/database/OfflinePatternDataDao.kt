@@ -12,6 +12,8 @@ abstract class OfflinePatternDataDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE) //todo need to check for using REPLACE
     abstract fun insertOfflinePatternData(offlinePatterns: OfflinePatterns): Long
 
+    @Query("SELECT * FROM offline_pattern_data")
+    abstract fun getTailernovaData(): List<OfflinePatterns>
 
     @Query("SELECT * FROM offline_pattern_data WHERE tailornaovaDesignId = :id")
     abstract fun getTailernovaDataByID(id: String): OfflinePatterns
@@ -19,14 +21,18 @@ abstract class OfflinePatternDataDao {
 
     @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId")
     abstract fun updateOfflinePatternData(
-        tailornaovaDesignId: String, selectedTab: String?, status:String?,
+        tailornaovaDesignId: String,
+        selectedTab: String?,
+        status: String?,
         numberOfCompletedPiece: NumberOfCompletedPiecesOffline?,
         patternPieces: List<PatternPiecesOffline>,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItems: MutableList<WorkspaceItemOffline>,
-        interfaceWorkspaceItems: MutableList<WorkspaceItemOffline> ): Int
+        interfaceWorkspaceItems: MutableList<WorkspaceItemOffline>
+    ): Int
 
     //if patternType!= trial >> delete it (keeping trial patterns only )
     @Query("DELETE from offline_pattern_data where patternType  != :patternType ")
-    abstract fun deletePatternsExceptTrial(patternType:String)
+    abstract fun deletePatternsExceptTrial(patternType: String)
+
 }
