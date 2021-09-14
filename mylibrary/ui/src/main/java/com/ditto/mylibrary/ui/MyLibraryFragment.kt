@@ -111,6 +111,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             if (tabPosition == 1) {
                 setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
             }
+            myfolderDetail = MyFolderDetailFragment()
             requireActivity().onBackPressed()
 
         }
@@ -157,13 +158,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     fun hideToolbar() {
-     //  binding.tvSearch.visibility = View.GONE
+        //  binding.tvSearch.visibility = View.GONE
         binding.patternLibraryAppBar.visibility = View.INVISIBLE
         binding.searchContainer?.visibility = View.VISIBLE
     }
 
     fun showToolbar() {
-       // binding.tvSearch.visibility = View.VISIBLE
+        // binding.tvSearch.visibility = View.VISIBLE
         binding.patternLibraryAppBar.visibility = View.VISIBLE
         binding.searchContainer?.visibility = View.GONE
     }
@@ -224,14 +225,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                      */
                     val currentFragment = fragmentManager?.fragments?.last()
 
-                    childFragmentManager
-                        ?.beginTransaction()
-                        .remove(myfolderDetail)
-                        ?.commit()
-
-                    /* if(childFragmentManager.fragments.size==3){
-                        childFragmentManager.fragments[2].fragmentManager?.popBackStack()
-                    }*/
+                    childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
                     showFilterComponents()
                     binding.toolbar.header_view_title.text =
                         getString(R.string.pattern_library_count, AppState.getPatternCount())

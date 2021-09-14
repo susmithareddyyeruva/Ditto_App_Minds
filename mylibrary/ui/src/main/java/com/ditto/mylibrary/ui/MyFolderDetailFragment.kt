@@ -71,7 +71,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         val args = arguments
         val tittle = args?.getString("TITTLE", "")
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()
-        (parentFragment as MyLibraryFragment?)?.setToolbarTittle(getString(R.string.myfolder_detail_count,tittle,AppState.getPatternCount()))
+        (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
+            getString(
+                R.string.myfolder_detail_count,
+                tittle,
+                AppState.getPatternCount()
+            )
+        )
 
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
@@ -123,11 +129,11 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
-     fun callSearchResult(terms: String) {
-     //   viewModel.resultmapFolder.clear()
+    fun callSearchResult(terms: String) {
+        //   viewModel.resultmapFolder.clear()
         viewModel.myfolderArryList.clear()
-       // viewModel.myfolderMenu.clear()
-       // viewModel.setList()
+        // viewModel.myfolderMenu.clear()
+        // viewModel.setList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
@@ -139,7 +145,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             isLastPage = false
             viewModel.myfolderArryList.clear()
             bottomNavViewModel.showProgress.set(true)
-            val menu=viewModel.myfolderMenu
+            val menu = viewModel.myfolderMenu
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
 
@@ -159,7 +165,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 handleEvent(it)
             }
     }
-
 
 
     private fun initializeAdapter() {
@@ -212,7 +217,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
         is MyFolderViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-           // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
+            // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
 
         }
 
@@ -305,7 +310,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-           // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
+            // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
 
             /**
              * Getting ALL PATTERNS LIST
@@ -384,8 +389,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
-            ,
+            Utility.AlertType.NETWORK,
             Utility.Iconype.FAILED
         )
     }
@@ -422,4 +426,11 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         val item = viewModel.myfolderMenu
         return item
     }
+
+     fun setDefault() {
+        viewModel.myfolderArryList.clear()
+        isLastPage = false
+        currentPage - 1
+    }
+
 }

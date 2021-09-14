@@ -30,7 +30,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     val logger: Logger by lazy {
         loggerFactory.create(MyLibraryFragment::class.java.simpleName)
     }
-
     private val viewModel: MyFolderViewModel by ViewModelDelegate()
     lateinit var binding: MyfolderfragmentBinding
     override fun onCreateView(
@@ -164,15 +163,16 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
+               val  detail = MyFolderDetailFragment()
                 run {
                     val args = Bundle()
                     args?.putString("TITTLE", viewModel?.clickedFolderName)
-                    myFolderDetailFragment?.setArguments(args)
+                    detail?.setArguments(args)
                     parentFragmentManager
                         ?.beginTransaction()
-                        .remove(myFolderDetailFragment)
+                        .remove(detail)
                         .addToBackStack("detail")
-                        ?.add(R.id.detail_nav_fragment, myFolderDetailFragment)
+                        ?.add(R.id.detail_nav_fragment, detail)
                         ?.commit()
                 }
             }
