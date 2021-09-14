@@ -741,7 +741,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             delay(25000)
             viewModel.isBLEConnected  = false
             viewModel.isServiceError.set(true)
-            showLayouts(false, false, false, true, false,"Bluetooth Connection failed")
+            showLayouts(false, false, false, true, false,"Bluetooth Handshake failed")
         }
     }
     private fun stopWaiting(){
