@@ -222,7 +222,16 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                      * To Show My Folders screen always  While Switching tab between all pattern and myfolder
                      * without showing My Folder Detail Screen
                      */
-                    childFragmentManager.fragments[1]?.fragmentManager?.popBackStackImmediate()
+                    val currentFragment = fragmentManager?.fragments?.last()
+
+                    childFragmentManager
+                        ?.beginTransaction()
+                        .remove(myfolderDetail)
+                        ?.commit()
+
+                    /* if(childFragmentManager.fragments.size==3){
+                        childFragmentManager.fragments[2].fragmentManager?.popBackStack()
+                    }*/
                     showFilterComponents()
                     binding.toolbar.header_view_title.text =
                         getString(R.string.pattern_library_count, AppState.getPatternCount())
@@ -238,6 +247,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+
             }
         })
     }
@@ -275,8 +285,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 hideToolbar()
                 binding.editSearch?.requestFocus()
                 val imgr: InputMethodManager =
-                   requireActivity()?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imgr.showSoftInput( binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
+                    requireActivity()?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imgr.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
 
                 val watcher = binding.editSearch?.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
@@ -312,11 +322,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
                     if (binding?.editSearch?.text.toString().isNotEmpty()) {
                         binding?.editSearch?.text?.clear()
-                      //  allPatternsFragment.cleaFilterData()
+                        //  allPatternsFragment.cleaFilterData()
                         val tabPosition = binding.tabLayout.selectedTabPosition
                         if (tabPosition == 0) {
                             allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
-                        }else{
+                        } else {
                             myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
                         }
                     }
@@ -333,7 +343,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                             val tabPosition = binding.tabLayout.selectedTabPosition
                             if (tabPosition == 0) {
                                 allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
-                            }else{
+                            } else {
                                 myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
                             }
 

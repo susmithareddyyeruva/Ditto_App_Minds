@@ -56,9 +56,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         setUIEvents()
         bottomNavViewModel.showProgress.set(true)
         Handler(Looper.getMainLooper()).postDelayed({
-           setAdapter()
+            setAdapter()
         }, 2000) //millis
-
 
 
     }
@@ -126,8 +125,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         getString(R.string.cancel_dialog),
                         getString(R.string.str_ok),
                         this@MyFolderFragment,
-                        core.ui.common.Utility.AlertType.DELETE
-                        ,
+                        core.ui.common.Utility.AlertType.DELETE,
                         core.ui.common.Utility.Iconype.FAILED
                     )
                 }
@@ -166,21 +164,16 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-                if (myFolderDetailFragment != null) {
+                run {
                     val args = Bundle()
                     args?.putString("TITTLE", viewModel?.clickedFolderName)
                     myFolderDetailFragment?.setArguments(args)
-                    //Begin the transaction
                     parentFragmentManager
-                        // 3
                         ?.beginTransaction()
-                        // 4
+                        .remove(myFolderDetailFragment)
+                        .addToBackStack("detail")
                         ?.add(R.id.detail_nav_fragment, myFolderDetailFragment)
-                        ?.addToBackStack("Detail")
-                        // 5
                         ?.commit()
-                } else {
-
                 }
             }
 
