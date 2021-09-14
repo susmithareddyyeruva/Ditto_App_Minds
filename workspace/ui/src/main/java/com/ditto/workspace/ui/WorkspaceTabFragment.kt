@@ -193,6 +193,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun refreshPatternPiecesAdapter() {
         com.ditto.workspace.ui.util.Utility.progressCount.set(0)
         viewModel.completedPieces.set(0)
+        viewModel.setCompletePieceCount()
         binding.recyclerViewPieces.adapter?.notifyDataSetChanged()
     }
 
@@ -620,9 +621,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
 //            viewModel.clickReset()
 //        }
-        if (viewModel.completedPieces.get() == 0) {
-            viewModel.clickReset()
-        }
+//        if (viewModel.completedPieces.get() == 0) {
+//            viewModel.clickReset()
+//        }
 //        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
 //            R.drawable.ic_workspace_new
 //        )
@@ -707,66 +708,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun getPatternPieceList(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-
         for (patternItem in viewModel.data.value?.patternPieces!!) {
             hashMap[patternItem.thumbnailImageName.toString()] = patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
         }
-
-        Log.d("hashmap",hashMap.toString())
-
-        /*hashMap["M7987_36_C_1.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_1.svg"
-        hashMap["M7987_36_C_2.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_2.svg"
-        hashMap["M7987_36_C_4_with_dots.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_4_with_dots.svg"
-        hashMap["M7987_36_C_5.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_5.svg"
-        hashMap["M7987_36_C_6.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_6.svg"
-        hashMap["M7987_36_C_7.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_7.svg"
-        hashMap["M7987_36_C_11.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_12.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_13.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_14.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_15.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_16.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_17.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_18.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_19.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_20.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_21.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_22.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_23.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_24.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_25.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_26.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_27.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_28.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_29.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"
-        hashMap["M7987_36_C_30.svg"] =
-            "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/M7987_36_C_8.svg"*/
         return hashMap
     }
 
@@ -791,7 +736,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         if (dowloadPermissonGranted()) {
                             bottomNavViewModel.showProgress.set(true)
                             viewModel.prepareDowloadList(map)
-
                         } else {
                             requestPermissions(
                                 REQUIRED_PERMISSIONS_DOWNLOAD,
@@ -2460,9 +2404,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
 //            resetPatternPiecesAdapter()
 //        }
-        if (viewModel.completedPieces.get() == 0) {
-            resetPatternPiecesAdapter()
-        }
+//        if (viewModel.completedPieces.get() == 0) {
+//            resetPatternPiecesAdapter()
+//        }
     }
 
     private fun setConnectButton() {

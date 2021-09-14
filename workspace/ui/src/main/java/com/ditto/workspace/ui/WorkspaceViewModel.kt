@@ -588,11 +588,12 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun clearPatternsSelected() {
-        data?.value?.patternPieces?.forEach { workspaceItem ->
-            if (workspaceItem?.isCompleted) {
-                workspaceItem?.isCompleted = false
+        data?.value?.patternPieces?.filter { it.tabCategory == tabCategory }?.toMutableList()
+            ?.forEach { workspaceItem ->
+                if (workspaceItem?.isCompleted) {
+                    workspaceItem?.isCompleted = false
+                }
             }
-        }
     }
 
     fun clickReset() {
@@ -638,7 +639,6 @@ class WorkspaceViewModel @Inject constructor(
     // Set workspace Dimensions to Virtual
     fun setWorkspaceDimensions(value: PatternsData): PatternsData {
         val patternsData = value
-
         setWorkspaceVirtualDimensions(
             patternsData?.garmetWorkspaceItemOfflines
                 ?: emptyList()
@@ -1080,7 +1080,6 @@ class WorkspaceViewModel @Inject constructor(
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
         Log.d("DOWNLOAD", "STARTED")
         temp.clear()
-
         //
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
