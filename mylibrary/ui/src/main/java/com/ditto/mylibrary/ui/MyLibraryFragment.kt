@@ -15,6 +15,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
@@ -107,16 +108,43 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.clearFilter?.performClick()
         }
         binding.toolbar.setNavigationOnClickListener {
+
             val tabPosition = binding.tabLayout.selectedTabPosition
+
+            removeBackstack()
+            val fr = childFragmentManager.fragments.size
+            requireActivity().onBackPressed()
             if (tabPosition == 1) {
+                hideFilterComponents()
                 setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
             }
-            myfolderDetail = MyFolderDetailFragment()
-            requireActivity().onBackPressed()
 
         }
 
 
+    }
+
+    private fun removeBackstack() {
+        if (childFragmentManager.fragments.size > 2) {
+            var list = ArrayList<Fragment>()
+            for (i in 2 until childFragmentManager?.fragments.size) {
+                list.add(childFragmentManager.fragments[i])
+            }
+            for (i in 2 until childFragmentManager.fragments.size) {
+
+                list.let {
+                    if (it.isNotEmpty()) {
+                        childFragmentManager.beginTransaction().apply {
+                            for (fragment in it) {
+                                remove(fragment)
+                            }
+                            commit()
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
     fun setToolbarTittle(tittle: String) {
@@ -223,17 +251,25 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                      * To Show My Folders screen always  While Switching tab between all pattern and myfolder
                      * without showing My Folder Detail Screen
                      */
-                    val currentFragment = fragmentManager?.fragments?.last()
-
-                    childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
                     showFilterComponents()
-                    binding.toolbar.header_view_title.text =
-                        getString(R.string.pattern_library_count, AppState.getPatternCount())
-
-                } else {
+                    setToolbarTittle(
+                        getString(
+                            R.string.pattern_library_count,
+                            AppState.getPatternCount()
+                        )
+                    )
                     val currentFragment = fragmentManager?.fragments?.last()
-                    hideFilterComponents()
-                    binding.toolbar.header_view_title.text = getString(R.string.my_folders)
+
+                    //  childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
+                    removeBackstack()
+                    val fragmentsize = childFragmentManager?.fragments?.size
+
+
+                } else if (tab?.position == 1) {
+                    if (childFragmentManager.fragments.size==2) {
+                        hideFilterComponents()
+                        setToolbarTittle(getString(R.string.my_folders))
+                    }
                 }
             }
 

@@ -45,6 +45,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     var isLoading: Boolean = false
     private var currentPage = 1
     lateinit var gridLayoutManager: GridLayoutManager
+    private var tittle: String? = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,20 +57,14 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
         }
+
         return binding.folderdetailRoot
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (parentFragment as MyLibraryFragment)?.hideFilterComponents()
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setUIEvents()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val args = arguments
-        val tittle = args?.getString("TITTLE", "")
+        tittle = args?.getString("TITTLE", "")
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()
         (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
             getString(
@@ -78,6 +73,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 AppState.getPatternCount()
             )
         )
+
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setUIEvents()
 
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
@@ -164,6 +166,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             .subscribe {
                 handleEvent(it)
             }
+
     }
 
 
@@ -207,6 +210,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+               // setBackStackData("TITTLE", tittle)
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -427,7 +431,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         return item
     }
 
-     fun setDefault() {
+    fun setDefault() {
         viewModel.myfolderArryList.clear()
         isLastPage = false
         currentPage - 1

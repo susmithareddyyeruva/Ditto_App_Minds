@@ -45,11 +45,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         }
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
@@ -57,7 +52,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         Handler(Looper.getMainLooper()).postDelayed({
             setAdapter()
         }, 2000) //millis
-
 
     }
 
@@ -171,7 +165,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     parentFragmentManager
                         ?.beginTransaction()
                         .remove(detail)
-                        .addToBackStack("detail")
+                        .addToBackStack(null)
                         ?.add(R.id.detail_nav_fragment, detail)
                         ?.commit()
                 }

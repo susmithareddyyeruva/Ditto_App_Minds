@@ -70,7 +70,6 @@ class AllPatternsFragment(
         return binding.container
 
     }
-
     @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
