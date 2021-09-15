@@ -10,6 +10,7 @@ import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
+import core.CUSTOMER_EMAIL
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -177,7 +178,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
-                "subscustomerOne@gmail.com",
+                CUSTOMER_EMAIL,
                 true,
                 true
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
