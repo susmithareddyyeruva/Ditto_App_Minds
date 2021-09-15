@@ -348,7 +348,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     showToolbar()
                     requireActivity().window
                         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-                    if (binding?.editSearch?.text.toString().isNotEmpty()) {
                         binding?.editSearch?.text?.clear()
                         //  allPatternsFragment.cleaFilterData()
                         val tabPosition = binding.tabLayout.selectedTabPosition
@@ -357,7 +356,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                         } else {
                             myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
                         }
-                    }
+
 
 
                 }
