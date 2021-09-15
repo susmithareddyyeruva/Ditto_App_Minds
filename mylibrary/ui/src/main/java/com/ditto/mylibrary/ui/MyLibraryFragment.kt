@@ -139,8 +139,10 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                         commit()
                     }
                 }
+                childFragmentManager.popBackStack()
             }
         }
+       println("FRAGMENt==="+childFragmentManager.fragments.size)
     }
 
     fun setToolbarTittle(tittle: String) {

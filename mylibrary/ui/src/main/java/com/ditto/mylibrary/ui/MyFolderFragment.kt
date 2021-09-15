@@ -160,12 +160,12 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                val  detail = MyFolderDetailFragment()
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
-                detail?.setArguments(args)
+                myFolderDetailFragment?.setArguments(args)
                 parentFragmentManager
                     ?.beginTransaction()
-                    .remove(detail)
+                    .remove(myFolderDetailFragment)
                     .addToBackStack(null)
-                    ?.add(R.id.detail_nav_fragment, detail)
+                    ?.add(R.id.detail_nav_fragment, myFolderDetailFragment)
                     ?.commit()
             }
 
