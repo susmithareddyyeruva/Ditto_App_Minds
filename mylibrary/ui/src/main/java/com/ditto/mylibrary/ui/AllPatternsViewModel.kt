@@ -8,6 +8,8 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.FoldersConfig
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
@@ -113,6 +115,23 @@ class AllPatternsViewModel @Inject constructor(
         }
     }
 
+    private fun handleAddToFavouriteResult(result: Result<AddFavouriteResult>) {
+        when (result) {
+            is Result.OnSuccess -> {
+                uiEvents.post(Event.OnHideProgress)
+                if (result.data.responseStatus) {
+                  Log.d("Added to Favourite","FAVOURITE")
+                  uiEvents.post(Event.FetchData)
+                }
+
+            }
+            is Result.OnError -> handleError(result.error)
+            else -> {
+
+            }
+        }
+    }
+
     fun setList() {
 
         for ((key, value) in map) {
@@ -204,6 +223,29 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnFolderCreated)
     }
 
+    fun onAddtoFavourite(id: String) {
+        Log.d("DESIGN ID==", id)
+        val favReq = FavouriteRequest(
+            OrderFilter(
+                true,
+                CUSTOMER_EMAIL,
+                false,
+                false,
+                trialPattern = true
+            ),
+            ProductFilter = ProductFilter(),
+            FoldersConfig = FoldersConfig(Favorite = arrayListOf(id))
+        )
+        uiEvents.post(Event.OnShowProgress)
+        disposable += getPatternsData.addFavourite(favReq)
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleAddToFavouriteResult(it) }
+
+    }
+
     /**
      * Events for this view model
      */
@@ -236,6 +278,7 @@ class AllPatternsViewModel @Inject constructor(
         object OnUpdateFilter : Event()
         object UpdateFilterImage : Event()
         object UpdateDefaultFilter : Event()
+        object FetchData : Event()
     }
 
     fun createJson(currentPage: Int, value: String): MyLibraryFilterRequestData {
@@ -244,7 +287,8 @@ class AllPatternsViewModel @Inject constructor(
                 true,
                 CUSTOMER_EMAIL,
                 true,
-                true
+                true,
+                trialPattern = false
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
         val json1 = Gson().toJson(menuList)
@@ -257,21 +301,16 @@ class AllPatternsViewModel @Inject constructor(
 
             }
         }
-       // isFilter = (filteredMap.isNotEmpty())
+        // isFilter = (filteredMap.isNotEmpty())
         if (filteredMap.isNotEmpty() && value.isNotEmpty()) {
             isFilter = true
-        }
-        else if (filteredMap.isEmpty()&&value.isEmpty()) {
+        } else if (filteredMap.isEmpty() && value.isEmpty()) {
             isFilter = false
-        }
-        else if (filteredMap.isNotEmpty()&&value.isEmpty()) {
+        } else if (filteredMap.isNotEmpty() && value.isEmpty()) {
             isFilter = true
-        }
-
-        else if (filteredMap.isNotEmpty()) {
+        } else if (filteredMap.isNotEmpty()) {
             isFilter = true
-        }
-        else if (filteredMap.isEmpty()&&value.isNotEmpty()) {
+        } else if (filteredMap.isEmpty() && value.isNotEmpty()) {
             isFilter = false
         }
 

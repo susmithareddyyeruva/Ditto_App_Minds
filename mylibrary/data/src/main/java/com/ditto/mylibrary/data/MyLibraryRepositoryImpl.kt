@@ -9,8 +9,10 @@ import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.AddFavouriteResult
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.request.FavouriteRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
@@ -159,6 +161,48 @@ class MyLibraryRepositoryImpl @Inject constructor(
         return myLibraryService.getFoldersList(createJson, "Bearer " + AppState.getToken()!!)
             .doOnSuccess {
                 logger.d("*****FETCH FILTER SUCCESS**")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
+                }
+
+                logger.d(it.localizedMessage)
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
+    }
+
+    override fun addtoFavourite(requestdata: FavouriteRequest): Single<Result<AddFavouriteResult>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return myLibraryService.addToFavourite(
+            requestdata, "Bearer " + AppState.getToken()!!,
+            method = "addToFavorite"
+        )
+            .doOnSuccess {
+                logger.d("*****Add to Favourite RESPONSE ")
             }
             .map {
                 Result.withValue(it.toDomain())

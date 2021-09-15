@@ -3,8 +3,10 @@ package com.ditto.mylibrary.data
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.AddFavouriteResult
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.request.FavouriteRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import io.reactivex.Single
 import non_core.lib.Result
@@ -40,5 +42,9 @@ class MyLibraryImpl @Inject constructor(
 
     override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         return myLibraryRepository.getMyLibraryFolderData(createJson)
+    }
+
+    override fun addFavourite(createJson: FavouriteRequest): Single<Result<AddFavouriteResult>> {
+        return myLibraryRepository.addtoFavourite(createJson)
     }
 }

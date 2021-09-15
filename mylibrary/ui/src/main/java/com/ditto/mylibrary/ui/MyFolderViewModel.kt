@@ -180,7 +180,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 true,
                 CUSTOMER_EMAIL,
                 true,
-                true
+                true,
+                trialPattern = false
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
         val json1 = Gson().toJson(myfolderMenu)
