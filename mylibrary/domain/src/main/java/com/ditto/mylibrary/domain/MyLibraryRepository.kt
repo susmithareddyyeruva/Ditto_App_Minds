@@ -20,7 +20,7 @@ interface MyLibraryRepository {
     fun removePattern(patternId: Int): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
-    fun addtoFavourite(requestdata: FavouriteRequest): Single<Result<AddFavouriteResult>>
+    fun addtoFavourite(requestdata: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResult>>
 
     //fun addProject(id : Int): Single<Any>
 }

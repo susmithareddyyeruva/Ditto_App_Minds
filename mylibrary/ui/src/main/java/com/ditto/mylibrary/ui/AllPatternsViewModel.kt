@@ -25,7 +25,6 @@ import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
 import org.json.JSONObject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -79,7 +78,6 @@ class AllPatternsViewModel @Inject constructor(
 
         uiEvents.post(Event.OnShowProgress)
         disposable += getPatternsData.invoke(createJson)
-            .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
@@ -115,13 +113,17 @@ class AllPatternsViewModel @Inject constructor(
         }
     }
 
-    private fun handleAddToFavouriteResult(result: Result<AddFavouriteResult>) {
+    private fun handleAddToFavouriteResult(
+        result: Result<AddFavouriteResult>,
+        product: ProdDomain
+    ) {
         when (result) {
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
                 if (result.data.responseStatus) {
-                  Log.d("Added to Favourite","FAVOURITE")
-                  uiEvents.post(Event.FetchData)
+                    Log.d("Added to Favourite", "FAVOURITE")
+                    product.isFavourite = result.data.queryString.equals("method=addToFavorite")
+                    uiEvents.post(Event.OnResultSuccess)
                 }
 
             }
@@ -223,8 +225,9 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnFolderCreated)
     }
 
-    fun onAddtoFavourite(id: String) {
-        Log.d("DESIGN ID==", id)
+    fun onAddtoFavourite(product: ProdDomain) {
+        var methodName: String? = ""
+        Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
         val favReq = FavouriteRequest(
             OrderFilter(
                 true,
@@ -234,15 +237,20 @@ class AllPatternsViewModel @Inject constructor(
                 trialPattern = true
             ),
             ProductFilter = ProductFilter(),
-            FoldersConfig = FoldersConfig(Favorite = arrayListOf(id))
+            FoldersConfig = FoldersConfig(Favorite = arrayListOf(product.tailornovaDesignId ?: ""))
         )
         uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.addFavourite(favReq)
-            .delay(600, TimeUnit.MILLISECONDS)
+        methodName = if (product.isFavourite == true) {
+            "deleteFavorite"
+        } else {
+            "addToFavorite"
+
+        }
+        disposable += getPatternsData.addFavourite(favReq, methodName)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleAddToFavouriteResult(it) }
+            .subscribeBy { handleAddToFavouriteResult(it, product) }
 
     }
 

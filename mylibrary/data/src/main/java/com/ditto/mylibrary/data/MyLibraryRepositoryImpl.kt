@@ -193,16 +193,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun addtoFavourite(requestdata: FavouriteRequest): Single<Result<AddFavouriteResult>> {
+    override fun addtoFavourite(requestdata: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResult>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return myLibraryService.addToFavourite(
             requestdata, "Bearer " + AppState.getToken()!!,
-            method = "addToFavorite"
+            method = methodName
         )
             .doOnSuccess {
-                logger.d("*****Add to Favourite RESPONSE ")
+                logger.d("*****methodName $methodName")
             }
             .map {
                 Result.withValue(it.toDomain())

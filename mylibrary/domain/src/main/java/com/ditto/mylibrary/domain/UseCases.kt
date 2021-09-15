@@ -18,6 +18,6 @@ interface GetMylibraryData {
     fun completeProject(patternId: Int): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun invokeFolderList(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
-    fun addFavourite(createJson: FavouriteRequest): Single<Result<AddFavouriteResult>>
+    fun addFavourite(createJson: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResult>>
 }
 

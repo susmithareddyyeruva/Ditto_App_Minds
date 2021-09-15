@@ -350,16 +350,7 @@ class AllPatternsFragment(
             }
 
         }
-        is AllPatternsViewModel.Event.FetchData -> {
-            viewModel.patternArrayList.clear()
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchOnPatternData(
-                viewModel.createJson(
-                    currentPage,
-                    value = ""
-                )
-            )  //Initial API call
-        }
+
         else -> {
 
         }

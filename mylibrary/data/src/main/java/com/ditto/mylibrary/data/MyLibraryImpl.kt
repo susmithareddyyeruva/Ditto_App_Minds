@@ -44,7 +44,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getMyLibraryFolderData(createJson)
     }
 
-    override fun addFavourite(createJson: FavouriteRequest): Single<Result<AddFavouriteResult>> {
-        return myLibraryRepository.addtoFavourite(createJson)
+    override fun addFavourite(createJson: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResult>> {
+        return myLibraryRepository.addtoFavourite(createJson,methodName)
     }
 }
