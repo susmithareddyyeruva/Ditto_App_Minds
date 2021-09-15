@@ -232,9 +232,9 @@ class AllPatternsViewModel @Inject constructor(
             OrderFilter(
                 true,
                 CUSTOMER_EMAIL,
-                false,
-                false,
-                trialPattern = true
+                purchasedPattern = true,
+                subscriptionList = true,
+                trialPattern = false
             ),
             ProductFilter = ProductFilter(),
             FoldersConfig = FoldersConfig(Favorite = arrayListOf(product.tailornovaDesignId ?: ""))
