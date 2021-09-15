@@ -158,17 +158,15 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
                val  detail = MyFolderDetailFragment()
-                run {
-                    val args = Bundle()
-                    args?.putString("TITTLE", viewModel?.clickedFolderName)
-                    detail?.setArguments(args)
-                    parentFragmentManager
-                        ?.beginTransaction()
-                        .remove(detail)
-                        .addToBackStack(null)
-                        ?.add(R.id.detail_nav_fragment, detail)
-                        ?.commit()
-                }
+                val args = Bundle()
+                args?.putString("TITTLE", viewModel?.clickedFolderName)
+                detail?.setArguments(args)
+                parentFragmentManager
+                    ?.beginTransaction()
+                    .remove(detail)
+                    .addToBackStack(null)
+                    ?.add(R.id.detail_nav_fragment, detail)
+                    ?.commit()
             }
 
             else -> {
