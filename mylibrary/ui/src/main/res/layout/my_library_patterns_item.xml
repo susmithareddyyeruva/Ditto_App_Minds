@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_card_start"
-        android:layout_marginTop="@dimen/margin_card_top"
+        android:layout_marginTop="@dimen/carview_top"
         android:layout_marginEnd="@dimen/margin_card_end"
         android:elevation="@dimen/elevation_card"
         android:onClick="@{() -> viewModel.onItemClick(patternValue.id)}"
