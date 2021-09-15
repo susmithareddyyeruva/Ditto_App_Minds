@@ -130,19 +130,15 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             for (i in 2 until childFragmentManager?.fragments.size) {
                 list.add(childFragmentManager.fragments[i])
             }
-            for (i in 2 until childFragmentManager.fragments.size) {
-
-                list.let {
-                    if (it.isNotEmpty()) {
-                        childFragmentManager.beginTransaction().apply {
-                            for (fragment in it) {
-                                remove(fragment)
-                            }
-                            commit()
+            list.let {
+                if (it.isNotEmpty()) {
+                    childFragmentManager.beginTransaction().apply {
+                        for (fragment in it) {
+                            remove(fragment)
                         }
+                        commit()
                     }
                 }
-
             }
         }
     }
