@@ -85,7 +85,6 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
-        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod

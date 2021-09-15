@@ -70,6 +70,7 @@ class AllPatternsFragment(
         return binding.container
 
     }
+
     @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -129,14 +130,14 @@ class AllPatternsFragment(
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
-     fun callSearchResult(terms: String) {
+    fun callSearchResult(terms: String) {
         /**
          * Search is Happened only in filtered results
          */
-      //  viewModel.resultMap.clear()
+        //  viewModel.resultMap.clear()
         viewModel.patternArrayList.clear()
         //viewModel.menuList.clear()
-       // viewModel.setList()
+        // viewModel.setList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
@@ -158,6 +159,7 @@ class AllPatternsFragment(
         allPatternAdapter.setListData(items = viewModel.patternArrayList)
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
+        bottomNavViewModel.showProgress.set(false)
     }
 
     private fun setUIEvents() {
@@ -173,6 +175,7 @@ class AllPatternsFragment(
         gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.recyclerViewPatterns.layoutManager = gridLayoutManager
         binding.recyclerViewPatterns.adapter = allPatternAdapter
+        allPatternAdapter.setListData(emptyList())
         allPatternAdapter.viewModel = viewModel
         binding.recyclerViewPatterns?.addOnScrollListener(object :
             PaginationScrollListener(gridLayoutManager) {
@@ -203,6 +206,7 @@ class AllPatternsFragment(
             }
         })
     }
+
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
@@ -220,7 +224,12 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
-            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
+            setPatternCount.onSetCount(
+                getString(
+                    R.string.pattern_library_count,
+                    AppState.getPatternCount()
+                )
+            )
 
         }
 
@@ -230,82 +239,7 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.OnSearchClick -> {
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-           /* if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                val alertDialog = Dialog(
-                    requireContext(),
-                    R.style.DialogTheme
-                )
 
-                alertDialog.setContentView(R.layout.search_dialog);
-                binding.viewModel = viewModel
-                alertDialog.window?.setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-                );
-                alertDialog.show()
-                val watcher = alertDialog.editSearch.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        logger.d("afterTextChanged")
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                        logger.d("beforeTextChanged")
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        logger.d("onTextChanged")
-                        if (s.toString().isNotEmpty()) {
-                            alertDialog.imageCloseSearch.visibility = View.VISIBLE
-                        } else {
-                            alertDialog.imageCloseSearch.visibility = View.GONE
-                        }
-                    }
-                })
-                alertDialog.tvCAncelDialog.setOnClickListener {
-                    requireActivity().window
-                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                    alertDialog.cancel()
-
-
-                }
-
-                alertDialog.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (alertDialog.editSearch.text.toString().isNotEmpty()) {
-                            requireActivity().getWindow()
-                                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                            callSearchResult(alertDialog.editSearch.text.toString())
-                            *//*   setBackStackData(
-                                   "KEY_SEARCH",
-                                   alertDialog.editSearch.text.toString(),
-                                   true
-                               )*//*
-                            alertDialog.cancel()
-                        } else
-                            alertDialog.cancel()
-                        //   targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK,  activity?.intent?.putExtras(bundle));
-
-                        return@OnEditorActionListener true
-                    }
-                    false
-                })
-                alertDialog.imageCloseSearch.setOnClickListener {
-                    alertDialog.editSearch.text?.clear()
-                }
-                //  findNavController().navigate(R.id.action_mylibrary_to_search)
-            } else {
-                Log.d("pattern", "OnSearchClick : ELSE")
-
-            }*/
         }
         is AllPatternsViewModel.Event.OnSyncClick -> {
             cleaFilterData()
@@ -315,9 +249,13 @@ class AllPatternsFragment(
             // open dialog
         }
         is AllPatternsViewModel.Event.OnResultSuccess -> {
-            bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
+            setPatternCount.onSetCount(
+                getString(
+                    R.string.pattern_library_count,
+                    AppState.getPatternCount()
+                )
+            )
 
             /**
              * Getting ALL PATTERNS LIST
@@ -325,13 +263,13 @@ class AllPatternsFragment(
             isLoading = false
             updatePatterns()
         }
-        is  AllPatternsViewModel.Event.OnShowProgress -> {
+        is AllPatternsViewModel.Event.OnShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
         }
-        is  AllPatternsViewModel.Event.OnHideProgress -> {
+        is AllPatternsViewModel.Event.OnHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        is  AllPatternsViewModel.Event.OnResultFailed -> {
+        is AllPatternsViewModel.Event.OnResultFailed -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
@@ -345,11 +283,11 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnAddProjectClick -> {
             Log.d("event", "Add project")
         }
-        is  AllPatternsViewModel.Event.OnUpdateFilter -> {
+        is AllPatternsViewModel.Event.OnUpdateFilter -> {
             Log.d("event", "OnUpdateFilter")
 
         }
-        is   AllPatternsViewModel.Event.UpdateFilterImage -> {
+        is AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIcons.onFilterApplied(true)
         }
         is AllPatternsViewModel.Event.OnCreateFolder -> {
@@ -358,12 +296,13 @@ class AllPatternsFragment(
             layout?.let {
                 com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialog(
                     requireActivity(),
-                   "",
                     "",
-                    it,viewModel,
-                   "CANCEL",
-                  "CREATE FOLDER",
-                    object : com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener{
+                    "",
+                    it, viewModel,
+                    "CANCEL",
+                    "CREATE FOLDER",
+                    object :
+                        com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
                         override fun onCreateClicked(foldername: String) {
 
                         }
@@ -376,7 +315,7 @@ class AllPatternsFragment(
                 )
             }
         }
-        is  AllPatternsViewModel.Event.OnFolderCreated -> {
+        is AllPatternsViewModel.Event.OnFolderCreated -> {
             (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
 
         }
@@ -392,7 +331,7 @@ class AllPatternsFragment(
                 activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, null)
             layout?.let {
                 getAlertDialogFolder(
-                    requireActivity(),viewModel.folderMainList,viewModel,
+                    requireActivity(), viewModel.folderMainList, viewModel,
                     object : com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
                         override fun onSaveButtonClicked(
                             projectName: String,
@@ -401,6 +340,7 @@ class AllPatternsFragment(
                             Log.d("onSaveButtonClicked", "Allpattern")
 
                         }
+
                         override fun onExitButtonClicked() {
                             Log.d("onExitButtonClicked", "Allpattern")
                         }
@@ -425,8 +365,7 @@ class AllPatternsFragment(
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
-            ,
+            Utility.AlertType.NETWORK,
             Utility.Iconype.FAILED
         )
     }
@@ -480,7 +419,7 @@ class AllPatternsFragment(
     }
 
     interface SetPatternCount {
-        fun onSetCount(tittle:String)
+        fun onSetCount(tittle: String)
     }
 
     interface setFilterIcons {
