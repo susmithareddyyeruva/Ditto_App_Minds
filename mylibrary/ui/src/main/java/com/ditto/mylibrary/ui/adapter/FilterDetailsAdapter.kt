@@ -40,7 +40,7 @@ class FilterDetailsAdapter(
         } else {
             holder.itemFilterdetailsBinding.checkItem.background = ContextCompat.getDrawable(
                 holder.itemFilterdetailsBinding.checkItem.context,
-                R.drawable.ic_chk_unselected
+                R.drawable.ic_check
             )
         }
         holder.itemView.setOnClickListener {

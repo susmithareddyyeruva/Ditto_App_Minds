@@ -87,7 +87,6 @@ class AllPatternsFragment(
                 )  //Initial API call
             } else {
                 updatePatterns()
-                //  setFilterMenuAdapter(0)
                 if (viewModel.isFilter == true) {
                     filterIconSetListener.onFilterApplied(true)
                 } else
@@ -181,7 +180,7 @@ class AllPatternsFragment(
             }
 
             override fun loadMoreItems() {
-                isLoading = true;
+                isLoading = true
                 currentPage++
                 //you have to call loadmore items to get more data
 
@@ -286,7 +285,7 @@ class AllPatternsFragment(
                     "CREATE FOLDER",
                     object :
                         com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                        override fun onCreateClicked(foldername: String) {
+                        override fun onCreateClicked(folderName: String) {
 
                         }
 
@@ -334,9 +333,6 @@ class AllPatternsFragment(
 
         }
 
-        else -> {
-
-        }
     }
 
 
