@@ -36,11 +36,9 @@ class AllPatternsViewModel @Inject constructor(
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
-    private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var errorString: ObservableField<String> = ObservableField("")
-    var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
@@ -128,18 +126,17 @@ class AllPatternsViewModel @Inject constructor(
 
             }
             is Result.OnError -> handleError(result.error)
-            else -> {
 
-            }
+
         }
     }
 
     fun setList() {
 
         for ((key, value) in map) {
-            var menuValues: ArrayList<FilterItems> = ArrayList()
+            val menuValues: ArrayList<FilterItems> = ArrayList()
             for (aString in value) {
-                menuValues?.add(FilterItems(aString))
+                menuValues.add(FilterItems(aString))
 
             }
             //  Filter.menuItemListFilter[key] = menuValues
@@ -216,7 +213,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onCreateFolderClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
+        Log.d("pattern", "onCreateFolderClick : viewModel")
         uiEvents.post(Event.OnCreateFolder)
     }
 
@@ -225,8 +222,8 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnFolderCreated)
     }
 
-    fun onAddtoFavourite(product: ProdDomain) {
-        var methodName: String? = ""
+    fun addToFavourite(product: ProdDomain) {
+        var methodName: String?=""
         Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
         val favReq = FavouriteRequest(
             OrderFilter(
@@ -286,7 +283,6 @@ class AllPatternsViewModel @Inject constructor(
         object OnUpdateFilter : Event()
         object UpdateFilterImage : Event()
         object UpdateDefaultFilter : Event()
-        object FetchData : Event()
     }
 
     fun createJson(currentPage: Int, value: String): MyLibraryFilterRequestData {
@@ -324,11 +320,11 @@ class AllPatternsViewModel @Inject constructor(
 
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
-            var arraYlist = ArrayList<String>()
+            val arrayList = ArrayList<String>()
             for (result in value) {
-                arraYlist.add(result.title)
-                resultMap[key] = arraYlist
-                jsonProduct.put(key, arraYlist)
+                arrayList.add(result.title)
+                resultMap[key] = arrayList
+                jsonProduct.put(key, arrayList)
 
 
             }
@@ -338,9 +334,6 @@ class AllPatternsViewModel @Inject constructor(
         filterCriteria.ProductFilter = resultMap
         val resultJson = Gson().toJson(resultMap)
         Log.d("JSON===", resultJson)
-
-        val jsonString: String = resultJson
-
         val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
         Log.d("RESULT STRING===", resultString)
         return filterCriteria
