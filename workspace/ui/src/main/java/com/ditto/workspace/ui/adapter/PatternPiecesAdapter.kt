@@ -22,6 +22,7 @@ import com.ditto.workspace.ui.databinding.PatternsPiecesItemBinding
 import com.ditto.workspace.ui.util.Draggable
 import com.ditto.workspace.ui.util.SvgBitmapDecoder
 import core.binding.BindableAdapter
+import core.network.NetworkUtility
 import core.ui.common.Utility
 
 
@@ -66,7 +67,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             //holder.patternsPiecesBinding.imageView.setImageURI(availableUri)
             //setOfflineImage(holder.patternsPiecesBinding.imageView,availableUri,holder.patternsPiecesBinding.imageArrow.context)
 
-            setImageFromSvgPngDrawable(if(viewModel.isOnline.get()) patternPieces.get(position).thumbnailImageUrl else patternPieces.get(position).thumbnailImageName,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
+            setImageFromSvgPngDrawable(if(NetworkUtility.isNetworkAvailable(holder.patternsPiecesBinding.imageArrow.context)) patternPieces.get(position).thumbnailImageUrl else patternPieces.get(position).thumbnailImageName,holder.patternsPiecesBinding.imageView.context,holder.patternsPiecesBinding.imageView)
             /* if (patternPieces[position].splice ?: false) {
                 if (patternPieces[position].spliceDirection == "Splice Multiple-to-Multiple") {
                     val drawable = Utility.getDrawableFromString(
@@ -182,14 +183,14 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
     ) {
 
         var availableUri:Uri? = null
-        if(!(viewModel.isOnline.get())){
+        if(!(NetworkUtility.isNetworkAvailable(context))){
             availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
             Log.d("imageUri123", " availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide
                 .with(context)
-                .load(if(viewModel.isOnline.get()) imagePath else availableUri)
+                .load(if(NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
@@ -199,7 +200,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         } else if (imagePath.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(if(viewModel.isOnline.get()) imagePath else availableUri)
+                .load(if(NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)

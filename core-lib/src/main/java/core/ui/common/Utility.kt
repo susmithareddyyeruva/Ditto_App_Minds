@@ -72,7 +72,8 @@ class Utility @Inject constructor(
         CUT_COMPLETE,
         CONNECTIVITY,
         SOC_CONNECT,
-        DELETE
+        DELETE,
+        UPDATEAPIFAILED
     }
 
     enum class Iconype {

@@ -54,7 +54,6 @@ class WorkspaceViewModel @Inject constructor(
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    val isOnline: ObservableBoolean = ObservableBoolean(false)
     var patternId: ObservableInt = ObservableInt(1)
     var clickedOrderNumber: ObservableInt = ObservableInt(1)
     var totalPieces: ObservableInt = ObservableInt(0)
@@ -135,17 +134,40 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun updateWSAPI(
-        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData,
-        closeScreen: Boolean
-    ) {
+    fun updateWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
         disposable += getWorkspaceData.updateWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",
             cTraceWorkSpacePatternInputData
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSUpdateResult(it, closeScreen, cTraceWorkSpacePatternInputData) }
+            .subscribeBy { handleWSUpdateResult(it) }
+    }
+
+    fun updateWSPatternDataStorage(
+        tailornaovaDesignId: String,
+        selectedTab: String?,
+        status: String?,
+        numberOfCompletedPiece: NumberOfPieces?,
+        patternPieces: List<PatternPieceDomain>,
+        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData
+    ) {
+        disposable += getWorkspaceData.updateOfflineStorageData(
+            tailornaovaDesignId,
+            selectedTab,
+            status,
+            numberOfCompletedPiece,
+            patternPieces,
+            garmetWorkspaceItems,
+            liningWorkspaceItems,
+            interfaceWorkspaceItems
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleWSPatternDataStorage(it,cTraceWorkSpacePatternInputData) }
     }
 
     fun createWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
@@ -168,37 +190,18 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    private fun handleWSUpdateResult(
-        result: Result<WSUpdateResultDomain>,
-        closeScreen: Boolean,
-        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData
-    ) {
+    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
         when (result) {
             is Result.OnSuccess -> {
-                Log.d("handleWSUpdateResult", "Success>>>>>>>>>>>>>>>>>>> $result")
-
-
-                /* val c: CTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(
-                     setWorkspaceDimensions(data.value!!)
-                 )*/
-
-                updateWSPatternDataStorage(
-                    "demo-design-id-png",
-                    cTraceWorkSpacePatternInputData.selectedTab,
-                    cTraceWorkSpacePatternInputData.status,
-                    cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
-                    cTraceWorkSpacePatternInputData.patternPieces,
-                    cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
-                    cTraceWorkSpacePatternInputData.liningWorkspaceItems,
-                    cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
-                    closeScreen
-                )
+                Log.d("handleWSUpdateResult", "update api Success>>>>>>>>>>>>>>>>>>> $result")
+                uiEvents.post(Event.CloseScreen)
             }
 
             is Result.OnError -> {
-                uiEvents.post(Event.HideProgressLoader)
-                Log.d("WorkspaceViewModel", "Failed")
+                //uiEvents.post(Event.HideProgressLoader)
+                uiEvents.post(Event.ApiFailed)
+                Log.d("WorkspaceViewModel", "update api Failed")
             }
         }
     }
@@ -216,53 +219,17 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun updateWSPatternDataStorage(
-        tailornaovaDesignId: String,
-        selectedTab: String?,
-        status: String?,
-        numberOfCompletedPiece: NumberOfPieces?,
-        patternPieces: List<PatternPieceDomain>,
-        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        closeScreen: Boolean
+    private fun handleWSPatternDataStorage(
+        result: Any?,
+        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData
     ) {
-        disposable += getWorkspaceData.updateOfflineStorageData(
-            tailornaovaDesignId,
-            selectedTab,
-            status,
-            numberOfCompletedPiece,
-            patternPieces,
-            garmetWorkspaceItems,
-            liningWorkspaceItems,
-            interfaceWorkspaceItems
-        )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSPatternDataStorage(it, closeScreen) }
-    }
-
-    private fun handleWSPatternDataStorage(result: Any?, closeScreen: Boolean) {
         Log.d("handlWSPattenDtaStorage", "${result.toString()}")
         if (result == 1) {
-            Log.d("handlWSPattenDtaStorage", "OnSuccess iside ifff ")
-            uiEvents.post(Event.CloseScreen)
+            Log.d("handlWSPattenDtaStorage", "Success update storage")
+            updateWSAPI(cTraceWorkSpacePatternInputData)
+        }else{
+            Log.d("handlWSPattenDtaStorage", "failed update storage")
         }
-        /* when (result) {
-             is Result.OnSuccess<*> -> {
-                 Log.d("handlWSPattenDtaStorage", "OnSuccess")
-
-                 if (closeScreen) {
-                     uiEvents.post(Event.CloseScreen)
-                 }
-
-             }
-             is Result.OnError<*> -> {
-                 handleError(result.error)
-                 Log.d("handlWSPattenDtaStorage", "onError")
-             }
-         }*/
-
     }
 
 
@@ -309,8 +276,6 @@ class WorkspaceViewModel @Inject constructor(
             is Result.OnSuccess<*> -> {
                 Log.d("handleInsertDataResult", "OnSuccess")
                 // exit button save to DB
-
-
             }
             is Result.OnError<*> -> handleError(result.error)
         }
@@ -633,7 +598,20 @@ class WorkspaceViewModel @Inject constructor(
         )
         val patternData: PatternsData = setWorkspaceDimensions(data.value!!)
         //insertData(patternData, closeScreen) // inserting inside DB
-        updateWSAPI(getWorkspaceInputDataToAPI(patternData), closeScreen)
+        //updateWSAPI(getWorkspaceInputDataToAPI(patternData))
+        var cTraceWorkSpacePatternInputData=getWorkspaceInputDataToAPI(patternData)
+
+        updateWSPatternDataStorage(
+            "demo-design-id-png",
+            cTraceWorkSpacePatternInputData.selectedTab,
+            cTraceWorkSpacePatternInputData.status,
+            cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
+            cTraceWorkSpacePatternInputData.patternPieces,
+            cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
+            cTraceWorkSpacePatternInputData.liningWorkspaceItems,
+            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,cTraceWorkSpacePatternInputData
+        )
+
     }
 
     // Set workspace Dimensions to Virtual
@@ -848,6 +826,7 @@ class WorkspaceViewModel @Inject constructor(
         object OnDownloadComplete : Event()
         object HideProgressLoader : Event()
         object ShowProgressLoader : Event()
+        object ApiFailed: Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -983,8 +962,11 @@ class WorkspaceViewModel @Inject constructor(
         filename: String,
         patternFolderName: String?
     ) {
-
         withContext(Dispatchers.IO) {
+            Log.d(
+                "DOWNLOAD",
+                "inside performtaskForPatternDownloads Started KEY: $filename \t VALUE : $imageUrl"
+            )
             val inputStream: InputStream
             var result: File? = null
             val url: URL = URL(imageUrl)
@@ -1078,17 +1060,31 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("DOWNLOAD", "STARTED")
+        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>>> STARTED")
         temp.clear()
         //
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
-                //downloadPatterns(url = value, filename = key, patternFolderName = data.value?.patternName ?: "Pattern Piece")
-                performtaskForPatternDownloads(
+
+                val availableUri = key?.let {
+                    core.ui.common.Utility.isImageFileAvailable(
+                        it,
+                        "${data.value?.patternName}"
+                    )
+                }
+
+
+
+                Log.d("DOWNLOAD", "KEY: $key \t VALUE : $value \t availableUri= $availableUri")
+
+                // if (availableUri == null) {
+                Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                   performtaskForPatternDownloads(
                     imageUrl = value,
                     filename = key,
                     patternFolderName = data.value?.patternName ?: "Pattern Piece"
                 )
+              //  }
             }
         }
 

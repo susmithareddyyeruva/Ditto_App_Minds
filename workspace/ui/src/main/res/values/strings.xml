@@ -32,7 +32,9 @@
     <string name="multiple_splicing_required">Multi-Directional Splicing Required</string>
     <string name="splicing_required_multiple_message"><![CDATA[This piece is too large for the projection area and will be projected across 3+ linked sections. <u><b>TRACING</b></u> the entire piece first is recommended before cutting due to the complexity.]]></string> <!--//multiple-->
     <string name="mirror">Mirror</string>
+    <string name="api_failed">API Failed</string>
     <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string> <!--// mirror reminder done-->
+    <string name="api_failed_message">Unable to save to Workspace</string>
     <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="cancel">CANCEL</string>
     <string name="empty_string"></string>

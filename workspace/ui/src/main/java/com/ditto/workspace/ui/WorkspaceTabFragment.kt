@@ -107,7 +107,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
+        //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
@@ -744,8 +744,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
                         }
                     } else {
-                        //No Network Available for Download
+                        //no internet available
 
+                        showProgress(false)
+                        Utility.getCommonAlertDialogue(
+                            requireContext(),
+                            resources.getString(R.string.api_failed),
+                            resources.getString(R.string.api_failed_message),
+                            resources.getString(R.string.empty_string),
+                            resources.getString(R.string.ok),
+                            this@WorkspaceTabFragment,
+                            Utility.AlertType.UPDATEAPIFAILED,
+                            Utility.Iconype.NONE
+                        )
                     }
                     //todo livin code
 
@@ -1007,7 +1018,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                  */
                 if (viewModel.temp.size==getPatternPieceList().size) {
                     bottomNavViewModel.showProgress.set(false)
-                    Log.d("DOWNLOAD","ENDED")
+                    Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     //moveToLibrary()
                     showSaveAndExitPopup()
                 }else{
@@ -1041,6 +1052,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.HideProgressLoader -> {
                 showProgress(false)
+            }
+            is WorkspaceViewModel.Event.ApiFailed -> {
+                showProgress(false)
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    resources.getString(R.string.api_failed),
+                    resources.getString(R.string.api_failed_message),
+                    resources.getString(R.string.empty_string),
+                    resources.getString(R.string.ok),
+                    this,
+                    Utility.AlertType.UPDATEAPIFAILED,
+                    Utility.Iconype.NONE
+                )
             }
         }
 
@@ -1663,7 +1687,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                imagename = "https://splicing-app.s3.us-east-2.amazonaws.com/demo-user-id/thumbnailImageUrl_.png"
 
                 var workSpaceImageData = WorkspaceImageData(
-                    if(viewModel.isOnline.get()) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) },
+                    if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) },
                     workspaceItem,
                     viewModel.scaleFactor.get(),
                     showProjection,
@@ -1695,14 +1719,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun getBitmapFromSvgPngDrawable(imagePath: String): Bitmap? {
         var availableUri: Uri? = null
-        if(!(viewModel.isOnline.get())){
+        if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
             availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
             Log.d("imageUri123", " availableUri: $availableUri")
         }
         return if (imagePath.endsWith(".svg", true)) {
             Glide
                 .with(context)
-                .load((if(viewModel.isOnline.get()) imagePath else availableUri))
+                .load((if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else availableUri))
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -1712,7 +1736,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else if (imagePath.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load((if(viewModel.isOnline.get()) imagePath else availableUri))
+                .load((if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else availableUri))
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -1849,7 +1873,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     try {
                         bitmap =
                            // imagename?.let { getBitmapFromSvgPngDrawable(it) }
-                        if(viewModel.isOnline.get()) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
+                        if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
                         withContext(Dispatchers.Main) {
                             if (imagename != null) {
                                 val matrix = Matrix()
@@ -2359,6 +2383,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.CONNECTIVITY -> {
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
                 showConnectivityPopup()
+            }
+            Utility.AlertType.UPDATEAPIFAILED -> {
+                showProgress(false)
+                baseViewModel.isSaveExitButtonClicked.set(true)
+                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+                activity?.onBackPressed()
             }
         }
 

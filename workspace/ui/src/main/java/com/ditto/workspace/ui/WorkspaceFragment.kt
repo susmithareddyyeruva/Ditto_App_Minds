@@ -65,7 +65,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
+        //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         if (viewModel.data.value == null) {
             Utility.fragmentTabs.set(0)
             logger.d("TRACE: Setting progress")
