@@ -37,7 +37,7 @@ import javax.inject.Inject
 
 
 class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
-    AllPatternsFragment.setFilterIcons {
+    AllPatternsFragment.FilterIconSetListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory

@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 class AllPatternsFragment(
     private val setPatternCount: SetPatternCount,
-    private val filterIcons: setFilterIcons
+    private val filterIconSetListener: FilterIconSetListener
 ) : BaseFragment(),
     Utility.CustomCallbackDialogListener {
 
@@ -49,7 +49,6 @@ class AllPatternsFragment(
     lateinit var binding: AllPatternsFragmentBinding
     private var patternId: Int = 0
     private val allPatternAdapter = AllPatternsAdapter()
-    private var clickedMenu: String = ""
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
     private var currentPage = 1
@@ -90,9 +89,9 @@ class AllPatternsFragment(
                 updatePatterns()
                 //  setFilterMenuAdapter(0)
                 if (viewModel.isFilter == true) {
-                    filterIcons.onFilterApplied(true)
+                    filterIconSetListener.onFilterApplied(true)
                 } else
-                    filterIcons.onFilterApplied(false)
+                    filterIconSetListener.onFilterApplied(false)
             }
 
 
@@ -171,7 +170,7 @@ class AllPatternsFragment(
         binding.recyclerViewPatterns.adapter = allPatternAdapter
         allPatternAdapter.setListData(emptyList())
         allPatternAdapter.viewModel = viewModel
-        binding.recyclerViewPatterns?.addOnScrollListener(object :
+        binding.recyclerViewPatterns.addOnScrollListener(object :
             PaginationScrollListener(gridLayoutManager) {
             override fun isLastPage(): Boolean {
                 return isLastPage
@@ -263,23 +262,16 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnAllPatternHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        is AllPatternsViewModel.Event.OnAllPatternResultFailed -> {
+        is AllPatternsViewModel.Event.OnAllPatternResultFailed, is AllPatternsViewModel.Event.NoInternet -> {
             showAlert()
             bottomNavViewModel.showProgress.set(false)
         }
-        is AllPatternsViewModel.Event.NoInternet -> {
-            showAlert()
-            bottomNavViewModel.showProgress.set(false)
-        }
-        /* else -> {
-             Log.d("event", "Add project")
-         }*/
         is AllPatternsViewModel.Event.OnAddProjectClick -> {
             Log.d("event", "Add project")
         }
 
         is AllPatternsViewModel.Event.UpdateFilterImage -> {
-            filterIcons.onFilterApplied(true)
+            filterIconSetListener.onFilterApplied(true)
         }
         is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
@@ -311,7 +303,7 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
-            filterIcons.onFilterApplied(false)
+            filterIconSetListener.onFilterApplied(false)
 
         }
         is AllPatternsViewModel.Event.OnPopupClick -> {
@@ -414,13 +406,12 @@ class AllPatternsFragment(
         fun onSetCount(tittle: String)
     }
 
-    interface setFilterIcons {
+    interface FilterIconSetListener {
         fun onFilterApplied(isApplied: Boolean)
     }
 
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
-        val item = viewModel.menuList
-        return item
+        return viewModel.menuList
     }
 
 
