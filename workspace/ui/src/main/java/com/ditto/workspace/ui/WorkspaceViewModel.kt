@@ -228,6 +228,7 @@ class WorkspaceViewModel @Inject constructor(
             Log.d("handlWSPattenDtaStorage", "Success update storage")
             updateWSAPI(cTraceWorkSpacePatternInputData)
         }else{
+            uiEvents.post(Event.ApiFailed)
             Log.d("handlWSPattenDtaStorage", "failed update storage")
         }
     }
