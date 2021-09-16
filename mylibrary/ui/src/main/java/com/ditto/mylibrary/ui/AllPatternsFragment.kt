@@ -98,12 +98,6 @@ class AllPatternsFragment(
 
         }
 
-
-        /*  getBackStackData<String>("KEY_SEARCH", true) { it ->
-              logger.d("SEARCH TERM : $it")
-              callSearchResult()
-          }*/
-
         binding.imageClearFilter.setOnClickListener {
             viewModel.resultMap.clear()
             viewModel.patternArrayList.clear()
@@ -237,18 +231,18 @@ class AllPatternsFragment(
             showPopupMenu(event.view, event.patternId)
         }
 
-        is AllPatternsViewModel.Event.OnSearchClick -> {
+        is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
 
         }
-        is AllPatternsViewModel.Event.OnSyncClick -> {
+        is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
             cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // open dialog
         }
-        is AllPatternsViewModel.Event.OnResultSuccess -> {
+        is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
             baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(
                 getString(
@@ -263,19 +257,19 @@ class AllPatternsFragment(
             isLoading = false
             updatePatterns()
         }
-        is AllPatternsViewModel.Event.OnShowProgress -> {
+        is AllPatternsViewModel.Event.OnAllPatternShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
         }
-        is AllPatternsViewModel.Event.OnHideProgress -> {
+        is AllPatternsViewModel.Event.OnAllPatternHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        is AllPatternsViewModel.Event.OnResultFailed -> {
-            bottomNavViewModel.showProgress.set(false)
+        is AllPatternsViewModel.Event.OnAllPatternResultFailed -> {
             showAlert()
+            bottomNavViewModel.showProgress.set(false)
         }
         is AllPatternsViewModel.Event.NoInternet -> {
-            bottomNavViewModel.showProgress.set(false)
             showAlert()
+            bottomNavViewModel.showProgress.set(false)
         }
         /* else -> {
              Log.d("event", "Add project")
@@ -283,10 +277,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnAddProjectClick -> {
             Log.d("event", "Add project")
         }
-        is AllPatternsViewModel.Event.OnUpdateFilter -> {
-            Log.d("event", "OnUpdateFilter")
 
-        }
         is AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIcons.onFilterApplied(true)
         }

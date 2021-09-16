@@ -57,7 +57,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         } else {
             clickedId.set(4)
         }
-        uiEvents.post(Event.OnItemClick)
+        uiEvents.post(Event.OnMyFolderItemClick)
     }
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -69,7 +69,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
             }
             else -> {
                 errorString.set(error.message)
-                uiEvents.post(Event.OnResultFailed)
+                uiEvents.post(Event.OnMyFolderResultFailed)
             }
         }
     }
@@ -79,7 +79,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         createJson: MyLibraryFilterRequestData
     ) {
 
-        uiEvents.post(Event.OnShowProgress)
+        uiEvents.post(Event.OnMyFolderShowProgress)
         disposable += getPatternsData.invoke(createJson)
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
@@ -89,7 +89,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
-        uiEvents.post(Event.OnHideProgress)
+        uiEvents.post(Event.OnMyFolderHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 myfolderList.value = result.data.prod
@@ -104,13 +104,13 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 totalPageCount = result.data.totalPageCount ?: 0
                 currentPageId = result.data.currentPageId ?: 0
                 myfolderMap = result.data.menuItem ?: hashMapOf() //hashmap
-                uiEvents.post(Event.OnResultSuccess)
+                uiEvents.post(Event.OnMyFolderResultSuccess)
                 if (isFilterApplied == false) {
                     setList()  // For Displaying menu item without any filter applied
-                    uiEvents.post(Event.UpdateDefaultFilter)
+                    uiEvents.post(Event.OnMyFolderUpdateDefaultFilter)
                     isFilterResult.set(false)
                 } else {
-                    uiEvents.post(Event.UpdateFilterImage)
+                    uiEvents.post(Event.OnMyFolderUpdateFilterImage)
                     isFilterResult.set(true)
                 }
             }
@@ -131,7 +131,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         }
 
         Log.d("MAP  RESULT== ", myfolderMenu.size.toString())
-        uiEvents.post(Event.OnUpdateFilter)
+
 
     }
 
@@ -167,7 +167,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     }
 
     fun createFolderEvent() {
-        uiEvents.post(Event.OnCreateFolderClicked)
+        uiEvents.post(Event.OnMyFolderCreateFolderClicked)
     }
     fun navigateToFolderDetails(title: String) {
         clickedFolderName=title
@@ -220,29 +220,28 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     }
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
-        uiEvents.post(Event.OnSyncClick)
+        uiEvents.post(Event.MyFolderSyncClick)
     }
 
     fun onSearchClick() {
         Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnSearchClick)
+        uiEvents.post(Event.OnMyFolderSearchClick)
     }
     sealed class Event {
-        object OnItemClick : MyFolderViewModel.Event()
-        object OnDataUpdated : MyFolderViewModel.Event()
-        object OnCreateFolderClicked : MyFolderViewModel.Event()
+        object OnMyFolderItemClick : MyFolderViewModel.Event()
+        object OnMyFolderDataUpdated : MyFolderViewModel.Event()
+        object OnMyFolderCreateFolderClicked : MyFolderViewModel.Event()
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
         object OnFolderCreated : MyFolderViewModel.Event()
-        object OnSyncClick : MyFolderViewModel.Event()
-        object OnSearchClick : MyFolderViewModel.Event()
+        object MyFolderSyncClick : MyFolderViewModel.Event()
+        object OnMyFolderSearchClick : MyFolderViewModel.Event()
         object OnCreateFolder : MyFolderViewModel.Event()
-        object OnResultSuccess : MyFolderViewModel.Event()
-        object OnShowProgress : MyFolderViewModel.Event()
-        object OnHideProgress : MyFolderViewModel.Event()
-        object OnResultFailed : MyFolderViewModel.Event()
+        object OnMyFolderResultSuccess : MyFolderViewModel.Event()
+        object OnMyFolderShowProgress : MyFolderViewModel.Event()
+        object OnMyFolderHideProgress : MyFolderViewModel.Event()
+        object OnMyFolderResultFailed : MyFolderViewModel.Event()
         object NoInternet : MyFolderViewModel.Event()
-        object OnUpdateFilter : MyFolderViewModel.Event()
-        object UpdateFilterImage : MyFolderViewModel.Event()
-        object UpdateDefaultFilter : MyFolderViewModel.Event()
+        object OnMyFolderUpdateFilterImage : MyFolderViewModel.Event()
+        object OnMyFolderUpdateDefaultFilter : MyFolderViewModel.Event()
     }
 }

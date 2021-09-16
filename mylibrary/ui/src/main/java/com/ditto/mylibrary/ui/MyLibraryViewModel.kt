@@ -95,7 +95,7 @@ class MyLibraryViewModel @Inject constructor(
         object completedProjects : Event()
         object allPatterns : Event()
         object OnFilterClick : Event()
-        object OnSyncClick : Event()
+        object MyLibrarySync : Event()
         object OnSearchClick : Event()
     }
 
@@ -106,7 +106,7 @@ class MyLibraryViewModel @Inject constructor(
 
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
-        uiEvents.post(Event.OnSyncClick)
+        uiEvents.post(Event.MyLibrarySync)
     }
 
     fun onSearchClick() {

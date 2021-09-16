@@ -298,7 +298,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     Log.d("pattern", "onFilterClick : MyFolder Detail")
                 }
             }
-            MyLibraryViewModel.Event.OnSyncClick -> {
+            MyLibraryViewModel.Event.MyLibrarySync -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
                     allPatternsFragment.onSyncClick()

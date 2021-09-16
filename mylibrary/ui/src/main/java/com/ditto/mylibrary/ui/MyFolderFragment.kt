@@ -130,7 +130,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyFolderViewModel.Event) =
         when (event) {
-            is MyFolderViewModel.Event.OnCreateFolderClicked -> {
+            is MyFolderViewModel.Event.OnMyFolderCreateFolderClicked -> {
                 val layout =
                     activity?.layoutInflater?.inflate(R.layout.create_folder, null)
                 layout?.let {

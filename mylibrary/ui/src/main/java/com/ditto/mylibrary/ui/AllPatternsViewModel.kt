@@ -64,9 +64,12 @@ class AllPatternsViewModel @Inject constructor(
             }
             else -> {
                 errorString.set(error.message)
-                uiEvents.post(Event.OnResultFailed)
+                uiEvents.post(Event.OnAllPatternResultFailed)
             }
+
         }
+        uiEvents.post(Event.OnAllPatternHideProgress)
+
     }
 
     //fetch data from repo (via usecase)
@@ -74,10 +77,9 @@ class AllPatternsViewModel @Inject constructor(
         createJson: MyLibraryFilterRequestData
     ) {
 
-        uiEvents.post(Event.OnShowProgress)
+        uiEvents.post(Event.OnAllPatternShowProgress)
         disposable += getPatternsData.invoke(createJson)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
@@ -97,7 +99,7 @@ class AllPatternsViewModel @Inject constructor(
                 totalPageCount = result.data.totalPageCount ?: 0
                 currentPageId = result.data.currentPageId ?: 0
                 map = result.data.menuItem ?: hashMapOf() //hashmap
-                uiEvents.post(Event.OnResultSuccess)
+                uiEvents.post(Event.OnAllPatternResultSuccess)
                 if (isFilter == false) {
                     setList()  // For Displaying menu item without any filter applied
                     uiEvents.post(Event.UpdateDefaultFilter)
@@ -117,13 +119,13 @@ class AllPatternsViewModel @Inject constructor(
     ) {
         when (result) {
             is Result.OnSuccess -> {
-                uiEvents.post(Event.OnHideProgress)
                 if (result.data.responseStatus) {
                     Log.d("Added to Favourite", "FAVOURITE")
                     product.isFavourite = result.data.queryString.equals("method=addToFavorite")
-                    uiEvents.post(Event.OnResultSuccess)
-                }
+                    uiEvents.post(Event.OnAllPatternResultSuccess)
 
+                }
+                uiEvents.post(Event.OnAllPatternHideProgress)
             }
             is Result.OnError -> handleError(result.error)
 
@@ -144,7 +146,6 @@ class AllPatternsViewModel @Inject constructor(
         }
 
         Log.d("MAP  RESULT== ", menuList.size.toString())
-        uiEvents.post(Event.OnUpdateFilter)
 
     }
 
@@ -209,12 +210,12 @@ class AllPatternsViewModel @Inject constructor(
 
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
-        uiEvents.post(Event.OnSyncClick)
+        uiEvents.post(Event.OnAllPatternSyncClick)
     }
 
     fun onSearchClick() {
         Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnSearchClick)
+        uiEvents.post(Event.OnAllPatternSearchClick)
     }
 
     fun onCreateFolderClick() {
@@ -228,7 +229,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun addToFavourite(product: ProdDomain) {
-        var methodName: String?=""
+        var methodName: String? = ""
         Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
         val favReq = FavouriteRequest(
             OrderFilter(
@@ -241,7 +242,7 @@ class AllPatternsViewModel @Inject constructor(
             ProductFilter = ProductFilter(),
             FoldersConfig = FoldersConfig(Favorite = arrayListOf(product.tailornovaDesignId ?: ""))
         )
-        uiEvents.post(Event.OnShowProgress)
+        uiEvents.post(Event.OnAllPatternShowProgress)
         methodName = if (product.isFavourite == true) {
             "deleteFavorite"
         } else {
@@ -276,16 +277,15 @@ class AllPatternsViewModel @Inject constructor(
             val patternId: Int
         ) : Event()
 
-        object OnSyncClick : Event()
-        object OnSearchClick : Event()
+        object OnAllPatternSyncClick : Event()
+        object OnAllPatternSearchClick : Event()
         object OnCreateFolder : Event()
         object OnFolderCreated : Event()
-        object OnResultSuccess : Event()
-        object OnShowProgress : Event()
-        object OnHideProgress : Event()
-        object OnResultFailed : Event()
+        object OnAllPatternResultSuccess : Event()
+        object OnAllPatternShowProgress : Event()
+        object OnAllPatternHideProgress : Event()
+        object OnAllPatternResultFailed : Event()
         object NoInternet : Event()
-        object OnUpdateFilter : Event()
         object UpdateFilterImage : Event()
         object UpdateDefaultFilter : Event()
     }

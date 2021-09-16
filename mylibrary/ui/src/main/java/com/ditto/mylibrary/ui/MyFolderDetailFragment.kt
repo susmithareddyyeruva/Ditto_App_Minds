@@ -207,7 +207,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyFolderViewModel.Event) = when (event) {
-        is MyFolderViewModel.Event.OnItemClick -> {
+        is MyFolderViewModel.Event.OnMyFolderItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
                // setBackStackData("TITTLE", tittle)
@@ -219,14 +219,14 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 logger.d("OnClickPatternDesc failed")
             }
         }
-        is MyFolderViewModel.Event.OnDataUpdated -> {
+        is MyFolderViewModel.Event.OnMyFolderDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
             // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
 
         }
 
 
-        is MyFolderViewModel.Event.OnSearchClick -> {
+        is MyFolderViewModel.Event.OnMyFolderSearchClick -> {
 
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
@@ -304,14 +304,14 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
             }
         }
-        is MyFolderViewModel.Event.OnSyncClick -> {
+        is MyFolderViewModel.Event.MyFolderSyncClick -> {
             cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
             Log.d("pattern", "onFilterClick : AllPatternsFragment")
             // open dialog
         }
-        is MyFolderViewModel.Event.OnResultSuccess -> {
+        is MyFolderViewModel.Event.OnMyFolderResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
             // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
@@ -322,13 +322,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             isLoading = false
             updatePatterns()
         }
-        is MyFolderViewModel.Event.OnShowProgress -> {
+        is MyFolderViewModel.Event.OnMyFolderShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
         }
-        is MyFolderViewModel.Event.OnHideProgress -> {
+        is MyFolderViewModel.Event.OnMyFolderHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        is MyFolderViewModel.Event.OnResultFailed -> {
+        is MyFolderViewModel.Event.OnMyFolderResultFailed -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
@@ -337,11 +337,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             showAlert()
         }
 
-        is MyFolderViewModel.Event.OnUpdateFilter -> {
-            Log.d("event", "OnUpdateFilter")
 
-        }
-        is MyFolderViewModel.Event.UpdateFilterImage -> {
+        is MyFolderViewModel.Event.OnMyFolderUpdateFilterImage -> {
             (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
         }
         is MyFolderViewModel.Event.OnCreateFolder -> {
@@ -373,7 +370,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
 
         }
-        is MyFolderViewModel.Event.UpdateDefaultFilter -> {
+        is MyFolderViewModel.Event.OnMyFolderUpdateDefaultFilter -> {
             (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
 
         }
