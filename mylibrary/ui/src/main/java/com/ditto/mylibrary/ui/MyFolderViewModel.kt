@@ -20,9 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import non_core.lib.whileSubscribed
 import org.json.JSONObject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMylibraryData) :
@@ -46,6 +44,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var currentPageId: Int = 1
     var isFilterApplied: Boolean? = false
     var clickedFolderName: String? = ""
+    var isFilter: Boolean? = false
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -81,9 +80,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
         uiEvents.post(Event.OnMyFolderShowProgress)
         disposable += getPatternsData.invoke(createJson)
-            .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
@@ -194,7 +191,18 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
             }
         }
-        isFilterApplied = !(filteredMap.isEmpty() && value.isEmpty())
+        if (filteredMap.isNotEmpty() && value.isNotEmpty()) {
+            isFilter = true
+        } else if (filteredMap.isEmpty() && value.isEmpty()) {
+            isFilter = false
+        } else if (filteredMap.isNotEmpty() && value.isEmpty()) {
+            isFilter = true
+        } else if (filteredMap.isNotEmpty()) {
+            isFilter = true
+        } else if (filteredMap.isEmpty() && value.isNotEmpty()) {
+            isFilter = false
+        }
+
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()
