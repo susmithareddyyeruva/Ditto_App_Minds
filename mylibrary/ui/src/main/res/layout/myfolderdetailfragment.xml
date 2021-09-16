@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="com.ditto.mylibrary.ui.MyFolderViewModel" />
+        <import type="android.view.View" />
 
     </data>
 
@@ -65,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/blue"
-                android:visibility="@{viewModel.isFilterResult()}"
+                android:visibility="@{viewModel.isFilterResult()? View.VISIBLE : View.GONE}"
                 app:constraint_referenced_ids="tv_filter_result,textview_clear,imageClearFilter" />
 
 
