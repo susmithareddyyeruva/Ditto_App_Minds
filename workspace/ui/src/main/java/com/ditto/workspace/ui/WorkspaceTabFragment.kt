@@ -2035,6 +2035,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         IntArray
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
+            Log.d("onReqPermissionsResult","permission granted")
             val map = getPatternPieceList()
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
@@ -2042,6 +2043,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.prepareDowloadList(map)
 
             }
+        }else {
+            showSaveAndExitPopup()
+            Log.d("onReqPermissionsResult","permission denied")
         }
 
     }
