@@ -165,7 +165,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     ?.beginTransaction()
                     .remove(myFolderDetailFragment)
                     .addToBackStack(null)
-                    ?.add(R.id.detail_nav_fragment, myFolderDetailFragment)
+                    ?.add(R.id.detail_nav_fragment, myFolderDetailFragment,"DETAILS")
                     ?.commit()
             }
 
