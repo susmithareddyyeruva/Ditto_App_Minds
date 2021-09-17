@@ -82,7 +82,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         binding.rvMyFolder.layoutManager = gridLayoutManager
         val adapter = MyFolderAdapter(
             requireContext(),
-            viewModel.getList(),
+            viewModel.getFoldersList(),
             object : MyFolderAdapter.OnRenameListener {
                 override fun onRenameClicked() {
                     val layout =

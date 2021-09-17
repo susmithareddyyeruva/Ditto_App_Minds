@@ -132,8 +132,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
     }
 
-    fun getList(): List<MyFolderData> {
-        val list = listOf<MyFolderData>(
+    fun getFoldersList(): List<MyFolderData> {
+        val list = arrayListOf<MyFolderData>(
             MyFolderData(
                 R.drawable.ic_newfolder,
                 "Add Folder",
@@ -143,18 +143,9 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 R.drawable.ic_owned,
                 "Owned",
                 false
-            ),
-            MyFolderData(
-                0,
-                "Favorites",
-                true
-            ),
-            MyFolderData(
-                0,
-                "Emma's Patterns",
-                true
             )
         )
+
         return list
     }
 

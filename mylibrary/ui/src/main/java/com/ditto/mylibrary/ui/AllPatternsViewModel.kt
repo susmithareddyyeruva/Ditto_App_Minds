@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.FavouriteRequest
-import com.ditto.mylibrary.domain.request.FoldersConfig
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
@@ -52,6 +51,7 @@ class AllPatternsViewModel @Inject constructor(
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
     var isFilter: Boolean? = false
+    var favorite: String = "Favorite"
 
 
     //error handler for data fetch related flow
@@ -228,7 +228,9 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnFolderCreated)
     }
 
-    fun addToFavourite(product: ProdDomain) {
+    fun addToFolder(product: ProdDomain, folderName: String) {
+        val hashMap = HashMap<String, ArrayList<String>>()
+        hashMap[folderName] = arrayListOf(product.tailornovaDesignId ?: "")
         var methodName: String? = ""
         Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
         val favReq = FavouriteRequest(
@@ -240,7 +242,7 @@ class AllPatternsViewModel @Inject constructor(
                 trialPattern = false
             ),
             ProductFilter = ProductFilter(),
-            FoldersConfig = FoldersConfig(Favorite = arrayListOf(product.tailornovaDesignId ?: ""))
+            FoldersConfig = hashMap
         )
         uiEvents.post(Event.OnAllPatternShowProgress)
         methodName = if (product.isFavourite == true) {
