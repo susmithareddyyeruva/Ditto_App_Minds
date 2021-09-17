@@ -1,6 +1,6 @@
 package com.ditto.mylibrary.data.api
 
-import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.model.FavouriteResult
@@ -35,8 +35,8 @@ interface MyLibraryFilterService {
 
     @Headers("Content-Type: application/json")
     @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppLibraryFolder-Modify")
-    fun addToFavourite(
-        @Body body: FavouriteRequest?,
+    fun addFolder(
+        @Body body: FolderRequest?,
         @Header("Authorization") header: String,
         @Query("method") method: String
     ): Single<FavouriteResult>

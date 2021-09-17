@@ -5,7 +5,7 @@ import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import io.reactivex.Single
@@ -22,7 +22,7 @@ interface MyLibraryRepository {
     fun removePattern(patternId: Int): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>>
-    fun addtoFavourite(requestdata: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
+    fun addFolder(requestdata: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
 
     //fun addProject(id : Int): Single<Any>
 }

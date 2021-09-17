@@ -13,7 +13,7 @@ import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.PatternsDao
@@ -196,11 +196,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun addtoFavourite(requestdata: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
+    override fun addFolder(requestdata: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.addToFavourite(
+        return myLibraryService.addFolder(
             requestdata, "Bearer " + AppState.getToken()!!,
             method = methodName
         )

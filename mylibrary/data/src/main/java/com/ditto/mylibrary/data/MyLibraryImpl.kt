@@ -7,7 +7,7 @@ import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import io.reactivex.Single
@@ -46,7 +46,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getMyLibraryFolderData(requestdata,methodName)
     }
 
-    override fun addFavourite(createJson: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
-        return myLibraryRepository.addtoFavourite(createJson,methodName)
+    override fun addFolder(createJson: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
+        return myLibraryRepository.addFolder(createJson,methodName)
     }
 }

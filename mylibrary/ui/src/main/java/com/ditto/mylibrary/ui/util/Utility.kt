@@ -211,7 +211,9 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString())
+                    if (edittext.text.toString().isNotEmpty()) {
+                        callback.onCreateClicked(edittext.text.toString())
+                    }
                     viewmodel.onCreateFoldersSuccess()
 
 

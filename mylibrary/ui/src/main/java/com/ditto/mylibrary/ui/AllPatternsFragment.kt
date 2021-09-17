@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.FilterItems
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
@@ -281,11 +282,12 @@ class AllPatternsFragment(
                     "",
                     "",
                     it, viewModel,
-                    "CANCEL",
-                    "CREATE FOLDER",
+                    getString(R.string.cancel_dialog),
+                    getString(R.string.create_folder),
                     object :
                         com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
                         override fun onCreateClicked(folderName: String) {
+                            viewModel.addToFolder(product = ProdDomain(),folderName = folderName)
 
                         }
 

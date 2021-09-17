@@ -8,7 +8,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
@@ -52,7 +52,8 @@ class AllPatternsViewModel @Inject constructor(
     var currentPageId: Int = 1
     var isFilter: Boolean? = false
     var favorite: String = "Favorite"
-
+    var deleteFavorite: String = "deleteFavorite"
+    var addToFavorite: String = "addToFavorite"
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -233,7 +234,7 @@ class AllPatternsViewModel @Inject constructor(
         hashMap[folderName] = arrayListOf(product.tailornovaDesignId ?: "")
         var methodName: String? = ""
         Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
-        val favReq = FavouriteRequest(
+        val favReq = FolderRequest(
             OrderFilter(
                 true,
                 CUSTOMER_EMAIL,
@@ -245,13 +246,19 @@ class AllPatternsViewModel @Inject constructor(
             FoldersConfig = hashMap
         )
         uiEvents.post(Event.OnAllPatternShowProgress)
-        methodName = if (product.isFavourite == true) {
-            "deleteFavorite"
+        if (folderName.equals(favorite)) {
+            methodName = if (product.isFavourite == true) {
+                "deleteFavorite"
+            } else {
+                "addToFavorite"
+
+            }
         } else {
-            "addToFavorite"
+            methodName = "update"
 
         }
-        disposable += getPatternsData.addFavourite(favReq, methodName)
+
+        disposable += getPatternsData.addFolder(favReq, methodName)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
