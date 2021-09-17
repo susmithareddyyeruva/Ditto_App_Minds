@@ -56,7 +56,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isAdded() && isVisible() && getUserVisibleHint()) {
+        if (isAdded && isVisible && getUserVisibleHint()) {
             val args = arguments
             tittle = args?.getString("TITTLE", "")
             (parentFragment as MyLibraryFragment?)?.showFilterComponents()
