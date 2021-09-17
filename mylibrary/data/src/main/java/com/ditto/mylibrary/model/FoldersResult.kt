@@ -10,5 +10,5 @@ data class FoldersResult(
     @SerializedName("queryString")
     var queryString: String,
     @SerializedName("responseStatus")
-    var responseStatus: Boolean
+    var responseStatus: List<String>
 )

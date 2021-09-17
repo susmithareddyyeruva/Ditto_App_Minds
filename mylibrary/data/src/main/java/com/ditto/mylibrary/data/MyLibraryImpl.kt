@@ -8,6 +8,7 @@ import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.request.FavouriteRequest
+import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import io.reactivex.Single
 import non_core.lib.Result
@@ -41,7 +42,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getFilteredPatterns(createJson)
     }
 
-    override fun invokeFolderList(requestdata: FavouriteRequest, methodName: String): Single<Result<FoldersResultDomain>> {
+    override fun invokeFolderList(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>> {
         return myLibraryRepository.getMyLibraryFolderData(requestdata,methodName)
     }
 
