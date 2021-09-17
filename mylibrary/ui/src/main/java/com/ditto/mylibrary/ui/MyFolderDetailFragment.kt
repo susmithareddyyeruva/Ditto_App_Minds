@@ -1,16 +1,10 @@
 package com.ditto.mylibrary.ui
 
-import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,7 +20,6 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.search_dialog.*
 import javax.inject.Inject
 
 class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
@@ -63,16 +56,19 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args = arguments
-        tittle = args?.getString("TITTLE", "")
-        (parentFragment as MyLibraryFragment?)?.showFilterComponents()
-        (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
-            getString(
-                R.string.myfolder_detail_count,
-                tittle,
-                AppState.getPatternCount()
+        if (isAdded() && isVisible() && getUserVisibleHint()) {
+            val args = arguments
+            tittle = args?.getString("TITTLE", "")
+            (parentFragment as MyLibraryFragment?)?.showFilterComponents()
+            (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
+                getString(
+                    R.string.myfolder_detail_count,
+                    tittle,
+                    AppState.getPatternCount()
+                )
             )
-        )
+        }
+
 
     }
 
@@ -94,11 +90,15 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             } else {
                 updatePatterns()
                 //  setFilterMenuAdapter(0)
-                if (viewModel.isFilterApplied == true) {
+                if (viewModel.isFilter == true) {
                     (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
-                } else {
+                } else
                     (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
-                }
+                /*  if (viewModel.isFilterApplied == true) {
+                      (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
+                  } else {
+                      (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
+                  }*/
 
             }
 
@@ -210,7 +210,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnMyFolderItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
-               // setBackStackData("TITTLE", tittle)
+                // setBackStackData("TITTLE", tittle)
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -228,81 +228,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
         is MyFolderViewModel.Event.OnMyFolderSearchClick -> {
 
-            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                val alertDialog = Dialog(
-                    requireContext(),
-                    R.style.DialogTheme
-                )
+            Log.d("pattern", " OnMyFolderSearchClick")
 
-                alertDialog.setContentView(R.layout.search_dialog);
-                binding.viewModel = viewModel
-                alertDialog.window?.setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-                );
-                alertDialog.show()
-                val watcher = alertDialog.editSearch.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        logger.d("afterTextChanged")
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                        logger.d("beforeTextChanged")
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        logger.d("onTextChanged")
-                        if (s.toString().isNotEmpty()) {
-                            alertDialog.imageCloseSearch.visibility = View.VISIBLE
-                        } else {
-                            alertDialog.imageCloseSearch.visibility = View.GONE
-                        }
-                    }
-                })
-                alertDialog.tvCAncelDialog.setOnClickListener {
-                    requireActivity().window
-                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                    alertDialog.cancel()
-
-
-                }
-
-                alertDialog.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (alertDialog.editSearch.text.toString().isNotEmpty()) {
-                            requireActivity().getWindow()
-                                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                            alertDialog.window?.setSoftInputMode(
-                                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-                            )
-                            callSearchResult(alertDialog.editSearch.text.toString())
-                            alertDialog.cancel()
-                        } else
-                            alertDialog.cancel()
-                        //   targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK,  activity?.intent?.putExtras(bundle));
-
-                        return@OnEditorActionListener true
-                    }
-                    false
-                })
-                alertDialog.imageCloseSearch.setOnClickListener {
-                    alertDialog.editSearch.text?.clear()
-                }
-                //  findNavController().navigate(R.id.action_mylibrary_to_search)
-            } else {
-                Log.d("pattern", "OnSearchClick : ELSE")
-
-            }
         }
         is MyFolderViewModel.Event.MyFolderSyncClick -> {
             cleaFilterData()
