@@ -15,6 +15,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.adapter.MyFolderAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderfragmentBinding
 import com.ditto.mylibrary.ui.util.Utility
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,11 +49,12 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setUIEvents()
         bottomNavViewModel.showProgress.set(true)
-        Handler(Looper.getMainLooper()).postDelayed({
-            setAdapter()
-        }, 2000) //millis
+        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            viewModel.getFoldersList()
+        }
+        setUIEvents()
+
 
     }
 
@@ -82,7 +84,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         binding.rvMyFolder.layoutManager = gridLayoutManager
         val adapter = MyFolderAdapter(
             requireContext(),
-            viewModel.getFoldersList(),
+            viewModel.folderList,
             object : MyFolderAdapter.OnRenameListener {
                 override fun onRenameClicked() {
                     val layout =
@@ -170,7 +172,10 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 println("FRAMENT ADDED" + childFragmentManager.fragments.size)
 
             }
-
+            is MyFolderViewModel.Event.OnMyFolderListUpdated -> {
+                setAdapter()
+                bottomNavViewModel.showProgress.set(false)
+            }
             else -> {
                 Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
 

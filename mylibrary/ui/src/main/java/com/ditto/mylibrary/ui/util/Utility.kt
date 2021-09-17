@@ -158,7 +158,7 @@ class Utility {
 
 
                 } else {
-                    edittext.setError("Project Name can't be empty")
+                    edittext.setError("Folder Name can't be empty")
                 }
             }
 

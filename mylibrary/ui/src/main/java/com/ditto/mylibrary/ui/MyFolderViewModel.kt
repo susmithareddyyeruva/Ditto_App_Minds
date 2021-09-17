@@ -7,6 +7,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
@@ -45,6 +46,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var isFilterApplied: Boolean? = false
     var clickedFolderName: String? = ""
     var isFilter: Boolean? = false
+    private val GETFOLDER = "getFolders"
+    var folderList = ArrayList<MyFolderData>()
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -58,6 +61,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         }
         uiEvents.post(Event.OnMyFolderItemClick)
     }
+
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -132,8 +136,26 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
     }
 
-    fun getFoldersList(): List<MyFolderData> {
-        val list = arrayListOf<MyFolderData>(
+    fun getFoldersList() {
+        val folderRequest = GetFolderRequest(
+            OrderFilter(
+                true,
+                CUSTOMER_EMAIL,
+                purchasedPattern = false,
+                subscriptionList = false,
+                trialPattern = true
+            )
+        )
+        uiEvents.post(Event.OnMyFolderShowProgress)
+        disposable += getPatternsData.invokeFolderList(folderRequest, GETFOLDER)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFolderFetchResult(it) }
+
+    }
+
+    private fun handleFolderFetchResult(folderResult: Result<FoldersResultDomain>?) {
+        folderList = arrayListOf(
             MyFolderData(
                 R.drawable.ic_newfolder,
                 "Add Folder",
@@ -145,8 +167,24 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 false
             )
         )
+        when (folderResult) {
+            is Result.OnSuccess -> {
+                folderResult.data.responseStatus.forEach {
+                    folderList.add(
+                        MyFolderData(
+                            url = null,
+                            title = it,
+                            isAction = true
+                        )
+                    )
+                }
+                uiEvents.post(Event.OnMyFolderListUpdated)
+            }
+            is Result.OnError -> {
+                handleError(folderResult.error)
+            }
 
-        return list
+        }
     }
 
     fun onCreateFoldersSuccess() {
@@ -157,8 +195,9 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     fun createFolderEvent() {
         uiEvents.post(Event.OnMyFolderCreateFolderClicked)
     }
+
     fun navigateToFolderDetails(title: String) {
-        clickedFolderName=title
+        clickedFolderName = title
         uiEvents.post(Event.OnNavigtaionToFolderDetail)
     }
 
@@ -217,6 +256,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         Log.d("RESULT STRING===", resultString)
         return filterCriteria
     }
+
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.MyFolderSyncClick)
@@ -226,9 +266,11 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnMyFolderSearchClick)
     }
+
     sealed class Event {
         object OnMyFolderItemClick : MyFolderViewModel.Event()
         object OnMyFolderDataUpdated : MyFolderViewModel.Event()
+        object OnMyFolderListUpdated : MyFolderViewModel.Event()
         object OnMyFolderCreateFolderClicked : MyFolderViewModel.Event()
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
         object OnFolderCreated : MyFolderViewModel.Event()

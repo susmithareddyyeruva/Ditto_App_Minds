@@ -52,8 +52,6 @@ class AllPatternsViewModel @Inject constructor(
     var currentPageId: Int = 1
     var isFilter: Boolean? = false
     var favorite: String = "Favorite"
-    var deleteFavorite: String = "deleteFavorite"
-    var addToFavorite: String = "addToFavorite"
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -246,7 +244,7 @@ class AllPatternsViewModel @Inject constructor(
             FoldersConfig = hashMap
         )
         uiEvents.post(Event.OnAllPatternShowProgress)
-        if (folderName.equals(favorite)) {
+        if (folderName == favorite) {
             methodName = if (product.isFavourite == true) {
                 "deleteFavorite"
             } else {
