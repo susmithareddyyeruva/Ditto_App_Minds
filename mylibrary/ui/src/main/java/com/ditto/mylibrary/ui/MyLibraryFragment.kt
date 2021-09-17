@@ -484,8 +484,10 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     fun switchtoMyFolderFragmentTab() {
-        val tabPosition = binding.tabLayout.selectedTabPosition
         binding.viewPager.currentItem = 1
+        myFolderFragment.getFoldersList()
+        hideFilterComponents()
+        setToolbarTittle(getString(R.string.my_folders))
 
     }
 

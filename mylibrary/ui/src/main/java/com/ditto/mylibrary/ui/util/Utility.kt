@@ -153,7 +153,7 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString())
+                    callback.onCreateClicked(edittext.text.toString(),"ADD")
                     viewmodel.onCreateFoldersSuccess()
 
 
@@ -212,13 +212,13 @@ class Utility {
                     )
                     Utility.alert?.dismiss()
                     if (edittext.text.toString().isNotEmpty()) {
-                        callback.onCreateClicked(edittext.text.toString())
+                        callback.onCreateClicked(edittext.text.toString(),"ADD")
                     }
                     viewmodel.onCreateFoldersSuccess()
 
 
                 } else {
-                    edittext.setError("Project Name can't be empty")
+                    edittext.setError("Folder Name can't be empty")
                 }
             }
 
@@ -270,7 +270,7 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString())
+                    callback.onCreateClicked(edittext.text.toString(),"RENAME")
                     viewmodel.onCreateFoldersSuccess()
 
 
@@ -289,7 +289,7 @@ class Utility {
         fun onNegativeButtonClicked()
     }
     interface CallbackCreateFolderDialogListener {
-        fun onCreateClicked(folderName: String)
+        fun onCreateClicked(folderName: String,parent: String)
         fun onCancelClicked()
     }
 

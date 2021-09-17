@@ -281,7 +281,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                     "CREATE FOLDER",
                     object :
                         com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                        override fun onCreateClicked(foldername: String) {
+                        override fun onCreateClicked(foldername: String, parent: String) {
 
                         }
 

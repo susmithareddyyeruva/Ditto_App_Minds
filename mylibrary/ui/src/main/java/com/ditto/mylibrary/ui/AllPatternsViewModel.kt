@@ -240,7 +240,6 @@ class AllPatternsViewModel @Inject constructor(
                 subscriptionList = true,
                 trialPattern = false
             ),
-            ProductFilter = ProductFilter(),
             FoldersConfig = hashMap
         )
         uiEvents.post(Event.OnAllPatternShowProgress)

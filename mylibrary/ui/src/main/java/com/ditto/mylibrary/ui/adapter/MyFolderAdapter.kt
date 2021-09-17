@@ -83,7 +83,7 @@ private val deleteClicked: OnDeleteClicked) :
         }
         holder.itemSingleMyfolderBinding.deleteText.setOnClickListener {
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
-            deleteClicked.onDeleteClicked()
+            deleteClicked.onDeleteClicked(data?.title?:"")
 
         }
         holder.itemSingleMyfolderBinding.rootView.setOnClickListener {
@@ -116,6 +116,6 @@ private val deleteClicked: OnDeleteClicked) :
         fun onRenameClicked()
     }
     interface OnDeleteClicked{
-        fun onDeleteClicked()
+        fun onDeleteClicked(title: String)
     }
 }

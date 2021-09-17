@@ -7,6 +7,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
@@ -21,6 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
+import non_core.lib.whileSubscribed
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -47,7 +49,11 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var clickedFolderName: String? = ""
     var isFilter: Boolean? = false
     private val GETFOLDER = "getFolders"
+    val addFolder = "ADD"
+    val rename = "RENAME"
+    val delete = "DELETE"
     var folderList = ArrayList<MyFolderData>()
+    var folderToDelete: String = ""
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -87,6 +93,60 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+    }
+
+    fun addToFolder(product: ProdDomain, folderName: String, clickedItem: String) {
+        uiEvents.post(Event.OnMyFolderShowProgress)
+        val hashMap = HashMap<String, ArrayList<String>>()
+        var methodName: String = ""
+        Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
+        if (clickedItem == addFolder) {
+            methodName = "update"
+            hashMap[folderName] = arrayListOf(product.tailornovaDesignId ?: "")
+        } else if (clickedItem == rename) {
+            methodName = "rename"
+        } else if (clickedItem == delete) {
+            methodName = "remove"
+            hashMap[folderToDelete] =arrayListOf(product.tailornovaDesignId ?: "")
+        }
+        val favReq = FolderRequest(
+            OrderFilter(
+                true,
+                CUSTOMER_EMAIL,
+                purchasedPattern = true,
+                subscriptionList = true,
+                trialPattern = false
+            ),
+            FoldersConfig = hashMap
+        )
+
+
+        disposable += getPatternsData.addFolder(favReq, methodName = methodName)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleAddFolderResult(it, product) }
+
+    }
+
+
+    private fun handleAddFolderResult(
+        result: Result<AddFavouriteResultDomain>,
+        product: ProdDomain
+    ) {
+        when (result) {
+            is Result.OnSuccess -> {
+                if (result.data.responseStatus) {
+                    product.isFavourite = result.data.queryString.equals("method=addToFavorite")
+                    uiEvents.post(Event.OnNewFolderAdded)
+
+                }
+                uiEvents.post(Event.OnMyFolderHideProgress)
+            }
+            is Result.OnError -> handleError(result.error)
+
+
+        }
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
@@ -146,7 +206,6 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 trialPattern = true
             )
         )
-        uiEvents.post(Event.OnMyFolderShowProgress)
         disposable += getPatternsData.invokeFolderList(folderRequest, GETFOLDER)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -278,6 +337,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         object OnMyFolderSearchClick : MyFolderViewModel.Event()
         object OnCreateFolder : MyFolderViewModel.Event()
         object OnMyFolderResultSuccess : MyFolderViewModel.Event()
+        object OnNewFolderAdded : MyFolderViewModel.Event()
         object OnMyFolderShowProgress : MyFolderViewModel.Event()
         object OnMyFolderHideProgress : MyFolderViewModel.Event()
         object OnMyFolderResultFailed : MyFolderViewModel.Event()
