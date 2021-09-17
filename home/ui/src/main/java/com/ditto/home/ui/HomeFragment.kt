@@ -19,6 +19,7 @@ import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
 import core.event.RxBus
 import core.event.RxBusEvent
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -75,10 +76,15 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
          * API call for getting pattern details....
          */
         if (AppState.getIsLogged()) {
-            if (!Utility.isTokenExpired()) {
-                bottomNavViewModel.showProgress.set(true)
-                homeViewModel.fetchData()
+            if(NetworkUtility.isNetworkAvailable(context)){
+                if (!Utility.isTokenExpired()) {
+                    bottomNavViewModel.showProgress.set(true)
+                    homeViewModel.fetchData()
+                }
+            }else{
+                homeViewModel.fetchOfflineData()
             }
+
         }else{
             homeViewModel.setHomeItems()
             if (recycler_view!=null) {

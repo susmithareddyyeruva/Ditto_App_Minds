@@ -3,9 +3,10 @@ package com.ditto.home.ui
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.ditto.home.domain.MyLibraryUseCase
+import com.ditto.home.domain.HomePageUseCase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
+import com.ditto.home.domain.model.OfflinePatternData
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.USER_FIRST_NAME
@@ -24,7 +25,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     val storageManager: StorageManager,
-    val useCase: MyLibraryUseCase,
+    val useCase: HomePageUseCase,
     private val utility: Utility
 ) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
@@ -89,20 +90,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setHomeItems() {
-   /*     val images = intArrayOf(
-            R.drawable.ic_home_pattern_library, R.drawable.ic_home_ditto,
-            R.drawable.ic_home_joann, R.drawable.ic_home_tutorial
-        )
-
-        val title = intArrayOf(
-            R.string.pattern_library_count, R.string.more_patterns_available_at,
-            R.string.for_fine_crafts_and_fabrics_visit_our_site, R.string.beam_setup_and_calibration
-        )
-
-        val description = intArrayOf(
-            R.string.all_your_patterns_in_one_place, R.string.ditto_patterns_site,
-            R.string.joann_site, R.string.view_tutorial
-        )*/
         val images = intArrayOf(
             R.drawable.ic_home_tutorial, R.drawable.ic_home_pattern_library,
             R.drawable.ic_home_ditto, R.drawable.ic_home_joann
@@ -114,7 +101,9 @@ class HomeViewModel @Inject constructor(
         )
 
         val description = intArrayOf(
-            R.string.view_tutorial,  R.string.all_your_patterns_in_one_place, R.string.ditto_patterns_site,
+            R.string.view_tutorial,
+            R.string.all_your_patterns_in_one_place,
+            R.string.ditto_patterns_site,
             R.string.joann_site
         )
         for (item in images.indices) {
@@ -127,8 +116,6 @@ class HomeViewModel @Inject constructor(
             homeItem.add(homeItems)
 
         }
-
-
     }
 
     fun fetchData() {
@@ -140,14 +127,20 @@ class HomeViewModel @Inject constructor(
                     "subscustomerOne@gmail.com",
                     true,
                     true
-                ), ProductFilter = resultMap,patternsPerPage = 12,pageId = 1
+                ), ProductFilter = resultMap, patternsPerPage = 12, pageId = 1
             )
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+    }
 
-
+    fun fetchOfflineData() {
+        uiEvents.post(Event.OnShowProgress)
+        disposable += useCase.getOfflinePatternDetails()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleOfflineFetchResult(it) }
     }
 
     /**
@@ -163,6 +156,30 @@ class HomeViewModel @Inject constructor(
                 productCount = homeDataResponse.value!!.totalPatternCount
                 AppState.setPatternCount(productCount)
                 Log.d("Home Screen", "${productCount}")
+                setHomeItems()  //Preparing menu items
+                uiEvents.post(Event.OnResultSuccess)
+            }
+            is Result.OnError -> {
+                uiEvents.post(Event.OnHideProgress)
+                uiEvents.post(Event.OnResultFailed)
+                Log.d("Home Screen", "Failed")
+                handleError(result.error)
+            }
+        }
+    }
+
+    /**
+     * Handling offline fetch result here.....
+     */
+    private fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
+        uiEvents.post(Event.OnHideProgress)
+        when (result) {
+            is Result.OnSuccess -> {
+                uiEvents.post(Event.OnHideProgress)
+                var count : Int = result?.data?.size
+                Log.d("Home Screen", "$count")
+                productCount = count
+                AppState.setPatternCount(productCount)
                 setHomeItems()  //Preparing menu items
                 uiEvents.post(Event.OnResultSuccess)
             }
