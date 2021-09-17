@@ -3,8 +3,9 @@ package com.ditto.mylibrary.data
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.MyLibraryRepository
-import com.ditto.mylibrary.domain.model.AddFavouriteResult
+import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
+import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.request.FavouriteRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
@@ -40,11 +41,11 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getFilteredPatterns(createJson)
     }
 
-    override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
-        return myLibraryRepository.getMyLibraryFolderData(createJson)
+    override fun invokeFolderList(requestdata: FavouriteRequest, methodName: String): Single<Result<FoldersResultDomain>> {
+        return myLibraryRepository.getMyLibraryFolderData(requestdata,methodName)
     }
 
-    override fun addFavourite(createJson: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResult>> {
+    override fun addFavourite(createJson: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
         return myLibraryRepository.addtoFavourite(createJson,methodName)
     }
 }

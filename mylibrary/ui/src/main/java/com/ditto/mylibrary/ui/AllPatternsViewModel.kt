@@ -114,7 +114,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     private fun handleAddToFavouriteResult(
-        result: Result<AddFavouriteResult>,
+        result: Result<AddFavouriteResultDomain>,
         product: ProdDomain
     ) {
         when (result) {

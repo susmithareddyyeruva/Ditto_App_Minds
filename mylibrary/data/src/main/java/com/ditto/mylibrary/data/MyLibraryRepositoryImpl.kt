@@ -9,8 +9,9 @@ import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
-import com.ditto.mylibrary.domain.model.AddFavouriteResult
+import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
+import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.domain.request.FavouriteRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
@@ -154,11 +155,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     }
 
-    override fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+    override fun getMyLibraryFolderData(requestdata: FavouriteRequest, methodName: String): Single<Result<FoldersResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getFoldersList(createJson, "Bearer " + AppState.getToken()!!)
+        return myLibraryService.getFoldersList(  requestdata, "Bearer " + AppState.getToken()!!,
+            method = methodName)
             .doOnSuccess {
                 logger.d("*****FETCH FILTER SUCCESS**")
             }
@@ -193,7 +195,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun addtoFavourite(requestdata: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResult>> {
+    override fun addtoFavourite(requestdata: FavouriteRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }

@@ -1,10 +1,8 @@
 package com.ditto.mylibrary.data.mapper
 
-import com.ditto.mylibrary.domain.model.AddFavouriteResult
-import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.model.FavouriteResult
+import com.ditto.mylibrary.model.FoldersResult
 import com.ditto.mylibrary.model.MyLibraryResult
 import com.ditto.mylibrary.model.Prod
 import com.ditto.storage.data.model.Patterns
@@ -82,9 +80,16 @@ fun Prod.toDomain(): ProdDomain {
     )
 
 }
-fun FavouriteResult.toDomain():AddFavouriteResult{
-    return AddFavouriteResult(action=this.action,
+fun FavouriteResult.toDomain():AddFavouriteResultDomain{
+    return AddFavouriteResultDomain(action=this.action,
     locale=this.locale,
     queryString=this.queryString,
     responseStatus=this.responseStatus)
+}
+
+fun FoldersResult.toDomain():FoldersResultDomain{
+    return FoldersResultDomain(action=this.action,
+        locale=this.locale,
+        queryString=this.queryString,
+        responseStatus=this.responseStatus)
 }

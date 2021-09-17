@@ -3,6 +3,7 @@ package com.ditto.mylibrary.data.api
 import com.ditto.mylibrary.domain.request.FavouriteRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.model.FavouriteResult
+import com.ditto.mylibrary.model.FoldersResult
 import com.ditto.mylibrary.model.MyLibraryResult
 import core.lib.BuildConfig
 import io.reactivex.Single
@@ -24,11 +25,12 @@ interface MyLibraryFilterService {
     ): Single<MyLibraryResult>
 
     @Headers("Content-Type: application/json")
-    @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppMyLibrary-Shows")
+    @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppLibraryFolder-Modify")
     fun getFoldersList(
-        @Body body: MyLibraryFilterRequestData?,
-        @Header("Authorization") header: String
-    ): Single<MyLibraryResult>
+        @Body body: FavouriteRequest?,
+        @Header("Authorization") header: String,
+        @Query("method") method: String
+    ): Single<FoldersResult>
 
     @Headers("Content-Type: application/json")
     @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppLibraryFolder-Modify")
