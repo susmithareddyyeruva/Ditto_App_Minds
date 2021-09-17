@@ -45,6 +45,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         }
         return binding.root
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
@@ -157,16 +158,17 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-               val  detail = MyFolderDetailFragment()
+
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
-                myFolderDetailFragment?.setArguments(args)
+                myFolderDetailFragment?.arguments = args
                 parentFragmentManager
                     ?.beginTransaction()
-                    .remove(myFolderDetailFragment)
                     .addToBackStack(null)
-                    ?.add(R.id.detail_nav_fragment, myFolderDetailFragment,"DETAILS")
+                    ?.replace(R.id.detail_nav_fragment, myFolderDetailFragment, "DETAIL")
                     ?.commit()
+                println("FRAMENT ADDED" + childFragmentManager.fragments.size)
+
             }
 
             else -> {

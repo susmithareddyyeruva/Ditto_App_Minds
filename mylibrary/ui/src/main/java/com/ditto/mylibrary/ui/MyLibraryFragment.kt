@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -110,10 +111,10 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.toolbar.setNavigationOnClickListener {
 
             val tabPosition = binding.tabLayout.selectedTabPosition
-
-            removeBackstack()
-            val fr = childFragmentManager.fragments.size
             requireActivity().onBackPressed()
+            removeAll()
+            val fr = childFragmentManager.fragments.size
+            println("ON BACK FRAGMENT SIZE" + fr)
             if (tabPosition == 1) {
                 hideFilterComponents()
                 setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
@@ -127,8 +128,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private fun removeBackstack() {
         if (childFragmentManager.fragments.size > 2) {
             var list = ArrayList<Fragment>()
-            for (i in 2 until childFragmentManager?.fragments.size) {
-                list.add(childFragmentManager.fragments[i])
+            childFragmentManager.fragments.forEach {
+                list.add(it)
+                /* if (it.tag.equals("DETAILS")) {
+                     list.add(it)
+                 }*/
             }
             list.let {
                 if (it.isNotEmpty()) {
@@ -142,7 +146,23 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 childFragmentManager.popBackStack()
             }
         }
-       println("FRAGMENt==="+childFragmentManager.fragments.size)
+        println("FRAGMENT REMOVE ALL===" + childFragmentManager.fragments.size)
+    }
+
+    fun removeAll() {
+        val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+
+        for (fragment in childFragmentManager.fragments) {
+            if (fragment.tag.equals("DETAIL")) {
+                ft.remove(fragment)
+
+
+            }
+        }
+
+        ft.commit()
+        childFragmentManager.popBackStack()
+        println("FRAGMENT REMOVE ALL===" + childFragmentManager.fragments.size)
     }
 
     fun setToolbarTittle(tittle: String) {
@@ -245,10 +265,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                 if (tab?.position == 0) {
+                    removeAll()
                     /**
                      * To Show My Folders screen always  While Switching tab between all pattern and myfolder
                      * without showing My Folder Detail Screen
                      */
+
                     showFilterComponents()
                     setToolbarTittle(
                         getString(
@@ -259,12 +281,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     val currentFragment = fragmentManager?.fragments?.last()
 
                     //  childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
-                    removeBackstack()
                     val fragmentsize = childFragmentManager?.fragments?.size
 
 
                 } else if (tab?.position == 1) {
-                    if (childFragmentManager.fragments.size==2) {
+                    if (childFragmentManager.fragments.size == 2) {
                         hideFilterComponents()
                         setToolbarTittle(getString(R.string.my_folders))
                     }
@@ -348,15 +369,14 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     showToolbar()
                     requireActivity().window
                         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-                        binding?.editSearch?.text?.clear()
-                        //  allPatternsFragment.cleaFilterData()
-                        val tabPosition = binding.tabLayout.selectedTabPosition
-                        if (tabPosition == 0) {
-                            allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
-                        } else {
-                            myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
-                        }
-
+                    binding?.editSearch?.text?.clear()
+                    //  allPatternsFragment.cleaFilterData()
+                    val tabPosition = binding.tabLayout.selectedTabPosition
+                    if (tabPosition == 0) {
+                        allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
+                    } else {
+                        myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
+                    }
 
 
                 }
