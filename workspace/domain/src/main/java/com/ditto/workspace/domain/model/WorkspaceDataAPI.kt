@@ -6,7 +6,7 @@ data class WorkspaceDataAPI (
     var selectedTab: String? ="",
     var status:String="",
     var numberOfPieces: NumberOfPieces?,
-    var patternPiecesFromApi: List<PatternPieceDomain> = emptyList(),
+    var patternPiecesFromApi: List<PatternPieceSFCCAPI> = emptyList(),
     var garmetWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var liningWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList()

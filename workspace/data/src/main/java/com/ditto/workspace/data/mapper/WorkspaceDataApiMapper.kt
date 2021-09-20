@@ -3,8 +3,8 @@ package com.ditto.workspace.data.mapper
 import com.ditto.workspace.domain.model.*
 
 
-fun PatternPieces.toPatternPieceDomain(): PatternPieceDomain {
-    return PatternPieceDomain(
+fun PatternPieces.toPatternPieceDomain(): PatternPieceSFCCAPI {
+    return PatternPieceSFCCAPI(
         id = this.id,
         isCompleted = this.isCompleted
     )
@@ -55,7 +55,7 @@ fun SplicedImageDomain.toOldModel(): SpliceImages {
     )
 }
 
-fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceDomain>): PatternPieces {
+fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>): PatternPieces {
 
     val patternPiece = getIsComplete(this.id, patternPieces)
 
@@ -145,8 +145,8 @@ private fun getPatternPiece(
 
 private fun getIsComplete(
     patternPiecesId: Int?,
-    patternPieces: List<PatternPieceDomain>
-): PatternPieceDomain? {
+    patternPieces: List<PatternPieceSFCCAPI>
+): PatternPieceSFCCAPI? {
     return patternPieces.find { it.id == patternPiecesId }
 }
 
@@ -186,8 +186,8 @@ fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPiec
     )
 }
 
-fun PatternPieceDataDomain.toOldModelOffline(patternPieces: List<PatternPiecesOfflineDomain>): PatternPieces {
-    val patternPiece: PatternPiecesOfflineDomain? = getIsComplete(this.id, patternPieces)
+fun PatternPieceDataDomain.toOldModelOffline(patternPieces: List<PatternPieceSFCCAPI>): PatternPieces {
+    val patternPiece: PatternPieceSFCCAPI? = getIsComplete(this.id, patternPieces)
     return PatternPieces(
         id = this.id,
         cutQuantity = this.cutQuantity,
@@ -229,9 +229,3 @@ fun SplicedImageDomain.toOldOffline(): SpliceImages {
         )
 }
 
-private fun getIsComplete(
-    patternPiecesId: Int?,
-    patternPieces: List<PatternPiecesOfflineDomain>
-): PatternPiecesOfflineDomain? {
-    return patternPieces.find { it.id == patternPiecesId }
-}

@@ -5,7 +5,7 @@ data class CTraceWorkSpacePatternDomain (
     val selectedTab:String?,
     val status:String?,
     val numberOfCompletedPieces:NumberOfPieces?,
-    var patternPieces: List<PatternPieceDomain> = emptyList(),
+    var patternPieces: List<PatternPieceSFCCAPI> = emptyList(),
     var garmetWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
     var liningWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
     var interfaceWorkspaceItems: List<WorkspaceItemDomain> = emptyList()

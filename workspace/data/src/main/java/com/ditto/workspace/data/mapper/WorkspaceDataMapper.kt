@@ -36,8 +36,8 @@ fun NumberOfCompletedPiece.toDomain(): NumberOfPieces {
     )
 }
 
-fun PatternPiece.toDomain(): PatternPieceDomain {
-    return PatternPieceDomain(
+fun PatternPiece.toDomain(): PatternPieceSFCCAPI {
+    return PatternPieceSFCCAPI(
         id = this.id,
         isCompleted = this.isCompleted
     )
@@ -118,15 +118,15 @@ fun com.ditto.storage.data.model.NumberOfCompletedPiecesOffline.toDomain(): Numb
 }
 
 
-fun PatternPieceDomain.toDomain(): com.ditto.storage.data.model.PatternPiecesOffline {
+fun PatternPieceSFCCAPI.toDomain(): com.ditto.storage.data.model.PatternPiecesOffline {
     return com.ditto.storage.data.model.PatternPiecesOffline(
         id = this.id,
         isCompleted = this.isCompleted
     )
 }
 
-fun com.ditto.storage.data.model.PatternPiecesOffline.toDomain(): PatternPieceDomain {
-    return PatternPieceDomain(
+fun com.ditto.storage.data.model.PatternPiecesOffline.toDomain(): PatternPieceSFCCAPI {
+    return PatternPieceSFCCAPI(
         id = this.id,
         isCompleted = this.isCompleted
     )
@@ -179,7 +179,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         selectedTab = this.selectedTab,
         status = this.status,
         numberOfCompletedPieces = this.numberOfCompletedPieces.toDomainOfflinePicecs(),
-        patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain1() },
+        patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain1() }
             .toMutableList(),
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain1() }
@@ -322,9 +322,4 @@ fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): NumberOfPieces {
     )
 }
 
-fun PatternPiecesOffline.toDomain1(): PatternPiecesOfflineDomain {
-    return PatternPiecesOfflineDomain(
-        id = this.id,
-        isCompleted = this.isCompleted
-    )
-}
+

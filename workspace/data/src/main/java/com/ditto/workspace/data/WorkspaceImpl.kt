@@ -25,7 +25,7 @@ class WorkspaceImpl @Inject constructor(
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
-        patternPieces: List<PatternPieceDomain>,
+        patternPieces: List<PatternPieceSFCCAPI>,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems:MutableList<WorkspaceItemDomain>?
