@@ -105,7 +105,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
             methodName = "rename"
         } else if (action == delete) {
             methodName = "remove"
-            hashMap[folderToDelete] =ArrayList()
+            hashMap[folderToDelete] = ArrayList()
         }
         val favReq = FolderRequest(
             OrderFilter(

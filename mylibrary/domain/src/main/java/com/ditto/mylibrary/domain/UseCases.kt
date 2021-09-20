@@ -23,5 +23,6 @@ interface GetMylibraryData {
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>
     fun addFolder(createJson: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
+
 }
 

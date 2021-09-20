@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.FolderRequest
+import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
@@ -54,6 +55,7 @@ class AllPatternsViewModel @Inject constructor(
     var favorite: String = "Favorite"
     var ADD: String = "ADD"
     var RENAME: String = "RENAME"
+    val GETFOLDER = "getFolders"
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -123,9 +125,9 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 if (result.data.responseStatus) {
                     Log.d("Added to Favourite", "FAVOURITE")
-                    if (methodName == "update"){
-                      uiEvents.post(Event.OnFolderCreated)
-                    }else{
+                    if (methodName == "update") {
+                        uiEvents.post(Event.OnFolderCreated)
+                    } else {
                         product.isFavourite = result.data.queryString.equals("method=addToFavorite")
                         uiEvents.post(Event.OnAllPatternResultSuccess)
 
@@ -181,13 +183,43 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onDialogPopupClick() {
-        folderMainList = arrayListOf<MyFolderList>(
-            MyFolderList(1, "New folder"),
-            MyFolderList(2, "Summer clothes"),
-            MyFolderList(3, "Winter wear"),
-            MyFolderList(4, "Emma’s patterns")
+        uiEvents.post(Event.OnAllPatternShowProgress)
+        val folderRequest = GetFolderRequest(
+            OrderFilter(
+                true,
+                CUSTOMER_EMAIL,
+                purchasedPattern = false,
+                subscriptionList = false,
+                trialPattern = true
+            )
         )
-        uiEvents.post(Event.OnPopupClick)
+        disposable += getPatternsData.invokeFolderList(folderRequest, GETFOLDER)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResultFolders(it) }
+
+
+    }
+    private fun handleFetchResultFolders(folderResult: Result<FoldersResultDomain>?) {
+        folderMainList = arrayListOf<MyFolderList>(
+            MyFolderList( "New folder")
+        )
+        when (folderResult) {
+            is Result.OnSuccess -> {
+                folderResult.data.responseStatus.forEach {
+                    folderMainList.add(
+                        MyFolderList(
+                            folderName = it
+                        )
+                    )
+                }
+                uiEvents.post(Event.OnPopupClick)
+            }
+            is Result.OnError -> {
+                handleError(folderResult.error)
+            }
+
+        }
     }
 
     fun navigateToAllPatterns() {
@@ -264,7 +296,7 @@ class AllPatternsViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleAddToFavouriteResult(it, product,methodName) }
+            .subscribeBy { handleAddToFavouriteResult(it, product, methodName) }
 
     }
 

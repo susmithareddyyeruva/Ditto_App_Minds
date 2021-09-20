@@ -314,7 +314,7 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.OnPopupClick -> {
-
+            bottomNavViewModel.showProgress.set(false)
 
             // open dialog
             val layout =

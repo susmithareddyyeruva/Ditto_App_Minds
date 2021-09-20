@@ -25,6 +25,5 @@ interface MyLibraryRepository {
     fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>>
     fun addFolder(requestdata: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
-
     //fun addProject(id : Int): Single<Any>
 }
