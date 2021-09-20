@@ -215,10 +215,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
                         serviceFoundList.add(service)
                     }
-                 } else {
-                    if (service.serviceName.startsWith("DITTO")){
+                } else {
+                    //if (service.serviceName.startsWith("DITTO")){ //todo
                         serviceFoundList.add(service)
-                    }
+                    //}
                 }
 
             }
