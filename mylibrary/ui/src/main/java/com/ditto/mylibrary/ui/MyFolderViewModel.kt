@@ -7,10 +7,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.request.FolderRequest
-import com.ditto.mylibrary.domain.request.GetFolderRequest
-import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
-import com.ditto.mylibrary.domain.request.OrderFilter
+import com.ditto.mylibrary.domain.request.*
 import com.google.gson.Gson
 import core.CUSTOMER_EMAIL
 import core.event.UiEvents
@@ -54,6 +51,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     val delete = "DELETE"
     var folderList = ArrayList<MyFolderData>()
     var folderToDelete: String = ""
+    var folderToRename: String = ""
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -95,19 +93,19 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
             .subscribeBy { handleFetchResult(it) }
     }
 
-    fun addToFolder(product: ProdDomain, folderName: String, clickedItem: String) {
+    fun addToFolder(product: ProdDomain, newFolderName: String, action: String) {
         uiEvents.post(Event.OnMyFolderShowProgress)
         val hashMap = HashMap<String, ArrayList<String>>()
         var methodName: String = ""
         Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
-        if (clickedItem == addFolder) {
+        if (action == addFolder) {
             methodName = "update"
-            hashMap[folderName] = arrayListOf(product.tailornovaDesignId ?: "")
-        } else if (clickedItem == rename) {
+            hashMap[newFolderName] = arrayListOf(product.tailornovaDesignId ?: "")
+        } else if (action == rename) {
             methodName = "rename"
-        } else if (clickedItem == delete) {
+        } else if (action == delete) {
             methodName = "remove"
-            hashMap[folderToDelete] =arrayListOf(product.tailornovaDesignId ?: "")
+            hashMap[folderToDelete] =ArrayList()
         }
         val favReq = FolderRequest(
             OrderFilter(
@@ -121,24 +119,49 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         )
 
 
-        disposable += getPatternsData.addFolder(favReq, methodName = methodName)
-            .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleAddFolderResult(it, product) }
+        if (methodName != "rename") {
+            disposable += getPatternsData.addFolder(favReq, methodName = methodName)
+                .subscribeOn(Schedulers.io())
+                .whileSubscribed { isLoading.set(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { handleFolderApiResult(it, product) }
+        } else {
+            val renameReq = FolderRenameRequest(
+                OrderFilterRename(
+                    true,
+                    CUSTOMER_EMAIL,
+                    purchasedPattern = true,
+                    subscriptionList = true,
+                    trialPattern = false,
+                    oldname = folderToRename,
+                    newname = newFolderName
+                )
+            )
+            disposable += getPatternsData.renameFolder(renameReq, methodName = methodName)
+                .subscribeOn(Schedulers.io())
+                .whileSubscribed { isLoading.set(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { handleFolderApiResult(it, product) }
+        }
 
     }
 
 
-    private fun handleAddFolderResult(
+    private fun handleFolderApiResult(
         result: Result<AddFavouriteResultDomain>,
         product: ProdDomain
     ) {
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.responseStatus) {
-                    product.isFavourite = result.data.queryString.equals("method=addToFavorite")
-                    uiEvents.post(Event.OnNewFolderAdded)
+                    if (result.data.queryString.equals("method=update")) {
+                        uiEvents.post(Event.OnNewFolderAdded)
+                    } else if (result.data.queryString.equals("method=remove")) {
+                        uiEvents.post(Event.OnFolderRemoved)
+                    }
+                    else if (result.data.queryString.equals("method=rename")) {
+                        uiEvents.post(Event.OnFolderRemoved)
+                    }
 
                 }
                 uiEvents.post(Event.OnMyFolderHideProgress)
@@ -338,6 +361,8 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
         object OnCreateFolder : MyFolderViewModel.Event()
         object OnMyFolderResultSuccess : MyFolderViewModel.Event()
         object OnNewFolderAdded : MyFolderViewModel.Event()
+        object OnFolderRemoved : MyFolderViewModel.Event()
+        object OnFolderRenamed : MyFolderViewModel.Event()
         object OnMyFolderShowProgress : MyFolderViewModel.Event()
         object OnMyFolderHideProgress : MyFolderViewModel.Event()
         object OnMyFolderResultFailed : MyFolderViewModel.Event()

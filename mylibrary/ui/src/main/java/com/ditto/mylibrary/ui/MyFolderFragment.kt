@@ -81,7 +81,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             requireContext(),
             viewModel.folderList,
             object : MyFolderAdapter.OnRenameListener {
-                override fun onRenameClicked() {
+                override fun onRenameClicked(oldFolderName: String) {
+                    viewModel.folderToRename=oldFolderName
                     val layout =
                         activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
                     layout?.let {
@@ -93,13 +94,13 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                             getString(R.string.rename_folder_dialog),
                             object :
                                 Utility.CallbackCreateFolderDialogListener {
-                                override fun onCreateClicked(foldername: String, parent: String) {
+                                override fun onCreateClicked(foldername: String, action: String) {
                                     if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
                                         bottomNavViewModel.showProgress.set(true)
                                         viewModel.addToFolder(
                                             product = ProdDomain(),
-                                            folderName = foldername,
-                                            clickedItem = parent
+                                            newFolderName = foldername,
+                                            action = viewModel.rename
                                         )
                                     }
 
@@ -156,8 +157,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                                     viewModel.folderList.clear()
                                     viewModel.addToFolder(
                                         product = ProdDomain(),
-                                        folderName = foldername,
-                                        clickedItem = parent
+                                        newFolderName = foldername,
+                                        action = parent
                                     )
                                 }
                             }
@@ -189,7 +190,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
                 bottomNavViewModel.showProgress.set(false)
             }
-            is MyFolderViewModel.Event.OnNewFolderAdded -> {
+            is MyFolderViewModel.Event.OnNewFolderAdded,MyFolderViewModel.Event.OnFolderRemoved,MyFolderViewModel.Event.OnFolderRenamed -> {
                 if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.folderList.clear()
@@ -214,8 +215,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             bottomNavViewModel.showProgress.set(true)
             viewModel.addToFolder(
                 product = ProdDomain(),
-                folderName = "",
-                clickedItem = "DELETE"
+                newFolderName = "",
+                action = viewModel.delete
             )
         }
 

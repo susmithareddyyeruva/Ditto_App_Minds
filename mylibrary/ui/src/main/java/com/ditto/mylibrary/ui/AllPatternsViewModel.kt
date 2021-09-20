@@ -52,6 +52,8 @@ class AllPatternsViewModel @Inject constructor(
     var currentPageId: Int = 1
     var isFilter: Boolean? = false
     var favorite: String = "Favorite"
+    var ADD: String = "ADD"
+    var RENAME: String = "RENAME"
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -114,14 +116,21 @@ class AllPatternsViewModel @Inject constructor(
 
     private fun handleAddToFavouriteResult(
         result: Result<AddFavouriteResultDomain>,
-        product: ProdDomain
+        product: ProdDomain,
+        methodName: String
     ) {
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.responseStatus) {
                     Log.d("Added to Favourite", "FAVOURITE")
-                    product.isFavourite = result.data.queryString.equals("method=addToFavorite")
-                    uiEvents.post(Event.OnAllPatternResultSuccess)
+                    if (methodName == "update"){
+                      uiEvents.post(Event.OnFolderCreated)
+                    }else{
+                        product.isFavourite = result.data.queryString.equals("method=addToFavorite")
+                        uiEvents.post(Event.OnAllPatternResultSuccess)
+
+                    }
+
 
                 }
                 uiEvents.post(Event.OnAllPatternHideProgress)
@@ -222,10 +231,6 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnCreateFolder)
     }
 
-    fun onCreateFoldersSuccess() {
-        Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnFolderCreated)
-    }
 
     fun addToFolder(product: ProdDomain, folderName: String) {
         val hashMap = HashMap<String, ArrayList<String>>()
@@ -259,7 +264,7 @@ class AllPatternsViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleAddToFavouriteResult(it, product) }
+            .subscribeBy { handleAddToFavouriteResult(it, product,methodName) }
 
     }
 

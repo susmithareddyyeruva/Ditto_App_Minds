@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.data.api
 
+import com.ditto.mylibrary.domain.request.FolderRenameRequest
 import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
@@ -37,6 +38,14 @@ interface MyLibraryFilterService {
     @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppLibraryFolder-Modify")
     fun addFolder(
         @Body body: FolderRequest?,
+        @Header("Authorization") header: String,
+        @Query("method") method: String
+    ): Single<FavouriteResult>
+
+    @Headers("Content-Type: application/json")
+    @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppLibraryFolder-Modify")
+    fun renameFolder(
+        @Body body: FolderRenameRequest?,
         @Header("Authorization") header: String,
         @Query("method") method: String
     ): Single<FavouriteResult>

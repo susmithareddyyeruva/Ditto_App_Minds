@@ -34,6 +34,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
 import kotlinx.android.synthetic.main.my_library_fragment.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -485,9 +488,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     fun switchtoMyFolderFragmentTab() {
         binding.viewPager.currentItem = 1
-        myFolderFragment.getFoldersList()
         hideFilterComponents()
         setToolbarTittle(getString(R.string.my_folders))
+        GlobalScope.launch {
+            delay(1000)
+            myFolderFragment.getFoldersList()
+        }
+
 
     }
 

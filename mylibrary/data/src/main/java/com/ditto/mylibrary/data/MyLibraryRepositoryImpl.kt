@@ -13,6 +13,7 @@ import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.FoldersResultDomain
 import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.request.FolderRenameRequest
 import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
@@ -202,6 +203,51 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         return myLibraryService.addFolder(
             requestdata, "Bearer " + AppState.getToken()!!,
+            method = methodName
+        )
+            .doOnSuccess {
+                logger.d("*****methodName $methodName")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = "Error Fetching data"
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    Log.d("Catch", e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            "Unknown host!"
+                        }
+                        is ConnectException -> {
+                            "No Internet connection available !"
+                        }
+                        else -> {
+                            "Error Fetching data!"
+                        }
+                    }
+                }
+
+                logger.d(it.localizedMessage)
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
+    }
+
+    override fun renameFolder(
+        renameRequest: FolderRenameRequest,
+        methodName: String
+    ): Single<Result<AddFavouriteResultDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return myLibraryService.renameFolder(
+            renameRequest, "Bearer " + AppState.getToken()!!,
             method = methodName
         )
             .doOnSuccess {
