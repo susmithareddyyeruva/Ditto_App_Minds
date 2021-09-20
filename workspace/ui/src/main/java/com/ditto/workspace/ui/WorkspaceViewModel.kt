@@ -47,7 +47,8 @@ import kotlin.collections.ArrayList
 
 class WorkspaceViewModel @Inject constructor(
     private val context: Context,
-    private val getWorkspaceData: GetWorkspaceData
+    private val getWorkspaceData: GetWorkspaceData,
+    private val utility: core.ui.common.Utility,
 ) : BaseViewModel() {
 
     var allPatterns: MutableLiveData<List<PatternsData>> = MutableLiveData()
@@ -107,6 +108,11 @@ class WorkspaceViewModel @Inject constructor(
     var isSingleDelete: Boolean = false
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
+    init {
+        if (core.ui.common.Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
+    }
     //fetch data from repo (via usecase)
     fun fetchWorkspaceData() {
         disposable += getWorkspaceData.invoke()
@@ -199,7 +205,6 @@ class WorkspaceViewModel @Inject constructor(
             }
 
             is Result.OnError -> {
-                //uiEvents.post(Event.HideProgressLoader)
                 uiEvents.post(Event.ApiFailed)
                 Log.d("WorkspaceViewModel", "update api Failed")
             }
@@ -276,7 +281,6 @@ class WorkspaceViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess<*> -> {
                 Log.d("handleInsertDataResult", "OnSuccess")
-                // exit button save to DB
             }
             is Result.OnError<*> -> handleError(result.error)
         }
@@ -325,7 +329,7 @@ class WorkspaceViewModel @Inject constructor(
                 handleError(fetchWorkspaceResult.error)
                 Log.d("handleFetchResultAPI", "Failed")
                 val patternsData: PatternsData =
-                    getPatternDataFromSFCC_Tailernova(tailornovaResult) // todo create new function without fetchWorkspaceResult for offline
+                    getPatternDataFromSFCC_Tailernova(tailornovaResult)
                 data.value = patternsData
                 setWorkspaceView()
                 uiEvents.post(Event.HideProgressLoader)
@@ -430,10 +434,6 @@ class WorkspaceViewModel @Inject constructor(
     fun setCompletedCount(progress: Int) {
         completedPieces.set(completedPieces.get().plus(progress))
         setCompletePieceCount()
-//        val totalCount = Utility.progressCount.get() + progress
-//        data.value?.completedPieces = totalCount
-//        Log.d("TRACE", "Setting progress")
-//        Utility.progressCount.set(totalCount)
         uiEvents.post(Event.updateProgressCount)
     }
 
@@ -472,24 +472,6 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun cutSelectAll(workspaceItems: List<WorkspaceItems>) {
-        cutCount = 0
-        cutType = core.ui.common.Utility.AlertType.CUT_BIN_ALL
-        for (workspaceItem in workspaceItems.distinctBy { it.parentPatternId }) {
-            if (!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted
-                    ?: false)
-            ) {
-                cutCount += workspaceItem?.cutQuantity?.get(4)
-                    ?.let { Character.getNumericValue(it) }
-            }
-        }
-        if (cutCount > 1) {
-            uiEvents.post(Event.ShowCutBinDialog)
-        } else {
-            cutAllPiecesConfirmed(workspaceItems)
-        }
-    }
-
     fun cutIndividualPieces(workspaceItems: WorkspaceItems) {
         cutCount = 0
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
@@ -511,7 +493,6 @@ class WorkspaceViewModel @Inject constructor(
     fun cutIndividualPiecesConfirmed(workspaceItems: WorkspaceItems, cutCount: Int) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-//        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
         completedPieces.set(completedPieces.get() + cutCount)
         setCompletePieceCount()
         if (!data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
@@ -525,7 +506,6 @@ class WorkspaceViewModel @Inject constructor(
     fun cutAllPiecesConfirmed(workspaceItems: List<WorkspaceItems>?) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-//        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
         completedPieces.set(completedPieces.get() + cutCount)
         setCompletePieceCount()
         workspaceItems?.forEach { workspaceItem ->
@@ -543,11 +523,9 @@ class WorkspaceViewModel @Inject constructor(
 
     fun cutCheckBoxClicked(count: Int?, isChecked: Boolean) {
         if (isChecked) {
-//            Utility.progressCount.set(Utility.progressCount.get() + count!!)
             completedPieces.set(completedPieces.get() + count!!)
             setCompletePieceCount()
         } else {
-//            Utility.progressCount.set(Utility.progressCount.get() - count!!)
             completedPieces.set(completedPieces.get() - count!!)
             setCompletePieceCount()
         }
@@ -598,8 +576,6 @@ class WorkspaceViewModel @Inject constructor(
             "toSavedProject : " + data.value?.garmetWorkspaceItemOfflines
         )
         val patternData: PatternsData = setWorkspaceDimensions(data.value!!)
-        //insertData(patternData, closeScreen) // inserting inside DB
-        //updateWSAPI(getWorkspaceInputDataToAPI(patternData))
         var cTraceWorkSpacePatternInputData=getWorkspaceInputDataToAPI(patternData)
 
         updateWSPatternDataStorage(
@@ -631,16 +607,6 @@ class WorkspaceViewModel @Inject constructor(
                 ?: emptyList()
         )
 
-
-        /*for (workspaceItem in workspaceItems) {
-            workspaceItem.xcoordinate =
-                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat())
-            workspaceItem.ycoordinate =
-                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat())
-            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat())
-            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat())
-
-        }*/
         return patternsData
     }
 
@@ -732,7 +698,6 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun clickSaveAndExit() {
-        //createWSAPI(getWorkspaceInputDataToAPI())
         uiEvents.post(Event.OnClickSaveAndExit)
     }
 
@@ -879,13 +844,6 @@ class WorkspaceViewModel @Inject constructor(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
 
-        // uncomment following line to save file in internal app memory
-        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-        /*
-    code to create foler with pattern name
-    val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
-     file.mkdirs()*/
-
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
@@ -910,19 +868,12 @@ class WorkspaceViewModel @Inject constructor(
         patternFolderName: String?
     ): File? {
         var result: File? = null
-        val outputFile: File? = null
         var dittofolder: File? = null
         var subFolder: File? = null
         dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
 
-        // uncomment following line to save file in internal app memory
-        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-        /*
-        code to create foler with pattern name
-        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
-         file.mkdirs()*/
         subFolder = File(dittofolder, "/${patternFolderName}")
 
         if (!dittofolder.exists()) {
@@ -951,12 +902,6 @@ class WorkspaceViewModel @Inject constructor(
         result.copyInputStreamToFile(inputStream)
         return result
     }
-
-
-    suspend fun downloadPatterns(url: String, filename: String, patternFolderName: String?) {
-        performtaskForPatternDownloads(url, filename, patternFolderName)
-    }
-
 
     suspend fun performtaskForPatternDownloads(
         imageUrl: String,
@@ -1013,7 +958,7 @@ class WorkspaceViewModel @Inject constructor(
             numberOfCompletedPiece = patternData.numberOfCompletedPiece?.toDomain(),
             patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
 
-            garmetWorkspaceItems =/*ArrayList(),*/ patternData.garmetWorkspaceItemOfflines?.map {
+            garmetWorkspaceItems = patternData.garmetWorkspaceItemOfflines?.map {
                 it.toWorkspaceItemDomain()
             }?.toMutableList(),
             liningWorkspaceItems = patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
@@ -1029,41 +974,9 @@ class WorkspaceViewModel @Inject constructor(
         return cTraceWorkSpacePatternInputData
     }
 
-    private fun getWorkspaceInputDataToAPI(): CTraceWorkSpacePatternInputData {
-        Log.d("getWorkspace12345", "OnSuccess ")
-        val numberOfCompletedPiece =
-            NumberOfPieces(garment = 0, lining = 0, `interface` = 0)
-
-        var patternPieces = mutableListOf<PatternPieceDomain>()
-        val patternInputData = PatternPieceDomain(id = 11, isCompleted = true)
-        patternPieces.add(patternInputData)
-        val patternInputData2 = PatternPieceDomain(id = 21, isCompleted = true)
-        patternPieces.add(patternInputData2)
-
-
-        val garmetWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
-        val liningWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
-        val interfaceWorkspaceItems: ArrayList<WorkspaceItemDomain> = ArrayList()
-
-
-        val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(
-            tailornaovaDesignId = "1",
-            selectedTab = "ABC",
-            status = "New",
-            numberOfCompletedPiece = numberOfCompletedPiece,
-            patternPieces,
-            garmetWorkspaceItems = garmetWorkspaceItems,
-            liningWorkspaceItems = liningWorkspaceItems,
-            interfaceWorkspaceItems = interfaceWorkspaceItems
-        )
-
-        return cTraceWorkSpacePatternInputData
-    }
-
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
         Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>>> STARTED")
         temp.clear()
-        //
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
 
@@ -1073,8 +986,6 @@ class WorkspaceViewModel @Inject constructor(
                         "${data.value?.patternName}"
                     )
                 }
-
-
 
                 Log.d("DOWNLOAD", "KEY: $key \t VALUE : $value \t availableUri= $availableUri")
 
