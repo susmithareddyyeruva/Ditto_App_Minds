@@ -1,7 +1,7 @@
 package com.ditto.workspace.data.mapper
 
 import com.ditto.storage.data.model.*
-import com.ditto.workspace.domain.model.NumberOfCompletedPieceDomain
+import com.ditto.workspace.domain.model.NumberOfPieces
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
@@ -151,8 +151,8 @@ internal fun PatternsData.toDomain(): Patterns {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
-        numberOfCompletedPieces= this.numberOfCompletedPiece?.toDomainn(),
-        numberOfPieces= this.totalNumberOfPieces?.toDomainn(),
+        numberOfCompletedPieces= this.numberOfCompletedPiece?.toDomain(),
+        numberOfPieces= this.totalNumberOfPieces?.toDomain(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
@@ -162,16 +162,8 @@ internal fun PatternsData.toDomain(): Patterns {
     )
 }
 
-fun NumberOfCompletedPiecesOffline.toDomainn(): NumberOfCompletedPieceDomain {
-    return NumberOfCompletedPieceDomain(
-        garment=this.garment,
-        lining=this.lining,
-        `interface` = this.`interface`
-    )
-}
-
-fun NumberOfCompletedPieceDomain.toDomainn(): NumberOfCompletedPiecesOffline {
-    return NumberOfCompletedPiecesOffline(
+fun NumberOfCompletedPiecesOffline.toDomainn(): NumberOfPieces {
+    return NumberOfPieces(
         garment=this.garment,
         lining=this.lining,
         `interface` = this.`interface`

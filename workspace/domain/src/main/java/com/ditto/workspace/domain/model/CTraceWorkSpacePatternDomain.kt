@@ -4,7 +4,7 @@ data class CTraceWorkSpacePatternDomain (
     val tailornaovaDesignId:String?,
     val selectedTab:String?,
     val status:String?,
-    val numberOfCompletedPieces:NumberOfCompletedPieceDomain?,
+    val numberOfCompletedPieces:NumberOfPieces?,
     var patternPieces: List<PatternPieceDomain> = emptyList(),
     var garmetWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),
     var liningWorkspaceItems: List<WorkspaceItemDomain> = emptyList(),

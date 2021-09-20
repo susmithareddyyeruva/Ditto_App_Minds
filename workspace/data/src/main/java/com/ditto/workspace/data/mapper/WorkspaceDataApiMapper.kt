@@ -3,14 +3,6 @@ package com.ditto.workspace.data.mapper
 import com.ditto.workspace.domain.model.*
 
 
-fun NumberOfCompletedPieceDomain.toDomain(): NumberOfPieces {
-    return NumberOfPieces(
-        garment = this.garment,
-        lining = this.lining,
-        `interface` = this.`interface`
-    )
-}
-
 fun PatternPieces.toPatternPieceDomain(): PatternPieceDomain {
     return PatternPieceDomain(
         id = this.id,

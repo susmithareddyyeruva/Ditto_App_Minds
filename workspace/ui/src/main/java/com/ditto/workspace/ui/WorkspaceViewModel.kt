@@ -955,7 +955,7 @@ class WorkspaceViewModel @Inject constructor(
             tailornaovaDesignId = patternData.id,
             selectedTab = patternData.selectedTab,
             status = patternData.status,
-            numberOfCompletedPiece = patternData.numberOfCompletedPiece?.toDomain(),
+            numberOfCompletedPiece = patternData.numberOfCompletedPiece,
             patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
 
             garmetWorkspaceItems = patternData.garmetWorkspaceItemOfflines?.map {

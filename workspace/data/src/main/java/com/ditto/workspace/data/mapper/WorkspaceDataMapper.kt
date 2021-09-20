@@ -28,8 +28,8 @@ fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternDomain {
 
 }
 
-fun NumberOfCompletedPiece.toDomain(): NumberOfCompletedPieceDomain {
-    return NumberOfCompletedPieceDomain(
+fun NumberOfCompletedPiece.toDomain(): NumberOfPieces {
+    return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
         `interface` = this.`interface`
@@ -314,8 +314,8 @@ fun WorkspaceItemOffline.toDomain1(): WorkspaceItemOfflineDomain {
     )
 }
 
-fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): NumberOfCompletedPieceDomain {
-    return NumberOfCompletedPieceDomain(
+fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): NumberOfPieces {
+    return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
         `interface` = this.`interface`
