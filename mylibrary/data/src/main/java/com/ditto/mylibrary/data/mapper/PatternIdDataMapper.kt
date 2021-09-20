@@ -7,6 +7,7 @@ import com.ditto.mylibrary.domain.model.SplicedImageData
 import com.ditto.storage.data.model.OfflinePatterns
 import com.ditto.storage.data.model.PatternPieceData
 import com.ditto.storage.data.model.SelvageData
+import core.appstate.AppState
 
 internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
     return this.map {
@@ -63,6 +64,7 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
 
 internal fun PatternIdData.toDomain(): OfflinePatterns {
     return OfflinePatterns(
+        custId = AppState.getCustID(),
         id = this.designId,
         tailornaovaDesignId = this.designId,
         name = this.name,

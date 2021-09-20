@@ -9,7 +9,7 @@ import com.ditto.storage.data.model.*
 @Dao
 abstract class OfflinePatternDataDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //todo need to check for using REPLACE
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertOfflinePatternData(offlinePatterns: OfflinePatterns): Long
 
     @Query("SELECT * FROM offline_pattern_data")
@@ -32,7 +32,7 @@ abstract class OfflinePatternDataDao {
     ): Int
 
     //if patternType!= trial >> delete it (keeping trial patterns only )
-    @Query("DELETE from offline_pattern_data where patternType  != :patternType ")
-    abstract fun deletePatternsExceptTrial(patternType: String)
+    @Query("DELETE from offline_pattern_data where patternType  != :patternType and custId == :custId")// for specific user
+    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?)
 
 }

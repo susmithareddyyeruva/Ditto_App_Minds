@@ -11,6 +11,10 @@ data class OfflinePatterns(
 
     //getWorkspace data response
 
+    @ColumnInfo(name="custId")
+    @SerializedName("custId")
+    var custId: String?,
+
     @ColumnInfo(name="tailornaovaDesignId")
     @SerializedName("tailornaovaDesignId")
     var tailornaovaDesignId: String,

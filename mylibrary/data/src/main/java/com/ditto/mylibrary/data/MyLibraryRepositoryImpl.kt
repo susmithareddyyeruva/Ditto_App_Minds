@@ -1,34 +1,32 @@
 package com.ditto.mylibrary.data
 
+import android.content.Context
 import android.util.Log
 import com.ditto.logger.LoggerFactory
-import android.content.Context
-import android.provider.SyncStateContract
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
-import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
+import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.OfflinePatternData
-import core.lib.BuildConfig
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
-import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import core.OS
-import core.models.CommonApiFetchError
 import core.appstate.AppState
+import core.lib.BuildConfig
+import core.models.CommonApiFetchError
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
-import retrofit2.HttpException
 import non_core.lib.error.NoNetworkError
+import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -111,7 +109,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial("trial") //todo
+                offlinePatternDataDao.deletePatternsExceptTrial("trial", AppState.getCustID())
                 offlinePatternDataDao.insertOfflinePatternData(it.toDomain())
                 //insert to db
             }.map {
