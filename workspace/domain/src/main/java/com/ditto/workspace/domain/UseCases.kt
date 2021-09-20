@@ -23,7 +23,7 @@ interface GetWorkspaceData {
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
     fun getUserDetails():Single<Result<LoginUser>>
     fun deleteAndInsert(id: String, patternsData: PatternsData): Single<Any>
-    fun getWorkspaceData(id: String): Single<Result<CTraceWorkSpacePatternDomain>>
+    fun getWorkspaceData(id: String): Single<Result<CTraceWorkSpacePatternInputData>>
     fun updateWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
     fun createWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
 }

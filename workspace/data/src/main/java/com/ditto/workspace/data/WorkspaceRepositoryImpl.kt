@@ -126,7 +126,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternDomain>> {
+    override fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternInputData>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }

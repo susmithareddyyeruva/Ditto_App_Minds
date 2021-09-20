@@ -4,26 +4,17 @@ import com.ditto.storage.data.model.*
 import com.ditto.workspace.data.model.*
 import com.ditto.workspace.domain.model.*
 
-fun WorkspaceResult.toDomain(): WorkspaceResultDomain {
-    return WorkspaceResultDomain(
-        version = this.version,
-        type = this.type,
-        key_property = this.key_property,
-        object_type = this.object_type,
-        c_traceWorkSpacePattern = this.c_traceWorkSpacePattern?.toDomain()
-    )
-}
 
-fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternDomain {
-    return CTraceWorkSpacePatternDomain(
+fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternInputData {
+    return CTraceWorkSpacePatternInputData(
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,
-        numberOfCompletedPieces = this.numberOfCompletedPiece?.toDomain(),
+        numberOfCompletedPiece = this.numberOfCompletedPiece?.toDomain(),
         patternPieces = this.patternPieces?.map { it.toDomain() },
-        garmetWorkspaceItems = this.garmetWorkspaceItems?.map { it.toDomain() },
-        liningWorkspaceItems = this.liningWorkspaceItems?.map { it.toDomain() },
-        interfaceWorkspaceItems = this.interfaceWorkspaceItems?.map { it.toDomain() },
+        garmetWorkspaceItems = this.garmetWorkspaceItems?.map { it.toDomain() }.toMutableList(),
+        liningWorkspaceItems = this.liningWorkspaceItems?.map { it.toDomain() }.toMutableList(),
+        interfaceWorkspaceItems = this.interfaceWorkspaceItems?.map { it.toDomain() }.toMutableList(),
     )
 
 }

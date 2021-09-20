@@ -113,6 +113,7 @@ class WorkspaceViewModel @Inject constructor(
             utility.refreshToken()
         }
     }
+
     //fetch data from repo (via usecase)
     fun fetchWorkspaceData() {
         disposable += getWorkspaceData.invoke()
@@ -173,7 +174,7 @@ class WorkspaceViewModel @Inject constructor(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSPatternDataStorage(it,cTraceWorkSpacePatternInputData) }
+            .subscribeBy { handleWSPatternDataStorage(it, cTraceWorkSpacePatternInputData) }
     }
 
     fun createWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
@@ -232,7 +233,7 @@ class WorkspaceViewModel @Inject constructor(
         if (result == 1) {
             Log.d("handlWSPattenDtaStorage", "Success update storage")
             updateWSAPI(cTraceWorkSpacePatternInputData)
-        }else{
+        } else {
             uiEvents.post(Event.ApiFailed)
             Log.d("handlWSPattenDtaStorage", "failed update storage")
         }
@@ -307,7 +308,7 @@ class WorkspaceViewModel @Inject constructor(
 
 
     private fun handleFetchResultFromAPI(
-        fetchWorkspaceResult: Result<CTraceWorkSpacePatternDomain>,
+        fetchWorkspaceResult: Result<CTraceWorkSpacePatternInputData>,
         tailornovaResult: Result.OnSuccess<OfflinePatternData>
     ) {
         Log.d("handleFetchResultAPI", "is:\t ${fetchWorkspaceResult.toString()}")
@@ -546,20 +547,9 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun saveProject(projectName: String, isCompleted: Boolean?, closeScreen: Boolean) {
-        if (data.value?.status.equals("New")) {
-            //data.value?.status = "Active"
-            //data.value?.id = System.currentTimeMillis().toInt()
-            //data.value?.patternName = projectName
-            data.value?.completedPieces = Utility.progressCount.get()
-            data.value?.selectedTab = Utility.fragmentTabs.get().toString()
-        } else {
-            //data.value?.patternName = projectName
-            data.value?.completedPieces = Utility.progressCount.get()
-            data.value?.selectedTab = Utility.fragmentTabs.get().toString()
-        }
-        if (isCompleted != null && isCompleted) {
-            data.value?.status = "Completed"
-        }
+        data.value?.completedPieces = Utility.progressCount.get()
+        data.value?.selectedTab = Utility.fragmentTabs.get().toString()
+
         if (data.value?.completedPieces == data.value?.totalPieces) {
             data.value?.status = "Completed"
         }
@@ -576,7 +566,7 @@ class WorkspaceViewModel @Inject constructor(
             "toSavedProject : " + data.value?.garmetWorkspaceItemOfflines
         )
         val patternData: PatternsData = setWorkspaceDimensions(data.value!!)
-        var cTraceWorkSpacePatternInputData=getWorkspaceInputDataToAPI(patternData)
+        var cTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(patternData)
 
         updateWSPatternDataStorage(
             "demo-design-id-png",
@@ -586,7 +576,7 @@ class WorkspaceViewModel @Inject constructor(
             cTraceWorkSpacePatternInputData.patternPieces,
             cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
             cTraceWorkSpacePatternInputData.liningWorkspaceItems,
-            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,cTraceWorkSpacePatternInputData
+            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems, cTraceWorkSpacePatternInputData
         )
 
     }
@@ -792,7 +782,7 @@ class WorkspaceViewModel @Inject constructor(
         object OnDownloadComplete : Event()
         object HideProgressLoader : Event()
         object ShowProgressLoader : Event()
-        object ApiFailed: Event()
+        object ApiFailed : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -991,12 +981,12 @@ class WorkspaceViewModel @Inject constructor(
 
                 // if (availableUri == null) {
                 Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                   performtaskForPatternDownloads(
+                performtaskForPatternDownloads(
                     imageUrl = value,
                     filename = key,
                     patternFolderName = data.value?.patternName ?: "Pattern Piece"
                 )
-              //  }
+                //  }
             }
         }
 
@@ -1008,7 +998,7 @@ class WorkspaceViewModel @Inject constructor(
 // mapping WorkspaceAPI response model to PatternData model
 private fun getPatternDataFromSFCC_Tailernova(
     resultTailernova: Result.OnSuccess<OfflinePatternData>,
-    fetchWorkspaceResult: Result.OnSuccess<CTraceWorkSpacePatternDomain>
+    fetchWorkspaceResult: Result.OnSuccess<CTraceWorkSpacePatternInputData>
 ): PatternsData {
 
     return PatternsData(
@@ -1017,7 +1007,7 @@ private fun getPatternDataFromSFCC_Tailernova(
         description = resultTailernova.data.description,
         totalPieces = 0,
         completedPieces = 0,
-        numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPieces,
+        numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPiece,
         totalNumberOfPieces = resultTailernova.data.numberOfPieces,
         selectedTab = fetchWorkspaceResult.data.selectedTab,
         status = fetchWorkspaceResult.data.status,
@@ -1026,22 +1016,22 @@ private fun getPatternDataFromSFCC_Tailernova(
         //descriptionImages TODO will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages.map { it.toOldModel() },
         patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
-        garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems.map {
+        garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems?.map {
             it.toOldModel(
                 resultTailernova.data.patternPieces
             )
-        }.toMutableList(),
+        }?.toMutableList(),
 
-        liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems.map {
+        liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems?.map {
             it.toOldModel(
                 resultTailernova.data.patternPieces
             )
-        }.toMutableList(),
-        interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems.map {
+        }?.toMutableList(),
+        interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems?.map {
             it.toOldModel(
                 resultTailernova.data.patternPieces
             )
-        }.toMutableList()
+        }?.toMutableList()
     )
 }
 

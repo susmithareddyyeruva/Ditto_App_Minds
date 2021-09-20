@@ -27,7 +27,7 @@ interface WorkspaceRepository {
     fun getUserData(): Single<Result<LoginUser>>
     fun getPatternDataByID(id:Int):Single<Result<PatternsData>>
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
-    fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternDomain>>
+    fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternInputData>>
     fun updateWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
     fun createWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
 }
