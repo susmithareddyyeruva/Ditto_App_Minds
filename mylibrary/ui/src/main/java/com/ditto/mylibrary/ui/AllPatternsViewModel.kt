@@ -262,6 +262,10 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("pattern", "onCreateFolderClick : viewModel")
         uiEvents.post(Event.OnCreateFolder)
     }
+    fun onFolderClick() {
+        Log.d("pattern", "onCreateFolderClick : viewModel")
+        uiEvents.post(Event.OnFolderItemClicked)
+    }
 
 
     fun addToFolder(product: ProdDomain, folderName: String) {
@@ -323,6 +327,7 @@ class AllPatternsViewModel @Inject constructor(
         object OnAllPatternSyncClick : Event()
         object OnAllPatternSearchClick : Event()
         object OnCreateFolder : Event()
+        object OnFolderItemClicked : Event()
         object OnFolderCreated : Event()
         object OnAllPatternResultSuccess : Event()
         object OnAllPatternShowProgress : Event()

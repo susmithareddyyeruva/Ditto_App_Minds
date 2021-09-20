@@ -82,7 +82,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             viewModel.folderList,
             object : MyFolderAdapter.OnRenameListener {
                 override fun onRenameClicked(oldFolderName: String) {
-                    viewModel.folderToRename=oldFolderName
+                    viewModel.folderToRename = oldFolderName
                     val layout =
                         activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
                     layout?.let {
@@ -118,7 +118,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             },
             object : MyFolderAdapter.OnDeleteClicked {
                 override fun onDeleteClicked(title: String) {
-                    viewModel.folderToDelete=title
+                    viewModel.folderToDelete = title
                     core.ui.common.Utility.getCommonAlertDialogue(
                         requireContext(),
                         "",
@@ -182,7 +182,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     .addToBackStack(null)
                     ?.replace(R.id.detail_nav_fragment, myFolderDetailFragment, "DETAIL")
                     ?.commit()
-                println("FRAMENT ADDED" + childFragmentManager.fragments.size)
+
 
             }
             is MyFolderViewModel.Event.OnMyFolderListUpdated -> {
@@ -190,7 +190,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
                 bottomNavViewModel.showProgress.set(false)
             }
-            is MyFolderViewModel.Event.OnNewFolderAdded,MyFolderViewModel.Event.OnFolderRemoved,MyFolderViewModel.Event.OnFolderRenamed -> {
+            is MyFolderViewModel.Event.OnNewFolderAdded, MyFolderViewModel.Event.OnFolderRemoved, MyFolderViewModel.Event.OnFolderRenamed -> {
                 if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.folderList.clear()

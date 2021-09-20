@@ -274,6 +274,9 @@ class AllPatternsFragment(
             filterIconSetListener.onFilterApplied(true)
         }
         is AllPatternsViewModel.Event.OnCreateFolder -> {
+
+        }
+        is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.create_folder, null)
             layout?.let {
@@ -305,7 +308,7 @@ class AllPatternsFragment(
                 )
             }
         }
-        is AllPatternsViewModel.Event.OnFolderCreated -> {
+        is AllPatternsViewModel.Event.OnFolderCreated,AllPatternsViewModel.Event.OnFolderItemClicked -> {
             (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
 
         }
@@ -340,6 +343,7 @@ class AllPatternsFragment(
             }
 
         }
+
 
     }
 

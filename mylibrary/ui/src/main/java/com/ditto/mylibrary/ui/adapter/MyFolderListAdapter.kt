@@ -13,7 +13,8 @@ import com.ditto.mylibrary.ui.databinding.ItemFoldersBinding
 class MyFolderListAdapter(
     context: Context,
     data: List<MyFolderList>?,
-    private val createFolderListener: CreateFolderListener
+    private val createFolderListener: CreateFolderListener,
+    private val folderClicked: OnItemFolderClicked
 ) :
     RecyclerView.Adapter<MyFolderListAdapter.MyFolderListHolder>() {
     lateinit var viewModel: AllPatternsViewModel
@@ -58,6 +59,8 @@ class MyFolderListAdapter(
         holder.itemFoldersBinding.dialogHeading.setOnClickListener {
             if (position == 0) {
                 createFolderListener.onNewFolderClicked()
+            }else{
+                folderClicked.onItemClicked(data?.folderName?:"")
             }
         }
 
@@ -74,5 +77,7 @@ class MyFolderListAdapter(
         fun onNewFolderClicked()
     }
 
-
+    interface OnItemFolderClicked {
+        fun onItemClicked(itemName:String)
+    }
 }
