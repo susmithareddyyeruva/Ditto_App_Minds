@@ -2,6 +2,8 @@ package com.ditto.mylibrary.ui
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableChar
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
@@ -25,6 +27,7 @@ class MyLibraryViewModel @Inject constructor(
     val clickedId: ObservableInt = ObservableInt(-1)
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var userId: Int = 0
+    var myLibraryTitle: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 

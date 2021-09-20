@@ -86,7 +86,7 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/avenir_next_it_pro_bold"
                             android:gravity="center"
-                            android:text="@string/pattern_library"
+                            android:text="@{viewModel.myLibraryTitle}"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/size_pattern_lib_text"
                             app:layout_constraintBottom_toBottomOf="parent"

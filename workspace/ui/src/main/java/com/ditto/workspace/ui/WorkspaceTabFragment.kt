@@ -147,8 +147,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         activity?.onBackPressed()
                         baseViewModel.isSaveExitButtonClicked.set(false)
                     } else {
-                        showSaveAndExitPopup()
-//                        moveToLibrary()
+                        downloadSaveAndExit()
                     }
                 }
             }
@@ -708,9 +707,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun getPatternPieceList(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap[viewModel.data.value?.thumbnailImageName.toString()] = viewModel.data.value?.thumbnailImagePath.toString()
+        for (patternItem in viewModel.data.value?.selvages!!) {
+            hashMap[patternItem.imagePath.toString()] = patternItem.imagePath.toString()
+        }
         for (patternItem in viewModel.data.value?.patternPieces!!) {
             hashMap[patternItem.thumbnailImageName.toString()] = patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
+            for (splicedImage in patternItem.splicedImages) {
+                hashMap[splicedImage.imageName.toString()] = splicedImage.imagePath.toString()
+                hashMap[splicedImage.mapImageUrl.toString()] = splicedImage.mapImageUrl.toString()
+            }
         }
         return hashMap
     }
@@ -724,47 +731,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 binding.recyclerViewPieces.smoothScrollBy(200, 0)
             }
             is WorkspaceViewModel.Event.OnClickSaveAndExit -> {
-                if (!baseViewModel.isProjecting.get()) {
-                    binding.buttonSaveAndExit.isEnabled = false
-                    //showSaveAndExitPopup()
-                    //moveToLibrary()
-                    //todo livin code
-                    //showSaveAndExitPopup()
-                    val map = getPatternPieceList()
-
-                    if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                        if (dowloadPermissonGranted()) {
-                            bottomNavViewModel.showProgress.set(true)
-                            viewModel.prepareDowloadList(map)
-                        } else {
-                            requestPermissions(
-                                REQUIRED_PERMISSIONS_DOWNLOAD,
-                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                            )
-
-                        }
-                    } else {
-                        //no internet available
-
-                        showProgress(false)
-                        Utility.getCommonAlertDialogue(
-                            requireContext(),
-                            resources.getString(R.string.api_failed),
-                            resources.getString(R.string.api_failed_message),
-                            resources.getString(R.string.empty_string),
-                            resources.getString(R.string.ok),
-                            this@WorkspaceTabFragment,
-                            Utility.AlertType.UPDATEAPIFAILED,
-                            Utility.Iconype.NONE
-                        )
-                    }
-                    //todo livin code
-
-
-
-                } else {
-                    showWaitingMessage("Projection is under process.. Please wait")
-                }
+                downloadSaveAndExit()
             }
             is WorkspaceViewModel.Event.OnClickSelectAll -> {
                 if (mWorkspaceEditor?.views?.any() ?: false) {
@@ -1067,6 +1034,46 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
         }
+
+    fun downloadSaveAndExit() {
+        if (!baseViewModel.isProjecting.get()) {
+                    binding.buttonSaveAndExit.isEnabled = false
+                    //showSaveAndExitPopup()
+                    //moveToLibrary()
+                    //todo livin code
+                    //showSaveAndExitPopup()
+                    val map = getPatternPieceList()
+
+                    if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(map)
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
+
+                        }
+                    } else {
+                        //no internet available
+                        showProgress(false)
+                        Utility.getCommonAlertDialogue(
+                            requireContext(),
+                            resources.getString(R.string.api_failed),
+                            resources.getString(R.string.api_failed_message),
+                            resources.getString(R.string.empty_string),
+                            resources.getString(R.string.ok),
+                            this@WorkspaceTabFragment,
+                            Utility.AlertType.UPDATEAPIFAILED,
+                            Utility.Iconype.NONE
+                        )
+                    }
+                    //todo livin code
+                } else {
+                    showWaitingMessage("Projection is under process.. Please wait")
+                }
+    }
 
     fun updateTabData(patternsData: PatternsData?) {
         viewModel.data.value = patternsData

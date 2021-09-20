@@ -12,6 +12,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
@@ -31,6 +32,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
@@ -59,13 +61,6 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     val showWorkspaceOrRenewSubscriptionButton: ObservableBoolean = ObservableBoolean(false)
     val isDataReceived: ObservableBoolean = ObservableBoolean(false)
 
-
-
-
-    init {
-
-    }
-
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -76,14 +71,24 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         }
     }
 
-    //fetch data from repo (via usecase)
-    /* fun fetchOnPatternData() {
-         disposable += getPattern.invoke()
-             .whileSubscribed { it }
-             .subscribeOn(Schedulers.io())
-             .observeOn(AndroidSchedulers.mainThread())
-             .subscribeBy { handleFetchResult(it) }
-     }*/
+    //fetch data from offline
+    fun fetchOfflinePatterns() {
+        disposable += getPattern.getOfflinePatternById("demo-design-id-png")
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleOfflineFetchResult(it) }
+    }
+
+    private fun handleOfflineFetchResult(result: Result<PatternIdData>) {
+        when (result) {
+            is Result.OnSuccess -> {
+                data.value = result.data
+                uiEvents.post(Event.OnDataUpdated)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
 
     fun fetchPattern() {
         disposable += getPattern.getPattern("demo-design-id-png")

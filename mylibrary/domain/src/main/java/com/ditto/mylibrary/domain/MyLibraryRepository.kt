@@ -1,11 +1,8 @@
 package com.ditto.mylibrary.domain
 
 import com.ditto.login.domain.model.LoginUser
-import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
-import com.ditto.mylibrary.domain.model.PatternIdData
-import com.ditto.mylibrary.domain.model.PatternIdResponse
 import io.reactivex.Single
 import non_core.lib.Result
 
@@ -20,7 +17,8 @@ interface MyLibraryRepository {
     fun removePattern(patternId: String): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
-
+    fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>>
+    fun getOfflinePatternById(id: String): Single<Result<PatternIdData>>
 
     //fun addProject(id : Int): Single<Any>
 }

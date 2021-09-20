@@ -26,6 +26,7 @@ import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -119,7 +120,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     fun setToolbarTittle(tittle: String) {
-        binding.toolbar.header_view_title.text = tittle
+        viewModel.myLibraryTitle.set(tittle)
     }
 
     private fun applyFilter() {
@@ -194,24 +195,33 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.header_view_title.text =
-            getString(R.string.pattern_library_count, AppState.getPatternCount())
+        viewModel.myLibraryTitle.set(
+            getString(R.string.pattern_library_count, AppState.getPatternCount()))
     }
 
     private fun setTabsAdapter() {
-        showFilterComponents()
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
-        adapter.addFragment(
-            allPatternsFragment, getString(
-                R.string.all_patterns
-            ), this, this
-        )
-        adapter.addFragment(
-            myFolderFragment, getString(
-                R.string.my_folders
-            ), this, this
-        )
+        if(NetworkUtility.isNetworkAvailable(context)){
+            showFilterComponents()
+            adapter.addFragment(
+                allPatternsFragment, getString(
+                    R.string.all_patterns
+                ), this, this
+            )
+            adapter.addFragment(
+                myFolderFragment, getString(
+                    R.string.my_folders
+                ), this, this
+            )
+        }else{
+            hideFilterComponents()
+            adapter.addFragment(
+                allPatternsFragment, getString(
+                    R.string.offline_patterns
+                ), this, this
+            )
+        }
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(view_pager)
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -224,13 +234,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                      */
                     childFragmentManager.fragments[1]?.fragmentManager?.popBackStackImmediate()
                     showFilterComponents()
-                    binding.toolbar.header_view_title.text =
-                        getString(R.string.pattern_library_count, AppState.getPatternCount())
+                    viewModel.myLibraryTitle.set(
+                        getString(R.string.pattern_library_count, AppState.getPatternCount()))
 
                 } else {
                     val currentFragment = fragmentManager?.fragments?.last()
                     hideFilterComponents()
-                    binding.toolbar.header_view_title.text = getString(R.string.my_folders)
+                    viewModel.myLibraryTitle.set( getString(R.string.my_folders))
                 }
             }
 
@@ -369,8 +379,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
         }
 
-    override fun onSetCount(tittle: String) {
-        binding.toolbar.header_view_title.text = tittle
+    override fun onSetCount(title: String) {
+        viewModel.myLibraryTitle.set(title)
     }
 
     override fun onFilterApplied(isApplied: Boolean) {

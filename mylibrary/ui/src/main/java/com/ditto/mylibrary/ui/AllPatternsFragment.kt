@@ -23,6 +23,7 @@ import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
 import com.ditto.mylibrary.ui.util.Utility.Companion.getAlertDialogFolder
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -77,25 +78,29 @@ class AllPatternsFragment(
         AndroidInjection.inject(requireActivity())
         setUIEvents()
         initializeAdapter()
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            if (viewModel.patternArrayList.isEmpty()) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.fetchOnPatternData(
-                    viewModel.createJson(
-                        currentPage,
-                        value = ""
-                    )
-                )  //Initial API call
-            } else {
-                updatePatterns()
-                //  setFilterMenuAdapter(0)
-                if (viewModel.isFilter == true) {
-                    filterIcons.onFilterApplied(true)
-                } else
-                    filterIcons.onFilterApplied(false)
+        if (AppState.getIsLogged()) {
+            if(NetworkUtility.isNetworkAvailable(context)){
+                if (!Utility.isTokenExpired()) {
+                    if (viewModel.patternArrayList.isEmpty()) {
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(
+                            viewModel.createJson(
+                                currentPage,
+                                value = ""
+                            )
+                        )  //Initial API call
+                    } else {
+                        updatePatterns()
+                        //  setFilterMenuAdapter(0)
+                        if (viewModel.isFilter == true) {
+                            filterIcons.onFilterApplied(true)
+                        } else
+                            filterIcons.onFilterApplied(false)
+                    }
+                }
+            }else{
+                viewModel.fetchOfflinePatterns()
             }
-
-
         }
 
 
@@ -319,7 +324,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-            setPatternCount.onSetCount(getString(R.string.pattern_library_count,AppState.getPatternCount()))
+            setPatternCount.onSetCount(getString(R.string.pattern_library_count,viewModel.totalPatternCount))
 
             /**
              * Getting ALL PATTERNS LIST

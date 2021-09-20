@@ -69,7 +69,35 @@ class AllPatternsViewModel @Inject constructor(
         }
     }
 
-    //fetch data from repo (via usecase)
+    //fetch data from offline
+    fun fetchOfflinePatterns() {
+        uiEvents.post(Event.OnShowProgress)
+        disposable += getPatternsData.getOfflinePatternDetails()
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleOfflineFetchResult(it) }
+    }
+
+    private fun handleOfflineFetchResult(result: Result<List<ProdDomain>>) {
+        uiEvents.post(Event.OnHideProgress)
+        when (result) {
+            is Result.OnSuccess -> {
+                patternArrayList.clear()
+                patternArrayList.addAll(result.data)
+                totalPatternCount = patternArrayList.size ?: 0
+                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
+                totalPageCount = patternArrayList.size ?: 0
+                currentPageId = patternArrayList.size ?: 0
+                uiEvents.post(Event.OnResultSuccess)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+    
+    
+//fetch data from repo (via usecase)
     fun fetchOnPatternData(
         createJson: MyLibraryFilterRequestData
     ) {

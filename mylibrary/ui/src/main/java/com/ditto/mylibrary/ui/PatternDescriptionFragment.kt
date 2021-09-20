@@ -30,6 +30,7 @@ import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -98,7 +99,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             arguments?.getString("clickedTailornovaID").toString()?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()?.let { viewModel.clickedOrderNumber.set(it) }
             bottomNavViewModel.showProgress.set(true)
-            viewModel.fetchPattern()
+            if(NetworkUtility.isNetworkAvailable(context)) {
+                viewModel.fetchPattern()
+            }else{
+                viewModel.fetchOfflinePatterns()
+            }
             setUIEvents()
         } else {
             setPatternImage()

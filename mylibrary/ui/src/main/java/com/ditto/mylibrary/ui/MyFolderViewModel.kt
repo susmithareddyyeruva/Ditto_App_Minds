@@ -38,6 +38,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var myfolderList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
     var myfolderArryList = mutableListOf<ProdDomain>()
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
+    var folderTitle: String? = ""
     var myfolderMap = HashMap<String, List<String>>()
     val myfolderMenu = hashMapOf<String, ArrayList<FilterItems>>()
     val resultmapFolder = hashMapOf<String, ArrayList<String>>()

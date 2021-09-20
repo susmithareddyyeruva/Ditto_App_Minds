@@ -10,10 +10,13 @@ import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
+import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
+import com.ditto.mylibrary.domain.model.OfflinePatternData
 import core.lib.BuildConfig
 import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.PatternsDao
@@ -220,6 +223,26 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     FilterError(errorMessage, it)
                 )
             }
+    }
+
+    override fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>> {
+        return Single.fromCallable{
+            val offlinePatternData = offlinePatternDataDao.getTailernovaData()
+            if(offlinePatternData != null)
+                Result.withValue(offlinePatternData.toDomain())
+            else
+                Result.withError(FilterError(""))
+        }
+    }
+
+    override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
+        return Single.fromCallable{
+            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id)
+            if(offlinePatternData != null)
+                Result.withValue(offlinePatternData.toPatternIDDomain())
+            else
+                Result.withError(FilterError(""))
+        }
     }
 
 

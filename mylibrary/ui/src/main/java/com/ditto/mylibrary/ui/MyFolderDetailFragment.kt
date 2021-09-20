@@ -69,9 +69,9 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
         val args = arguments
-        val tittle = args?.getString("TITTLE", "")
+        viewModel.folderTitle = args?.getString("TITTLE", "")
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()
-        (parentFragment as MyLibraryFragment?)?.setToolbarTittle(getString(R.string.myfolder_detail_count,tittle,AppState.getPatternCount()))
+        viewModel.folderTitle?.let { (parentFragment as MyLibraryFragment?)?.setToolbarTittle(it) }
 
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
@@ -150,6 +150,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         myFolderDetailListAdapter.setListData(items = viewModel.myfolderArryList)
         binding.tvFilterResult.text =
             context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
+        (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,viewModel.folderTitle,viewModel.totalPatternCount))
+
     }
 
     private fun setUIEvents() {
@@ -214,7 +216,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
            // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
-
         }
 
 
@@ -306,8 +307,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnResultSuccess -> {
             if(isAdded){
                 baseViewModel.totalCount = viewModel.totalPatternCount
-                // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
-
                 /**
                  * Getting ALL PATTERNS LIST
                  */
