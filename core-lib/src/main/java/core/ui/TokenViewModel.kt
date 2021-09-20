@@ -36,7 +36,7 @@ class TokenViewModel @Inject constructor(
                 RxBus.publish(RxBusEvent.isTokenRefreshed(true))
             }
             is Result.OnError -> {
-                AppState.saveToken("",0)
+//                AppState.saveToken("",0)
             }
         }
     }

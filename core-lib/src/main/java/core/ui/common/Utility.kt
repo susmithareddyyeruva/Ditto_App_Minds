@@ -52,7 +52,7 @@ class Utility @Inject constructor(
 
 
     fun refreshToken(){
-        AppState.saveToken("",0)
+//        AppState.saveToken("",0)
         tokenViewModel.calltoken()
     }
 
