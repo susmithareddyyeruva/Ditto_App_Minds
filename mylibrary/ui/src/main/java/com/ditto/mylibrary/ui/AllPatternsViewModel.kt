@@ -235,19 +235,6 @@ class AllPatternsViewModel @Inject constructor(
         )
     }
 
-    fun updateProjectComplete(patternId: Int) {
-        disposable += getPatternsData.completeProject(patternId)
-            .whileSubscribed { it }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { uiEvents.post(Event.OnDataUpdated) }
-    }
-
-    fun removePattern(patternId: Int) {
-        Log.d("pattern", "Removed")
-    }
-
-
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.OnAllPatternSyncClick)

@@ -16,10 +16,6 @@ interface GetMylibraryData {
     fun invoke(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getUser(): Single<Result<LoginUser>>
     fun getPattern(get: Int): Single<Result<MyLibraryData>>
-    //fun addProject( id : Int): Single<Any>
-    fun removeProject(patternId: Int): Single<Any>
-    fun completeProject(patternId: Int): Single<Any>
-    fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>
     fun addFolder(createJson: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>

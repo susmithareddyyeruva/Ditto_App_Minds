@@ -75,25 +75,10 @@ class MyLibraryViewModel @Inject constructor(
         }
     }
 
-    fun activeProjects() {
-        Log.d("uiEvents", "activeProjects")
-    }
-
-    fun completedProjects() {
-        uiEvents.post(Event.completedProjects)
-    }
-
-    fun allPatterns() {
-        Log.d("uiEvents", "allPatterns")
-    }
-
     /**
      * Events for this view model
      */
     sealed class Event {
-        object activeProjects : Event()
-        object completedProjects : Event()
-        object allPatterns : Event()
         object OnFilterClick : Event()
         object MyLibrarySync : Event()
         object OnSearchClick : Event()

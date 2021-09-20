@@ -30,19 +30,6 @@ class MyLibraryImpl @Inject constructor(
     override fun getPattern(get: Int): Single<Result<MyLibraryData>> {
         return myLibraryRepository.getPatternData(get)
     }
-
-    override fun removeProject(patternId: Int): Single<Any> {
-        return myLibraryRepository.removePattern(patternId)
-    }
-
-    override fun completeProject(patternId: Int): Single<Any> {
-        return myLibraryRepository.completeProject(patternId)
-    }
-
-    override fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
-        return myLibraryRepository.getFilteredPatterns(createJson)
-    }
-
     override fun invokeFolderList(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>> {
         return myLibraryRepository.getMyLibraryFolderData(requestdata,methodName)
     }

@@ -10,7 +10,6 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
@@ -304,9 +303,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyLibraryViewModel.Event) =
         when (event) {
-            is MyLibraryViewModel.Event.completedProjects -> {
-                Toast.makeText(context, "adadjhf", Toast.LENGTH_SHORT).show()
-            }
+
             MyLibraryViewModel.Event.OnFilterClick -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
