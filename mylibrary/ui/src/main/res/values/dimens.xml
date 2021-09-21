@@ -19,6 +19,7 @@
     <dimen name="text_heading">20sp</dimen>
     <dimen name="text_add_project">12sp</dimen>
     <dimen name="text_desc">14sp</dimen>
+    <dimen name="text_18">18sp</dimen>
     <dimen name="text_count">16sp</dimen>
     <dimen name="dimen_15">15dp</dimen>
     <dimen name="dimen_0">0dp</dimen>
