@@ -3,7 +3,7 @@ package com.ditto.home.ui
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.ditto.home.domain.MyLibraryUseCase
+import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.storage.domain.StorageManager
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     val storageManager: StorageManager,
-    val useCase: MyLibraryUseCase,
+    val useCase: HomeUsecase,
     private val utility: Utility
 ) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
@@ -134,7 +134,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchData() {
         uiEvents.post(Event.OnShowProgress)
-        disposable += useCase.getMyLibraryDetails(
+        disposable += useCase.getHomePatternsData(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(
                 com.ditto.home.domain.request.OrderFilter(
                     true,

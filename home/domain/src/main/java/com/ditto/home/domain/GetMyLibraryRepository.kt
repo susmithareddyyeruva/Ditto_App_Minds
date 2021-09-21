@@ -6,5 +6,5 @@ import io.reactivex.Single
 import non_core.lib.Result
 
 interface GetMyLibraryRepository {
-    fun getMyLibraryDetails(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>>
+    fun getHomePatternsData(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>>
 }

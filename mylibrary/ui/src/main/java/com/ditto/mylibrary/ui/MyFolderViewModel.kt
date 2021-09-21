@@ -52,6 +52,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     var folderList = ArrayList<MyFolderData>()
     var folderToDelete: String = ""
     var folderToRename: String = ""
+    var myFolderDetailHeader: String = ""
 
     fun onItemClickPattern(id: String) {
         if (id == "10140549") {
@@ -158,8 +159,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                         uiEvents.post(Event.OnNewFolderAdded)
                     } else if (result.data.queryString.equals("method=remove")) {
                         uiEvents.post(Event.OnFolderRemoved)
-                    }
-                    else if (result.data.queryString.equals("method=rename")) {
+                    } else if (result.data.queryString.equals("method=rename")) {
                         uiEvents.post(Event.OnFolderRemoved)
                     }
 
@@ -284,15 +284,39 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     }
 
     fun createJson(currentPage: Int, value: String): MyLibraryFilterRequestData {
-        val filterCriteria = MyLibraryFilterRequestData(
-            OrderFilter(
-                true,
-                CUSTOMER_EMAIL,
-                true,
-                true,
-                trialPattern = false
-            ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
-        )
+        val filterCriteria: MyLibraryFilterRequestData
+        if (myFolderDetailHeader == "Owned") {
+            /**
+             * If is owned folder Purchase pattern will be true and folder name will be empty
+             */
+            filterCriteria = MyLibraryFilterRequestData(
+                OrderFilter(
+                    false,
+                    CUSTOMER_EMAIL,
+                    purchasedPattern = true,
+                    subscriptionList = false,
+                    trialPattern = false,
+                    FolderName = ""
+                ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
+            )
+        } else {
+            /**
+             *  all query will be true folder name not be empty
+             */
+            filterCriteria = MyLibraryFilterRequestData(
+                OrderFilter(
+                    true,
+                    CUSTOMER_EMAIL,
+                    purchasedPattern = false,
+                    subscriptionList = false,
+                    trialPattern = false,
+                    FolderName = myFolderDetailHeader
+                ), pageId = currentPage,
+                patternsPerPage = 12,
+                searchTerm = value
+            )
+        }
+
         val json1 = Gson().toJson(myfolderMenu)
         Log.d("JSON===", json1)
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()

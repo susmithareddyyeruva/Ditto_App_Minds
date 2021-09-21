@@ -67,6 +67,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                     AppState.getPatternCount()
                 )
             )
+            viewModel.myFolderDetailHeader = tittle ?: ""
         }
 
 
@@ -79,6 +80,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            viewModel.myfolderArryList.clear()
+            //Initial API call
             if (viewModel.myfolderArryList.isEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(
@@ -94,14 +97,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                     (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
                 } else
                     (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
-                /*  if (viewModel.isFilterApplied == true) {
-                      (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
-                  } else {
-                      (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
-                  }*/
+                if (viewModel.isFilterApplied == true) {
+                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
+                } else {
+                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
+                }
 
             }
-
 
         }
 
@@ -120,6 +122,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
 
     }
+
 
     fun cleaFilterData() {
         viewModel.resultmapFolder.clear()

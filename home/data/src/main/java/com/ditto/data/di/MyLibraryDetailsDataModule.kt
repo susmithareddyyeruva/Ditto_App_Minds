@@ -3,7 +3,7 @@ package com.ditto.data.di
 import com.ditto.data.GetHomeDataUseCaseImpl
 import com.ditto.data.MyLibraryRepositoryImpl
 import com.ditto.home.domain.GetMyLibraryRepository
-import com.ditto.home.domain.MyLibraryUseCase
+import com.ditto.home.domain.HomeUsecase
 import dagger.Binds
 import dagger.Module
 
@@ -21,6 +21,6 @@ internal interface MyLibraryUseCaseModule {
     @Binds
     fun bindMyLibraryUsecase(
         getHomeDataUseCaseImpl: GetHomeDataUseCaseImpl
-    ): MyLibraryUseCase
+    ): HomeUsecase
 
 }

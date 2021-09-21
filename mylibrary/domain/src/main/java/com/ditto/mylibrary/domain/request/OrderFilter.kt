@@ -5,5 +5,6 @@ data class OrderFilter(
     var emailID: String,
     var purchasedPattern: Boolean,
     var subscriptionList: Boolean,
-    var trialPattern:Boolean?=false
+    var trialPattern:Boolean?=false,
+    var FolderName:String?=""
 )
