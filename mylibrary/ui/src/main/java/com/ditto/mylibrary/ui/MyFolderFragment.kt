@@ -19,6 +19,8 @@ import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.create_folder.*
+import kotlinx.android.synthetic.main.layout_rename.*
 import javax.inject.Inject
 
 class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment(),
@@ -90,7 +92,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                      */
                     viewModel.folderToRename = oldFolderName
                     val layout =
-                        activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
+                        activity?.layoutInflater?.inflate(R.layout.layout_rename, renameRoot)
                     layout?.let {
                         Utility.renameFolderAlertDialog(
                             requireActivity(),
@@ -150,7 +152,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         when (event) {
             is MyFolderViewModel.Event.OnMyFolderCreateFolderClicked -> {
                 val layout =
-                    activity?.layoutInflater?.inflate(R.layout.create_folder, null)
+                    activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
                 layout?.let {
                     Utility.createFolderAlertDialogForMyFolder(
                         requireActivity(),
