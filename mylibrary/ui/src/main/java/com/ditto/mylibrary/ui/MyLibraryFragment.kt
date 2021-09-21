@@ -112,7 +112,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             requireActivity().onBackPressed()
             removeAll()
             val fr = childFragmentManager.fragments.size
-            println("ON BACK FRAGMENT SIZE" + fr)
             if (tabPosition == 1) {
                 hideFilterComponents()
                 setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
