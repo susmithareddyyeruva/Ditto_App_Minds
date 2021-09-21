@@ -46,16 +46,6 @@ class WorkspaceRepositoryImpl @Inject constructor(
         loggerFactory.create(WorkspaceRepositoryImpl::class.java.simpleName)
     }
 
-    /**
-     * fetches PatternsData from local first. if not available locally, fetches from server
-     */
-    override fun getWorkspaceData(): Single<Result<List<PatternsData>>> {
-        return Single.fromCallable {
-            //fetch from local DB
-            val data = patternsDao.getPatternsData()
-            Result.withValue(data.toDomain())
-        }
-    }
 
     override fun insertData(patternsData: PatternsData): Single<Any> {
         return Single.fromCallable {

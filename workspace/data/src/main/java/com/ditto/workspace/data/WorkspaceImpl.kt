@@ -12,9 +12,6 @@ import javax.inject.Inject
 class WorkspaceImpl @Inject constructor(
     private val workspaceRepository: WorkspaceRepository
 ) : GetWorkspaceData {
-    override fun invoke(): Single<Result<List<PatternsData>>> {
-        return workspaceRepository.getWorkspaceData()
-    }
 
     override fun insert(patternsData: PatternsData): Single<Any> {
         return workspaceRepository.insertData(patternsData)

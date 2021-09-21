@@ -9,7 +9,6 @@ import non_core.lib.Result
  * Repository interface defining methods to be used by upper (UI/UseCase) layer
  */
 interface WorkspaceRepository {
-    fun getWorkspaceData(): Single<Result<List<PatternsData>>>
     fun insertData(patternsData: PatternsData): Single<Any>
     fun insertWorkspaceData(patternsData: WorkspaceDataAPI): Single<Any>
     //fun updateOfflineStorageData(tailornaovaDesignId:Int,selectedTab: String,status:String): Single<Any>

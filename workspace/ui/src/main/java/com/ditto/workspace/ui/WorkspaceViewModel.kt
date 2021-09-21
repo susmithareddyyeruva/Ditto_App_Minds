@@ -114,15 +114,6 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    //fetch data from repo (via usecase)
-    fun fetchWorkspaceData() {
-        disposable += getWorkspaceData.invoke()
-            .whileSubscribed { it }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResult(it) }
-    }
-
     fun fetchTailernovaDataByID(id: String) {
         disposable += getWorkspaceData.getTailernovaDataByID(id)
             .whileSubscribed { it }
