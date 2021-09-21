@@ -1,8 +1,6 @@
 package com.ditto.mylibrary.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,6 +28,8 @@ import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.create_folder.*
+import kotlinx.android.synthetic.main.dialog_addfolder.*
 import javax.inject.Inject
 
 
@@ -78,6 +78,9 @@ class AllPatternsFragment(
         setUIEvents()
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            /**
+             * API CALL for Getting All Patterns
+             */
             if (viewModel.patternArrayList.isEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(
@@ -98,13 +101,7 @@ class AllPatternsFragment(
         }
 
         binding.imageClearFilter.setOnClickListener {
-            viewModel.resultMap.clear()
-            viewModel.patternArrayList.clear()
-            viewModel.menuList.clear()
-            viewModel.setList()
-            currentPage = 1
-            isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+            cleaFilterData()
         }
 
         binding.textviewClear.setOnClickListener {
@@ -273,7 +270,7 @@ class AllPatternsFragment(
         }
         is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
-                activity?.layoutInflater?.inflate(R.layout.create_folder, null)
+                activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
             layout?.let {
                 com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialog(
                     requireActivity(),
@@ -285,6 +282,9 @@ class AllPatternsFragment(
                     object :
                         com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
                         override fun onCreateClicked(folderName: String, parent: String) {
+                            /**
+                             * Pop up  for Create Folder
+                             */
                             if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                                 viewModel.addToFolder(
                                     product = ProdDomain(),
@@ -296,6 +296,7 @@ class AllPatternsFragment(
                         }
 
                         override fun onCancelClicked() {
+                            logger.d("Cancel Clicked")
 
                         }
                     },
@@ -303,7 +304,7 @@ class AllPatternsFragment(
                 )
             }
         }
-        is AllPatternsViewModel.Event.OnFolderCreated,AllPatternsViewModel.Event.OnFolderItemClicked -> {
+        is AllPatternsViewModel.Event.OnFolderCreated, AllPatternsViewModel.Event.OnFolderItemClicked -> {
             (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
 
         }
@@ -314,9 +315,11 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnPopupClick -> {
             bottomNavViewModel.showProgress.set(false)
 
-            // open dialog
+            /**
+             * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
+             */
             val layout =
-                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, null)
+                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, addFolderRoot)
             layout?.let {
                 getAlertDialogFolder(
                     requireActivity(), viewModel.folderMainList, viewModel,
@@ -325,12 +328,12 @@ class AllPatternsFragment(
                             projectName: String,
                             isCompleted: Boolean?
                         ) {
-                            Log.d("onSaveButtonClicked", "Allpattern")
+                            logger.d("onSaveButtonClicked")
 
                         }
 
                         override fun onExitButtonClicked() {
-                            Log.d("onExitButtonClicked", "Allpattern")
+                            logger.d("onExitButtonClicked")
                         }
                     },
                     Utility.AlertType.DEFAULT
@@ -369,27 +372,15 @@ class AllPatternsFragment(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        // TODO("Not yet implemented")
+
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (data?.data.toString() == "KEY_SEARCH") {
-                Log.d("MAP  RESULT== ", "IF")
-                //Re directing to Video Screen
-
-            }
-        }
-    }
-
 
     fun onSyncClick() {
         if (viewModel != null) {
