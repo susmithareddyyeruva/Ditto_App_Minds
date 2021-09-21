@@ -6,7 +6,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
@@ -31,7 +31,7 @@ import kotlin.collections.component2
 import kotlin.collections.set
 
 class AllPatternsViewModel @Inject constructor(
-    private val getPatternsData: GetMylibraryData
+    private val libraryUseCase: MyLibraryUseCase
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
@@ -81,7 +81,7 @@ class AllPatternsViewModel @Inject constructor(
     ) {
 
         uiEvents.post(Event.OnAllPatternShowProgress)
-        disposable += getPatternsData.invoke(createJson)
+        disposable += libraryUseCase.invoke(createJson)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
@@ -193,7 +193,7 @@ class AllPatternsViewModel @Inject constructor(
                 trialPattern = true
             )
         )
-        disposable += getPatternsData.invokeFolderList(folderRequest, GETFOLDER)
+        disposable += libraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResultFolders(it) }
@@ -283,7 +283,7 @@ class AllPatternsViewModel @Inject constructor(
 
         }
 
-        disposable += getPatternsData.addFolder(favReq, methodName)
+        disposable += libraryUseCase.addFolder(favReq, methodName)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())

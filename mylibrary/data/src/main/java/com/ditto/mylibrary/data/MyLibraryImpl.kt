@@ -1,8 +1,8 @@
 package com.ditto.mylibrary.data
 
 import com.ditto.login.domain.model.LoginUser
-import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.FoldersResultDomain
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class MyLibraryImpl @Inject constructor(
     private val myLibraryRepository: MyLibraryRepository
-) : GetMylibraryData {
+) : MyLibraryUseCase {
     override fun invoke(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         return myLibraryRepository.getMyLibraryData(createJson)
     }

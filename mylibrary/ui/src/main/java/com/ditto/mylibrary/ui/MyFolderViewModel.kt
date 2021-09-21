@@ -5,7 +5,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.*
 import com.google.gson.Gson
@@ -23,7 +23,7 @@ import non_core.lib.whileSubscribed
 import org.json.JSONObject
 import javax.inject.Inject
 
-class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMylibraryData) :
+class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibraryUseCase) :
     BaseViewModel() {
     private val uiEvents = UiEvents<MyFolderViewModel.Event>()
     val events = uiEvents.stream()
@@ -88,7 +88,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
     ) {
 
         uiEvents.post(Event.OnMyFolderShowProgress)
-        disposable += getPatternsData.invoke(createJson)
+        disposable += myLibraryUseCase.invoke(createJson)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
@@ -121,7 +121,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
 
 
         if (methodName != "rename") {
-            disposable += getPatternsData.addFolder(favReq, methodName = methodName)
+            disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)
                 .subscribeOn(Schedulers.io())
                 .whileSubscribed { isLoading.set(it) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -138,7 +138,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                     newname = newFolderName
                 )
             )
-            disposable += getPatternsData.renameFolder(renameReq, methodName = methodName)
+            disposable += myLibraryUseCase.renameFolder(renameReq, methodName = methodName)
                 .subscribeOn(Schedulers.io())
                 .whileSubscribed { isLoading.set(it) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -229,7 +229,7 @@ class MyFolderViewModel @Inject constructor(private val getPatternsData: GetMyli
                 trialPattern = true
             )
         )
-        disposable += getPatternsData.invokeFolderList(folderRequest, GETFOLDER)
+        disposable += myLibraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFolderFetchResult(it) }

@@ -12,7 +12,7 @@ import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import io.reactivex.Single
 import non_core.lib.Result
 
-interface GetMylibraryData {
+interface MyLibraryUseCase {
     fun invoke(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getUser(): Single<Result<LoginUser>>
     fun getPattern(get: Int): Single<Result<MyLibraryData>>

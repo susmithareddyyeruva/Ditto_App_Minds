@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -18,7 +18,7 @@ import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
-    private val getMylibraryData: GetMylibraryData
+    private val getMylibraryData: MyLibraryUseCase
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
