@@ -182,7 +182,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             }
 
             override fun loadMoreItems() {
-                isLoading = true;
+                isLoading = true
                 currentPage++
                 //you have to call loadmore items to get more data
 
@@ -248,47 +248,12 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnMyFolderHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        is MyFolderViewModel.Event.OnMyFolderResultFailed -> {
+        is MyFolderViewModel.Event.OnMyFolderResultFailed,MyFolderViewModel.Event.NoInternet -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
-        is MyFolderViewModel.Event.NoInternet -> {
-            bottomNavViewModel.showProgress.set(false)
-            showAlert()
-        }
-
-
         is MyFolderViewModel.Event.OnMyFolderUpdateFilterImage -> {
             (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
-        }
-        is MyFolderViewModel.Event.OnCreateFolder -> {
-            val layout =
-                activity?.layoutInflater?.inflate(R.layout.create_folder, null)
-            layout?.let {
-                com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialogForMyFolder(
-                    requireActivity(),
-                    "",
-                    "",
-                    it, viewModel,
-                    "CANCEL",
-                    "CREATE FOLDER",
-                    object :
-                        com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                        override fun onCreateClicked(foldername: String, parent: String) {
-
-                        }
-
-                        override fun onCancelClicked() {
-
-                        }
-                    },
-                    Utility.AlertType.DEFAULT
-                )
-            }
-        }
-        is MyFolderViewModel.Event.OnFolderCreated -> {
-            (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
-
         }
         is MyFolderViewModel.Event.OnMyFolderUpdateDefaultFilter -> {
             (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)

@@ -238,8 +238,6 @@ class AllPatternsFragment(
             cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
-            Log.d("pattern", "onFilterClick : AllPatternsFragment")
-            // open dialog
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
             baseViewModel.totalCount = viewModel.totalPatternCount
@@ -272,9 +270,6 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIconSetListener.onFilterApplied(true)
-        }
-        is AllPatternsViewModel.Event.OnCreateFolder -> {
-
         }
         is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
