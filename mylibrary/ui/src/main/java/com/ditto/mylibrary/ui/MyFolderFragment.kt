@@ -100,7 +100,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                             getString(R.string.rename_folder_dialog),
                             object :
                                 Utility.CallbackCreateFolderDialogListener {
-                                override fun onCreateClicked(foldername: String, action: String) {
+                                override fun onCreateClicked(newFolderName: String, action: String) {
                                     /**
                                      * API call for Rename Folder
                                      */
@@ -108,7 +108,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                                         bottomNavViewModel.showProgress.set(true)
                                         viewModel.addToFolder(
                                             product = ProdDomain(),
-                                            newFolderName = foldername,
+                                            newFolderName = newFolderName,
                                             action = viewModel.rename
                                         )
                                     }
@@ -161,13 +161,13 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         getString(R.string.create_folder),
                         object :
                             Utility.CallbackCreateFolderDialogListener {
-                            override fun onCreateClicked(foldername: String, parent: String) {
+                            override fun onCreateClicked(newFolderName: String, parent: String) {
                                 if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
                                     bottomNavViewModel.showProgress.set(true)
                                     viewModel.folderList.clear()
                                     viewModel.addToFolder(
                                         product = ProdDomain(),
-                                        newFolderName = foldername,
+                                        newFolderName = newFolderName,
                                         action = parent
                                     )
                                 }

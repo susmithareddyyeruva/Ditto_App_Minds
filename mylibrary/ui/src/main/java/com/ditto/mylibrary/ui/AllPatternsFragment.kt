@@ -281,14 +281,14 @@ class AllPatternsFragment(
                     getString(R.string.create_folder),
                     object :
                         com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                        override fun onCreateClicked(folderName: String, parent: String) {
+                        override fun onCreateClicked(newFolderName: String, parent: String) {
                             /**
                              * Pop up  for Create Folder
                              */
                             if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                                 viewModel.addToFolder(
                                     product = ProdDomain(),
-                                    folderName = folderName
+                                    folderName = newFolderName
                                 )
                             }
 
