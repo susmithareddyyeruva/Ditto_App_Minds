@@ -31,8 +31,8 @@ class WorkspaceImpl @Inject constructor(
         garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItems)
     }
 
-    override fun insertWorkspaceData(workspaceData: CTraceWorkSpacePatternInputData): Single<Any> {
-       return workspaceRepository.insertWorkspaceData(workspaceData)
+    override fun insertWorkspaceData(workspaceDataAPI: WorkspaceDataAPI): Single<Any> {
+       return workspaceRepository.insertWorkspaceData(workspaceDataAPI)
     }
 
     override fun getPatternDataByID(id: Int):Single<Result<PatternsData>>  {
@@ -51,16 +51,16 @@ class WorkspaceImpl @Inject constructor(
         return workspaceRepository.deleteAndInsert(id, patternsData)
     }
 
-    override fun getWorkspaceData(id: String): Single<Result<CTraceWorkSpacePatternInputData>> {
+    override fun getWorkspaceData(id: String): Single<Result<WorkspaceDataAPI>> {
         return workspaceRepository.getWorkspaceDataFromApi(id)
     }
 
-    override fun updateWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
-        return workspaceRepository.updateWorkspaceDataFromApi(id,cTraceWorkSpacePatternInputData)
+    override fun updateWorkspaceData(id: String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
+        return workspaceRepository.updateWorkspaceDataFromApi(id,workspaceDataAPI)
     }
 
-    override fun createWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
-     return workspaceRepository.createWorkspaceDataFromApi(id,cTraceWorkSpacePatternInputData)
+    override fun createWorkspaceData(id: String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
+     return workspaceRepository.createWorkspaceDataFromApi(id,workspaceDataAPI)
     }
 
 }

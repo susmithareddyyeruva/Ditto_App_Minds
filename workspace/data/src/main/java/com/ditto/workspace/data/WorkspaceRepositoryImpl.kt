@@ -53,7 +53,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertWorkspaceData(workspaceData: CTraceWorkSpacePatternInputData): Single<Any> {
+    override fun insertWorkspaceData(workspaceDataAPI: WorkspaceDataAPI): Single<Any> {
         return Single.fromCallable{
             //offlinePatternDataDao.insertOfflinePatternData(workspaceData.toDomain())
         }
@@ -116,7 +116,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternInputData>> {
+    override fun getWorkspaceDataFromApi(id: String): Single<Result<WorkspaceDataAPI>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -150,11 +150,11 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updateWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+    override fun updateWorkspaceDataFromApi(id: String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val jsonobj = Gson().toJson(cTraceWorkSpacePatternInputData)
+        val jsonobj = Gson().toJson(workspaceDataAPI)
         val jsonString = jsonobj.toString()
         val wsInputData = WSInputData(jsonString)
 
@@ -184,11 +184,11 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun createWorkspaceDataFromApi(id:String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>> {
+    override fun createWorkspaceDataFromApi(id:String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val jsonobj = Gson().toJson(cTraceWorkSpacePatternInputData)
+        val jsonobj = Gson().toJson(workspaceDataAPI)
         Log.d("WorkspaceRepositoryImpl", "json object is: $jsonobj")
 
         val jsonString = jsonobj.toString()

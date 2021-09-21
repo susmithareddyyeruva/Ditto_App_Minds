@@ -1,7 +1,7 @@
 package com.ditto.workspace.domain.model
 
 
-data class CTraceWorkSpacePatternInputData (
+data class WorkspaceDataAPI (
     val tailornaovaDesignId:String? = "",
     val selectedTab:String? = "",
     val status:String? = "",

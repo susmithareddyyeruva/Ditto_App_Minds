@@ -17,13 +17,13 @@ interface GetWorkspaceData {
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int>
-    fun insertWorkspaceData(w: CTraceWorkSpacePatternInputData): Single<Any>//follow same
+    fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
     fun getPatternDataByID(id: Int):Single<Result<PatternsData>>
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
     fun getUserDetails():Single<Result<LoginUser>>
     fun deleteAndInsert(id: String, patternsData: PatternsData): Single<Any>
-    fun getWorkspaceData(id: String): Single<Result<CTraceWorkSpacePatternInputData>>
-    fun updateWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
-    fun createWorkspaceData(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) : Single<Result<WSUpdateResultDomain>>
+    fun getWorkspaceData(id: String): Single<Result<WorkspaceDataAPI>>
+    fun updateWorkspaceData(id: String, workspaceDataAPI: WorkspaceDataAPI) : Single<Result<WSUpdateResultDomain>>
+    fun createWorkspaceData(id: String, workspaceDataAPI: WorkspaceDataAPI) : Single<Result<WSUpdateResultDomain>>
 }
 

@@ -132,10 +132,10 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun updateWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
+    fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.updateWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",
-            cTraceWorkSpacePatternInputData
+            workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -151,7 +151,7 @@ class WorkspaceViewModel @Inject constructor(
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData
+        workspaceDataAPI: WorkspaceDataAPI
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
@@ -165,14 +165,14 @@ class WorkspaceViewModel @Inject constructor(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSPatternDataStorage(it, cTraceWorkSpacePatternInputData) }
+            .subscribeBy { handleWSPatternDataStorage(it, workspaceDataAPI) }
     }
 
-    fun createWSAPI(cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData) {
+    fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.createWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
                 patternId.get()
-            }", cTraceWorkSpacePatternInputData
+            }", workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -218,12 +218,12 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun handleWSPatternDataStorage(
         result: Any?,
-        cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData
+        workspaceDataAPI: WorkspaceDataAPI
     ) {
         Log.d("handlWSPattenDtaStorage", "${result.toString()}")
         if (result == 1) {
             Log.d("handlWSPattenDtaStorage", "Success update storage")
-            updateWSAPI(cTraceWorkSpacePatternInputData)
+            updateWSAPI(workspaceDataAPI)
         } else {
             uiEvents.post(Event.ApiFailed)
             Log.d("handlWSPattenDtaStorage", "failed update storage")
@@ -231,7 +231,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun insertWSAPIDataToDB(value: CTraceWorkSpacePatternInputData) {
+    fun insertWSAPIDataToDB(value: WorkspaceDataAPI) {
         disposable += getWorkspaceData.insertWorkspaceData(value)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -298,7 +298,7 @@ class WorkspaceViewModel @Inject constructor(
 
 
     private fun handleFetchResultFromAPI(
-        fetchWorkspaceResult: Result<CTraceWorkSpacePatternInputData>,
+        fetchWorkspaceResult: Result<WorkspaceDataAPI>,
         tailornovaResult: Result.OnSuccess<OfflinePatternData>
     ) {
         Log.d("handleFetchResultAPI", "is:\t ${fetchWorkspaceResult.toString()}")
@@ -927,11 +927,11 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    private fun getWorkspaceInputDataToAPI(patternData: PatternsData): CTraceWorkSpacePatternInputData {
+    private fun getWorkspaceInputDataToAPI(patternData: PatternsData): WorkspaceDataAPI {
 
         Log.d("getWSInputDataToAPI", "OnSuccess patternData: $patternData")
 
-        val cTraceWorkSpacePatternInputData = CTraceWorkSpacePatternInputData(
+        val cTraceWorkSpacePatternInputData = WorkspaceDataAPI(
             tailornaovaDesignId = patternData.id,
             selectedTab = patternData.selectedTab,
             status = patternData.status,
@@ -988,7 +988,7 @@ class WorkspaceViewModel @Inject constructor(
 // mapping WorkspaceAPI response model to PatternData model
 private fun getPatternDataFromSFCC_Tailernova(
     resultTailernova: Result.OnSuccess<OfflinePatternData>,
-    fetchWorkspaceResult: Result.OnSuccess<CTraceWorkSpacePatternInputData>
+    fetchWorkspaceResult: Result.OnSuccess<WorkspaceDataAPI>
 ): PatternsData {
 
     return PatternsData(

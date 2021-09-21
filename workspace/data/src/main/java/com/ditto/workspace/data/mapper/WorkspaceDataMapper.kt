@@ -5,8 +5,8 @@ import com.ditto.workspace.data.model.*
 import com.ditto.workspace.domain.model.*
 
 
-fun CTraceWorkSpacePattern.toDomain(): CTraceWorkSpacePatternInputData {
-    return CTraceWorkSpacePatternInputData(
+fun CTraceWorkSpacePattern.toDomain(): WorkspaceDataAPI {
+    return WorkspaceDataAPI(
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,
@@ -78,8 +78,8 @@ fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
     )
 }*/
 
-fun OfflinePatterns.toDomain(): CTraceWorkSpacePatternInputData {
-    return CTraceWorkSpacePatternInputData(
+fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
+    return WorkspaceDataAPI(
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,

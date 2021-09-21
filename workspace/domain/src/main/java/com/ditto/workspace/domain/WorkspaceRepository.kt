@@ -10,7 +10,7 @@ import non_core.lib.Result
  */
 interface WorkspaceRepository {
     fun insertData(patternsData: PatternsData): Single<Any>
-    fun insertWorkspaceData(patternsData: CTraceWorkSpacePatternInputData): Single<Any>
+    fun insertWorkspaceData(patternsDataAPI: WorkspaceDataAPI): Single<Any>
     //fun updateOfflineStorageData(tailornaovaDesignId:Int,selectedTab: String,status:String): Single<Any>
     fun updateOfflineStorageData(
         tailornaovaDesignId: String,
@@ -26,7 +26,7 @@ interface WorkspaceRepository {
     fun getUserData(): Single<Result<LoginUser>>
     fun getPatternDataByID(id:Int):Single<Result<PatternsData>>
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
-    fun getWorkspaceDataFromApi(id: String): Single<Result<CTraceWorkSpacePatternInputData>>
-    fun updateWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
-    fun createWorkspaceDataFromApi(id: String,cTraceWorkSpacePatternInputData: CTraceWorkSpacePatternInputData): Single<Result<WSUpdateResultDomain>>
+    fun getWorkspaceDataFromApi(id: String): Single<Result<WorkspaceDataAPI>>
+    fun updateWorkspaceDataFromApi(id: String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>>
+    fun createWorkspaceDataFromApi(id: String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>>
 }
