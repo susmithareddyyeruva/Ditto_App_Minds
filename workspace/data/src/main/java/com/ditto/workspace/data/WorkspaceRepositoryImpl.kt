@@ -53,7 +53,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertWorkspaceData(workspaceData: WorkspaceDataAPI): Single<Any> {
+    override fun insertWorkspaceData(workspaceData: CTraceWorkSpacePatternInputData): Single<Any> {
         return Single.fromCallable{
             //offlinePatternDataDao.insertOfflinePatternData(workspaceData.toDomain())
         }
@@ -155,15 +155,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val jsonobj = Gson().toJson(cTraceWorkSpacePatternInputData)
-        Log.d("WorkspaceRepositoryImpl", "json object is: $jsonobj")
-
         val jsonString = jsonobj.toString()
-        Log.d("WorkspaceRepositoryImpl", "json string is: $jsonString")
-
-        /*val wsInputData = WSInputData("{\n" +
-                "    \"c_traceWorkSpacePattern\": \"{\\\"tailornaovaDesignId\\\":\\\"\\\",\\\"selectedTab\\\":\\\"\\\",\\\"status\\\":\\\"\\\",\\\"numberOfCompletedPieces\\\":{\\\"garment\\\":11,\\\"lining\\\":4,\\\"interface\\\":5},\\\"patternPieces\\\":[{\\\"id\\\":0,\\\"isCompleted\\\":\\\"\\\"},{\\\"id\\\":0,\\\"isCompleted\\\":\\\"\\\"}],\\\"garmetWorkspaceItems\\\":[{\\\"id\\\":0,\\\"patternPiecesId\\\":0,\\\"isCompleted\\\":\\\"\\\",\\\"xcoordinate\\\":\\\"\\\",\\\"ycoordinate\\\":\\\"\\\",\\\"pivotX\\\":\\\"\\\",\\\"pivotY\\\":\\\"\\\",\\\"transformA\\\":\\\"\\\",\\\"transformD\\\":\\\"\\\",\\\"rotationAngle\\\":\\\"\\\",\\\"isMirrorH\\\":\\\"\\\",\\\"isMirrorV\\\":\\\"\\\",\\\"showMirrorDialog\\\":\\\"\\\",\\\"currentSplicedPieceNo\\\":\\\"\\\"},{\\\"id\\\":0,\\\"patternPiecesId\\\":0,\\\"isCompleted\\\":\\\"\\\",\\\"xcoordinate\\\":\\\"\\\",\\\"ycoordinate\\\":\\\"\\\",\\\"pivotX\\\":\\\"\\\",\\\"pivotY\\\":\\\"\\\",\\\"transformA\\\":\\\"\\\",\\\"transformD\\\":\\\"\\\",\\\"rotationAngle\\\":\\\"\\\",\\\"isMirrorH\\\":\\\"\\\",\\\"isMirrorV\\\":\\\"\\\",\\\"showMirrorDialog\\\":\\\"\\\",\\\"currentSplicedPieceNo\\\":\\\"\\\"}],\\\"liningWorkspaceItems\\\":[{\\\"id\\\":0,\\\"patternPiecesId\\\":0,\\\"isCompleted\\\":\\\"\\\",\\\"xcoordinate\\\":\\\"\\\",\\\"ycoordinate\\\":\\\"\\\",\\\"pivotX\\\":\\\"\\\",\\\"pivotY\\\":\\\"\\\",\\\"transformA\\\":\\\"\\\",\\\"transformD\\\":\\\"\\\",\\\"rotationAngle\\\":\\\"\\\",\\\"isMirrorH\\\":\\\"\\\",\\\"isMirrorV\\\":\\\"\\\",\\\"showMirrorDialog\\\":\\\"\\\",\\\"currentSplicedPieceNo\\\":\\\"\\\"}],\\\"interfaceWorkspaceItems\\\":[{\\\"id\\\":0,\\\"patternPiecesId\\\":0,\\\"isCompleted\\\":\\\"\\\",\\\"xcoordinate\\\":\\\"\\\",\\\"ycoordinate\\\":\\\"\\\",\\\"pivotX\\\":\\\"\\\",\\\"pivotY\\\":\\\"\\\",\\\"transformA\\\":\\\"\\\",\\\"transformD\\\":\\\"\\\",\\\"rotationAngle\\\":\\\"\\\",\\\"isMirrorH\\\":\\\"\\\",\\\"isMirrorV\\\":\\\"\\\",\\\"showMirrorDialog\\\":\\\"\\\",\\\"currentSplicedPieceNo\\\":\\\"\\\"}]}\"\n" +
-                "}")*/
-
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.updateWorkspaceDataFromApi(

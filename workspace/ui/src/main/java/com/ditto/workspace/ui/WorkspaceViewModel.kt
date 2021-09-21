@@ -231,7 +231,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
 
-    fun insertWSAPIDataToDB(value: WorkspaceDataAPI) {
+    fun insertWSAPIDataToDB(value: CTraceWorkSpacePatternInputData) {
         disposable += getWorkspaceData.insertWorkspaceData(value)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

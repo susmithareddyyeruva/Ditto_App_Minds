@@ -17,7 +17,7 @@ interface GetWorkspaceData {
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int>
-    fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
+    fun insertWorkspaceData(w: CTraceWorkSpacePatternInputData): Single<Any>//follow same
     fun getPatternDataByID(id: Int):Single<Result<PatternsData>>
     fun getTailernovaDataByID(id: String):Single<Result<OfflinePatternData>>
     fun getUserDetails():Single<Result<LoginUser>>

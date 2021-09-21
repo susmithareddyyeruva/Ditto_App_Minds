@@ -31,7 +31,7 @@ class WorkspaceImpl @Inject constructor(
         garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItems)
     }
 
-    override fun insertWorkspaceData(workspaceData: WorkspaceDataAPI): Single<Any> {
+    override fun insertWorkspaceData(workspaceData: CTraceWorkSpacePatternInputData): Single<Any> {
        return workspaceRepository.insertWorkspaceData(workspaceData)
     }
 

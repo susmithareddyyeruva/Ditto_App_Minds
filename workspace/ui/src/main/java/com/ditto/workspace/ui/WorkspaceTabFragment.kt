@@ -143,7 +143,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     if (baseViewModel.isSaveExitButtonClicked.get()) {
                         viewModel.disposable.clear()
                         isEnabled = false
-                        //findNavController().popBackStack(R.id.patternDescriptionFragment, true)
                         activity?.onBackPressed()
                         baseViewModel.isSaveExitButtonClicked.set(false)
                     } else {

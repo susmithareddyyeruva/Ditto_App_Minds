@@ -78,13 +78,13 @@ fun WorkspaceDataAPI.toDomain(): OfflinePatternData {
     )
 }*/
 
-fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
-    return WorkspaceDataAPI(
+fun OfflinePatterns.toDomain(): CTraceWorkSpacePatternInputData {
+    return CTraceWorkSpacePatternInputData(
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,
-        numberOfPieces = this.numberOfCompletedPieces.toDomain(),
-        patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
+        numberOfCompletedPiece = this.numberOfCompletedPieces.toDomain(),
+        patternPieces = this.patternPiecesFromApi.map { it.toDomain() },
         garmetWorkspaceItems = this.garmetWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
         liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
         interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }.toMutableList()
