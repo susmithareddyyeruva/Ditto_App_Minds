@@ -31,7 +31,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     val logger: Logger by lazy {
         loggerFactory.create(MyFolderDetailFragment::class.java.simpleName)
     }
-    private var patternId: Int = 0
     private val myFolderDetailListAdapter = MyFolderDetailListAdapter()
     private var clickedMenu: String = ""
     var isLastPage: Boolean = false
@@ -311,12 +310,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
         val item = viewModel.myfolderMenu
         return item
-    }
-
-    fun setDefault() {
-        viewModel.myfolderArryList.clear()
-        isLastPage = false
-        currentPage - 1
     }
 
 }
