@@ -60,13 +60,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             val args = arguments
             tittle = args?.getString("TITTLE", "")
             (parentFragment as MyLibraryFragment?)?.showFilterComponents()
-            (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
-                getString(
-                    R.string.myfolder_detail_count,
-                    tittle,
-                    AppState.getPatternCount()
-                )
-            )
             viewModel.myFolderDetailHeader = tittle ?: ""
         }
 
@@ -222,29 +215,26 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 logger.d("OnClickPatternDesc failed")
             }
         }
-        is MyFolderViewModel.Event.OnMyFolderDataUpdated -> {
-            bottomNavViewModel.showProgress.set(false)
-            // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
-
-        }
-
-
         is MyFolderViewModel.Event.OnMyFolderSearchClick -> {
 
-            Log.d("pattern", " OnMyFolderSearchClick")
+            Log.d("pattern", " MyFolderDetailSearchClick")
 
         }
         is MyFolderViewModel.Event.MyFolderSyncClick -> {
             cleaFilterData()
-            Log.d("pattern", "OnSyncClick : AllPatternsFragment")
+            Log.d("pattern", "OnSyncClick : MyFolderDetail")
 
-            Log.d("pattern", "onFilterClick : AllPatternsFragment")
-            // open dialog
         }
         is MyFolderViewModel.Event.OnMyFolderResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-            // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
+            (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
+                getString(
+                    R.string.myfolder_detail_count,
+                    tittle,
+                    viewModel.totalPatternCount
+                )
+            )
 
             /**
              * Getting ALL PATTERNS LIST
