@@ -14,7 +14,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -122,30 +121,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
 
 
-    }
-
-    private fun removeBackstack() {
-        if (childFragmentManager.fragments.size > 2) {
-            var list = ArrayList<Fragment>()
-            childFragmentManager.fragments.forEach {
-                list.add(it)
-                /* if (it.tag.equals("DETAILS")) {
-                     list.add(it)
-                 }*/
-            }
-            list.let {
-                if (it.isNotEmpty()) {
-                    childFragmentManager.beginTransaction().apply {
-                        for (fragment in it) {
-                            remove(fragment)
-                        }
-                        commit()
-                    }
-                }
-                childFragmentManager.popBackStack()
-            }
-        }
-        println("FRAGMENT REMOVE ALL===" + childFragmentManager.fragments.size)
     }
 
     fun removeAll() {
