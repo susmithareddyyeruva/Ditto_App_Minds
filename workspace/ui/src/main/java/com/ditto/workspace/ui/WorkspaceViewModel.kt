@@ -295,7 +295,6 @@ class WorkspaceViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 allPatterns.value = result.data
                 data.value = result.data.find { it.id == patternId.get().toString() }
-                //workspacedata.value = data.value?.workspaceItems?.get(0)
                 Log.d("WorkspaceViewModel098", "Combine patternsData: data.value >>${data.value} ")
                 activeInternetConnection.set(true)
                 uiEvents.post(Event.CalculateScrollButtonVisibility)

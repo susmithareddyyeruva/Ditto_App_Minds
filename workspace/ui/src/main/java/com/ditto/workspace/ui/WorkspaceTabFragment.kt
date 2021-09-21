@@ -147,7 +147,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         activity?.onBackPressed()
                         baseViewModel.isSaveExitButtonClicked.set(false)
                     } else {
-                        downloadSaveAndExit()
+                        downloadPatternPieces()
                     }
                 }
             }
@@ -250,10 +250,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     fun isTablet(context: Context?): Boolean {
-        val xlarge = context?.getResources()
-            ?.getConfiguration()?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == 4
-        val large = context?.getResources()
-            ?.getConfiguration()?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == Configuration.SCREENLAYOUT_SIZE_LARGE
+        val xlarge = context?.resources
+            ?.configuration?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == 4
+        val large = context?.resources
+            ?.configuration?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == Configuration.SCREENLAYOUT_SIZE_LARGE
         return xlarge || large
     }
 
@@ -705,7 +705,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
     }
 
-    fun getPatternPieceList(): HashMap<String, String> {
+    fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] = viewModel.data.value?.thumbnailImagePath.toString()
         for (patternItem in viewModel.data.value?.selvages!!) {
@@ -731,11 +731,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 binding.recyclerViewPieces.smoothScrollBy(200, 0)
             }
             is WorkspaceViewModel.Event.OnClickSaveAndExit -> {
-                downloadSaveAndExit()
+                downloadPatternPieces()
             }
             is WorkspaceViewModel.Event.OnClickSelectAll -> {
                 if (mWorkspaceEditor?.views?.any() ?: false) {
-//                    binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.VISIBLE
                     viewModel.selectAllText.set(getString(R.string.de_select_all))
                     mWorkspaceEditor?.selectAllSelection()
                 } else Utility.showSnackBar(
@@ -743,7 +742,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             is WorkspaceViewModel.Event.OnClickDeSelectAll -> {
-//                binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
                 viewModel.selectAllText.set(getString(R.string.select_all))
                 mWorkspaceEditor?.clearAllSelection()
             }
@@ -983,7 +981,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 /**
                  * All Pattern Pieces Downloaded Successfully
                  */
-                if (viewModel.temp.size==getPatternPieceList().size) {
+                if (viewModel.temp.size==getPatternPieceListTailornova().size) {
                     bottomNavViewModel.showProgress.set(false)
                     Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     //moveToLibrary()
@@ -1035,15 +1033,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
 
-    fun downloadSaveAndExit() {
+    fun downloadPatternPieces() {
         if (!baseViewModel.isProjecting.get()) {
                     binding.buttonSaveAndExit.isEnabled = false
-                    //showSaveAndExitPopup()
-                    //moveToLibrary()
-                    //todo livin code
-                    //showSaveAndExitPopup()
-                    val map = getPatternPieceList()
-
+                    val map = getPatternPieceListTailornova()
                     if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
                             bottomNavViewModel.showProgress.set(true)
@@ -1069,7 +1062,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             Utility.Iconype.NONE
                         )
                     }
-                    //todo livin code
                 } else {
                     showWaitingMessage("Projection is under process.. Please wait")
                 }
@@ -1086,17 +1078,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
 
     private fun onUpdateFont() {
-        binding.txtPatternPieces.setTypeface(
-            ResourcesCompat.getFont(
-                requireContext(),
-                if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_demi else R.font.avenir_next_lt_pro_regular
-            )
+        binding.txtPatternPieces.typeface = ResourcesCompat.getFont(
+            requireContext(),
+            if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_demi else R.font.avenir_next_lt_pro_regular
         )
-        binding.txtReeferanceLayout.setTypeface(
-            ResourcesCompat.getFont(
-                requireContext(),
-                if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_regular else R.font.avenir_next_lt_pro_demi
-            )
+        binding.txtReeferanceLayout.typeface = ResourcesCompat.getFont(
+            requireContext(),
+            if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_regular else R.font.avenir_next_lt_pro_demi
         )
     }
 
@@ -1109,11 +1097,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onResume() {
         super.onResume()
         calculateScrollButtonVisibility()
-        requireActivity().getWindow()
+        requireActivity().window
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-        requireActivity().getWindow()
+        requireActivity().window
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        requireActivity().getWindow()
+        requireActivity().window
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get() != true) {
@@ -1938,7 +1926,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
             Log.d("onReqPermissionsResult","permission granted")
-            val map = getPatternPieceList()
+            val map = getPatternPieceListTailornova()
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
