@@ -41,6 +41,9 @@ const val SCREEN_MANAGE_DEVICE = "MD"
 const val SUBSCRIPTION_END_DATE = "enddate"
 const val PATTERN_COUNT = "COUNT"
 const val CUSTOMER_EMAIL = "subscustomerOne@gmail.com"
+const val UNKNOWN_HOST_EXCEPTION = "UnknownHostException !"
+const val CONNECTION_EXCEPTION = "No Internet connection available !"
+const val ERROR_FETCH = "Error Fetching data!"
 
 
 

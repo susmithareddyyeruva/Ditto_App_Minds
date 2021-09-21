@@ -19,6 +19,10 @@ import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
+import core.CONNECTION_EXCEPTION
+import core.ERROR_FETCH
+import core.UNKNOWN_HOST_EXCEPTION
+import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.network.NetworkUtility
 import io.reactivex.Single
@@ -46,13 +50,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
     /**
      * fetches data from local store first. if not available locally, fetches from server
      */
-    override fun getMyLibraryData(request: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+    override fun getMyLibraryData(filterRequestData: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getAllPatternsPatterns(request, "Bearer " + AppState.getToken()!!)
+        return myLibraryService.getAllPatternsPatterns(
+            filterRequestData,
+            "Bearer " + AppState.getToken()!!
+        )
             .doOnSuccess {
-                logger.d("*****FETCH FILTER SUCCESS**")
+                logger.d("*****FETCH PATTERNS SUCCESS**")
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -60,20 +67,21 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
+                    logger.d( e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            USER_FIRST_NAME
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                           ERROR_FETCH
                         }
                     }
                 }
@@ -106,14 +114,19 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>> {
+    override fun getMyLibraryFolderData(
+        requestdata: GetFolderRequest,
+        methodName: String
+    ): Single<Result<FoldersResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getFoldersList(  requestdata, "Bearer " + AppState.getToken()!!,
-            method = methodName)
+        return myLibraryService.getFoldersList(
+            requestdata, "Bearer " + AppState.getToken()!!,
+            method = methodName
+        )
             .doOnSuccess {
-                logger.d("*****FETCH FILTER SUCCESS**")
+                logger.d("*****FETCH FOLDER LIST SUCCESS**")
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -121,20 +134,20 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                            ERROR_FETCH
                         }
                     }
                 }
@@ -146,7 +159,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun addFolder(requestdata: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>> {
+    override fun addFolder(
+        requestdata: FolderRequest,
+        methodName: String
+    ): Single<Result<AddFavouriteResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -163,20 +179,20 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                            ERROR_FETCH
                         }
                     }
                 }
@@ -208,20 +224,20 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
+                    logger.d( e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                            ERROR_FETCH
                         }
                     }
                 }
@@ -232,7 +248,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 )
             }
     }
-
 
 
 }

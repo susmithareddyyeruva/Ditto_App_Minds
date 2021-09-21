@@ -13,7 +13,7 @@ import io.reactivex.Single
 import non_core.lib.Result
 
 interface MyLibraryUseCase {
-    fun getPatterns(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
+    fun getPatterns(filterRequestData: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getUser(): Single<Result<LoginUser>>
     fun getPatternDetails(get: Int): Single<Result<MyLibraryData>>
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>

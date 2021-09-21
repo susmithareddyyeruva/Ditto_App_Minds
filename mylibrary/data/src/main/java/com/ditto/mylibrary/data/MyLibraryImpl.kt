@@ -19,8 +19,8 @@ import javax.inject.Inject
 class MyLibraryImpl @Inject constructor(
     private val myLibraryRepository: MyLibraryRepository
 ) : MyLibraryUseCase {
-    override fun getPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
-        return myLibraryRepository.getMyLibraryData(createJson)
+    override fun getPatterns(filterRequestData: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        return myLibraryRepository.getMyLibraryData(filterRequestData)
     }
 
     override fun getUser(): Single<Result<LoginUser>> {
