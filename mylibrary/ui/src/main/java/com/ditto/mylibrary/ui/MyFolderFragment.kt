@@ -49,6 +49,9 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            /**
+             * API call for getting Folders List
+             */
             bottomNavViewModel.showProgress.set(true)
             viewModel.getFoldersList()
         }
@@ -82,6 +85,9 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             viewModel.folderList,
             object : MyFolderAdapter.OnRenameListener {
                 override fun onRenameClicked(oldFolderName: String) {
+                    /**
+                     * Rename PopUp Displayed
+                     */
                     viewModel.folderToRename = oldFolderName
                     val layout =
                         activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
@@ -95,6 +101,9 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                             object :
                                 Utility.CallbackCreateFolderDialogListener {
                                 override fun onCreateClicked(foldername: String, action: String) {
+                                    /**
+                                     * API call for Rename Folder
+                                     */
                                     if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
                                         bottomNavViewModel.showProgress.set(true)
                                         viewModel.addToFolder(
@@ -107,6 +116,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                                 }
 
                                 override fun onCancelClicked() {
+                                    logger.d("onCancelClicked")
 
                                 }
                             },
@@ -164,6 +174,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                             }
 
                             override fun onCancelClicked() {
+                                logger.d("onCancelClicked")
+
 
                             }
                         },
@@ -196,6 +208,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     viewModel.folderList.clear()
                     viewModel.getFoldersList()
                 } else {
+                    logger.d("")
 
                 }
 
