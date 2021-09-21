@@ -13,9 +13,9 @@ import io.reactivex.Single
 import non_core.lib.Result
 
 interface MyLibraryUseCase {
-    fun invoke(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
+    fun getPatterns(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getUser(): Single<Result<LoginUser>>
-    fun getPattern(get: Int): Single<Result<MyLibraryData>>
+    fun getPatternDetails(get: Int): Single<Result<MyLibraryData>>
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>
     fun addFolder(createJson: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>

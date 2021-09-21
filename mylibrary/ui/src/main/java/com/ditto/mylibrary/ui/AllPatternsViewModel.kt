@@ -81,7 +81,7 @@ class AllPatternsViewModel @Inject constructor(
     ) {
 
         uiEvents.post(Event.OnAllPatternShowProgress)
-        disposable += libraryUseCase.invoke(createJson)
+        disposable += libraryUseCase.getPatterns(createJson)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }

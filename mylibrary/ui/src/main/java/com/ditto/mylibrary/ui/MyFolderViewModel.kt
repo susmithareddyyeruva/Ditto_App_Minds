@@ -88,7 +88,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     ) {
 
         uiEvents.post(Event.OnMyFolderShowProgress)
-        disposable += myLibraryUseCase.invoke(createJson)
+        disposable += myLibraryUseCase.getPatterns(createJson)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }

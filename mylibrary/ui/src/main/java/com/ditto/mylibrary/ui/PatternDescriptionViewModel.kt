@@ -85,7 +85,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
      }*/
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern(clickedID.get())
+        disposable += getPattern.getPatternDetails(clickedID.get())
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MyLibraryImpl @Inject constructor(
     private val myLibraryRepository: MyLibraryRepository
 ) : MyLibraryUseCase {
-    override fun invoke(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+    override fun getPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         return myLibraryRepository.getMyLibraryData(createJson)
     }
 
@@ -27,7 +27,7 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getUserData()
     }
 
-    override fun getPattern(get: Int): Single<Result<MyLibraryData>> {
+    override fun getPatternDetails(get: Int): Single<Result<MyLibraryData>> {
         return myLibraryRepository.getPatternData(get)
     }
     override fun invokeFolderList(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>> {
