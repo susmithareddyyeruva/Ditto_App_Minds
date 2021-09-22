@@ -51,14 +51,17 @@ class SplashFragment : BaseFragment() {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.initialApiCall()
+    }
+
     private fun handleEvent(event: SplashViewModel.Event) =
         when (event) {
             is SplashViewModel.Event.NavigateToLogin -> {
                 if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash) {
                     findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
-                } else{
-
-                }
+                } else{}
             }
             is SplashViewModel.Event.NavigateToOnBoarding -> {
                 // navigate to onboarding
