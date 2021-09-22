@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -51,33 +52,34 @@ class SplashFragment : BaseFragment() {
             }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.initialApiCall()
-    }
-
     private fun handleEvent(event: SplashViewModel.Event) =
-        when (event) {
-            is SplashViewModel.Event.NavigateToLogin -> {
-                if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash) {
-                    findNavController().navigate(R.id.action_splashActivity_to_LoginFragment)
-                } else{}
-            }
-            is SplashViewModel.Event.NavigateToOnBoarding -> {
-                // navigate to onboarding
-                getUserDetails(false)
+        lifecycleScope.launchWhenResumed {
+            when (event) {
+                is SplashViewModel.Event.NavigateToLogin -> {
+                    if (findNavController()?.currentDestination?.id == com.ditto.login.ui.R.id.destination_splash) {
+                        findNavController()?.navigate(R.id.action_splashActivity_to_LoginFragment)
+                    } else {
+                    }
+                }
+                is SplashViewModel.Event.NavigateToOnBoarding -> {
+                    // navigate to onboarding
+                    getUserDetails(false)
 //              findNavController().navigate(R.id.action_splashActivity_to_VideoFragment)
-                if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash)
-                    findNavController().navigate(R.id.action_splashActivity_to_Onboarding) else{}
+                    if (findNavController()?.currentDestination?.id == com.ditto.login.ui.R.id.destination_splash)
+                        findNavController()?.navigate(R.id.action_splashActivity_to_Onboarding) else {
+                    }
+                }
+                is SplashViewModel.Event.NavigateToDashboard -> {
+                    getUserDetails(false)
+                    if (findNavController()?.currentDestination?.id == com.ditto.login.ui.R.id.destination_splash)
+                        findNavController()?.navigate(R.id.action_splashActivity_to_HomeFragment) else {
+                    }
+                }
             }
-            is SplashViewModel.Event.NavigateToDashboard -> {
-                getUserDetails(false)
-                if (findNavController().currentDestination?.id == com.ditto.login.ui.R.id.destination_splash)
-                    findNavController().navigate(R.id.action_splashActivity_to_HomeFragment) else{}
-            }
+
         }
 
-    private fun getUserDetails(isGuest : Boolean) {
+    private fun getUserDetails(isGuest: Boolean) {
         bottomNavViewModel.isGuestBase.set(isGuest)
         bottomNavViewModel.userEmailBase.set(viewModel.userEmail)
         bottomNavViewModel.userPhoneBase.set(viewModel.userPhone)
