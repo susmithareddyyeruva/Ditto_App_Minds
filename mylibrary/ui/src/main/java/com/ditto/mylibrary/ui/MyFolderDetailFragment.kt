@@ -55,7 +55,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isAdded && isVisible && getUserVisibleHint()) {
+        if (isAdded && isVisible && userVisibleHint) {
             val args = arguments
             tittle = args?.getString("TITTLE", "")
             (parentFragment as MyLibraryFragment?)?.showFilterComponents()
@@ -228,7 +228,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
             (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
-                getString(
+             getString(
                     R.string.myfolder_detail_count,
                     tittle,
                     viewModel.totalPatternCount
