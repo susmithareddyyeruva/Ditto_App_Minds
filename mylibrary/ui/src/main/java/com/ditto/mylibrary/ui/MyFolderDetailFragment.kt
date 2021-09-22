@@ -152,7 +152,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         // Updating the adapter
         myFolderDetailListAdapter.setListData(items = viewModel.myfolderArryList)
         binding.tvFilterResult.text =
-            getString(R.string.text_filter_result, viewModel.totalPatternCount)
+            context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
 
     private fun setUIEvents() {
