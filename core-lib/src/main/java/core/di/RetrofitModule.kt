@@ -230,6 +230,7 @@ class HmacSignatureInterceptor : Interceptor {
         timestamp: String
     ): String {
         val emptyString = ""
+        val projectName = "DittoPatterns"
         val method = request.method
         val domain = request.url.host
         val path = request.url.encodedPath
@@ -241,6 +242,7 @@ class HmacSignatureInterceptor : Interceptor {
         val stringToHash =
             """
             $emptyString
+            $projectName
             $method
             $domain
             $path

@@ -11,6 +11,7 @@
     <string name="str_menu_settings">Settings</string>
     <string name="str_menu_faq">FAQ &amp; Glossary</string>
     <string name="str_menu_softwareupdate">Software Updates</string>
+    <string name="str_softwareupdate">Software updates</string>
     <string name="str_menu_logout">Log Out</string>
     <string name="str_menu_signin">Sign in</string>
     <string name="str_menu_ws_pro_settings">Workspace settings</string>

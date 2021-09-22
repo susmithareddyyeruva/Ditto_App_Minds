@@ -24,9 +24,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -38,12 +40,14 @@ import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
 import core.ui.adapter.ExpandableMenuListAdapter
 import core.ui.common.NoScrollExListView
+import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import javax.inject.Inject
 
 
@@ -221,6 +225,20 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                             else R.id.action_pattern_description_to_nav_graph_manage
                         )
                     }
+                }
+
+                if (binding.bottomNavViewModel!!.childList.get(
+                        binding.bottomNavViewModel!!.headerList.get(
+                            groupPosition
+                        )
+                    )?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.str_softwareupdate))
+                ) {
+
+                    navController.navigate(
+                        if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_nav_graph_softwareUpdate
+                        else R.id.action_pattern_description_to_nav_graph_sotwareUpdate
+                    )
                 }
 
                 if (binding.bottomNavViewModel!!.childList.get(
@@ -417,7 +435,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         return when (item?.itemId) {
             R.id.nav_graph_settings, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                false
+
+                true
             }
             R.id.nav_graph_support -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)

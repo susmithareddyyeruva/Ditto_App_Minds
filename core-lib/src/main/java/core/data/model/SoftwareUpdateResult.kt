@@ -1,0 +1,6 @@
+package core.data.model
+
+import com.google.gson.annotations.SerializedName
+
+class SoftwareUpdateResult(@SerializedName("response") val response : VersionResult,
+                        @SerializedName("errors") val errors : Errors)
