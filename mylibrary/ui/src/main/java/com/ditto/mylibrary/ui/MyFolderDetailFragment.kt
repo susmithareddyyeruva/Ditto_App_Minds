@@ -283,6 +283,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
+        logger.d("onCustomPositiveButtonClicked")
 
     }
 
@@ -290,7 +291,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-
+        logger.d("onCustomNegativeButtonClicked")
     }
 
     fun onSyncClick() {
