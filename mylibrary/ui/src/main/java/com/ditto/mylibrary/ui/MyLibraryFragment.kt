@@ -76,12 +76,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         toolbarViewModel.isShowTransparentActionBar.set(false)
         setUIEvents()
         binding.closeFilter?.setOnClickListener {
-            binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             //  setFilterMenuAdapter(0)
-            binding.rvCategory?.smoothScrollToPosition(0)
-            binding.rvActions?.smoothScrollToPosition(0)
+            binding.rvCategory.smoothScrollToPosition(0)
+            binding.rvActions.smoothScrollToPosition(0)
         }
-        binding.apply?.setOnClickListener {
+        binding.apply.setOnClickListener {
             //  viewModel.createJson()
             /**
              * API call for getting filter Results....
@@ -89,29 +89,28 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             applyFilter()
         }
 
-        binding.clearFilter?.setOnClickListener {
+        binding.clearFilter.setOnClickListener {
             val tabPosition = binding.tabLayout.selectedTabPosition
             if (tabPosition == 0)
                 allPatternsFragment.cleaFilterData()
             else
                 myfolderDetail.cleaFilterData()
 
-            if (binding?.rvActions?.adapter != null) {
-                binding.rvActions?.adapter?.notifyDataSetChanged()
-                binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            if (binding?.rvActions.adapter != null) {
+                binding.rvActions.adapter?.notifyDataSetChanged()
+                binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             }
 
         }
 
-        binding.imageClearAll?.setOnClickListener {
-            binding.clearFilter?.performClick()
+        binding.imageClearAll.setOnClickListener {
+            binding.clearFilter.performClick()
         }
         binding.toolbar.setNavigationOnClickListener {
 
             val tabPosition = binding.tabLayout.selectedTabPosition
             requireActivity().onBackPressed()
             removeAll()
-            val fr = childFragmentManager.fragments.size
             if (tabPosition == 1) {
                 hideFilterComponents()
                 setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
@@ -128,14 +127,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         for (fragment in childFragmentManager.fragments) {
             if (fragment.tag.equals("DETAIL")) {
                 ft.remove(fragment)
-
-
             }
         }
 
         ft.commit()
         childFragmentManager.popBackStack()
-        Log.d("FRAGMENT REMOVE ALL===", "SIZE: " + childFragmentManager.fragments.size);
+        Log.d("FRAGMENT REMOVE ALL===", "SIZE: " + childFragmentManager.fragments.size)
     }
 
     fun setToolbarTittle(tittle: String) {
@@ -146,27 +143,27 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         val tabPosition = binding.tabLayout.selectedTabPosition
         if (tabPosition == 0) {
             allPatternsFragment.applyFilter()
-            binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
         } else {
             myfolderDetail.applyFilter()
-            binding.drawerLayoutMylib?.closeDrawer(Gravity.RIGHT)
+            binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
         }
     }
 
     private fun setUpNavigationDrawer() {
-        binding.drawerLayoutMylib?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        binding.drawerLayoutMylib?.addDrawerListener(object : DrawerLayout.DrawerListener {
+        binding.drawerLayoutMylib.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.drawerLayoutMylib.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                binding.drawerLayoutMylib?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                binding.drawerLayoutMylib.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
 
             override fun onDrawerClosed(drawerView: View) {
-                binding.drawerLayoutMylib?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                binding.drawerLayoutMylib.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
 
             override fun onDrawerStateChanged(newState: Int) {
@@ -176,23 +173,23 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
-    fun hideToolbar() {
+    private fun hideToolbar() {
         //  binding.tvSearch.visibility = View.GONE
         binding.patternLibraryAppBar.visibility = View.INVISIBLE
-        binding.searchContainer?.visibility = View.VISIBLE
+        binding.searchContainer.visibility = View.VISIBLE
     }
 
-    fun showToolbar() {
+    private fun showToolbar() {
         // binding.tvSearch.visibility = View.VISIBLE
         binding.patternLibraryAppBar.visibility = View.VISIBLE
-        binding.searchContainer?.visibility = View.GONE
+        binding.searchContainer.visibility = View.GONE
     }
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                handleEvent(it)
+                handleUIEvent(it)
             }
     }
 
@@ -251,31 +248,26 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                             AppState.getPatternCount()
                         )
                     )
-                    val currentFragment = fragmentManager?.fragments?.last()
-
-                    //  childFragmentManager.fragments[1].fragmentManager?.popBackStackImmediate()
-                    val fragmentsize = childFragmentManager?.fragments?.size
 
 
-                } else if (tab?.position == 1) {
-                    if (childFragmentManager.fragments.size == 2) {
-                        hideFilterComponents()
-                        setToolbarTittle(getString(R.string.my_folders))
-                    }
+                } else if (tab?.position == 1 && childFragmentManager.fragments.size == 2) {
+                    hideFilterComponents()
+                    setToolbarTittle(getString(R.string.my_folders))
                 }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
+                logger.d("onTabUnselected")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                logger.d("onTabReselected")
             }
         })
     }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    private fun handleEvent(event: MyLibraryViewModel.Event) =
+    private fun handleUIEvent(event: MyLibraryViewModel.Event) =
         when (event) {
 
             MyLibraryViewModel.Event.OnFilterClick -> {
@@ -286,7 +278,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     Log.d("pattern", "onFilterClick : AllPatternsFragment")
                 } else {
                     setFilterMenuAdapter(0)
-                    binding.drawerLayoutMylib?.openDrawer(Gravity.RIGHT)
+                    binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
                     Log.d("pattern", "onFilterClick : MyFolder Detail")
                 }
             }
@@ -303,12 +295,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
                 hideToolbar()
-                binding.editSearch?.requestFocus()
+                binding.editSearch.requestFocus()
                 val imgr: InputMethodManager =
-                    requireActivity()?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imgr.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
 
-                val watcher = binding.editSearch?.addTextChangedListener(object : TextWatcher {
+                binding.editSearch.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
                         logger.d("afterTextChanged")
                     }
@@ -330,57 +322,48 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     ) {
                         logger.d("onTextChanged")
                         if (s.toString().isNotEmpty()) {
-                            binding?.imageCloseSearch?.visibility = View.VISIBLE
+                            binding.imageCloseSearch.visibility = View.VISIBLE
                         } else {
-                            binding?.imageCloseSearch?.visibility = View.GONE
+                            binding.imageCloseSearch.visibility = View.GONE
                         }
                     }
                 })
-                binding?.tvCAncelDialog?.setOnClickListener {
+                binding.tvCAncelDialog.setOnClickListener {
                     showToolbar()
                     requireActivity().window
                         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-                    binding?.editSearch?.text?.clear()
+                    binding.editSearch.text?.clear()
                     //  allPatternsFragment.cleaFilterData()
                     val tabPosition = binding.tabLayout.selectedTabPosition
                     if (tabPosition == 0) {
-                        allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
+                        allPatternsFragment.callSearchResult(binding.editSearch.text.toString())
                     } else {
-                        myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
+                        myfolderDetail.callSearchResult(binding.editSearch.text.toString())
                     }
 
 
                 }
 
-                binding?.editSearch?.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+                binding.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (binding?.editSearch?.text.toString().isNotEmpty()) {
+                        if (binding.editSearch.text.toString().isNotEmpty()) {
                             val imm =
-                                requireActivity()?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.hideSoftInputFromWindow(binding?.editSearch?.getWindowToken(), 0)
+                                requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(binding.editSearch.getWindowToken(), 0)
                             val tabPosition = binding.tabLayout.selectedTabPosition
                             if (tabPosition == 0) {
-                                allPatternsFragment.callSearchResult(binding?.editSearch?.text.toString())
+                                allPatternsFragment.callSearchResult(binding.editSearch.text.toString())
                             } else {
-                                myfolderDetail.callSearchResult(binding?.editSearch?.text.toString())
+                                myfolderDetail.callSearchResult(binding.editSearch.text.toString())
                             }
-
-
-                            /*   setBackStackData(
-                                   "KEY_SEARCH",
-                                   alertDialog.editSearch.text.toString(),
-                                   true
-                               )*/
-
                         } else
-
 
                             return@OnEditorActionListener true
                     }
                     false
                 })
-                binding?.imageCloseSearch?.setOnClickListener {
-                    binding?.editSearch?.editSearch?.text?.clear()
+                binding.imageCloseSearch.setOnClickListener {
+                    binding.editSearch.editSearch?.text?.clear()
                 }
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0)
@@ -391,10 +374,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
 
             }
-            else -> {
-                Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
 
-            }
         }
 
     override fun onSetCount(tittle: String) {
@@ -417,12 +397,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
         val result = menulist.keys.toList()   //setting menus
         if (result.isNotEmpty()) {
-            binding.rvCategory?.layoutManager = LinearLayoutManager(requireContext())
-            binding.rvCategory?.adapter =
+            binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCategory.adapter =
                 FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
                     override fun onMenuSelected(menu: String) {
                         Log.d("CLICKED===", menu)
-                        (binding.rvActions?.adapter as FilterDetailsAdapter).updateList(menu)
+                        (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
 
                     }
 
@@ -448,7 +428,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
             }
         }, menuList, keys)
-        binding.rvActions?.adapter = filterDetailsAdapter
+        binding.rvActions.adapter = filterDetailsAdapter
         filterDetailsAdapter.viewModel = viewModel
         // filterDetailsAdapter.updateList(keys)
 
