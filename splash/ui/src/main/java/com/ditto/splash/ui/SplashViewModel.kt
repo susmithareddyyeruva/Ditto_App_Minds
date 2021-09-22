@@ -41,14 +41,11 @@ class SplashViewModel @Inject constructor(
         /*if (Utility.isTokenExpired()){
             utility.refreshToken()
         }*/
-        initialApiCall()
-        /**
-         * getting patterns data
-         */
-//       updateDb()
+        initialDelayWithDataFetch()
+
     }
 
-    fun initialApiCall() {
+    fun initialDelayWithDataFetch() {
         utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
@@ -60,6 +57,10 @@ class SplashViewModel @Inject constructor(
                 uiEvents.post(Event.NavigateToLogin)
             }
         }
+        /**
+         * getting patterns data
+         */
+        updateDb()
     }
 
     fun callToken() {
