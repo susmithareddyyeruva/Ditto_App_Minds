@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable
@@ -47,14 +46,14 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
-    private var myfolderDetail: MyFolderDetailFragment = MyFolderDetailFragment()
-    private var myFolderFragment: MyFolderFragment = MyFolderFragment(myfolderDetail)
+    private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
+    private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
         @Nullable savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = MyLibraryFragmentBinding.inflate(
             inflater
         ).also {
@@ -75,7 +74,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
         setUIEvents()
-        binding.closeFilter?.setOnClickListener {
+        binding.closeFilter.setOnClickListener {
             binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             //  setFilterMenuAdapter(0)
             binding.rvCategory.smoothScrollToPosition(0)
@@ -94,9 +93,9 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             if (tabPosition == 0)
                 allPatternsFragment.cleaFilterData()
             else
-                myfolderDetail.cleaFilterData()
+                myFolderDetailFragment.cleaFilterData()
 
-            if (binding?.rvActions.adapter != null) {
+            if (binding.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
                 binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             }
@@ -146,7 +145,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
         } else {
-            myfolderDetail.applyFilter()
+            myFolderDetailFragment.applyFilter()
             binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             setFilterMenuAdapter(0)
         }
@@ -208,7 +207,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private fun setUpToolbar() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
-        binding.toolbar?.setNavigationIcon(R.drawable.ic_back_button)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.header_view_title.text =
@@ -267,14 +266,14 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    private fun handleUIEvent(event: MyLibraryViewModel.Event) =
+    private  fun handleUIEvent(event: MyLibraryViewModel.Event) =
         when (event) {
 
             MyLibraryViewModel.Event.OnFilterClick -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
                     setFilterMenuAdapter(0)
-                    binding.drawerLayoutMylib?.openDrawer(Gravity.RIGHT)
+                    binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
                     Log.d("pattern", "onFilterClick : AllPatternsFragment")
                 } else {
                     setFilterMenuAdapter(0)
@@ -286,18 +285,18 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
                     allPatternsFragment.onSyncClick()
-                } else { //tab postion 1
-                    if (childFragmentManager?.fragments?.size == 2) {
+                } else {
+                    if (childFragmentManager.fragments.size == 2) {
                         myFolderFragment.onSyncClick()
                     } else
-                        myfolderDetail.onSyncClick()
+                        myFolderDetailFragment.onSyncClick()
                 }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
                 hideToolbar()
                 binding.editSearch.requestFocus()
                 val imgr: InputMethodManager =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imgr.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
 
                 binding.editSearch.addTextChangedListener(object : TextWatcher {
@@ -338,7 +337,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     if (tabPosition == 0) {
                         allPatternsFragment.callSearchResult(binding.editSearch.text.toString())
                     } else {
-                        myfolderDetail.callSearchResult(binding.editSearch.text.toString())
+                        myFolderDetailFragment.callSearchResult(binding.editSearch.text.toString())
                     }
 
 
@@ -354,7 +353,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                             if (tabPosition == 0) {
                                 allPatternsFragment.callSearchResult(binding.editSearch.text.toString())
                             } else {
-                                myfolderDetail.callSearchResult(binding.editSearch.text.toString())
+                                myFolderDetailFragment.callSearchResult(binding.editSearch.text.toString())
                             }
                         } else
 
@@ -369,7 +368,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 if (tabPosition == 0)
                     allPatternsFragment.onSearchClick()
                 else {
-                    myfolderDetail.onSearchClick()
+                    myFolderDetailFragment.onSearchClick()
 
                 }
 
@@ -390,12 +389,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     private fun setFilterMenuAdapter(position: Int) {
         val tabPosition = binding.tabLayout.selectedTabPosition
-        val menulist = if (tabPosition == 0) {
+        val menuList = if (tabPosition == 0) {
             allPatternsFragment.getMenuListItems()
         } else {
-            myfolderDetail.getMenuListItems()
+            myFolderDetailFragment.getMenuListItems()
         }
-        val result = menulist.keys.toList()   //setting menus
+        val result = menuList.keys.toList()   //setting menus
         if (result.isNotEmpty()) {
             binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
             binding.rvCategory.adapter =
@@ -414,17 +413,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private fun setFilterActionAdapter(keys: String) {
         val menuList: HashMap<String, ArrayList<FilterItems>>
         val tabPosition = binding.tabLayout.selectedTabPosition
-        if (tabPosition == 0) {
-            menuList = allPatternsFragment.getMenuListItems()
+        menuList = if (tabPosition == 0) {
+            allPatternsFragment.getMenuListItems()
         } else {
-            menuList = myfolderDetail.getMenuListItems()
+            myFolderDetailFragment.getMenuListItems()
         }
         val filterDetailsAdapter = FilterDetailsAdapter(object :
             FilterDetailsAdapter.SelectedItemsListener {
             override fun onItemsSelected(title: String, isSelected: Boolean) {
-                logger.d("Items==" + title)
+                logger.d("Items==$title")
                 for ((key, value) in menuList) {
-                    logger.d("After  clik selection : $key = $value")
+                    logger.d("After  click selection : $key = $value")
                 }
             }
         }, menuList, keys)
@@ -434,7 +433,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
-    fun switchtoMyFolderFragmentTab() {
+    fun switchToMyFolderFragmentTab() {
         binding.viewPager.currentItem = 1
         hideFilterComponents()
         setToolbarTittle(getString(R.string.my_folders))

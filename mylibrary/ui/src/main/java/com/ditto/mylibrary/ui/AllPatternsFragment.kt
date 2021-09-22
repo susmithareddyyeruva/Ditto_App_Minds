@@ -305,7 +305,7 @@ class AllPatternsFragment(
             }
         }
         is AllPatternsViewModel.Event.OnFolderCreated, AllPatternsViewModel.Event.OnFolderItemClicked -> {
-            (parentFragment as MyLibraryFragment?)?.switchtoMyFolderFragmentTab()
+            (parentFragment as MyLibraryFragment?)?.switchToMyFolderFragmentTab()
 
         }
         is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
