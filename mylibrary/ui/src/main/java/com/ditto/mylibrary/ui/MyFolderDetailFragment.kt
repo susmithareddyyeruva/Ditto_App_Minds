@@ -32,7 +32,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         loggerFactory.create(MyFolderDetailFragment::class.java.simpleName)
     }
     private val myFolderDetailListAdapter = MyFolderDetailListAdapter()
-    private var clickedMenu: String = ""
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
     private var currentPage = 1
@@ -42,7 +41,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = MyfolderdetailfragmentBinding.inflate(
             inflater
         ).also {
@@ -170,7 +169,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         binding.rvMyfolderlist.layoutManager = gridLayoutManager
         binding.rvMyfolderlist.adapter = myFolderDetailListAdapter
         myFolderDetailListAdapter.viewModel = viewModel
-        binding.rvMyfolderlist?.addOnScrollListener(object :
+        binding.rvMyfolderlist.addOnScrollListener(object :
             PaginationScrollListener(gridLayoutManager) {
             override fun isLastPage(): Boolean {
                 return isLastPage
@@ -205,7 +204,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnMyFolderItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
-                // setBackStackData("TITTLE", tittle)
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -228,7 +226,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             bottomNavViewModel.showProgress.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
             (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
-             getString(
+                getString(
                     R.string.myfolder_detail_count,
                     tittle,
                     viewModel.totalPatternCount
@@ -247,7 +245,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         is MyFolderViewModel.Event.OnMyFolderHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
         }
-        is MyFolderViewModel.Event.OnMyFolderResultFailed,MyFolderViewModel.Event.NoInternet -> {
+        is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
             bottomNavViewModel.showProgress.set(false)
             showAlert()
         }
@@ -260,6 +258,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
 
         else -> {
+            logger.d("undefined")
 
         }
     }
