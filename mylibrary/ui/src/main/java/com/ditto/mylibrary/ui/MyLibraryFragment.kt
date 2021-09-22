@@ -135,7 +135,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
         ft.commit()
         childFragmentManager.popBackStack()
-        println("FRAGMENT REMOVE ALL===" + childFragmentManager.fragments.size)
+        Log.d("FRAGMENT REMOVE ALL===", "SIZE: " + childFragmentManager.fragments.size);
     }
 
     fun setToolbarTittle(tittle: String) {
