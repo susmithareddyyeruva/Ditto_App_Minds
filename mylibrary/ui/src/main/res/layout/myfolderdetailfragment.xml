@@ -145,7 +145,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/no_item"
                 android:visibility="@{viewModel.myfolderList.size()==0?View.VISIBLE:View.GONE}"
-                android:textSize="@dimen/text_18"
+                android:textSize="@dimen/txt_clear_filter"
                 android:textColor="@color/black"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 app:layout_constraintBottom_toBottomOf="parent"

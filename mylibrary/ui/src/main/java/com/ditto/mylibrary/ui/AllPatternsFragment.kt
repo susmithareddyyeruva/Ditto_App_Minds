@@ -81,7 +81,7 @@ class AllPatternsFragment(
             /**
              * API CALL for Getting All Patterns
              */
-            if (viewModel.patternArrayList.isEmpty()) {
+            if (viewModel.patternList.value.isNullOrEmpty()) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.fetchOnPatternData(
                     viewModel.createJson(
@@ -112,7 +112,7 @@ class AllPatternsFragment(
 
     fun cleaFilterData() {
         viewModel.resultMap.clear()
-        viewModel.patternArrayList.clear()
+       // viewModel.patternArrayList.clear()
         viewModel.menuList.clear()
         viewModel.setList()
         currentPage = 1
@@ -125,7 +125,7 @@ class AllPatternsFragment(
          * Search is Happened only in filtered results
          */
         //  viewModel.resultMap.clear()
-        viewModel.patternArrayList.clear()
+        //viewModel.patternArrayList.clear()
         //viewModel.menuList.clear()
         // viewModel.setList()
         currentPage = 1
@@ -137,7 +137,7 @@ class AllPatternsFragment(
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             currentPage = 1
             isLastPage = false
-            viewModel.patternArrayList.clear()
+          //  viewModel.patternArrayList.clear()
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
@@ -146,10 +146,16 @@ class AllPatternsFragment(
 
     private fun updatePatterns() {
         // Updating the adapter
-        allPatternAdapter.setListData(items = viewModel.patternArrayList)
+        allPatternAdapter.setListData(items = viewModel.patternList.value?: emptyList())
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
         bottomNavViewModel.showProgress.set(false)
+        setPatternCount.onSetCount(
+            getString(
+                R.string.pattern_library_count,
+                AppState.getPatternCount()
+            )
+        )
     }
 
     private fun setUIEvents() {

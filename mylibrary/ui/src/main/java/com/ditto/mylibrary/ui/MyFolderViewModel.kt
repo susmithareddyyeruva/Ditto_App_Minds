@@ -34,7 +34,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var myfolderList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
-    var myfolderArryList = mutableListOf<ProdDomain>()
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
     var myfolderMap = HashMap<String, List<String>>()
     val myfolderMenu = hashMapOf<String, ArrayList<FilterItems>>()
@@ -42,7 +41,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     var totalPageCount: Int = 0
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
-    var isFilterApplied: Boolean? = false
     var clickedFolderName: String? = ""
     var isFilter: Boolean? = false
     private val GETFOLDER = "getFolders"
@@ -178,9 +176,9 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             is Result.OnSuccess -> {
                 myfolderList.value = result.data.prod
 
-                result.data.prod.forEach {
+               /* result.data.prod.forEach {
                     myfolderArryList.add(it)
-                }
+                }*/
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
@@ -189,7 +187,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                 currentPageId = result.data.currentPageId ?: 0
                 myfolderMap = result.data.menuItem ?: hashMapOf() //hashmap
                 uiEvents.post(Event.OnMyFolderResultSuccess)
-                if (isFilterApplied == false) {
+                if (isFilter == false) {
                     setList()  // For Displaying menu item without any filter applied
                     uiEvents.post(Event.OnMyFolderUpdateDefaultFilter)
                     isFilterResult.set(false)

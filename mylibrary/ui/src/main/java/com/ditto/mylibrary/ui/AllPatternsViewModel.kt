@@ -42,7 +42,6 @@ class AllPatternsViewModel @Inject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
-    var patternArrayList = mutableListOf<ProdDomain>()
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
@@ -92,9 +91,9 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
 
-                result.data.prod.forEach {
+              /*  result.data.prod.forEach {
                     patternArrayList.add(it)
-                }
+                }*/
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0

@@ -125,11 +125,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     val tabPosition = binding.tabLayout.selectedTabPosition
                     if (isEnabled) {
                         isEnabled = false
-                        if (tabPosition == 1) {
+                        if (tabPosition == 1 && childFragmentManager.fragments.size > 2) {  //Detail screen
                             hideFilterComponents()
                             setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+                            removeAll()
+                        } else {
+                            childFragmentManager.fragments.forEach {
+                                childFragmentManager.popBackStack()
+                            }
+                            requireActivity().onBackPressed()
                         }
-                        requireActivity().onBackPressed()
+
 
                     }
 
@@ -229,8 +235,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.header_view_title.text =
-            getString(R.string.pattern_library_count, AppState.getPatternCount())
+        /*    binding.toolbar.header_view_title.text =
+                getString(R.string.pattern_library_count, AppState.getPatternCount())*/
     }
 
     private fun setTabsAdapter() {

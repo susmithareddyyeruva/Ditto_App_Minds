@@ -59,6 +59,9 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             val args = arguments
             tittle = args?.getString("TITTLE", "")
             (parentFragment as MyLibraryFragment?)?.showFilterComponents()
+            (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
+                tittle ?: ""
+            )
             viewModel.myFolderDetailHeader = tittle ?: ""
         }
 
@@ -72,36 +75,24 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
         initializeAdapter()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.myfolderArryList.clear()
-            //Initial API call
-            if (viewModel.myfolderArryList.isEmpty()) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.fetchOnPatternData(
-                    viewModel.createJson(
-                        currentPage,
-                        value = ""
-                    )
-                )  //Initial API call
-            } else {
-                updatePatterns()
-                //  setFilterMenuAdapter(0)
-                if (viewModel.isFilter == true) {
-                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
-                } else
-                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
-                if (viewModel.isFilterApplied == true) {
-                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
-                } else {
-                    (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
-                }
+            viewModel.myfolderList.value = emptyList()
+            myFolderDetailListAdapter.setListData(
+                items = viewModel.myfolderList.value ?: emptyList()
+            )
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnPatternData(
+                viewModel.createJson(
+                    currentPage,
+                    value = ""
+                )
+            )  //Initial API call
 
-            }
 
         }
 
         binding.imageClearFilter.setOnClickListener {
             viewModel.resultmapFolder.clear()
-            viewModel.myfolderArryList.clear()
+            // viewModel.myfolderArryList.clear()
             viewModel.myfolderMenu.clear()
             viewModel.setList()
             currentPage = 1
@@ -119,7 +110,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     fun cleaFilterData() {
         viewModel.resultmapFolder.clear()
-        viewModel.myfolderArryList.clear()
+        // viewModel.myfolderArryList.clear()
         viewModel.myfolderMenu.clear()
         viewModel.setList()
         currentPage = 1
@@ -129,7 +120,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     fun callSearchResult(terms: String) {
         //   viewModel.resultmapFolder.clear()
-        viewModel.myfolderArryList.clear()
+        // viewModel.myfolderArryList.clear()
         // viewModel.myfolderMenu.clear()
         // viewModel.setList()
         currentPage = 1
@@ -141,7 +132,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             currentPage = 1
             isLastPage = false
-            viewModel.myfolderArryList.clear()
+            // viewModel.myfolderArryList.clear()
             bottomNavViewModel.showProgress.set(true)
             val menu = viewModel.myfolderMenu
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
@@ -151,7 +142,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     private fun updatePatterns() {
         // Updating the adapter
-        myFolderDetailListAdapter.setListData(items = viewModel.myfolderArryList)
+        myFolderDetailListAdapter.setListData(items = viewModel.myfolderList.value ?: emptyList())
         binding.tvFilterResult.text =
             context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
     }
