@@ -28,10 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
@@ -857,6 +854,39 @@ class WorkspaceViewModel @Inject constructor(
         return result
     }
 
+
+    private fun File.copyInputStreamToFile(inputStream: InputStream) {
+        try {
+            this.outputStream().use { fileOut ->
+                inputStream.copyTo(fileOut)
+            }
+        } catch (e: Exception) {
+            Log.d("Error", "", e)
+        }
+    }
+
+    fun prepareDowloadList(hashMap: HashMap<String, String>) {
+        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("Download", "Hashmap size: ${hashMap?.size}")
+        temp.clear()
+        if (!hashMap.isEmpty()) {
+            GlobalScope.launch {
+
+                runBlocking {
+                    hashMap.forEach { (key, value) ->
+                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        downloadEachPatternPiece(
+                            imageUrl = value,
+                            filename = key,
+                            patternFolderName = data.value?.patternName ?: "Pattern Piece"
+                        )
+                    }
+                }
+                uiEvents.post(Event.OnDownloadComplete)
+            }
+        }
+    }
+
     suspend fun downloadEachPatternPiece(
         imageUrl: String,
         filename: String,
@@ -871,7 +901,6 @@ class WorkspaceViewModel @Inject constructor(
             conn.connect()
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 patternpdfuri.set("")
-                onFinished()
                 return@withContext
             }
             inputStream = conn.inputStream
@@ -883,41 +912,6 @@ class WorkspaceViewModel @Inject constructor(
             Log.d("PATTERN", patternUri.get() ?: "")
 
             temp.add(path.toString())
-            onFinished() // end of all pattern pices download
-        }
-    }
-
-    private fun File.copyInputStreamToFile(inputStream: InputStream) {
-        try {
-            this.outputStream().use { fileOut ->
-                inputStream.copyTo(fileOut)
-            }
-        } catch (e: Exception) {
-            Log.d("Error", "", e)
-        }
-    }
-
-    fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
-        Log.d("Download", "Hashmap size: ${hashMap.size}")
-        temp.clear()
-        if (!hashMap.isEmpty()) {
-            GlobalScope.launch {
-                hashMap.forEach { (key, value) ->
-
-                    //Log.d("DOWNLOAD", "KEY: $key \t VALUE : $value \t availableUri= $availableUri")
-                    //if (availableUri == null) {
-                    Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                    downloadEachPatternPiece(
-                        imageUrl = value,
-                        filename = key,
-                        patternFolderName = data.value?.patternName ?: "Pattern Piece"
-                    )
-                    //}
-                }
-            }
-        } else {
-            onFinished()
         }
     }
 

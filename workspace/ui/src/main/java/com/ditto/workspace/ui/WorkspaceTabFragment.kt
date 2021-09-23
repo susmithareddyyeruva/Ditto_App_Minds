@@ -981,15 +981,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 /**
                  * All Pattern Pieces Downloaded Successfully
                  */
-                if (viewModel.temp.size == getPatternPieceListTailornova().size) {
+                if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
                     Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
-                    //moveToLibrary()
                     showSaveAndExitPopup()
                 }else{
 
+                    Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        resources.getString(R.string.download_failed),
+                        resources.getString(R.string.download_failed_message),
+                        resources.getString(R.string.str_retry),
+                        resources.getString(R.string.ok),
+                        this,
+                        Utility.AlertType.DOWNLOADFAILED,
+                        Utility.Iconype.NONE
+                    )
                 }
-
             }
             is WorkspaceViewModel.Event.OnClickTutorial -> {
                 navigateToTutorial()
