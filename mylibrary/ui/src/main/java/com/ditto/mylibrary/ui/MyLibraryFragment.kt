@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +50,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
     private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
+    private var count = 0
+
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -63,6 +67,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         return binding.root
     }
 
+    @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
@@ -105,20 +110,41 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
-        binding.toolbar.setNavigationOnClickListener {
+        /*  binding.toolbar.setNavigationOnClickListener {
 
-            val tabPosition = binding.tabLayout.selectedTabPosition
-            requireActivity().onBackPressed()
-            removeAll()
-            if (tabPosition == 1) {
-                hideFilterComponents()
-                setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+              val tabPosition = binding.tabLayout.selectedTabPosition
+              requireActivity().onBackPressed()
+              removeAll()
+              if (tabPosition == 1) {
+                  hideFilterComponents()
+                  setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+              }
+
+          }*/
+
+
+        val backpressCall =
+            object : OnBackPressedCallback(
+                true
+            ) {
+                override fun handleOnBackPressed() {
+                    if (isEnabled) {
+                        isEnabled = false
+                        val tabPosition = binding.tabLayout.selectedTabPosition
+                        requireActivity().onBackPressed()
+                        removeAll()
+                        if (tabPosition == 1) {
+                            hideFilterComponents()
+                            setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+                        }
+
+                    }
+
+                }
             }
-
-        }
-
-
+        activity?.onBackPressedDispatcher?.addCallback(this, backpressCall)
     }
+
 
     fun removeAll() {
         val ft: FragmentTransaction = childFragmentManager.beginTransaction()
@@ -266,7 +292,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    private  fun handleUIEvent(event: MyLibraryViewModel.Event) =
+    private fun handleUIEvent(event: MyLibraryViewModel.Event) =
         when (event) {
 
             MyLibraryViewModel.Event.OnFilterClick -> {
