@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,7 +65,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     }
 
-
+    @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
@@ -111,6 +112,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         binding.textviewClear.setOnClickListener {
             cleaFilterData()
         }
+
 
     }
 

@@ -110,17 +110,18 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
-          binding.toolbar.setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
+            Log.d(" NavigationListener==", "SIZE: " + childFragmentManager.fragments.size)
 
-              val tabPosition = binding.tabLayout.selectedTabPosition
-              requireActivity().onBackPressed()
-              //removeAll()
-              if (tabPosition == 1) {
-                  hideFilterComponents()
-                  setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
-              }
+            val tabPosition = binding.tabLayout.selectedTabPosition
+            requireActivity().onBackPressed()
+            removeAll()
+            if (tabPosition == 1) {
+                hideFilterComponents()
+                setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+            }
 
-          }
+        }
 
 
         val backpressCall =
@@ -128,15 +129,15 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 true
             ) {
                 override fun handleOnBackPressed() {
+                    val tabPosition = binding.tabLayout.selectedTabPosition
                     if (isEnabled) {
                         isEnabled = false
-                        val tabPosition = binding.tabLayout.selectedTabPosition
                         requireActivity().onBackPressed()
-                        removeAll()
                         if (tabPosition == 1) {
                             hideFilterComponents()
                             setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
                         }
+
 
                     }
 
