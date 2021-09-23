@@ -33,6 +33,7 @@ import core.lib.R
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.TokenViewModel
+import core.ui.VersionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
@@ -48,13 +49,18 @@ import kotlin.math.PI
  * Helper Utility class
  */
 class Utility @Inject constructor(
-    private val tokenViewModel: TokenViewModel
+    private val tokenViewModel: TokenViewModel,
+    private val versionViewModel: VersionViewModel
 ) {
 
 
     fun refreshToken(){
         AppState.saveToken("",0)
         tokenViewModel.calltoken()
+    }
+
+    fun checkVersion(){
+        versionViewModel.checkVersion()
     }
 
     enum class AlertType {
@@ -72,7 +78,8 @@ class Utility @Inject constructor(
         PDF,
         CUT_COMPLETE,
         CONNECTIVITY,
-        SOC_CONNECT
+        SOC_CONNECT,
+        SOFTWARE_UPDATE
     }
 
     enum class Iconype {
@@ -482,6 +489,7 @@ class Utility @Inject constructor(
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
                     || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
+                    || alertType == AlertType.SOFTWARE_UPDATE
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE

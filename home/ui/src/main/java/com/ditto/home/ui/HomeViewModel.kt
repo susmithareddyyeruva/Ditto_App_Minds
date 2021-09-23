@@ -103,4 +103,8 @@ val utility: Utility) : BaseViewModel() {
         }
     }
 
+    fun versionCheck(){
+        utility.checkVersion()
+    }
+
 }

@@ -17,6 +17,7 @@ import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -35,6 +36,7 @@ import java.util.*
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
+                                                      val utility: Utility,
                                                       private val getPattern: GetMylibraryData) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
@@ -220,5 +222,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         } catch (e: Exception) {
             Log.d("Error","",e)
         }
+    }
+    fun versionCheck(){
+        utility.checkVersion()
     }
 }

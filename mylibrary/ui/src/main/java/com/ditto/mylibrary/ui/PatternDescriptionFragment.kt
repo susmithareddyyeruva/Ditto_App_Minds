@@ -31,12 +31,16 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.data.model.SoftwareUpdateResult
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import core.ui.rxbus.RxBus
+import core.ui.rxbus.RxBusEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -59,14 +63,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     val logger: Logger by lazy {
         loggerFactory.create(PatternDescriptionFragment::class.java.simpleName)
     }
-
+    var versionDisposable: CompositeDisposable? = null
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: PatternDescriptionFragmentBinding
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
-
+    var versionResult: SoftwareUpdateResult? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -537,14 +541,59 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        listenVersionEvents()
     }
+    private fun listenVersionEvents() {
+        versionDisposable = CompositeDisposable()
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.checkVersion::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (it.isCheckVersion){
+                    !it.isCheckVersion
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.versionCheck()
+                }
+            })
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.versionReceived::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
 
+                bottomNavViewModel.showProgress.set(false)
+                versionResult = it.versionReceived
+                showVersionPopup()
+
+            })
+
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                bottomNavViewModel.showProgress.set(false)
+            })
+    }
 
     override fun onPause() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         super.onPause()
+        versionDisposable?.clear()
+        versionDisposable?.dispose()
     }
 
+    private fun showVersionPopup() {
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            getString(R.string.str_menu_softwareupdate),
+            versionResult?.response?.body!!,
+            versionResult?.response?.cancel!!,
+            versionResult?.response?.confirm!!,
+            this,
+            Utility.AlertType.SOFTWARE_UPDATE
+            ,
+            Utility.Iconype.SUCCESS
+        )
+    }
     private fun enterWorkspace() {
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }

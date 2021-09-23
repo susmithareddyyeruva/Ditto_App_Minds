@@ -20,6 +20,9 @@ fun VersionResult.toDomain(): VersionResult {
         body = this.body,
         confirm = this.confirm,
         confirm_link = this.confirm_link,
-        cancel = this.cancel
+        cancel = this.cancel,
+        version_update = this.version_update,
+        critical_update = this.critical_update,
+        force_update = this.force_update
     )
 }
