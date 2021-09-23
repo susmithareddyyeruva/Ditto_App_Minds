@@ -112,14 +112,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
         binding.toolbar.setNavigationOnClickListener {
             Log.d(" NavigationListener==", "SIZE: " + childFragmentManager.fragments.size)
-
-            val tabPosition = binding.tabLayout.selectedTabPosition
             requireActivity().onBackPressed()
-            removeAll()
-            if (tabPosition == 1) {
-                hideFilterComponents()
-                setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
-            }
 
         }
 
@@ -132,12 +125,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     val tabPosition = binding.tabLayout.selectedTabPosition
                     if (isEnabled) {
                         isEnabled = false
-                        requireActivity().onBackPressed()
                         if (tabPosition == 1) {
                             hideFilterComponents()
                             setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
                         }
-
+                        requireActivity().onBackPressed()
 
                     }
 
