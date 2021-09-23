@@ -90,6 +90,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setHomeItems() {
+        homeItem.clear()
    /*     val images = intArrayOf(
             R.drawable.ic_home_pattern_library, R.drawable.ic_home_ditto,
             R.drawable.ic_home_joann, R.drawable.ic_home_tutorial
