@@ -110,17 +110,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.imageClearAll.setOnClickListener {
             binding.clearFilter.performClick()
         }
-        /*  binding.toolbar.setNavigationOnClickListener {
+          binding.toolbar.setNavigationOnClickListener {
 
               val tabPosition = binding.tabLayout.selectedTabPosition
               requireActivity().onBackPressed()
-              removeAll()
+              //removeAll()
               if (tabPosition == 1) {
                   hideFilterComponents()
                   setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
               }
 
-          }*/
+          }
 
 
         val backpressCall =
