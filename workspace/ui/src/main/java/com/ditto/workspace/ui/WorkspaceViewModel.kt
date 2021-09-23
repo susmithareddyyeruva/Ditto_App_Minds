@@ -884,6 +884,8 @@ class WorkspaceViewModel @Inject constructor(
                 }
                 uiEvents.post(Event.OnDownloadComplete)
             }
+        } else {
+            uiEvents.post(Event.OnDownloadComplete)
         }
     }
 
