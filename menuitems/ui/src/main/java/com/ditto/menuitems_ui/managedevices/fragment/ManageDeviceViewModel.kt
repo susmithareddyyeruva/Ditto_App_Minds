@@ -32,7 +32,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     fun connectToProjector(hostAddress : String, port : Int, isShowProgress : Boolean){
         showProgress(isShowProgress)
         GlobalScope.launch {
-            delay(200)
+            delay(1000)
             startSocketConnection(hostAddress,port)
         }
     }

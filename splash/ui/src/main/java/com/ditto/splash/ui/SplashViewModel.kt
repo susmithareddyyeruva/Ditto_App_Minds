@@ -41,6 +41,11 @@ class SplashViewModel @Inject constructor(
         /*if (Utility.isTokenExpired()){
             utility.refreshToken()
         }*/
+        initialDelayWithDataFetch()
+
+    }
+
+    fun initialDelayWithDataFetch() {
         utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
@@ -55,13 +60,13 @@ class SplashViewModel @Inject constructor(
         /**
          * getting patterns data
          */
-       updateDb()
+        updateDb()
     }
 
-    fun callToken(){
+    fun callToken() {
         utility.refreshToken()
-
     }
+
     private fun updateDb() {
         disposable += updateDbUseCase.invoke()
             .subscribeOn(Schedulers.io())
@@ -74,8 +79,7 @@ class SplashViewModel @Inject constructor(
         userPhone = storageManager.getStringValue(USER_PHONE)
         userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
         userLastName = storageManager.getStringValue(USER_LAST_NAME)
-
-        subscriptionEndDate=storageManager.getStringValue(SUBSCRIPTION_END_DATE)
+        subscriptionEndDate = storageManager.getStringValue(SUBSCRIPTION_END_DATE)
     }
 
     private fun fetchDbUser() {
