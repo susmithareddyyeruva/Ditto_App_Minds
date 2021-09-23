@@ -1040,7 +1040,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
                             bottomNavViewModel.showProgress.set(true)
-                            viewModel.prepareDowloadList(map)
+                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
                         } else {
                             requestPermissions(
                                 REQUIRED_PERMISSIONS_DOWNLOAD,
@@ -1930,8 +1930,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
-                viewModel.prepareDowloadList(map)
-
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
         }else {
             showSaveAndExitPopup()
@@ -2243,6 +2242,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 findNavController().popBackStack(R.id.patternDescriptionFragment, false)
                 activity?.onBackPressed()
             }
+            Utility.AlertType.DOWNLOADFAILED -> {
+               showSaveAndExitPopup()
+            }
         }
 
     }
@@ -2276,7 +2278,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.cutType = Utility.AlertType.CUT_BIN
-
+            }
+            Utility.AlertType.DOWNLOADFAILED -> {
+                Toast.makeText(requireContext(),"pending put download code",Toast.LENGTH_LONG)
+                val map = getPatternPieceListTailornova()
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
 
         }

@@ -83,4 +83,6 @@
     <string name="str_calib">Calibrate</string>
     <string name="str_connect">Connect</string>
     <string name="pattern_instructions">Pattern Instructions</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="download_failed_message">Downloading pattern pieces is not complete.</string>
 </resources>

@@ -98,7 +98,7 @@ class WorkspaceViewModel @Inject constructor(
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val patternUri: ObservableField<String> = ObservableField("")
     val temp = ArrayList<String>()
-
+    val imagesToDownload = hashMapOf<String, String>()
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var isHorizontalMirror: Boolean = false
@@ -543,7 +543,8 @@ class WorkspaceViewModel @Inject constructor(
             }
         }
 
-        var cTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value!!))
+        var cTraceWorkSpacePatternInputData =
+            getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value!!))
 
         updateWorkspaceDB(
             "demo-design-id-png",
@@ -804,7 +805,8 @@ class WorkspaceViewModel @Inject constructor(
             dittofolder.mkdir()
         }
 
-        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
+        val filename =
+            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
 
         result = File(dittofolder, filename)
         if (!result.exists()) {
@@ -897,29 +899,41 @@ class WorkspaceViewModel @Inject constructor(
 
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
         Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
-        Log.d("Download","Hashmap size: ${hashMap.size}")
+        Log.d("Download", "Hashmap size: ${hashMap.size}")
         temp.clear()
-        GlobalScope.launch {
-            hashMap.forEach { (key, value) ->
+        if (!hashMap.isEmpty()) {
+            GlobalScope.launch {
+                hashMap.forEach { (key, value) ->
 
-                val availableUri = key?.let {
-                    core.ui.common.Utility.isImageFileAvailable(
-                        it,
-                        "${data.value?.patternName}"
+                    //Log.d("DOWNLOAD", "KEY: $key \t VALUE : $value \t availableUri= $availableUri")
+                    //if (availableUri == null) {
+                    Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                    downloadEachPatternPiece(
+                        imageUrl = value,
+                        filename = key,
+                        patternFolderName = data.value?.patternName ?: "Pattern Piece"
                     )
+                    //}
                 }
+            }
+        } else {
+            onFinished()
+        }
+    }
 
-                Log.d("DOWNLOAD", "KEY: $key \t VALUE : $value \t availableUri= $availableUri")
-
-                // if (availableUri == null) {
-                Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                performtaskForPatternDownloads(
-                    imageUrl = value,
-                    filename = key,
-                    patternFolderName = data.value?.patternName ?: "Pattern Piece"
+    fun imageFilesToDownload(hashMap: HashMap<String, String>): HashMap<String, String> {
+        imagesToDownload.clear()
+        hashMap.forEach { (key, value) ->
+            val availableUri = key.let {
+                core.ui.common.Utility.isImageFileAvailable(
+                    it,
+                    "${data.value?.patternName}"
                 )
-                //  }
+            }
+            if (availableUri == null) {
+                imagesToDownload.put(key, value)
             }
         }
+        return imagesToDownload
     }
 }

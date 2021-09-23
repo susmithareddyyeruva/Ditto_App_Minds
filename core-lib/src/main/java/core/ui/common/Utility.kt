@@ -464,20 +464,18 @@ class Utility @Inject constructor(
                     .toString() + "/Ditto/$patternFolderName"
             )
 
-
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
             var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
-            Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
-            val svgFile = File(directory, filename)
+            //Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
+            val file = File(directory, filename)
 
             var path : Uri? = null
-            if (svgFile.exists()){
-                path = Uri.fromFile(svgFile)
+            if (file.exists()){
+                path = Uri.fromFile(file)
             } else {
                 path = null
             }
-
             return path
         }
 
