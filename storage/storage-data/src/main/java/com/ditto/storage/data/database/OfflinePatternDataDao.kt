@@ -17,7 +17,6 @@ abstract class OfflinePatternDataDao {
 
     @Query("SELECT * FROM offline_pattern_data WHERE tailornaovaDesignId = :id")
     abstract fun getTailernovaDataByID(id: String): OfflinePatterns
-    //updateing where tairlnova id == 1
 
     @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId")
     abstract fun updateOfflinePatternData(
@@ -31,7 +30,7 @@ abstract class OfflinePatternDataDao {
         interfaceWorkspaceItems: MutableList<WorkspaceItemOffline>
     ): Int
 
-    //if patternType!= trial >> delete it (keeping trial patterns only )
+    //if patternType!= trial >> delete it (keeping trial patterns only)
     @Query("DELETE from offline_pattern_data where patternType  != :patternType and custId == :custId")// for specific user
     abstract fun deletePatternsExceptTrial(patternType: String, custId: String?)
 

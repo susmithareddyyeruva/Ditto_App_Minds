@@ -1,7 +1,6 @@
 package com.ditto.workspace.ui
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -114,7 +113,8 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun fetchTailernovaDataByID(id: String) {
+    //Fetching tailornova details from offline_pattern_data table
+    fun fetchTailernovaDetails(id: String) {
         disposable += getWorkspaceData.getTailernovaDataByID(id)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -122,9 +122,9 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleTailernovaResult(it) }
     }
 
-    //fetch data from API repo (via usecase)  //CustomerID_OrderNumebr_PatternID
-    fun fetchWorkspaceDataFromAPI(result: Result.OnSuccess<OfflinePatternData>) {
-        disposable += getWorkspaceData.getWorkspaceData("${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}")
+    //fetch data from SFCC server  //CustomerID_OrderNumebr_PatternID
+    fun fetchWorkspaceDataFromAPI(result: Result.OnSuccess<OfflinePatternData>, id: String) {
+        disposable += getWorkspaceData.getWorkspaceData(id)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -142,7 +142,7 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleWSUpdateResult(it) }
     }
 
-    fun updateWSPatternDataStorage(
+    fun updateWorkspaceDB(
         tailornaovaDesignId: String,
         selectedTab: String?,
         status: String?,
@@ -301,16 +301,9 @@ class WorkspaceViewModel @Inject constructor(
         fetchWorkspaceResult: Result<WorkspaceDataAPI>,
         tailornovaResult: Result.OnSuccess<OfflinePatternData>
     ) {
-        Log.d("handleFetchResultAPI", "is:\t ${fetchWorkspaceResult.toString()}")
         when (fetchWorkspaceResult) {
             is Result.OnSuccess -> {
-
-                val patternsData: PatternsData =
-                    getPatternDataFromSFCC_Tailernova(tailornovaResult, fetchWorkspaceResult)
-                Log.d("handleFetchResultAPI", "Combine patternsData >>>>${patternsData} ")
-
-                data.value = patternsData
-                Log.d("handleFetchResultAPI", "Combine patternsData: data.value >>${data.value} ")
+                data.value = combineTailornovaAndSFCCDetails(tailornovaResult, fetchWorkspaceResult)
                 activeInternetConnection.set(true)
                 uiEvents.post(Event.HideProgressLoader)
                 setWorkspaceView()
@@ -319,23 +312,21 @@ class WorkspaceViewModel @Inject constructor(
             is Result.OnError -> {
                 handleError(fetchWorkspaceResult.error)
                 Log.d("handleFetchResultAPI", "Failed")
-                val patternsData: PatternsData =
-                    getPatternDataFromSFCC_Tailernova(tailornovaResult)
-                data.value = patternsData
+                data.value = combineTailornovaAndSFCCDetails(tailornovaResult)
                 setWorkspaceView()
                 uiEvents.post(Event.HideProgressLoader)
-
             }
         }
     }
 
-
-    private fun handleTailernovaResult(
-        result: Result<OfflinePatternData>?,
-    ) {
+    private fun handleTailernovaResult(result: Result<OfflinePatternData>?) {
         when (result) {
             is Result.OnSuccess -> {
-                fetchWorkspaceDataFromAPI(result)
+                // Fetching workspace data from SFCC server
+                fetchWorkspaceDataFromAPI(
+                    result,
+                    "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
+                )
                 Log.d("WorkspaceViewModel", "Tailernova Success $result")
             }
             is Result.OnError -> handleError(result.error)
@@ -536,7 +527,7 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.OnResetClicked)
     }
 
-    fun saveProject(projectName: String, isCompleted: Boolean?, closeScreen: Boolean) {
+    fun saveProject() {
         data.value?.completedPieces = Utility.progressCount.get()
         data.value?.selectedTab = Utility.fragmentTabs.get().toString()
 
@@ -551,14 +542,10 @@ class WorkspaceViewModel @Inject constructor(
                 }
             }
         }
-        Log.d(
-            "Coordinates",
-            "toSavedProject : " + data.value?.garmetWorkspaceItemOfflines
-        )
-        val patternData: PatternsData = setWorkspaceDimensions(data.value!!)
-        var cTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(patternData)
 
-        updateWSPatternDataStorage(
+        var cTraceWorkSpacePatternInputData = getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value!!))
+
+        updateWorkspaceDB(
             "demo-design-id-png",
             cTraceWorkSpacePatternInputData.selectedTab,
             cTraceWorkSpacePatternInputData.status,
@@ -586,14 +573,12 @@ class WorkspaceViewModel @Inject constructor(
             patternsData?.interfaceWorkspaceItemOfflines
                 ?: emptyList()
         )
-
         return patternsData
     }
 
 
     // Set workspace Dimensions to Virtual
     fun setWorkspaceVirtualDimensions(workspaceItems: List<WorkspaceItems>): List<WorkspaceItems> {
-
         for (workspaceItem in workspaceItems) {
             workspaceItem.xcoordinate =
                 workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat())
@@ -601,14 +586,12 @@ class WorkspaceViewModel @Inject constructor(
                 workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat())
             workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat())
             workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat())
-
         }
         return workspaceItems
     }
 
     // Set workspace Dimensions to Virtual
     fun getWorkspaceDimensions(workspaceItems: List<WorkspaceItems>?): List<WorkspaceItems>? {
-
         if (workspaceItems != null) {
             for (workspaceItem in workspaceItems) {
                 workspaceItem.xcoordinate =
@@ -617,7 +600,6 @@ class WorkspaceViewModel @Inject constructor(
                     workspaceItem.ycoordinate?.div(scaleFactor.get().toFloat())
                 workspaceItem.pivotX = workspaceItem.pivotX?.div(scaleFactor.get().toFloat())
                 workspaceItem.pivotY = workspaceItem.pivotY?.div(scaleFactor.get().toFloat())
-
             }
         }
         return workspaceItems
@@ -715,7 +697,6 @@ class WorkspaceViewModel @Inject constructor(
 
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
-        Log.d("DOWLOAD", "COMPLETED")
     }
 
     sealed class Event {
@@ -802,7 +783,7 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
+                result = convertInputStreamToFile(inputStream, patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
@@ -811,15 +792,10 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun convertInputStreamToFile(
         inputStream: InputStream,
-        filename: String,
         patternFolderName: String?
     ): File? {
         var result: File? = null
-        val outputFile: File? = null
         var dittofolder: File? = null
-
-        val contextWrapper = ContextWrapper(context)
-
         dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
@@ -828,8 +804,7 @@ class WorkspaceViewModel @Inject constructor(
             dittofolder.mkdir()
         }
 
-        val filename =
-            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
+        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
 
         result = File(dittofolder, filename)
         if (!result.exists()) {
@@ -862,15 +837,12 @@ class WorkspaceViewModel @Inject constructor(
                 subFolder.mkdirs()
             }
         } else {
-            Log.d("Ditto Folder", "PRESENT IN DIRECTORY")
-
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             } else {
                 Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
             }
         }
-
 
         result = File(subFolder, filename)
         if (!result.exists()) {
@@ -883,16 +855,12 @@ class WorkspaceViewModel @Inject constructor(
         return result
     }
 
-    suspend fun performtaskForPatternDownloads(
+    suspend fun downloadEachPatternPiece(
         imageUrl: String,
         filename: String,
         patternFolderName: String?
     ) {
         withContext(Dispatchers.IO) {
-            Log.d(
-                "DOWNLOAD",
-                "inside performtaskForPatternDownloads Started KEY: $filename \t VALUE : $imageUrl"
-            )
             val inputStream: InputStream
             var result: File? = null
             val url: URL = URL(imageUrl)
@@ -913,7 +881,7 @@ class WorkspaceViewModel @Inject constructor(
             Log.d("PATTERN", patternUri.get() ?: "")
 
             temp.add(path.toString())
-            onFinished()
+            onFinished() // end of all pattern pices download
         }
     }
 
@@ -927,35 +895,9 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    private fun getWorkspaceInputDataToAPI(patternData: PatternsData): WorkspaceDataAPI {
-
-        Log.d("getWSInputDataToAPI", "OnSuccess patternData: $patternData")
-
-        val cTraceWorkSpacePatternInputData = WorkspaceDataAPI(
-            tailornaovaDesignId = patternData.id,
-            selectedTab = patternData.selectedTab,
-            status = patternData.status,
-            numberOfCompletedPiece = patternData.numberOfCompletedPiece,
-            patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
-
-            garmetWorkspaceItems = patternData.garmetWorkspaceItemOfflines?.map {
-                it.toWorkspaceItemDomain()
-            }?.toMutableList(),
-            liningWorkspaceItems = patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
-                ?.toMutableList(),
-            interfaceWorkspaceItems = patternData.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
-                ?.toMutableList()
-        )
-        Log.d(
-            "getWSInputDataToAPI",
-            "OnSuccess cTraceWSPatternInputData: $cTraceWorkSpacePatternInputData"
-        )
-
-        return cTraceWorkSpacePatternInputData
-    }
-
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("Download","Hashmap size: ${hashMap.size}")
         temp.clear()
         GlobalScope.launch {
             hashMap.forEach { (key, value) ->
@@ -979,92 +921,5 @@ class WorkspaceViewModel @Inject constructor(
                 //  }
             }
         }
-
-
     }
-
-}
-
-// mapping WorkspaceAPI response model to PatternData model
-private fun getPatternDataFromSFCC_Tailernova(
-    resultTailernova: Result.OnSuccess<OfflinePatternData>,
-    fetchWorkspaceResult: Result.OnSuccess<WorkspaceDataAPI>
-): PatternsData {
-
-    return PatternsData(
-        id = resultTailernova.data.id,
-        patternName = resultTailernova.data.name,
-        description = resultTailernova.data.description,
-        totalPieces = 0,
-        completedPieces = 0,
-        numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPiece,
-        totalNumberOfPieces = resultTailernova.data.numberOfPieces,
-        selectedTab = fetchWorkspaceResult.data.selectedTab,
-        status = fetchWorkspaceResult.data.status,
-        thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
-        thumbnailImageName = resultTailernova.data.thumbnailImageName,
-        //descriptionImages TODO will come from tailernova in next sprints
-        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
-        patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
-        garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems?.map {
-            it.toOldModel(
-                resultTailernova.data.patternPieces
-            )
-        }?.toMutableList(),
-
-        liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems?.map {
-            it.toOldModel(
-                resultTailernova.data.patternPieces
-            )
-        }?.toMutableList(),
-        interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems?.map {
-            it.toOldModel(
-                resultTailernova.data.patternPieces
-            )
-        }?.toMutableList()
-    )
-}
-
-
-// mapping WorkspaceAPI response model to PatternData model for offline
-private fun getPatternDataFromSFCC_Tailernova(
-    resultTailernova: Result.OnSuccess<OfflinePatternData>
-): PatternsData {
-
-    return PatternsData(
-        id = resultTailernova.data.id,
-        patternName = resultTailernova.data.name,
-        description = resultTailernova.data.description,
-        totalPieces = 0,
-        completedPieces = 0,
-        numberOfCompletedPiece = resultTailernova.data.numberOfCompletedPieces,
-        totalNumberOfPieces = resultTailernova.data.numberOfPieces,
-        selectedTab = resultTailernova.data.selectedTab,
-        status = resultTailernova.data.status,
-        thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
-        thumbnailImageName = resultTailernova.data.thumbnailImageName,
-        //descriptionImages TODO will come from tailernova in next sprints
-        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
-        patternPieces = resultTailernova.data.patternPieces.map {
-            it.toOldModelOffline(
-                resultTailernova
-                    .data
-                    .patternPiecesFromApi
-            )
-        },
-        garmetWorkspaceItemOfflines = resultTailernova.data.garmetWorkspaceItemOfflines.map {
-            it.toOldModelOffline(resultTailernova.data.patternPieces)
-        }.toMutableList(),
-
-        liningWorkspaceItemOfflines = resultTailernova.data.liningWorkspaceItemOfflines.map {
-            it.toOldModelOffline(
-                resultTailernova.data.patternPieces
-            )
-        }.toMutableList(),
-        interfaceWorkspaceItemOfflines = resultTailernova.data.interfaceWorkspaceItemOfflines.map {
-            it.toOldModelOffline(
-                resultTailernova.data.patternPieces
-            )
-        }.toMutableList()
-    )
 }

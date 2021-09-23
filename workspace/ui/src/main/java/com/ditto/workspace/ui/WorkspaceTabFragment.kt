@@ -20,6 +20,7 @@ import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -708,14 +709,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         var hashMap: HashMap<String, String> = HashMap<String, String>()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] = viewModel.data.value?.thumbnailImagePath.toString()
         for (patternItem in viewModel.data.value?.selvages!!) {
-            hashMap[patternItem.imagePath.toString()] = patternItem.imagePath.toString()
+            hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
         }
         for (patternItem in viewModel.data.value?.patternPieces!!) {
             hashMap[patternItem.thumbnailImageName.toString()] = patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
             for (splicedImage in patternItem.splicedImages) {
                 hashMap[splicedImage.imageName.toString()] = splicedImage.imagePath.toString()
-                hashMap[splicedImage.mapImageUrl.toString()] = splicedImage.mapImageUrl.toString()
+                hashMap[splicedImage.mapImageName.toString()] = splicedImage.mapImageUrl.toString()
             }
         }
         return hashMap
@@ -980,7 +981,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 /**
                  * All Pattern Pieces Downloaded Successfully
                  */
-                if (viewModel.temp.size==getPatternPieceListTailornova().size) {
+                if (viewModel.temp.size == getPatternPieceListTailornova().size) {
                     bottomNavViewModel.showProgress.set(false)
                     Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     //moveToLibrary()
@@ -1489,7 +1490,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
-        viewModel.saveProject(projectName, isCompleted, true)
+        viewModel.saveProject()
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
     }
 
@@ -1676,7 +1677,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             )
 
         }
-        viewModel.referenceImage.set(spliceImages?.reference_splice)
+        viewModel.referenceImage.set(spliceImages?.mapImageUrl)
     }
 
     private fun showSpliceArrows(row: Int?, column: Int?) {

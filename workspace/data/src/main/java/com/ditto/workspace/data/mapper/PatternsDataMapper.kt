@@ -69,7 +69,8 @@ internal fun SpliceImages.toDomain(): com.ditto.workspace.domain.model.SpliceIma
         reference_splice = this.reference_splice,
         imagePath = this.imagePath,
         imageName = this.imagePath,
-        mapImageUrl = this.mapImageUrl
+        mapImageUrl = this.mapImageUrl,
+        mapImageName = this.mapImageName
     )
 }
 

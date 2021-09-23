@@ -1,6 +1,8 @@
 package com.ditto.workspace.data.mapper
 
+import android.util.Log
 import com.ditto.workspace.domain.model.*
+import non_core.lib.Result
 
 
 fun PatternPieces.toPatternPieceDomain(): PatternPieceSFCCAPI {
@@ -51,7 +53,8 @@ fun SplicedImageDomain.toOldModel(): SpliceImages {
         reference_splice = this.mapImageName,
         imagePath = this.imageUrl,
         imageName = this.imageName,
-        mapImageUrl = this.mapImageUrl
+        mapImageUrl = this.mapImageUrl,
+        mapImageName=this.mapImageName
     )
 }
 
@@ -93,7 +96,8 @@ fun SplicedImageDomain.toOldModelSpliceImage(): SpliceImages {
         reference_splice = this.mapImageName,
         imageName = this.imageName,
         imagePath = this.imageUrl,
-        mapImageUrl=this.mapImageUrl
+        mapImageUrl=this.mapImageUrl,
+        mapImageName=this.imageName
     )
 }
 
@@ -225,7 +229,116 @@ fun SplicedImageDomain.toOldOffline(): SpliceImages {
         imageName = this.imageName,
         imagePath = this.imageUrl,
         mapImageUrl = this.mapImageUrl,
-
+        mapImageName = this.mapImageName,
         )
 }
 
+// mapping WorkspaceAPI response model to PatternData model
+fun combineTailornovaAndSFCCDetails(
+    resultTailernova: Result.OnSuccess<OfflinePatternData>,
+    fetchWorkspaceResult: Result.OnSuccess<WorkspaceDataAPI>
+): PatternsData {
+
+    return PatternsData(
+        id = resultTailernova.data.id,
+        patternName = resultTailernova.data.name,
+        description = resultTailernova.data.description,
+        totalPieces = 0,
+        completedPieces = 0,
+        numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPiece,
+        totalNumberOfPieces = resultTailernova.data.numberOfPieces,
+        selectedTab = fetchWorkspaceResult.data.selectedTab,
+        status = fetchWorkspaceResult.data.status,
+        thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
+        thumbnailImageName = resultTailernova.data.thumbnailImageName,
+        //descriptionImages TODO will come from tailernova in next sprints
+        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
+        patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
+        garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems?.map {
+            it.toOldModel(
+                resultTailernova.data.patternPieces
+            )
+        }?.toMutableList(),
+
+        liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems?.map {
+            it.toOldModel(
+                resultTailernova.data.patternPieces
+            )
+        }?.toMutableList(),
+        interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems?.map {
+            it.toOldModel(
+                resultTailernova.data.patternPieces
+            )
+        }?.toMutableList()
+    )
+}
+
+// mapping WorkspaceAPI response model to PatternData model for offline
+fun combineTailornovaAndSFCCDetails(
+    resultTailernova: Result.OnSuccess<OfflinePatternData>
+): PatternsData {
+
+    return PatternsData(
+        id = resultTailernova.data.id,
+        patternName = resultTailernova.data.name,
+        description = resultTailernova.data.description,
+        totalPieces = 0,
+        completedPieces = 0,
+        numberOfCompletedPiece = resultTailernova.data.numberOfCompletedPieces,
+        totalNumberOfPieces = resultTailernova.data.numberOfPieces,
+        selectedTab = resultTailernova.data.selectedTab,
+        status = resultTailernova.data.status,
+        thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
+        thumbnailImageName = resultTailernova.data.thumbnailImageName,
+        //descriptionImages TODO will come from tailernova in next sprints
+        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
+        patternPieces = resultTailernova.data.patternPieces.map {
+            it.toOldModelOffline(
+                resultTailernova
+                    .data
+                    .patternPiecesFromApi
+            )
+        },
+        garmetWorkspaceItemOfflines = resultTailernova.data.garmetWorkspaceItemOfflines.map {
+            it.toOldModelOffline(resultTailernova.data.patternPieces)
+        }.toMutableList(),
+
+        liningWorkspaceItemOfflines = resultTailernova.data.liningWorkspaceItemOfflines.map {
+            it.toOldModelOffline(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList(),
+        interfaceWorkspaceItemOfflines = resultTailernova.data.interfaceWorkspaceItemOfflines.map {
+            it.toOldModelOffline(
+                resultTailernova.data.patternPieces
+            )
+        }.toMutableList()
+    )
+}
+
+fun getWorkspaceInputDataToAPI(patternData: PatternsData): WorkspaceDataAPI {
+
+    Log.d("getWSInputDataToAPI", "OnSuccess patternData: $patternData")
+
+    val cTraceWorkSpacePatternInputData = WorkspaceDataAPI(
+        tailornaovaDesignId = patternData.id,
+        selectedTab = patternData.selectedTab,
+        status = patternData.status,
+        numberOfCompletedPiece = patternData.numberOfCompletedPiece,
+        patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
+
+        garmetWorkspaceItems = patternData.garmetWorkspaceItemOfflines?.map {
+            it.toWorkspaceItemDomain()
+        }?.toMutableList(),
+        liningWorkspaceItems = patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+            ?.toMutableList(),
+        interfaceWorkspaceItems = patternData.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+            ?.toMutableList()
+    )
+    Log.d(
+        "getWSInputDataToAPI",
+        "OnSuccess cTraceWSPatternInputData: $cTraceWorkSpacePatternInputData"
+    )
+
+    return cTraceWorkSpacePatternInputData
+}

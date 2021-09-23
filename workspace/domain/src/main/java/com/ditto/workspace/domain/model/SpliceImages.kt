@@ -7,5 +7,6 @@ data class SpliceImages(
     var reference_splice: String?,
     var imageName: String?,
     var imagePath: String?,
-    var mapImageUrl: String?
+    var mapImageUrl: String?,
+    var mapImageName: String?// add this
 )

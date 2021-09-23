@@ -45,9 +45,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .map {
                 Result.withValue(it.toDomain())
-
-
-
             }
             .onErrorReturn {
                 var errorMessage = "Error Fetching data"
@@ -67,8 +64,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         }
                     }
                 }
-
-
                 Result.withError(
                     HomeDataFetchError(errorMessage, it)
                 )

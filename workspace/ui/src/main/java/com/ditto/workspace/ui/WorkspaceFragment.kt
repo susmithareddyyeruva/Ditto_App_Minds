@@ -18,7 +18,6 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.workspace.ui.adapter.WorkspaceAdapter
 import com.ditto.workspace.ui.databinding.FragmentWorkspaceBinding
 import com.ditto.workspace.ui.util.Utility
-import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -56,7 +55,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             ).also {
                 arguments?.getInt("PatternId")?.let { viewModel.patternId.set(it) }
                 arguments?.getInt("clickedOrderNumber")?.let { viewModel.clickedOrderNumber.set(it) }
-
             }
         }
         return binding.root
@@ -65,17 +63,14 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         if (viewModel.data.value == null) {
             Utility.fragmentTabs.set(0)
             logger.d("TRACE: Setting progress")
             Utility.progressCount.set(0)
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
-            //viewModel.fetchWorkspaceData()
-            //viewModel.fetchWorkspaceDataFromAPI()
             showProgress(true)
-            viewModel.fetchTailernovaDataByID("demo-design-id-png") // fetching from internal DB
+            viewModel.fetchTailernovaDetails("demo-design-id-png") // fetching data from internal DB
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -124,10 +119,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
             workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
             workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
-            workspacAdapter.addFragment(
-                fragmentInterface,
-                getString(R.string.interfacing)
-            )//Interfacing
+            workspacAdapter.addFragment(fragmentInterface,getString(R.string.interfacing))//Interfacing
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
@@ -160,7 +152,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.tabLayoutWorkspace.getTabAt(Utility.fragmentTabs.get())?.select()
             disableNoItemTabs() // to fix the disable tab issue after coming back from calibration page
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -184,7 +175,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         } else {
             viewModel.data.value?.interfaceWorkspaceItemOfflines = fragmentInterface.fetchWorkspaceData(2)
         }
-
         fragmentGarment.updateTabData(viewModel.data.value)
         fragmentLining.updateTabData(viewModel.data.value)
         fragmentInterface.updateTabData(viewModel.data.value)
@@ -279,7 +269,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         }
-
     }
 
     private fun handleEvent(event: WorkspaceViewModel.Event) =
@@ -288,7 +277,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 clearWorkspace()
                 updateTab()
-
                 fragmentGarment.updateTabDataAndShowToUI(viewModel.data.value)
                 fragmentLining.updateTabDataAndShowToUI(viewModel.data.value)
                 fragmentInterface.updateTabDataAndShowToUI(viewModel.data.value)
@@ -299,7 +287,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             is WorkspaceViewModel.Event.HideProgressLoader -> {
                 showProgress(false)
             }
-
             else -> logger.d("Invalid Event")
         }
 
@@ -326,7 +313,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (alertType == core.ui.common.Utility.AlertType.TAB_SWITCH) {
             switchTab()
         }
-
     }
 
     private fun switchTab() {
@@ -358,20 +344,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             if (!baseViewModel.isProjecting.get()) {
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
                     updateData()
-                    //onTabSwitchAlert()
-                   /* if (viewModel.selectedTab.get() == 0) {
-                       // fragmentGarment.onSaveButtonClicked()
-                    } else if (viewModel.selectedTab.get() == 1) {
-
-                      //  fragmentLining.onSaveButtonClicked()
-                    } else {
-                       // fragmentInterface.onSaveButtonClicked()
-                    }*/
                     viewModel.selectedTab.set(view?.tag as Int)
                     binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
-
-                    // todo
-                    viewModel.selectedTab
                     //switchTab()
                     return true
                 }
