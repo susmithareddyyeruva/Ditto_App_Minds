@@ -22,7 +22,8 @@ class MyLibraryAdapter(supportFragmentManager: FragmentManager) : FragmentStateP
         return mFragmentTitleList[position]
     }
 
-    fun addFragment(fragment: Fragment, title: String,listener: AllPatternsFragment.SetPatternCount,isfilter:AllPatternsFragment.setFilterIcons) {
+    fun addFragment(fragment: Fragment, title: String,listener: AllPatternsFragment.SetPatternCount,isfilter:AllPatternsFragment.FilterIconSetListener,
+    ) {
         mFragmentList.add(fragment)
         mFragmentTitleList.add(title)
     }

@@ -35,7 +35,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         loggerFactory.create(MyLibraryRepositoryImpl::class.java.simpleName)
     }
 
-    override fun getMyLibraryDetails(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>> {
+    override fun getHomePatternsData(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }

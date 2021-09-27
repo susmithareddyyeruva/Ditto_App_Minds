@@ -11,14 +11,24 @@ import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
 import com.ditto.mylibrary.domain.model.AllPatternsDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.model.FoldersResultDomain
+import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.request.FolderRenameRequest
+import com.ditto.mylibrary.domain.request.FolderRequest
+import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import core.OS
+import core.CONNECTION_EXCEPTION
+import core.ERROR_FETCH
+import core.UNKNOWN_HOST_EXCEPTION
+import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
@@ -51,13 +61,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
     /**
      * fetches data from local store first. if not available locally, fetches from server
      */
-    override fun getMyLibraryData(request: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+    override fun getMyLibraryData(filterRequestData: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getAllPatternsPatterns(request, "Bearer " + AppState.getToken()!!)
+        return myLibraryService.getAllPatternsPatterns(
+            filterRequestData,
+            "Bearer " + AppState.getToken()!!
+        )
             .doOnSuccess {
-                logger.d("*****FETCH FILTER SUCCESS**")
+                logger.d("*****FETCH PATTERNS SUCCESS**")
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -65,20 +78,21 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
+                    logger.d( e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            USER_FIRST_NAME
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                           ERROR_FETCH
                         }
                     }
                 }
@@ -140,57 +154,63 @@ class MyLibraryRepositoryImpl @Inject constructor(
     override fun removePattern(patternId: String): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-
-    override fun getFilteredPatterns(request: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+    
+    override fun getMyLibraryFolderData(
+        requestdata: GetFolderRequest,
+        methodName: String
+    ): Single<Result<FoldersResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getFilterredPatterns(
-            request, "Bearer " + AppState.getToken()!!
+        return myLibraryService.getFoldersList(
+            requestdata, "Bearer " + AppState.getToken()!!,
+            method = methodName
         )
             .doOnSuccess {
-                logger.d("*****FETCH FILTER SUCCESS**")
+                logger.d("*****FETCH FOLDER LIST SUCCESS**")
             }
             .map {
                 Result.withValue(it.toDomain())
-
-
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                            ERROR_FETCH
                         }
                     }
                 }
-                logger.d(it.localizedMessage)
 
+                logger.d(it.localizedMessage)
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
             }
-
     }
 
-    override fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+    override fun addFolder(
+        requestdata: FolderRequest,
+        methodName: String
+    ): Single<Result<AddFavouriteResultDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return myLibraryService.getFoldersList(createJson, "Bearer " + AppState.getToken()!!)
+        return myLibraryService.addFolder(
+            requestdata, "Bearer " + AppState.getToken()!!,
+            method = methodName
+        )
             .doOnSuccess {
-                logger.d("*****FETCH FILTER SUCCESS**")
+                logger.d("*****methodName $methodName")
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -198,20 +218,65 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = ERROR_FETCH
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
                     Log.d("Catch", e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
-                            "Unknown host!"
+                            UNKNOWN_HOST_EXCEPTION
                         }
                         is ConnectException -> {
-                            "No Internet connection available !"
+                            CONNECTION_EXCEPTION
                         }
                         else -> {
-                            "Error Fetching data!"
+                            ERROR_FETCH
+                        }
+                    }
+                }
+
+                logger.d(it.localizedMessage)
+                Result.withError(
+                    FilterError(errorMessage, it)
+                )
+            }
+    }
+
+    override fun renameFolder(
+        renameRequest: FolderRenameRequest,
+        methodName: String
+    ): Single<Result<AddFavouriteResultDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        return myLibraryService.renameFolder(
+            renameRequest, "Bearer " + AppState.getToken()!!,
+            method = methodName
+        )
+            .doOnSuccess {
+                logger.d("*****methodName $methodName")
+            }
+            .map {
+                Result.withValue(it.toDomain())
+
+
+            }
+            .onErrorReturn {
+                var errorMessage = ERROR_FETCH
+                try {
+                    logger.d("try block")
+                } catch (e: Exception) {
+                    logger.d( e.localizedMessage)
+                    errorMessage = when (e) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
                         }
                     }
                 }
@@ -244,13 +309,4 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
 
-//    override fun addProject(
-//        id: Int,
-//        dndOnboarding: Boolean,
-//        isLaterClicked: Boolean
-//    ): Single<Any> {
-//        return Single.fromCallable {
-//            dbDataDao.updateDndOnboarding(id,dndOnboarding, isLaterClicked)
-//        }
-//    }
 }

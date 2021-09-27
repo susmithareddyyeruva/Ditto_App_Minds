@@ -1,7 +1,7 @@
 package com.ditto.data
 
 import com.ditto.home.domain.GetMyLibraryRepository
-import com.ditto.home.domain.HomePageUseCase
+import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.home.domain.model.OfflinePatternData
 import com.ditto.home.domain.request.MyLibraryFilterRequestData
@@ -11,9 +11,9 @@ import javax.inject.Inject
 
 class GetHomeDataUseCaseImpl @Inject constructor(
     private val homeRepository: GetMyLibraryRepository
-) : HomePageUseCase {
-    override fun getMyLibraryDetails(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>> {
-      return  homeRepository.getMyLibraryDetails(requestData)
+) : HomeUsecase {
+    override fun getHomePatternsData(requestData: MyLibraryFilterRequestData): Single<Result<MyLibraryDetailsDomain>> {
+      return  homeRepository.getHomePatternsData(requestData)
     }
 
     override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {

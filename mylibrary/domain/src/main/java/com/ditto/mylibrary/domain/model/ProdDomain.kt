@@ -22,5 +22,5 @@ data class ProdDomain(
     val prodSize: String?="",
     val prodGender: String?="",
     val prodBrand: String?="",
-    val isFavourite:Boolean?=false
+    var isFavourite:Boolean?=false
 ):Serializable

@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -109,8 +112,8 @@ class ActiveProjectsFragment : BaseFragment() {
 
             is AllPatternsViewModel.Event.OnOptionsClicked ->
                 showPopupMenu(event.view, event.patternId)
-            is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
+            is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {TODO()}
+            is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {TODO()}
             else -> {
 
             }
@@ -122,40 +125,6 @@ class ActiveProjectsFragment : BaseFragment() {
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.actions, popup.menu)
         popup.show()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_remove -> {
-                viewModel.removePattern(patternId)
-            }
-            R.id.menu_complete -> {
-                viewModel.updateProjectComplete(patternId)
-            }
-            R.id.menu_rename -> {
-                renameProject()
-            }
-            R.id.menu_details -> {
-                Log.d("menu", "Detail")
-            }
-        }
-        return true
-    }
-
-    private fun renameProject() {
-        val layout =
-            activity?.layoutInflater?.inflate(R.layout.library_save_and_exit_dialog, null)
-        layout?.let {
-            getAlertDialogSaveAndExit(
-                requireActivity(),
-                resources.getString(R.string.save_and_exit_dialog_title),
-                "viewModel.data.value?.patternName"
-                    ?: resources.getString(R.string.save_and_exit_dialog_message),
-                it,
-                resources.getString(R.string.exit),
-                resources.getString(R.string.save)
-            )
-        }
     }
 
     private fun getAlertDialogSaveAndExit(

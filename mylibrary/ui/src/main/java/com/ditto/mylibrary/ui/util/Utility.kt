@@ -90,12 +90,21 @@ class Utility {
             val negative = mDialogView.findViewById(R.id.imageCloseDialog) as ImageView
             val rvFolder = mDialogView.findViewById(R.id.rvfolders) as RecyclerView
             rvFolder.layoutManager = LinearLayoutManager(mDialogView.context)
-            val adapter = MyFolderListAdapter(mDialogView.context, list,object :MyFolderListAdapter.CreateFolderListener{
-                override fun onNewFolderClicked() {
-                    alert.dismiss()
-                    viewmodel.onCreateFolderClick()
-                }
-            })
+            val adapter = MyFolderListAdapter(
+                mDialogView.context,
+                list,
+                object : MyFolderListAdapter.CreateFolderListener {
+                    override fun onNewFolderClicked() {
+                        alert.dismiss()
+                        viewmodel.onCreateFolderClick()
+                    }
+                },
+                object : MyFolderListAdapter.OnItemFolderClicked {
+                    override fun onItemClicked(itemName: String) {
+                        alert.dismiss()
+                        viewmodel.onFolderClick()
+                    }
+                })
             rvFolder.adapter = adapter
             adapter.viewModel = viewmodel
             dialogBuilder
@@ -106,6 +115,7 @@ class Utility {
 
 
         }
+
         fun createFolderAlertDialog(
             context: Context,
             title: String,
@@ -153,17 +163,17 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString())
-                    viewmodel.onCreateFoldersSuccess()
+                    callback.onCreateClicked(edittext.text.toString(), viewmodel.ADD)
 
 
                 } else {
-                    edittext.setError("Project Name can't be empty")
+                    edittext.setError("Folder Name can't be empty")
                 }
             }
 
 
         }
+
         fun createFolderAlertDialogForMyFolder(
             context: Context,
             title: String,
@@ -211,12 +221,14 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString())
+                    if (edittext.text.toString().isNotEmpty()) {
+                        callback.onCreateClicked(edittext.text.toString(), "ADD")
+                    }
                     viewmodel.onCreateFoldersSuccess()
 
 
                 } else {
-                    edittext.setError("Project Name can't be empty")
+                    edittext.setError("Folder Name can't be empty")
                 }
             }
 
@@ -268,12 +280,12 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    callback.onCreateClicked(edittext.text.toString())
+                    callback.onCreateClicked(edittext.text.toString(), viewmodel.rename)
                     viewmodel.onCreateFoldersSuccess()
 
 
                 } else {
-                    edittext.setError("Project Name can't be empty")
+                    edittext.setError("Folder Name can't be empty")
                 }
             }
 
@@ -286,8 +298,9 @@ class Utility {
         fun onPositiveButtonClicked()
         fun onNegativeButtonClicked()
     }
+
     interface CallbackCreateFolderDialogListener {
-        fun onCreateClicked(folderName: String)
+        fun onCreateClicked(newFolderName: String, parent: String)
         fun onCancelClicked()
     }
 

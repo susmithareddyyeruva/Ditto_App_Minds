@@ -3,12 +3,13 @@ package com.ditto.home.ui
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.ditto.home.domain.HomePageUseCase
+import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.home.domain.model.OfflinePatternData
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
+import core.CUSTOMER_EMAIL
 import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.event.UiEvents
@@ -25,7 +26,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     val storageManager: StorageManager,
-    val useCase: HomePageUseCase,
+    val useCase: HomeUsecase,
     private val utility: Utility
 ) : BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
@@ -90,6 +91,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setHomeItems() {
+        homeItem.clear()
         val images = intArrayOf(
             R.drawable.ic_home_tutorial, R.drawable.ic_home_pattern_library,
             R.drawable.ic_home_ditto, R.drawable.ic_home_joann
@@ -120,11 +122,11 @@ class HomeViewModel @Inject constructor(
 
     fun fetchData() {
         uiEvents.post(Event.OnShowProgress)
-        disposable += useCase.getMyLibraryDetails(
+        disposable += useCase.getHomePatternsData(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(
                 com.ditto.home.domain.request.OrderFilter(
                     true,
-                    "subscustomerOne@gmail.com",
+                    CUSTOMER_EMAIL,
                     true,
                     true
                 ), ProductFilter = resultMap, patternsPerPage = 12, pageId = 1

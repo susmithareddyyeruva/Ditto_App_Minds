@@ -52,6 +52,10 @@ const val PATTERN_COUNT = "COUNT"
 const val TAILORNOVA_API_KEY_VALUE = "FA872702-6396-45DC-89F0-FC1BE900591B"
 const val TAILORNOVA_API_KEY = "X-Api-Key"
 const val OS = "Android"
+const val CUSTOMER_EMAIL = "subscustomerOne@gmail.com"
+const val UNKNOWN_HOST_EXCEPTION = "UnknownHostException !"
+const val CONNECTION_EXCEPTION = "No Internet connection available !"
+const val ERROR_FETCH = "Error Fetching data!"
 
 
 

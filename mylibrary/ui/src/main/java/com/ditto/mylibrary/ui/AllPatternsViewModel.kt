@@ -5,11 +5,14 @@ import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.request.FolderRequest
+import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
+import core.CUSTOMER_EMAIL
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,28 +24,26 @@ import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import non_core.lib.whileSubscribed
 import org.json.JSONObject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
 
 class AllPatternsViewModel @Inject constructor(
-    private val getPatternsData: GetMylibraryData
+    private val libraryUseCase: MyLibraryUseCase
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
+    val clickedId: ObservableInt = ObservableInt(-1)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var errorString: ObservableField<String> = ObservableField("")
-    var userId: Int = 0
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var patternList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
-    var patternArrayList = mutableListOf<ProdDomain>()
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
     var map = HashMap<String, List<String>>()
     val menuList = hashMapOf<String, ArrayList<FilterItems>>()
@@ -52,7 +53,10 @@ class AllPatternsViewModel @Inject constructor(
     var totalPatternCount: Int = 0
     var currentPageId: Int = 1
     var isFilter: Boolean? = false
-
+    var favorite: String = "Favorite"
+    var ADD: String = "ADD"
+    var RENAME: String = "RENAME"
+    val GETFOLDER = "getFolders"
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -64,9 +68,12 @@ class AllPatternsViewModel @Inject constructor(
             }
             else -> {
                 errorString.set(error.message)
-                uiEvents.post(Event.OnResultFailed)
+                uiEvents.post(Event.OnAllPatternResultFailed)
             }
+
         }
+        uiEvents.post(Event.OnAllPatternHideProgress)
+
     }
 
     //fetch data from offline
@@ -102,24 +109,21 @@ class AllPatternsViewModel @Inject constructor(
         createJson: MyLibraryFilterRequestData
     ) {
 
-        uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.invoke(createJson)
-            .delay(600, TimeUnit.MILLISECONDS)
+        uiEvents.post(Event.OnAllPatternShowProgress)
+        disposable += libraryUseCase.getPatterns(createJson)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
-        uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
 
-                result.data.prod.forEach {
+              /*  result.data.prod.forEach {
                     patternArrayList.add(it)
-                }
+                }*/
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
@@ -127,7 +131,7 @@ class AllPatternsViewModel @Inject constructor(
                 totalPageCount = result.data.totalPageCount ?: 0
                 currentPageId = result.data.currentPageId ?: 0
                 map = result.data.menuItem ?: hashMapOf() //hashmap
-                uiEvents.post(Event.OnResultSuccess)
+                uiEvents.post(Event.OnAllPatternResultSuccess)
                 if (isFilter == false) {
                     setList()  // For Displaying menu item without any filter applied
                     uiEvents.post(Event.UpdateDefaultFilter)
@@ -141,12 +145,39 @@ class AllPatternsViewModel @Inject constructor(
         }
     }
 
+    private fun handleAddToFavouriteResult(
+        result: Result<AddFavouriteResultDomain>,
+        product: ProdDomain,
+        methodName: String
+    ) {
+        when (result) {
+            is Result.OnSuccess -> {
+                if (result.data.responseStatus) {
+                    Log.d("Added to Favourite", "FAVOURITE")
+                    if (methodName == "update") {
+                        uiEvents.post(Event.OnFolderCreated)
+                    } else {
+                        product.isFavourite = result.data.queryString.equals("method=addToFavorite")
+                        uiEvents.post(Event.OnAllPatternResultSuccess)
+
+                    }
+
+
+                }
+                uiEvents.post(Event.OnAllPatternHideProgress)
+            }
+            is Result.OnError -> handleError(result.error)
+
+
+        }
+    }
+
     fun setList() {
 
         for ((key, value) in map) {
-            var menuValues: ArrayList<FilterItems> = ArrayList()
+            val menuValues: ArrayList<FilterItems> = ArrayList()
             for (aString in value) {
-                menuValues?.add(FilterItems(aString))
+                menuValues.add(FilterItems(aString))
 
             }
             //  Filter.menuItemListFilter[key] = menuValues
@@ -154,7 +185,6 @@ class AllPatternsViewModel @Inject constructor(
         }
 
         Log.d("MAP  RESULT== ", menuList.size.toString())
-        uiEvents.post(Event.OnUpdateFilter)
 
     }
 
@@ -181,13 +211,43 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onDialogPopupClick() {
-        folderMainList = arrayListOf<MyFolderList>(
-            MyFolderList(1, "New folder"),
-            MyFolderList(2, "Summer clothes"),
-            MyFolderList(3, "Winter wear"),
-            MyFolderList(4, "Emma’s patterns")
+        uiEvents.post(Event.OnAllPatternShowProgress)
+        val folderRequest = GetFolderRequest(
+            OrderFilter(
+                true,
+                CUSTOMER_EMAIL,
+                purchasedPattern = false,
+                subscriptionList = false,
+                trialPattern = true
+            )
         )
-        uiEvents.post(Event.OnPopupClick)
+        disposable += libraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResultFolders(it) }
+
+
+    }
+    private fun handleFetchResultFolders(folderResult: Result<FoldersResultDomain>?) {
+        folderMainList = arrayListOf<MyFolderList>(
+            MyFolderList( "New folder")
+        )
+        when (folderResult) {
+            is Result.OnSuccess -> {
+                folderResult.data.responseStatus.forEach {
+                    folderMainList.add(
+                        MyFolderList(
+                            folderName = it
+                        )
+                    )
+                }
+                uiEvents.post(Event.OnPopupClick)
+            }
+            is Result.OnError -> {
+                handleError(folderResult.error)
+            }
+
+        }
     }
 
     fun navigateToAllPatterns() {
@@ -214,26 +274,61 @@ class AllPatternsViewModel @Inject constructor(
     fun removePattern(patternId: String) {
         Log.d("pattern", "Removed")
     }
-
-
+    
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
-        uiEvents.post(Event.OnSyncClick)
+        uiEvents.post(Event.OnAllPatternSyncClick)
     }
 
     fun onSearchClick() {
         Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnSearchClick)
+        uiEvents.post(Event.OnAllPatternSearchClick)
     }
 
     fun onCreateFolderClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
+        Log.d("pattern", "onCreateFolderClick : viewModel")
         uiEvents.post(Event.OnCreateFolder)
     }
+    fun onFolderClick() {
+        Log.d("pattern", "onCreateFolderClick : viewModel")
+        uiEvents.post(Event.OnFolderItemClicked)
+    }
 
-    fun onCreateFoldersSuccess() {
-        Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnFolderCreated)
+
+    fun addToFolder(product: ProdDomain, folderName: String) {
+        val hashMap = HashMap<String, ArrayList<String>>()
+        hashMap[folderName] = arrayListOf(product.tailornovaDesignId ?: "")
+        var methodName: String? = ""
+        Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
+        val favReq = FolderRequest(
+            OrderFilter(
+                true,
+                CUSTOMER_EMAIL,
+                purchasedPattern = true,
+                subscriptionList = true,
+                trialPattern = false
+            ),
+            FoldersConfig = hashMap
+        )
+        uiEvents.post(Event.OnAllPatternShowProgress)
+        if (folderName == favorite) {
+            methodName = if (product.isFavourite == true) {
+                "deleteFavorite"
+            } else {
+                "addToFavorite"
+
+            }
+        } else {
+            methodName = "update"
+
+        }
+
+        disposable += libraryUseCase.addFolder(favReq, methodName)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleAddToFavouriteResult(it, product, methodName) }
+
     }
 
     /**
@@ -256,16 +351,16 @@ class AllPatternsViewModel @Inject constructor(
             val patternId: String
         ) : Event()
 
-        object OnSyncClick : Event()
-        object OnSearchClick : Event()
+        object OnAllPatternSyncClick : Event()
+        object OnAllPatternSearchClick : Event()
         object OnCreateFolder : Event()
+        object OnFolderItemClicked : Event()
         object OnFolderCreated : Event()
-        object OnResultSuccess : Event()
-        object OnShowProgress : Event()
-        object OnHideProgress : Event()
-        object OnResultFailed : Event()
+        object OnAllPatternResultSuccess : Event()
+        object OnAllPatternShowProgress : Event()
+        object OnAllPatternHideProgress : Event()
+        object OnAllPatternResultFailed : Event()
         object NoInternet : Event()
-        object OnUpdateFilter : Event()
         object UpdateFilterImage : Event()
         object UpdateDefaultFilter : Event()
     }
@@ -274,9 +369,10 @@ class AllPatternsViewModel @Inject constructor(
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
-                "subscustomerOne@gmail.com",
+                CUSTOMER_EMAIL,
                 true,
-                true
+                true,
+                trialPattern = false
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
         val json1 = Gson().toJson(menuList)
@@ -289,31 +385,26 @@ class AllPatternsViewModel @Inject constructor(
 
             }
         }
-       // isFilter = (filteredMap.isNotEmpty())
+        // isFilter = (filteredMap.isNotEmpty())
         if (filteredMap.isNotEmpty() && value.isNotEmpty()) {
             isFilter = true
-        }
-        else if (filteredMap.isEmpty()&&value.isEmpty()) {
+        } else if (filteredMap.isEmpty() && value.isEmpty()) {
             isFilter = false
-        }
-        else if (filteredMap.isNotEmpty()&&value.isEmpty()) {
+        } else if (filteredMap.isNotEmpty() && value.isEmpty()) {
             isFilter = true
-        }
-
-        else if (filteredMap.isNotEmpty()) {
+        } else if (filteredMap.isNotEmpty()) {
             isFilter = true
-        }
-        else if (filteredMap.isEmpty()&&value.isNotEmpty()) {
+        } else if (filteredMap.isEmpty() && value.isNotEmpty()) {
             isFilter = false
         }
 
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
-            var arraYlist = ArrayList<String>()
+            val arrayList = ArrayList<String>()
             for (result in value) {
-                arraYlist.add(result.title)
-                resultMap[key] = arraYlist
-                jsonProduct.put(key, arraYlist)
+                arrayList.add(result.title)
+                resultMap[key] = arrayList
+                jsonProduct.put(key, arrayList)
 
 
             }
@@ -323,9 +414,6 @@ class AllPatternsViewModel @Inject constructor(
         filterCriteria.ProductFilter = resultMap
         val resultJson = Gson().toJson(resultMap)
         Log.d("JSON===", resultJson)
-
-        val jsonString: String = resultJson
-
         val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
         Log.d("RESULT STRING===", resultString)
         return filterCriteria

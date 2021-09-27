@@ -1,8 +1,6 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +10,17 @@ import androidx.annotation.Nullable
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.MyFolderAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderfragmentBinding
 import com.ditto.mylibrary.ui.util.Utility
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.create_folder.*
+import kotlinx.android.synthetic.main.layout_rename.*
 import javax.inject.Inject
 
 class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment(),
@@ -30,7 +32,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     val logger: Logger by lazy {
         loggerFactory.create(MyLibraryFragment::class.java.simpleName)
     }
-
     private val viewModel: MyFolderViewModel by ViewModelDelegate()
     lateinit var binding: MyfolderfragmentBinding
     override fun onCreateView(
@@ -47,29 +48,23 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            /**
+             * API call for getting Folders List
+             */
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.getFoldersList()
+        }
         setUIEvents()
-        bottomNavViewModel.showProgress.set(true)
-        Handler(Looper.getMainLooper()).postDelayed({
-           setAdapter()
-        }, 2000) //millis
-
-
-
     }
 
     fun onSyncClick() {
         if (viewModel != null) {
             Log.d("MyFolder", "Sync")
             bottomNavViewModel.showProgress.set(true)
-            Handler(Looper.getMainLooper()).postDelayed({
-                setAdapter()
-            }, 3500) //millis
+            viewModel.getFoldersList()
 
 
         }
@@ -89,25 +84,41 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         binding.rvMyFolder.layoutManager = gridLayoutManager
         val adapter = MyFolderAdapter(
             requireContext(),
-            viewModel.getList(),
+            viewModel.folderList,
             object : MyFolderAdapter.OnRenameListener {
-                override fun onRenameClicked() {
+                override fun onRenameClicked(oldFolderName: String) {
+                    /**
+                     * Rename PopUp Displayed
+                     */
+                    viewModel.folderToRename = oldFolderName
                     val layout =
-                        activity?.layoutInflater?.inflate(R.layout.layout_rename, null)
+                        activity?.layoutInflater?.inflate(R.layout.layout_rename, renameRoot)
                     layout?.let {
                         Utility.renameFolderAlertDialog(
                             requireActivity(),
                             it,
                             viewModel,
-                            "CANCEL",
-                            "RENAME FOLDER",
+                            getString(R.string.cancel_dialog),
+                            getString(R.string.rename_folder_dialog),
                             object :
                                 Utility.CallbackCreateFolderDialogListener {
-                                override fun onCreateClicked(foldername: String) {
+                                override fun onCreateClicked(newFolderName: String, action: String) {
+                                    /**
+                                     * API call for Rename Folder
+                                     */
+                                    if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                                        bottomNavViewModel.showProgress.set(true)
+                                        viewModel.addToFolder(
+                                            product = ProdDomain(),
+                                            newFolderName = newFolderName,
+                                            action = viewModel.rename
+                                        )
+                                    }
 
                                 }
 
                                 override fun onCancelClicked() {
+                                    logger.d("onCancelClicked")
 
                                 }
                             },
@@ -118,7 +129,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             },
             object : MyFolderAdapter.OnDeleteClicked {
-                override fun onDeleteClicked() {
+                override fun onDeleteClicked(title: String) {
+                    viewModel.folderToDelete = title
                     core.ui.common.Utility.getCommonAlertDialogue(
                         requireContext(),
                         "",
@@ -126,8 +138,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         getString(R.string.cancel_dialog),
                         getString(R.string.str_ok),
                         this@MyFolderFragment,
-                        core.ui.common.Utility.AlertType.DELETE
-                        ,
+                        core.ui.common.Utility.AlertType.DELETE,
                         core.ui.common.Utility.Iconype.FAILED
                     )
                 }
@@ -139,24 +150,34 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyFolderViewModel.Event) =
         when (event) {
-            is MyFolderViewModel.Event.OnCreateFolderClicked -> {
+            is MyFolderViewModel.Event.OnMyFolderCreateFolderClicked -> {
                 val layout =
-                    activity?.layoutInflater?.inflate(R.layout.create_folder, null)
+                    activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
                 layout?.let {
                     Utility.createFolderAlertDialogForMyFolder(
                         requireActivity(),
                         "",
                         "",
                         it, viewModel,
-                        "CANCEL",
-                        "CREATE FOLDER",
+                        getString(R.string.cancel_dialog),
+                        getString(R.string.create_folder),
                         object :
-                            com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                            override fun onCreateClicked(foldername: String) {
-
+                            Utility.CallbackCreateFolderDialogListener {
+                            override fun onCreateClicked(newFolderName: String, parent: String) {
+                                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                                    bottomNavViewModel.showProgress.set(true)
+                                    viewModel.folderList.clear()
+                                    viewModel.addToFolder(
+                                        product = ProdDomain(),
+                                        newFolderName = newFolderName,
+                                        action = parent
+                                    )
+                                }
                             }
 
                             override fun onCancelClicked() {
+                                logger.d("onCancelClicked")
+
 
                             }
                         },
@@ -166,24 +187,34 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-                if (myFolderDetailFragment != null) {
-                    val args = Bundle()
-                    args?.putString("TITTLE", viewModel?.clickedFolderName)
-                    myFolderDetailFragment?.setArguments(args)
-                    //Begin the transaction
-                    parentFragmentManager
-                        // 3
-                        ?.beginTransaction()
-                        // 4
-                        ?.add(R.id.detail_nav_fragment, myFolderDetailFragment)
-                        ?.addToBackStack("Detail")
-                        // 5
-                        ?.commit()
+
+                val args = Bundle()
+                args?.putString("TITTLE", viewModel?.clickedFolderName)
+                myFolderDetailFragment?.arguments = args
+                parentFragmentManager
+                    ?.beginTransaction()
+                    .addToBackStack(null)
+                    ?.replace(R.id.detail_nav_fragment, myFolderDetailFragment, "DETAIL")
+                    ?.commit()
+
+
+            }
+            is MyFolderViewModel.Event.OnMyFolderListUpdated -> {
+                setAdapter()
+                (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
+                bottomNavViewModel.showProgress.set(false)
+            }
+            is MyFolderViewModel.Event.OnNewFolderAdded, MyFolderViewModel.Event.OnFolderRemoved, MyFolderViewModel.Event.OnFolderRenamed -> {
+                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.folderList.clear()
+                    viewModel.getFoldersList()
                 } else {
+                    logger.d("")
 
                 }
-            }
 
+            }
             else -> {
                 Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
 
@@ -195,6 +226,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         iconype: core.ui.common.Utility.Iconype,
         alertType: core.ui.common.Utility.AlertType
     ) {
+        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.addToFolder(
+                product = ProdDomain(),
+                newFolderName = "",
+                action = viewModel.delete
+            )
+        }
 
     }
 
@@ -203,6 +242,16 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         alertType: core.ui.common.Utility.AlertType
     ) {
 
+    }
+
+    fun getFoldersList() {
+        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.folderList.clear()
+            viewModel.getFoldersList()
+        } else {
+
+        }
     }
 
 }

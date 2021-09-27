@@ -104,14 +104,13 @@ class CompletedProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnOptionsClicked -> {
                 Log.d("error","instruction error")
             }
-            is AllPatternsViewModel.Event.OnSyncClick -> {}
-            is AllPatternsViewModel.Event.OnSearchClick -> {}
-            AllPatternsViewModel.Event.OnResultSuccess ->{}
-            AllPatternsViewModel.Event.OnShowProgress -> {}
-            AllPatternsViewModel.Event.OnHideProgress -> {}
-            AllPatternsViewModel.Event.OnResultFailed -> {}
+            is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {}
+            is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {}
+            AllPatternsViewModel.Event.OnAllPatternResultSuccess ->{}
+            AllPatternsViewModel.Event.OnAllPatternShowProgress -> {}
+            AllPatternsViewModel.Event.OnAllPatternHideProgress -> {}
+            AllPatternsViewModel.Event.OnAllPatternResultFailed -> {}
             AllPatternsViewModel.Event.NoInternet ->{}
-            AllPatternsViewModel.Event.OnUpdateFilter ->{}
             AllPatternsViewModel.Event.UpdateFilterImage -> {}
             AllPatternsViewModel.Event.UpdateDefaultFilter ->{}
             else ->{

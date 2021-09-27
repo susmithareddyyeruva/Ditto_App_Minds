@@ -78,12 +78,12 @@ private val deleteClicked: OnDeleteClicked) :
         }
         holder.itemSingleMyfolderBinding.renameText.setOnClickListener {
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
-            renameListener.onRenameClicked()
+            renameListener.onRenameClicked(data?.title?:"")
 
         }
         holder.itemSingleMyfolderBinding.deleteText.setOnClickListener {
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
-            deleteClicked.onDeleteClicked()
+            deleteClicked.onDeleteClicked(data?.title?:"")
 
         }
         holder.itemSingleMyfolderBinding.rootView.setOnClickListener {
@@ -113,9 +113,9 @@ private val deleteClicked: OnDeleteClicked) :
         RecyclerView.ViewHolder(itemSingleMyfolderBinding.root) {
     }
     interface OnRenameListener{
-        fun onRenameClicked()
+        fun onRenameClicked(s: String)
     }
     interface OnDeleteClicked{
-        fun onDeleteClicked()
+        fun onDeleteClicked(title: String)
     }
 }

@@ -13,6 +13,8 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.MyLibraryUseCase
+import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
@@ -36,7 +38,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
-                                                      private val getPattern: GetMylibraryData) :
+                                                      private val getPattern: MyLibraryUseCase) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()

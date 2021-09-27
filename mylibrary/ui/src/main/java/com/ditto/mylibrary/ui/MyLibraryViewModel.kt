@@ -6,7 +6,7 @@ import androidx.databinding.ObservableChar
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -20,7 +20,7 @@ import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
-    private val getMylibraryData: GetMylibraryData
+    private val getMylibraryData: MyLibraryUseCase
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
@@ -78,27 +78,12 @@ class MyLibraryViewModel @Inject constructor(
         }
     }
 
-    fun activeProjects() {
-        Log.d("uiEvents", "activeProjects")
-    }
-
-    fun completedProjects() {
-        uiEvents.post(Event.completedProjects)
-    }
-
-    fun allPatterns() {
-        Log.d("uiEvents", "allPatterns")
-    }
-
     /**
      * Events for this view model
      */
     sealed class Event {
-        object activeProjects : Event()
-        object completedProjects : Event()
-        object allPatterns : Event()
         object OnFilterClick : Event()
-        object OnSyncClick : Event()
+        object MyLibrarySync : Event()
         object OnSearchClick : Event()
     }
 
@@ -109,7 +94,7 @@ class MyLibraryViewModel @Inject constructor(
 
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
-        uiEvents.post(Event.OnSyncClick)
+        uiEvents.post(Event.MyLibrarySync)
     }
 
     fun onSearchClick() {
