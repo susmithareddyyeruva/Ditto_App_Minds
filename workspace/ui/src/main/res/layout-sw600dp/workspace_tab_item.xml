@@ -244,7 +244,7 @@
             android:id="@+id/image_selvage_horizontal"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:layout_margin="@dimen/margin_text"
+            android:padding="@dimen/margin_text"
             android:contentDescription="@string/image_selvage_horizontal"
             android:elevation="@dimen/elevation_pieces_reference"
             app:layout_constraintBottom_toTopOf="@+id/guideline_selvages_horizontal"

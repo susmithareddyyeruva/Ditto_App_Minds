@@ -81,7 +81,7 @@ class AllPatternsFragment(
         if (AppState.getIsLogged()) {
             if(NetworkUtility.isNetworkAvailable(context)){
                 if (!Utility.isTokenExpired()) {
-                    if (viewModel.patternArrayList.isEmpty()) {
+                    if (viewModel.patternList.value.isNullOrEmpty()) {
                         bottomNavViewModel.showProgress.set(true)
                         viewModel.fetchOnPatternData(
                             viewModel.createJson(
@@ -93,9 +93,9 @@ class AllPatternsFragment(
                         updatePatterns()
                         //  setFilterMenuAdapter(0)
                         if (viewModel.isFilter == true) {
-                            filterIcons.onFilterApplied(true)
+                            filterIconSetListener.onFilterApplied(true)
                         } else
-                            filterIcons.onFilterApplied(false)
+                            filterIconSetListener.onFilterApplied(false)
                     }
                 }
             }else{

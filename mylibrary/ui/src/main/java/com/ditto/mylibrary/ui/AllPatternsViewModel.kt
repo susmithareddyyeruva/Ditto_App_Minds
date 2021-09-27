@@ -1,5 +1,6 @@
 package com.ditto.mylibrary.ui
 
+import android.icu.util.TimeUnit
 import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
@@ -37,7 +38,6 @@ class AllPatternsViewModel @Inject constructor(
     var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    val clickedId: ObservableInt = ObservableInt(-1)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var errorString: ObservableField<String> = ObservableField("")
@@ -78,9 +78,9 @@ class AllPatternsViewModel @Inject constructor(
 
     //fetch data from offline
     fun fetchOfflinePatterns() {
-        uiEvents.post(Event.OnShowProgress)
-        disposable += getPatternsData.getOfflinePatternDetails()
-            .delay(600, TimeUnit.MILLISECONDS)
+        uiEvents.post(Event.OnAllPatternShowProgress)
+        disposable += libraryUseCase.getOfflinePatternDetails()
+            .delay(600, java.util.concurrent.TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
@@ -88,21 +88,19 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     private fun handleOfflineFetchResult(result: Result<List<ProdDomain>>) {
-        uiEvents.post(Event.OnHideProgress)
+        uiEvents.post(Event.OnAllPatternHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                patternArrayList.clear()
-                patternArrayList.addAll(result.data)
-                totalPatternCount = patternArrayList.size ?: 0
+                patternList.value = result.data
+                totalPatternCount = patternList.value?.size ?: 0
                 Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
-                totalPageCount = patternArrayList.size ?: 0
-                currentPageId = patternArrayList.size ?: 0
-                uiEvents.post(Event.OnResultSuccess)
+                totalPageCount = totalPatternCount
+                currentPageId = totalPatternCount
+                uiEvents.post(Event.OnAllPatternResultSuccess)
             }
             is Result.OnError -> handleError(result.error)
         }
     }
-    
     
 //fetch data from repo (via usecase)
     fun fetchOnPatternData(
@@ -263,18 +261,6 @@ class AllPatternsViewModel @Inject constructor(
         )
     }
 
-    fun updateProjectComplete(patternId: String) {
-        disposable += getPatternsData.completeProject(patternId)
-            .whileSubscribed { it }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { uiEvents.post(Event.OnDataUpdated) }
-    }
-
-    fun removePattern(patternId: String) {
-        Log.d("pattern", "Removed")
-    }
-    
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.OnAllPatternSyncClick)

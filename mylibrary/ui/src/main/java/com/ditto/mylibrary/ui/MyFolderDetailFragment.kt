@@ -210,60 +210,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 logger.d("OnClickPatternDesc failed")
             }
         }
+        is MyFolderViewModel.Event.OnMyFolderSearchClick -> {
 
-      is MyFolderViewModel.Event.OnDataUpdated -> {
-            bottomNavViewModel.showProgress.set(false)
-           // (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,AppState.getPatternCount()))
-        }
-
-
-        is MyFolderViewModel.Event.OnSearchClick -> {
-
-            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                val alertDialog = Dialog(
-                    requireContext(),
-                    R.style.DialogTheme
-                )
-
-                alertDialog.setContentView(R.layout.search_dialog);
-                binding.viewModel = viewModel
-                alertDialog.window?.setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-                );
-                alertDialog.show()
-                val watcher = alertDialog.editSearch.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        logger.d("afterTextChanged")
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                        logger.d("beforeTextChanged")
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        logger.d("onTextChanged")
-                        if (s.toString().isNotEmpty()) {
-                            alertDialog.imageCloseSearch.visibility = View.VISIBLE
-                        } else {
-                            alertDialog.imageCloseSearch.visibility = View.GONE
-                        }
-                    }
-                })
-                alertDialog.tvCAncelDialog.setOnClickListener {
-                    requireActivity().window
-                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                    alertDialog.cancel()
             Log.d("pattern", " MyFolderDetailSearchClick")
 
         }
@@ -271,18 +219,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             cleaFilterData()
             Log.d("pattern", "OnSyncClick : MyFolderDetail")
 
-        }
-        
-        is MyFolderViewModel.Event.OnResultSuccess -> {
-            if(isAdded){
-                baseViewModel.totalCount = viewModel.totalPatternCount
-                /**
-                 * Getting ALL PATTERNS LIST
-                 */
-                isLoading = false
-                updatePatterns()
-            }
-            bottomNavViewModel.showProgress.set(false)
         }
         is MyFolderViewModel.Event.OnMyFolderResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
@@ -294,6 +230,12 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                     viewModel.totalPatternCount
                 )
             )
+
+            /**
+             * Getting ALL PATTERNS LIST
+             */
+            isLoading = false
+            updatePatterns()
         }
         is MyFolderViewModel.Event.OnMyFolderShowProgress -> {
             bottomNavViewModel.showProgress.set(true)

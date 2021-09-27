@@ -1,10 +1,7 @@
 package com.ditto.mylibrary.domain
 
 import com.ditto.login.domain.model.LoginUser
-import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
-import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.FoldersResultDomain
-import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.FolderRenameRequest
 import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest

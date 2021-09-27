@@ -147,6 +147,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
     }
 
+    override fun getPatternData(get: Int): Single<Result<MyLibraryData>> {
+        TODO("Not yet implemented")
+    }
+
     override fun completeProject(patternId: String): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -154,7 +158,15 @@ class MyLibraryRepositoryImpl @Inject constructor(
     override fun removePattern(patternId: String): Single<Any> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-    
+
+    override fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        TODO("Not yet implemented")
+    }
+
     override fun getMyLibraryFolderData(
         requestdata: GetFolderRequest,
         methodName: String
