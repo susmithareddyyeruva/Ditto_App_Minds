@@ -28,7 +28,6 @@ import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.create_folder.*
-import kotlinx.android.synthetic.main.dialog_addfolder.*
 import javax.inject.Inject
 
 
@@ -274,6 +273,7 @@ class AllPatternsFragment(
             filterIconSetListener.onFilterApplied(true)
         }
         is AllPatternsViewModel.Event.OnCreateFolder -> {
+            logger.d("OnCreateFolder")
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
             layout?.let {
@@ -293,12 +293,7 @@ class AllPatternsFragment(
                             /**
                              * Pop up  for Create Folder
                              */
-                            if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                                viewModel.addToFolder(
-                                    product = viewModel.clickedProduct,
-                                    folderName = newFolderName
-                                )
-                            }
+                            addFolder(newFolderName, parent)
 
 
                         }
@@ -312,10 +307,13 @@ class AllPatternsFragment(
                 )
             }
         }
-        is AllPatternsViewModel.Event.OnFolderCreated, AllPatternsViewModel.Event.OnFolderItemClicked -> {
+        is AllPatternsViewModel.Event.OnFolderCreated -> {
+            viewModel.clickedProduct = null
             (parentFragment as MyLibraryFragment?)?.switchToMyFolderFragmentTab()
 
+
         }
+
         is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIconSetListener.onFilterApplied(false)
 
@@ -326,27 +324,11 @@ class AllPatternsFragment(
             /**
              * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
              */
-            val layout =
-                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, addFolderRoot)
-            layout?.let {
-                getAlertDialogFolder(
-                    requireActivity(), viewModel.folderMainList, viewModel,
-                    object : com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
-                        override fun onSaveButtonClicked(
-                            projectName: String,
-                            isCompleted: Boolean?
-                        ) {
-                            logger.d("onSaveButtonClicked")
-
-                        }
-
-                        override fun onExitButtonClicked() {
-                            logger.d("onExitButtonClicked")
-                        }
-                    },
-                    Utility.AlertType.DEFAULT
-                )
-            }
+            Log.d("DIALOG", "handleFetchResultFolders")
+            logger.d("OnPopupClick")
+            getAlertDialogFolder(
+                requireActivity(), viewModel.folderMainList, viewModel
+            )
 
         }
 
@@ -412,8 +394,18 @@ class AllPatternsFragment(
         fun onFilterApplied(isApplied: Boolean)
     }
 
+
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
         return viewModel.menuList
+    }
+
+    private fun addFolder(newFolderName: String, parent: String) {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            viewModel.addToFolder(
+                product = viewModel.clickedProduct,
+                folderName = newFolderName
+            )
+        }
     }
 
 

@@ -47,10 +47,10 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
-    private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
+
+     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
     private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
-    private var count = 0
 
 
     override fun onCreateView(
@@ -243,6 +243,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         showFilterComponents()
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
+
+
         adapter.addFragment(
             allPatternsFragment, getString(
                 R.string.all_patterns

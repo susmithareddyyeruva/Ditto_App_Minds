@@ -379,6 +379,7 @@
                         android:hint="Search pattern library"
                         android:imeOptions="flagNoExtractUi|actionSearch"
                         android:inputType="text"
+                        android:lines="1"
                         android:paddingHorizontal="@dimen/padding_x"
                         android:paddingVertical="@dimen/padding_x"
                         android:singleLine="true"
