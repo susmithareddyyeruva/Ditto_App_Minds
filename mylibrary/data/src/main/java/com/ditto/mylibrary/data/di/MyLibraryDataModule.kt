@@ -1,11 +1,11 @@
 package com.ditto.mylibrary.data.di
 
+import com.ditto.mylibrary.data.MyLibraryImpl
+import com.ditto.mylibrary.data.MyLibraryRepositoryImpl
+import com.ditto.mylibrary.domain.MyLibraryRepository
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import dagger.Binds
 import dagger.Module
-import com.ditto.mylibrary.data.MyLibraryRepositoryImpl
-import com.ditto.mylibrary.data.MyLibraryImpl
-import com.ditto.mylibrary.domain.GetMylibraryData
-import com.ditto.mylibrary.domain.MyLibraryRepository
 
 /**
  * Dagger module to provide injections for UseCase implementation
@@ -21,5 +21,5 @@ internal interface UseCaseModule {
     @Binds
     fun bindMyLibraryUseCase(
         myLibraryImpl: MyLibraryImpl
-    ): GetMylibraryData
+    ): MyLibraryUseCase
 }

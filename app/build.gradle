@@ -34,9 +34,9 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName "2.13(01)"
+        versionName "2.13(785)(2)"
         multiDexEnabled true
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -48,7 +48,6 @@ android {
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
-            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
             signingConfig signingConfigs.release
         }
         debug {
@@ -58,7 +57,6 @@ android {
 //            buildConfigField "String", "APP_CENTER_KEY", "\"77ff932d-72e1-430f-ba3d-b8f0499ea8a6\""  //----- NS
 //          buildConfigField "String", "APP_CENTER_KEY", "\"d6e41159-e327-4f58-86fb-1d37d2878b77\""  //--- DEV
             buildConfigField "String", "APP_CENTER_KEY", "\"965a12cd-7f40-45ed-88de-6432d3d40155\""  // -- QA
-            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""
         }
     }
 
@@ -227,4 +225,7 @@ dependencies {
     implementation project(path: ':menuitems-ui')
     implementation project(path: ':menuitems-domain')
     implementation project(path: ':menuitems-data')
+
+    implementation project(path: ':home-data')
+    implementation project(path: ':home-domain')
 }

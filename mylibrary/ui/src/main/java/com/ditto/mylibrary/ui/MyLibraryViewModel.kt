@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -15,11 +15,10 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
-    private val getMylibraryData: GetMylibraryData
+    private val getMylibraryData: MyLibraryUseCase
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
@@ -30,7 +29,7 @@ class MyLibraryViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        fetchOnBoardingData()
+        // fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -40,13 +39,13 @@ class MyLibraryViewModel @Inject constructor(
     }
 
     //fetch data from repo (via usecase)
-    private fun fetchOnBoardingData() {
+/*    private fun fetchOnBoardingData() {
         disposable += getMylibraryData.invoke()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
-    }
+    }*/
 
     private fun fetchDbUser() {
         dbLoadError.set(false)
@@ -71,27 +70,35 @@ class MyLibraryViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("MyLibraryViewModel","handleError")
+                Log.d("MyLibraryViewModel", "handleError")
             }
         }
-    }
-
-    fun activeProjects(){
-        Log.d("uiEvents","activeProjects")
-    }
-    fun completedProjects(){
-        uiEvents.post(Event.completedProjects)
-    }
-    fun allPatterns(){
-        Log.d("uiEvents","allPatterns")
     }
 
     /**
      * Events for this view model
      */
     sealed class Event {
-        object activeProjects : Event()
-        object completedProjects : Event()
-        object allPatterns : Event()
+        object OnFilterClick : Event()
+        object MyLibrarySync : Event()
+        object OnSearchClick : Event()
     }
+
+    fun onFilterClick() {
+        Log.d("pattern", "onFilterClick : viewModel")
+        uiEvents.post(Event.OnFilterClick)
+    }
+
+    fun onSyncClick() {
+        Log.d("pattern", "onSyncClick : viewModel")
+        uiEvents.post(Event.MyLibrarySync)
+    }
+
+    fun onSearchClick() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        uiEvents.post(Event.OnSearchClick)
+    }
+
+
+
 }

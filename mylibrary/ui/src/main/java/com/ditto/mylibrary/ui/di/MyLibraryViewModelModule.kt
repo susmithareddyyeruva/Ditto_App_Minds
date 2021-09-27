@@ -7,7 +7,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import com.ditto.mylibrary.ui.*
 
 /**
  * Dagger module to provide LoginViewModel functionality.
@@ -26,6 +25,12 @@ interface  MyLibraryViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(MyFolderViewModel::class)
+    fun bindMyFolderViewModel(viewModel: MyFolderViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
     @ViewModelKey(PatternDescriptionViewModel::class)
     fun bindPatternDescriptionViewModel(viewModel: PatternDescriptionViewModel): ViewModel
 }
@@ -34,6 +39,9 @@ interface  MyLibraryViewModelModule {
 interface MyLibraryFragmentModule {
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun myLibraryFragment(): MyLibraryFragment
+
+    @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
+    fun myLibraryFolderFragment(): MyFolderFragment
 
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun activeProjeFragment(): ActiveProjectsFragment
@@ -49,5 +57,8 @@ interface MyLibraryFragmentModule {
 
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun patternInstructionsFragment(): PatternInstructionsFragment
+
+    @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
+    fun MyFolderDetailFragment(): MyFolderDetailFragment
 
 }

@@ -11,46 +11,601 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout_mylib"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:openDrawer="right">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".06" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_top"
-            app:tabIndicator="@drawable/tab_item_selector"
-            app:tabIndicatorGravity="center"
-            app:tabMode="auto"
-            android:layout_marginTop="15dp"
-            app:tabPaddingStart="20dp"
-            app:tabPaddingEnd="20dp"
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabRippleColor="@android:color/transparent"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-            app:tabTextColor="@color/tab_text_color">
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0"
-            app:layout="@layout/my_library_item"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topbar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".0" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".62" />
+
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/pattern_library_appBar"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dimen_5"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/topbar1">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:menu="@null"
+                    app:theme="@style/ToolBarStyle"
+                    app:titleTextColor="@color/black">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:foregroundGravity="center">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guide_startn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent=".07" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guide_endn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent=".98" />
+
+
+                        <TextView
+                            android:id="@+id/header_view_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/avenir_next_it_pro_bold"
+                            android:gravity="center"
+                            android:text="@string/pattern_library"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/size_pattern_lib_text"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/header_view_title_pattern_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/margin_start_pattern_liabry_count"
+                            android:fontFamily="@font/avenir_next_it_pro_bold"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/size_pattern_lib_text"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title"
+                            app:layout_constraintLeft_toRightOf="@id/header_view_title"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title"
+                            tools:text="(11)" />
+
+                        <View
+                            android:id="@+id/view_vertical"
+                            android:layout_width="2dp"
+                            android:layout_height="@dimen/size_pattern_lib_text"
+                            android:layout_marginStart="@dimen/margin_start_vertical_view"
+                            android:background="@color/search_text_code"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title"
+                            app:layout_constraintLeft_toRightOf="@id/header_view_title_pattern_count"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title" />
+
+                        <TextView
+                            android:id="@+id/tv_sync"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/margin_start_search"
+                            android:drawableStart="@drawable/ic_sync"
+                            android:drawablePadding="@dimen/distance_after_icon_sync"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="center"
+                            android:onClick="@{() -> viewModel.onSyncClick()}"
+                            android:text="@string/text_sync"
+                            android:textColor="@color/search_text_code"
+                            android:textSize="@dimen/size_search"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title_pattern_count"
+                            app:layout_constraintLeft_toRightOf="@id/view_vertical"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title_pattern_count" />
+
+                        <!--  <androidx.constraintlayout.widget.ConstraintLayout
+                              android:id="@+id/searchContainer"
+                              android:layout_width="@dimen/dimen_0"
+                              android:layout_height="wrap_content"
+                              android:background="@color/white"
+                              android:visibility="gone"
+                              android:paddingHorizontal="@dimen/padding_15"
+                              app:layout_constraintEnd_toStartOf="@+id/view_dot"
+                              app:layout_constraintStart_toEndOf="@+id/tv_sync"
+                              app:layout_constraintTop_toTopOf="parent">
+
+                              &lt;!&ndash;<androidx.constraintlayout.widget.Guideline
+                                  android:id="@+id/guidlineSearchStart"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="vertical"
+                                  app:layout_constraintGuide_percent=".15">
+
+                              </androidx.constraintlayout.widget.Guideline>
+
+                              <androidx.constraintlayout.widget.Guideline
+                                  android:id="@+id/guidlineSearchEnd"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="vertical"
+                                  app:layout_constraintGuide_percent=".85" />&ndash;&gt;
+
+                              <RelativeLayout
+                                  android:id="@+id/relSearch"
+                                  android:layout_width="0dp"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginTop="@dimen/margin_top"
+                                  android:background="@drawable/search_bg"
+                                  app:layout_constraintEnd_toStartOf="@+id/tvCAncelDialog"
+                                  app:layout_constraintStart_toStartOf="parent"
+                                  app:layout_constraintTop_toTopOf="parent">
+
+                                  <androidx.appcompat.widget.AppCompatEditText
+                                      android:id="@+id/editSearch"
+                                      android:layout_width="match_parent"
+                                      android:layout_height="wrap_content"
+                                      android:layout_centerVertical="true"
+                                      android:layout_toStartOf="@+id/imageCloseSearch"
+                                      android:background="@null"
+                                      android:drawableStart="@drawable/ic_search_icon"
+                                      android:drawablePadding="@dimen/padding_x"
+                                      android:ellipsize="end"
+                                      android:focusable="true"
+                                      android:focusableInTouchMode="true"
+                                      android:fontFamily="@font/avenir_next_lt_pro_regular"
+                                      android:gravity="center_vertical"
+                                      android:hint="Search pattern library"
+                                      android:imeOptions="flagNoExtractUi|actionSearch"
+                                      android:inputType="text"
+                                      android:paddingHorizontal="@dimen/padding_x"
+                                      android:paddingVertical="@dimen/padding_x"
+                                      android:singleLine="true"
+                                      android:textColor="@android:color/black"
+                                      android:textColorHint="@android:color/black"
+                                      android:textSize="@dimen/size_12sp">
+
+                                      <requestFocus />
+                                  </androidx.appcompat.widget.AppCompatEditText>
+
+                                  <ImageView
+                                      android:id="@+id/imageCloseSearch"
+                                      android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:layout_alignParentEnd="true"
+                                      android:layout_centerVertical="true"
+                                      android:layout_marginStart="@dimen/padding_small"
+                                      android:layout_marginEnd="@dimen/search_close"
+                                      android:src="@drawable/ic_close_search"
+                                      android:visibility="gone">
+
+                                  </ImageView>
+                              </RelativeLayout>
+
+                              <TextView
+                                  android:id="@+id/tvCAncelDialog"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginStart="@dimen/padding_9"
+                                  android:layout_marginTop="@dimen/margin_top"
+                                  android:fontFamily="@font/avenir_next_lt_pro_regular"
+                                  android:gravity="center_vertical"
+                                  android:padding="@dimen/padding_x"
+                                  android:singleLine="true"
+                                  android:text="@string/cancel_search"
+                                  android:textAllCaps="false"
+                                  android:textColor="@color/black"
+                                  android:textSize="@dimen/size_12sp"
+                                  app:layout_constraintEnd_toEndOf="parent"
+                                  app:layout_constraintTop_toTopOf="parent" />
+                          </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+                        <TextView
+                            android:id="@+id/tvSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginEnd="@dimen/margin_end_search"
+                            android:layout_toLeftOf="@+id/tv_filter"
+                            android:drawableStart="@drawable/ic_search"
+                            android:drawablePadding="@dimen/distance_after_icon_sync"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="center"
+                            android:onClick="@{() -> viewModel.onSearchClick()}"
+                            android:padding="@dimen/padding_small"
+                            android:text="@string/text_search"
+                            android:textColor="@color/search_text_code"
+                            android:textSize="@dimen/size_search"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title"
+                            app:layout_constraintRight_toLeftOf="@id/tv_filter"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title" />
+
+                        <ImageView
+                            android:id="@+id/view_dot"
+                            android:layout_width="@dimen/selected_filter_width"
+                            android:layout_height="@dimen/selected_filter_height"
+                            android:layout_marginEnd="@dimen/dimen_5"
+                            android:onClick="@{() -> viewModel.onFilterClick()}"
+                            android:src="@drawable/ic_filter_default"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_filter"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_filter"
+                            app:layout_constraintTop_toTopOf="@+id/tv_filter" />
+
+                        <TextView
+                            android:id="@+id/tv_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginEnd="@dimen/margin_card_end"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="center"
+                            android:onClick="@{() -> viewModel.onFilterClick()}"
+                            android:text="@string/filter"
+                            android:textColor="@color/search_text_code"
+                            android:textSize="@dimen/size_search"
+                            app:layout_constraintBottom_toBottomOf="@id/header_view_title"
+                            app:layout_constraintEnd_toStartOf="@id/guide_endn"
+                            app:layout_constraintTop_toTopOf="@id/header_view_title" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_top1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".09" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top1"
+                app:tabBackground="@android:color/white"
+                app:tabIndicatorColor="#A4211F"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorGravity="bottom"
+                app:tabMinWidth="@dimen/tab_min_width"
+                app:tabMode="fixed"
+                app:tabPaddingBottom="-18dp"
+                app:tabPaddingEnd="@dimen/dimen_0"
+                app:tabPaddingStart="@dimen/dimen_0"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/MineCustomTabText"
+                app:tabTextColor="#A8A7A8" />
+
+            <core.ui.common.NonSwipeableViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0"
+                android:background="@color/white"
+                app:layout="@layout/my_library_item"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/searchContainer"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:background="@color/white"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tabLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidlineSearchStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".15">
+
+                </androidx.constraintlayout.widget.Guideline>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidlineSearchEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".85" />
+
+                <RelativeLayout
+                    android:id="@+id/relSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_top"
+                    android:background="@drawable/search_bg"
+                    app:layout_constraintEnd_toStartOf="@+id/tvCAncelDialog"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="@+id/guidlineSearchStart"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/imageCloseSearch"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ic_search_icon"
+                        android:drawablePadding="@dimen/padding_x"
+                        android:ellipsize="end"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/avenir_next_lt_pro_regular"
+                        android:gravity="center_vertical"
+                        android:hint="Search pattern library"
+                        android:imeOptions="flagNoExtractUi|actionSearch"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/padding_x"
+                        android:paddingVertical="@dimen/padding_x"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@android:color/black"
+                        android:textSize="@dimen/size_12sp">
+
+                        <requestFocus />
+                    </androidx.appcompat.widget.AppCompatEditText>
+
+                    <ImageView
+                        android:id="@+id/imageCloseSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/padding_small"
+                        android:layout_marginEnd="@dimen/search_close"
+                        android:src="@drawable/ic_close_search"
+                        android:visibility="gone">
+
+                    </ImageView>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvCAncelDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_9"
+                    android:layout_marginTop="@dimen/margin_top"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_x"
+                    android:singleLine="true"
+                    android:text="@string/cancel_search"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_12sp"
+                    app:layout_constraintEnd_toEndOf="@id/guidlineSearchEnd"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toEndOf="@+id/relSearch"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="@dimen/drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/white"
+            android:minWidth="@dimen/drawer_width"
+            android:visibility="visible"
+            app:insetForeground="@android:color/transparent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".05" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent=".10" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".40" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".95" />
+
+                <TextView
+                    android:id="@+id/textFilterHeader1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_it_pro_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_filter"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/toolbar_head_size"
+                    app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_start"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/closeFilter"
+                    android:layout_width="@dimen/close_image"
+                    android:layout_height="@dimen/close_image"
+                    android:padding="@dimen/padding_round"
+                    android:src="@drawable/ic_filterclose"
+                    app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ImageView>
+
+                <View
+                    android:id="@+id/topDevider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/line_size"
+                    android:background="@color/item_devider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline_top">
+
+                </View>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/cell_color"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline_center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topDevider"
+                    tools:itemCount="30"
+                    tools:listitem="@layout/item_singlecategory"
+                    tools:orientation="vertical"
+                    tools:src="@tools:sample/avatars">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvActions"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:paddingBottom="@dimen/small_padding"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@+id/linBottom"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_center"
+                    app:layout_constraintTop_toBottomOf="@+id/topDevider"
+                    tools:itemCount="20"
+                    tools:listitem="@layout/item_filterdetails"
+                    tools:orientation="vertical">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/linBottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/clear_text_start"
+                    android:baselineAligned="false"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:weightSum="2"
+                    app:layout_constraintBottom_toTopOf="@+id/guidlineBottom"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_center">
+
+                    <ImageView
+                        android:id="@+id/imageClearAll"
+                        android:layout_width="@dimen/close_filter"
+                        android:layout_height="@dimen/close_image"
+                        android:src="@drawable/ic_closebtn_new"
+                        android:visibility="visible">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/clearFilter"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="@dimen/padding_small"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/padding_small"
+                        android:paddingBottom="@dimen/dimen_2"
+                        android:text="@string/clear_all"
+                        android:textColor="@color/sign_in_blue"
+                        android:textSize="@dimen/item_action_text_size" />
+
+                    <TextView
+                        android:id="@+id/apply"
+                        android:layout_width="@dimen/btn_width"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/apply_bg"
+                        android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center"
+                        android:text="@string/apply"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/apply_button_size"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidlineBottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    app:layout_constraintGuide_percent=".93"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_center" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
 </layout>

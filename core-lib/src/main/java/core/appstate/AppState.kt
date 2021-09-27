@@ -2,7 +2,6 @@ package core.appstate
 
 import android.content.Context
 import core.*
-import core.CUST_ID
 import core.models.Nsdservicedata
 
 object AppState {
@@ -81,5 +80,13 @@ object AppState {
     }
     fun getLastSavedServiceHost() : String?{
         return pref?.getString(CONNECTED_SERVICE_HOST)
+    }
+    fun setPatternCount(count: Int) {
+        pref?.saveInt(PATTERN_COUNT, count)
+    }
+
+    fun getPatternCount(): Int? {
+        val count = pref?.getInt(PATTERN_COUNT)
+        return count
     }
 }

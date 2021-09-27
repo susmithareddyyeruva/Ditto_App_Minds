@@ -19,8 +19,9 @@
     <dimen name="text_heading">20sp</dimen>
     <dimen name="text_add_project">12sp</dimen>
     <dimen name="text_desc">14sp</dimen>
+    <dimen name="text_18">18sp</dimen>
     <dimen name="text_count">16sp</dimen>
-
+    <dimen name="dimen_15">15dp</dimen>
     <dimen name="dimen_0">0dp</dimen>
     <dimen name="dimen_10">10dp</dimen>
     <dimen name="dimen_5">5dp</dimen>
@@ -54,10 +55,11 @@
     <dimen name="search_width">12dp</dimen>
     <dimen name="search_width1">9.63</dimen>
     <dimen name="search_height">12dp</dimen>
-    <dimen name="clear_text_margin_top">20dp</dimen>
-    <dimen name="recy_margin_top">15dp</dimen>
+    <dimen name="clear_text_margin_top">10dp</dimen>
+    <dimen name="recy_margin_top">5dp</dimen>
+    <dimen name="recy_margin_bottom">10dp</dimen>
     <dimen name="guidline_clear_text">.039</dimen>
-    <dimen name="guidline_top">.09</dimen>
+    <dimen name="guidline_top">0</dimen>c
     <dimen name="distance_after_icon_sync">5dp</dimen>
     <dimen name="size_34sp">34sp</dimen>
     <dimen name="size_12sp">12sp</dimen>
@@ -75,7 +77,8 @@
     <dimen name="scissor_width">22dp</dimen>
     <dimen name="cart_height">13dp</dimen>
     <dimen name="scissor_height">13dp</dimen>
-
+    <dimen name="text_10">10sp</dimen>
+    <dimen name="text_5">5sp</dimen>
     <dimen name="size_21dp">21dp</dimen>
     <dimen name="subscription">34dp</dimen>
 
@@ -85,6 +88,8 @@
     <dimen name="menu_text_start">11dp</dimen>
     <dimen name="padding_start_content">13dp</dimen>
     <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_smallx">8dp</dimen>
+    <dimen name="padding_small_3">3dp</dimen>
     <dimen name="clear_text_start">9dp</dimen>
     <dimen name="size_13px">13sp</dimen>
     <dimen name="size_19px">19sp</dimen>
@@ -112,5 +117,42 @@
     <dimen name="margin_left_button">12dp</dimen>
     <dimen name="margin_start_pattern_liabry_count">10dp</dimen>
     <dimen name="pattern_name">18sp</dimen>
+    <dimen name="text_width">140dp</dimen>
+    <dimen name="close_filter1">10dp</dimen>
+    <dimen name="close_filter1_h">24dp</dimen>
+    <dimen name="margin_top">19dp</dimen>
+    <dimen name="search_view_height">32dp</dimen>
+    <dimen name="tab_min_width">100dp</dimen>
+    <dimen name="like_btn_margin">12dp</dimen>
+    <dimen name="close_icon_top">5dp</dimen>
+    <dimen name="close_icon_bottom">8dp</dimen>
+    <dimen name="text_delete_marginbottom">16.5dp</dimen>
+    <dimen name="icon_padding_start">15dp</dimen>
+    <dimen name="text_paddind_start">11dp</dimen>
+    <dimen name="text_margin_between">18dp</dimen>
+    <dimen name="text_delete_margin_bottom">16.5dp</dimen>
+    <dimen name="ic_edit">7dp</dimen>
+    <dimen name="ic_delete_w">7dp</dimen>
+    <dimen name="ic_delete_h">9dp</dimen>
+    <dimen name="ic_close">7.426dp</dimen>
+    <dimen name="hear_w">13.333dp</dimen>
+    <dimen name="hear_h">12.49dp</dimen>
+    <dimen name="add">14.5dp</dimen>
+    <dimen name="search_close">13dp</dimen>
+    <dimen name="start_folder_margin">26dp</dimen>
+    <dimen name="folder_margin_top">19dp</dimen>
+    <dimen name="folder_margin_end">18.4dp</dimen>
+    <dimen name="folder_margin_icons">12.6dp</dimen>
+    <dimen name="edit_text_bottom">35dp</dimen>
+    <dimen name="edit_text_top">10dp</dimen>
+    <dimen name="close_dialog_w">8dp</dimen>
+    <dimen name="close_dialog_h">8dp</dimen>
+    <dimen name="dimen_25">25dp</dimen>
+    <dimen name="selected_filter_width">15.32dp</dimen>
+    <dimen name="selected_filter_height">17.13dp</dimen>
+    <dimen name="close_filter_text">7dp</dimen>
+    <dimen name="carview_top">15dp</dimen>
+    <dimen name="checkbox_dimens">16dp</dimen>
+
 
 </resources>

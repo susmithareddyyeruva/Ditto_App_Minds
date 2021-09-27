@@ -11,7 +11,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
@@ -35,7 +35,7 @@ import java.util.*
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
-                                                      private val getPattern: GetMylibraryData) :
+                                                      private val getPattern: MyLibraryUseCase) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -85,7 +85,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
      }*/
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern(clickedID.get())
+        disposable += getPattern.getPatternDetails(clickedID.get())
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

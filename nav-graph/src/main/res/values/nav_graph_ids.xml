@@ -77,5 +77,8 @@
     <item name="action_pattern_description_to_wssettings_fragment" type="id" />
     <item name="action_pattern_description_to_nav_graph_manage" type="id" />
     <item name="action_pattern_description_to_privacyAndSettingFragment" type="id" />
+    <item name="nav_graph_id_folderdetail" type="id" />
+    <item name="myfolderFragment" type="id" />
+
 
 </resources>
