@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.FilterItems
-import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
@@ -112,7 +111,7 @@ class AllPatternsFragment(
 
     fun cleaFilterData() {
         viewModel.resultMap.clear()
-       // viewModel.patternArrayList.clear()
+        // viewModel.patternArrayList.clear()
         viewModel.menuList.clear()
         viewModel.setList()
         currentPage = 1
@@ -137,7 +136,7 @@ class AllPatternsFragment(
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             currentPage = 1
             isLastPage = false
-          //  viewModel.patternArrayList.clear()
+            //  viewModel.patternArrayList.clear()
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
@@ -146,7 +145,7 @@ class AllPatternsFragment(
 
     private fun updatePatterns() {
         // Updating the adapter
-        allPatternAdapter.setListData(items = viewModel.patternList.value?: emptyList())
+        allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
         bottomNavViewModel.showProgress.set(false)
@@ -287,13 +286,16 @@ class AllPatternsFragment(
                     getString(R.string.create_folder),
                     object :
                         com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                        override fun onCreateClicked(newFolderName: String, parent: String) {
+                        override fun onCreateClicked(
+                            newFolderName: String,
+                            parent: String
+                        ) {
                             /**
                              * Pop up  for Create Folder
                              */
                             if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                                 viewModel.addToFolder(
-                                    product = ProdDomain(),
+                                    product = viewModel.clickedProduct,
                                     folderName = newFolderName
                                 )
                             }

@@ -55,6 +55,7 @@ class AllPatternsViewModel @Inject constructor(
     var ADD: String = "ADD"
     var RENAME: String = "RENAME"
     val GETFOLDER = "getFolders"
+    var clickedProduct=ProdDomain()
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -181,7 +182,7 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnItemClick)
     }
 
-    fun onDialogPopupClick() {
+    fun onDialogPopupClick(product:ProdDomain) {
         uiEvents.post(Event.OnAllPatternShowProgress)
         val folderRequest = GetFolderRequest(
             OrderFilter(
@@ -195,14 +196,18 @@ class AllPatternsViewModel @Inject constructor(
         disposable += libraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultFolders(it) }
+            .subscribeBy { handleFetchResultFolders(it,product) }
 
 
     }
-    private fun handleFetchResultFolders(folderResult: Result<FoldersResultDomain>?) {
+    private fun handleFetchResultFolders(
+        folderResult: Result<FoldersResultDomain>?,
+        product: ProdDomain
+    ) {
         folderMainList = arrayListOf<MyFolderList>(
             MyFolderList( "New folder")
         )
+        clickedProduct=product
         when (folderResult) {
             is Result.OnSuccess -> {
                 folderResult.data.responseStatus.forEach {
