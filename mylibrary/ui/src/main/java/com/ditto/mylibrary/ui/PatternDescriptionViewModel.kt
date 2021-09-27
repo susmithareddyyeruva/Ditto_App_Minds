@@ -9,8 +9,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.PDF_PASSWORD
@@ -32,6 +34,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
@@ -40,8 +43,9 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedID: ObservableInt = ObservableInt(1)
-    var data: MutableLiveData<MyLibraryData> = MutableLiveData()
+    val clickedTailornovaID: ObservableField<String> = ObservableField("demo-design-id-png")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
@@ -57,42 +61,46 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     val showLine: ObservableBoolean = ObservableBoolean(false)
     val showResumButton: ObservableBoolean = ObservableBoolean(false)
     val showWorkspaceOrRenewSubscriptionButton: ObservableBoolean = ObservableBoolean(false)
-
-
-
-
-    init {
-
-    }
+    val isDataReceived: ObservableBoolean = ObservableBoolean(false)
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("error","Error undefined")
+                uiEvents.post(Event.OnDataloadFailed)
             }
         }
     }
 
-    //fetch data from repo (via usecase)
-    /* fun fetchOnPatternData() {
-         disposable += getPattern.invoke()
-             .whileSubscribed { it }
-             .subscribeOn(Schedulers.io())
-             .observeOn(AndroidSchedulers.mainThread())
-             .subscribeBy { handleFetchResult(it) }
-     }*/
+    //fetch data from offline
+    fun fetchOfflinePatterns() {
+        disposable += getPattern.getOfflinePatternById("demo-design-id-png")
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleOfflineFetchResult(it) }
+    }
+
+    private fun handleOfflineFetchResult(result: Result<PatternIdData>) {
+        when (result) {
+            is Result.OnSuccess -> {
+                data.value = result.data
+                uiEvents.post(Event.OnDataUpdated)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
 
     fun fetchPattern() {
-        disposable += getPattern.getPatternDetails(clickedID.get())
+        disposable += getPattern.getPattern("demo-design-id-png")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
     }
 
-    private fun handleFetchResult(result: Result<MyLibraryData>) {
+    private fun handleFetchResult(result: Result<PatternIdData>) {
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
@@ -140,6 +148,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         object OnDataUpdated : Event()
 
         object OnDownloadComplete : Event()
+
+        object OnDataloadFailed : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -157,9 +167,10 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             var result: File? = null
             val url: URL = URL(url)
             val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val basicAuth =
+            //If the pdf hosted site is to be authorized.
+            /*val basicAuth =
                 "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-            conn.setRequestProperty("Authorization", basicAuth)
+            conn.setRequestProperty("Authorization", basicAuth)*/
             conn.requestMethod = "GET"
             conn.connect()
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {

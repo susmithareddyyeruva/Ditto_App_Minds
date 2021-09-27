@@ -18,6 +18,15 @@ import non_core.lib.Result
 interface MyLibraryRepository {
     fun getMyLibraryData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getUserData(): Single<Result<LoginUser>>
+    fun getPatternData(get:String): Single<Result<PatternIdData>>
+    fun completeProject(patternId:String): Single<Any>
+    fun removePattern(patternId: String): Single<Any>
+    fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
+    fun getMyLibraryFolderData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
+    fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>>
+    fun getOfflinePatternById(id: String): Single<Result<PatternIdData>>
+
+    //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>
     fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>>
     fun addFolder(requestdata: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>

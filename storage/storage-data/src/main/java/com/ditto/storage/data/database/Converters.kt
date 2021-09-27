@@ -75,7 +75,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun stringToWorkspaceItemsList(data: String?): List<WorkspaceItems> {
+    fun stringToWorkspaceItemsList(data: String?): List<WorkspaceItems>? {
         if (data == null) {
             return emptyList()
         }
@@ -84,6 +84,48 @@ class Converters {
         }.type
         return Gson().fromJson(data, listType)
     }
+
+    @TypeConverter
+    fun stringToWorkspaceItemAPIList(data: String?): List<WorkspaceItemOffline> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<WorkspaceItemOffline>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun workspaceItemAPIListToString(someObjects: List<WorkspaceItemOffline>): String {
+        return Gson().toJson(someObjects)
+    }
+
+    @TypeConverter
+    fun stringToPatternPiecesFromApiList(data: String?): List<PatternPiecesOffline> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<PatternPiecesOffline>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun patternPiecesFromApiListToString(someObjects: List<PatternPiecesOffline>): String {
+        return Gson().toJson(someObjects)
+    }
+    @TypeConverter
+    fun stringToNumberOfPieces(string: String?): NumberOfCompletedPiecesOffline? {
+        return Gson().fromJson(string, NumberOfCompletedPiecesOffline::class.java)
+    }
+
+    @TypeConverter
+    fun NumberOfPiecesToString(numberOfCompletedPieces: NumberOfCompletedPiecesOffline?): String {
+        return Gson().toJson(numberOfCompletedPieces)
+    }
+
 
     @TypeConverter
     fun instructionsListToString(someObjects: List<Instructions>): String {
@@ -106,8 +148,41 @@ class Converters {
     }
 
     @TypeConverter
-    fun workspaceItemsListToString(someObjects: List<WorkspaceItems>): String {
+    fun workspaceItemsListToString(someObjects: List<WorkspaceItems>?): String? {
         return Gson().toJson(someObjects)
     }
 
+    @TypeConverter
+    fun stringToSelvageDataList(data: String?): List<SelvageData> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<SelvageData>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun SelvageDataListToString(someObjects: List<SelvageData>): String {
+        return Gson().toJson(someObjects)
+    }
+
+
+
+    @TypeConverter
+    fun stringToPatternPieceDataList(data: String?): List<PatternPieceData> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<PatternPieceData>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun patternPieceDataListToString(someObjects: List<PatternPieceData>): String {
+        return Gson().toJson(someObjects)
+    }
 }

@@ -1,13 +1,10 @@
 package core.di
 
 import android.content.Context
+import core.*
 import core.MOCK_API_CERT
-import core.OCAPI_PASSWORD
-import core.OCAPI_USERNAME
-import core.di.scope.WbApiRetrofit
-import core.di.scope.WbBaseUrl
-import core.di.scope.WbTokenApiRetrofit
-import core.di.scope.WbTokenBaseUrl
+import core.TAILORNOVA_API_KEY
+import core.di.scope.*
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
@@ -30,8 +27,9 @@ import javax.net.ssl.*
 @Module(
     includes = [
         WbBaseUrlModule::class,
-        WbTokenBaseUrlModule::class/*,
-        WbSocketCertificateModule::class*/
+        WbTokenBaseUrlModule::class,
+        /*WbSocketCertificateModule::class,*/
+        WbTailornovaBaseUrlModule :: class
     ]
 )
 class RetrofitModule {
@@ -95,6 +93,30 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
+
+    @Provides
+    @WbTailornovaApiRetrofit
+    fun provideTailornovaRetrofit(
+        @WbTailornovaBaseUrl baseUrl: String
+    ): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val head_auth = AuthInterceptor(TAILORNOVA_API_KEY, TAILORNOVA_API_KEY_VALUE)
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(head_auth)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(logging)
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxCallAdapterWrapperFactory.createAsync())
+            .client(httpClient.build())
+            .build()
+    }
 }
 
 @Module
@@ -112,6 +134,14 @@ class WbTokenBaseUrlModule {
     @WbTokenBaseUrl
     fun providesTokenBaseUrl(): String {
         return BuildConfig.BASEURL
+    }
+}
+@Module
+class WbTailornovaBaseUrlModule {
+    @Provides
+    @WbTailornovaBaseUrl
+    fun providesTailornovaBaseUrl(): String {
+        return BuildConfig.TAILORNOVA_ENDURL
     }
 }
 
@@ -190,5 +220,16 @@ class BasicAuthInterceptor(user: String?, password: String?) :
 
     init {
         credentials = Credentials.basic(user!!, password!!)
+    }
+}
+
+class AuthInterceptor(tailornovaApiKey: String, tailornovaApiKeyValue: String) :Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        val authRequest: Request = request.newBuilder()
+            .addHeader(TAILORNOVA_API_KEY, TAILORNOVA_API_KEY_VALUE)
+            .method(request.method, request.body)
+            .build()
+        return chain.proceed(authRequest)
     }
 }

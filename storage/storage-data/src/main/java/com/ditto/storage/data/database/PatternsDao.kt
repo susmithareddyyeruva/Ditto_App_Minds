@@ -32,7 +32,7 @@ abstract class PatternsDao {
     }
 
     @Query("DELETE FROM patterns_data where id = :id")
-    abstract fun deletePatternsData(id: Int)
+    abstract fun deletePatternsData(id: String)
 
     /**
      * This method should not be used.  Instead, use [setPatternsData],

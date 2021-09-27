@@ -2,13 +2,16 @@ package com.ditto.data
 
 import android.content.Context
 import android.util.Log
-import com.ditto.data.api.MyLibraryService
+import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.toDomain
+import com.ditto.data.mapper.toDomainn
 import com.ditto.home.domain.GetMyLibraryRepository
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
+import com.ditto.home.domain.model.OfflinePatternData
 import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import com.ditto.logger.LoggerFactory
+import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.UserDao
 import core.appstate.AppState
 import core.network.NetworkUtility
@@ -20,8 +23,9 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 class MyLibraryRepositoryImpl @Inject constructor(
-    private val homeService: @JvmSuppressWildcards MyLibraryService,
+    private val homeService: @JvmSuppressWildcards HomeApiService,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
+    private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val loggerFactory: LoggerFactory
 
 ): GetMyLibraryRepository {
@@ -41,9 +45,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .map {
                 Result.withValue(it.toDomain())
-
-
-
             }
             .onErrorReturn {
                 var errorMessage = "Error Fetching data"
@@ -63,12 +64,20 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         }
                     }
                 }
-
-
                 Result.withError(
                     HomeDataFetchError(errorMessage, it)
                 )
             }
+    }
+
+    override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {
+        return Single.fromCallable{
+            val offlinePatternData = offlinePatternDataDao.getTailernovaData()
+            if(offlinePatternData != null)
+                Result.withValue(offlinePatternData.toDomain())
+            else
+                Result.withError(HomeDataFetchError(""))
+        }
     }
 }
 

@@ -54,6 +54,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 inflater
             ).also {
                 arguments?.getInt("PatternId")?.let { viewModel.patternId.set(it) }
+                arguments?.getInt("clickedOrderNumber")?.let { viewModel.clickedOrderNumber.set(it) }
             }
         }
         return binding.root
@@ -68,7 +69,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.progressCount.set(0)
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
-            viewModel.fetchWorkspaceData()
+            showProgress(true)
+            viewModel.fetchTailernovaDetails("demo-design-id-png") // fetching data from internal DB
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -117,10 +119,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
             workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
             workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
-            workspacAdapter.addFragment(
-                fragmentInterface,
-                getString(R.string.interfacing)
-            )//Interfacing
+            workspacAdapter.addFragment(fragmentInterface,getString(R.string.interfacing))//Interfacing
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
@@ -153,7 +152,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.tabLayoutWorkspace.getTabAt(Utility.fragmentTabs.get())?.select()
             disableNoItemTabs() // to fix the disable tab issue after coming back from calibration page
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -166,6 +164,20 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentInterface.clearWorkspace()
         }
         viewModel.spliced_pices_visibility.set(false)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun updateData() {
+        if (viewModel.selectedTab.get() == 0) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines = fragmentGarment.fetchWorkspaceData(0)
+        } else if (viewModel.selectedTab.get() == 1) {
+            viewModel.data.value?.liningWorkspaceItemOfflines = fragmentLining.fetchWorkspaceData(1)
+        } else {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines = fragmentInterface.fetchWorkspaceData(2)
+        }
+        fragmentGarment.updateTabData(viewModel.data.value)
+        fragmentLining.updateTabData(viewModel.data.value)
+        fragmentInterface.updateTabData(viewModel.data.value)
     }
 
     //  To reset connect buttton and pattern piece adapter
@@ -257,14 +269,23 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         }
-
     }
 
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDataUpdated -> {
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 clearWorkspace()
                 updateTab()
+                fragmentGarment.updateTabDataAndShowToUI(viewModel.data.value)
+                fragmentLining.updateTabDataAndShowToUI(viewModel.data.value)
+                fragmentInterface.updateTabDataAndShowToUI(viewModel.data.value)
+            }
+            is WorkspaceViewModel.Event.ShowProgressLoader -> {
+                showProgress(true)
+            }
+            is WorkspaceViewModel.Event.HideProgressLoader -> {
+                showProgress(false)
             }
             else -> logger.d("Invalid Event")
         }
@@ -292,7 +313,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (alertType == core.ui.common.Utility.AlertType.TAB_SWITCH) {
             switchTab()
         }
-
     }
 
     private fun switchTab() {
@@ -323,10 +343,11 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         if (action == MotionEvent.ACTION_UP) {
             if (!baseViewModel.isProjecting.get()) {
                 if (viewModel.selectedTab.get() != view?.tag as Int) {
+                    updateData()
                     viewModel.selectedTab.set(view?.tag as Int)
-                    //onTabSwitchAlert()
+                    binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
                     //switchTab()
-                    //return true
+                    return true
                 }
                 return false
             } else {
@@ -343,5 +364,9 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     companion object {
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
+    }
+
+    private fun showProgress(toShow: Boolean) {
+        bottomNavViewModel.showProgress.set(toShow)
     }
 }

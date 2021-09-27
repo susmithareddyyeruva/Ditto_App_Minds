@@ -1,7 +1,7 @@
 package core.di
 
 
-import core.CLIENT_ID_DEV
+import core.CLIENT_ID
 import core.data.model.TokenResult
 import core.lib.BuildConfig
 import io.reactivex.Single
@@ -14,7 +14,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    @POST(BuildConfig.TOKEN_ENDURL+"?client_id=$CLIENT_ID_DEV")
+    @POST(BuildConfig.TOKEN_ENDURL+"?client_id=$CLIENT_ID")
     fun refreshToken(@FieldMap req : Map<String, String> ): Single <TokenResult>
 
 }

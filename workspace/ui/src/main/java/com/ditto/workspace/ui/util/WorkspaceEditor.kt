@@ -3,7 +3,6 @@ package com.ditto.workspace.ui.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -44,7 +43,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
      */
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun addImage(
-        drawable: Drawable?,
+        imageBitmap: Bitmap?,
         workspaceItem: WorkspaceItems?,
         scaleFactor: Double,
         showProjection: Boolean,
@@ -55,15 +54,19 @@ class WorkspaceEditor private constructor(builder: Builder) {
         val imageRootView = getLayout(IMAGE)
         val imageV =
             imageRootView?.findViewById<ImageView>(R.id.imgPhotoEditorImage)
-        val tempDrawable = drawable
+        val tempimageBitmap = imageBitmap
+//        imageV?.maxWidth =
+//            ceil(tempDrawable?.intrinsicWidth?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
+//        imageV?.maxHeight =
+//            ceil(tempDrawable?.intrinsicHeight?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
         imageV?.maxWidth =
-            ceil(tempDrawable?.intrinsicWidth?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
+            ceil(tempimageBitmap?.width?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
         imageV?.maxHeight =
-            ceil(tempDrawable?.intrinsicHeight?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
+            ceil(tempimageBitmap?.height?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
         Log.d("TAG", "maxWidth : " + imageV?.maxWidth)
         Log.d("TAG", "maxHeight : " + imageV?.maxHeight)
         imageV?.scaleType = ImageView.ScaleType.FIT_XY
-        imageV?.setImageDrawable(tempDrawable)
+        imageV?.setImageBitmap(tempimageBitmap)
         var sticky: Draggable.STICKY =
             Draggable.STICKY.NONE
         val params =
@@ -94,10 +97,11 @@ class WorkspaceEditor private constructor(builder: Builder) {
         // checking overlapping only for dragged pieces
         // TODO : PUT isOverlappingEnabled true IF OVERLAPPING NEEDED
         if (Utility.isOverlappingEnabled.get() && isDraggedPiece && checkOverlappingCondition(
-                CollisionUtil.drawableToBitmap(
-                    drawable,
-                    scaleFactor
-                ),
+//                CollisionUtil.drawableToBitmap(
+//                    imageBitmap,
+//                    scaleFactor
+//                ),
+                imageBitmap,
                 null,
                 workspaceItem?.xcoordinate?.toInt(),
                 workspaceItem?.ycoordinate?.toInt()
@@ -354,6 +358,12 @@ class WorkspaceEditor private constructor(builder: Builder) {
                     ?: 0F
             }
         }
+
+        //todo testing pending
+        /*if(image?.splicedImages?.size ?:0 > 1){
+            image?.xcoordinate = 0F
+            image?.ycoordinate = 0F
+        }*/
         //
         rootView?.let { addedViews.add(it) }
         image?.let { addedViewsModel.add(it) }

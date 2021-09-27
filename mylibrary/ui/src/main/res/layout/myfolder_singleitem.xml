@@ -29,7 +29,7 @@
             android:id="@+id/image_pattern"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:onClick="@{() -> viewModel.onItemClickPattern(product.ID)}"
+            android:onClick="@{() -> viewModel.onItemClickPattern(product.tailornovaDesignId,product.orderNo)}"
             app:layout_constraintDimensionRatio="157:121"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

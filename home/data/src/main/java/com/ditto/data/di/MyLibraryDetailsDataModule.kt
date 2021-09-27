@@ -22,5 +22,4 @@ internal interface MyLibraryUseCaseModule {
     fun bindMyLibraryUsecase(
         getHomeDataUseCaseImpl: GetHomeDataUseCaseImpl
     ): HomeUsecase
-
 }

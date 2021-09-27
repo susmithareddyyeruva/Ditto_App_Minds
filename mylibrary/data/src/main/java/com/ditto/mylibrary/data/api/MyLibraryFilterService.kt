@@ -8,6 +8,7 @@ import com.ditto.mylibrary.model.FavouriteResult
 import com.ditto.mylibrary.model.FoldersResult
 import com.ditto.mylibrary.model.MyLibraryResult
 import core.lib.BuildConfig
+import core.lib.BuildConfig.MYLIBRARY_ENDURL
 import io.reactivex.Single
 import retrofit2.http.*
 

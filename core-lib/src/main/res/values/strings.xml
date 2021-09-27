@@ -23,4 +23,5 @@
     <string name="pattern_library_count">Pattern Library\u0020(0)</string>
     <string name="pattern_library_count1">Pattern Library\u0020(%1$d)</string>
     <string name="about_app_policies">About the app &amp; policies</string>
+    <string name="str_fetch_error">Error Fetching Data!!</string>
 </resources>

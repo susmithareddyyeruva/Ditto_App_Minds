@@ -3,6 +3,7 @@ package com.ditto.data
 import com.ditto.home.domain.GetMyLibraryRepository
 import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
+import com.ditto.home.domain.model.OfflinePatternData
 import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import io.reactivex.Single
 import non_core.lib.Result
@@ -15,4 +16,7 @@ class GetHomeDataUseCaseImpl @Inject constructor(
       return  homeRepository.getHomePatternsData(requestData)
     }
 
+    override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {
+        return homeRepository.getOfflinePatternDetails()
+    }
 }

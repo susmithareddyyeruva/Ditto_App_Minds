@@ -7,6 +7,7 @@ import com.ditto.mylibrary.model.MyLibraryResult
 import com.ditto.mylibrary.model.Prod
 import com.ditto.storage.data.model.Patterns
 
+
 internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
     return this.map {
         MyLibraryData(
@@ -17,13 +18,18 @@ internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
             completedPieces = it.completedPieces,
             status = it.status,
             thumbnailImagePath = it.thumbnailImagePath,
+            thumbnailImageName = it.thumbnailImageName,
             descriptionImages = it.descriptionImages,
             selvages = it.selvages,
             patternPieces = it.patternPieces,
-            workspaceItems = it.workspaceItems
+            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines,
+            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines,
+            interfaceWorkspaceItemOfflines =it.interfaceWorkspaceItemOfflines
         )
     }
 }
+
+
 
 
 internal fun Patterns.toDomain(): MyLibraryData {
@@ -35,10 +41,13 @@ internal fun Patterns.toDomain(): MyLibraryData {
         completedPieces = this.completedPieces,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
+        thumbnailImageName = this.thumbnailImageName,
         descriptionImages = this.descriptionImages,
         selvages = this.selvages,
         patternPieces = this.patternPieces,
-        workspaceItems = this.workspaceItems
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines,
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines,
+        interfaceWorkspaceItemOfflines =this.interfaceWorkspaceItemOfflines
     )
 }
 
@@ -65,6 +74,7 @@ fun Prod.toDomain(): ProdDomain {
         patternType = this.patternType?:"",
         prodSize = this.prodSize?:"",
         tailornovaDesignId = this.tailornovaDesignId?:"",
+        orderNo = this.orderNo?:"",
         image = this.image?:"",
         customization = this.customization?:"",
         dateOfModification = this.dateOfModification?:"",

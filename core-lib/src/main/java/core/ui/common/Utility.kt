@@ -52,7 +52,7 @@ class Utility @Inject constructor(
 
 
     fun refreshToken(){
-        AppState.saveToken("",0)
+//        AppState.saveToken("",0)
         tokenViewModel.calltoken()
     }
 
@@ -72,7 +72,9 @@ class Utility @Inject constructor(
         CUT_COMPLETE,
         CONNECTIVITY,
         SOC_CONNECT,
-        DELETE
+        DELETE,
+        UPDATEAPIFAILED,
+        DOWNLOADFAILED
     }
 
     enum class Iconype {
@@ -303,18 +305,18 @@ class Utility @Inject constructor(
             )
         }
 
-        fun setSharedPref(context: Context, id: Int) {
+        fun setSharedPref(context: Context, id: String) {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
             var editor = sharedPreference.edit()
-            editor.putInt("PATTERN_ID", id)
+            editor.putString("PATTERN_ID", id)
             editor.commit()
         }
 
-        fun getSharedPref(context: Context): Int {
+        fun getSharedPref(context: Context): String? {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
-            return sharedPreference.getInt("PATTERN_ID", 0)
+            return sharedPreference.getString("PATTERN_ID", "")
         }
 
         fun getOutputDirectory(context: Context): File {
@@ -452,6 +454,28 @@ class Utility @Inject constructor(
                 path = null
             }
 
+            return path
+        }
+
+        fun isImageFileAvailable(filename: String?, patternFolderName: String?) : Uri? {
+
+            val directory = File(
+                Environment.getExternalStorageDirectory()
+                    .toString() + "/Ditto/$patternFolderName"
+            )
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            //Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
+            val file = File(directory, filename)
+
+            var path : Uri? = null
+            if (file.exists()){
+                path = Uri.fromFile(file)
+            } else {
+                path = null
+            }
             return path
         }
 

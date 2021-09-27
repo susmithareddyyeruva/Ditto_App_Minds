@@ -8,8 +8,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -18,8 +18,9 @@ import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -31,23 +32,20 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.workspace.domain.model.DragData
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.SpliceImages
-import com.ditto.workspace.domain.model.WorkspaceItems
+import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
-import com.ditto.workspace.ui.util.Draggable
-import com.ditto.workspace.ui.util.DraggableListener
-import com.ditto.workspace.ui.util.Utility.Companion.getAlertDialogSaveAndExit
-import com.ditto.workspace.ui.util.WorkspaceEditor
-import com.ditto.workspace.ui.util.showPinchZoomPopup
+import com.ditto.workspace.ui.util.*
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
@@ -61,15 +59,14 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
+
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListener,
@@ -111,13 +108,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }
         if (viewModel.data.value == null) {
-            viewModel.fetchWorkspaceData()
+            //viewModel.fetchWorkspaceData()
+            //viewModel.fetchWorkspaceDataFromAPI(result) // SFCC
+            //viewModel.fetchTailernovaDataByID("demo-design-id-png", "WorkspaceTABFragment")
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
@@ -144,12 +144,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     if (baseViewModel.isSaveExitButtonClicked.get()) {
                         viewModel.disposable.clear()
                         isEnabled = false
-                        //findNavController().popBackStack(R.id.patternDescriptionFragment, true)
                         activity?.onBackPressed()
                         baseViewModel.isSaveExitButtonClicked.set(false)
                     } else {
-                        //showSaveAndExitPopup()
-                        moveToLibrary()
+                        downloadPatternPieces()
                     }
                 }
             }
@@ -193,6 +191,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun refreshPatternPiecesAdapter() {
         com.ditto.workspace.ui.util.Utility.progressCount.set(0)
+        viewModel.completedPieces.set(0)
+        viewModel.setCompletePieceCount()
         binding.recyclerViewPieces.adapter?.notifyDataSetChanged()
     }
 
@@ -250,10 +250,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     fun isTablet(context: Context?): Boolean {
-        val xlarge = context?.getResources()
-            ?.getConfiguration()?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == 4
-        val large = context?.getResources()
-            ?.getConfiguration()?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == Configuration.SCREENLAYOUT_SIZE_LARGE
+        val xlarge = context?.resources
+            ?.configuration?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == 4
+        val large = context?.resources
+            ?.configuration?.screenLayout?.and(Configuration.SCREENLAYOUT_SIZE_MASK) ?: 0 == Configuration.SCREENLAYOUT_SIZE_LARGE
         return xlarge || large
     }
 
@@ -461,10 +461,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
                 if (viewModel.clickedSize45.get()) {
                     val selvage = garments.filter { it.fabricLength == "45" }[0]
+
+                    logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage.imagePath}")
                     selvage.imagePath.let {
-                        binding.imageSelvageHorizontal.setImageDrawable(
-                            getDrawableFromString(context, it)
+                        /* binding.imageSelvageHorizontal.setImageDrawable(
+                             getDrawableFromString(context, it)
+                         )*/
+                        getBitmapFromSvgPngDrawable(
+                            selvage.imagePath,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
                         )
+
                     }
                     viewModel.clickedSize45.set(true)
                     viewModel.clickedSize60.set(false)
@@ -473,9 +481,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (viewModel.clickedSize60.get()) {
                     val selvage = garments.filter { it.fabricLength == "60" }[0]
                     selvage.imagePath.let {
-                        binding.imageSelvageHorizontal.setImageDrawable(
-                            getDrawableFromString(context, it)
+                        /* binding.imageSelvageHorizontal.setImageDrawable(
+                             getDrawableFromString(context, it)
+                         )*/
+                        getBitmapFromSvgPngDrawable(
+                            selvage.imagePath,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
                         )
+
                     }
                     viewModel.clickedSize45.set(false)
                     viewModel.clickedSize60.set(true)
@@ -495,6 +509,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     binding.imageSelvageHorizontal.setImageDrawable(
                         getDrawableFromString(context, it)
                     )
+                    getBitmapFromSvgPngDrawable(
+                        garments[0].imagePath,
+                        binding.imageSelvageHorizontal.context,
+                        binding.imageSelvageHorizontal
+                    )
                 }
                 viewModel.referenceImage.set(garments[0].imagePath)
             }
@@ -511,9 +530,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
             lining?.get(0)?.imagePath?.let {
+/*
                 binding.imageSelvageHorizontal.setImageDrawable(
                     getDrawableFromString(context, it)
                 )
+*/
+
+                getBitmapFromSvgPngDrawable(
+                    lining?.get(0)?.imagePath,
+                    binding.imageSelvageHorizontal.context,
+                    binding.imageSelvageHorizontal
+                )
+
             }
             binding.txtSize45.isEnabled = lining?.get(0)?.fabricLength == "45"
             binding.txtSize60.isEnabled = lining?.get(0)?.fabricLength == "60"
@@ -539,9 +567,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
             interfacing?.get(0)?.imagePath?.let {
-                binding.imageSelvageHorizontal.setImageDrawable(
+                /*binding.imageSelvageHorizontal.setImageDrawable(
                     getDrawableFromString(context, it)
+                )*/
+
+                getBitmapFromSvgPngDrawable(
+                    interfacing?.get(0)?.imagePath,
+                    binding.imageSelvageHorizontal.context,
+                    binding.imageSelvageHorizontal
                 )
+
             }
             binding.txtSize45.isEnabled = interfacing?.get(0)?.fabricLength == "45"
             binding.txtSize60.isEnabled = interfacing?.get(0)?.fabricLength == "60"
@@ -558,15 +593,36 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
+    // todo
+    fun fetchWorkspaceData(selectedTab:Int): MutableList<WorkspaceItems>? {
+
+        if ( selectedTab == 0) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            return viewModel.data.value?.garmetWorkspaceItemOfflines
+        } else if (selectedTab == 1) {
+            viewModel.data.value?.liningWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            return viewModel.data.value?.liningWorkspaceItemOfflines
+        } else {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            return viewModel.data.value?.interfaceWorkspaceItemOfflines
+        }
+    }
+
     fun clearWorkspace() {
         disableInchTabs()
         setSelvageImage()
         viewModel.showDoubleTouchToZoom.set(false)
         binding.invalidateAll()
 
-        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
-            viewModel.clickReset()
-        }
+//        if (com.ditto.workspace.ui.util.Utility.progressCount.get() == 0) {
+//            viewModel.clickReset()
+//        }
+//        if (viewModel.completedPieces.get() == 0) {
+//            viewModel.clickReset()
+//        }
 //        binding.includeWorkspacearea?.layoutWorkspaceBackground?.setBackgroundResource(
 //            R.drawable.ic_workspace_new
 //        )
@@ -649,6 +705,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
     }
 
+    fun getPatternPieceListTailornova(): HashMap<String, String> {
+        var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap[viewModel.data.value?.thumbnailImageName.toString()] = viewModel.data.value?.thumbnailImagePath.toString()
+        for (patternItem in viewModel.data.value?.selvages!!) {
+            hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
+        }
+        for (patternItem in viewModel.data.value?.patternPieces!!) {
+            hashMap[patternItem.thumbnailImageName.toString()] = patternItem.thumbnailImageUrl.toString()
+            hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
+            for (splicedImage in patternItem.splicedImages) {
+                hashMap[splicedImage.imageName.toString()] = splicedImage.imagePath.toString()
+                hashMap[splicedImage.mapImageName.toString()] = splicedImage.mapImageUrl.toString()
+            }
+        }
+        return hashMap
+    }
+
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
@@ -658,17 +731,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 binding.recyclerViewPieces.smoothScrollBy(200, 0)
             }
             is WorkspaceViewModel.Event.OnClickSaveAndExit -> {
-                if (!baseViewModel.isProjecting.get()) {
-                    binding.buttonSaveAndExit.isEnabled = false
-                    //showSaveAndExitPopup()
-                    moveToLibrary()
-                } else {
-                    showWaitingMessage("Projection is under process.. Please wait")
-                }
+                downloadPatternPieces()
             }
             is WorkspaceViewModel.Event.OnClickSelectAll -> {
                 if (mWorkspaceEditor?.views?.any() ?: false) {
-//                    binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.VISIBLE
                     viewModel.selectAllText.set(getString(R.string.de_select_all))
                     mWorkspaceEditor?.selectAllSelection()
                 } else Utility.showSnackBar(
@@ -676,7 +742,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             is WorkspaceViewModel.Event.OnClickDeSelectAll -> {
-//                binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
                 viewModel.selectAllText.set(getString(R.string.select_all))
                 mWorkspaceEditor?.clearAllSelection()
             }
@@ -690,6 +755,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 setSelvageImage()
                 getScaleFactor()
                 setInitialProgressCount()
@@ -733,7 +799,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata)
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -751,7 +817,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -768,7 +834,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata);
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -785,7 +851,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false);
+                    showToWorkspace(true, false,viewModel.workspacedata)
                     mWorkspaceEditor?.highlightSplicePiece()
                     enableClear(true)
                 } else {
@@ -804,7 +870,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                        } else {
 //                            showCalibrationDialog()
 //                        }
-
                     } else {
                         checkBluetoothWifiPermission()
                     }
@@ -826,41 +891,38 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 clearWorkspace()
             }
             is WorkspaceViewModel.Event.CloseScreen -> {
+                showProgress(false)
                 baseViewModel.isSaveExitButtonClicked.set(true)
                 findNavController().popBackStack(R.id.patternDescriptionFragment, false)
                 activity?.onBackPressed()
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
-                //----------------Code change should be done for getting the saved tab------------//
-                var workspaceTab: String
-                if (viewModel.data?.value?.selectedTab?.length ?: 0 > 1) {
-                    workspaceTab = viewModel.data?.value?.selectedTab.toString()
-                } else {
-                    workspaceTab = resources.getStringArray(R.array.workspace_tabs).get(
-                        viewModel.data?.value?.selectedTab?.toInt() ?: 0
-                    )
+
+                var workspaceItems: MutableList<WorkspaceItems>? = null
+                if (viewModel.tabCategory.equals("Garment")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.garmetWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                } else if (viewModel.tabCategory.equals("Lining")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.liningWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                } else if (viewModel.tabCategory.equals("Interfacing")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
                 }
-                //-----------------------------------------------------------------------------//
-                if (workspaceTab == viewModel.tabCategory) {
-                    logger.d(" Duplicate Loading  ")
-                    val workspaceItems = viewModel.data.value?.workspaceItems
-                    // set id of workspace item to the oldest large value
-                    com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
-                        workspaceItems?.maxBy { it.id }?.id ?: 0
-                    )
-                    var i = 0
-                    if (workspaceItems != null) {
-                        for (workspaceItem in workspaceItems) {
-                            i++
-                            viewModel.workspacedata = workspaceItem
-                            showToWorkspace(i == workspaceItems.size, false)
-                        }
-                    } else {
-                        logger.d("workspace item is null")
+                // set id of workspace item to the oldest large value
+                com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
+                    workspaceItems?.maxBy { it.id }?.id ?: 0
+                )
+                var i = 0
+                if (workspaceItems != null) {
+                    for (workspaceItem in workspaceItems) {
+                        i++
+                        viewModel.workspacedata = workspaceItem
+                        showToWorkspace(i == workspaceItems.size, false,workspaceItem)
                     }
                 } else {
-                    logger.d(" Duplicate Loading  Else")
+                    logger.d("workspace item is null")
                 }
             }
             is WorkspaceViewModel.Event.onProject -> {
@@ -916,7 +978,26 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
+                /**
+                 * All Pattern Pieces Downloaded Successfully
+                 */
+                if (viewModel.temp.size == viewModel.imagesToDownload.size) {
+                    bottomNavViewModel.showProgress.set(false)
+                    Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
+                    showSaveAndExitPopup()
+                }else{
 
+                    Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        resources.getString(R.string.download_failed),
+                        resources.getString(R.string.download_failed_message),
+                        resources.getString(R.string.str_retry),
+                        resources.getString(R.string.ok),
+                        this,
+                        Utility.AlertType.DOWNLOADFAILED,
+                        Utility.Iconype.NONE
+                    )
+                }
             }
             is WorkspaceViewModel.Event.OnClickTutorial -> {
                 navigateToTutorial()
@@ -939,37 +1020,96 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.EnableSelectAll -> {
                 enableSelectAll(true)
             }
+            is WorkspaceViewModel.Event.ShowProgressLoader -> {
+                showProgress(true)
+            }
+            is WorkspaceViewModel.Event.HideProgressLoader -> {
+                showProgress(false)
+            }
+            is WorkspaceViewModel.Event.ApiFailed -> {
+                showProgress(false)
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    resources.getString(R.string.api_failed),
+                    resources.getString(R.string.api_failed_message),
+                    resources.getString(R.string.empty_string),
+                    resources.getString(R.string.ok),
+                    this,
+                    Utility.AlertType.UPDATEAPIFAILED,
+                    Utility.Iconype.NONE
+                )
+            }
         }
 
+    fun downloadPatternPieces() {
+        if (!baseViewModel.isProjecting.get()) {
+                    binding.buttonSaveAndExit.isEnabled = false
+                    val map = getPatternPieceListTailornova()
+                    if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
+
+                        }
+                    } else {
+                        //no internet available
+                        showProgress(false)
+                        Utility.getCommonAlertDialogue(
+                            requireContext(),
+                            resources.getString(R.string.api_failed),
+                            resources.getString(R.string.api_failed_message),
+                            resources.getString(R.string.empty_string),
+                            resources.getString(R.string.ok),
+                            this@WorkspaceTabFragment,
+                            Utility.AlertType.UPDATEAPIFAILED,
+                            Utility.Iconype.NONE
+                        )
+                    }
+                } else {
+                    showWaitingMessage("Projection is under process.. Please wait")
+                }
+    }
+
+    fun updateTabData(patternsData: PatternsData?) {
+        viewModel.data.value = patternsData
+    }
+
+    fun updateTabDataAndShowToUI(patternsData: PatternsData?){
+        viewModel.data.value = patternsData
+        viewModel.setWorkspaceView()
+    }
+
+
     private fun onUpdateFont() {
-        binding.txtPatternPieces.setTypeface(
-            ResourcesCompat.getFont(
-                requireContext(),
-                if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_demi else R.font.avenir_next_lt_pro_regular
-            )
+        binding.txtPatternPieces.typeface = ResourcesCompat.getFont(
+            requireContext(),
+            if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_demi else R.font.avenir_next_lt_pro_regular
         )
-        binding.txtReeferanceLayout.setTypeface(
-            ResourcesCompat.getFont(
-                requireContext(),
-                if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_regular else R.font.avenir_next_lt_pro_demi
-            )
+        binding.txtReeferanceLayout.typeface = ResourcesCompat.getFont(
+            requireContext(),
+            if (viewModel.clickedPattenPieces.get()) R.font.avenir_next_lt_pro_regular else R.font.avenir_next_lt_pro_demi
         )
     }
 
     private fun onUpdateProgressCount() {
         binding.seekbarStatus.progress = 0
-        binding.seekbarStatus.max = viewModel.data?.value?.totalPieces!!
+        binding.seekbarStatus.max = viewModel.data?.value?.totalPieces ?: 0
         binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
     }
 
     override fun onResume() {
         super.onResume()
         calculateScrollButtonVisibility()
-        requireActivity().getWindow()
+        requireActivity().window
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-        requireActivity().getWindow()
+        requireActivity().window
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        requireActivity().getWindow()
+        requireActivity().window
             ?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get() != true) {
@@ -1037,8 +1177,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
                         enableSelectAll(true)
 //                        enableClear(true)
-                        if (dragData?.patternPieces?.splice == SPLICE_NO) {
-                            if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
+                        if (!(dragData?.patternPieces?.splice ?: true)) {
+                            if (viewModel.workspacedata?.splice ?: false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
                                         ?: true
                                 ) {
@@ -1064,7 +1204,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true)
+                            showToWorkspace(true, true,viewModel.workspacedata)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1121,7 +1261,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true)
+                            showToWorkspace(true, true,viewModel.workspacedata)
                         }
                     }
                 }
@@ -1183,6 +1323,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
+        enableSelectAll(true)
         enableClear(true)
         viewModel.workspacedata = workspaceItem
         viewModel.checkMirroring()
@@ -1341,42 +1482,24 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     override fun onSaveButtonClicked(projectName: String, isCompleted: Boolean?) {
-        viewModel.data.value?.workspaceItems = mWorkspaceEditor?.views?.toMutableList()
-        this.isCompleted = isCompleted
-        val pattern = checkProjectName(projectName, viewModel.data.value?.id!!)
-        if (pattern != null) {
-            matchedPattern = pattern
-            showSameNameAlert()
-        } else {
-            if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch {
-                    Utility.sendDittoImage(
-                        requireActivity(),
-                        "ditto_project"
-                    )
-                }
-            }
-            viewModel.saveProject(projectName, isCompleted)
+        showProgress(true)
+        val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
+        if (a.equals("0")) {
+            viewModel.data.value?.garmetWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+        } else if (a.equals("1")) {
+            viewModel.data.value?.liningWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+        } else if (a.equals("2")) {
+            viewModel.data.value?.interfaceWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
+        this.isCompleted = isCompleted
+        viewModel.saveProject()
         context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
-    }
-
-    private fun checkProjectName(projectName: String, id: Int): PatternsData? {
-        return viewModel.allPatterns.value?.filter {
-            (it.status == "Active").or(it.status == "Completed")
-        }?.firstOrNull { it.patternName == projectName && it.id != id }
-    }
-
-    private fun showSameNameAlert() {
-        getAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.renameproject),
-            resources.getString(R.string.existing_project),
-            resources.getString(R.string.rename),
-            resources.getString(R.string.override),
-            this,
-            Utility.AlertType.PATTERN_RENAME
-        )
     }
 
     override fun onExitButtonClicked() {
@@ -1420,83 +1543,54 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSaveAndExitPopup() {
         baseViewModel.isSaveExitButtonClicked.set(false)
-        val layout =
-            activity?.layoutInflater?.inflate(R.layout.workspace_save_and_exit_dialog, null)
-        if (viewModel.data.value?.status.equals("Completed") ||
-            (com.ditto.workspace.ui.util.Utility.progressCount.get() == viewModel.data.value?.totalPieces)
-        ) {
-            val checkbox = layout?.findViewById(R.id.complete_checkbox) as CheckBox
-            checkbox.visibility = View.GONE
-        }
-        layout?.let {
-            getAlertDialogSaveAndExit(
-                requireActivity(),
-                resources.getString(R.string.save_and_exit_dialog_title),
-                viewModel.data.value?.patternName
-                    ?: resources.getString(R.string.save_and_exit_dialog_message),
-                it,
-                resources.getString(R.string.exit),
-                resources.getString(R.string.save),
-                this,
-                Utility.AlertType.DEFAULT
-            )
-        }
+        onSaveButtonClicked(viewModel.data.value?.patternName.toString(), false)
     }
 
     private fun getScaleFactor() {
         val width: Int = binding.includeWorkspacearea.layoutWorkspace.width ?: 1
-        val virtualWidth: Int =
-            binding.includeWorkspacearea.virtualWorkspaceDimension.width ?: 1
+        val virtualWidth: Int = 2520
         val x: Double = (virtualWidth.toDouble().div(width.toDouble()))
         viewModel.scaleFactor.set(x)
         Log.d("TAG", "scalefactor : " + viewModel.scaleFactor.get())
     }
 
     private fun setInitialProgressCount() {
-        var workspaceTab: String
-        if (viewModel.data?.value?.selectedTab?.length ?: 0 > 1) {
-            workspaceTab = viewModel.data?.value?.selectedTab.toString()
-        } else {
-            workspaceTab = resources.getStringArray(R.array.workspace_tabs).get(
-                viewModel.data?.value?.selectedTab?.toInt() ?: 0
-            )
-        }
-        //-----------------------------------------------------------------------------//
-        if (workspaceTab == viewModel.tabCategory) {
-            viewModel.data.value?.completedPieces?.let {
-                com.ditto.workspace.ui.util.Utility.progressCount.set(
-                    it
-                )
-            }
-            binding.seekbarStatus.progress = 0
-            binding.seekbarStatus.max = viewModel.data?.value?.totalPieces!!
-            binding.seekbarStatus.progress = com.ditto.workspace.ui.util.Utility.progressCount.get()
-            logger.d("TRACE: Fetched progress count " + com.ditto.workspace.ui.util.Utility.progressCount.get())
+        if (viewModel.tabCategory.equals("Garment")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.garment ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.garment ?: 0)
+        } else if (viewModel.tabCategory.equals("Lining")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.lining ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.lining ?: 0)
+        } else if (viewModel.tabCategory.equals("Interfacing")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.`interface` ?: 0)
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.`interface` ?: 0)
         }
     }
 
     /*
     Displaying pieces in Workspace
      */
-    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean) {
+    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
             viewModel.showDoubleTouchToZoom.set(true)
         }
         viewModel.selectAllText.set(getString(R.string.select_all))
+        enableSelectAll(true)
         mWorkspaceEditor?.clearAllSelection()
-        var imagename = viewModel.workspacedata?.imagePath
-        if (viewModel.workspacedata?.splice?.equals(SPLICE_YES) == true) {
+        var imagename = workspaceItem?.imagePath
+        var imagenameOffline = workspaceItem?.imageName
+        if (workspaceItem?.splice ?: false) {
             showSpliceArrows(
-                viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
-                viewModel.workspacedata?.currentSplicedPieceColumn ?: 0
+                workspaceItem?.currentSplicedPieceRow ?: 0,
+                workspaceItem?.currentSplicedPieceColumn ?: 0
             )
 
             val splicePiece = getSplicePiece(
-                viewModel.workspacedata?.currentSplicedPieceRow ?: 0,
-                viewModel.workspacedata?.currentSplicedPieceColumn ?: 0,
-                viewModel.workspacedata?.splicedImages
+                workspaceItem?.currentSplicedPieceRow ?: 0,
+                workspaceItem?.currentSplicedPieceColumn ?: 0,
+                workspaceItem?.splicedImages
             )
 
             // Setting splice reference layout
@@ -1508,35 +1602,90 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.clickedSize60.set(false)
 
             imagename = splicePiece?.imagePath
-            viewModel.workspacedata?.splicedImages?.size?.let {
+            imagenameOffline = splicePiece?.imageName
+            workspaceItem?.splicedImages?.size?.let {
                 viewModel.splice_pices_count.set(
                     it
                 )
             }
             viewModel.spliced_pices_visibility.set(true)
         }
-        if (imagename != null) {
-            mWorkspaceEditor?.addImage(
-                getDrawableFromString(
-                    context,
-                    imagename
-                ),
-                viewModel.workspacedata,
-                viewModel.scaleFactor.get(),
-                showProjection,
-                isDraggedPiece,
-                this
-            )
+        //TODO To be included when using API images
+        GlobalScope.launch {
+            try {
+                showProgress(toShow = true)
+                var workSpaceImageData = WorkspaceImageData(
+                    if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) },
+                    workspaceItem,
+                    viewModel.scaleFactor.get(),
+                    showProjection,
+                    isDraggedPiece
+                )
+
+
+                withContext(Dispatchers.Main) {
+                    if (imagename != null) {
+                        mWorkspaceEditor?.addImage(
+                            workSpaceImageData.bitmap,
+                            workSpaceImageData.workspaceItem,
+                            workSpaceImageData.scaleFactor,
+                            workSpaceImageData.showProjection,
+                            workSpaceImageData.isDraggedPiece,
+                            this@WorkspaceTabFragment
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                showProgress(toShow = false)
+            }
+        }
+
+    }
+
+
+    private fun getBitmapFromSvgPngDrawable(imagePath: String): Bitmap? {
+        var availableUri: Uri? = null
+        if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
+            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
+            Log.d("imageUri123", " availableUri: $availableUri")
+        }
+        return if (imagePath.endsWith(".svg", true)) {
+            Glide
+                .with(context)
+                .load((if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else availableUri))
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_launcher_background)
+                .imageDecoder(SvgBitmapDecoder(context))
+                .into(SIZE_ORIGINAL, SIZE_ORIGINAL)
+                .get()
+        } else if (imagePath.endsWith(".png", true)) {
+            Glide
+                .with(context)
+                .load((if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else availableUri))
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(SIZE_ORIGINAL, SIZE_ORIGINAL)
+                .get()
+        } else {
+            getBitmap(getDrawableFromString(context, imagePath) as VectorDrawable, false, false)
         }
     }
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
-        spliceImages?.reference_splice.let {
-            binding.imageSelvageHorizontal.setImageDrawable(
-                getDrawableFromString(context, it)
+        Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageUrl} ")
+        spliceImages?.mapImageUrl.let {
+            getBitmapFromSvgPngDrawable(
+                spliceImages?.mapImageUrl,
+                binding.imageSelvageHorizontal.context,
+                binding.imageSelvageHorizontal
             )
+
         }
-        viewModel.referenceImage.set(spliceImages?.reference_splice)
+        viewModel.referenceImage.set(spliceImages?.mapImageUrl)
     }
 
     private fun showSpliceArrows(row: Int?, column: Int?) {
@@ -1546,7 +1695,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.workspacedata?.splicedImages
             )
         ) {
-//            layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_right_new)
             splice_right.bringToFront()
             viewModel.isSpliceRightVisible.set(true)
             viewModel.spliced_pices.set(1)
@@ -1557,7 +1705,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.workspacedata?.splicedImages
             )
         ) {
-//            layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_left_new)
             splice_left.bringToFront()
             viewModel.isSpliceLeftVisible.set(true)
             viewModel.spliced_pices.set(2)
@@ -1569,7 +1716,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.workspacedata?.splicedImages
             )
         ) {
-//            layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_top_new)
             splice_top.bringToFront()
             viewModel.isSpliceTopVisible.set(true)
             viewModel.spliced_pices.set(1)
@@ -1580,7 +1726,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.workspacedata?.splicedImages
             )
         ) {
-//            layout_workspace_background.setBackgroundResource(R.drawable.ic_workspace_splice_bottom_new)
             splice_bottom.bringToFront()
             viewModel.isSpliceBottomVisible.set(true)
             viewModel.spliced_pices.set(2)
@@ -1614,10 +1759,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     fun getVirtualWorkspace(): Bitmap {
         val workspaceItems: List<WorkspaceItems> =
             mWorkspaceEditor?.views ?: emptyList()
-        // added +5 inorder to fix the right and bottom cut in projection
         val bitmapWidth =
             Math.ceil(
-                layout_workspace?.measuredWidth?.plus(5)?.times(viewModel.scaleFactor.get())
+                layout_workspace?.measuredWidth?.times(viewModel.scaleFactor.get())
                     ?: 0.0
             ).toInt()
         val bitmapHeight = bitmapWidth / 14 * 9
@@ -1627,51 +1771,70 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         )
         val canvas = Canvas(bigBitmap)
         for (workspaceItem in workspaceItems) {
-            val myIcon: Drawable?
-            if (workspaceItem.splice.equals(SPLICE_YES) == true) {
-                myIcon = getDrawableFromString(
-                    context,
-                    getSplicePiece(
-                        workspaceItem.currentSplicedPieceRow,
-                        workspaceItem.currentSplicedPieceColumn,
-                        workspaceItem.splicedImages
-                    )?.imagePath
-                )
+            val imagename: String?
+            val imagenameOffline: String?
+            if (workspaceItem.splice ?: false) {
+                imagename = getSplicePiece(
+                    workspaceItem.currentSplicedPieceRow,
+                    workspaceItem.currentSplicedPieceColumn,
+                    workspaceItem.splicedImages
+                )?.imagePath
+                imagenameOffline =getSplicePiece(
+                    workspaceItem.currentSplicedPieceRow,
+                    workspaceItem.currentSplicedPieceColumn,
+                    workspaceItem.splicedImages
+                )?.imageName
             } else {
-                myIcon = getDrawableFromString(context, workspaceItem.imagePath)
+                imagename = workspaceItem.imagePath
+                imagenameOffline = workspaceItem.imageName
             }
+            var bitmap: Bitmap? = null
+            runBlocking {
+                 val job : Job = GlobalScope.launch {
+                    try {
+                        bitmap =
+                        if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
+                        withContext(Dispatchers.Main) {
+                            if (imagename != null) {
+                                val matrix = Matrix()
+                                matrix.preTranslate(
+                                    workspaceItem.xcoordinate.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    ),
+                                    workspaceItem.ycoordinate.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    )
+                                )
+                                val pivotx =
+                                    (bitmap?.width)?.toFloat()?.div(2)
+                                val pivoty =
+                                    bitmap?.height?.toFloat()?.div(2)
 
-            val bitmap = getBitmap(
-                myIcon as VectorDrawable,
-                workspaceItem.isMirrorV,
-                workspaceItem.isMirrorH
-            )
-
-            val matrix = Matrix()
-            matrix.preTranslate(
-                workspaceItem.xcoordinate.times(viewModel.scaleFactor.get().toFloat()),
-                workspaceItem.ycoordinate.times(viewModel.scaleFactor.get().toFloat())
-            )
-            val pivotx =
-                (bitmap?.width)?.toFloat()?.div(2)
-            val pivoty =
-                bitmap?.height?.toFloat()?.div(2)
-
-            matrix.preRotate(
-                workspaceItem.rotationAngle,
-                pivotx ?: workspaceItem.pivotX.times(viewModel.scaleFactor.get().toFloat()),
-                pivoty ?: workspaceItem.pivotY.times(viewModel.scaleFactor.get().toFloat())
-            )
-            //**********************
-            bitmap?.let {
-                canvas.drawBitmap(
-                    it,
-                    matrix,
-                    null
-                )
+                                matrix.preRotate(
+                                    workspaceItem.rotationAngle,
+                                    pivotx ?: workspaceItem.pivotX.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    ),
+                                    pivoty ?: workspaceItem.pivotY.times(
+                                        viewModel.scaleFactor.get().toFloat()
+                                    )
+                                )
+                                bitmap?.let {
+                                    canvas.drawBitmap(
+                                        it,
+                                        matrix,
+                                        null
+                                    )
+                                }
+                                matrix.reset()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                job.join()
             }
-            matrix.reset()
-            //******************************
         }
         return bigBitmap
     }
@@ -1689,22 +1852,27 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val SPLICE_TOP_TO_BOTTOM = "Splice Top-to-Bottom"
         private const val MULTIPLE_TO_MULTIPLE = "Splice Multiple-to-Multiple"
         private const val REQUEST_CODE_PERMISSIONS = 111
+        private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private val REQUIRED_PERMISSIONS_DOWNLOAD =
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+
 
     }
 
-    private fun showBluetoothDialogue() {
-        /*getAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.ditto_connect),
-            resources.getString(R.string.ble_connectivity),
-            resources.getString(R.string.skips),
-            resources.getString(R.string.turnon),
-            this,
-            Utility.AlertType.BLE
-        )*/
+    private fun dowloadPermissonGranted() = REQUIRED_PERMISSIONS_DOWNLOAD.all {
+        context?.let { it1 ->
+            ContextCompat.checkSelfPermission(
+                it1, it
+            )
+        } == PackageManager.PERMISSION_GRANTED
+    }
 
+    private fun showBluetoothDialogue() {
         Utility.getCommonAlertDialogue(
             requireContext(),
             "Connectivity",
@@ -1718,17 +1886,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showWifiDialogue() {
-
-        /*getAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.ditto_connect),
-            resources.getString(R.string.wifi_connectivity),
-            resources.getString(R.string.skips),
-            resources.getString(R.string.settings),
-            this,
-            Utility.AlertType.WIFI
-        )*/
-
         Utility.getCommonAlertDialogue(
             requireContext(),
             "Connectivity",
@@ -1767,6 +1924,29 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
+    /**
+     * [Function] Call back when user allow/deny the permission
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
+            Log.d("onReqPermissionsResult","permission granted")
+            val map = getPatternPieceListTailornova()
+
+            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+            }
+        }else {
+            showSaveAndExitPopup()
+            Log.d("onReqPermissionsResult","permission denied")
+        }
+
+    }
+
     private fun showConnectivityPopup() {
         val intent = Intent(requireContext(), ConnectivityActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -1777,17 +1957,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun showCalibrationDialog() {
-        /*getAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.setup_calibration_title),
-            resources.getString(R.string.setup_calibration_message),
-            resources.getString(R.string.setup_calibration_quickcheck),
-            resources.getString(R.string.setup_calibration_calibrate),
-            resources.getString(R.string.skips),
-            this,
-            Utility.AlertType.CALIBRATION
-        )*/
-
         val layout =
             activity?.layoutInflater?.inflate(R.layout.alert_calibration_confirmation, null)
         val dialogBuilder =
@@ -1802,18 +1971,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             alertCalibration.dismiss()
             baseViewModel.isCalibrated.set(false)
             viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
-//            baseViewModel.isUserNeedCalibrated.set(true)
-            //sendBorderImage()
         }
         negative.setOnClickListener {
             alertCalibration.dismiss()
             baseViewModel.isCalibrated.set(true)
             viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
-//            baseViewModel.isUserNeedCalibrated.set(false)
-            /*if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
-            }*/
-
         }
     }
 
@@ -1843,30 +2005,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val layout =
             activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
-        /* val dialogBuilder =
-             AlertDialog.Builder(
-                 ContextThemeWrapper(
-                     requireContext(),
-                     R.style.AlertDialogCustom
-                 )
-             )*/
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setCancelable(false)
-        /*.setNegativeButton(
-            getString(R.string.cancel),
-            DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-            })
-        .setPositiveButton(
-            getString(R.string.launch_camera),
-            DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-                sendCalibrationPattern()
-            })*/
-
         val alertCamera = dialogBuilder.create()
         alertCamera.setView(layout)
-        // alertCamera.window?.setLayout(535,201)
         alertCamera.show()
         val cancel = layout?.findViewById(R.id.textCancel) as TextView
         val launch = layout.findViewById(R.id.textLaunch) as TextView
@@ -2012,7 +2154,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             } else {
                 baseViewModel.activeSocketConnection.set(false)
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
-                //txt_recalibrate.setText("Connect")
                 logger.d("")
             }
         }
@@ -2103,6 +2244,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
                 showConnectivityPopup()
             }
+            Utility.AlertType.UPDATEAPIFAILED -> {
+                showProgress(false)
+                baseViewModel.isSaveExitButtonClicked.set(true)
+                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+                activity?.onBackPressed()
+            }
+            Utility.AlertType.DOWNLOADFAILED -> {
+               showSaveAndExitPopup()
+            }
         }
 
     }
@@ -2136,7 +2286,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.CUT_BIN_ALL -> {
                 viewModel.cutType = Utility.AlertType.CUT_BIN
-
+            }
+            Utility.AlertType.DOWNLOADFAILED -> {
+                Toast.makeText(requireContext(),"pending put download code",Toast.LENGTH_LONG)
+                val map = getPatternPieceListTailornova()
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
 
         }
@@ -2144,23 +2298,45 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun resetWorkspaceUI() {
         setConnectButton()
-        if(com.ditto.workspace.ui.util.Utility.progressCount.get() == 0){
-            resetPatternPiecesAdapter()
-        }
     }
 
     private fun setConnectButton() {
         viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
         viewModel.isWorkspaceIsCalibrated.set(baseViewModel.isCalibrated.get())
-        if(baseViewModel.isSetUpError.get()){
+        if (baseViewModel.isSetUpError.get()) {
             baseViewModel.isSetUpError.set(false)
             viewModel.onClickRecalibrate()
         }
     }
 
-    private fun resetPatternPiecesAdapter() {
-        (binding.recyclerViewPieces.adapter as PatternPiecesAdapter)?.viewModel.clearPatternsSelected()
-        binding.recyclerViewPieces.adapter?.notifyDataSetChanged()
-    }
 
+    private fun getBitmapFromSvgPngDrawable(
+        imagePath: String?,
+        context: Context,
+        imageView: ImageView
+    ) {
+        if (imagePath?.endsWith(".svg", true)!!) {
+            Glide
+                .with(context)
+                .load(imagePath)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_placeholder)
+                .imageDecoder(SvgBitmapDecoder(context))
+                .into(imageView)
+
+        } else if (imagePath.endsWith(".png", true)) {
+            Glide
+                .with(context)
+                .load(imagePath)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(imageView)
+        } else {
+            imageView.setImageDrawable(
+                Utility.getDrawableFromString(context, imagePath) as VectorDrawable,
+            )
+        }
+    }
 }

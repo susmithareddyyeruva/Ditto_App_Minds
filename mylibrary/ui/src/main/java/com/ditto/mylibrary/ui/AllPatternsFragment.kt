@@ -22,6 +22,7 @@ import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
 import com.ditto.mylibrary.ui.util.Utility.Companion.getAlertDialogFolder
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -48,7 +49,7 @@ class AllPatternsFragment(
 
     private val viewModel: AllPatternsViewModel by ViewModelDelegate()
     lateinit var binding: AllPatternsFragmentBinding
-    private var patternId: Int = 0
+    private var patternId: String = "0"
     private val allPatternAdapter = AllPatternsAdapter()
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
@@ -77,27 +78,29 @@ class AllPatternsFragment(
         AndroidInjection.inject(requireActivity())
         setUIEvents()
         initializeAdapter()
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            /**
-             * API CALL for Getting All Patterns
-             */
-            if (viewModel.patternList.value.isNullOrEmpty()) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.fetchOnPatternData(
-                    viewModel.createJson(
-                        currentPage,
-                        value = ""
-                    )
-                )  //Initial API call
-            } else {
-                updatePatterns()
-                if (viewModel.isFilter == true) {
-                    filterIconSetListener.onFilterApplied(true)
-                } else
-                    filterIconSetListener.onFilterApplied(false)
+        if (AppState.getIsLogged()) {
+            if(NetworkUtility.isNetworkAvailable(context)){
+                if (!Utility.isTokenExpired()) {
+                    if (viewModel.patternArrayList.isEmpty()) {
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(
+                            viewModel.createJson(
+                                currentPage,
+                                value = ""
+                            )
+                        )  //Initial API call
+                    } else {
+                        updatePatterns()
+                        //  setFilterMenuAdapter(0)
+                        if (viewModel.isFilter == true) {
+                            filterIcons.onFilterApplied(true)
+                        } else
+                            filterIcons.onFilterApplied(false)
+                    }
+                }
+            }else{
+                viewModel.fetchOfflinePatterns()
             }
-
-
         }
 
         binding.imageClearFilter.setOnClickListener {
@@ -208,7 +211,8 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get())
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -244,13 +248,7 @@ class AllPatternsFragment(
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
             baseViewModel.totalCount = viewModel.totalPatternCount
-            setPatternCount.onSetCount(
-                getString(
-                    R.string.pattern_library_count,
-                    AppState.getPatternCount()
-                )
-            )
-
+            setPatternCount.onSetCount(getString(R.string.pattern_library_count,viewModel.totalPatternCount))
             /**
              * Getting ALL PATTERNS LIST
              */
@@ -366,7 +364,7 @@ class AllPatternsFragment(
         )
     }
 
-    private fun showPopupMenu(view: View, patternId: Int) {
+    private fun showPopupMenu(view: View, patternId: String) {
         this.patternId = patternId
         val popup = PopupMenu(requireContext(), view)
         val inflater: MenuInflater = popup.menuInflater

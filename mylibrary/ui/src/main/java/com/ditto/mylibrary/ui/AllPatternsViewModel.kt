@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
@@ -35,6 +34,9 @@ class AllPatternsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
+    var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     val clickedId: ObservableInt = ObservableInt(-1)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -74,7 +76,35 @@ class AllPatternsViewModel @Inject constructor(
 
     }
 
-    //fetch data from repo (via usecase)
+    //fetch data from offline
+    fun fetchOfflinePatterns() {
+        uiEvents.post(Event.OnShowProgress)
+        disposable += getPatternsData.getOfflinePatternDetails()
+            .delay(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .whileSubscribed { isLoading.set(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleOfflineFetchResult(it) }
+    }
+
+    private fun handleOfflineFetchResult(result: Result<List<ProdDomain>>) {
+        uiEvents.post(Event.OnHideProgress)
+        when (result) {
+            is Result.OnSuccess -> {
+                patternArrayList.clear()
+                patternArrayList.addAll(result.data)
+                totalPatternCount = patternArrayList.size ?: 0
+                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
+                totalPageCount = patternArrayList.size ?: 0
+                currentPageId = patternArrayList.size ?: 0
+                uiEvents.post(Event.OnResultSuccess)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+    
+    
+//fetch data from repo (via usecase)
     fun fetchOnPatternData(
         createJson: MyLibraryFilterRequestData
     ) {
@@ -158,25 +188,24 @@ class AllPatternsViewModel @Inject constructor(
 
     }
 
-    fun onItemClick(id: Int) {
-        clickedId.set(id)
+    fun onItemClick(id: String) {
+        clickedTailornovaID.set(id)
         uiEvents.post(Event.OnItemClick)
     }
 
-    fun onItemClickPattern(id: String) {
-        when (id) {
-            "10140549" -> {
-                clickedId.set(1)
-            }
-            "10544781" -> {
-                clickedId.set(2)
-            }
-            "10140606" -> {
-                clickedId.set(3)
-            }
-            else -> {
-                clickedId.set(4)
-            }
+    fun onItemClickPattern(id: String,orderNumber: String) {
+        if (id == "10140549") {
+            clickedTailornovaID.set("1")
+            clickedOrderNumber.set(orderNumber)
+        } else if (id == "10544781") {
+            clickedTailornovaID.set("2")
+            clickedOrderNumber.set(orderNumber)
+        } else if (id == "10140606") {
+            clickedTailornovaID.set("3")
+            clickedOrderNumber.set(orderNumber)
+        } else {
+            clickedTailornovaID.set("4")
+            clickedOrderNumber.set(orderNumber)
         }
         uiEvents.post(Event.OnItemClick)
     }
@@ -225,7 +254,7 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnAddProjectClick)
     }
 
-    fun onOptionsClicked(view: View, patternId: Int) {
+    fun onOptionsClicked(view: View, patternId: String) {
         uiEvents.post(
             Event.OnOptionsClicked(
                 view,
@@ -234,6 +263,18 @@ class AllPatternsViewModel @Inject constructor(
         )
     }
 
+    fun updateProjectComplete(patternId: String) {
+        disposable += getPatternsData.completeProject(patternId)
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { uiEvents.post(Event.OnDataUpdated) }
+    }
+
+    fun removePattern(patternId: String) {
+        Log.d("pattern", "Removed")
+    }
+    
     fun onSyncClick() {
         Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.OnAllPatternSyncClick)
@@ -307,7 +348,7 @@ class AllPatternsViewModel @Inject constructor(
 
         class OnOptionsClicked(
             val view: View,
-            val patternId: Int
+            val patternId: String
         ) : Event()
 
         object OnAllPatternSyncClick : Event()

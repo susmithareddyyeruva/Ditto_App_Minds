@@ -27,6 +27,17 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getUserData()
     }
 
+    override fun getPattern(get: String): Single<Result<PatternIdData>> {
+        return myLibraryRepository.getPatternData(get)
+    }
+
+    override fun removeProject(patternId: String): Single<Any> {
+        return myLibraryRepository.removePattern(patternId)
+    }
+
+    override fun completeProject(patternId: String): Single<Any> {
+        return myLibraryRepository.completeProject(patternId)
+        
     override fun getPatternDetails(get: Int): Single<Result<MyLibraryData>> {
         return myLibraryRepository.getPatternData(get)
     }
@@ -45,7 +56,16 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.renameFolder(createJson,methodName)
     }
 
+    override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
+        return myLibraryRepository.getMyLibraryFolderData(createJson)
+    }
 
+    override fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>> {
+        return myLibraryRepository.getOfflinePatternDetails()
+    }
 
+    override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
+        return myLibraryRepository.getOfflinePatternById(id)
+    }
 
 }

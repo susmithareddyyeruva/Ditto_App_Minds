@@ -48,7 +48,6 @@
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
-                android:tag="image_tag"
                 android:layout_margin="@dimen/margin_small"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="261:135"

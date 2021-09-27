@@ -23,6 +23,15 @@ annotation class WbTokenBaseUrl
 
 @Qualifier
 @Retention(RUNTIME)
+annotation class WbTailornovaApiRetrofit
+
+
+@Qualifier
+@Retention(RUNTIME)
+annotation class WbTailornovaBaseUrl
+
+@Qualifier
+@Retention(RUNTIME)
 annotation class WbMyLibraryApiRetrofit
 
 @Qualifier
