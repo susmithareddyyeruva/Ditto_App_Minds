@@ -48,5 +48,6 @@ dependencies {
 
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
+    implementation project(path: ':mylibrary-domain')
 
 }

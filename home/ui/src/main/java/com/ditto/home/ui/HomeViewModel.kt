@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
-import com.ditto.home.domain.model.OfflinePatternData
+import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.CUSTOMER_EMAIL

@@ -3,7 +3,14 @@ package com.ditto.data.mapper
 import com.ditto.data.model.MyLibraryResult
 import com.ditto.data.model.Prod
 import com.ditto.home.domain.model.*
+import com.ditto.home.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.model.*
+import com.ditto.mylibrary.domain.model.PatternPieceDataDomain
+import com.ditto.mylibrary.domain.model.SplicedImageDomain
 import com.ditto.storage.data.model.*
+import com.ditto.storage.data.model.PatternPieceData
+import com.ditto.storage.data.model.SelvageData
+import com.ditto.storage.data.model.SplicedImageData
 
 fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
     return MyLibraryDetailsDomain(
