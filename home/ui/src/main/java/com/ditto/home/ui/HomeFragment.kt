@@ -2,6 +2,8 @@ package com.ditto.home.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.home.ui.adapter.HomeAdapter
@@ -88,6 +91,14 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
     override fun onResume() {
         super.onResume()
         listenVersionEvents()
+        try {
+            val pInfo: PackageInfo =
+                context?.getPackageName()?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
+            val version = pInfo.versionName
+            println("================= version = ${version}")
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
     }
 
     private fun listenVersionEvents() {
@@ -125,12 +136,18 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
     }
 
     private fun showVersionPopup() {
+        var negativeText = versionResult?.response?.cancel!!
+        var positiveText = versionResult?.response?.confirm!!
+        if (versionResult?.response?.version_update == false){
+            negativeText = ""
+            positiveText = "OK"
+        }
         Utility.getCommonAlertDialogue(
             requireContext(),
-            getString(R.string.str_menu_softwareupdate),
+            versionResult?.response?.title!!,
             versionResult?.response?.body!!,
-            versionResult?.response?.cancel!!,
-            versionResult?.response?.confirm!!,
+            negativeText,
+            positiveText,
             this,
             Utility.AlertType.SOFTWARE_UPDATE
             ,
@@ -182,11 +199,13 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        val  packageName = "com.joann.ditto"
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+        if (versionResult?.response?.version_update == true){
+            val  packageName = context?.packageName
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+            } catch (e: ActivityNotFoundException) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+            }
         }
     }
 
@@ -194,6 +213,10 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
+
+        if (versionResult?.response?.force_update == true){
+            requireActivity().finishAffinity()
+        }
 
     }
 

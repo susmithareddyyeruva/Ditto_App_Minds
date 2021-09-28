@@ -38,6 +38,11 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
+        utility.checkVersion()
+    }
+
+    fun continueToApp() {
+
         if (AppState.getToken().isNullOrEmpty()) {
             utility.refreshToken()
         } else {
@@ -47,7 +52,7 @@ class SplashViewModel @Inject constructor(
         }
         getUserDetails()
         GlobalScope.launch {
-            delay(3000)
+            delay(2000)
             if (AppState.getIsLogged()) {
                 fetchDbUser()
             } else { //Guest User

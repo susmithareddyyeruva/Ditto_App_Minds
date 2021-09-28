@@ -17,6 +17,7 @@ fun VersionResult.toDomain(): VersionResult {
         version = this.version,
         critical_version = this.critical_version,
         force_version = this.force_version,
+        title = this.title,
         body = this.body,
         confirm = this.confirm,
         confirm_link = this.confirm_link,

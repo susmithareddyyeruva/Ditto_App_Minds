@@ -2,6 +2,7 @@ package com.ditto.mylibrary.ui
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
+import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,6 +10,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -582,12 +584,18 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun showVersionPopup() {
+        var negativeText = versionResult?.response?.cancel!!
+        var positiveText = versionResult?.response?.confirm!!
+        if (versionResult?.response?.version_update == false){
+            negativeText = ""
+            positiveText = "OK"
+        }
         Utility.getCommonAlertDialogue(
             requireContext(),
-            getString(R.string.str_menu_softwareupdate),
+            versionResult?.response?.title!!,
             versionResult?.response?.body!!,
-            versionResult?.response?.cancel!!,
-            versionResult?.response?.confirm!!,
+            negativeText,
+            positiveText,
             this,
             Utility.AlertType.SOFTWARE_UPDATE
             ,
@@ -789,7 +797,18 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-        }    }
+            Utility.AlertType.SOFTWARE_UPDATE -> {
+                if (versionResult?.response?.version_update == true){
+                    val  packageName = "com.joann.ditto"
+                    try {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                    } catch (e: ActivityNotFoundException) {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
@@ -813,5 +832,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-        }    }
+            alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
+                if (versionResult?.response?.force_update == true){
+                    requireActivity().finishAffinity()
+                }
+            }
+        }
+    }
 }

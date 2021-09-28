@@ -1,6 +1,7 @@
 package core.ui
 
-import androidx.lifecycle.MutableLiveData
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import core.data.model.SoftwareUpdateResult
 import core.domain.SoftwareupdateUseCase
 import core.ui.rxbus.RxBus

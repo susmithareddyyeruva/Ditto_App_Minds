@@ -5,6 +5,7 @@ import core.MOCK_API_CERT
 import core.OCAPI_PASSWORD
 import core.OCAPI_USERNAME
 import core.TRACKING_ID
+import core.appstate.AppState
 import core.di.scope.WbApiRetrofit
 import core.di.scope.WbBaseUrl
 import core.di.scope.WbTokenApiRetrofit
@@ -204,12 +205,12 @@ class HmacSignatureInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val accessKeyId =
-            java.lang.String.format("ANDROID%s", BuildConfig.VERSION_NAME)
+            java.lang.String.format("ANDROID%s", AppState.getAppVersion())
         val timestamp = "" + System.currentTimeMillis() / 1000
         val signature = generateSignature(chain.request(), accessKeyId, timestamp)
         val userAgent = java.lang.String.format(
             "JOANN/%s %s",
-            BuildConfig.VERSION_NAME,
+            AppState.getAppVersion(),
             System.getProperty("http.agent")
         )
         var request = chain.request()

@@ -10,6 +10,7 @@ object AppState {
     private const val KEY_IS_LOGGED = "logged"
     private const val KEY_TOKEN = "token"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
+    private const val APP_VERSION = ""
 
     fun init(context: Context) {
         pref = PreferenceStorageImpl(context)
@@ -81,5 +82,13 @@ object AppState {
     }
     fun getLastSavedServiceHost() : String?{
         return pref?.getString(CONNECTED_SERVICE_HOST)
+    }
+    fun getAppVersion(): String? {
+        val appversion = pref?.getString(APP_VERSION)
+        return appversion
+    }
+
+    fun saveAppVersion(version: String) {
+        pref?.saveString(APP_VERSION, version)
     }
 }
