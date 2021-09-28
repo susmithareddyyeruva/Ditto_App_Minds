@@ -11,4 +11,8 @@ interface ApiService {
     @GET("session")
     fun refreshToken(): Single<TokenResult>
 
+    @Headers("Content-Type: application/json")
+    @GET("session")
+    suspend fun refreshTokenAuthentication(): TokenResult
+
 }

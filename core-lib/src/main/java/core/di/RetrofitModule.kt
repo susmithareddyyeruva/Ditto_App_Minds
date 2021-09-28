@@ -1,10 +1,11 @@
 package core.di
 
 import android.content.Context
+import android.util.Log
 import core.MOCK_API_CERT
-import core.OCAPI_PASSWORD
-import core.OCAPI_USERNAME
 import core.TRACKING_ID
+import core.appstate.AppState
+import core.data.model.TokenResult
 import core.di.scope.WbApiRetrofit
 import core.di.scope.WbBaseUrl
 import core.di.scope.WbTokenApiRetrofit
@@ -13,6 +14,7 @@ import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,6 +27,7 @@ import java.security.KeyStore
 import java.security.NoSuchAlgorithmException
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -48,6 +51,8 @@ class RetrofitModule {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
+            .addInterceptor(HmacSignatureInterceptor())
+            .authenticator(TokenAuthenticator())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -72,13 +77,14 @@ class RetrofitModule {
             .client(httpClient.build())
             .build()
     }
+
     @Provides
     @WbTokenApiRetrofit
     fun provideTokenRetrofit(
         @WbTokenBaseUrl baseUrl: String
     ): Retrofit {
         val logging = HttpLoggingInterceptor()
-        val head_auth = BasicAuthInterceptor(OCAPI_USERNAME, OCAPI_PASSWORD)
+        //val head_auth = BasicAuthInterceptor(OCAPI_USERNAME, OCAPI_PASSWORD)
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(HmacSignatureInterceptor())
@@ -184,22 +190,6 @@ class WbSocketCertificateModule {
 
 }
 
-class BasicAuthInterceptor(user: String?, password: String?) :
-    Interceptor {
-    private val credentials: String
-
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request: Request = chain.request()
-        val authenticatedRequest: Request = request.newBuilder()
-            .header("Authorization", credentials).build()
-        return chain.proceed(authenticatedRequest)
-    }
-
-    init {
-        credentials = Credentials.basic(user!!, password!!)
-    }
-}
 class HmacSignatureInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -221,7 +211,8 @@ class HmacSignatureInterceptor : Interceptor {
         request = request.newBuilder().url(httpUrl)
             .addHeader("User-Agent", userAgent)
             .build()
-        return chain.proceed(request)
+        val response = chain.proceed(request)
+        return response
     }
 
     private fun generateSignature(
@@ -230,6 +221,7 @@ class HmacSignatureInterceptor : Interceptor {
         timestamp: String
     ): String {
         val emptyString = ""
+        val projectName = "DittoPatterns"
         val method = request.method
         val domain = request.url.host
         val path = request.url.encodedPath
@@ -241,6 +233,7 @@ class HmacSignatureInterceptor : Interceptor {
         val stringToHash =
             """
             $emptyString
+            $projectName
             $method
             $domain
             $path
@@ -267,4 +260,55 @@ class HmacSignatureInterceptor : Interceptor {
             )
         ).toLowerCase()
     }
+}
+
+class TokenAuthenticator : Authenticator {
+
+    override fun authenticate(route: Route?, response: Response): Request? {
+        return runBlocking {
+
+            // 1. Refresh your access_token using a synchronous api request
+            val responseMain = getUpdatedToken()
+
+
+            val expCal = Calendar.getInstance()
+            expCal.add(Calendar.MINUTE, responseMain.response?.expires_in ?: 0)
+            val expirytime = expCal.time.time
+            val token = responseMain?.response?.access_token ?: ""
+            Log.d("TOKEN==", token)
+            token.let {
+                AppState.saveToken(
+                    it,
+                    expirytime
+                )
+            }
+
+            response.request.newBuilder()
+                .header("Authorization", "Bearer ${responseMain.response?.access_token}")
+                .build()
+
+
+        }
+    }
+
+    private suspend fun getUpdatedToken(): TokenResult {
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(HmacSignatureInterceptor())
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.TOKEN_BASEURL)
+            .client(httpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+        val service = retrofit.create(ApiService::class.java)
+        return service.refreshTokenAuthentication()
+
+    }
+
 }

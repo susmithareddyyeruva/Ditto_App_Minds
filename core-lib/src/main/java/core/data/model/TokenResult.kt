@@ -1,8 +1,9 @@
 package core.data.model
 
 import com.google.gson.annotations.SerializedName
+import core.ui.errors.TokenError
 
 data class TokenResult (
 	@SerializedName("response") val response : TokenDetails,
-	@SerializedName("errors") val errors : Errors
+	@SerializedName("errors") val errors : TokenError
 )
