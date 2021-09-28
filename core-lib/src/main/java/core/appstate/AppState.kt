@@ -8,6 +8,7 @@ object AppState {
     private var pref: PreferenceStorage? = null
     private const val KEY_IS_LOGGED = "logged"
     private const val KEY_TOKEN = "token"
+    private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
 
     fun init(context: Context) {

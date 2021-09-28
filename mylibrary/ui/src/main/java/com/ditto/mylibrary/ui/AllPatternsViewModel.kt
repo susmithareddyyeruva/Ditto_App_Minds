@@ -14,8 +14,10 @@ import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
 import core.CUSTOMER_EMAIL
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -57,6 +59,7 @@ class AllPatternsViewModel @Inject constructor(
     var ADD: String = "ADD"
     var RENAME: String = "RENAME"
     val GETFOLDER = "getFolders"
+     var clickedProduct: ProdDomain?=null
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -101,8 +104,8 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnError -> handleError(result.error)
         }
     }
-    
-//fetch data from repo (via usecase)
+
+    //fetch data from repo (via usecase)
     fun fetchOnPatternData(
         createJson: MyLibraryFilterRequestData
     ) {
@@ -120,9 +123,9 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
 
-              /*  result.data.prod.forEach {
-                    patternArrayList.add(it)
-                }*/
+                /*  result.data.prod.forEach {
+                      patternArrayList.add(it)
+                  }*/
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
@@ -146,7 +149,7 @@ class AllPatternsViewModel @Inject constructor(
 
     private fun handleAddToFavouriteResult(
         result: Result<AddFavouriteResultDomain>,
-        product: ProdDomain,
+        product: ProdDomain?,
         methodName: String
     ) {
         when (result) {
@@ -156,7 +159,7 @@ class AllPatternsViewModel @Inject constructor(
                     if (methodName == "update") {
                         uiEvents.post(Event.OnFolderCreated)
                     } else {
-                        product.isFavourite = result.data.queryString.equals("method=addToFavorite")
+                        product?.isFavourite = result.data.queryString.equals("method=addToFavorite")
                         uiEvents.post(Event.OnAllPatternResultSuccess)
 
                     }
@@ -209,8 +212,8 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnItemClick)
     }
 
-    fun onDialogPopupClick() {
-        Log.d("Testing", ">>>>>>  onDialogPopupClick ")
+    fun onDialogPopupClick(product: ProdDomain) {
+        Log.d("DIALOG","onDialogPopupClick")
         uiEvents.post(Event.OnAllPatternShowProgress)
         val folderRequest = GetFolderRequest(
             OrderFilter(
@@ -224,15 +227,20 @@ class AllPatternsViewModel @Inject constructor(
         disposable += libraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultFolders(it) }
+            .subscribeBy { handleFetchResultFolders(it, product) }
 
 
     }
-    private fun handleFetchResultFolders(folderResult: Result<FoldersResultDomain>?) {
-        Log.d("Testing", ">>>>>>  handleFetchResultFolders ")
+
+    private fun handleFetchResultFolders(
+        folderResult: Result<FoldersResultDomain>?,
+        product: ProdDomain
+    ) {
+        Log.d("DIALOG","handleFetchResultFolders")
         folderMainList = arrayListOf<MyFolderList>(
-            MyFolderList( "New folder")
+            MyFolderList("New folder")
         )
+        clickedProduct = product
         when (folderResult) {
             is Result.OnSuccess -> {
                 folderResult.data.responseStatus.forEach {
@@ -278,17 +286,25 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("pattern", "onCreateFolderClick : viewModel")
         uiEvents.post(Event.OnCreateFolder)
     }
-    fun onFolderClick() {
-        Log.d("pattern", "onCreateFolderClick : viewModel")
-        uiEvents.post(Event.OnFolderItemClicked)
+
+    fun onFolderClick(folderName: String) {
+        Log.d("pattern", "onFolderClick : viewModel")
+        Log.d("DIALOG","onFolderClick")
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            addToFolder(
+                product = clickedProduct,
+                folderName = folderName
+            )
+        }
+
     }
 
 
-    fun addToFolder(product: ProdDomain, folderName: String) {
+    fun addToFolder(product: ProdDomain?, folderName: String) {
         val hashMap = HashMap<String, ArrayList<String>>()
-        hashMap[folderName] = arrayListOf(product.tailornovaDesignId ?: "")
+        hashMap[folderName] = arrayListOf(product?.tailornovaDesignId ?: "")
         var methodName: String? = ""
-        Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
+        Log.d("DESIGN ID==", product?.tailornovaDesignId ?: "")
         val favReq = FolderRequest(
             OrderFilter(
                 true,
@@ -301,7 +317,7 @@ class AllPatternsViewModel @Inject constructor(
         )
         uiEvents.post(Event.OnAllPatternShowProgress)
         if (folderName == favorite) {
-            methodName = if (product.isFavourite == true) {
+            methodName = if (product?.isFavourite == true) {
                 "deleteFavorite"
             } else {
                 "addToFavorite"
@@ -343,7 +359,6 @@ class AllPatternsViewModel @Inject constructor(
         object OnAllPatternSyncClick : Event()
         object OnAllPatternSearchClick : Event()
         object OnCreateFolder : Event()
-        object OnFolderItemClicked : Event()
         object OnFolderCreated : Event()
         object OnAllPatternResultSuccess : Event()
         object OnAllPatternShowProgress : Event()

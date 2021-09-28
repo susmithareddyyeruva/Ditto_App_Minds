@@ -105,6 +105,8 @@ class AllPatternsFragment(
             } else {
                 viewModel.fetchOfflinePatterns()
             }
+
+
         }
 
         binding.imageClearFilter.setOnClickListener {
@@ -119,7 +121,7 @@ class AllPatternsFragment(
 
     fun cleaFilterData() {
         viewModel.resultMap.clear()
-        // viewModel.patternArrayList.clear()
+       // viewModel.patternArrayList.clear()
         viewModel.menuList.clear()
         viewModel.setList()
         currentPage = 1
@@ -312,10 +314,11 @@ class AllPatternsFragment(
                 )
             }
         }
-        is AllPatternsViewModel.Event.OnFolderCreated, AllPatternsViewModel.Event.OnFolderItemClicked -> {
+        is AllPatternsViewModel.Event.OnFolderCreated -> {
+            viewModel.clickedProduct = null
             (parentFragment as MyLibraryFragment?)?.switchToMyFolderFragmentTab()
-
         }
+
         is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIconSetListener.onFilterApplied(false)
 
@@ -326,27 +329,12 @@ class AllPatternsFragment(
             /**
              * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
              */
-            val layout =
-                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, addFolderRoot)
-            layout?.let {
-                getAlertDialogFolder(
-                    requireActivity(), viewModel.folderMainList, viewModel,
-                    object : com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
-                        override fun onSaveButtonClicked(
-                            projectName: String,
-                            isCompleted: Boolean?
-                        ) {
-                            logger.d("onSaveButtonClicked")
+            Log.d("DIALOG", "handleFetchResultFolders")
+            logger.d("OnPopupClick")
+            getAlertDialogFolder(
+                requireActivity(), viewModel.folderMainList, viewModel
+            )
 
-                        }
-
-                        override fun onExitButtonClicked() {
-                            logger.d("onExitButtonClicked")
-                        }
-                    },
-                    Utility.AlertType.DEFAULT
-                )
-            }
         }
     }
 
@@ -409,6 +397,7 @@ class AllPatternsFragment(
         fun onFilterApplied(isApplied: Boolean)
     }
 
+
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
         return viewModel.menuList
     }
@@ -417,16 +406,21 @@ class AllPatternsFragment(
         /**
          * Pop up  for Create Folder
          */
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.addToFolder(
-                product = ProdDomain(),
-                folderName = newFolderName
-            )
-        }
+        addFolder(newFolderName, parent)
+
     }
 
     override fun onCancelClicked() {
         logger.d("Cancel Clicked")
+    }
+
+    private fun addFolder(newFolderName: String, parent: String) {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            viewModel.addToFolder(
+                product = viewModel.clickedProduct,
+                folderName = newFolderName
+            )
+        }
     }
 
 

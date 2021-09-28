@@ -374,7 +374,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
     sealed class Event {
         object OnMyFolderItemClick : MyFolderViewModel.Event()
-        object OnMyFolderDataUpdated : MyFolderViewModel.Event()
         object OnMyFolderListUpdated : MyFolderViewModel.Event()
         object OnMyFolderCreateFolderClicked : MyFolderViewModel.Event()
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
