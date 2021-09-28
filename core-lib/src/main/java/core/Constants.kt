@@ -2,18 +2,19 @@ package core
 
 import core.lib.BuildConfig
 
-internal const val BASE_URL = BuildConfig.BASEURL
-internal const val TOKEN_BASE_URL = BuildConfig.TOKEN_BASEURL
 const val NO_NETWORK = "Network connection required !"
 internal const val MOCK_API_CERT = "mockapicert.crt"
 const val GUEST_SIGNED_IN = "GUEST"
 const val GITHUB_SIGNED_IN = "LOGGED IN : GITHUB"
 const val GOOGLE_SIGNED_IN = "LOGGED IN : GOOGLE"
 const val CLIENT_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+const val SITE_ID = "JoAnn"
 const val PDF_USERNAME = "amrita.pattanaik@infosys.com"
 const val PDF_PASSWORD = "A@Mala4204"
-const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
-
+const val PDF_SAMPLE_URL =
+    "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
+//const val PDF_SAMPLE_URL = "https://dev05-na03-joann.demandware.net/on/demandware.servlet/webdav/Sites/Catalogs/joann-product-catalog/default/PDF/instructions.pdf";
+var PDF_DOWNLOAD_URL : String ?= "";
 //Shared Preference Keys
 const val USER_EMAIL = "USER_EMAIL"
 const val USER_PHONE = "USER_PHONE"
@@ -49,6 +50,15 @@ const val SUBSCRIPTION_END_DATE = "enddate"
 const val SUBSCRIPTION_PLAN_PRICE = "planprice"
 const val SUBSCRIPTION_PLAN_NAME = "planname"
 const val TRACKING_ID = "ZGl0dG9hbmRyb2lk"
+const val PATTERN_COUNT = "COUNT"
+const val TAILORNOVA_API_KEY_VALUE = "FA872702-6396-45DC-89F0-FC1BE900591B"
+const val TAILORNOVA_API_KEY = "X-Api-Key"
+const val OS = "Android"
+const val CUSTOMER_EMAIL = "subscustomerOne@gmail.com"
+const val UNKNOWN_HOST_EXCEPTION = "UnknownHostException !"
+const val CONNECTION_EXCEPTION = "No Internet connection available !"
+const val ERROR_FETCH = "Error Fetching data!"
+
 
 
 

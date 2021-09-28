@@ -51,7 +51,7 @@ class CompletedProjectsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
-        viewModel.fetchOnPatternData()
+        viewModel.fetchOnPatternData(viewModel.createJson(1,value = ""))
     }
 
     private fun setUIEvents() {
@@ -83,7 +83,7 @@ class CompletedProjectsFragment : BaseFragment() {
         when (event) {
             is AllPatternsViewModel.Event.OnItemClick -> {
                 if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                    val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+                    val bundle = bundleOf("clickedID" to viewModel.clickedTailornovaID.get())
                     findNavController().navigate(
                         R.id.action_allPatternsFragment_to_patternDescriptionFragment,
                         bundle
@@ -104,11 +104,18 @@ class CompletedProjectsFragment : BaseFragment() {
             is AllPatternsViewModel.Event.OnOptionsClicked -> {
                 Log.d("error","instruction error")
             }
-            is AllPatternsViewModel.Event.OnFilterClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnSyncClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnSearchClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnLoadingStarts -> {TODO()}
-            is AllPatternsViewModel.Event.OnLoadingCompleted -> {TODO()}
+            is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {}
+            is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {}
+            AllPatternsViewModel.Event.OnAllPatternResultSuccess ->{}
+            AllPatternsViewModel.Event.OnAllPatternShowProgress -> {}
+            AllPatternsViewModel.Event.OnAllPatternHideProgress -> {}
+            AllPatternsViewModel.Event.OnAllPatternResultFailed -> {}
+            AllPatternsViewModel.Event.NoInternet ->{}
+            AllPatternsViewModel.Event.UpdateFilterImage -> {}
+            AllPatternsViewModel.Event.UpdateDefaultFilter ->{}
+            else ->{
+
+            }
         }
 
 }

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.mylibrary.ui.MyFolderViewModel" />
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/folderdetailRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topbar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".02" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".98" />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toStartOf="@id/guide_end"
+            app:layout_constraintStart_toEndOf="@id/guide_start">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="@dimen/guidline_top" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_start_clear_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="@dimen/guide_start_clear_text_per" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:visibility="@{viewModel.isFilterResult()? View.VISIBLE : View.GONE}"
+                app:constraint_referenced_ids="tv_filter_result,textview_clear,imageClearFilter" />
+
+            <TextView
+                android:id="@+id/tv_filter_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/clear_text_margin_top"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:padding="@dimen/dimen_5"
+                android:text="@string/text_filter_result"
+                android:textColor="@color/search_text_code"
+                android:textSize="@dimen/txt_filter_result"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/guide_start_clear_text"
+                app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_bottom_clear_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.15" />
+
+            <ImageView
+                android:id="@+id/imageClearFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_padding"
+                android:paddingBottom="@dimen/dimen_8"
+                android:baselineAlignBottom="true"
+                android:src="@drawable/ic_close_tab"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_clear"
+                app:layout_constraintStart_toEndOf="@id/tv_filter_result"
+                >
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textview_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/clear_text_margin_top"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:padding="@dimen/dimen_5"
+                android:text="@string/text_clear_filter"
+                android:textColor="@color/color_clear_filter"
+                android:textSize="@dimen/txt_clear_filter"
+                app:layout_constraintStart_toEndOf="@id/imageClearFilter"
+                app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMyfolderlist"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/recy_margin_top"
+                android:layout_marginBottom="@dimen/margin_text"
+                android:clickable="true"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_clear"
+                app:spanCount="4"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/my_library_patterns_item" />
+
+            <TextView
+                android:id="@+id/textNoLabel"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/no_item"
+                android:visibility="@{viewModel.myfolderList.size()==0?View.VISIBLE:View.GONE}"
+                android:textSize="@dimen/txt_clear_filter"
+                android:textColor="@color/black"
+                android:fontFamily="@font/avenir_next_lt_pro_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

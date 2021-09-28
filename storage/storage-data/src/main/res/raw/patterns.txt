@@ -1,7 +1,7 @@
 {
    "patterns":[
       {
-         "id":1,
+         "id":"1",
          "patternName":"M7739 Girl's Dress B",
          "description":"M7739 View B is a girls lined dress with a full gathered skirt, strap ruffle detail and back ties. Suitable for kid friendly cotton fabrics.",
          "totalPieces":17,
@@ -9,6 +9,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"m7739_b_thumbnail",
+         "thumbnailImageName":"m7739_b_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -240,7 +241,7 @@
          ]
       },
       {
-         "id":2,
+         "id":"2",
          "patternName":"M7987 Men's Pants C",
          "description":"M7987 View C is a men’s pant with tapered leg and fly front with hook and bar closure. View C also features side slant pockets and back patch pockets.",
          "totalPieces":21,
@@ -248,6 +249,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"m7987_c_thumbnail",
+         "thumbnailImageName":"m7987_c_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -637,7 +639,7 @@
          ]
       },
       {
-         "id":3,
+         "id":"3",
          "patternName":"M7991 Woman's Dress B",
          "description":"M7791 View B is a long sleeve, close-fitting knit dress with elasticized waist and faux wrap bodice with band and above the knee pencil skirt. Suitable for moderate knit fabric, this is a dress you can wear every day.",
          "totalPieces":9,
@@ -645,6 +647,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"m7991_b_thumbnail",
+         "thumbnailImageName":"m7991_b_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -770,7 +773,7 @@
          ]
       },
       {
-         "id":4,
+         "id":"4",
          "patternName":"M7980 Men’s & Women’s Shirt A",
          "description":"M7980 View A is a semi fitted, western style button up shirt for men and women. View A features a yoke, collar, collar band and patch pockets with buttoned flaps.",
          "totalPieces":33,
@@ -778,6 +781,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"m7980_a_thumbnail",
+         "thumbnailImageName":"m7980_a_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -1135,7 +1139,7 @@
          ]
       },
       {
-         "id":5,
+         "id":"5",
          "patternName":"M7991 Woman's Dress A",
          "description":"M7791 View A is a sleeveless, close-fitting knit dress with elasticized waist and faux wrap bodice with band and circle style skirt. Suitable for moderate knit fabric, this is a dress you can wear every day. ",
          "totalPieces":7,
@@ -1143,6 +1147,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"m7991_a_thumbnail",
+         "thumbnailImageName":"m7991_a_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -1261,7 +1266,7 @@
          ]
       },
       {
-         "id":6,
+         "id":"6",
          "patternName":"Mid-Neck Princess Seams Women's Dress",
          "description":"Mid-Neck Princess Dress is a fitted woven dress with A-line silhouette with princess seam details and square neckline.",
          "totalPieces":15,
@@ -1269,6 +1274,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"midneck_thumbnail",
+         "thumbnailImageName":"midneck_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -1538,7 +1544,7 @@
          ]
       },
       {
-         "id":7,
+         "id":"7",
          "patternName":"Women’s Pant",
          "description":"Women’s 12 Pant is a semi-fitted, tapered leg pant for woven fabric with a natural waistline and decorative waistband.",
          "totalPieces":8,
@@ -1546,6 +1552,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"womenpant_thumbnail",
+         "thumbnailImageName":"womenpant_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -1723,6 +1730,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"boatneck_thumbnail",
+         "thumbnailImageName":"boatneck_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -1960,7 +1968,7 @@
          ]
       },
       {
-         "id":9,
+         "id":"9",
          "patternName":"Knit Surplice Empire Dress",
          "description":"Knit Surplice Empire Dress is a fitted knit dress with full length A-line skirt, empire waist seam, wrap style neckline and short flutter sleeve.",
          "totalPieces":13,
@@ -1968,6 +1976,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"knitwomen_thumbnail",
+         "thumbnailImageName":"knitwomen_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -2138,7 +2147,7 @@
          ]
       },
       {
-         "id":10,
+         "id":"10",
          "patternName":"Knit Tunic Short Sleeve",
          "description":"Knit Tunic Short Sleeve is a fitted knit tunic-length top with short fitted sleeves, décolleté neckline and decorative curved hemline.",
          "totalPieces":11,
@@ -2146,6 +2155,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"knitsleeve_thumbnail",
+         "thumbnailImageName":"knitsleeve_thumbnail",
          "descriptionImages":[
             {
                "id":1,
@@ -2336,7 +2346,7 @@
          ]
       },
       {
-         "id":11,
+         "id":"11",
          "patternName":"Z Multidirection dress test",
          "description":"Z New Splicing Multidirection dress test",
          "totalPieces":6,
@@ -2344,6 +2354,7 @@
          "selectedTab":"Garment",
          "status":"New",
          "thumbnailImagePath":"ic_multi_direction_dress_test",
+         "thumbnailImageName":"ic_multi_direction_dress_test",
          "descriptionImages":[
             {
                "id":1,
@@ -2423,7 +2434,8 @@
                ],
                "cutOnFold":"NO",
                "mirrorOption":"NO",
-               "thumbnailImagePath":"ic_multi_direction_dress_front_1"
+               "thumbnailImagePath":"ic_multi_direction_dress_front_1",
+               "thumbnailImageName":"ic_multi_direction_dress_front_1"
             },
             {
                "id":2,
@@ -2457,7 +2469,8 @@
                ],
                "cutOnFold":"NO",
                "mirrorOption":"NO",
-               "thumbnailImagePath":"ic_multi_direction_dress_back_2"
+               "thumbnailImagePath":"ic_multi_direction_dress_back_2",
+               "thumbnailImageName":"ic_multi_direction_dress_back_2"
             },
             {
                "id":3,
@@ -2478,7 +2491,8 @@
                ],
                "cutOnFold":"YES",
                "mirrorOption":"YES",
-               "thumbnailImagePath":"ic_multi_direction_dress_neck_facing_3"
+               "thumbnailImagePath":"ic_multi_direction_dress_neck_facing_3",
+               "thumbnailImageName":"ic_multi_direction_dress_neck_facing_3"
             },
             {
                "id":4,
@@ -2499,7 +2513,8 @@
                ],
                "cutOnFold":"YES",
                "mirrorOption":"YES",
-               "thumbnailImagePath":"ic_multi_direction_dress_armhole_facing_4"
+               "thumbnailImagePath":"ic_multi_direction_dress_armhole_facing_4",
+               "thumbnailImageName":"ic_multi_direction_dress_armhole_facing_4"
             },
             {
                "id":5,
@@ -2520,7 +2535,8 @@
                ],
                "cutOnFold":"YES",
                "mirrorOption":"YES",
-               "thumbnailImagePath":"ic_multi_direction_dress_neck_facing_5"
+               "thumbnailImagePath":"ic_multi_direction_dress_neck_facing_5",
+               "thumbnailImageName":"ic_multi_direction_dress_neck_facing_5"
             },
             {
                "id":6,
@@ -2541,7 +2557,8 @@
                ],
                "cutOnFold":"YES",
                "mirrorOption":"YES",
-               "thumbnailImagePath":"ic_multi_direction_dress_armhole_facing_6"
+               "thumbnailImagePath":"ic_multi_direction_dress_armhole_facing_6",
+               "thumbnailImageName":"ic_multi_direction_dress_armhole_facing_6"
             }
          ],
          "workspaceItems":[

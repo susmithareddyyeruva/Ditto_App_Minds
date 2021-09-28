@@ -40,7 +40,6 @@ import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -53,7 +52,7 @@ class Utility @Inject constructor(
 
 
     fun refreshToken(){
-        AppState.saveToken("",0)
+//        AppState.saveToken("",0)
         tokenViewModel.calltoken()
     }
 
@@ -72,7 +71,10 @@ class Utility @Inject constructor(
         PDF,
         CUT_COMPLETE,
         CONNECTIVITY,
-        SOC_CONNECT
+        SOC_CONNECT,
+        DELETE,
+        UPDATEAPIFAILED,
+        DOWNLOADFAILED
     }
 
     enum class Iconype {
@@ -303,18 +305,18 @@ class Utility @Inject constructor(
             )
         }
 
-        fun setSharedPref(context: Context, id: Int) {
+        fun setSharedPref(context: Context, id: String) {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
             var editor = sharedPreference.edit()
-            editor.putInt("PATTERN_ID", id)
+            editor.putString("PATTERN_ID", id)
             editor.commit()
         }
 
-        fun getSharedPref(context: Context): Int {
+        fun getSharedPref(context: Context): String? {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
-            return sharedPreference.getInt("PATTERN_ID", 0)
+            return sharedPreference.getString("PATTERN_ID", "")
         }
 
         fun getOutputDirectory(context: Context): File {
@@ -455,6 +457,28 @@ class Utility @Inject constructor(
             return path
         }
 
+        fun isImageFileAvailable(filename: String?, patternFolderName: String?) : Uri? {
+
+            val directory = File(
+                Environment.getExternalStorageDirectory()
+                    .toString() + "/Ditto/$patternFolderName"
+            )
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            //Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
+            val file = File(directory, filename)
+
+            var path : Uri? = null
+            if (file.exists()){
+                path = Uri.fromFile(file)
+            } else {
+                path = null
+            }
+            return path
+        }
+
 
 
         @SuppressLint("ResourceType")
@@ -481,7 +505,7 @@ class Utility @Inject constructor(
                 val lay_withoutimage =
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
-                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
+                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN ||alertType == AlertType.DELETE
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE

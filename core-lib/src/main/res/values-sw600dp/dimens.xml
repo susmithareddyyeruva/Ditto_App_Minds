@@ -15,4 +15,5 @@
     <dimen name="process_text">26sp</dimen>
     <dimen name="process_text_top">60dp</dimen>
     <dimen name="end_margin_yes">58dp</dimen>
+    <dimen name="brand_name_width">120dp</dimen>
 </resources>

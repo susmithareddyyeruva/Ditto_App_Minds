@@ -1,43 +1,46 @@
 package com.ditto.mylibrary.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.mylibrary.domain.model.Filter
 import com.ditto.mylibrary.domain.model.FilterItems
-import com.ditto.mylibrary.domain.model.FilterMenuItem
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.adapter.FilterActionsAdapter
-import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
-import com.ditto.mylibrary.ui.adapter.PatternAdapter
+import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
-import com.ditto.mylibrary.ui.util.ClickListener
-import com.ditto.mylibrary.ui.util.RecyclerTouchListener
+import com.ditto.mylibrary.ui.util.PaginationScrollListener
+import com.ditto.mylibrary.ui.util.Utility.Companion.getAlertDialogFolder
+import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
+import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
-import java.util.*
+import kotlinx.android.synthetic.main.create_folder.*
+import kotlinx.android.synthetic.main.dialog_addfolder.*
 import javax.inject.Inject
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsListener {
+class AllPatternsFragment(
+    private val setPatternCount: SetPatternCount,
+    private val filterIconSetListener: FilterIconSetListener
+) : BaseFragment(),
+    Utility.CustomCallbackDialogListener,
+    com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
 
 
     @Inject
@@ -48,64 +51,12 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
 
     private val viewModel: AllPatternsViewModel by ViewModelDelegate()
     lateinit var binding: AllPatternsFragmentBinding
-    private var patternId: Int = 0
-    private var isOpen = true
-    private var selectedItemsList = ArrayList<String>()
-    private lateinit var adapter: FilterRvAdapter
-    var menuItems = arrayListOf(
-        FilterMenuItem("Category", 1),
-        FilterMenuItem("Gender", 2),
-        FilterMenuItem("Brand", 3),
-        FilterMenuItem("Size", 4),
-        FilterMenuItem("Type", 5),
-        FilterMenuItem("Season", 6),
-        FilterMenuItem("Occasion", 7),
-        FilterMenuItem("Age Group", 8),
-        FilterMenuItem("Customization", 9)
-    )
-    var categoryFilterList = arrayListOf(
-        FilterItems("Subscribed"),
-        FilterItems("Purchased"),
-        FilterItems("Trials"),
-    )
-    val genderList = arrayListOf(
-        FilterItems("Male"),
-        FilterItems("Female")
-    )
-    val brandList = arrayListOf(
-        FilterItems("Lee"),
-        FilterItems("Addidas")
-    )
-    val sizeList = arrayListOf(
-        FilterItems("32"),
-        FilterItems("34"),
-        FilterItems("36"),
-        FilterItems("38")
-    )
-    val typeList = arrayListOf(
-        FilterItems("Dress"),
-        FilterItems("Skirt"),
-        FilterItems("Blouse")
-    )
-    val occasionList = arrayListOf(
-        FilterItems("Sleepwear"),
-        FilterItems("Lounge"),
-        FilterItems("Formal"),
-        FilterItems("Sport")
-    )
-    val suitableList = arrayListOf(
-        FilterItems("Children"),
-        FilterItems("Men"),
-        FilterItems("Women"),
-    )
-    val customizationList = arrayListOf(
-        FilterItems("Yes"),
-        FilterItems("No")
-    )
-    val seasonList = arrayListOf(
-        FilterItems("Winter"),
-        FilterItems("Summer")
-    )
+    private var patternId: String = "0"
+    private val allPatternAdapter = AllPatternsAdapter()
+    var isLastPage: Boolean = false
+    var isLoading: Boolean = false
+    private var currentPage = 1
+    lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -117,196 +68,75 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         ).also {
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
+
         }
-        return binding.root
+        return binding.container
+
     }
 
+    @SuppressLint("WrongConstant")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setUIEvents()
-        setUpToolbar()
-        setUpNavigationDrawer()
-        setFilterMenuAdapter(0)
-        viewModel.fetchOnPatternData()
-        setList()
+        AndroidInjection.inject(requireActivity())
 
+        Log.d("Testing", ">>>>>>   All Patterns onActivityCreated")
+        initializeAdapter()
 
-        // Add Item Touch Listener
-        binding.rvCategory.addOnItemTouchListener(RecyclerTouchListener(requireContext(), object :
-            ClickListener {
-            override fun onClick(view: View, position: Int) {
-                setFilterMenuAdapter(position)
-                when (position) {
-                    0 -> {//category
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            categoryFilterList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    1 -> {//Gender
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            genderList,
-                            menuItems[position].menuItem
-                        )
-                    }
-                    2 -> {//Brand
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            brandList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    3 -> {//Size
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            sizeList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    4 -> {//Type
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            typeList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    5 -> {//Season
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            seasonList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    6 -> {//Occasion
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            occasionList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    7 -> {//Suitable
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            suitableList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                    8 -> {//Customization
-                        (binding.rvActions.adapter as FilterActionsAdapter).updateList(
-                            customizationList,
-                            menuItems[position].menuItem
-                        )
-
-                    }
-                }
-
-
-            }
-        }))
-        binding.closeFilter.setOnClickListener {
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-            setFilterMenuAdapter(0)
-        }
-        binding.apply.setOnClickListener {
-            viewModel.createJson()
-            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-            setFilterMenuAdapter(0)
+        binding.imageClearFilter.setOnClickListener {
+            cleaFilterData()
         }
 
-        binding.clearFilter.setOnClickListener {
-            Filter.clearAll()
-            setAsDefault()
-            setList()
-            (binding.rvActions.adapter as FilterActionsAdapter).notifyDataSetChanged()
-
-        }
-
-        binding.imageClearAll.setOnClickListener {
-            binding.clearFilter.performClick()
+        binding.textviewClear.setOnClickListener {
+            cleaFilterData()
         }
     }
 
-    private fun setAsDefault() {
-        categoryFilterList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        brandList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        genderList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        seasonList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        occasionList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        suitableList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        typeList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        customizationList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
-        sizeList.forEach {
-            if (it.isSelected) {
-                it.isSelected = false
-            }
-        }
+    fun cleaFilterData() {
+        viewModel.resultMap.clear()
+       // viewModel.patternArrayList.clear()
+        viewModel.menuList.clear()
+        viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
-    private fun setList() {
-        Filter.genderList.addAll(genderList)
-        Filter.brandList.addAll(brandList)
-        Filter.categoryList.addAll(categoryFilterList)
-        Filter.sizeList.addAll(sizeList)
-        Filter.typeList.addAll(typeList)
-        Filter.occasionList.addAll(occasionList)
-        Filter.seasonList.addAll(seasonList)
-        Filter.suitableList.addAll(suitableList)
-        Filter.customizationList.addAll(customizationList)
+    fun callSearchResult(terms: String) {
+        /**
+         * Search is Happened only in filtered results
+         */
+        //  viewModel.resultMap.clear()
+        //viewModel.patternArrayList.clear()
+        //viewModel.menuList.clear()
+        // viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
     }
 
-    private fun setFilterActionAdapter() {
-        binding.rvActions.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvActions.adapter = FilterActionsAdapter(categoryFilterList, this)
+    fun applyFilter() {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            currentPage = 1
+            isLastPage = false
+            //  viewModel.patternArrayList.clear()
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        }
+
     }
 
-    private fun setFilterMenuAdapter(position: Int) {
-        binding.rvCategory.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCategory.adapter = FilterRvAdapter(menuItems, position)
-        setFilterActionAdapter()
-    }
-
-    private fun showProgress(toShow: Boolean) {
-        bottomNavViewModel.showProgress.set(toShow)
-    }
-    private fun setUpToolbar() {
-        toolbarViewModel.isShowTransparentActionBar.set(false)
-        toolbarViewModel.isShowActionBar.set(false)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    private fun updatePatterns() {
+        // Updating the adapter
+        allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
+        binding.tvFilterResult.text =
+            getString(R.string.text_filter_result, viewModel.totalPatternCount)
+        bottomNavViewModel.showProgress.set(false)
+        setPatternCount.onSetCount(
+            getString(
+                R.string.pattern_library_count,
+                AppState.getPatternCount()
+            )
+        )
     }
 
     private fun setUIEvents() {
@@ -317,27 +147,100 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("Testing", ">>>>>>   All Patterns  onResume ")
+        viewModel.disposable = CompositeDisposable()
+        setUIEvents()
+        if (AppState.getIsLogged()) {
+            if (NetworkUtility.isNetworkAvailable(context)) {
+                if (!Utility.isTokenExpired()) {
+                    if (viewModel.patternList.value.isNullOrEmpty()) {
+                        Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(
+                            viewModel.createJson(
+                                currentPage,
+                                value = ""
+                            )
+                        )  //Initial API call
+                    } else {
+                        updatePatterns()
+                        //  setFilterMenuAdapter(0)
+                        if (viewModel.isFilter == true) {
+                            filterIconSetListener.onFilterApplied(true)
+                        } else
+                            filterIconSetListener.onFilterApplied(false)
+                    }
+                }
+            } else {
+                viewModel.fetchOfflinePatterns()
+            }
 
-    private fun setPatternAdapter() {
-        val adapter = PatternAdapter()
-        binding.recyclerViewPatterns.adapter = adapter
-        adapter.viewModel = viewModel
-        val patternData: List<MyLibraryData>? = viewModel.data.value?.filter { it.status == "New" }
 
-        //for sorting
-        Collections.sort(patternData,
-            Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.patternName.compareTo(rhs!!.patternName) })
+        }
 
-        patternData?.let { adapter.setListData(it) }
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d("Testing", ">>>>>>   All Patterns  onPause ")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("Testing", ">>>>>>   All Patterns  onDestroyView ")
+    }
+
+
+    private fun initializeAdapter() {
+        gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        binding.recyclerViewPatterns.layoutManager = gridLayoutManager
+        binding.recyclerViewPatterns.adapter = allPatternAdapter
+        allPatternAdapter.setListData(emptyList())
+        allPatternAdapter.viewModel = viewModel
+        binding.recyclerViewPatterns.addOnScrollListener(object :
+            PaginationScrollListener(gridLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true
+                currentPage++
+                //you have to call loadmore items to get more data
+
+                if (currentPage <= viewModel.totalPageCount) {
+                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+                    }
+                } else {
+                    isLastPage = true
+                    isLoading = false
+                    currentPage = 1
+                }
+
+            }
+        })
+    }
+
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) = when (event) {
 
         is AllPatternsViewModel.Event.OnItemClick -> {
-            if (findNavController().currentDestination?.id == R.id.myLibraryFragment ||findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                val bundle = bundleOf("clickedID" to viewModel.clickedId.get())
+            if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
+                val bundle = bundleOf(
+                    "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
+                )
                 findNavController().navigate(
-                    R.id.action_allPatternsFragment_to_patternDescriptionFragment,
+                    R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
                 )
             } else {
@@ -346,52 +249,116 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         }
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
-            setPatternAdapter()
+            bottomNavViewModel.showProgress.set(false)
+            setPatternCount.onSetCount(
+                getString(
+                    R.string.pattern_library_count,
+                    AppState.getPatternCount()
+                )
+            )
+
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
             showPopupMenu(event.view, event.patternId)
         }
 
-        is AllPatternsViewModel.Event.OnFilterClick -> {
-
-            binding.drawerLayout.openDrawer(Gravity.RIGHT)
-            //setPatternAdapter()
-            Log.d("pattern", "onFilterClick : AllPatternsFragment")
-            // setDrawerList()
-            // open dialog
-        }
-        is AllPatternsViewModel.Event.OnSearchClick -> {
-            //setPatternAdapter()
+        is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {
             Log.d("pattern", "OnSearchClick : AllPatternsFragment")
-            // open dialog
+
         }
-        is AllPatternsViewModel.Event.OnSyncClick -> {
-            //setPatternAdapter()
+        is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
+            cleaFilterData()
             Log.d("pattern", "OnSyncClick : AllPatternsFragment")
 
-            //setPatternAdapter()
-            Log.d("pattern","onFilterClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnSearchClick -> {
-            //setPatternAdapter()
-            Log.d("pattern","OnSearchClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnSyncClick -> {
-            //setPatternAdapter()
-            Log.d("pattern","OnSyncClick : AllPatternsFragment")
-            // open dialog
-        }is AllPatternsViewModel.Event.OnLoadingStarts -> {
-            showProgress(true)
-        }is AllPatternsViewModel.Event.OnLoadingCompleted -> {
-            showProgress(false)
         }
-        else -> {
-            logger.d("OnClickPattern")
+        is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
+            baseViewModel.totalCount = viewModel.totalPatternCount
+            setPatternCount.onSetCount(
+                getString(
+                    R.string.pattern_library_count,
+                    viewModel.totalPatternCount
+                )
+            )
+            /**
+             * Getting ALL PATTERNS LIST
+             */
+            isLoading = false
+            updatePatterns()
+        }
+        is AllPatternsViewModel.Event.OnAllPatternShowProgress -> {
+            bottomNavViewModel.showProgress.set(true)
+        }
+        is AllPatternsViewModel.Event.OnAllPatternHideProgress -> {
+            bottomNavViewModel.showProgress.set(false)
+        }
+        is AllPatternsViewModel.Event.OnAllPatternResultFailed, is AllPatternsViewModel.Event.NoInternet -> {
+            showAlert()
+            bottomNavViewModel.showProgress.set(false)
+        }
+        is AllPatternsViewModel.Event.OnAddProjectClick -> {
+            Log.d("event", "Add project")
+        }
+
+        is AllPatternsViewModel.Event.UpdateFilterImage -> {
+            filterIconSetListener.onFilterApplied(true)
+        }
+        is AllPatternsViewModel.Event.OnCreateFolder -> {
+            val layout =
+                activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
+            layout?.let {
+                com.ditto.mylibrary.ui.util.Utility.createFolderAlertDialog(
+                    requireActivity(),
+                    "",
+                    "",
+                    it, viewModel,
+                    getString(R.string.cancel_dialog),
+                    getString(R.string.create_folder),
+                    this@AllPatternsFragment,
+                    Utility.AlertType.DEFAULT
+                )
+            }
+        }
+        is AllPatternsViewModel.Event.OnFolderCreated -> {
+            viewModel.clickedProduct = null
+            (parentFragment as MyLibraryFragment?)?.switchToMyFolderFragmentTab()
+        }
+
+        is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
+            filterIconSetListener.onFilterApplied(false)
+
+        }
+        is AllPatternsViewModel.Event.OnPopupClick -> {
+            Log.d("Testing", ">>>>>>  OnPopupClick ")
+            bottomNavViewModel.showProgress.set(false)
+            /**
+             * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
+             */
+            Log.d("DIALOG", "handleFetchResultFolders")
+            logger.d("OnPopupClick")
+            getAlertDialogFolder(
+                requireActivity(), viewModel.folderMainList, viewModel
+            )
+
         }
     }
 
-    private fun showPopupMenu(view: View, patternId: Int) {
+
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
+    }
+
+    private fun showPopupMenu(view: View, patternId: String) {
         this.patternId = patternId
         val popup = PopupMenu(requireContext(), view)
         val inflater: MenuInflater = popup.menuInflater
@@ -399,29 +366,67 @@ class AllPatternsFragment : BaseFragment(), FilterActionsAdapter.SelectedItemsLi
         popup.show()
     }
 
-
-    private fun setUpNavigationDrawer() {
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            }
-
-            override fun onDrawerOpened(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            }
-
-            override fun onDrawerClosed(drawerView: View) {
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            }
-
-            override fun onDrawerStateChanged(newState: Int) {
-            }
-        })
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
 
     }
 
-    override fun onItemsSelected(title: String, isSelected: Boolean, menu: String) {
-        logger.d("Items==" + title)
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
     }
+
+    fun onSyncClick() {
+        if (viewModel != null) {
+            Log.d("pattern", "onSyncClick : viewModel")
+            viewModel.onSyncClick()
+        }
+    }
+
+    fun onSearchClick() {
+        if (viewModel != null) {
+            Log.d("pattern", "onSearchClick : viewModel")
+            viewModel.onSearchClick()
+        }
+    }
+
+    interface SetPatternCount {
+        fun onSetCount(tittle: String)
+    }
+
+    interface FilterIconSetListener {
+        fun onFilterApplied(isApplied: Boolean)
+    }
+
+
+    fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
+        return viewModel.menuList
+    }
+
+    override fun onCreateClicked(newFolderName: String, parent: String) {
+        /**
+         * Pop up  for Create Folder
+         */
+        addFolder(newFolderName, parent)
+
+    }
+
+    override fun onCancelClicked() {
+        logger.d("Cancel Clicked")
+    }
+
+    private fun addFolder(newFolderName: String, parent: String) {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            viewModel.addToFolder(
+                product = viewModel.clickedProduct,
+                folderName = newFolderName
+            )
+        }
+    }
+
 
 }

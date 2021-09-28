@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/addFolderRoot"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_dialog_folder"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/dialog_heading"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="@dimen/folder_margin_end"
+        android:layout_marginTop="@dimen/folder_margin_top"
+        android:layout_marginStart="@dimen/folder_margin_top"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textdialog_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addto"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:textSize="@dimen/tab_heading"
+            android:textColor="@color/black" />
+        <ImageView
+            android:id="@+id/imageCloseDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/close_tab_black">
+
+        </ImageView>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvfolders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="22.5dp"
+        android:layout_marginEnd="@dimen/folder_margin_end"
+        android:layout_marginStart="@dimen/folder_margin_top"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_folders" />
+
+</LinearLayout>

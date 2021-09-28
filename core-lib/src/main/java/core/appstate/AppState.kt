@@ -2,13 +2,13 @@ package core.appstate
 
 import android.content.Context
 import core.*
-import core.CUST_ID
 import core.models.Nsdservicedata
 
 object AppState {
     private var pref: PreferenceStorage? = null
     private const val KEY_IS_LOGGED = "logged"
     private const val KEY_TOKEN = "token"
+    private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
 
     fun init(context: Context) {
@@ -81,5 +81,13 @@ object AppState {
     }
     fun getLastSavedServiceHost() : String?{
         return pref?.getString(CONNECTED_SERVICE_HOST)
+    }
+    fun setPatternCount(count: Int) {
+        pref?.saveInt(PATTERN_COUNT, count)
+    }
+
+    fun getPatternCount(): Int? {
+        val count = pref?.getInt(PATTERN_COUNT)
+        return count
     }
 }

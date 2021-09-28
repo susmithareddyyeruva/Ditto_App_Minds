@@ -1,6 +1,7 @@
 package com.ditto.workspace.data.mapper
 
 import com.ditto.storage.data.model.*
+import com.ditto.workspace.domain.model.NumberOfPieces
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
@@ -16,10 +17,18 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             selectedTab = it.selectedTab,
             status = it.status,
             thumbnailImagePath = it.thumbnailImagePath,
+            thumbnailImageName =it.thumbnailImageName,
+            numberOfCompletedPiece = it.numberOfCompletedPieces?.toDomainn(),
+            totalNumberOfPieces =it.numberOfPieces?.toDomainn(),
             descriptionImages = it.descriptionImages.map { it.toDomain() },
             selvages = it.selvages.map { it.toDomain() },
             patternPieces = it.patternPieces.map { it.toDomain() },
-            workspaceItems = it.workspaceItems?.map { it.toDomain() }?.toMutableList()
+            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines?.map { it.toDomain() }
+                ?.toMutableList(),
+            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines?.map { it.toDomain() }
+                ?.toMutableList(),
+            interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+                ?.toMutableList()
         )
     }
 }
@@ -33,13 +42,17 @@ internal fun Patterns.toDomain(): PatternsData {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
+        thumbnailImageName =this.thumbnailImageName,
+        numberOfCompletedPiece = this.numberOfCompletedPieces?.toDomainn(),
+        totalNumberOfPieces =this.numberOfPieces?.toDomainn(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
-        workspaceItems = this.workspaceItems?.map { it.toDomain() }?.toMutableList()
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
     )
 }
-
 
 internal fun DescriptionImages.toDomain(): com.ditto.workspace.domain.model.DescriptionImages {
     return com.ditto.workspace.domain.model.DescriptionImages(
@@ -54,7 +67,10 @@ internal fun SpliceImages.toDomain(): com.ditto.workspace.domain.model.SpliceIma
         row = this.row,
         column = this.column,
         reference_splice = this.reference_splice,
-        imagePath = this.imagePath
+        imagePath = this.imagePath,
+        imageName = this.imagePath,
+        mapImageUrl = this.mapImageUrl,
+        mapImageName = this.mapImageName
     )
 }
 
@@ -73,6 +89,9 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         id = this.id,
         parentPattern = this.parentPattern,
         imagePath = this.imagePath,
+        imageName=this.imageName,
+        thumbnailImageUrl= this.thumbnailImageUrl,
+        thumbnailImageName=this.thumbnailImageName,
         size = this.size,
         view = this.view,
         pieceNumber = this.pieceNumber,
@@ -106,7 +125,7 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         splice = this.splice,
         spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.mirrorOption,
         xcoordinate = this.xcoordinate,
@@ -122,7 +141,7 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
-
+//todo check below
 internal fun PatternsData.toDomain(): Patterns {
     return Patterns(
         id = this.id,
@@ -133,13 +152,24 @@ internal fun PatternsData.toDomain(): Patterns {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
+        numberOfCompletedPieces= this.numberOfCompletedPiece?.toDomain(),
+        numberOfPieces= this.totalNumberOfPieces?.toDomain(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages.map { it.toDomain() },
         patternPieces = this.patternPieces.map { it.toDomain() },
-        workspaceItems = this.workspaceItems?.map { it.toDomain() }?.toMutableList()
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
+        interfaceWorkspaceItemOfflines= this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
     )
 }
 
+fun NumberOfCompletedPiecesOffline.toDomainn(): NumberOfPieces {
+    return NumberOfPieces(
+        garment=this.garment,
+        lining=this.lining,
+        `interface` = this.`interface`
+    )
+}
 
 internal fun com.ditto.workspace.domain.model.DescriptionImages.toDomain(): DescriptionImages {
     return DescriptionImages(
@@ -206,7 +236,7 @@ internal fun com.ditto.workspace.domain.model.WorkspaceItems.toDomain(): Workspa
         splice = this.splice,
         spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.mirrorOption,
         xcoordinate = this.xcoordinate,
@@ -222,8 +252,3 @@ internal fun com.ditto.workspace.domain.model.WorkspaceItems.toDomain(): Workspa
         currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
-
-
-
-
-

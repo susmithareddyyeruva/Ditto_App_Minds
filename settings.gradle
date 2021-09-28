@@ -1,3 +1,4 @@
+include ':home-data'
 include ':dittoProjectorApp', ':FabricTraceTransform-debug'
 include ':app'
 include ':nav-graph'
@@ -43,7 +44,8 @@ include ':home-ui'
 project(':home-ui').projectDir = new File('home/ui')
 include ':home-domain'
 project(':home-domain').projectDir = new File('home/domain')
-
+include ':home-data'
+project(':home-data').projectDir = new File('home/data')
 include ':mylibrary-ui'
 project(':mylibrary-ui').projectDir = new File('mylibrary/ui')
 include ':mylibrary-domain'

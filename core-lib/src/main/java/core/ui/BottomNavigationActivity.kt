@@ -27,7 +27,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -89,6 +88,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             .subscribe {
                 handleEvent(it)
             }
+        window.navigationBarColor = resources.getColor(R.color.nav_item_grey2);
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
     }
 
     private fun handleEvent(
