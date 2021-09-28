@@ -74,12 +74,15 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
     }
-
+    override fun onPause() {
+        super.onPause()
+        Log.d("Testing", ">>>>>>   Myfolder  onPause")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("Testing", ">>>>>>   Myfolder onDestroyView ")
-        viewModel.disposable.clear()
-        viewModel.disposable.dispose()
     }
 
     fun onSyncClick() {
@@ -87,8 +90,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             Log.d("MyFolder", "Sync")
             bottomNavViewModel.showProgress.set(true)
             viewModel.getFoldersList()
-
-
         }
     }
 

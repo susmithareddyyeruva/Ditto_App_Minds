@@ -78,35 +78,9 @@ class AllPatternsFragment(
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         AndroidInjection.inject(requireActivity())
+
         Log.d("Testing", ">>>>>>   All Patterns onActivityCreated")
         initializeAdapter()
-        if (AppState.getIsLogged()) {
-            if (NetworkUtility.isNetworkAvailable(context)) {
-                if (!Utility.isTokenExpired()) {
-                    if (viewModel.patternList.value.isNullOrEmpty()) {
-                        Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
-                        bottomNavViewModel.showProgress.set(true)
-                        viewModel.fetchOnPatternData(
-                            viewModel.createJson(
-                                currentPage,
-                                value = ""
-                            )
-                        )  //Initial API call
-                    } else {
-                        updatePatterns()
-                        //  setFilterMenuAdapter(0)
-                        if (viewModel.isFilter == true) {
-                            filterIconSetListener.onFilterApplied(true)
-                        } else
-                            filterIconSetListener.onFilterApplied(false)
-                    }
-                }
-            } else {
-                viewModel.fetchOfflinePatterns()
-            }
-
-
-        }
 
         binding.imageClearFilter.setOnClickListener {
             cleaFilterData()
@@ -115,7 +89,6 @@ class AllPatternsFragment(
         binding.textviewClear.setOnClickListener {
             cleaFilterData()
         }
-
     }
 
     fun cleaFilterData() {
@@ -179,13 +152,45 @@ class AllPatternsFragment(
         Log.d("Testing", ">>>>>>   All Patterns  onResume ")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
+        if (AppState.getIsLogged()) {
+            if (NetworkUtility.isNetworkAvailable(context)) {
+                if (!Utility.isTokenExpired()) {
+                    if (viewModel.patternList.value.isNullOrEmpty()) {
+                        Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(
+                            viewModel.createJson(
+                                currentPage,
+                                value = ""
+                            )
+                        )  //Initial API call
+                    } else {
+                        updatePatterns()
+                        //  setFilterMenuAdapter(0)
+                        if (viewModel.isFilter == true) {
+                            filterIconSetListener.onFilterApplied(true)
+                        } else
+                            filterIconSetListener.onFilterApplied(false)
+                    }
+                }
+            } else {
+                viewModel.fetchOfflinePatterns()
+            }
+
+
+        }
+
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d("Testing", ">>>>>>   All Patterns  onPause ")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("Testing", ">>>>>>   All Patterns  onDestroyView ")
-        viewModel.disposable.clear()
-        viewModel.disposable.dispose()
     }
 
 
