@@ -127,6 +127,8 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+
+            Log.d("Testing", ">>>>>>  createFolderAlertDialog ")
             val edittext = view.findViewById(R.id.edFolderName) as EditText
             edittext.setSelection(edittext.text.length)
             edittext.setSelection(edittext.length())
@@ -164,8 +166,6 @@ class Utility {
                     )
                     Utility.alert?.dismiss()
                     callback.onCreateClicked(edittext.text.toString(), viewmodel.ADD)
-
-
                 } else {
                     edittext.setError("Folder Name can't be empty")
                 }
@@ -185,6 +185,7 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+            Log.d("Testing", ">>>>>>  createFolderAlertDialogForMyFolder ")
             val edittext = view.findViewById(R.id.edFolderName) as EditText
             edittext.setSelection(edittext.text.length)
             edittext.setSelection(edittext.length())
@@ -221,12 +222,7 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    if (edittext.text.toString().isNotEmpty()) {
-                        callback.onCreateClicked(edittext.text.toString(), "ADD")
-                    }
-                    viewmodel.onCreateFoldersSuccess()
-
-
+                    callback.onCreateClicked(edittext.text.toString(), viewmodel.addFolder)
                 } else {
                     edittext.setError("Folder Name can't be empty")
                 }
@@ -244,6 +240,8 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+
+            Log.d("Testing", ">>>>>>  renameFolderAlertDialog ")
             val edittext = view.findViewById(R.id.edRename) as EditText
             edittext.setSelection(edittext.text.length)
             edittext.setSelection(edittext.length())
@@ -281,9 +279,6 @@ class Utility {
                     )
                     Utility.alert?.dismiss()
                     callback.onCreateClicked(edittext.text.toString(), viewmodel.rename)
-                    viewmodel.onCreateFoldersSuccess()
-
-
                 } else {
                     edittext.setError("Folder Name can't be empty")
                 }

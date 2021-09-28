@@ -115,6 +115,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
+        Log.d("Testing", ">>>>>>   All Patterns handleFetchResult")
         when (result) {
             is Result.OnSuccess -> {
                 patternList.value = result.data.prod
@@ -209,6 +210,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onDialogPopupClick() {
+        Log.d("Testing", ">>>>>>  onDialogPopupClick ")
         uiEvents.post(Event.OnAllPatternShowProgress)
         val folderRequest = GetFolderRequest(
             OrderFilter(
@@ -227,6 +229,7 @@ class AllPatternsViewModel @Inject constructor(
 
     }
     private fun handleFetchResultFolders(folderResult: Result<FoldersResultDomain>?) {
+        Log.d("Testing", ">>>>>>  handleFetchResultFolders ")
         folderMainList = arrayListOf<MyFolderList>(
             MyFolderList( "New folder")
         )

@@ -273,11 +273,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         }
     }
 
-    fun onCreateFoldersSuccess() {
-        Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnFolderCreated)
-    }
-
     fun createFolderEvent() {
         uiEvents.post(Event.OnMyFolderCreateFolderClicked)
     }
@@ -383,7 +378,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         object OnMyFolderListUpdated : MyFolderViewModel.Event()
         object OnMyFolderCreateFolderClicked : MyFolderViewModel.Event()
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
-        object OnFolderCreated : MyFolderViewModel.Event()
         object MyFolderSyncClick : MyFolderViewModel.Event()
         object OnMyFolderSearchClick : MyFolderViewModel.Event()
         object OnCreateFolder : MyFolderViewModel.Event()

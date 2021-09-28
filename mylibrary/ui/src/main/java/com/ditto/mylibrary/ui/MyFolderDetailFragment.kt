@@ -55,7 +55,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isAdded && isVisible && userVisibleHint) {
             val args = arguments
             tittle = args?.getString("TITTLE", "")
             (parentFragment as MyLibraryFragment?)?.showFilterComponents()
@@ -63,9 +62,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 tittle ?: ""
             )
             viewModel.myFolderDetailHeader = tittle ?: ""
-        }
-
-
     }
 
     @SuppressLint("FragmentBackPressedCallback")
