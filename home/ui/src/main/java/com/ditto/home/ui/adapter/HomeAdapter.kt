@@ -45,7 +45,6 @@ class HomeAdapter(private val context: Context) : RecyclerView.Adapter<HomeAdapt
         }else{
             holder.rowHomeBinding.textHeader.setText(homeData[position].title)
         }
-
     }
 
     inner class HomeHolder(val rowHomeBinding: HomeItemBinding, viewType: Int) :

@@ -70,24 +70,24 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
-       setHomeAdapter()
+        setHomeAdapter()
 
         /**
          * API call for getting pattern details....
          */
         if (AppState.getIsLogged()) {
-            if(NetworkUtility.isNetworkAvailable(context)){
+            if (NetworkUtility.isNetworkAvailable(context)) {
                 if (!Utility.isTokenExpired()) {
                     bottomNavViewModel.showProgress.set(true)
                     homeViewModel.fetchData()
                 }
-            }else{
+            } else {
                 homeViewModel.fetchOfflineData()
             }
 
-        }else{
+        } else {
             homeViewModel.setHomeItems()
-            if (recycler_view!=null) {
+            if (recycler_view != null) {
                 (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
                 (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
             }
@@ -128,12 +128,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 }
             }
             is HomeViewModel.Event.OnClickMyPatterns -> {
-                val list=homeViewModel.homeDataResponse.value?.prod
+                val list = homeViewModel.homeDataResponse.value?.prod
 
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
                     val bundle = bundleOf(
                         "clickedID" to context?.let { Utility.getSharedPref(it) },
-                        "isFrom" to "RESUME_RECENT","PATTERNS" to  list
+                        "isFrom" to "RESUME_RECENT", "PATTERNS" to list
                     )
                     findNavController().navigate(R.id.action_home_to_my_library, bundle)
                 } else {
@@ -150,7 +150,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
             HomeViewModel.Event.OnResultSuccess -> {
                 bottomNavViewModel.showProgress.set(false)
-                if (recycler_view!=null) {
+                if (recycler_view != null) {
                     (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
                     (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
                 }
@@ -186,8 +186,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
-            ,
+            Utility.AlertType.NETWORK,
             Utility.Iconype.FAILED
         )
     }
