@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ditto.mylibrary.ui.AllPatternsFragment
 
-class MyLibraryAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager) {
+class MyLibraryAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTitleList = ArrayList<String>()
@@ -24,6 +24,7 @@ class MyLibraryAdapter(supportFragmentManager: FragmentManager) : FragmentStateP
 
     fun addFragment(fragment: Fragment, title: String,listener: AllPatternsFragment.SetPatternCount,isfilter:AllPatternsFragment.FilterIconSetListener,
     ) {
+
         mFragmentList.add(fragment)
         mFragmentTitleList.add(title)
     }

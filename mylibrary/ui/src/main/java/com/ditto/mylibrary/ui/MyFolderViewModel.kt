@@ -273,16 +273,13 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         }
     }
 
-    fun onCreateFoldersSuccess() {
-        Log.d("pattern", "onSearchClick : viewModel")
-        uiEvents.post(Event.OnFolderCreated)
-    }
-
     fun createFolderEvent() {
+        Log.d("Testing", ">>>>>>   Myfolder createFolderEvent ")
         uiEvents.post(Event.OnMyFolderCreateFolderClicked)
     }
 
     fun navigateToFolderDetails(title: String) {
+        Log.d("Testing", ">>>>>>   Myfolder navigateToFolderDetails ")
         clickedFolderName = title
         uiEvents.post(Event.OnNavigtaionToFolderDetail)
     }
@@ -379,11 +376,9 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
     sealed class Event {
         object OnMyFolderItemClick : MyFolderViewModel.Event()
-        object OnMyFolderDataUpdated : MyFolderViewModel.Event()
         object OnMyFolderListUpdated : MyFolderViewModel.Event()
         object OnMyFolderCreateFolderClicked : MyFolderViewModel.Event()
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
-        object OnFolderCreated : MyFolderViewModel.Event()
         object MyFolderSyncClick : MyFolderViewModel.Event()
         object OnMyFolderSearchClick : MyFolderViewModel.Event()
         object OnCreateFolder : MyFolderViewModel.Event()

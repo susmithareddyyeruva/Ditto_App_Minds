@@ -66,9 +66,7 @@ class Utility {
         fun getAlertDialogFolder(
             context: Context,
             list: ArrayList<MyFolderList>,
-            viewmodel: AllPatternsViewModel,
-            callback: Utility.CallbackDialogListener,
-            alertType: core.ui.common.Utility.AlertType
+            viewmodel: AllPatternsViewModel
         ) {
             val dpi: Float = context.resources.displayMetrics.density
             val mDialogView =
@@ -96,13 +94,13 @@ class Utility {
                 object : MyFolderListAdapter.CreateFolderListener {
                     override fun onNewFolderClicked() {
                         alert.dismiss()
-                        viewmodel.onCreateFolderClick()
+                        viewmodel.onCreateFolderClick()  //New Folder Click
                     }
                 },
                 object : MyFolderListAdapter.OnItemFolderClicked {
                     override fun onItemClicked(itemName: String) {
                         alert.dismiss()
-                        viewmodel.onFolderClick()
+                        viewmodel.onFolderClick(itemName)
                     }
                 })
             rvFolder.adapter = adapter
@@ -127,11 +125,17 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+
+            Log.d("Testing", ">>>>>>  createFolderAlertDialog ")
             val edittext = view.findViewById(R.id.edFolderName) as EditText
             edittext.setSelection(edittext.text.length)
             edittext.setSelection(edittext.length())
             val dpi: Float = context.resources.displayMetrics.density
+            val mDialogView =
+                LayoutInflater.from(context).inflate(R.layout.create_folder, null)
             val dialogBuilder = AlertDialog.Builder(context)
+
+            dialogBuilder.setView(mDialogView)
             dialogBuilder
                 .setCancelable(false)
                 .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
@@ -164,8 +168,6 @@ class Utility {
                     )
                     Utility.alert?.dismiss()
                     callback.onCreateClicked(edittext.text.toString(), viewmodel.ADD)
-
-
                 } else {
                     edittext.setError("Folder Name can't be empty")
                 }
@@ -185,6 +187,7 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+            Log.d("Testing", ">>>>>>  createFolderAlertDialogForMyFolder ")
             val edittext = view.findViewById(R.id.edFolderName) as EditText
             edittext.setSelection(edittext.text.length)
             edittext.setSelection(edittext.length())
@@ -221,12 +224,7 @@ class Utility {
                         view
                     )
                     Utility.alert?.dismiss()
-                    if (edittext.text.toString().isNotEmpty()) {
-                        callback.onCreateClicked(edittext.text.toString(), "ADD")
-                    }
-                    viewmodel.onCreateFoldersSuccess()
-
-
+                    callback.onCreateClicked(edittext.text.toString(), viewmodel.addFolder)
                 } else {
                     edittext.setError("Folder Name can't be empty")
                 }
@@ -244,6 +242,8 @@ class Utility {
             callback: CallbackCreateFolderDialogListener,
             alertType: core.ui.common.Utility.AlertType
         ) {
+
+            Log.d("Testing", ">>>>>>  renameFolderAlertDialog ")
             val edittext = view.findViewById(R.id.edRename) as EditText
             edittext.setSelection(edittext.text.length)
             edittext.setSelection(edittext.length())
@@ -281,9 +281,6 @@ class Utility {
                     )
                     Utility.alert?.dismiss()
                     callback.onCreateClicked(edittext.text.toString(), viewmodel.rename)
-                    viewmodel.onCreateFoldersSuccess()
-
-
                 } else {
                     edittext.setError("Folder Name can't be empty")
                 }

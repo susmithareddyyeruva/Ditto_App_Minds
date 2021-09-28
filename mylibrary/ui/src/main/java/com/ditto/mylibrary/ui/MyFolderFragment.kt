@@ -18,13 +18,16 @@ import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.create_folder.*
 import kotlinx.android.synthetic.main.layout_rename.*
 import javax.inject.Inject
 
 class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment(),
-    core.ui.common.Utility.CustomCallbackDialogListener {
+    core.ui.common.Utility.CustomCallbackDialogListener,
+    Utility.CallbackCreateFolderDialogListener, MyFolderAdapter.OnRenameListener,
+    MyFolderAdapter.OnDeleteClicked {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -50,14 +53,36 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.d("Testing", ">>>>>>   Myfolder onActivityCreated ")
         if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
             /**
              * API call for getting Folders List
              */
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.getFoldersList()
+            if (viewModel.folderList.isNullOrEmpty()) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.getFoldersList()
+            } else {
+                setAdapter()
+                (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("Testing", ">>>>>>   Myfolder  onResume ")
+        viewModel.disposable = CompositeDisposable()
         setUIEvents()
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.d("Testing", ">>>>>>   Myfolder  onPause")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("Testing", ">>>>>>   Myfolder onDestroyView ")
     }
 
     fun onSyncClick() {
@@ -65,8 +90,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             Log.d("MyFolder", "Sync")
             bottomNavViewModel.showProgress.set(true)
             viewModel.getFoldersList()
-
-
         }
     }
 
@@ -79,70 +102,13 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     }
 
     private fun setAdapter() {
-        bottomNavViewModel.showProgress.set(false)
         val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.rvMyFolder.layoutManager = gridLayoutManager
         val adapter = MyFolderAdapter(
             requireContext(),
             viewModel.folderList,
-            object : MyFolderAdapter.OnRenameListener {
-                override fun onRenameClicked(oldFolderName: String) {
-                    /**
-                     * Rename PopUp Displayed
-                     */
-                    viewModel.folderToRename = oldFolderName
-                    val layout =
-                        activity?.layoutInflater?.inflate(R.layout.layout_rename, renameRoot)
-                    layout?.let {
-                        Utility.renameFolderAlertDialog(
-                            requireActivity(),
-                            it,
-                            viewModel,
-                            getString(R.string.cancel_dialog),
-                            getString(R.string.rename_folder_dialog),
-                            object :
-                                Utility.CallbackCreateFolderDialogListener {
-                                override fun onCreateClicked(newFolderName: String, action: String) {
-                                    /**
-                                     * API call for Rename Folder
-                                     */
-                                    if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
-                                        bottomNavViewModel.showProgress.set(true)
-                                        viewModel.addToFolder(
-                                            product = ProdDomain(),
-                                            newFolderName = newFolderName,
-                                            action = viewModel.rename
-                                        )
-                                    }
-
-                                }
-
-                                override fun onCancelClicked() {
-                                    logger.d("onCancelClicked")
-
-                                }
-                            },
-                            core.ui.common.Utility.AlertType.DEFAULT
-                        )
-                    }
-                }
-
-            },
-            object : MyFolderAdapter.OnDeleteClicked {
-                override fun onDeleteClicked(title: String) {
-                    viewModel.folderToDelete = title
-                    core.ui.common.Utility.getCommonAlertDialogue(
-                        requireContext(),
-                        "",
-                        getString(R.string.are_you_sure_delete),
-                        getString(R.string.cancel_dialog),
-                        getString(R.string.str_ok),
-                        this@MyFolderFragment,
-                        core.ui.common.Utility.AlertType.DELETE,
-                        core.ui.common.Utility.Iconype.FAILED
-                    )
-                }
-            })
+            this@MyFolderFragment,
+            this@MyFolderFragment)
         binding.rvMyFolder.adapter = adapter
         adapter.viewModel = viewModel
     }
@@ -151,6 +117,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     private fun handleEvent(event: MyFolderViewModel.Event) =
         when (event) {
             is MyFolderViewModel.Event.OnMyFolderCreateFolderClicked -> {
+                Log.d("Testing", ">>>>>>2  Myfolder createFolderEvent ")
                 val layout =
                     activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
                 layout?.let {
@@ -161,33 +128,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         it, viewModel,
                         getString(R.string.cancel_dialog),
                         getString(R.string.create_folder),
-                        object :
-                            Utility.CallbackCreateFolderDialogListener {
-                            override fun onCreateClicked(newFolderName: String, parent: String) {
-                                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
-                                    bottomNavViewModel.showProgress.set(true)
-                                    viewModel.folderList.clear()
-                                    viewModel.addToFolder(
-                                        product = ProdDomain(),
-                                        newFolderName = newFolderName,
-                                        action = parent
-                                    )
-                                }
-                            }
-
-                            override fun onCancelClicked() {
-                                logger.d("onCancelClicked")
-
-
-                            }
-                        },
+                        this@MyFolderFragment,
                         core.ui.common.Utility.AlertType.DEFAULT
                     )
                 }
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-
+                Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
                 myFolderDetailFragment?.arguments = args
@@ -211,7 +159,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     viewModel.getFoldersList()
                 } else {
                     logger.d("")
-
                 }
 
             }
@@ -252,6 +199,59 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         } else {
 
         }
+    }
+
+    override fun onCreateClicked(newFolderName: String, parent: String) {
+        /**
+         * API call for Rename Folder
+         */
+        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.addToFolder(
+                product = ProdDomain(),
+                newFolderName = newFolderName,
+                action = parent
+            )
+
+        }
+    }
+
+    override fun onCancelClicked() {
+        logger.d("onCancelClicked")
+    }
+
+    override fun onRenameClicked(oldFolderName: String) {
+        /**
+         * Rename PopUp Displayed
+         */
+        viewModel.folderToRename = oldFolderName
+        val layout =
+            activity?.layoutInflater?.inflate(R.layout.layout_rename, renameRoot)
+        layout?.let {
+            Utility.renameFolderAlertDialog(
+                requireActivity(),
+                it,
+                viewModel,
+                getString(R.string.cancel_dialog),
+                getString(R.string.rename_folder_dialog),
+                this@MyFolderFragment,
+                core.ui.common.Utility.AlertType.DEFAULT
+            )
+        }
+    }
+
+    override fun onDeleteClicked(title: String) {
+        viewModel.folderToDelete = title
+        core.ui.common.Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            getString(R.string.are_you_sure_delete),
+            getString(R.string.cancel_dialog),
+            getString(R.string.str_ok),
+            this@MyFolderFragment,
+            core.ui.common.Utility.AlertType.DELETE,
+            core.ui.common.Utility.Iconype.FAILED
+        )
     }
 
 }

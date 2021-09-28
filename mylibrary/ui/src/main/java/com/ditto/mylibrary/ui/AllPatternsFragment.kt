@@ -28,6 +28,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.create_folder.*
 import kotlinx.android.synthetic.main.dialog_addfolder.*
@@ -38,7 +39,8 @@ class AllPatternsFragment(
     private val setPatternCount: SetPatternCount,
     private val filterIconSetListener: FilterIconSetListener
 ) : BaseFragment(),
-    Utility.CustomCallbackDialogListener {
+    Utility.CustomCallbackDialogListener,
+    com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
 
 
     @Inject
@@ -76,32 +78,9 @@ class AllPatternsFragment(
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         AndroidInjection.inject(requireActivity())
-        setUIEvents()
+
+        Log.d("Testing", ">>>>>>   All Patterns onActivityCreated")
         initializeAdapter()
-        if (AppState.getIsLogged()) {
-            if(NetworkUtility.isNetworkAvailable(context)){
-                if (!Utility.isTokenExpired()) {
-                    if (viewModel.patternList.value.isNullOrEmpty()) {
-                        bottomNavViewModel.showProgress.set(true)
-                        viewModel.fetchOnPatternData(
-                            viewModel.createJson(
-                                currentPage,
-                                value = ""
-                            )
-                        )  //Initial API call
-                    } else {
-                        updatePatterns()
-                        //  setFilterMenuAdapter(0)
-                        if (viewModel.isFilter == true) {
-                            filterIconSetListener.onFilterApplied(true)
-                        } else
-                            filterIconSetListener.onFilterApplied(false)
-                    }
-                }
-            }else{
-                viewModel.fetchOfflinePatterns()
-            }
-        }
 
         binding.imageClearFilter.setOnClickListener {
             cleaFilterData()
@@ -110,7 +89,6 @@ class AllPatternsFragment(
         binding.textviewClear.setOnClickListener {
             cleaFilterData()
         }
-
     }
 
     fun cleaFilterData() {
@@ -140,7 +118,7 @@ class AllPatternsFragment(
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             currentPage = 1
             isLastPage = false
-          //  viewModel.patternArrayList.clear()
+            //  viewModel.patternArrayList.clear()
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
@@ -149,7 +127,7 @@ class AllPatternsFragment(
 
     private fun updatePatterns() {
         // Updating the adapter
-        allPatternAdapter.setListData(items = viewModel.patternList.value?: emptyList())
+        allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
         bottomNavViewModel.showProgress.set(false)
@@ -167,6 +145,52 @@ class AllPatternsFragment(
             .subscribe {
                 handleEvent(it)
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("Testing", ">>>>>>   All Patterns  onResume ")
+        viewModel.disposable = CompositeDisposable()
+        setUIEvents()
+        if (AppState.getIsLogged()) {
+            if (NetworkUtility.isNetworkAvailable(context)) {
+                if (!Utility.isTokenExpired()) {
+                    if (viewModel.patternList.value.isNullOrEmpty()) {
+                        Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.fetchOnPatternData(
+                            viewModel.createJson(
+                                currentPage,
+                                value = ""
+                            )
+                        )  //Initial API call
+                    } else {
+                        updatePatterns()
+                        //  setFilterMenuAdapter(0)
+                        if (viewModel.isFilter == true) {
+                            filterIconSetListener.onFilterApplied(true)
+                        } else
+                            filterIconSetListener.onFilterApplied(false)
+                    }
+                }
+            } else {
+                viewModel.fetchOfflinePatterns()
+            }
+
+
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("Testing", ">>>>>>   All Patterns  onPause ")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("Testing", ">>>>>>   All Patterns  onDestroyView ")
     }
 
 
@@ -211,8 +235,10 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.OnItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
-                val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get())
+                val bundle = bundleOf(
+                    "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
+                )
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -248,7 +274,12 @@ class AllPatternsFragment(
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
             baseViewModel.totalCount = viewModel.totalPatternCount
-            setPatternCount.onSetCount(getString(R.string.pattern_library_count,viewModel.totalPatternCount))
+            setPatternCount.onSetCount(
+                getString(
+                    R.string.pattern_library_count,
+                    viewModel.totalPatternCount
+                )
+            )
             /**
              * Getting ALL PATTERNS LIST
              */
@@ -283,70 +314,33 @@ class AllPatternsFragment(
                     it, viewModel,
                     getString(R.string.cancel_dialog),
                     getString(R.string.create_folder),
-                    object :
-                        com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
-                        override fun onCreateClicked(newFolderName: String, parent: String) {
-                            /**
-                             * Pop up  for Create Folder
-                             */
-                            if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-                                viewModel.addToFolder(
-                                    product = ProdDomain(),
-                                    folderName = newFolderName
-                                )
-                            }
-
-
-                        }
-
-                        override fun onCancelClicked() {
-                            logger.d("Cancel Clicked")
-
-                        }
-                    },
+                    this@AllPatternsFragment,
                     Utility.AlertType.DEFAULT
                 )
             }
         }
-        is AllPatternsViewModel.Event.OnFolderCreated, AllPatternsViewModel.Event.OnFolderItemClicked -> {
+        is AllPatternsViewModel.Event.OnFolderCreated -> {
+            viewModel.clickedProduct = null
             (parentFragment as MyLibraryFragment?)?.switchToMyFolderFragmentTab()
-
         }
+
         is AllPatternsViewModel.Event.UpdateDefaultFilter -> {
             filterIconSetListener.onFilterApplied(false)
 
         }
         is AllPatternsViewModel.Event.OnPopupClick -> {
+            Log.d("Testing", ">>>>>>  OnPopupClick ")
             bottomNavViewModel.showProgress.set(false)
-
             /**
              * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
              */
-            val layout =
-                activity?.layoutInflater?.inflate(R.layout.dialog_addfolder, addFolderRoot)
-            layout?.let {
-                getAlertDialogFolder(
-                    requireActivity(), viewModel.folderMainList, viewModel,
-                    object : com.ditto.workspace.ui.util.Utility.CallbackDialogListener {
-                        override fun onSaveButtonClicked(
-                            projectName: String,
-                            isCompleted: Boolean?
-                        ) {
-                            logger.d("onSaveButtonClicked")
-
-                        }
-
-                        override fun onExitButtonClicked() {
-                            logger.d("onExitButtonClicked")
-                        }
-                    },
-                    Utility.AlertType.DEFAULT
-                )
-            }
+            Log.d("DIALOG", "handleFetchResultFolders")
+            logger.d("OnPopupClick")
+            getAlertDialogFolder(
+                requireActivity(), viewModel.folderMainList, viewModel
+            )
 
         }
-
-
     }
 
 
@@ -408,8 +402,30 @@ class AllPatternsFragment(
         fun onFilterApplied(isApplied: Boolean)
     }
 
+
     fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
         return viewModel.menuList
+    }
+
+    override fun onCreateClicked(newFolderName: String, parent: String) {
+        /**
+         * Pop up  for Create Folder
+         */
+        addFolder(newFolderName, parent)
+
+    }
+
+    override fun onCancelClicked() {
+        logger.d("Cancel Clicked")
+    }
+
+    private fun addFolder(newFolderName: String, parent: String) {
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            viewModel.addToFolder(
+                product = viewModel.clickedProduct,
+                folderName = newFolderName
+            )
+        }
     }
 
 

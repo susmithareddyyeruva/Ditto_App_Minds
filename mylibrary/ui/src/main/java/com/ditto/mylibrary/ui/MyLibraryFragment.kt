@@ -51,7 +51,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
     private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
-    private var count = 0
 
 
     override fun onCreateView(
@@ -72,6 +71,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
+        Log.d("Testing", ">>>>>>   MyLibraryFragment onActivityCreated")
         setTabsAdapter()
         setUpToolbar()
         setUpNavigationDrawer()
@@ -241,6 +241,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun setTabsAdapter() {
+        Log.d("Testing", ">>>>>>   MyLibraryFragment setTabsAdapter count  :" + binding.viewPager.adapter?.count)
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
         if(NetworkUtility.isNetworkAvailable(context)){

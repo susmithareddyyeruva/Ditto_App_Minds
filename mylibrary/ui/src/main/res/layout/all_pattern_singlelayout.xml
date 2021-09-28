@@ -95,7 +95,7 @@
                 android:layout_alignBottom="@+id/textPatternName"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:onClick="@{() -> viewModel.onDialogPopupClick()}"
+                android:onClick="@{() -> viewModel.onDialogPopupClick(product)}"
                 android:paddingStart="@dimen/dimen_25"
                 android:src="@drawable/ic_addicon" />
 
