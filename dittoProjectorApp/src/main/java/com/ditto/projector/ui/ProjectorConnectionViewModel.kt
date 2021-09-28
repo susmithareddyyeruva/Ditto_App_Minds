@@ -125,10 +125,6 @@ class ProjectorConnectionViewModel : ViewModel() {
 
         decryptedssid = splitwificredentials?.get(0)?.let { Utility.decrypt(it) }
         decryptedpwd = splitwificredentials?.get(1)?.let { Utility.decrypt(it) }
-        if (decryptedssid.equals("") || decryptedpwd.equals("")){
-            decryptedssid = splitwificredentials?.get(0)
-            decryptedpwd = splitwificredentials?.get(1)
-        }
         // Store wifi name in preference
         decryptedssid?.let {
             Utility.setSharedPref(

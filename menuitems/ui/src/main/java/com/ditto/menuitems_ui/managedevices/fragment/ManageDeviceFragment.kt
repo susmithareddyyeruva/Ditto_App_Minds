@@ -154,18 +154,17 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      */
     private fun filterServiceListAfterWifi() {
         if (ConnectivityUtils.nsdSericeNameAfterWifi != null) {
+            var hostAddress : String = ""
+            var port : Int = 0
             for (item in receivedServiceList!!.indices) {
                 if (ConnectivityUtils.nsdSericeNameAfterWifi == receivedServiceList!![item].nsdServiceName) {
                     viewModel.clickedPosition.set(item)
-                    viewModel.connectToProjector(
-                        receivedServiceList!![item].nsdSericeHostAddress,
-                        receivedServiceList!![item].nsdServicePort,
-                        true
-                    )
+                    hostAddress= receivedServiceList!![item].nsdSericeHostAddress
+                    port = receivedServiceList!![item].nsdServicePort
                     break
                 }
             }
-
+            viewModel.connectToProjector(hostAddress, port, true)
         }
         viewModel.numberOfProjectors.set(
             getString(
