@@ -66,13 +66,13 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
             }
         }
-        setUIEvents()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("Testing", ">>>>>>   All Patterns  onResume ")
+        Log.d("Testing", ">>>>>>   Myfolder  onResume ")
         viewModel.disposable = CompositeDisposable()
+        setUIEvents()
     }
 
     override fun onDestroyView() {
@@ -116,6 +116,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     private fun handleEvent(event: MyFolderViewModel.Event) =
         when (event) {
             is MyFolderViewModel.Event.OnMyFolderCreateFolderClicked -> {
+                Log.d("Testing", ">>>>>>2  Myfolder createFolderEvent ")
                 val layout =
                     activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
                 layout?.let {
@@ -133,7 +134,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-
+                Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
                 myFolderDetailFragment?.arguments = args

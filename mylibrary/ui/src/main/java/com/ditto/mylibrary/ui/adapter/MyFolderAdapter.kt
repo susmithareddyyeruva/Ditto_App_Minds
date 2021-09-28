@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +71,7 @@ private val deleteClicked: OnDeleteClicked) :
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
             //  data?.isAction = !(data?.isAction ?: false)
+
             clickedPostion = position
             data?.clicked = clickedPostion == position
             notifyDataSetChanged()
@@ -77,11 +79,15 @@ private val deleteClicked: OnDeleteClicked) :
             holder.itemSingleMyfolderBinding.rootView.isFocusable =false
         }
         holder.itemSingleMyfolderBinding.renameText.setOnClickListener {
+
+            Log.d("Testing", ">>>>>>   Myfolder Rename ")
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
             renameListener.onRenameClicked(data?.title?:"")
 
         }
         holder.itemSingleMyfolderBinding.deleteText.setOnClickListener {
+
+            Log.d("Testing", ">>>>>>   Myfolder Delete ")
             holder.itemSingleMyfolderBinding.layoutDialog.visibility = View.GONE
             deleteClicked.onDeleteClicked(data?.title?:"")
 

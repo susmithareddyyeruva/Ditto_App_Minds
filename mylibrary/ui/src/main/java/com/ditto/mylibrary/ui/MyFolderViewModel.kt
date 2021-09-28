@@ -274,10 +274,12 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     }
 
     fun createFolderEvent() {
+        Log.d("Testing", ">>>>>>   Myfolder createFolderEvent ")
         uiEvents.post(Event.OnMyFolderCreateFolderClicked)
     }
 
     fun navigateToFolderDetails(title: String) {
+        Log.d("Testing", ">>>>>>   Myfolder navigateToFolderDetails ")
         clickedFolderName = title
         uiEvents.post(Event.OnNavigtaionToFolderDetail)
     }

@@ -79,7 +79,6 @@ class AllPatternsFragment(
         super.onActivityCreated(savedInstanceState)
         AndroidInjection.inject(requireActivity())
         Log.d("Testing", ">>>>>>   All Patterns onActivityCreated")
-        setUIEvents()
         initializeAdapter()
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
@@ -179,6 +178,7 @@ class AllPatternsFragment(
         super.onResume()
         Log.d("Testing", ">>>>>>   All Patterns  onResume ")
         viewModel.disposable = CompositeDisposable()
+        setUIEvents()
     }
 
     override fun onDestroyView() {
