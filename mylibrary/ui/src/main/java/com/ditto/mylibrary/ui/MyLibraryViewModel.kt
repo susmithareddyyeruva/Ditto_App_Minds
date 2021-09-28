@@ -2,7 +2,6 @@ package com.ditto.mylibrary.ui
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableChar
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,6 @@ import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
-import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -21,8 +19,6 @@ import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
-    private val getMylibraryData: GetMylibraryData,
-    val utility: Utility
     private val getMylibraryData: MyLibraryUseCase
 ) : BaseViewModel() {
 
@@ -35,10 +31,7 @@ class MyLibraryViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        if (Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
-        fetchOnBoardingData()
+        // fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -54,7 +47,7 @@ class MyLibraryViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
-    }
+    }*/
 
     private fun fetchDbUser() {
         dbLoadError.set(false)

@@ -54,6 +54,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d("Testing", ">>>>>>   Myfolder onActivityCreated ")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("Testing", ">>>>>>   Myfolder  onResume ")
+        viewModel.disposable = CompositeDisposable()
+        setUIEvents()
         if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
             /**
              * API call for getting Folders List
@@ -66,13 +74,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("Testing", ">>>>>>   Myfolder  onResume ")
-        viewModel.disposable = CompositeDisposable()
-        setUIEvents()
     }
     override fun onPause() {
         super.onPause()
