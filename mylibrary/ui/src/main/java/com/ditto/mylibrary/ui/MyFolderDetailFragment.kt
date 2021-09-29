@@ -79,6 +79,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 items = viewModel.myfolderList.value ?: emptyList()
             )
             bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
             viewModel.fetchOnPatternData(
                 viewModel.createJson(
                     currentPage,
@@ -133,6 +134,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             isLastPage = false
             // viewModel.myfolderArryList.clear()
             bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
             val menu = viewModel.myfolderMenu
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
@@ -180,6 +182,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 if (currentPage <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                         bottomNavViewModel.showProgress.set(true)
+                        viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
                     }
                 } else {
@@ -218,6 +221,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
         is MyFolderViewModel.Event.OnMyFolderResultSuccess -> {
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
             (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
                 getString(
@@ -235,12 +239,15 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
         is MyFolderViewModel.Event.OnMyFolderShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
         }
         is MyFolderViewModel.Event.OnMyFolderHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
         }
         is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
             showAlert()
         }
         is MyFolderViewModel.Event.OnMyFolderUpdateFilterImage -> {
