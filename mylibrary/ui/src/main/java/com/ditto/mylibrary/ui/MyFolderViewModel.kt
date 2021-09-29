@@ -3,13 +3,12 @@ package com.ditto.mylibrary.ui
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.*
 import com.google.gson.Gson
-import core.CUSTOMER_EMAIL
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -115,7 +114,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         val favReq = FolderRequest(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 purchasedPattern = true,
                 subscriptionList = true,
                 trialPattern = false
@@ -134,7 +133,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             val renameReq = FolderRenameRequest(
                 OrderFilterRename(
                     true,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     purchasedPattern = true,
                     subscriptionList = true,
                     trialPattern = false,
@@ -227,7 +226,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         val folderRequest = GetFolderRequest(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 purchasedPattern = false,
                 subscriptionList = false,
                 trialPattern = true
@@ -293,7 +292,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
                     false,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     purchasedPattern = true,
                     subscriptionList = false,
                     trialPattern = false,
@@ -307,7 +306,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
                     true,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     purchasedPattern = false,
                     subscriptionList = false,
                     trialPattern = false,

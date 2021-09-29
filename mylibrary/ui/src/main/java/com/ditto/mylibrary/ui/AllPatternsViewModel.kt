@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.icu.util.TimeUnit
 import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
@@ -218,7 +217,7 @@ class AllPatternsViewModel @Inject constructor(
         val folderRequest = GetFolderRequest(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 purchasedPattern = false,
                 subscriptionList = false,
                 trialPattern = true

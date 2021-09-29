@@ -52,9 +52,9 @@ object AppState {
         return custid
     }
 
-    fun getEmail(): String? {
+    fun getEmail(): String {
         val email = pref?.getString(USER_EMAIL)
-        return email
+        return email?:""
     }
 
     fun setEmail(email: String) {

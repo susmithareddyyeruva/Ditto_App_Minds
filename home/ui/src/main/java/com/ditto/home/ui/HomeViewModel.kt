@@ -9,7 +9,6 @@ import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.home.domain.model.OfflinePatternData
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
-import core.CUSTOMER_EMAIL
 import core.USER_FIRST_NAME
 import core.appstate.AppState
 import core.event.UiEvents
@@ -126,7 +125,7 @@ class HomeViewModel @Inject constructor(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(
                 com.ditto.home.domain.request.OrderFilter(
                     true,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     true,
                     true
                 ), ProductFilter = resultMap, patternsPerPage = 12, pageId = 1
