@@ -83,7 +83,6 @@ class AllPatternsViewModel @Inject constructor(
         disposable += libraryUseCase.getOfflinePatternDetails()
             .delay(600, java.util.concurrent.TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleOfflineFetchResult(it) }
     }
@@ -330,7 +329,6 @@ class AllPatternsViewModel @Inject constructor(
 
         disposable += libraryUseCase.addFolder(favReq, methodName)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleAddToFavouriteResult(it, product, methodName) }
 
