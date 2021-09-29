@@ -586,9 +586,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun showVersionPopup() {
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
+        var status = Utility.Iconype.WARNING
         if (versionResult?.response?.version_update == false){
             negativeText = ""
             positiveText = "OK"
+            status = Utility.Iconype.SUCCESS
         }
         Utility.getCommonAlertDialogue(
             requireContext(),
@@ -599,7 +601,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             this,
             Utility.AlertType.SOFTWARE_UPDATE
             ,
-            Utility.Iconype.SUCCESS
+            status
         )
     }
     private fun enterWorkspace() {

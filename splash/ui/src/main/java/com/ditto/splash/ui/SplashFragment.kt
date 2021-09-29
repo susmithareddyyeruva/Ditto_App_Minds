@@ -106,7 +106,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
             .subscribe{
 
                 versionResult = it.versionReceived
-                if (versionResult?.response?.force_update == true){
+                if (versionResult?.response?.version_update == true ){
                     showVersionPopup()
                 } else {
                     Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
@@ -135,7 +135,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
             this,
             Utility.AlertType.SOFTWARE_UPDATE
             ,
-            Utility.Iconype.SUCCESS
+            Utility.Iconype.WARNING
         )
     }
     override fun onPause() {
@@ -166,6 +166,11 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        requireActivity().finishAffinity()
+        if (versionResult?.response?.force_update == true){
+            requireActivity().finishAffinity()
+        } else {
+            viewModel.continueToApp()
+        }
+
     }
 }

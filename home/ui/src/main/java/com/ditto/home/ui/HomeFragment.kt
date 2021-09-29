@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.home.ui.adapter.HomeAdapter
@@ -22,13 +21,14 @@ import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
-import core.ui.*
+import core.ui.BaseFragment
+import core.ui.BottomNavigationActivity
+import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import core.ui.rxbus.RxBus
 import core.ui.rxbus.RxBusEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
@@ -138,10 +138,13 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
     private fun showVersionPopup() {
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
-        if (versionResult?.response?.version_update == false){
+        var status = Utility.Iconype.WARNING
+        if (versionResult?.response?.version_update == false) {
             negativeText = ""
             positiveText = "OK"
+            status = Utility.Iconype.SUCCESS
         }
+
         Utility.getCommonAlertDialogue(
             requireContext(),
             versionResult?.response?.title!!,
@@ -151,8 +154,9 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             this,
             Utility.AlertType.SOFTWARE_UPDATE
             ,
-            Utility.Iconype.SUCCESS
+            status
         )
+
     }
 
     private fun handleEvent(event: HomeViewModel.Event) =

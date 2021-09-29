@@ -15,6 +15,7 @@ import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -29,6 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
@@ -87,6 +89,7 @@ class Utility @Inject constructor(
     enum class Iconype {
         SUCCESS,
         FAILED,
+        WARNING,
         NONE
     }
 
@@ -491,7 +494,6 @@ class Utility @Inject constructor(
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
                     || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
-                    || alertType == AlertType.SOFTWARE_UPDATE
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE
@@ -553,6 +555,8 @@ class Utility @Inject constructor(
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
                     } else if (imgtyp.equals(Iconype.FAILED)) {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                    } else if (imgtyp.equals(Iconype.WARNING)) {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_warning))
                     } else {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
                     }
