@@ -12,7 +12,6 @@ import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
 import com.google.gson.Gson
-import core.CUSTOMER_EMAIL
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -307,7 +306,7 @@ class AllPatternsViewModel @Inject constructor(
         val favReq = FolderRequest(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 purchasedPattern = true,
                 subscriptionList = true,
                 trialPattern = false
@@ -372,7 +371,7 @@ class AllPatternsViewModel @Inject constructor(
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 true,
                 true,
                 trialPattern = false
