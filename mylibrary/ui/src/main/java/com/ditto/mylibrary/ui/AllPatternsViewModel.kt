@@ -85,7 +85,6 @@ class AllPatternsViewModel @Inject constructor(
         disposable += libraryUseCase.getOfflinePatternDetails()
             .delay(600, java.util.concurrent.TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleOfflineFetchResult(it) }
     }
@@ -121,9 +120,11 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("Testing", ">>>>>>   All Patterns handleFetchResult")
         when (result) {
             is Result.OnSuccess -> {
-                patternList.value = result.data.prod
+                var temp: ArrayList<ProdDomain> = if(patternList.value==null) ArrayList() else patternList.value as ArrayList<ProdDomain>
+                temp?.addAll(result.data.prod)
+                patternList.value = temp
 
-                /*  result.data.prod.forEach {
+                /*result.data.prod.forEach {
                       patternArrayList.add(it)
                   }*/
 
@@ -330,7 +331,6 @@ class AllPatternsViewModel @Inject constructor(
 
         disposable += libraryUseCase.addFolder(favReq, methodName)
             .subscribeOn(Schedulers.io())
-            .whileSubscribed { isLoading.set(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleAddToFavouriteResult(it, product, methodName) }
 

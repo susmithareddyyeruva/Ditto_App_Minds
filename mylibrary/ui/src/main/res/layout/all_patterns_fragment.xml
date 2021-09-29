@@ -141,16 +141,16 @@
             <TextView
                 android:id="@+id/textNoItem"
                 android:layout_width="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/no_item"
-                android:visibility="@{viewModel.patternList.size()==0?View.VISIBLE:View.GONE}"
-                android:textSize="@dimen/txt_clear_filter"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
+                android:text="@string/no_pattern"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_clear_filter"
+                android:visibility="@{viewModel.isLoading == false  &amp;&amp; viewModel.patternList.size()==0 ? View.VISIBLE:View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_height="wrap_content">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             </TextView>
 

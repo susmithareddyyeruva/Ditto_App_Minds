@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="com.ditto.mylibrary.ui.MyFolderViewModel" />
+
         <import type="android.view.View" />
 
     </data>
@@ -143,8 +144,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/no_item"
-                android:visibility="@{viewModel.myfolderList.size()==0?View.VISIBLE:View.GONE}"
+                android:text="@string/no_pattern"
+                android:visibility="@{viewModel.isLoading == false &amp;&amp;  viewModel.myfolderList.size()==0? View.VISIBLE:View.GONE}"
                 android:textSize="@dimen/txt_clear_filter"
                 android:textColor="@color/black"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"

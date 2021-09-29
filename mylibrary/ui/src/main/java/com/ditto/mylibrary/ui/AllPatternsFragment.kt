@@ -93,7 +93,7 @@ class AllPatternsFragment(
 
     fun cleaFilterData() {
         viewModel.resultMap.clear()
-       // viewModel.patternArrayList.clear()
+        viewModel.patternList.value = ArrayList()
         viewModel.menuList.clear()
         viewModel.setList()
         currentPage = 1
@@ -106,9 +106,9 @@ class AllPatternsFragment(
          * Search is Happened only in filtered results
          */
         //  viewModel.resultMap.clear()
-        //viewModel.patternArrayList.clear()
         //viewModel.menuList.clear()
         // viewModel.setList()
+        viewModel.patternList.value = ArrayList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
@@ -118,8 +118,9 @@ class AllPatternsFragment(
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             currentPage = 1
             isLastPage = false
-            //  viewModel.patternArrayList.clear()
+            viewModel.patternList.value = ArrayList()
             bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
 
@@ -131,6 +132,7 @@ class AllPatternsFragment(
         binding.tvFilterResult.text =
             getString(R.string.text_filter_result, viewModel.totalPatternCount)
         bottomNavViewModel.showProgress.set(false)
+        viewModel.isLoading.set(false)
         setPatternCount.onSetCount(
             getString(
                 R.string.pattern_library_count,
@@ -158,6 +160,7 @@ class AllPatternsFragment(
                     if (viewModel.patternList.value.isNullOrEmpty()) {
                         Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
                         bottomNavViewModel.showProgress.set(true)
+                        viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(
                             viewModel.createJson(
                                 currentPage,
@@ -218,6 +221,7 @@ class AllPatternsFragment(
                 if (currentPage <= viewModel.totalPageCount) {
                     if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
                         bottomNavViewModel.showProgress.set(true)
+                        viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
                     }
                 } else {
@@ -250,6 +254,7 @@ class AllPatternsFragment(
 
         is AllPatternsViewModel.Event.OnDataUpdated -> {
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
             setPatternCount.onSetCount(
                 getString(
                     R.string.pattern_library_count,
@@ -288,13 +293,16 @@ class AllPatternsFragment(
         }
         is AllPatternsViewModel.Event.OnAllPatternShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
         }
         is AllPatternsViewModel.Event.OnAllPatternHideProgress -> {
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
         }
         is AllPatternsViewModel.Event.OnAllPatternResultFailed, is AllPatternsViewModel.Event.NoInternet -> {
             showAlert()
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
         }
         is AllPatternsViewModel.Event.OnAddProjectClick -> {
             Log.d("event", "Add project")
@@ -331,6 +339,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnPopupClick -> {
             Log.d("Testing", ">>>>>>  OnPopupClick ")
             bottomNavViewModel.showProgress.set(false)
+            viewModel.isLoading.set(false)
             /**
              * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
              */
