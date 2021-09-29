@@ -11,6 +11,8 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
+import non_core.lib.error.Error
+import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 class VersionViewModel @Inject constructor (
@@ -31,8 +33,22 @@ class VersionViewModel @Inject constructor (
                RxBus.publish(RxBusEvent.versionReceived(result.data))
             }
             is Result.OnError -> {
-              RxBus.publish(RxBusEvent.versionErrorReceived("Something Went Worng!!"))
+                handleError(result.error)
+
             }
+        }
+    }
+
+    private fun handleError(error: Error) {
+        when (error) {
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                RxBus.publish(RxBusEvent.versionErrorReceived("No Internet connection available !"))
+            }
+            else -> {
+                RxBus.publish(RxBusEvent.versionErrorReceived("Something Went Worng!!"))
+            }
+
         }
     }
 

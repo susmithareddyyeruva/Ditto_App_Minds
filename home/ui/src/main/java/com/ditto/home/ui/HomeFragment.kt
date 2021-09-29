@@ -126,6 +126,7 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{
                 bottomNavViewModel.showProgress.set(false)
+                showAlert(it.versionerrorReceived)
             })
     }
 
@@ -223,5 +224,8 @@ class HomeFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         }
 
     }
-
+    private fun showAlert(versionerrorReceived: String) {
+        Utility.getCommonAlertDialogue(requireContext(),"",versionerrorReceived,"",getString(com.ditto.menuitems_ui.R.string.str_ok),this, Utility.AlertType.NETWORK
+            ,Utility.Iconype.FAILED)
+    }
 }
