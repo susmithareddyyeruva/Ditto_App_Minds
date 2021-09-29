@@ -93,7 +93,7 @@ class AllPatternsFragment(
 
     fun cleaFilterData() {
         viewModel.resultMap.clear()
-       // viewModel.patternArrayList.clear()
+        viewModel.patternList.value = ArrayList()
         viewModel.menuList.clear()
         viewModel.setList()
         currentPage = 1
@@ -106,9 +106,9 @@ class AllPatternsFragment(
          * Search is Happened only in filtered results
          */
         //  viewModel.resultMap.clear()
-        //viewModel.patternArrayList.clear()
         //viewModel.menuList.clear()
         // viewModel.setList()
+        viewModel.patternList.value = ArrayList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
@@ -118,7 +118,7 @@ class AllPatternsFragment(
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             currentPage = 1
             isLastPage = false
-            //  viewModel.patternArrayList.clear()
+            viewModel.patternList.value = ArrayList()
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
