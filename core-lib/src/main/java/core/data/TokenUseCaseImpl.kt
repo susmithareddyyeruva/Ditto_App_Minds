@@ -1,5 +1,6 @@
 package core.data
 
+import core.data.model.TokenResultDomain
 import core.domain.GetTokenRepository
 import core.domain.GetTokenUseCase
 import io.reactivex.Single

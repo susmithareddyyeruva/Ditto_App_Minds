@@ -2,7 +2,6 @@ package com.ditto.mylibrary.ui
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableChar
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData

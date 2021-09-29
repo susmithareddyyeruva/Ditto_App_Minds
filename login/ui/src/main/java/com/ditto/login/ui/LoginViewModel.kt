@@ -30,7 +30,8 @@ class LoginViewModel @Inject constructor(
     private val context: Context,
     val loggerFactory: LoggerFactory,
     val useCase: GetLoginDbUseCase,
-    val storageManager: StorageManager
+    val storageManager: StorageManager,
+     val utility: Utility
 ) : BaseViewModel() {
 
     var userName: ObservableField<String> = ObservableField<String>("")
@@ -49,6 +50,11 @@ class LoginViewModel @Inject constructor(
     var viewPagerDataList: MutableLiveData<List<String>> = MutableLiveData()
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
+    }
+    init {
+        if (Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
     }
 
     fun validateCredentials() {
