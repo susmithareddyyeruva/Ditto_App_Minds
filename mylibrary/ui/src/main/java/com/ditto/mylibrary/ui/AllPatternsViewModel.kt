@@ -5,6 +5,8 @@ import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.FolderRequest
@@ -23,7 +25,6 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import non_core.lib.whileSubscribed
 import org.json.JSONObject
 import javax.inject.Inject
 import kotlin.collections.component1
@@ -33,6 +34,13 @@ import kotlin.collections.set
 class AllPatternsViewModel @Inject constructor(
     private val libraryUseCase: MyLibraryUseCase
 ) : BaseViewModel() {
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+
+    val logger: Logger by lazy {
+        loggerFactory.create(AllPatternsViewModel::class.java.simpleName)
+    }
+
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
@@ -93,7 +101,7 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 patternList.value = result.data
                 totalPatternCount = patternList.value?.size ?: 0
-                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
+                logger.d("PATTERN  COUNT== $totalPatternCount" )
                 totalPageCount = totalPatternCount
                 currentPageId = totalPatternCount
                 uiEvents.post(Event.OnAllPatternResultSuccess)
@@ -128,7 +136,7 @@ class AllPatternsViewModel @Inject constructor(
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
-                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
+                logger.d("PATTERN  COUNT== $totalPatternCount")
                 totalPageCount = result.data.totalPageCount ?: 0
                 currentPageId = result.data.currentPageId ?: 0
                 map = result.data.menuItem ?: hashMapOf() //hashmap
@@ -146,7 +154,7 @@ class AllPatternsViewModel @Inject constructor(
         }
     }
 
-    private fun handleAddToFavouriteResult(
+    private fun handleFolderAPIResult(
         result: Result<AddFavouriteResultDomain>,
         product: ProdDomain?,
         methodName: String
@@ -154,7 +162,7 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.responseStatus) {
-                    Log.d("Added to Favourite", "FAVOURITE")
+                    logger.d("ADD Folder API RESULT", )
                     if (methodName == "update") {
                         uiEvents.post(Event.OnFolderCreated)
                     } else {
@@ -185,7 +193,7 @@ class AllPatternsViewModel @Inject constructor(
             menuList[key] = menuValues
         }
 
-        Log.d("MAP  RESULT== ", menuList.size.toString())
+        logger.d("MAP  RESULT==${menuList.size} ")
 
     }
 
@@ -212,7 +220,6 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onDialogPopupClick(product: ProdDomain) {
-        Log.d("DIALOG","onDialogPopupClick")
         uiEvents.post(Event.OnAllPatternShowProgress)
         val folderRequest = GetFolderRequest(
             OrderFilter(
@@ -223,6 +230,9 @@ class AllPatternsViewModel @Inject constructor(
                 trialPattern = true
             )
         )
+        /**
+         * Calling  get Folders API along with New Folder and Display it in POP UP Dialog
+         */
         disposable += libraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -235,7 +245,7 @@ class AllPatternsViewModel @Inject constructor(
         folderResult: Result<FoldersResultDomain>?,
         product: ProdDomain
     ) {
-        Log.d("DIALOG","handleFetchResultFolders")
+        logger.d("DIALOG   :handleFetchResultFolders",)
         folderMainList = arrayListOf<MyFolderList>(
             MyFolderList("New folder")
         )
@@ -272,23 +282,25 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onSyncClick() {
-        Log.d("pattern", "onSyncClick : viewModel")
+        logger.d("onSyncClick : ALL PATTERN VIEW MODEL")
         uiEvents.post(Event.OnAllPatternSyncClick)
     }
 
     fun onSearchClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
+        logger.d("onSearchClick : ALL PATTERN VIEW MODEL")
         uiEvents.post(Event.OnAllPatternSearchClick)
     }
 
     fun onCreateFolderClick() {
-        Log.d("pattern", "onCreateFolderClick : viewModel")
+        logger.d("onCreateFolderClick : ALL PATTERN VIEW MODEL")
         uiEvents.post(Event.OnCreateFolder)
     }
 
     fun onFolderClick(folderName: String) {
-        Log.d("pattern", "onFolderClick : viewModel")
-        Log.d("DIALOG","onFolderClick")
+        /**
+         * API call for adding product to a Folder
+         */
+        logger.d("onFolderClick : ALL PATTERN VIEW MODEL")
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             addToFolder(
                 product = clickedProduct,
@@ -298,6 +310,9 @@ class AllPatternsViewModel @Inject constructor(
 
     }
 
+    /**
+     * Managing API call for Delete Favorite ADD and Update or Create Folder
+     */
 
     fun addToFolder(product: ProdDomain?, folderName: String) {
         val hashMap = HashMap<String, ArrayList<String>>()
@@ -330,7 +345,7 @@ class AllPatternsViewModel @Inject constructor(
         disposable += libraryUseCase.addFolder(favReq, methodName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleAddToFavouriteResult(it, product, methodName) }
+            .subscribeBy { handleFolderAPIResult(it, product, methodName) }
 
     }
 
