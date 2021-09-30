@@ -88,7 +88,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     fun onSyncClick() {
         if (viewModel != null) {
-            Log.d("MyFolder", "Sync")
+            logger.d("onSyncClick : MyFolder Fragment")
             bottomNavViewModel.showProgress.set(true)
             viewModel.getFoldersList()
         }
@@ -164,7 +164,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
             }
             else -> {
-                Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
+                logger.d("onSyncClick : MyLibraryViewModel.Event undefined")
 
             }
 
