@@ -55,13 +55,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            val args = arguments
-            tittle = args?.getString("TITTLE", "")
-            (parentFragment as MyLibraryFragment?)?.showFilterComponents()
-            (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
-                tittle ?: ""
-            )
-            viewModel.myFolderDetailHeader = tittle ?: ""
+        val args = arguments
+        tittle = args?.getString("TITTLE", "")
+        (parentFragment as MyLibraryFragment?)?.showFilterComponents()
+        (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
+            tittle ?: ""
+        )
+        viewModel.myFolderDetailHeader = tittle ?: ""
     }
 
     @SuppressLint("FragmentBackPressedCallback")
@@ -80,35 +80,39 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             )
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
-            viewModel.fetchOnPatternData(
-                viewModel.createJson(
-                    currentPage,
-                    value = ""
-                )
-            )  //Initial API call
+            if (viewModel.myfolderList.value.isNullOrEmpty()) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.isLoading.set(true)
+                cleaFilterDataWithApi()
+            } else {
+                updatePatterns()
+            }
+
 
 
         }
 
         binding.imageClearFilter.setOnClickListener {
-            viewModel.resultmapFolder.clear()
-            // viewModel.myfolderArryList.clear()
-            viewModel.myfolderMenu.clear()
-            viewModel.setList()
-            currentPage = 1
-            isLastPage = false
-            viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+            cleaFilterDataWithApi()
         }
 
         binding.textviewClear.setOnClickListener {
-            cleaFilterData()
+            cleaFilterDataWithApi()
         }
 
 
     }
 
+    fun clearFilterData() {
+        viewModel.resultmapFolder.clear()
+        // viewModel.myfolderArryList.clear()
+        viewModel.myfolderMenu.clear()
+        viewModel.setList()
+        currentPage = 1
+        isLastPage = false
+    }
 
-    fun cleaFilterData() {
+    fun cleaFilterDataWithApi() {
         viewModel.resultmapFolder.clear()
         // viewModel.myfolderArryList.clear()
         viewModel.myfolderMenu.clear()
@@ -146,7 +150,13 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         myFolderDetailListAdapter.setListData(items = viewModel.myfolderList.value ?: emptyList())
         binding.tvFilterResult.text =
             context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
-        (parentFragment as MyLibraryFragment?)?.onSetCount(getString(R.string.myfolder_detail_count,viewModel.folderTitle,viewModel.totalPatternCount))
+        (parentFragment as MyLibraryFragment?)?.onSetCount(
+            getString(
+                R.string.myfolder_detail_count,
+                viewModel.folderTitle,
+                viewModel.totalPatternCount
+            )
+        )
     }
 
     private fun setUIEvents() {
@@ -199,8 +209,10 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     private fun handleEvent(event: MyFolderViewModel.Event) = when (event) {
         is MyFolderViewModel.Event.OnMyFolderItemClick -> {
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
-                val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get())
+                val bundle = bundleOf(
+                    "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
+                )
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
                     bundle
@@ -215,7 +227,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
         }
         is MyFolderViewModel.Event.MyFolderSyncClick -> {
-            cleaFilterData()
+            cleaFilterDataWithApi()
             Log.d("pattern", "OnSyncClick : MyFolderDetail")
 
         }

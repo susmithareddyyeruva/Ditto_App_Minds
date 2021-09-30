@@ -99,7 +99,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             if (tabPosition == 0)
                 allPatternsFragment.cleaFilterData()
             else
-                myFolderDetailFragment.cleaFilterData()
+                myFolderDetailFragment.cleaFilterDataWithApi()
 
             if (binding.rvActions.adapter != null) {
                 binding.rvActions.adapter?.notifyDataSetChanged()
@@ -113,16 +113,16 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
         binding.toolbar.setNavigationOnClickListener {
             Log.d(" NavigationListener==", "SIZE: " + childFragmentManager.fragments.size)
-            val tabPosition = binding.tabLayout.selectedTabPosition
-            if (tabPosition == 1 && childFragmentManager.fragments.size > 2) {  //Detail screen
-                hideFilterComponents()
-                setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
-            }
             requireActivity().onBackPressed()
 
         }
+        handleBackPressCallback()
 
 
+    }
+
+    @SuppressLint("FragmentBackPressedCallback")
+    private fun handleBackPressCallback() {
         val backpressCall =
             object : OnBackPressedCallback(
                 true
@@ -130,12 +130,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 override fun handleOnBackPressed() {
                     val tabPosition = binding.tabLayout.selectedTabPosition
                     if (isEnabled) {
-                        isEnabled = false
+
                         if (tabPosition == 1 && childFragmentManager.fragments.size > 2) {  //Detail screen
                             hideFilterComponents()
                             setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
                             removeAll()
                         } else {
+                            isEnabled = false
                             childFragmentManager.fragments.forEach {
                                 childFragmentManager.popBackStack()
                             }
@@ -149,7 +150,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
         activity?.onBackPressedDispatcher?.addCallback(this, backpressCall)
     }
-
 
     fun removeAll() {
         val ft: FragmentTransaction = childFragmentManager.beginTransaction()
@@ -242,14 +242,18 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel.myLibraryTitle.set(
-            getString(R.string.pattern_library_count, AppState.getPatternCount()))
+            getString(R.string.pattern_library)
+        )
     }
 
     private fun setTabsAdapter() {
-        Log.d("Testing", ">>>>>>   MyLibraryFragment setTabsAdapter count  :" + binding.viewPager.adapter?.count)
+        Log.d(
+            "Testing",
+            ">>>>>>   MyLibraryFragment setTabsAdapter count  :" + binding.viewPager.adapter?.count
+        )
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
-        if(NetworkUtility.isNetworkAvailable(context)){
+        if (NetworkUtility.isNetworkAvailable(context)) {
             showFilterComponents()
             adapter.addFragment(
                 allPatternsFragment, getString(
@@ -261,7 +265,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     R.string.my_folders
                 ), this, this
             )
-        }else{
+        } else {
             hideFilterComponents()
             adapter.addFragment(
                 allPatternsFragment, getString(
@@ -283,7 +287,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
                     showFilterComponents()
                     viewModel.myLibraryTitle.set(
-                        getString(R.string.pattern_library_count, AppState.getPatternCount()))
+                        getString(R.string.pattern_library_count, AppState.getPatternCount())
+                    )
                     setToolbarTittle(
                         getString(
                             R.string.pattern_library_count,
@@ -294,7 +299,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
                 } else if (tab?.position == 1 && childFragmentManager.fragments.size == 2) {
                     hideFilterComponents()
-                    viewModel.myLibraryTitle.set( getString(R.string.my_folders))
+                    viewModel.myLibraryTitle.set(getString(R.string.my_folders))
                     setToolbarTittle(getString(R.string.my_folders))
                 }
             }
