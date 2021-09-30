@@ -113,6 +113,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         }
         binding.toolbar.setNavigationOnClickListener {
             Log.d(" NavigationListener==", "SIZE: " + childFragmentManager.fragments.size)
+            val tabPosition = binding.tabLayout.selectedTabPosition
+            if (tabPosition == 1 && childFragmentManager.fragments.size > 2) {  //Detail screen
+                hideFilterComponents()
+                setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
+            }
             requireActivity().onBackPressed()
 
         }
