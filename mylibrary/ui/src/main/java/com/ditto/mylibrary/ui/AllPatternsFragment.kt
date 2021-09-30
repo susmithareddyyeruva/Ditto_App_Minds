@@ -135,7 +135,7 @@ class AllPatternsFragment(
         setPatternCount.onSetCount(
             getString(
                 R.string.pattern_library_count,
-                AppState.getPatternCount()
+                viewModel.totalPatternCount
             )
         )
     }
@@ -249,18 +249,6 @@ class AllPatternsFragment(
             } else {
                 logger.d("OnClickPatternDesc failed")
             }
-        }
-
-        is AllPatternsViewModel.Event.OnDataUpdated -> {
-            bottomNavViewModel.showProgress.set(false)
-            viewModel.isLoading.set(false)
-            setPatternCount.onSetCount(
-                getString(
-                    R.string.pattern_library_count,
-                    AppState.getPatternCount()
-                )
-            )
-
         }
 
         is AllPatternsViewModel.Event.OnOptionsClicked -> {

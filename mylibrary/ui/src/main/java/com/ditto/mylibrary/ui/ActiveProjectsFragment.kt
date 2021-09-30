@@ -101,9 +101,6 @@ class ActiveProjectsFragment : BaseFragment() {
                 }
             }
 
-            is AllPatternsViewModel.Event.OnDataUpdated -> {
-                setPatternAdapter()
-            }
 
             is AllPatternsViewModel.Event.OnAddProjectClick -> {
                 val frag: MyLibraryFragment? = this.parentFragment as MyLibraryFragment?

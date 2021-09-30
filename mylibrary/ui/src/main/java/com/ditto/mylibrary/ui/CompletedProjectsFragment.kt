@@ -93,9 +93,7 @@ class CompletedProjectsFragment : BaseFragment() {
                 }
             }
 
-            is AllPatternsViewModel.Event.OnDataUpdated -> {
-                setPatternAdapter()
-            }
+
 
             is AllPatternsViewModel.Event.OnAddProjectClick -> {
                 view_pager.setCurrentItem(2)

@@ -360,8 +360,6 @@ class AllPatternsViewModel @Inject constructor(
          */
         object OnItemClick : Event()
 
-        object OnDataUpdated : Event()
-
         object OnAddProjectClick : Event()
 
         object OnPopupClick : Event()
