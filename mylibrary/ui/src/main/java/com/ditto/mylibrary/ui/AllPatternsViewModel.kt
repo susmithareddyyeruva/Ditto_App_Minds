@@ -110,7 +110,9 @@ class AllPatternsViewModel @Inject constructor(
         }
     }
 
-    //fetch data from repo (via usecase)
+    /**
+     * Fetching  all patterns from remote data source
+     */
     fun fetchOnPatternData(
         createJson: MyLibraryFilterRequestData
     ) {
