@@ -11,12 +11,7 @@ import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
-import com.ditto.mylibrary.domain.model.AddFavouriteResultDomain
-import com.ditto.mylibrary.domain.model.AllPatternsDomain
-import com.ditto.mylibrary.domain.model.PatternIdData
-import com.ditto.mylibrary.domain.model.ProdDomain
-import com.ditto.mylibrary.domain.model.FoldersResultDomain
-import com.ditto.mylibrary.domain.model.MyLibraryData
+import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.FolderRenameRequest
 import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
@@ -24,11 +19,7 @@ import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
-import core.OS
-import core.CONNECTION_EXCEPTION
-import core.ERROR_FETCH
-import core.UNKNOWN_HOST_EXCEPTION
-import core.USER_FIRST_NAME
+import core.*
 import core.appstate.AppState
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
@@ -70,7 +61,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
             "Bearer " + AppState.getToken()!!
         )
             .doOnSuccess {
-                logger.d("*****FETCH PATTERNS SUCCESS**")
+                if (!it.errorMsg.isNullOrEmpty()) {
+                    logger.d("*****FETCH PATTERNS SUCCESS 200 with Error **")
+                    throw java.lang.Exception(it.errorMsg)
+                } else {
+                    logger.d("*****FETCH PATTERNS SUCCESS**")
+                }
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -79,25 +75,20 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                try {
-                    logger.d("try block")
-                } catch (e: Exception) {
-                    logger.d( e.localizedMessage)
-                    errorMessage = when (e) {
-                        is UnknownHostException -> {
-                            USER_FIRST_NAME
-                            UNKNOWN_HOST_EXCEPTION
-                        }
-                        is ConnectException -> {
-                            CONNECTION_EXCEPTION
-                        }
-                        else -> {
-                           ERROR_FETCH
-                        }
+                logger.d(it.localizedMessage)
+                errorMessage = when (it) {
+                    is UnknownHostException -> {
+                        USER_FIRST_NAME
+                        UNKNOWN_HOST_EXCEPTION
+                    }
+                    is ConnectException -> {
+                        CONNECTION_EXCEPTION
+                    }
+                    else -> {
+                        it.localizedMessage
                     }
                 }
 
-                logger.d(it.localizedMessage)
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
@@ -118,8 +109,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(get:String): Single<Result<PatternIdData>> {
-        return tailornovaApiService.getPatternDetailsByDesignId(BuildConfig.TAILORNOVA_ENDURL+get, OS)
+    override fun getPatternData(get: String): Single<Result<PatternIdData>> {
+        return tailornovaApiService.getPatternDetailsByDesignId(
+            BuildConfig.TAILORNOVA_ENDURL + get,
+            OS
+        )
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
@@ -179,7 +173,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
             method = methodName
         )
             .doOnSuccess {
-                logger.d("*****FETCH FOLDER LIST SUCCESS**")
+                if (!it.errorMsg.isNullOrEmpty()) {
+                    logger.d("*****FETCH FOLDER LIST SUCCESS 200 with Error **")
+                    throw java.lang.Exception(it.errorMsg)
+                } else {
+                    logger.d("*****FETCH FOLDER LIST SUCCESS**")
+                }
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -223,6 +222,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
         )
             .doOnSuccess {
                 logger.d("*****methodName $methodName")
+                if (!it.errorMsg.isNullOrEmpty()) {
+                    logger.d("*****ADD  FOLDER API SUCCESS 200 with Error **")
+                    throw java.lang.Exception(it.errorMsg)
+                } else {
+                    logger.d("*****ADD  FOLDER API SUCCESS**")
+                }
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -231,20 +236,15 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                try {
-                    logger.d("try block")
-                } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
-                    errorMessage = when (e) {
-                        is UnknownHostException -> {
-                            UNKNOWN_HOST_EXCEPTION
-                        }
-                        is ConnectException -> {
-                            CONNECTION_EXCEPTION
-                        }
-                        else -> {
-                            ERROR_FETCH
-                        }
+                errorMessage = when (it) {
+                    is UnknownHostException -> {
+                        UNKNOWN_HOST_EXCEPTION
+                    }
+                    is ConnectException -> {
+                        CONNECTION_EXCEPTION
+                    }
+                    else -> {
+                        it.localizedMessage
                     }
                 }
 
@@ -268,6 +268,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
         )
             .doOnSuccess {
                 logger.d("*****methodName $methodName")
+                if (!it.errorMsg.isNullOrEmpty()) {
+                    logger.d("*****RENAME  FOLDER API SUCCESS 200 with Error **")
+                    throw java.lang.Exception(it.errorMsg)
+                } else {
+                    logger.d("*****RENAME  FOLDER API SUCCESS**")
+                }
+
             }
             .map {
                 Result.withValue(it.toDomain())
@@ -276,20 +283,15 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                try {
-                    logger.d("try block")
-                } catch (e: Exception) {
-                    logger.d( e.localizedMessage)
-                    errorMessage = when (e) {
-                        is UnknownHostException -> {
-                            UNKNOWN_HOST_EXCEPTION
-                        }
-                        is ConnectException -> {
-                            CONNECTION_EXCEPTION
-                        }
-                        else -> {
-                            ERROR_FETCH
-                        }
+                errorMessage = when (it) {
+                    is UnknownHostException -> {
+                        UNKNOWN_HOST_EXCEPTION
+                    }
+                    is ConnectException -> {
+                        CONNECTION_EXCEPTION
+                    }
+                    else -> {
+                        ERROR_FETCH
                     }
                 }
 
@@ -301,9 +303,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
     override fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>> {
-        return Single.fromCallable{
+        return Single.fromCallable {
             val offlinePatternData = offlinePatternDataDao.getTailernovaData()
-            if(offlinePatternData != null)
+            if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
                 Result.withError(FilterError(""))
@@ -311,9 +313,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
-        return Single.fromCallable{
+        return Single.fromCallable {
             val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id)
-            if(offlinePatternData != null)
+            if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toPatternIDDomain())
             else
                 Result.withError(FilterError(""))

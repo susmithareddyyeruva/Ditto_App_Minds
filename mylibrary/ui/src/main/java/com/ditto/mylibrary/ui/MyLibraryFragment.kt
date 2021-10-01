@@ -261,36 +261,27 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                         R.string.all_patterns
                     )
                 )
-                adapter.addFragment(
-                    allPatternsFragment, getString(
-                        R.string.all_patterns
-                    ), this, this
-                )
-            }else{
-                adapter.addFragment(
-                    allPatternsFragment, getString(
-                        R.string.all_patterns
-                    ), this, this
-                )
+
             }
+            adapter.addFragment(
+                allPatternsFragment, getString(
+                    R.string.all_patterns
+                ), this, this
+            )
+
             if (myFolderFragment.isAdded) {
                 adapter.remove(
                     myFolderFragment, getString(
                         R.string.my_folders
                     )
                 )
-                adapter.addFragment(
-                    myFolderFragment, getString(
-                        R.string.my_folders
-                    ), this, this
-                )
-            }else{
-                adapter.addFragment(
-                    myFolderFragment, getString(
-                        R.string.my_folders
-                    ), this, this
-                )
             }
+            adapter.addFragment(
+                myFolderFragment, getString(
+                    R.string.my_folders
+                ), this, this
+            )
+
 
         } else {
             hideFilterComponents()
