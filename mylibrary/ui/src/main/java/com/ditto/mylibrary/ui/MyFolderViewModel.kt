@@ -34,6 +34,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val isFilterResult: ObservableBoolean = ObservableBoolean(false)
     var myfolderList: MutableLiveData<List<ProdDomain>> = MutableLiveData()
+    var isPatternClicked=ObservableBoolean()
     var patterns = MutableLiveData<ArrayList<ProdDomain>>()
     var folderTitle: String? = ""
     var myfolderMap = HashMap<String, List<String>>()

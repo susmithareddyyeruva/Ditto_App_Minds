@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.FilterItems
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.MyFolderDetailListAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderdetailfragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
@@ -80,16 +83,15 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             )
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
-            if (viewModel.myfolderList.value.isNullOrEmpty()) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.isLoading.set(true)
-                cleaFilterDataWithApi()
+            if (viewModel.isPatternClicked.get()) {
+                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
             } else {
-                updatePatterns()
+                cleaFilterDataWithApi()
+
             }
-
-
-
+            viewModel.myfolderList.observeForever(Observer {
+                updatePatterns(viewModel.myfolderList)
+            })
         }
 
         binding.imageClearFilter.setOnClickListener {
@@ -145,9 +147,9 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     }
 
-    private fun updatePatterns() {
+    private fun updatePatterns(myfolderList: MutableLiveData<List<ProdDomain>>) {
         // Updating the adapter
-        myFolderDetailListAdapter.setListData(items = viewModel.myfolderList.value ?: emptyList())
+        myFolderDetailListAdapter.setListData(items = myfolderList.value ?: emptyList())
         binding.tvFilterResult.text =
             context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
         (parentFragment as MyLibraryFragment?)?.onSetCount(
@@ -208,6 +210,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyFolderViewModel.Event) = when (event) {
         is MyFolderViewModel.Event.OnMyFolderItemClick -> {
+            viewModel.isPatternClicked.set(true)
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
@@ -247,7 +250,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
              * Getting ALL PATTERNS LIST
              */
             isLoading = false
-            updatePatterns()
+            updatePatterns(viewModel.myfolderList)
         }
         is MyFolderViewModel.Event.OnMyFolderShowProgress -> {
             bottomNavViewModel.showProgress.set(true)
