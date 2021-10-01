@@ -162,6 +162,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                  showAlert()
              }*/
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
+                (parentFragment as MyLibraryFragment).isFolderDetailsClicked=true
                 Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)

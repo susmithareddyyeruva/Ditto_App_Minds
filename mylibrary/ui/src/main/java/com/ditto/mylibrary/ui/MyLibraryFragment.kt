@@ -50,7 +50,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
     private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
-
+     var isFolderDetailsClicked = false
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
@@ -24,6 +23,7 @@ import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
@@ -59,8 +59,10 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        logger.d("***********onViewCreated")
         val args = arguments
         tittle = args?.getString("TITTLE", "")
+        logger.d("***********$tittle")
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()
         (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
             tittle ?: ""
@@ -73,28 +75,12 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
         val args = arguments
+        logger.d("***********OnActivityCreated********")
         viewModel.folderTitle = args?.getString("TITTLE", "")
+        logger.d("***********${viewModel.folderTitle}")
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()
         viewModel.folderTitle?.let { (parentFragment as MyLibraryFragment?)?.setToolbarTittle(it) }
         initializeAdapter()
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.myfolderList.value = emptyList()
-            myFolderDetailListAdapter.setListData(
-                items = viewModel.myfolderList.value ?: emptyList()
-            )
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.isLoading.set(true)
-            if (viewModel.isPatternClicked.get()) {
-                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
-            } else {
-                cleaFilterDataWithApi()
-
-            }
-            viewModel.myfolderList.observeForever(Observer {
-                updatePatterns(viewModel.myfolderList)
-            })
-        }
-
         binding.imageClearFilter.setOnClickListener {
             cleaFilterDataWithApi()
         }
@@ -104,6 +90,38 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logger.d("***********onResume")
+        viewModel.disposable = CompositeDisposable()
+        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+            viewModel.myfolderList.value = emptyList()
+            myFolderDetailListAdapter.setListData(
+                items = viewModel.myfolderList.value ?: emptyList()
+            )
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
+            if ((parentFragment as MyLibraryFragment).isFolderDetailsClicked) {
+                cleaFilterDataWithApi()
+                (parentFragment as MyLibraryFragment).isFolderDetailsClicked = false
+            } else {
+                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+            }
+            //updatePatterns(viewModel.myfolderList)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        logger.d("***********onPause")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     fun clearFilterData() {
@@ -211,7 +229,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: MyFolderViewModel.Event) = when (event) {
         is MyFolderViewModel.Event.OnMyFolderItemClick -> {
-            viewModel.isPatternClicked.set(true)
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
@@ -236,6 +253,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
         }
         is MyFolderViewModel.Event.OnMyFolderResultSuccess -> {
+            logger.d("***********OnMyFolderResultSuccess")
             bottomNavViewModel.showProgress.set(false)
             viewModel.isLoading.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
@@ -313,7 +331,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     fun onSyncClick() {
         if (viewModel != null) {
             Log.d("pattern", "onSyncClick : viewModel")
-            if (AppState.getIsLogged()&&NetworkUtility.isNetworkAvailable(context)) {
+            if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.onSyncClick()
             }
@@ -331,5 +349,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         val item = viewModel.myfolderMenu
         return item
     }
+
 
 }

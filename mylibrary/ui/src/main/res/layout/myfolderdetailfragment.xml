@@ -145,7 +145,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/no_pattern"
-                android:visibility="@{viewModel.isLoading == false &amp;&amp;  viewModel.myfolderList.size()==0? View.VISIBLE:View.GONE}"
+                android:visibility="@{viewModel.isLoading == false &amp;&amp;  viewModel.totalPatternCount==0? View.VISIBLE:View.GONE}"
                 android:textSize="@dimen/txt_clear_filter"
                 android:textColor="@color/black"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
