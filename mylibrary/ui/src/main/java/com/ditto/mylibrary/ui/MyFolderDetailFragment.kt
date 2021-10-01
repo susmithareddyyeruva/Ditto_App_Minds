@@ -19,6 +19,7 @@ import com.ditto.mylibrary.ui.adapter.MyFolderDetailListAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderdetailfragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -312,7 +313,10 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     fun onSyncClick() {
         if (viewModel != null) {
             Log.d("pattern", "onSyncClick : viewModel")
-            viewModel.onSyncClick()
+            if (AppState.getIsLogged()&&NetworkUtility.isNetworkAvailable(context)) {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.onSyncClick()
+            }
         }
     }
 

@@ -190,6 +190,7 @@ class AllPatternsFragment(
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("Testing", ">>>>>>   All Patterns  onDestroyView ")
@@ -256,11 +257,15 @@ class AllPatternsFragment(
         }
 
         is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {
-          logger.d("OnSearchClick : AllPatternsFragment")
+            logger.d("OnSearchClick : AllPatternsFragment")
 
         }
         is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
-            cleaFilterData()
+            if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
+                cleaFilterData()
+            } else {
+                viewModel.fetchOfflinePatterns()
+            }
             logger.d("OnSyncClick : AllPatternsFragment")
 
         }
@@ -292,7 +297,7 @@ class AllPatternsFragment(
             viewModel.isLoading.set(false)
         }
         is AllPatternsViewModel.Event.OnAddProjectClick -> {
-            logger.d( "Add project")
+            logger.d("Add project")
         }
 
         is AllPatternsViewModel.Event.UpdateFilterImage -> {
@@ -384,7 +389,7 @@ class AllPatternsFragment(
 
     fun onSearchClick() {
         if (viewModel != null) {
-            logger.d( "onSearchClick : All Pattern")
+            logger.d("onSearchClick : All Pattern")
             viewModel.onSearchClick()
         }
     }

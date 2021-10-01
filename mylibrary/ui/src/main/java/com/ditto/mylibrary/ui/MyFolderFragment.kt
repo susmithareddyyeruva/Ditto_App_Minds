@@ -15,6 +15,7 @@ import com.ditto.mylibrary.ui.adapter.MyFolderAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderfragmentBinding
 import com.ditto.mylibrary.ui.util.Utility
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -88,9 +89,11 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     fun onSyncClick() {
         if (viewModel != null) {
-            logger.d("onSyncClick : MyFolder Fragment")
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.getFoldersList()
+            if (AppState.getIsLogged()&&NetworkUtility.isNetworkAvailable(context)) {
+                logger.d("onSyncClick : MyFolder Fragment")
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.getFoldersList()
+            }
         }
     }
 
