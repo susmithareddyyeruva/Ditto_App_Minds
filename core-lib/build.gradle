@@ -35,7 +35,8 @@ android {
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             /*buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
-            buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://splicing.tailornova.com/api/v1/patterns/\""
+         /*   buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://splicing.tailornova.com/api/v1/patterns/\""*/
+            buildConfigField "String", "TAILORNOVA_ENDURL", "\"http://ditto-splicing.tailornova.com:9901/api/v1/patterns/\""
 
         }
         debug {
@@ -51,7 +52,8 @@ android {
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
           /*  buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
-            buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://splicing.tailornova.com/api/v1/patterns/\""
+            /*buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://splicing.tailornova.com/api/v1/patterns/\""*/
+            buildConfigField "String", "TAILORNOVA_ENDURL", "\"http://ditto-splicing.tailornova.com:9901/api/v1/patterns/\""
 
         }
     }
