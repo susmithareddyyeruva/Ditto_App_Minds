@@ -163,7 +163,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
-            logger.d("*****update Workspace Success**")
+            logger.d("**Update Workspace Success**")
         }.map {
             Result.withValue(it.toDomain())
         }.onErrorReturn {
@@ -217,7 +217,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 errorMessage = e.message.toString()
             }
             Result.withError(
-                UpdateWorkspaceApiFetchError(errorMessage, it)
+                CreateWorkspaceAPIError(errorMessage, it)
             )
         }
     }
