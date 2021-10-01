@@ -28,4 +28,10 @@ class MyLibraryAdapter(supportFragmentManager: FragmentManager) : FragmentStateP
         mFragmentList.add(fragment)
         mFragmentTitleList.add(title)
     }
+
+    fun remove(fragment: Fragment, title: String) {
+
+        mFragmentList.remove(fragment)
+        mFragmentTitleList.remove(title)
+    }
 }

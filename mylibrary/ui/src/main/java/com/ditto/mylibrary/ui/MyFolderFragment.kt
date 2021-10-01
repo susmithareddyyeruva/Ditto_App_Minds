@@ -76,12 +76,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             }
         }
     }
+
     override fun onPause() {
         super.onPause()
         Log.d("Testing", ">>>>>>   Myfolder  onPause")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("Testing", ">>>>>>   Myfolder onDestroyView ")
@@ -95,6 +97,21 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 viewModel.getFoldersList()
             }
         }
+    }
+
+    private fun showAlert() {
+        bottomNavViewModel.showProgress.set(false)
+        val errorMessage = viewModel.errorString.get() ?: ""
+        core.ui.common.Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            core.ui.common.Utility.AlertType.NETWORK,
+            core.ui.common.Utility.Iconype.FAILED
+        )
     }
 
     private fun setUIEvents() {
@@ -112,7 +129,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             requireContext(),
             viewModel.folderList,
             this@MyFolderFragment,
-            this@MyFolderFragment)
+            this@MyFolderFragment
+        )
         binding.rvMyFolder.adapter = adapter
         adapter.viewModel = viewModel
     }
@@ -138,6 +156,11 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
 
             }
+            /* is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
+                 bottomNavViewModel.showProgress.set(false)
+                 viewModel.isLoading.set(false)
+                 showAlert()
+             }*/
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
                 Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
                 val args = Bundle()
@@ -166,6 +189,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
 
             }
+
             else -> {
                 logger.d("onSyncClick : MyLibraryViewModel.Event undefined")
 

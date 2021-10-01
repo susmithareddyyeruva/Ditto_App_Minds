@@ -26,7 +26,6 @@ import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
-import core.appstate.AppState
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -253,18 +252,46 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         )
         val cfManager: FragmentManager = childFragmentManager
         val adapter = MyLibraryAdapter(cfManager)
+
         if (NetworkUtility.isNetworkAvailable(context)) {
             showFilterComponents()
-            adapter.addFragment(
-                allPatternsFragment, getString(
-                    R.string.all_patterns
-                ), this, this
-            )
-            adapter.addFragment(
-                myFolderFragment, getString(
-                    R.string.my_folders
-                ), this, this
-            )
+            if (allPatternsFragment.isAdded) {
+                adapter.remove(
+                    allPatternsFragment, getString(
+                        R.string.all_patterns
+                    )
+                )
+                adapter.addFragment(
+                    allPatternsFragment, getString(
+                        R.string.all_patterns
+                    ), this, this
+                )
+            }else{
+                adapter.addFragment(
+                    allPatternsFragment, getString(
+                        R.string.all_patterns
+                    ), this, this
+                )
+            }
+            if (myFolderFragment.isAdded) {
+                adapter.remove(
+                    myFolderFragment, getString(
+                        R.string.my_folders
+                    )
+                )
+                adapter.addFragment(
+                    myFolderFragment, getString(
+                        R.string.my_folders
+                    ), this, this
+                )
+            }else{
+                adapter.addFragment(
+                    myFolderFragment, getString(
+                        R.string.my_folders
+                    ), this, this
+                )
+            }
+
         } else {
             hideFilterComponents()
             adapter.addFragment(
@@ -287,20 +314,16 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
                     showFilterComponents()
                     viewModel.myLibraryTitle.set(
-                        getString(R.string.pattern_library_count, AppState.getPatternCount())
-                    )
-                    setToolbarTittle(
-                        getString(
-                            R.string.pattern_library_count,
-                            AppState.getPatternCount()
-                        )
+                        getString(R.string.pattern_library)
                     )
 
 
                 } else if (tab?.position == 1 && childFragmentManager.fragments.size == 2) {
-                    hideFilterComponents()
-                    viewModel.myLibraryTitle.set(getString(R.string.my_folders))
-                    setToolbarTittle(getString(R.string.my_folders))
+                    if (NetworkUtility.isNetworkAvailable(context)) {
+                        hideFilterComponents()
+                        viewModel.myLibraryTitle.set(getString(R.string.my_folders))
+                    } else
+                        setTabsAdapter()
                 }
             }
 
@@ -331,6 +354,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
             }
             MyLibraryViewModel.Event.MyLibrarySync -> {
+                setTabsAdapter()
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
                     allPatternsFragment.onSyncClick()
