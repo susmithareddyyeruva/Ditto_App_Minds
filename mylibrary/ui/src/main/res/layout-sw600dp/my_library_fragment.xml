@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="com.ditto.mylibrary.ui.MyLibraryViewModel" />
+        <import type="android.view.View" />
 
     </data>
     <androidx.drawerlayout.widget.DrawerLayout
