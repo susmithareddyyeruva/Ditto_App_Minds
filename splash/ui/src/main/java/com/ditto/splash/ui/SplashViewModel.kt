@@ -42,17 +42,16 @@ class SplashViewModel @Inject constructor(
     }
 
     fun continueToApp() {
+ 
+        initialDelayWithDataFetch()
 
-        if (AppState.getToken().isNullOrEmpty()) {
-            utility.refreshToken()
-        } else {
-            if (Utility.isTokenExpired()) {
-                utility.refreshToken()
-            }
-        }
+    }
+
+    fun initialDelayWithDataFetch() {
+        utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
-            delay(2000)
+            delay(3000)
             if (AppState.getIsLogged()) {
                 fetchDbUser()
             } else { //Guest User
@@ -68,7 +67,6 @@ class SplashViewModel @Inject constructor(
 
     fun callToken() {
         utility.refreshToken()
-
     }
 
     private fun updateDb() {
@@ -83,7 +81,6 @@ class SplashViewModel @Inject constructor(
         userPhone = storageManager.getStringValue(USER_PHONE)
         userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
         userLastName = storageManager.getStringValue(USER_LAST_NAME)
-
         subscriptionEndDate = storageManager.getStringValue(SUBSCRIPTION_END_DATE)
     }
 
