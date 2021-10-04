@@ -395,7 +395,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
 
             MyLibraryViewModel.Event.MyLibrarySync -> {
-                if (NetworkUtility.isNetworkAvailable(context)) {
+                if (!NetworkUtility.isNetworkAvailable(context)) {
                     setTabsAdapter()
                 }
                 val tabPosition = binding.tabLayout.selectedTabPosition
