@@ -202,7 +202,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
-    private fun hideToolbar() {
+   /* private fun hideToolbar() {
         //  binding.tvSearch.visibility = View.GONE
         binding.patternLibraryAppBar.visibility = View.INVISIBLE
         binding.searchContainer.visibility = View.VISIBLE
@@ -212,7 +212,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         // binding.tvSearch.visibility = View.VISIBLE
         binding.patternLibraryAppBar.visibility = View.VISIBLE
         binding.searchContainer.visibility = View.GONE
-    }
+    }*/
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
@@ -357,7 +357,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
-                hideToolbar()
+                viewModel.isSearchEnabled.set(true)
+              //  hideToolbar()
                 binding.editSearch.requestFocus()
                 val imgr: InputMethodManager =
                     requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -392,7 +393,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     }
                 })
                 binding.tvCAncelDialog.setOnClickListener {
-                    showToolbar()
+                    viewModel.isSearchEnabled.set(false)
+                   // showToolbar()
                     requireActivity().window
                         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
                     binding.editSearch.text?.clear()

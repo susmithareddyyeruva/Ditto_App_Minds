@@ -29,6 +29,7 @@ class MyLibraryViewModel @Inject constructor(
     var myLibraryTitle: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+    var  isSearchEnabled=ObservableBoolean()
 
     init {
         // fetchOnBoardingData()
