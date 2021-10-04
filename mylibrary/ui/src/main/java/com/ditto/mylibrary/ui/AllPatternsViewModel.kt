@@ -65,7 +65,7 @@ class AllPatternsViewModel @Inject constructor(
     var ADD: String = "ADD"
     var RENAME: String = "RENAME"
     val GETFOLDER = "getFolders"
-     var clickedProduct: ProdDomain?=null
+    var clickedProduct: ProdDomain? = null
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -101,7 +101,7 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 patternList.value = result.data
                 totalPatternCount = patternList.value?.size ?: 0
-                logger.d("PATTERN  COUNT== $totalPatternCount" )
+                logger.d("PATTERN  COUNT== $totalPatternCount")
                 totalPageCount = totalPatternCount
                 currentPageId = totalPatternCount
                 uiEvents.post(Event.OnAllPatternResultSuccess)
@@ -128,7 +128,8 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("Testing", ">>>>>>   All Patterns handleFetchResult")
         when (result) {
             is Result.OnSuccess -> {
-                var temp: ArrayList<ProdDomain> = if(patternList.value==null) ArrayList() else patternList.value as ArrayList<ProdDomain>
+                var temp: ArrayList<ProdDomain> =
+                    if (patternList.value == null) ArrayList() else patternList.value as ArrayList<ProdDomain>
                 temp?.addAll(result.data.prod)
                 patternList.value = temp
 
@@ -164,11 +165,12 @@ class AllPatternsViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 if (result.data.responseStatus) {
-                    logger.d("ADD Folder API RESULT", )
+                    logger.d("ADD Folder API RESULT")
                     if (methodName == "update") {
                         uiEvents.post(Event.OnFolderCreated)
                     } else {
-                        product?.isFavourite = result.data.queryString.equals("method=addToFavorite")
+                        product?.isFavourite =
+                            result.data.queryString.equals("method=addToFavorite")
                         uiEvents.post(Event.OnAllPatternResultSuccess)
 
                     }
@@ -204,7 +206,7 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnItemClick)
     }
 
-    fun onItemClickPattern(id: String,orderNumber: String) {
+    fun onItemClickPattern(id: String, orderNumber: String) {
         if (id == "10140549") {
             clickedTailornovaID.set("1")
             clickedOrderNumber.set(orderNumber)
@@ -247,7 +249,7 @@ class AllPatternsViewModel @Inject constructor(
         folderResult: Result<FoldersResultDomain>?,
         product: ProdDomain
     ) {
-        logger.d("DIALOG   :handleFetchResultFolders",)
+        logger.d("DIALOG   :handleFetchResultFolders")
         folderMainList = arrayListOf<MyFolderList>(
             MyFolderList("New folder")
         )
@@ -435,6 +437,7 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("RESULT STRING===", resultString)
         return filterCriteria
     }
+
 
 
 }

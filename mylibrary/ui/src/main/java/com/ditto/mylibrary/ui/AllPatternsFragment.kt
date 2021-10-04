@@ -303,6 +303,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIconSetListener.onFilterApplied(true)
         }
+
         is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)

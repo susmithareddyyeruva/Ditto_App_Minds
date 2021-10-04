@@ -416,6 +416,7 @@
                     android:padding="@dimen/padding_x"
                     android:singleLine="true"
                     android:text="@string/cancel_search"
+                    android:onClick="@{() -> viewModel.onCancelSearchClick()}"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_12sp"
