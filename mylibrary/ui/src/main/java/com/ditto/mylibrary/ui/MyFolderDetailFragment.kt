@@ -97,17 +97,21 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         logger.d("***********onResume")
         viewModel.disposable = CompositeDisposable()
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.myfolderList.value = emptyList()
-            myFolderDetailListAdapter.setListData(
-                items = viewModel.myfolderList.value ?: emptyList()
-            )
+            /* viewModel.myfolderList.value = emptyList()
+             myFolderDetailListAdapter.setListData(
+                 items = viewModel.myfolderList.value ?: emptyList()
+             )*/
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
             if ((parentFragment as MyLibraryFragment).isFolderDetailsClicked) {
                 cleaFilterDataWithApi()
                 (parentFragment as MyLibraryFragment).isFolderDetailsClicked = false
             } else {
-                viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+                if (viewModel.myfolderList.value.isNullOrEmpty()) {
+                    viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+                } else {
+                    updatePatterns(viewModel.myfolderList)
+                }
             }
             //updatePatterns(viewModel.myfolderList)
         }
@@ -136,6 +140,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     fun cleaFilterDataWithApi() {
         viewModel.resultmapFolder.clear()
         // viewModel.myfolderArryList.clear()
+        viewModel.myfolderList.value = ArrayList()
         viewModel.myfolderMenu.clear()
         viewModel.setList()
         currentPage = 1
@@ -148,6 +153,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         // viewModel.myfolderArryList.clear()
         // viewModel.myfolderMenu.clear()
         // viewModel.setList()
+        viewModel.myfolderList.value = ArrayList()
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = terms))
@@ -158,6 +164,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             currentPage = 1
             isLastPage = false
             // viewModel.myfolderArryList.clear()
+            viewModel.myfolderList.value = ArrayList()
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
             val menu = viewModel.myfolderMenu
@@ -167,6 +174,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     }
 
     private fun updatePatterns(myfolderList: MutableLiveData<List<ProdDomain>>) {
+        bottomNavViewModel.showProgress.set(false)
         // Updating the adapter
         myFolderDetailListAdapter.setListData(items = myfolderList.value ?: emptyList())
         binding.tvFilterResult.text =
@@ -178,6 +186,11 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 viewModel.totalPatternCount
             )
         )
+        if (viewModel.isFilterResult.get()) {
+            (parentFragment as MyLibraryFragment?)?.onFilterApplied(true)
+        } else {
+            (parentFragment as MyLibraryFragment?)?.onFilterApplied(false)
+        }
     }
 
     private fun setUIEvents() {

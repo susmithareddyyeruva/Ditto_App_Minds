@@ -53,7 +53,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     var folderToRename: String = ""
     var myFolderDetailHeader: String = ""
 
-    fun onItemClickPattern(id: String,orderNumber: String) {
+    fun onItemClickPattern(id: String, orderNumber: String) {
         if (id == "10140549") {
             clickedTailornovaID.set("1")
             clickedOrderNumber.set(orderNumber)
@@ -179,11 +179,15 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         uiEvents.post(Event.OnMyFolderHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                myfolderList.value = result.data.prod
+                var temp: ArrayList<ProdDomain> =
+                    if (myfolderList.value == null) ArrayList() else myfolderList.value as ArrayList<ProdDomain>
+                temp?.addAll(result.data.prod)
+                myfolderList.value = temp
+                // myfolderList.value = result.data.prod
 
-               /* result.data.prod.forEach {
-                    myfolderArryList.add(it)
-                }*/
+                /* result.data.prod.forEach {
+                     myfolderArryList.add(it)
+                 }*/
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
@@ -373,6 +377,8 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         uiEvents.post(Event.OnMyFolderSearchClick)
     }
 
+
+
     sealed class Event {
         object OnMyFolderItemClick : MyFolderViewModel.Event()
         object OnMyFolderListUpdated : MyFolderViewModel.Event()
@@ -380,7 +386,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
         object MyFolderSyncClick : MyFolderViewModel.Event()
         object OnMyFolderSearchClick : MyFolderViewModel.Event()
-        object OnCreateFolder : MyFolderViewModel.Event()
         object OnMyFolderResultSuccess : MyFolderViewModel.Event()
         object OnNewFolderAdded : MyFolderViewModel.Event()
         object OnFolderRemoved : MyFolderViewModel.Event()

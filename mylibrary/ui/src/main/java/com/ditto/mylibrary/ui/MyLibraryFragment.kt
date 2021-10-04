@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -118,6 +117,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 logger.d("afterTextChanged")
+                performSearchOperation()
             }
 
             override fun beforeTextChanged(
@@ -144,8 +144,23 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
         })
 
+        performSearchOperation()
 
-        binding.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+
+
+
+        binding.imageCloseSearch.setOnClickListener {
+            binding.editSearch.editSearch?.text?.clear()
+        }
+
+
+        handleBackPressCallback()
+
+
+    }
+
+    private fun performSearchOperation() {
+        binding.editSearch.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (binding.editSearch.text.toString().isNotEmpty()) {
                     val imm =
@@ -157,20 +172,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     } else {
                         myFolderDetailFragment.callSearchResult(binding.editSearch.text.toString())
                     }
-                } else
 
-                    return@OnEditorActionListener true
+                }
+                return@setOnEditorActionListener true
             }
-            false
-        })
-        binding.imageCloseSearch.setOnClickListener {
-            binding.editSearch.editSearch?.text?.clear()
+            return@setOnEditorActionListener false
+
         }
-
-
-        handleBackPressCallback()
-
-
     }
 
     @SuppressLint("FragmentBackPressedCallback")
@@ -254,18 +262,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         })
 
     }
-
-    /* private fun hideToolbar() {
-         //  binding.tvSearch.visibility = View.GONE
-         binding.patternLibraryAppBar.visibility = View.INVISIBLE
-         binding.searchContainer.visibility = View.VISIBLE
-     }
-
-     private fun showToolbar() {
-         // binding.tvSearch.visibility = View.VISIBLE
-         binding.patternLibraryAppBar.visibility = View.VISIBLE
-         binding.searchContainer.visibility = View.GONE
-     }*/
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
@@ -417,58 +413,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 val imgr: InputMethodManager =
                     requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imgr.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
-
-            /*    binding.editSearch.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        logger.d("afterTextChanged")
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                        logger.d("beforeTextChanged")
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        logger.d("onTextChanged")
-                        if (s.toString().isNotEmpty()) {
-                            binding.imageCloseSearch.visibility = View.VISIBLE
-                        } else {
-                            binding.imageCloseSearch.visibility = View.GONE
-                        }
-                    }
-                })
-
-
-                binding.editSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (binding.editSearch.text.toString().isNotEmpty()) {
-                            val imm =
-                                requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.hideSoftInputFromWindow(binding.editSearch.getWindowToken(), 0)
-                            val tabPosition = binding.tabLayout.selectedTabPosition
-                            if (tabPosition == 0) {
-                                allPatternsFragment.callSearchResult(binding.editSearch.text.toString())
-                            } else {
-                                myFolderDetailFragment.callSearchResult(binding.editSearch.text.toString())
-                            }
-                        } else
-
-                            return@OnEditorActionListener true
-                    }
-                    false
-                })
-                binding.imageCloseSearch.setOnClickListener {
-                    binding.editSearch.editSearch?.text?.clear()
-                }*/
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0)
                     allPatternsFragment.onSearchClick()
@@ -493,6 +437,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
 
             }
+
         }
 
     override fun onSetCount(title: String) {
