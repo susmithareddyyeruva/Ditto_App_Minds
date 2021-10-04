@@ -307,6 +307,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_12sp"
+                    android:onClick="@{() -> viewModel.onCancelSearchClick()}"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintEnd_toEndOf="@id/guidlineSearchEnd"
                     app:layout_constraintStart_toEndOf="@+id/relSearch"
