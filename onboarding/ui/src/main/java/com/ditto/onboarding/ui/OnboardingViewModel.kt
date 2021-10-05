@@ -15,6 +15,7 @@ import com.ditto.storage.domain.StorageManager
 import core.VIDEO_URL
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -28,7 +29,8 @@ import javax.inject.Inject
 class OnboardingViewModel @Inject constructor(
     private val getOnboardingData: GetOnboardingData,
     private val storageManager: StorageManager,
-    private val context: Context
+    private val context: Context,
+    val utility: Utility
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<OnboardingData>> = MutableLiveData()
@@ -53,6 +55,9 @@ class OnboardingViewModel @Inject constructor(
     var userId: Int = 0
 
     init {
+        if (Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
         fetchDbUser()
     }
 

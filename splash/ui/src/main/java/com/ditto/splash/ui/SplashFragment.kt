@@ -1,27 +1,36 @@
 package com.ditto.splash.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.splash.ui.databinding.SplashActivityBinding
+import core.data.model.SoftwareUpdateResult
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
+import core.ui.rxbus.RxBus
+import core.ui.rxbus.RxBusEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
     private val viewModel: SplashViewModel by ViewModelDelegate()
     private lateinit var binding: SplashActivityBinding
-
+    var versionResult: SoftwareUpdateResult? = null
     @Inject
     lateinit var loggerFactory: LoggerFactory
-
+    var versionDisposable: CompositeDisposable? = null
     val logger: Logger by lazy {
         loggerFactory.create(SplashFragment::class.java.simpleName)
     }
@@ -86,6 +95,88 @@ class SplashFragment : BaseFragment() {
         bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)
         bottomNavViewModel.userLastNameBase.set(viewModel.userLastName)
         bottomNavViewModel.subscriptionEndDateBase.set(viewModel.subscriptionEndDate)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listenVersionEvents()
+    }
+    private fun listenVersionEvents() {
+        versionDisposable = CompositeDisposable()
+
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.versionReceived::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+
+                versionResult = it.versionReceived
+                if (versionResult?.response?.critical_update == true ||
+                    versionResult?.response?.force_update == true){
+                    showVersionPopup()
+                } else if (versionResult?.response?.version_update == true){
+                    viewModel.continueToApp()
+                } else {
+                    Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
+                    viewModel.continueToApp()
+                }
+            })
+
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                viewModel.continueToApp()
+            })
+    }
+    private fun showVersionPopup() {
+        var negativeText = versionResult?.response?.cancel!!
+        var positiveText = versionResult?.response?.confirm!!
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            versionResult?.response?.title!!,
+            versionResult?.response?.body!!,
+            negativeText,
+            positiveText,
+            this,
+            Utility.AlertType.SOFTWARE_UPDATE
+            ,
+            Utility.Iconype.WARNING
+        )
+    }
+    override fun onPause() {
+        super.onPause()
+        versionDisposable?.clear()
+        versionDisposable?.dispose()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        versionDisposable?.clear()
+        versionDisposable?.dispose()
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        val  packageName = context?.packageName
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+        }
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        if (versionResult?.response?.force_update == true){
+            requireActivity().finishAffinity()
+        } else {
+            viewModel.continueToApp()
+        }
 
     }
 }

@@ -8,6 +8,7 @@ import com.ditto.mylibrary.domain.GetMylibraryData
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -19,7 +20,8 @@ import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
-    private val getMylibraryData: GetMylibraryData
+    private val getMylibraryData: GetMylibraryData,
+    val utility: Utility
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
@@ -30,6 +32,9 @@ class MyLibraryViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
+        if (Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
         fetchOnBoardingData()
         fetchDbUser()
     }

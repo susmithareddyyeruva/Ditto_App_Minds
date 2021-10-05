@@ -38,9 +38,11 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        /*if (Utility.isTokenExpired()){
-            utility.refreshToken()
-        }*/
+        utility.checkVersion()
+    }
+
+    fun continueToApp() {
+ 
         initialDelayWithDataFetch()
 
     }

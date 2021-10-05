@@ -76,6 +76,10 @@
             android:id="@+id/action_homeFragment_to_privacyAndSettingFragment"
             app:destination="@id/privacyAndSettingFragment" />
 
+        <action
+            android:id="@+id/action_homeFragment_to_nav_graph_softwareUpdate"
+            app:destination="@id/softwareupdate" />
+
 
     </fragment>
 
@@ -129,6 +133,11 @@
         android:id="@+id/privacyAndSettingFragment"
         android:name="com.ditto.menuitems_ui.privacyandsettings.ui.PrivacyAndSettingFragment"
         android:label="PrivacyAndSettingFragment" />
+
+    <fragment
+        android:id="@+id/softwareupdate"
+        android:name="com.ditto.menuitems_ui.softwareupdate.SoftwareUpdateFragment"
+        android:label="SoftwareUpdateFragment" />
 
 
 </navigation>

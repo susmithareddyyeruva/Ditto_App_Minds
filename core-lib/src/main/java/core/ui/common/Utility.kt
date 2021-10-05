@@ -7,12 +7,15 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -27,12 +30,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.TokenViewModel
+import core.ui.VersionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
@@ -48,13 +53,18 @@ import kotlin.math.PI
  * Helper Utility class
  */
 class Utility @Inject constructor(
-    private val tokenViewModel: TokenViewModel
+    private val tokenViewModel: TokenViewModel,
+    private val versionViewModel: VersionViewModel
 ) {
 
 
     fun refreshToken(){
         AppState.saveToken("",0)
         tokenViewModel.calltoken()
+    }
+
+    fun checkVersion(){
+        versionViewModel.checkVersion()
     }
 
     enum class AlertType {
@@ -72,12 +82,14 @@ class Utility @Inject constructor(
         PDF,
         CUT_COMPLETE,
         CONNECTIVITY,
-        SOC_CONNECT
+        SOC_CONNECT,
+        SOFTWARE_UPDATE
     }
 
     enum class Iconype {
         SUCCESS,
         FAILED,
+        WARNING,
         NONE
     }
 
@@ -543,6 +555,8 @@ class Utility @Inject constructor(
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
                     } else if (imgtyp.equals(Iconype.FAILED)) {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                    } else if (imgtyp.equals(Iconype.WARNING)) {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_warning))
                     } else {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
                     }
