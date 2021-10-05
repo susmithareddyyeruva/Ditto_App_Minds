@@ -28,6 +28,7 @@ import com.google.android.material.tabs.TabLayout
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
@@ -36,7 +37,7 @@ import javax.inject.Inject
 
 
 class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
-    AllPatternsFragment.FilterIconSetListener {
+    AllPatternsFragment.FilterIconSetListener, Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -396,6 +397,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             MyLibraryViewModel.Event.MyLibrarySync -> {
                 if (!NetworkUtility.isNetworkAvailable(context)) {
+                    showAlert()
                     setTabsAdapter()
                 }
                 val tabPosition = binding.tabLayout.selectedTabPosition
@@ -508,4 +510,31 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
+    private fun showAlert() {
+        val errorMessage = getString(R.string.no_internet_available)
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+      //  TODO("Not yet implemented")
+    }
 }
