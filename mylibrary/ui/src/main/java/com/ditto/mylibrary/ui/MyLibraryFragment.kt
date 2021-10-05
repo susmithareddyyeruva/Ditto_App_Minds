@@ -28,7 +28,6 @@ import com.google.android.material.tabs.TabLayout
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
-import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
@@ -37,7 +36,7 @@ import javax.inject.Inject
 
 
 class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
-    AllPatternsFragment.FilterIconSetListener, Utility.CustomCallbackDialogListener {
+    AllPatternsFragment.FilterIconSetListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -396,18 +395,21 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
 
             MyLibraryViewModel.Event.MyLibrarySync -> {
-                if (!NetworkUtility.isNetworkAvailable(context)) {
-                    showAlert()
-                }
-                setTabsAdapter()
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
+                    setTabsAdapter()
                     allPatternsFragment.onSyncClick()
                 } else {
-                    if (childFragmentManager.fragments.size == 2) {
-                        myFolderFragment.onSyncClick()
-                    } else
-                        myFolderDetailFragment.onSyncClick()
+                    if (NetworkUtility.isNetworkAvailable(context)) {
+                        if (childFragmentManager.fragments.size == 2) {
+                            myFolderFragment.onSyncClick()
+                        } else
+                            myFolderDetailFragment.onSyncClick()
+                    } else {
+                        setTabsAdapter()
+                        allPatternsFragment.onSyncClick()
+                    }
+
                 }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
@@ -428,7 +430,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             }
             MyLibraryViewModel.Event.OnCancelClick -> {
                 viewModel.isSearchEnabled.set(false)
-                // showToolbar()
                 requireActivity().window
                     .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
                 binding.editSearch.text?.clear()
@@ -510,31 +511,4 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
-    private fun showAlert() {
-        val errorMessage = getString(R.string.no_internet_available)
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            errorMessage,
-            "",
-            getString(R.string.str_ok),
-            this,
-            Utility.AlertType.NETWORK,
-            Utility.Iconype.FAILED
-        )
-    }
-
-    override fun onCustomPositiveButtonClicked(
-        iconype: Utility.Iconype,
-        alertType: Utility.AlertType
-    ) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onCustomNegativeButtonClicked(
-        iconype: Utility.Iconype,
-        alertType: Utility.AlertType
-    ) {
-        //  TODO("Not yet implemented")
-    }
 }

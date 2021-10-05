@@ -264,6 +264,8 @@ class AllPatternsFragment(
             if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
                 cleaFilterData()
             } else {
+                viewModel.errorString.set(getString(R.string.no_internet_available))
+                showAlert()
                 viewModel.fetchOfflinePatterns()
             }
             logger.d("OnSyncClick : AllPatternsFragment")

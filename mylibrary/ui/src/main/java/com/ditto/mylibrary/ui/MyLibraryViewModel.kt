@@ -32,6 +32,7 @@ class MyLibraryViewModel @Inject constructor(
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var  isSearchEnabled=ObservableBoolean()
+    var tabPosition: Int=0
     private var patternSearchName = MutableLiveData<String?>()
     var searchText: LiveData<String?>? = null
         get() = patternSearchName
