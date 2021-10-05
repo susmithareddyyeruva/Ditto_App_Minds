@@ -220,6 +220,7 @@
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:background="@color/white"
+                android:clickable="true"
                 android:visibility="@{viewModel.isSearchEnabled() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/tabLayout"
                 app:layout_constraintEnd_toEndOf="parent"

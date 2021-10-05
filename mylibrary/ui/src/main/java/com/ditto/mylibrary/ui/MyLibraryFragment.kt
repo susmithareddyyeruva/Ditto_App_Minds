@@ -29,6 +29,7 @@ import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
 import kotlinx.android.synthetic.main.my_library_fragment.view.*
@@ -112,7 +113,9 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.toolbar.setNavigationOnClickListener {
             Log.d(" NavigationListener==", "SIZE: " + childFragmentManager.fragments.size)
             requireActivity().onBackPressed()
-
+        }
+        binding.editSearch.setOnClickListener {
+            performSearchOperation()
         }
         binding.editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -511,4 +514,18 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("Testing", ">>>>>>   All Patterns  onResume ")
+        viewModel.disposable = CompositeDisposable()
+        setUIEvents()
+        setTabsAdapter()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("Testing", ">>>>>>   All Patterns  onPause ")
+        viewModel.disposable.clear()
+        viewModel.disposable.dispose()
+    }
 }
