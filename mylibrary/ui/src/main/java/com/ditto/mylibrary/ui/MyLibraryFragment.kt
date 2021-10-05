@@ -398,8 +398,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             MyLibraryViewModel.Event.MyLibrarySync -> {
                 if (!NetworkUtility.isNetworkAvailable(context)) {
                     showAlert()
-                    setTabsAdapter()
                 }
+                setTabsAdapter()
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
                     allPatternsFragment.onSyncClick()
@@ -535,6 +535,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-      //  TODO("Not yet implemented")
+        //  TODO("Not yet implemented")
     }
 }
