@@ -51,7 +51,7 @@ class SplashViewModel @Inject constructor(
         utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
-            delay(3000)
+//            delay(3000)
             if (AppState.getIsLogged()) {
                 fetchDbUser()
             } else { //Guest User

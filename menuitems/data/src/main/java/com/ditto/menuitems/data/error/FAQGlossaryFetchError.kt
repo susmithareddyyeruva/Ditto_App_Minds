@@ -4,6 +4,6 @@ import non_core.lib.error.FeatureError
 
 
 open class FAQGlossaryFetchError(
-    message: String = "FAQ and Glossary  fetch Failed",
+    message: String = "FAQs and Glossary  fetch Failed",
     throwable: Throwable? = null
 ) : FeatureError(message, throwable)
