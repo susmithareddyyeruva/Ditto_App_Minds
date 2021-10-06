@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:text="@string/double_tap_to_zoom"
+            android:text="@string/tap_to_enlarge"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_double_tap_zoom"
             android:visibility="@{viewModel.showDoubleTouchToZoom}"
