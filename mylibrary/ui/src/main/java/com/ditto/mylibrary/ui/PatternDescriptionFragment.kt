@@ -58,7 +58,8 @@ import java.net.Socket
 import java.util.*
 import javax.inject.Inject
 
-class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,Utility.CustomCallbackDialogListener {
+class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,
+    Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -95,7 +96,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern details")
+        context?.getString(R.string.pattern_details)?.let {
+            (activity as BottomNavigationActivity).setToolbarTitle(
+                it
+            )
+        }
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
@@ -125,15 +130,23 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
     }
 
-    private fun setUpUiForGuestUser(){
+    private fun setUpUiForGuestUser() {
         setData()
-        setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
+        setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
         setPatternImage()
 
     }
 
-    private fun setVisibilityForViews(buttonText:String,showStatusLayout:Boolean,isSubscriptionExpired:Boolean
-    ,showActiveText:Boolean,showPurchasedText:Boolean,showLine:Boolean,showResumeButton:Boolean,showWorkspaceOrRenewSubscriptionButton: Boolean){
+    private fun setVisibilityForViews(
+        buttonText: String,
+        showStatusLayout: Boolean,
+        isSubscriptionExpired: Boolean,
+        showActiveText: Boolean,
+        showPurchasedText: Boolean,
+        showLine: Boolean,
+        showResumeButton: Boolean,
+        showWorkspaceOrRenewSubscriptionButton: Boolean
+    ) {
         viewModel.resumeOrSubscription.set(buttonText)
         viewModel.isStatusLayoutVisible.set(showStatusLayout)
         viewModel.isSubscriptionExpired.set(isSubscriptionExpired)
@@ -142,27 +155,45 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         viewModel.showLine.set(showLine)
         viewModel.showResumButton.set(showResumeButton)
         viewModel.showWorkspaceOrRenewSubscriptionButton.set(showWorkspaceOrRenewSubscriptionButton)
-        if(showPurchasedText && !showActiveText){
-            binding.purchasedPattern.setPadding(0,0,0,0)
+        if (showPurchasedText && !showActiveText) {
+            binding.purchasedPattern.setPadding(0, 0, 0, 0)
         }
     }
 
     private fun setUIForLoggedInUser() {
         setData()
-        when(viewModel.clickedID.get()){
-             1-> setVisibilityForViews("RESUME",true,false,true,false, false,true,false)
-            4-> setVisibilityForViews("WORKSPACE",true,false,false,true, false,false,true)
-            8-> setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
-            9-> setVisibilityForViews("RESUME",true,false,true,true, true,true,false)
-            10-> setVisibilityForViews("RENEW SUBSCRIPTION",false,true,false,false, false,false,true)
-            else->setVisibilityForViews("WORKSPACE",false,false,false,false, false,false,true)
+        when (viewModel.clickedID.get()) {
+            1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+            4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
+            8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
+            9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
+            10 -> setVisibilityForViews(
+                "RENEW SUBSCRIPTION",
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                true
+            )
+            else -> setVisibilityForViews(
+                "WORKSPACE",
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+            )
         }
         setPatternImage()
 
 
     }
 
-    private fun setData(){
+    private fun setData() {
         viewModel.patternName.set(viewModel.data.value?.patternName)
         viewModel.patternDescription.set(viewModel.data.value?.description)
         viewModel.patternStatus.set(viewModel.data.value?.status)
@@ -297,7 +328,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun sendCalibrationPattern() {
-        logger.d("TRACE_ Projection : performTransform  Start " + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : performTransform  Start " + Calendar.getInstance().timeInMillis)
         showProgress(true)
         val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
         viewModel.disposable += Observable.fromCallable {
@@ -342,7 +373,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>, isQuickCheck: Boolean) {
-        logger.d("TRACE_ Projection : performTransform  finish " + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : performTransform  finish " + Calendar.getInstance().timeInMillis)
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
         alert?.dismiss()
         when (result.first) {
@@ -366,7 +397,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private suspend fun sendSampleImage(result: Bitmap, isQuickCheck: Boolean) {
         //saveBitmap(result)
-        logger.d("TRACE_ Projection : sendSampleImage  Start " + Calendar. getInstance().timeInMillis)
+        logger.d("TRACE_ Projection : sendSampleImage  Start " + Calendar.getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
             var soc: Socket? = null
             try {
@@ -410,7 +441,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
             } finally {
                 soc?.close()
-                logger.d("TRACE_ Projection : sendSampleImage  Finish " + Calendar. getInstance().timeInMillis)
+                logger.d("TRACE_ Projection : sendSampleImage  Finish " + Calendar.getInstance().timeInMillis)
             }
         }
     }
@@ -442,9 +473,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setUpUiBasedOnLoggedIn()
             }
 
-            is PatternDescriptionViewModel.Event.onSubscriptionClicked ->{
+            is PatternDescriptionViewModel.Event.onSubscriptionClicked -> {
                 logger.d("onSubscriptionClicked")
-                Utility.redirectToExternalBrowser(requireContext(),"http://www.dittopatterns.com")
+                Utility.redirectToExternalBrowser(requireContext(), "http://www.dittopatterns.com")
 
             }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
@@ -472,7 +503,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             REQUEST_ACTIVITY_RESULT_CODE
         )
     }
-
 
 
     private fun setPatternImage() {
@@ -504,7 +534,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 //baseViewModel.activeSocketConnection.set(true)
                 showCalibrationDialog()
             } else if (data?.data.toString().equals("skip")) {
-               enterWorkspace()
+                enterWorkspace()
             }
         }
     }
@@ -539,42 +569,44 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
         listenVersionEvents()
     }
+
     private fun listenVersionEvents() {
         versionDisposable = CompositeDisposable()
         versionDisposable?.plusAssign(
             RxBus.listen(RxBusEvent.checkVersion::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.isCheckVersion){
-                    !it.isCheckVersion
-                    bottomNavViewModel.showProgress.set(true)
-                    viewModel.versionCheck()
-                }
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.isCheckVersion) {
+                        !it.isCheckVersion
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.versionCheck()
+                    }
+                })
         versionDisposable?.plusAssign(
             RxBus.listen(RxBusEvent.versionReceived::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
 
-                bottomNavViewModel.showProgress.set(false)
-                versionResult = it.versionReceived
-                showVersionPopup()
+                    bottomNavViewModel.showProgress.set(false)
+                    versionResult = it.versionReceived
+                    showVersionPopup()
 
-            })
+                })
 
         versionDisposable?.plusAssign(
             RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
-                bottomNavViewModel.showProgress.set(false)
-                showAlert(it.versionerrorReceived)
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    bottomNavViewModel.showProgress.set(false)
+                    showAlert(it.versionerrorReceived)
+                })
     }
 
     override fun onPause() {
@@ -588,7 +620,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
         var status = Utility.Iconype.WARNING
-        if (versionResult?.response?.version_update == false){
+        if (versionResult?.response?.version_update == false) {
             negativeText = ""
             positiveText = "OK"
             status = Utility.Iconype.SUCCESS
@@ -600,11 +632,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             negativeText,
             positiveText,
             this,
-            Utility.AlertType.SOFTWARE_UPDATE
-            ,
+            Utility.AlertType.SOFTWARE_UPDATE,
             status
         )
     }
+
     private fun enterWorkspace() {
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
@@ -713,13 +745,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         dialogBuilder
             .setCancelable(false)
-            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-            })
-            .setPositiveButton(getString(R.string.launch_camera), DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-                sendCalibrationPattern()
-            })
+            .setNegativeButton(
+                getString(R.string.cancel),
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                })
+            .setPositiveButton(
+                getString(R.string.launch_camera),
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                    sendCalibrationPattern()
+                })
 
         val alertCalibration = dialogBuilder.create()
         alertCalibration.setView(layout)
@@ -801,12 +837,22 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
             Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.version_update == true){
-                    val  packageName = "com.joann.ditto"
+                if (versionResult?.response?.version_update == true) {
+                    val packageName = "com.joann.ditto"
                     try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=$packageName")
+                            )
+                        )
                     } catch (e: ActivityNotFoundException) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                            )
+                        )
                     }
                 }
             }
@@ -836,14 +882,23 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
             alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.force_update == true){
+                if (versionResult?.response?.force_update == true) {
                     requireActivity().finishAffinity()
                 }
             }
         }
     }
+
     private fun showAlert(versionerrorReceived: String) {
-        Utility.getCommonAlertDialogue(requireContext(),"",versionerrorReceived,"",getString(com.ditto.menuitems_ui.R.string.str_ok),this, Utility.AlertType.NETWORK
-            ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            versionerrorReceived,
+            "",
+            getString(com.ditto.menuitems_ui.R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
     }
 }

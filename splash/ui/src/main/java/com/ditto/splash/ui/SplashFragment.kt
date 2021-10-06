@@ -117,7 +117,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
                 } else if (versionResult?.response?.version_update == true){
                     viewModel.continueToApp()
                 } else {
-                    Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
                     viewModel.continueToApp()
                 }
             })
@@ -166,6 +166,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
         }
+        requireActivity().finishAffinity()
     }
 
     override fun onCustomNegativeButtonClicked(

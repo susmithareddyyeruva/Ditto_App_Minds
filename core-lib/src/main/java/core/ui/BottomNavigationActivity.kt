@@ -230,7 +230,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                             groupPosition
                         )
                     )?.get(childPosition)
-                        ?.menuName.equals(this.getString(R.string.str_softwareupdate))
+                        ?.menuName.equals(this.getString(R.string.str_menu_softwareupdate))
                 ) {
                     RxBus.publish(RxBusEvent.checkVersion(true))
 
@@ -522,7 +522,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 logoutUser(false)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
-        } else if (selectedmenu.equals(this.getString(R.string.about_app_policies))) {
+        } else if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))) {
             if (navController.currentDestination?.label?.equals("Home")!! ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)

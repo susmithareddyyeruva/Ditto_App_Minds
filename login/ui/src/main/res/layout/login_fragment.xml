@@ -51,13 +51,15 @@
                                 android:id="@+id/iv_viewpager_login"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@color/color_login_image_desc_background"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/ic_placeholder"
-                                android:background="@color/color_login_image_desc_background"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </FrameLayout>
 
@@ -131,7 +133,7 @@
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:paddingStart="@dimen/text_view_we_got_padding_start"
                             android:paddingBottom="5dp"
-                            android:text=" The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
+                            android:text="@string/login_app_description"
                             android:textColor="@color/edittext_fill_white"
                             android:textSize="@dimen/textview_image_dec"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -163,9 +165,10 @@
                             android:background="@drawable/ic_button_green"
                             android:fontFamily="@font/avenir_next_lt_pro_bold"
                             android:paddingStart="@dimen/text_view_we_got_padding_start"
+                            android:gravity="center_vertical"
                             android:paddingTop="@dimen/text_view_we_got_padding_top"
                             android:paddingBottom="@dimen/text_view_we_got_padding_bottom"
-                            android:text="@string/we_got_this"
+                            android:text="@string/login_app_title"
                             android:textColor="@color/White"
                             android:textSize="@dimen/textview_we_got_this"
                             app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline"
