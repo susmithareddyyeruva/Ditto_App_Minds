@@ -136,7 +136,7 @@ class AllPatternsFragment(
         setPatternCount.onSetCount(
             getString(
                 R.string.pattern_library_count,
-                count
+                viewModel.totalPatternCount
             )
         )
     }
@@ -276,7 +276,10 @@ class AllPatternsFragment(
             val count = String.format("%02d", viewModel.totalPatternCount)
             baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(
-                count
+                getString(
+                    R.string.pattern_library_count,
+                    viewModel.totalPatternCount
+                )
             )
             /**
              * Getting ALL PATTERNS LIST

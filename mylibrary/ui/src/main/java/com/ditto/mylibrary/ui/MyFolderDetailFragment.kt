@@ -184,7 +184,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             getString(
                 R.string.myfolder_detail_count,
                 viewModel.folderTitle,
-                count
+                viewModel.totalPatternCount
             )
         )
         if (viewModel.isFilterResult.get()) {

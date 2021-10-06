@@ -356,9 +356,15 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                      */
 
                     showFilterComponents()
-                    viewModel.myLibraryTitle.set(
-                        getString(R.string.pattern_library)
-                    )
+                    if (baseViewModel.totalCount.equals(0)) {
+                        viewModel.myLibraryTitle.set(
+                            getString(R.string.pattern_library)
+                        )
+                    } else {
+                        viewModel.myLibraryTitle.set(
+                            getString(R.string.pattern_library_count, baseViewModel.totalCount)
+                        )
+                    }
 
 
                 } else if (tab?.position == 1 && childFragmentManager.fragments.size == 2) {
