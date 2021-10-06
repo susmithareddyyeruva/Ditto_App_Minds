@@ -165,6 +165,7 @@
                             android:background="@drawable/ic_button_green"
                             android:fontFamily="@font/avenir_next_lt_pro_bold"
                             android:paddingStart="@dimen/text_view_we_got_padding_start"
+                            android:gravity="center_vertical"
                             android:paddingTop="@dimen/text_view_we_got_padding_top"
                             android:paddingBottom="@dimen/text_view_we_got_padding_bottom"
                             android:text="@string/login_app_title"
