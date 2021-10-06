@@ -9,6 +9,6 @@
     <fragment
         android:id="@+id/aboutAppFragment"
         android:name="com.ditto.menuitems_ui.aboutapp.fragment.AboutAppFragment"
-        android:label="About The App  Policies"
+        android:label="@string/about_the_app_amp_policies"
         tools:layout="@layout/fragment_about_app" />
 </navigation>
