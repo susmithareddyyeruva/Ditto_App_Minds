@@ -12,7 +12,7 @@ import core.appstate.AppState
 internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
     return this.map {
         ProdDomain(
-            iD = it.id,
+            iD = it.designId,
             image = it.thumbnailImageName,
             prodName = it.patternName,
             description = it.description,
@@ -39,7 +39,7 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
 
 internal fun OfflinePatterns.toDomain(): ProdDomain {
     return ProdDomain(
-        iD = this.id,
+        iD = this.designId,
         image = this.thumbnailImageUrl,
         prodName = this.patternName,
         description = this.description,
@@ -65,7 +65,7 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
 internal fun PatternIdData.toDomain(): OfflinePatterns {
     return OfflinePatterns(
         custId = AppState.getCustID(),
-        id = this.designId,
+        designId = this.designId,
         tailornaovaDesignId = this.designId,
         patternName = this.patternName,
         description = this.description,

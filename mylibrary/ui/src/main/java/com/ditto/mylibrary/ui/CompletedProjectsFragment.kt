@@ -74,7 +74,11 @@ class CompletedProjectsFragment : BaseFragment() {
 
         //for sorting
         Collections.sort(patternData,
-            Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.patternName.compareTo(rhs!!.patternName) })
+            Comparator<MyLibraryData?> { lhs, rhs -> rhs?.patternName?.let {
+                lhs!!.patternName?.compareTo(
+                    it
+                )
+            }!! })
 
         patternData?.let { adapter.setListData(it) }
     }

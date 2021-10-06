@@ -52,7 +52,7 @@ data class OfflinePatterns(
     @ColumnInfo(name = "designId")
     @SerializedName("designId")
     @NotNull
-    var id: String,
+    var designId: String,
 
     @ColumnInfo(name = "patternName")
     @SerializedName("patternName")

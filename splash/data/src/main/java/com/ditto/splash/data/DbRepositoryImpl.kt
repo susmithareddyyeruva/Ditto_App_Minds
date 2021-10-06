@@ -51,7 +51,8 @@ class DbRepositoryImpl @Inject constructor(
         return Single.fromCallable {
             val data = dbPatternsDao.getPatternsData()
             if (data.isEmpty()) {
-                TraceDataDatabase.preLoadPatternData(context)
+                //TraceDataDatabase.preLoadPatternData(context)
+                //todo discuss with nivedh
             }
         }
     }

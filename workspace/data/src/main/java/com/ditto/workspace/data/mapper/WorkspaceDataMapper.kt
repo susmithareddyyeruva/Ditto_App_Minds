@@ -177,7 +177,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
             .toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
             ?.toMutableList(),
-        id = this.id,
+        id = this.designId,
         patternName = this.patternName,
         description = this.description,
         patternType = this.patternType,
