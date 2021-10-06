@@ -54,13 +54,13 @@ data class OfflinePatterns(
     @NotNull
     var id: String,
 
-    @ColumnInfo(name = "name")
-    @SerializedName("name")
-    var name:String ="",
+    @ColumnInfo(name = "patternName")
+    @SerializedName("patternName")
+    var patternName:String? ="",
 
     @ColumnInfo(name = "description")
     @SerializedName("description")
-    var description:String="",
+    var description:String?="",
 
     @ColumnInfo(name = "patternType")
     @SerializedName("patternType")
@@ -88,11 +88,11 @@ data class OfflinePatterns(
 
     @ColumnInfo(name="thumbnailImageUrl")
     @SerializedName("thumbnailImageUrl")
-    var thumbnailImageUrl:String="",
+    var thumbnailImageUrl:String?="",
 
     @ColumnInfo(name="thumbnailImageName")
     @SerializedName("thumbnailImageName")
-    var thumbnailImageName:String="",
+    var thumbnailImageName:String?="",
 
     @ColumnInfo(name="thumbnailEnlargedImageName")
     @SerializedName("thumbnailEnlargedImageName")

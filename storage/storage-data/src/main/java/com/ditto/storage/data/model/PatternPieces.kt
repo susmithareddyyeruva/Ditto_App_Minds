@@ -15,7 +15,7 @@ data class PatternPieces (
     var tabCategory: String? = "",
     var cutQuantity: String? = "",
     var splice: Boolean? = false,
-    var spliceDirection: String? = "",
+    var spliceDirection: Int? = 0,
     var spliceScreenQuantity: String? = "",
     var splicedImages: List<SpliceImages> = emptyList(),
     var cutOnFold: String? = "",

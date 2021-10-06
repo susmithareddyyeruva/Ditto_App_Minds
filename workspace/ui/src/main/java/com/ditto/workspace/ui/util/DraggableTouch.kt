@@ -53,10 +53,7 @@ fun View.makeDraggable(
             MultiTouchGestureDetectorListener()
         )
 
-    if (workspaceItem?.spliceDirection.equals("Splice Left-to-Right") ||
-        workspaceItem?.spliceDirection.equals("Splice Top-to-Bottom")||
-        workspaceItem?.spliceDirection.equals("Splice Multiple-to-Multiple")
-    ) {
+    if (workspaceItem?.splicedImages?.size ?: 0 > 1) {
         splicedXdirection = workspaceItem?.xcoordinate ?: 0F
         splicedYdirection = workspaceItem?.ycoordinate ?: 0F
     }

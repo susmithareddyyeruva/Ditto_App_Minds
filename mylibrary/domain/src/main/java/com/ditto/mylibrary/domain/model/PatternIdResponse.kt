@@ -19,7 +19,7 @@ data class PatternIdResponse(
     val instructionFileName: String = "",
     @SerializedName("instructionUrl")
     val instructionUrl: String = "",
-    @SerializedName("name")
+    @SerializedName("patternName")
     val name: String = "",
     @SerializedName("numberOfPieces")
     val numberOfPieces: NumberOfPieces = NumberOfPieces(),

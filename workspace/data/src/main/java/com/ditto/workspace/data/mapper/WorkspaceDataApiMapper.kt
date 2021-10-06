@@ -241,7 +241,7 @@ fun combineTailornovaAndSFCCDetails(
 
     return PatternsData(
         id = resultTailernova.data.id,
-        patternName = resultTailernova.data.name,
+        patternName = resultTailernova.data.patternName,
         description = resultTailernova.data.description,
         totalPieces = 0,
         completedPieces = 0,
@@ -280,7 +280,7 @@ fun combineTailornovaAndSFCCDetails(
 
     return PatternsData(
         id = resultTailernova.data.id,
-        patternName = resultTailernova.data.name,
+        patternName = resultTailernova.data.patternName,
         description = resultTailernova.data.description,
         totalPieces = 0,
         completedPieces = 0,

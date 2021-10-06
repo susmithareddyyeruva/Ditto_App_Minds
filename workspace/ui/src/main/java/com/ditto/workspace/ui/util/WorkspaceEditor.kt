@@ -76,22 +76,27 @@ class WorkspaceEditor private constructor(builder: Builder) {
             )
         if (workspaceItem != null) {
             initialPosition(isDraggedPiece, workspaceItem, imageV)
-            if (workspaceItem.spliceDirection.equals("Splice Left-to-Right")) {
+           // if (workspaceItem.spliceDirection.equals("Splice Left-to-Right")) {
+            if (workspaceItem.splicedImages?.size ?: 0 > 1) {
                 workspaceItem.xcoordinate = 0F
-                params.addRule(if (workspaceItem.currentSplicedPieceColumn!=0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.addRule(if (workspaceItem.currentSplicedPieceColumn != 0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
                 sticky =
                     if (workspaceItem.currentSplicedPieceColumn!=0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
-            } else if (workspaceItem.spliceDirection.equals("Splice Top-to-Bottom")) {
+            //} else if (workspaceItem.spliceDirection.equals("Splice Top-to-Bottom")) {
+
+            } /*else if (workspaceItem.spliceDirection ?: 0 > 1) {
                 workspaceItem.ycoordinate = 0F
-                params.addRule(if (workspaceItem.currentSplicedPieceRow!=0) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
+                params.addRule(if (workspaceItem.currentSplicedPieceRow != 0) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
                 sticky =
                     if (workspaceItem.currentSplicedPieceRow!=0) Draggable.STICKY.AXIS_Y_END else Draggable.STICKY.AXIS_Y_START
-            } else if (workspaceItem.spliceDirection.equals("Splice Multiple-to-Multiple")) {
+            //} else if (workspaceItem.spliceDirection.equals("Splice Multiple-to-Multiple")) {
+            } else if (workspaceItem.spliceDirection ?: 0 > 1) {
+
                 workspaceItem.xcoordinate = 0F
-                params.addRule(if (workspaceItem.currentSplicedPieceColumn!=0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.addRule(if (workspaceItem.currentSplicedPieceColumn != 0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
                 sticky =
-                    if (workspaceItem.currentSplicedPieceColumn!=0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
-            }
+                    if (workspaceItem.currentSplicedPieceColumn != 0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
+            }*/
             imageRootView?.tag = workspaceItem.id
         }
         // checking overlapping only for dragged pieces
@@ -338,26 +343,29 @@ class WorkspaceEditor private constructor(builder: Builder) {
         }
 
         // For fixing Virtual image spliced issue
-        if (image?.spliceDirection.equals("Splice Left-to-Right")) {
-            image?.xcoordinate = if (image?.currentSplicedPieceRow!=0) 0F else {
+        //if (image?.spliceDirection?.equals("Splice Left-to-Right")!!) {
+        if (image?.splicedImages?.size?: 0>1) {
+            image?.xcoordinate = if (image?.currentSplicedPieceRow != 0) 0F else {
                 parentView?.width?.toFloat()
                     ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
                     ?: 0F
             }
         }
-        if (image?.spliceDirection.equals("Splice Top-to-Bottom")) {
-            image?.ycoordinate = if (image?.currentSplicedPieceColumn!=0) 0F else {
+        /*//if (image?.spliceDirection!!.equals("Splice Top-to-Bottom")) {
+        if (image?.spliceDirection?: 0>1) {
+            image?.ycoordinate = if (image?.currentSplicedPieceColumn != 0) 0F else {
                 parentView?.height?.toFloat()
                     ?.minus((imageV as ImageView)?.maxHeight?.toFloat() ?: 0F) ?: 0F
             }
         }
-        if (image?.spliceDirection.equals("Splice Multiple-to-Multiple")) {
-            image?.xcoordinate = if (image?.currentSplicedPieceRow!=0) 0F else {
+       // if (image?.spliceDirection!!.equals("Splice Multiple-to-Multiple")) {
+        if (image?.spliceDirection?: 0>1) {
+            image?.xcoordinate = if (image?.currentSplicedPieceRow != 0) 0F else {
                 parentView?.width?.toFloat()
                     ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
                     ?: 0F
             }
-        }
+        }*/
 
         //todo testing pending
         /*if(image?.splicedImages?.size ?:0 > 1){

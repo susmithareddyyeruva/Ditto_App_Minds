@@ -66,7 +66,7 @@ internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData>
             interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
                 ?.toMutableList(),
             id = it.id,
-            name = it.name,
+            patternName = it.patternName,
             description = it.description,
             patternType = it.patternType,
             numberOfPieces = it.numberOfPieces.toDomainOfflinePicecs(),
@@ -105,7 +105,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
             ?.toMutableList(),
         id = this.id,
-        name = this.name,
+        patternName = this.patternName,
         description = this.description,
         patternType = this.patternType,
         numberOfPieces = this.numberOfPieces.toDomainOfflinePicecs(),

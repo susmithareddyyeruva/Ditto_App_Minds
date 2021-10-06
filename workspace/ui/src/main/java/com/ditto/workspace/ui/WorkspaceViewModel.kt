@@ -393,7 +393,7 @@ class WorkspaceViewModel @Inject constructor(
             dragData.patternPieces?.tabCategory ?: "",
             dragData.patternPieces?.cutQuantity ?: "",
             dragData.patternPieces?.splice ?: false,
-            dragData.patternPieces?.spliceDirection ?: "",
+            dragData.patternPieces?.spliceDirection ?: 0,
             dragData.patternPieces?.spliceScreenQuantity ?: "",
             dragData.patternPieces?.splicedImages ?: emptyList(),
             dragData.patternPieces?.cutOnFold ?: "",

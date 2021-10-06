@@ -16,10 +16,10 @@ data class Patterns(
     var id: String,
     @ColumnInfo(name = "patternName")
     @SerializedName("patternName")
-    var patternName: String = "",
+    var patternName: String? = "",
     @ColumnInfo(name = "description")
     @SerializedName("description")
-    var description: String = "",
+    var description: String? = "",
     @ColumnInfo(name = "totalPieces")
     @SerializedName("totalPieces")
     var totalPieces: Int = 0,
@@ -34,7 +34,7 @@ data class Patterns(
     var status: String? = "",
     @ColumnInfo(name = "thumbnailImagePath")
     @SerializedName("thumbnailImagePath")
-    var thumbnailImagePath: String = "",
+    var thumbnailImagePath: String? = "",
     @ColumnInfo(name = "descriptionImages")
     @SerializedName("descriptionImages")
     var descriptionImages: List<DescriptionImages> = emptyList(),
@@ -55,7 +55,7 @@ data class Patterns(
 
     @ColumnInfo(name="thumbnailImageName")
     @SerializedName("thumbnailImageName")
-    var thumbnailImageName:String="",
+    var thumbnailImageName:String?="",
     /*@ColumnInfo(name = "workspaceItems")
     @SerializedName("workspaceItems")
     var workspaceItems: MutableList<WorkspaceItems>? = ArrayList(),*/
