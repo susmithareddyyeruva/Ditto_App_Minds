@@ -273,7 +273,6 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
-            val count = String.format("%02d", viewModel.totalPatternCount)
             baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(
                 getString(

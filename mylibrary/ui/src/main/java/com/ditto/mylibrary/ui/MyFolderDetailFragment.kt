@@ -271,12 +271,11 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             bottomNavViewModel.showProgress.set(false)
             viewModel.isLoading.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
-            val count = String.format("%02d", viewModel.totalPatternCount)
             (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
                 getString(
                     R.string.myfolder_detail_count,
                     tittle,
-                    count
+                    viewModel.totalPatternCount
                 )
             )
 
