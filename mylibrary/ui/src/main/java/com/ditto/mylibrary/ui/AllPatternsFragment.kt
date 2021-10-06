@@ -128,14 +128,15 @@ class AllPatternsFragment(
     private fun updatePatterns() {
         // Updating the adapter
         allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
+        val count = String.format("%02d", viewModel.totalPatternCount)
         binding.tvFilterResult.text =
-            getString(R.string.text_filter_result, viewModel.totalPatternCount)
+            getString(R.string.text_filter_result, count)
         bottomNavViewModel.showProgress.set(false)
         viewModel.isLoading.set(false)
         setPatternCount.onSetCount(
             getString(
                 R.string.pattern_library_count,
-                viewModel.totalPatternCount
+                count
             )
         )
     }
@@ -272,12 +273,10 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
+            val count = String.format("%02d", viewModel.totalPatternCount)
             baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(
-                getString(
-                    R.string.pattern_library_count,
-                    viewModel.totalPatternCount
-                )
+                count
             )
             /**
              * Getting ALL PATTERNS LIST

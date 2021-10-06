@@ -53,7 +53,7 @@
     <string name="text_filter">Filters</string>
     <string name="text_new">New</string>
     <string name="text_clear_filter"><u>clear filters</u></string>
-    <string name="text_filter_result">Showing filtered results\u0020(%1$d)
+    <string name="text_filter_result">Showing filtered results\u0020(%1$s)
     </string>Confirm setup and make sure red lighted rectangle is still within the white cutting mat border
     <string name="filters">Filters</string>
     <string name="apply">APPLY</string>
@@ -61,8 +61,8 @@
     <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="pattern_instructions">Pattern Instructions</string>
     <string name="pattern_details">Pattern details</string>
-    <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
-    <string name="myfolder_detail_count">%1$s\u0020(%2$d)</string>
+    <string name="pattern_library_count">Pattern Library\u0020(%1$s)</string>
+    <string name="myfolder_detail_count">%1$s\u0020(%2$s)</string>
     <string name="myfolder">My Folders</string>
     <string name="rename_folder">Rename Folder</string>
     <string name="delete_folder">Delete Folder</string>

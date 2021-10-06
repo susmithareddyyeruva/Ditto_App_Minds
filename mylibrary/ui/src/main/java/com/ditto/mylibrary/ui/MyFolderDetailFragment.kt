@@ -177,13 +177,14 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         bottomNavViewModel.showProgress.set(false)
         // Updating the adapter
         myFolderDetailListAdapter.setListData(items = myfolderList.value ?: emptyList())
+        val count = String.format("%02d", viewModel.totalPatternCount)
         binding.tvFilterResult.text =
-            context?.getString(R.string.text_filter_result, viewModel.totalPatternCount)
+            context?.getString(R.string.text_filter_result, count)
         (parentFragment as MyLibraryFragment?)?.onSetCount(
             getString(
                 R.string.myfolder_detail_count,
                 viewModel.folderTitle,
-                viewModel.totalPatternCount
+                count
             )
         )
         if (viewModel.isFilterResult.get()) {
@@ -270,11 +271,12 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             bottomNavViewModel.showProgress.set(false)
             viewModel.isLoading.set(false)
             baseViewModel.totalCount = viewModel.totalPatternCount
+            val count = String.format("%02d", viewModel.totalPatternCount)
             (parentFragment as MyLibraryFragment?)?.setToolbarTittle(
                 getString(
                     R.string.myfolder_detail_count,
                     tittle,
-                    viewModel.totalPatternCount
+                    count
                 )
             )
 
