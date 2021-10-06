@@ -30,4 +30,8 @@
     <string name="str_later">LATER</string>
     <string name="str_wifi_message">This app needs WiFi connectivity</string>
     <string name="str_settings">SETTINGS</string>
+    <string name="mirroring_reminder">Mirroring Reminder</string>
+    <string name="cut_number_reminder">Cut Number Reminder</string>
+    <string name="splicing_notification">Splicing Notification</string>
+    <string name="multidirectional_splicing_notification">Multidirectional Splicing Notification</string>
 </resources>
