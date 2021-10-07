@@ -59,6 +59,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     override fun onPause() {
         pauseVideo()
+        isPlay = true
         super.onPause()
     }
 
