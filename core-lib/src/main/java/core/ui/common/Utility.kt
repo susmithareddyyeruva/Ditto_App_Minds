@@ -74,7 +74,8 @@ class Utility @Inject constructor(
         SOC_CONNECT,
         DELETE,
         UPDATEAPIFAILED,
-        DOWNLOADFAILED
+        DOWNLOADFAILED,
+        RUNTIMEPERMISSION
     }
 
     enum class Iconype {

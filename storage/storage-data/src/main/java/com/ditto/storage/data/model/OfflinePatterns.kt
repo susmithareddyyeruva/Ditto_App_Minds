@@ -29,7 +29,7 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "numberOfCompletedPiece")
     @SerializedName("numberOfCompletedPiece")
-    var numberOfCompletedPieces: NumberOfCompletedPiecesOffline,
+    var numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
 
     @ColumnInfo(name = "patternPieces")
     @SerializedName("patternPieces")
@@ -68,7 +68,7 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "totalNumberOfPieces")
     @SerializedName("totalNumberOfPieces")
-    var numberOfPieces:NumberOfCompletedPiecesOffline,
+    var numberOfPieces:NumberOfCompletedPiecesOffline?,
 
     @ColumnInfo(name = "orderModificationDate")
     @SerializedName("orderModificationDate")

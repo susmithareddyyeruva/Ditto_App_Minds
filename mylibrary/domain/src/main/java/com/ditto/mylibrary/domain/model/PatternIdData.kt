@@ -12,7 +12,7 @@ data class PatternIdData(
     val instructionFileName: String? ="",
     val instructionUrl: String? ="",
     val patternName: String? ="",
-    val numberOfPieces: NumberOfPiecesData,
+    val numberOfPieces: NumberOfPiecesData?,
     val occasion: String? ="",
     val orderCreationDate: String? ="",
     val orderModificationDate: String? ="",

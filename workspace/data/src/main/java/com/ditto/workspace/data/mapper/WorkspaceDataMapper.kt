@@ -83,12 +83,14 @@ fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,
-        numberOfCompletedPiece = this.numberOfCompletedPieces.toDomain(),
+        numberOfCompletedPiece = this.numberOfCompletedPieces?.toDomain(),
         patternPieces = this.patternPiecesFromApi.map { it.toDomain() },
-        garmetWorkspaceItems = this.garmetWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
-        liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }.toMutableList(),
-        interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }.toMutableList()
-    )
+        garmetWorkspaceItems = this.garmetWorkspaceItemOfflines.map { it.toDomain() }
+            .toMutableList(),
+        liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }
+            .toMutableList(),
+        interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }
+            .toMutableList())
 }
 
 
@@ -169,7 +171,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         tailornaovaDesignId = this.tailornaovaDesignId,
         selectedTab = this.selectedTab,
         status = this.status,
-        numberOfCompletedPieces = this.numberOfCompletedPieces.toDomainOfflinePicecs(),
+        numberOfCompletedPieces = this.numberOfCompletedPieces?.toDomainOfflinePicecs(),
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain1() }
             .toMutableList(),
@@ -181,7 +183,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         patternName = this.patternName,
         description = this.description,
         patternType = this.patternType,
-        numberOfPieces = this.numberOfPieces.toDomainOfflinePicecs(),
+        numberOfPieces = this.numberOfPieces?.toDomainOfflinePicecs(),
         orderModificationDate = this.orderModificationDate,
         orderCreationDate = this.orderCreationDate,
         instructionFileName = this.instructionFileName,
