@@ -56,6 +56,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             showAlert()
         }
     }
+
+    override fun onPause() {
+        pauseVideo()
+        super.onPause()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.custom_layout)
