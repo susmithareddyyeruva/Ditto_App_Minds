@@ -46,7 +46,7 @@ data class PatternPieceData(
     val pieceNumber: String? ="",
     val positionInTab: String? ="",
     val size: String? ="",
-    //val spliceDirection: Int? =0,
+    //var spliceDirection: String? = "",
     val spliceScreenQuantity: String? ="",
     val splicedImages: List<SplicedImageData>,
     val tabCategory: String? ="",

@@ -20,8 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
@@ -40,7 +39,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedTailornovaID: ObservableField<String> = ObservableField("demo-design-id-png")
+    val clickedTailornovaID: ObservableField<String> = ObservableField("170a4ffb2d1b4fe4a8109d7f6ebffe84")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -59,6 +58,9 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     val showResumButton: ObservableBoolean = ObservableBoolean(false)
     val showWorkspaceOrRenewSubscriptionButton: ObservableBoolean = ObservableBoolean(false)
     val isDataReceived: ObservableBoolean = ObservableBoolean(false)
+    val patternUri: ObservableField<String> = ObservableField("")
+    val imagesToDownload = hashMapOf<String, String>()
+    val temp = ArrayList<String>()
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -72,7 +74,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
 
     //fetch data from offline
     fun fetchOfflinePatterns() {
-        disposable += getPattern.getOfflinePatternById("demo-design-id-png")
+        disposable += getPattern.getOfflinePatternById("170a4ffb2d1b4fe4a8109d7f6ebffe84")
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -90,7 +92,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern("demo-design-id-png")
+        disposable += getPattern.getPattern("170a4ffb2d1b4fe4a8109d7f6ebffe84")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -136,17 +138,12 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     sealed class Event {
 
         object OnWorkspaceButtonClicked : Event()
-
         object onSubscriptionClicked : Event()
-
-
         object OnInstructionsButtonClicked : Event()
-
         object OnDataUpdated : Event()
-
         object OnDownloadComplete : Event()
-
         object OnDataloadFailed : Event()
+        object OnImageDownloadComplete : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -228,5 +225,118 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         } catch (e: Exception) {
             Log.d("Error","",e)
         }
+    }
+
+    fun prepareDowloadList(hashMap: HashMap<String, String>) {
+        Log.d("Download", ">>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("Download", "Hashmap size: ${hashMap?.size}")
+        Log.d("Download", "Hashmap size: ${hashMap}")
+        temp.clear()
+        if (!hashMap.isEmpty()) {
+            GlobalScope.launch {
+
+                runBlocking {
+                    hashMap.forEach { (key, value) ->
+                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                                if(!(key.equals("null"))){
+                                    downloadEachPatternPiece(
+                                        imageUrl = value,
+                                        filename = key,
+                                        patternFolderName = patternName.get() ?: "Pattern Piece"
+                                    )
+                                }
+
+                    }
+                }
+                uiEvents.post(Event.OnImageDownloadComplete)
+            }
+        } else {
+            uiEvents.post(Event.OnImageDownloadComplete)
+        }
+    }
+
+    suspend fun downloadEachPatternPiece(
+        imageUrl: String,
+        filename: String,
+        patternFolderName: String?
+    ) {
+        withContext(Dispatchers.IO) {
+            val inputStream: InputStream
+            var result: File? = null
+            val url: URL = URL(imageUrl)
+            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connect()
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                patternpdfuri.set("")
+                return@withContext
+            }
+            inputStream = conn.inputStream
+            if (inputStream != null)
+                result =
+                    convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
+            val path = Uri.fromFile(result)
+            patternUri.set(path.toString())
+            Log.d("PATTERN", patternUri.get() ?: "")
+
+            temp.add(path.toString())
+        }
+    }
+
+    private fun convertInputStreamToFileForPatterns(
+        inputStream: InputStream,
+        filename: String,
+        patternFolderName: String?
+    ): File? {
+        var result: File? = null
+        var dittofolder: File? = null
+        var subFolder: File? = null
+        dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+        )
+
+        subFolder = File(dittofolder, "/${patternFolderName}")
+
+        if (!dittofolder.exists()) {
+            dittofolder.mkdir()
+            if (!subFolder.exists()) {
+                subFolder.mkdirs()
+            }
+        } else {
+            if (!subFolder.exists()) {
+                subFolder.mkdirs()
+            } else {
+                Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
+            }
+        }
+
+        result = File(subFolder, filename)
+        if (!result.exists()) {
+            try {
+                result.createNewFile()
+            } catch (e: Exception) {
+            }
+        }
+        result.copyInputStreamToFile(inputStream)
+        return result
+    }
+
+    fun imageFilesToDownload(hashMap: HashMap<String, String>): HashMap<String, String> {
+        imagesToDownload.clear()
+        hashMap.forEach { (key, value) ->
+            if(!(key.equals("null"))) {
+                val availableUri = key.let {
+                    core.ui.common.Utility.isImageFileAvailable(
+                        it,
+                        "${patternName.get()}"
+                    )
+                }
+
+                if (availableUri == null) {
+                    imagesToDownload.put(key, value)
+                }
+            }
+        }
+        return imagesToDownload
     }
 }

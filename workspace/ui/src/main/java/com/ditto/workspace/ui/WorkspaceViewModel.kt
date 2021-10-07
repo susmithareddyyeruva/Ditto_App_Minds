@@ -544,7 +544,7 @@ class WorkspaceViewModel @Inject constructor(
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
 
         updateWorkspaceDB(
-            "demo-design-id-png",
+            "170a4ffb2d1b4fe4a8109d7f6ebffe84",
             cTraceWorkSpacePatternInputData.selectedTab,
             cTraceWorkSpacePatternInputData.status,
             cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
