@@ -144,7 +144,7 @@ class WorkspaceViewModel @Inject constructor(
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
-        patternPieces: List<PatternPieceSFCCAPI>,
+        patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
@@ -337,7 +337,7 @@ class WorkspaceViewModel @Inject constructor(
             is GetWorkspaceApiFetchError -> {
                 if (error.message.contains("key", true)) {
                     Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
-                    createWSAPI(getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value!!)))
+                    createWSAPI(getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)))
                 }
             }
             else -> {
@@ -393,7 +393,7 @@ class WorkspaceViewModel @Inject constructor(
             dragData.patternPieces?.tabCategory ?: "",
             dragData.patternPieces?.cutQuantity ?: "",
             dragData.patternPieces?.splice ?: false,
-            dragData.patternPieces?.spliceDirection ?: 0,
+            //dragData.patternPieces?.spliceDirection ?: 0,
             dragData.patternPieces?.spliceScreenQuantity ?: "",
             dragData.patternPieces?.splicedImages ?: emptyList(),
             dragData.patternPieces?.cutOnFold ?: "",
@@ -541,7 +541,7 @@ class WorkspaceViewModel @Inject constructor(
         }
 
         var cTraceWorkSpacePatternInputData =
-            getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value!!))
+            getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
 
         updateWorkspaceDB(
             "demo-design-id-png",
@@ -557,7 +557,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     // Set workspace Dimensions to Virtual
-    fun setWorkspaceDimensions(value: PatternsData): PatternsData {
+    fun setWorkspaceDimensions(value: PatternsData?): PatternsData? {
         val patternsData = value
         setWorkspaceVirtualDimensions(
             patternsData?.garmetWorkspaceItemOfflines

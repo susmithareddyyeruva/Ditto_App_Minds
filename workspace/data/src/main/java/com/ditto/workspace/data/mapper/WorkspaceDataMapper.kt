@@ -218,7 +218,7 @@ fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
         size = this.size,
-        spliceDirection = this.spliceDirection,
+        //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages.map { it.toDomain() },
         tabCategory = this.tabCategory
@@ -240,7 +240,7 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         positionInTab = this.positionInTab,
         size = this.size,
         view=this.view,
-        spliceDirection = this.spliceDirection,
+        //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages.map { it.toDomain() },
         tabCategory = this.tabCategory

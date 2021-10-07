@@ -64,14 +64,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
-        patternPieces: List<PatternPieceSFCCAPI>,
+        patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int> {
         return Single.fromCallable{
             offlinePatternDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece?.toDomain(),
-                patternPieces.map { it.toDomain() },
+                patternPieces?.map { it.toDomain() },
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 liningWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 interfaceWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>)

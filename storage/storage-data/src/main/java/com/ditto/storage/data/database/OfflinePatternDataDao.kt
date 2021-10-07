@@ -24,7 +24,7 @@ abstract class OfflinePatternDataDao {
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfCompletedPiecesOffline?,
-        patternPieces: List<PatternPiecesOffline>,
+        patternPieces: List<PatternPiecesOffline>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItems: MutableList<WorkspaceItemOffline>,
         interfaceWorkspaceItems: MutableList<WorkspaceItemOffline>

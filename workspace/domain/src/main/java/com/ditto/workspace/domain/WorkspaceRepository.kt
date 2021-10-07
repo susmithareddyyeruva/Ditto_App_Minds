@@ -17,7 +17,7 @@ interface WorkspaceRepository {
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
-        patternPieces: List<PatternPieceSFCCAPI>,
+        patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?

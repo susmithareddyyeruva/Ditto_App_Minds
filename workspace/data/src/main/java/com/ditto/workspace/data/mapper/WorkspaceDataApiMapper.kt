@@ -58,7 +58,7 @@ fun SplicedImageDomain.toOldModel(): SpliceImages {
     )
 }
 
-fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>): PatternPieces {
+fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>?): PatternPieces {
 
     val patternPiece = getIsComplete(this.id, patternPieces)
 
@@ -77,7 +77,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>):
         tabCategory = this.tabCategory,
         cutQuantity = this.cutQuantity,
         splice = this.isSpliced,
-        spliceDirection = this.spliceDirection,
+        //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages.map {
             it.toOldModel()
@@ -120,7 +120,7 @@ fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>):
         tabCategory = patternPiece?.tabCategory,
         cutQuantity = patternPiece?.cutQuantity ?: "", // todo check I used !!
         splice = patternPiece?.isSpliced ?: false,
-        spliceDirection = patternPiece?.spliceDirection,
+        //spliceDirection = patternPiece?.spliceDirection,
         spliceScreenQuantity = patternPiece?.spliceScreenQuantity,
         cutOnFold = patternPiece?.cutOnFold.toString(),
         mirrorOption = true,//todo check should come from tailornova
@@ -149,9 +149,9 @@ private fun getPatternPiece(
 
 private fun getIsComplete(
     patternPiecesId: Int?,
-    patternPieces: List<PatternPieceSFCCAPI>
+    patternPieces: List<PatternPieceSFCCAPI>?
 ): PatternPieceSFCCAPI? {
-    return patternPieces.find { it.id == patternPiecesId }
+    return patternPieces?.find { it.id == patternPiecesId }
 }
 
 
@@ -170,7 +170,7 @@ fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPiec
         tabCategory = patternPiece?.tabCategory,
         cutQuantity = patternPiece?.cutQuantity ?: "", // todo check I used !!
         splice = patternPiece?.isSpliced ?: false,
-        spliceDirection = patternPiece?.spliceDirection,
+        //spliceDirection = patternPiece?.spliceDirection,
         spliceScreenQuantity = patternPiece?.spliceScreenQuantity,
         cutOnFold = patternPiece?.cutOnFold.toString(),
         mirrorOption = true,//todo check should come from tailornova
@@ -203,14 +203,14 @@ fun PatternPieceDataDomain.toOldModelOffline(patternPieces: List<PatternPieceSFC
         splice = this.isSpliced,
         tabCategory = this.tabCategory,
         size = this.size,
-        pieceDescription = "pieceDescription",
+        pieceDescription = this.pieceDescription,
         cutOnFold = this.cutOnFold.toString(),
         positionInTab = this.positionInTab,
         pieceNumber = this.pieceNumber,
         thumbnailImageName = this.thumbnailImageName,
         thumbnailImageUrl = this.thumbnailImageUrl,
         view = this.view,
-        spliceDirection = this.spliceDirection,
+        //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages.map {
             it.toOldOffline()
@@ -316,23 +316,23 @@ fun combineTailornovaAndSFCCDetails(
     )
 }
 
-fun getWorkspaceInputDataToAPI(patternData: PatternsData): WorkspaceDataAPI {
+fun getWorkspaceInputDataToAPI(patternData: PatternsData?): WorkspaceDataAPI {
 
     Log.d("getWSInputDataToAPI", "OnSuccess patternData: $patternData")
 
     val cTraceWorkSpacePatternInputData = WorkspaceDataAPI(
-        tailornaovaDesignId = patternData.id,
-        selectedTab = patternData.selectedTab,
-        status = patternData.status,
-        numberOfCompletedPiece = patternData.numberOfCompletedPiece,
-        patternPieces = patternData.patternPieces.map { it.toPatternPieceDomain() },
+        tailornaovaDesignId = patternData?.id,
+        selectedTab = patternData?.selectedTab,
+        status = patternData?.status,
+        numberOfCompletedPiece = patternData?.numberOfCompletedPiece,
+        patternPieces = patternData?.patternPieces?.map { it.toPatternPieceDomain() },
 
-        garmetWorkspaceItems = patternData.garmetWorkspaceItemOfflines?.map {
+        garmetWorkspaceItems = patternData?.garmetWorkspaceItemOfflines?.map {
             it.toWorkspaceItemDomain()
         }?.toMutableList(),
-        liningWorkspaceItems = patternData.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+        liningWorkspaceItems = patternData?.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
             ?.toMutableList(),
-        interfaceWorkspaceItems = patternData.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
+        interfaceWorkspaceItems = patternData?.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
             ?.toMutableList()
     )
     Log.d(
