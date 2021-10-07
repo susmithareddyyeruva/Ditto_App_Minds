@@ -31,6 +31,8 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
+import javax.net.ssl.HttpsURLConnection
+
 
 /**
  * Concrete class of MyLibraryRepository to expose MyLibrary Data from various sources (API, DB)
@@ -76,16 +78,26 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
-                errorMessage = when (it) {
-                    is UnknownHostException -> {
-                        USER_FIRST_NAME
-                        UNKNOWN_HOST_EXCEPTION
+                val error = it as HttpException
+                if (it is HttpException) {
+                    errorMessage = when (error.code()) {
+                        HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
+                        HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
+                        HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
+                        HttpsURLConnection.HTTP_BAD_REQUEST -> HTTP_BAD_REQUEST
+                        else -> ERROR_FETCH
                     }
-                    is ConnectException -> {
-                        CONNECTION_EXCEPTION
-                    }
-                    else -> {
-                        it.localizedMessage
+                }else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
                     }
                 }
 

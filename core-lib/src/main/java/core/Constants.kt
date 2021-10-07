@@ -1,7 +1,5 @@
 package core
 
-import core.lib.BuildConfig
-
 const val NO_NETWORK = "Network connection required !"
 internal const val MOCK_API_CERT = "mockapicert.crt"
 const val GUEST_SIGNED_IN = "GUEST"
@@ -58,6 +56,10 @@ const val CUSTOMER_EMAIL = "subscustomerOne@gmail.com"
 const val UNKNOWN_HOST_EXCEPTION = "UnknownHostException !"
 const val CONNECTION_EXCEPTION = "No Internet connection available !"
 const val ERROR_FETCH = "Error Fetching data!"
+const val HTTP_UNAUTHORIZED4="Unauthorized"
+const val HTTP_INTERNAL_ERROR="Internal Server Error"
+const val HTTP_BAD_REQUEST="Bad Request"
+const val HTTP_FORBIDDEN="Forbidden Request"
 
 
 
