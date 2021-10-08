@@ -78,8 +78,8 @@ internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData>
             thumbnailImageName = it.thumbnailImageName,
             thumbnailEnlargedImageName = it.thumbnailEnlargedImageName,
             patternDescriptionImageUrl = it.patternDescriptionImageUrl,
-            selvages = it.selvages.map { it.toDomainStorage() },
-            patternPieces = it.patternPieces.map { it.toDomainn() },
+            selvages = it.selvages?.map { it.toDomainStorage() },
+            patternPieces = it.patternPieces?.map { it.toDomainn() },
             brand = it.brand,
             size = it.size,
             gender = it.gender,
@@ -117,8 +117,8 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         thumbnailImageName = this.thumbnailImageName,
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         patternDescriptionImageUrl = this.patternDescriptionImageUrl,
-        selvages = this.selvages.map { it.toDomainStorage() },
-        patternPieces = this.patternPieces.map { it.toDomainn() },
+        selvages = this.selvages?.map { it.toDomainStorage() },
+        patternPieces = this.patternPieces?.map { it.toDomainn() },
         brand = this.brand,
         size = this.size,
         gender = this.gender,
@@ -147,7 +147,7 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         view=this.view,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory
     )
 }

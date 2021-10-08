@@ -79,7 +79,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>?)
         splice = this.isSpliced,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map {
+        splicedImages = this.splicedImages?.map {
             it.toOldModel()
         },
         cutOnFold = this.cutOnFold.toString(),
@@ -103,7 +103,7 @@ fun SplicedImageDomain.toOldModelSpliceImage(): SpliceImages {
 
 
 
-fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>): WorkspaceItems {
+fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>?): WorkspaceItems {
 
     val patternPiece = getPatternPiece(this.patternPiecesId, patternPieces)
 
@@ -142,9 +142,9 @@ fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>):
 
 private fun getPatternPiece(
     patternPiecesId: Int?,
-    patternPieces: List<PatternPieceDataDomain>
+    patternPieces: List<PatternPieceDataDomain>?
 ): PatternPieceDataDomain? {
-    return patternPieces.find { it.id == patternPiecesId }
+    return patternPieces?.find { it.id == patternPiecesId }
 }
 
 private fun getIsComplete(
@@ -155,7 +155,7 @@ private fun getIsComplete(
 }
 
 
-fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPieceDataDomain>):WorkspaceItems{
+fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPieceDataDomain>?):WorkspaceItems{
     val patternPiece= getPatternPiece(this.patternPiecesId,patternPieces)
     return WorkspaceItems(
         id = this.id,
@@ -212,7 +212,7 @@ fun PatternPieceDataDomain.toOldModelOffline(patternPieces: List<PatternPieceSFC
         view = this.view,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map {
+        splicedImages = this.splicedImages?.map {
             it.toOldOffline()
         }
 
@@ -252,8 +252,8 @@ fun combineTailornovaAndSFCCDetails(
         thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
         //descriptionImages TODO will come from tailernova in next sprints
-        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
-        patternPieces = resultTailernova.data.patternPieces.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
+        selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
+        patternPieces = resultTailernova.data.patternPieces?.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
         garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems?.map {
             it.toOldModel(
                 resultTailernova.data.patternPieces
@@ -291,8 +291,8 @@ fun combineTailornovaAndSFCCDetails(
         thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
         //descriptionImages TODO will come from tailernova in next sprints
-        selvages = resultTailernova.data.selvages.map { it.toOldModel() },
-        patternPieces = resultTailernova.data.patternPieces.map {
+        selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
+        patternPieces = resultTailernova.data.patternPieces?.map {
             it.toOldModelOffline(
                 resultTailernova
                     .data

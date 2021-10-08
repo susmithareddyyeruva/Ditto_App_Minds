@@ -15,7 +15,7 @@ data class PatternPieceData (
     val size: String?="",
     //val spliceDirection: String? = "",
     val spliceScreenQuantity: String?="",
-    val splicedImages: List<SplicedImageData>,
+    val splicedImages: List<SplicedImageData>?= emptyList(),
     val tabCategory: String?="",
     val view: String?=""
 )

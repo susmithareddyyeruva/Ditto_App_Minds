@@ -40,10 +40,10 @@ data class Patterns(
     var descriptionImages: List<DescriptionImages> = emptyList(),
     @ColumnInfo(name = "selvages")
     @SerializedName("selvages")
-    var selvages: List<Selvages> = emptyList(),
+    var selvages: List<Selvages>? = emptyList(),
     @ColumnInfo(name = "patternPieces")
     @SerializedName("patternPieces")
-    var patternPieces: List<PatternPieces> = emptyList(),
+    var patternPieces: List<PatternPieces>? = emptyList(),
 
     @ColumnInfo(name = "numberOfCompletedPiece")
     @SerializedName("numberOfCompletedPiece")

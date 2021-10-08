@@ -13,8 +13,8 @@ data class PatternsData(
     var thumbnailImagePath: String?,
     val thumbnailImageName: String?,
     var descriptionImages: List<DescriptionImages> = emptyList(),
-    var selvages: List<Selvages> = emptyList(),
-    var patternPieces: List<PatternPieces> = emptyList(),
+    var selvages: List<Selvages>? = emptyList(),
+    var patternPieces: List<PatternPieces>? = emptyList(),
     var liningWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList()

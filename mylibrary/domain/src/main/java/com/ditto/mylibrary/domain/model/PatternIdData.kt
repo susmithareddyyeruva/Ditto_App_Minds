@@ -17,10 +17,10 @@ data class PatternIdData(
     val orderCreationDate: String? ="",
     val orderModificationDate: String? ="",
     val patternDescriptionImageUrl: String? ="",
-    val patternPieces: List<PatternPieceData>,
+    val patternPieces: List<PatternPieceData>? = emptyList(),
     val season: String? ="",
-    val selvages: List<SelvageData>,
-    val size: Int,
+    val selvages: List<SelvageData>? = emptyList(),
+    val size: String? = "",
     val suitableFor: String? ="",
     val thumbnailEnlargedImageName: String? ="",
     val thumbnailImageName: String? ="",
@@ -48,7 +48,7 @@ data class PatternPieceData(
     val size: String? ="",
     //var spliceDirection: String? = "",
     val spliceScreenQuantity: String? ="",
-    val splicedImages: List<SplicedImageData>,
+    val splicedImages: List<SplicedImageData>? = emptyList(),
     val tabCategory: String? ="",
     val view: String? =""
 )

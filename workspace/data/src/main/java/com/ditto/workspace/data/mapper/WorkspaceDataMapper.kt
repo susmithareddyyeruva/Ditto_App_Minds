@@ -192,8 +192,8 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         thumbnailImageName = this.thumbnailImageName,
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         patternDescriptionImageUrl = this.patternDescriptionImageUrl,
-        selvages = this.selvages.map { it.toDomainStorage() },
-        patternPieces = this.patternPieces.map { it.toDomainn() },
+        selvages = this.selvages?.map { it.toDomainStorage() },
+        patternPieces = this.patternPieces?.map { it.toDomainn() },
         brand = this.brand,
         size = this.size,
         gender = this.gender,
@@ -220,7 +220,7 @@ fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
         size = this.size,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory
     )
 }
@@ -242,7 +242,7 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         view=this.view,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory
     )
 }

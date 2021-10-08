@@ -21,8 +21,8 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             numberOfCompletedPiece = it.numberOfCompletedPieces?.toDomainn(),
             totalNumberOfPieces =it.numberOfPieces?.toDomainn(),
             descriptionImages = it.descriptionImages.map { it.toDomain() },
-            selvages = it.selvages.map { it.toDomain() },
-            patternPieces = it.patternPieces.map { it.toDomain() },
+            selvages = it.selvages?.map { it.toDomain() },
+            patternPieces = it.patternPieces?.map { it.toDomain() },
             liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines?.map { it.toDomain() }
                 ?.toMutableList(),
             garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines?.map { it.toDomain() }
@@ -46,8 +46,8 @@ internal fun Patterns.toDomain(): PatternsData {
         numberOfCompletedPiece = this.numberOfCompletedPieces?.toDomainn(),
         totalNumberOfPieces =this.numberOfPieces?.toDomainn(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
-        selvages = this.selvages.map { it.toDomain() },
-        patternPieces = this.patternPieces.map { it.toDomain() },
+        selvages = this.selvages?.map { it.toDomain() },
+        patternPieces = this.patternPieces?.map { it.toDomain() },
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
@@ -102,7 +102,7 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         splice = this.splice,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.mirrorOption,
         isCompleted = this.isCompleted
@@ -155,8 +155,8 @@ internal fun PatternsData.toDomain(): Patterns {
         numberOfCompletedPieces= this.numberOfCompletedPiece?.toDomain(),
         numberOfPieces= this.totalNumberOfPieces?.toDomain(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
-        selvages = this.selvages.map { it.toDomain() },
-        patternPieces = this.patternPieces.map { it.toDomain() },
+        selvages = this.selvages?.map { it.toDomain() },
+        patternPieces = this.patternPieces?.map { it.toDomain() },
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
         interfaceWorkspaceItemOfflines= this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
@@ -213,7 +213,7 @@ internal fun com.ditto.workspace.domain.model.PatternPieces.toDomain(): PatternP
         splice = this.splice,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.mirrorOption,
         isCompleted = this.isCompleted

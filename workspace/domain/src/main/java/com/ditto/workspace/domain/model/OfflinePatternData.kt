@@ -22,10 +22,10 @@ data class OfflinePatternData(
     var thumbnailImageName: String?,
     var thumbnailEnlargedImageName: String?,
     var patternDescriptionImageUrl: String?,
-    var selvages: List<SelvageDomain> = emptyList(),
-    var patternPieces: List<PatternPieceDataDomain> = emptyList(),
+    var selvages: List<SelvageDomain>? = emptyList(),
+    var patternPieces: List<PatternPieceDataDomain>? = emptyList(),
     var brand: String? = "",
-    var size: Int? = 0,
+    var size: String? = "",
     var gender: String? = "",
     var customization: Boolean? = false,
     var dressType: String? = "",
@@ -76,7 +76,7 @@ data class PatternPieceDataDomain(
     val size: String? = "",
     //val spliceDirection: String? = "",
     val spliceScreenQuantity: String? = "",
-    val splicedImages: List<SplicedImageDomain>,
+    val splicedImages: List<SplicedImageDomain>?= emptyList(),
     val tabCategory: String? = "",
     val view: String? = ""
 )

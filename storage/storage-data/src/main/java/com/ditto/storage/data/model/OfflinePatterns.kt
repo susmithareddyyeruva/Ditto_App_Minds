@@ -104,11 +104,11 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "selvages")
     @SerializedName("selvages")
-    var selvages: List<SelvageData> = emptyList(),
+    var selvages: List<SelvageData>? = emptyList(),
 
     @ColumnInfo(name = "patternPiecesTailornova")
     @SerializedName("patternPiecesTailornova")
-    var patternPieces: List<PatternPieceData> = emptyList(),
+    var patternPieces: List<PatternPieceData>? = emptyList(),
 
     @ColumnInfo(name="brand")
     @SerializedName("brand")
@@ -116,7 +116,7 @@ data class OfflinePatterns(
 
     @ColumnInfo(name="size")
     @SerializedName("size")
-    var size:Int=0,
+    var size:String?="",
 
     @ColumnInfo(name="gender")
     @SerializedName("gender")

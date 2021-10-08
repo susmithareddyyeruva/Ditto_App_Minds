@@ -15,8 +15,8 @@ data class MyLibraryData(
     var thumbnailImagePath: String?,
     var thumbnailImageName: String?,
     var descriptionImages: List<DescriptionImages>,
-    var selvages: List<Selvages>,
-    var patternPieces: List<PatternPieces>,
+    var selvages: List<Selvages>?= emptyList(),
+    var patternPieces: List<PatternPieces>?= emptyList(),
    // var workspaceItems: MutableList<WorkspaceItems>? = ArrayList()
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),

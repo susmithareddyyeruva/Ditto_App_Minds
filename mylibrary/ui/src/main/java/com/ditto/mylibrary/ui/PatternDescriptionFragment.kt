@@ -667,14 +667,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         var hashMap: HashMap<String, String> = HashMap<String, String>()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
-        for (patternItem in viewModel.data.value?.selvages!!) {
+        for (patternItem in viewModel.data.value?.selvages?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
         }
-        for (patternItem in viewModel.data.value?.patternPieces!!) {
+        for (patternItem in viewModel.data.value?.patternPieces?: emptyList()) {
             hashMap[patternItem.thumbnailImageName.toString()] =
                 patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
-            for (splicedImage in patternItem.splicedImages) {
+            for (splicedImage in patternItem.splicedImages?: emptyList()) {
                 hashMap[splicedImage.imageName.toString()] = splicedImage.imageUrl.toString()
                 hashMap[splicedImage.mapImageName.toString()] = splicedImage.mapImageUrl.toString()
             }

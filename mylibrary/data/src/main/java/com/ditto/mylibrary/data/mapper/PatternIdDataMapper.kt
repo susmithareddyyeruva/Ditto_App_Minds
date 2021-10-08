@@ -80,8 +80,8 @@ internal fun PatternIdData.toDomain(): OfflinePatterns {
         thumbnailImageName = this.thumbnailImageName,
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         patternDescriptionImageUrl = this.patternDescriptionImageUrl,
-        selvages = this.selvages.map { it.toDomain() },
-        patternPieces = this.patternPieces.map { it.toDomain() },
+        selvages = this.selvages?.map { it.toDomain() },
+        patternPieces = this.patternPieces?.map { it.toDomain() },
         brand = this.brand,
         size = this.size,
         gender = this.gender,
@@ -108,7 +108,7 @@ fun PatternPieceData.toDomain(): com.ditto.mylibrary.domain.model.PatternPieceDa
         size = this.size,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory,
         view = this.view
     )
@@ -131,7 +131,7 @@ fun com.ditto.mylibrary.domain.model.PatternPieceData.toDomain(): PatternPieceDa
         size = this.size,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory,
         view = this.view
     )
