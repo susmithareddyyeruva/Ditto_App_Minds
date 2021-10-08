@@ -36,6 +36,7 @@ import core.lib.R
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.TokenViewModel
+import core.ui.VersionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*

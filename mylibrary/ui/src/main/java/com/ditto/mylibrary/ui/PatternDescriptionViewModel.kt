@@ -36,7 +36,7 @@ import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
                                                       val utility: Utility,
-                                                      private val getPattern: GetMylibraryData) :
+                                                      private val getPattern: MyLibraryUseCase) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()

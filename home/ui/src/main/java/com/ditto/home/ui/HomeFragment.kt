@@ -22,8 +22,6 @@ import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
-import core.event.RxBus
-import core.event.RxBusEvent
 import core.network.NetworkUtility
 import core.data.model.SoftwareUpdateResult
 import core.ui.BaseFragment
@@ -114,16 +112,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             .subscribe {
                 handleEvent(it)
             }
-
-        RxBus.listen(RxBusEvent.isTokenRefreshed::class.java)
-            .subscribe {
-                Log.d("TOKEN======", "SUCCESSS")
-                if (AppState.getIsLogged()) {
-                    homeViewModel.fetchData()
-                }
-            }
-
-
     }
 
 
@@ -142,7 +130,8 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private fun listenVersionEvents() {
         versionDisposable = CompositeDisposable()
-        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.checkVersion::class.java)
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.checkVersion::class.java)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (it.isCheckVersion){

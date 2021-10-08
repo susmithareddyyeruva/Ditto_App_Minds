@@ -1000,6 +1000,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
+            alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
+                if (versionResult?.response?.force_update == true) {
+                    requireActivity().finishAffinity()
+                }
+            }
         }
     }
 
@@ -1053,13 +1058,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Log.d("onReqPermissionsResult", "permission denied")
         }
 
-    }
-            alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.force_update == true) {
-                    requireActivity().finishAffinity()
-                }
-            }
-        }
     }
 
     private fun showAlert(versionerrorReceived: String) {

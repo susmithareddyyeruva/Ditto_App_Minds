@@ -9,7 +9,6 @@ import core.TRACKING_ID
 import core.appstate.AppState
 import core.data.model.TokenResult
 import core.di.scope.*
-import core.appstate.AppState
 import core.di.scope.WbApiRetrofit
 import core.di.scope.WbBaseUrl
 import core.di.scope.WbTokenApiRetrofit
@@ -54,7 +53,7 @@ class RetrofitModule {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
-            .authenticator(TokenAuthenticator())
+            //.authenticator(TokenAuthenticator())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)

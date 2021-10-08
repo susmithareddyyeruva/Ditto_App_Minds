@@ -82,10 +82,6 @@ class SplashViewModel @Inject constructor(
         userPhone = storageManager.getStringValue(USER_PHONE)
         userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
         userLastName = storageManager.getStringValue(USER_LAST_NAME)
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
         subscriptionEndDate = storageManager.getStringValue(SUBSCRIPTION_END_DATE)
     }
 

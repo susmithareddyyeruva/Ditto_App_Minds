@@ -62,10 +62,9 @@ import javax.inject.Singleton
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, VideoPlayerFragmentModule::class, OnboardingApiModule::class,
         CustomerCareFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
-        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
-        PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class]
-        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class,
-        VideosFragmentModule::class,SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class]
+        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
+        PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class,
+        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class]
 
 )
 @Singleton
