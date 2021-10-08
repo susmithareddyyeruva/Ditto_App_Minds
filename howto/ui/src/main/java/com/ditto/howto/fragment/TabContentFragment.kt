@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.ditto.howto.adapter.TabContentAdapter
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.utils.Common
+import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.TabcontentFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -48,7 +49,7 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as BottomNavigationActivity).setToolbarTitle("How To")
+        (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.toolbar_title_how_to))
         setInstructionadapter()
         vm.disposable += vm.events
             .observeOn(AndroidSchedulers.mainThread())

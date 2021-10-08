@@ -27,7 +27,7 @@
     <string name="spliced_piece">Spliced Pieces</string>
     <string name="spliced_piece_message">Additional pieces cannot be in the workspace at the same time as a spliced piece.</string><!--//multiple warning-->
     <string name="splicing_required">Splicing Required</string>
-    <string name="splicing_required_first_message">This is a spliced piece that is too large for the projection area and will be projected across two or more linked sections.</string><!-- // done splice notification-->
+    <string name="splicing_required_first_message">This is a spliced piece that is too large for the projection area. It will be projected across two or more linked sections.</string><!-- // done splice notification-->
     <string name="splicing_required_message">This is a large piece which required splicing. This piece can\'t be projected at the same time as other pieces.</string> <!--//multiple-->
     <string name="multiple_splicing_required">Multi-Directional Splicing Required</string>
     <string name="splicing_required_multiple_message"><![CDATA[This piece is too large for the projection area and will be projected across 3+ linked sections. <u><b>TRACING</b></u> the entire piece first is recommended before cutting due to the complexity.]]></string> <!--//multiple-->
@@ -46,7 +46,7 @@
     <string name="seek_text"><![CDATA["<font color='#AD201A'> %1$d</font>/%2$d"]]></string>
     <string name="splice_text"> Spliced screen %1$d of %2$d</string>
     <string name="tap_to_enlarge">Double Tap to Zoom</string>
-    <string name="select_a_layout">Select a layout</string>
+    <string name="select_a_layout">Select a Layout</string>
     <string name="reset">Reset</string>
     <string name="size_36_nwith_or_without_nap">Size 36 \nWith or Without Nap</string>
     <string name="switching">Switching</string>
@@ -61,7 +61,6 @@
     <string name="save_and_exit_dialog_message">Type your project name.</string>
     <string name="save">Save</string>
     <string name="exit">Exit</string>
-    <string name="double_tap_to_zoom">Double tap to zoom</string>
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
     <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>

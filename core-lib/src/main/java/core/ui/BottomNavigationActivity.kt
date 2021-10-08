@@ -37,11 +37,14 @@ import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
 import core.ui.adapter.ExpandableMenuListAdapter
 import core.ui.common.NoScrollExListView
+import core.ui.rxbus.RxBus
+import core.ui.rxbus.RxBusEvent
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 
@@ -59,7 +62,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var expandableListView: NoScrollExListView
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
     lateinit var navViewHeaderBinding: NavDrawerHeaderBinding
-
+    private lateinit var versionDisposable: Disposable
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -222,6 +225,17 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                             else R.id.action_pattern_description_to_nav_graph_manage
                         )
                     }
+                }
+
+                if (binding.bottomNavViewModel!!.childList.get(
+                        binding.bottomNavViewModel!!.headerList.get(
+                            groupPosition
+                        )
+                    )?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.str_menu_softwareupdate))
+                ) {
+                    RxBus.publish(RxBusEvent.checkVersion(true))
+
                 }
 
                 if (binding.bottomNavViewModel!!.childList.get(
@@ -418,7 +432,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         return when (item?.itemId) {
             R.id.nav_graph_settings, R.id.nav_graph_software_updates -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
-                false
+
+                true
             }
             R.id.nav_graph_support -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -509,7 +524,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 logoutUser(false)
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
-        } else if (selectedmenu.equals(this.getString(R.string.about_app_policies))) {
+        } else if (selectedmenu.equals(this.getString(R.string.about_the_app_amp_policies))) {
             if (navController.currentDestination?.label?.equals("Home")!! ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)

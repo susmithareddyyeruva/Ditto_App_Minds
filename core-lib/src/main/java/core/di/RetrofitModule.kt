@@ -9,6 +9,11 @@ import core.TRACKING_ID
 import core.appstate.AppState
 import core.data.model.TokenResult
 import core.di.scope.*
+import core.appstate.AppState
+import core.di.scope.WbApiRetrofit
+import core.di.scope.WbBaseUrl
+import core.di.scope.WbTokenApiRetrofit
+import core.di.scope.WbTokenBaseUrl
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
@@ -238,7 +243,7 @@ class HmacSignatureInterceptor : Interceptor {
         val signature = generateSignature(chain.request(), accessKeyId, timestamp)
         val userAgent = java.lang.String.format(
             "JOANN/%s %s",
-            BuildConfig.VERSION_NAME,
+            AppState.getAppVersion(),
             System.getProperty("http.agent")
         )
         var request = chain.request()
@@ -300,57 +305,3 @@ class HmacSignatureInterceptor : Interceptor {
         ).toLowerCase()
     }
 }
-
-class TokenAuthenticator : Authenticator {
-
-    override fun authenticate(route: Route?, response: Response): Request? {
-        return runBlocking {
-
-            // 1. Refresh your access_token using a synchronous api request
-            val responseMain = getUpdatedToken()
-
-
-            val expCal = Calendar.getInstance()
-            expCal.add(Calendar.MINUTE, responseMain.response?.expires_in ?: 0)
-            val expirytime = expCal.time.time
-            val token = responseMain?.response?.access_token ?: ""
-            Log.d("TOKEN==", token)
-            token.let {
-                AppState.saveToken(
-                    it,
-                    expirytime
-                )
-            }
-
-            response.request.newBuilder()
-                .header("Authorization", "Bearer ${responseMain.response?.access_token}")
-                .build()
-
-
-        }
-    }
-
-    private suspend fun getUpdatedToken(): TokenResult {
-        val httpClient = OkHttpClient.Builder()
-            .addInterceptor(HmacSignatureInterceptor())
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BuildConfig.TOKEN_BASEURL)
-            .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-
-        val service = retrofit.create(ApiService::class.java)
-        return service.refreshTokenAuthentication()
-
-    }
-
-}
-
-
-

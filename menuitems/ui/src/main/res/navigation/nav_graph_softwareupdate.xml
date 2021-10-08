@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/softwareupdate"
+    android:id="@+id/nav_graph_softwareupdate">
+
+    <dialog
+        android:id="@+id/softwareupdate"
+        android:name="com.ditto.menuitems_ui.softwareupdate.SoftwareUpdateFragment"
+        tools:layout="@layout/fragment_software_update"
+        android:label="Software Update">
+    </dialog>
+
+</navigation>

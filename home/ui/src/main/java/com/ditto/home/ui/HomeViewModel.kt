@@ -210,5 +210,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun versionCheck(){
+        utility.checkVersion()
+    }
+
 
 }

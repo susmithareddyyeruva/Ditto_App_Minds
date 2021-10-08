@@ -134,7 +134,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
-        (activity as BottomNavigationActivity).setToolbarTitle("About The App & Policies")
+        (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.about_the_app_amp_policies))
 
 
     }

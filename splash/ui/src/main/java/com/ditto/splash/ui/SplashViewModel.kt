@@ -38,16 +38,20 @@ class SplashViewModel @Inject constructor(
     val events = uiEvents.stream()
 
     init {
-        if (AppState.getToken().isNullOrEmpty()) {
-            utility.refreshToken()
-        } else {
-            if (Utility.isTokenExpired()) {
-                utility.refreshToken()
-            }
-        }
+        utility.checkVersion()
+    }
+
+    fun continueToApp() {
+
+        initialDelayWithDataFetch()
+
+    }
+
+    fun initialDelayWithDataFetch() {
+        utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
-            delay(3000)
+//            delay(3000)
             if (AppState.getIsLogged()) {
                 fetchDbUser()
             } else { //Guest User
@@ -78,7 +82,10 @@ class SplashViewModel @Inject constructor(
         userPhone = storageManager.getStringValue(USER_PHONE)
         userFirstName = storageManager.getStringValue(USER_FIRST_NAME)
         userLastName = storageManager.getStringValue(USER_LAST_NAME)
+<<<<<<<<< Temporary merge branch 1
 
+=========
+>>>>>>>>> Temporary merge branch 2
         subscriptionEndDate = storageManager.getStringValue(SUBSCRIPTION_END_DATE)
     }
 

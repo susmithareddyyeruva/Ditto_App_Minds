@@ -1,6 +1,11 @@
 package com.ditto.home.ui
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,11 +25,15 @@ import core.appstate.AppState
 import core.event.RxBus
 import core.event.RxBusEvent
 import core.network.NetworkUtility
+import core.data.model.SoftwareUpdateResult
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import core.ui.rxbus.RxBus
+import core.ui.rxbus.RxBusEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
@@ -34,6 +43,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
+    var versionResult: SoftwareUpdateResult? = null
 
     val logger: Logger by lazy {
         loggerFactory.create(HomeFragment::class.java.simpleName)
@@ -41,7 +51,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     private val homeViewModel: HomeViewModel by ViewModelDelegate()
     lateinit var binding: HomeFragmentBinding
     var toolbar: Toolbar? = null
-
+   var versionDisposable: CompositeDisposable? = null
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -54,6 +64,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             it.lifecycleOwner = this
         }
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        versionDisposable?.clear()
+        versionDisposable?.dispose()
     }
 
     @SuppressLint("CheckResult")
@@ -110,6 +126,78 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        listenVersionEvents()
+        try {
+            val pInfo: PackageInfo =
+                context?.getPackageName()?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
+            val version = pInfo.versionName
+            println("================= version = ${version}")
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun listenVersionEvents() {
+        versionDisposable = CompositeDisposable()
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.checkVersion::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (it.isCheckVersion){
+                    !it.isCheckVersion
+                    bottomNavViewModel.showProgress.set(true)
+                    homeViewModel.versionCheck()
+                }
+            })
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionReceived::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+
+                bottomNavViewModel.showProgress.set(false)
+                versionResult = it.versionReceived
+                showVersionPopup()
+
+            })
+
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                bottomNavViewModel.showProgress.set(false)
+                showAlert(it.versionerrorReceived)
+            })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        versionDisposable?.clear()
+        versionDisposable?.dispose()
+    }
+
+    private fun showVersionPopup() {
+        var negativeText = versionResult?.response?.cancel!!
+        var positiveText = versionResult?.response?.confirm!!
+        var status = Utility.Iconype.WARNING
+        if (versionResult?.response?.version_update == false) {
+            negativeText = ""
+            positiveText = "OK"
+            status = Utility.Iconype.SUCCESS
+        }
+
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            versionResult?.response?.title!!,
+            versionResult?.response?.body!!,
+            negativeText,
+            positiveText,
+            this,
+            Utility.AlertType.SOFTWARE_UPDATE
+            ,
+            status
+        )
+
+    }
 
     private fun handleEvent(event: HomeViewModel.Event) =
         when (event) {
@@ -201,14 +289,28 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+        if (versionResult?.response?.version_update == true){
+            val  packageName = context?.packageName
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+            } catch (e: ActivityNotFoundException) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+            }
+        }
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        // TODO("Not yet implemented")
-    }
 
+        if (versionResult?.response?.force_update == true){
+            requireActivity().finishAffinity()
+        }
+
+    }
+    private fun showAlert(versionerrorReceived: String) {
+        Utility.getCommonAlertDialogue(requireContext(),"",versionerrorReceived,"",getString(com.ditto.menuitems_ui.R.string.str_ok),this, Utility.AlertType.NETWORK
+            ,Utility.Iconype.FAILED)
+    }
 }

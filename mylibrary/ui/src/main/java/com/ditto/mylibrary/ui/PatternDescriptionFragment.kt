@@ -2,10 +2,14 @@ package com.ditto.mylibrary.ui
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
+import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -34,12 +38,16 @@ import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
 import core.network.NetworkUtility
+import core.data.model.SoftwareUpdateResult
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
+import core.ui.rxbus.RxBus
+import core.ui.rxbus.RxBusEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -64,14 +72,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     val logger: Logger by lazy {
         loggerFactory.create(PatternDescriptionFragment::class.java.simpleName)
     }
-
+    var versionDisposable: CompositeDisposable? = null
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
     lateinit var binding: PatternDescriptionFragmentBinding
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
-
+    var versionResult: SoftwareUpdateResult? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -94,7 +102,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern details")
+        context?.getString(R.string.pattern_details)?.let {
+            (activity as BottomNavigationActivity).setToolbarTitle(
+                it
+            )
+        }
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarPatterndesc)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
@@ -576,7 +588,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
 
-
     private fun setPatternImage() {
         Glide.with(requireContext())
             .load(viewModel.data.value?.patternDescriptionImageUrl)
@@ -632,16 +643,72 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        listenVersionEvents()
     }
 
+    private fun listenVersionEvents() {
+        versionDisposable = CompositeDisposable()
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.checkVersion::class.java)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.isCheckVersion) {
+                        !it.isCheckVersion
+                        bottomNavViewModel.showProgress.set(true)
+                        viewModel.versionCheck()
+                    }
+                })
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.versionReceived::class.java)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+
+                    bottomNavViewModel.showProgress.set(false)
+                    versionResult = it.versionReceived
+                    showVersionPopup()
+
+                })
+
+        versionDisposable?.plusAssign(
+            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    bottomNavViewModel.showProgress.set(false)
+                    showAlert(it.versionerrorReceived)
+                })
+    }
 
     override fun onPause() {
         toolbarViewModel.isShowTransparentActionBar.set(false)
         super.onPause()
+        versionDisposable?.clear()
+        versionDisposable?.dispose()
+    }
+
+    private fun showVersionPopup() {
+        var negativeText = versionResult?.response?.cancel!!
+        var positiveText = versionResult?.response?.confirm!!
+        var status = Utility.Iconype.WARNING
+        if (versionResult?.response?.version_update == false) {
+            negativeText = ""
+            positiveText = "OK"
+            status = Utility.Iconype.SUCCESS
+        }
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            versionResult?.response?.title!!,
+            versionResult?.response?.body!!,
+            negativeText,
+            positiveText,
+            this,
+            Utility.AlertType.SOFTWARE_UPDATE,
+            status
+        )
     }
 
     private fun enterWorkspace() {
@@ -886,6 +953,28 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
+
+
+            Utility.AlertType.SOFTWARE_UPDATE -> {
+                if (versionResult?.response?.version_update == true) {
+                    val packageName = "com.joann.ditto"
+                    try {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=$packageName")
+                            )
+                        )
+                    } catch (e: ActivityNotFoundException) {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -964,5 +1053,25 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Log.d("onReqPermissionsResult", "permission denied")
         }
 
+    }
+            alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
+                if (versionResult?.response?.force_update == true) {
+                    requireActivity().finishAffinity()
+                }
+            }
+        }
+    }
+
+    private fun showAlert(versionerrorReceived: String) {
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            versionerrorReceived,
+            "",
+            getString(com.ditto.menuitems_ui.R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
     }
 }

@@ -1,4 +1,3 @@
-
 package com.ditto.base.core.di
 import android.content.Context
 import com.ditto.base.DittoApplication
@@ -15,6 +14,7 @@ import com.ditto.login.data.di.LoginApiModule
 import com.ditto.login.data.di.LoginDbModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.menuitems.data.di.*
+import com.ditto.menuitems_ui.softwareupdate.di.SoftwareUpdateFragmentModule
 import com.ditto.menuitems_ui.aboutapp.di.AboutAppFragmentModule
 import com.ditto.menuitems_ui.customercare.di.CustomerCareFragmentModule
 import com.ditto.menuitems_ui.faq.di.FAQfragmentModule
@@ -40,6 +40,7 @@ import com.ditto.videoplayer.di.VideoPlayerFragmentModule
 import com.ditto.workspace.data.di.GetWorkspcaeDataApiModule
 import com.ditto.workspace.data.di.WorkspaceDataModule
 import com.ditto.workspace.ui.di.WorkspaceFragmentModule
+import core.data.di.SoftwareUpdateUseCaseModule
 import core.data.di.TokenUsecaseModule
 import core.di.RetrofitModule
 import core.di.TokenApiModule
@@ -63,6 +64,8 @@ import javax.inject.Singleton
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
         GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
         PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class]
+        GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, ManageDeviceFragmentModule::class, AboutAppAPIModule::class, AboutAppDataModule::class, PrivacyAndSettingFragmentModule::class,
+        VideosFragmentModule::class,SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class]
 
 )
 @Singleton

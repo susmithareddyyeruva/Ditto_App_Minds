@@ -7,6 +7,8 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
@@ -27,6 +29,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
@@ -47,13 +50,18 @@ import kotlin.math.PI
  * Helper Utility class
  */
 class Utility @Inject constructor(
-    private val tokenViewModel: TokenViewModel
+    private val tokenViewModel: TokenViewModel,
+    private val versionViewModel: VersionViewModel
 ) {
 
 
     fun refreshToken(){
 //        AppState.saveToken("",0)
         tokenViewModel.calltoken()
+    }
+
+    fun checkVersion(){
+        versionViewModel.checkVersion()
     }
 
     enum class AlertType {
@@ -75,12 +83,14 @@ class Utility @Inject constructor(
         DELETE,
         UPDATEAPIFAILED,
         DOWNLOADFAILED,
-        RUNTIMEPERMISSION
+        RUNTIMEPERMISSION,
+        SOFTWARE_UPDATE
     }
 
     enum class Iconype {
         SUCCESS,
         FAILED,
+        WARNING,
         NONE
     }
 
@@ -568,6 +578,8 @@ class Utility @Inject constructor(
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
                     } else if (imgtyp.equals(Iconype.FAILED)) {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                    } else if (imgtyp.equals(Iconype.WARNING)) {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_warning))
                     } else {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
                     }

@@ -10,6 +10,7 @@ object AppState {
     private const val KEY_TOKEN = "token"
     private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
+    private const val APP_VERSION = ""
 
     fun init(context: Context) {
         pref = PreferenceStorageImpl(context)
@@ -89,5 +90,13 @@ object AppState {
     fun getPatternCount(): Int? {
         val count = pref?.getInt(PATTERN_COUNT)
         return count
+    }
+    fun getAppVersion(): String? {
+        val appversion = pref?.getString(APP_VERSION)
+        return appversion
+    }
+
+    fun saveAppVersion(version: String) {
+        pref?.saveString(APP_VERSION, version)
     }
 }

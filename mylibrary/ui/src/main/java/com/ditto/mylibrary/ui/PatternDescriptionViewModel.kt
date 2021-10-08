@@ -16,6 +16,7 @@ import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
 import core.ui.BaseViewModel
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -34,7 +35,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class PatternDescriptionViewModel @Inject constructor(private val context: Context,
-                                                      private val getPattern: MyLibraryUseCase) :
+                                                      val utility: Utility,
+                                                      private val getPattern: GetMylibraryData) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -338,5 +340,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             }
         }
         return imagesToDownload
+    }
+    fun versionCheck(){
+        utility.checkVersion()
     }
 }

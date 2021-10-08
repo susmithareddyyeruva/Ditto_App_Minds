@@ -95,7 +95,7 @@ class HowtoFragment : BaseFragment() {
     private fun handleEvent(event: HowtoViewModel.Event) =
         when (event) {
             is HowtoViewModel.Event.OnDataUpdated -> {
-                viewModel.toolbarTitle.set("How To")
+                viewModel.toolbarTitle.set(getString(R.string.toolbar_title_how_to))
                 setTabsAdapter()
             }
 
@@ -178,7 +178,7 @@ class HowtoFragment : BaseFragment() {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
-            viewModel.toolbarTitle.set("How To")
+            viewModel.toolbarTitle.set(getString(R.string.toolbar_title_how_to))
             toolbar.setNavigationIcon(R.drawable.ic_back_button)
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
