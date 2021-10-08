@@ -11,5 +11,6 @@ data class FavouriteResult(
     @SerializedName("queryString")
     var queryString: String,
     @SerializedName("responseStatus")
-    var responseStatus: Boolean
+    var responseStatus: Boolean,
+    val errorMsg: String?
 )

@@ -15,6 +15,7 @@ import com.ditto.mylibrary.ui.adapter.MyFolderAdapter
 import com.ditto.mylibrary.ui.databinding.MyfolderfragmentBinding
 import com.ditto.mylibrary.ui.util.Utility
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -75,12 +76,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             }
         }
     }
+
     override fun onPause() {
         super.onPause()
         Log.d("Testing", ">>>>>>   Myfolder  onPause")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("Testing", ">>>>>>   Myfolder onDestroyView ")
@@ -88,10 +91,27 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     fun onSyncClick() {
         if (viewModel != null) {
-            Log.d("MyFolder", "Sync")
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.getFoldersList()
+            if (AppState.getIsLogged()&&NetworkUtility.isNetworkAvailable(context)) {
+                logger.d("onSyncClick : MyFolder Fragment")
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.getFoldersList()
+            }
         }
+    }
+
+    private fun showAlert() {
+        bottomNavViewModel.showProgress.set(false)
+        val errorMessage = viewModel.errorString.get() ?: ""
+        core.ui.common.Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            errorMessage,
+            "",
+            getString(R.string.str_ok),
+            this,
+            core.ui.common.Utility.AlertType.NETWORK,
+            core.ui.common.Utility.Iconype.FAILED
+        )
     }
 
     private fun setUIEvents() {
@@ -109,7 +129,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             requireContext(),
             viewModel.folderList,
             this@MyFolderFragment,
-            this@MyFolderFragment)
+            this@MyFolderFragment
+        )
         binding.rvMyFolder.adapter = adapter
         adapter.viewModel = viewModel
     }
@@ -135,7 +156,13 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
 
             }
+            /* is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
+                 bottomNavViewModel.showProgress.set(false)
+                 viewModel.isLoading.set(false)
+                 showAlert()
+             }*/
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
+                (parentFragment as MyLibraryFragment).isFolderDetailsClicked=true
                 Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
@@ -163,8 +190,9 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
 
             }
+
             else -> {
-                Log.d("MyLibraryViewModel", "MyLibraryViewModel.Event undefined")
+                logger.d("onSyncClick : MyLibraryViewModel.Event undefined")
 
             }
 

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.FilterItems
-import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.AllPatternsAdapter
 import com.ditto.mylibrary.ui.databinding.AllPatternsFragmentBinding
 import com.ditto.mylibrary.ui.util.PaginationScrollListener
@@ -129,14 +128,15 @@ class AllPatternsFragment(
     private fun updatePatterns() {
         // Updating the adapter
         allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
+        val count = String.format("%02d", viewModel.totalPatternCount)
         binding.tvFilterResult.text =
-            getString(R.string.text_filter_result, viewModel.totalPatternCount)
+            getString(R.string.text_filter_result, count)
         bottomNavViewModel.showProgress.set(false)
         viewModel.isLoading.set(false)
         setPatternCount.onSetCount(
             getString(
                 R.string.pattern_library_count,
-                AppState.getPatternCount()
+                viewModel.totalPatternCount
             )
         )
     }
@@ -191,6 +191,7 @@ class AllPatternsFragment(
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("Testing", ">>>>>>   All Patterns  onDestroyView ")
@@ -252,29 +253,23 @@ class AllPatternsFragment(
             }
         }
 
-        is AllPatternsViewModel.Event.OnDataUpdated -> {
-            bottomNavViewModel.showProgress.set(false)
-            viewModel.isLoading.set(false)
-            setPatternCount.onSetCount(
-                getString(
-                    R.string.pattern_library_count,
-                    AppState.getPatternCount()
-                )
-            )
-
-        }
-
         is AllPatternsViewModel.Event.OnOptionsClicked -> {
             showPopupMenu(event.view, event.patternId)
         }
 
         is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {
-            Log.d("pattern", "OnSearchClick : AllPatternsFragment")
+            logger.d("OnSearchClick : AllPatternsFragment")
 
         }
         is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
-            cleaFilterData()
-            Log.d("pattern", "OnSyncClick : AllPatternsFragment")
+            if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
+                cleaFilterData()
+            } else {
+                viewModel.errorString.set(getString(R.string.no_internet_available))
+                showAlert()
+                viewModel.fetchOfflinePatterns()
+            }
+            logger.d("OnSyncClick : AllPatternsFragment")
 
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
@@ -305,12 +300,13 @@ class AllPatternsFragment(
             viewModel.isLoading.set(false)
         }
         is AllPatternsViewModel.Event.OnAddProjectClick -> {
-            Log.d("event", "Add project")
+            logger.d("Add project")
         }
 
         is AllPatternsViewModel.Event.UpdateFilterImage -> {
             filterIconSetListener.onFilterApplied(true)
         }
+
         is AllPatternsViewModel.Event.OnCreateFolder -> {
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
@@ -341,9 +337,8 @@ class AllPatternsFragment(
             bottomNavViewModel.showProgress.set(false)
             viewModel.isLoading.set(false)
             /**
-             * CREATE  FOLDER POP UP WITH  ALL FOLDERS LIST FROM MY FOLDER
+             * CREATE  FOLDER POP UP WITH  ALL FOLDERS CREATED ALONG WITH NEW FOLDER
              */
-            Log.d("DIALOG", "handleFetchResultFolders")
             logger.d("OnPopupClick")
             getAlertDialogFolder(
                 requireActivity(), viewModel.folderMainList, viewModel
@@ -391,14 +386,14 @@ class AllPatternsFragment(
 
     fun onSyncClick() {
         if (viewModel != null) {
-            Log.d("pattern", "onSyncClick : viewModel")
+            logger.d("onSyncClick : All Pattern")
             viewModel.onSyncClick()
         }
     }
 
     fun onSearchClick() {
         if (viewModel != null) {
-            Log.d("pattern", "onSearchClick : viewModel")
+            logger.d("onSearchClick : All Pattern")
             viewModel.onSearchClick()
         }
     }

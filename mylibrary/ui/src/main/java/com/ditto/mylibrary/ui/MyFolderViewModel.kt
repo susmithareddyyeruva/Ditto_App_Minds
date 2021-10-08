@@ -3,13 +3,12 @@ package com.ditto.mylibrary.ui
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.*
 import com.google.gson.Gson
-import core.CUSTOMER_EMAIL
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -54,7 +53,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     var folderToRename: String = ""
     var myFolderDetailHeader: String = ""
 
-    fun onItemClickPattern(id: String,orderNumber: String) {
+    fun onItemClickPattern(id: String, orderNumber: String) {
         if (id == "10140549") {
             clickedTailornovaID.set("1")
             clickedOrderNumber.set(orderNumber)
@@ -115,7 +114,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         val favReq = FolderRequest(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 purchasedPattern = true,
                 subscriptionList = true,
                 trialPattern = false
@@ -134,7 +133,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             val renameReq = FolderRenameRequest(
                 OrderFilterRename(
                     true,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     purchasedPattern = true,
                     subscriptionList = true,
                     trialPattern = false,
@@ -180,11 +179,15 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         uiEvents.post(Event.OnMyFolderHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                myfolderList.value = result.data.prod
+                var temp: ArrayList<ProdDomain> =
+                    if (myfolderList.value == null) ArrayList() else myfolderList.value as ArrayList<ProdDomain>
+                temp?.addAll(result.data.prod)
+                myfolderList.value = temp
+                // myfolderList.value = result.data.prod
 
-               /* result.data.prod.forEach {
-                    myfolderArryList.add(it)
-                }*/
+                /* result.data.prod.forEach {
+                     myfolderArryList.add(it)
+                 }*/
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
@@ -227,7 +230,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         val folderRequest = GetFolderRequest(
             OrderFilter(
                 true,
-                CUSTOMER_EMAIL,
+                AppState.getEmail(),
                 purchasedPattern = false,
                 subscriptionList = false,
                 trialPattern = true
@@ -293,7 +296,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
                     false,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     purchasedPattern = true,
                     subscriptionList = false,
                     trialPattern = false,
@@ -307,7 +310,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
                     true,
-                    CUSTOMER_EMAIL,
+                    AppState.getEmail(),
                     purchasedPattern = false,
                     subscriptionList = false,
                     trialPattern = false,
@@ -374,6 +377,8 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         uiEvents.post(Event.OnMyFolderSearchClick)
     }
 
+
+
     sealed class Event {
         object OnMyFolderItemClick : MyFolderViewModel.Event()
         object OnMyFolderListUpdated : MyFolderViewModel.Event()
@@ -381,7 +386,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         object OnNavigtaionToFolderDetail : MyFolderViewModel.Event()
         object MyFolderSyncClick : MyFolderViewModel.Event()
         object OnMyFolderSearchClick : MyFolderViewModel.Event()
-        object OnCreateFolder : MyFolderViewModel.Event()
         object OnMyFolderResultSuccess : MyFolderViewModel.Event()
         object OnNewFolderAdded : MyFolderViewModel.Event()
         object OnFolderRemoved : MyFolderViewModel.Event()

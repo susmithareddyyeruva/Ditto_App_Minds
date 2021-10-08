@@ -9,6 +9,8 @@ data class FoldersResult(
     var locale: String,
     @SerializedName("queryString")
     var queryString: String,
-    @SerializedName("responseStatus")
-    var responseStatus: List<String>
+    @SerializedName("responseVal")
+    var responseStatus: List<String>,
+    @SerializedName("errorMsg")
+    val errorMsg: String?
 )

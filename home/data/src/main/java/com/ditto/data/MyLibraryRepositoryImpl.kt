@@ -1,7 +1,6 @@
 package com.ditto.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.toDomain
@@ -27,7 +26,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
     private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val loggerFactory: LoggerFactory
 
-): GetMyLibraryRepository {
+) : GetMyLibraryRepository {
     @Inject
     lateinit var context: Context
     val logger: com.ditto.logger.Logger by lazy {
@@ -38,29 +37,32 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return homeService.getHomeScreenDetails(requestData,"Bearer "+ AppState.getToken()!!)
+        return homeService.getHomeScreenDetails(requestData, "Bearer " + AppState.getToken()!!)
             .doOnSuccess {
-                logger.d("*****FETCH HOME SUCCESS**")
+                if (!it.errorMsg.isNullOrEmpty()) {
+                    logger.d("*****FETCH HOME SUCCESS 200 with Error **")
+                    throw java.lang.Exception(it.errorMsg)
+                } else {
+                    logger.d("*****FETCH HOME SUCCESS**")
+                }
+
             }
             .map {
                 Result.withValue(it.toDomain())
+
+
             }
             .onErrorReturn {
                 var errorMessage = "Error Fetching data"
-                try {
-                    logger.d("try block")
-                } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
-                    errorMessage = when (e) {
-                        is UnknownHostException -> {
-                            "Unknown host!"
-                        }
-                        is ConnectException -> {
-                            "No Internet connection available !"
-                        }
-                        else -> {
-                            "Error Fetching data!"
-                        }
+                errorMessage = when (it) {
+                    is UnknownHostException -> {
+                        "Unknown host!"
+                    }
+                    is ConnectException -> {
+                        "No Internet connection available !"
+                    }
+                    else -> {
+                        it.localizedMessage
                     }
                 }
                 Result.withError(
@@ -70,9 +72,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
     override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {
-        return Single.fromCallable{
+        return Single.fromCallable {
             val offlinePatternData = offlinePatternDataDao.getTailernovaData()
-            if(offlinePatternData != null)
+            if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
                 Result.withError(HomeDataFetchError(""))

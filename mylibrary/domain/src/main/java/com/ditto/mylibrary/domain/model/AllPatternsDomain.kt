@@ -11,5 +11,7 @@ data class AllPatternsDomain(
     val totalPatternCount: Int?=0,
     val totalPageCount: Int?=0,
     val currentPageId: Int?=0,
-    val menuItem: HashMap<String,List<String>>?= hashMapOf()
+    val menuItem: HashMap<String,List<String>>?= hashMapOf(),
+    val errorMsg:String
+
 ):Serializable

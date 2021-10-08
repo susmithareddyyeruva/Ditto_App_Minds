@@ -7,5 +7,6 @@ data class MyLibraryDetailsDomain(
     var queryString: String,
     val totalPatternCount: Int,
     val totalPageCount: Int,
-    val currentPageId: Int
+    val currentPageId: Int,
+    val errorMsg:String
 )
