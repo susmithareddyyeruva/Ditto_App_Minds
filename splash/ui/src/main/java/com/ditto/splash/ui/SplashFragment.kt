@@ -28,6 +28,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
     private val viewModel: SplashViewModel by ViewModelDelegate()
     private lateinit var binding: SplashActivityBinding
     var versionResult: SoftwareUpdateResult? = null
+
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var versionDisposable: CompositeDisposable? = null
@@ -107,27 +108,31 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
         versionDisposable?.plusAssign(
             RxBus.listen(RxBusEvent.versionReceived::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
-
-                versionResult = it.versionReceived
-                if (versionResult?.response?.critical_update == true ||
-                    versionResult?.response?.force_update == true){
-                    showVersionPopup()
-                } else if (versionResult?.response?.version_update == true){
-                    viewModel.continueToApp()
-                } else {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    lifecycleScope.launchWhenResumed {
+                        versionResult = it.versionReceived
+                        if (versionResult?.response?.critical_update == true ||
+                            versionResult?.response?.force_update == true
+                        ) {
+                            showVersionPopup()
+                        } else if (versionResult?.response?.version_update == true) {
+                            viewModel.continueToApp()
+                        } else {
 //                    Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
-                    viewModel.continueToApp()
-                }
-            })
+                            viewModel.continueToApp()
+                        }
+                    }
+                })
 
         versionDisposable?.plusAssign(
             RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
-                viewModel.continueToApp()
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    lifecycleScope.launchWhenResumed {
+                        viewModel.continueToApp()
+                    }
+                })
     }
     private fun showVersionPopup() {
         var negativeText = versionResult?.response?.cancel!!
@@ -139,11 +144,11 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
             negativeText,
             positiveText,
             this,
-            Utility.AlertType.SOFTWARE_UPDATE
-            ,
+            Utility.AlertType.SOFTWARE_UPDATE,
             Utility.Iconype.WARNING
         )
     }
+
     override fun onPause() {
         super.onPause()
         versionDisposable?.clear()
@@ -160,11 +165,16 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        val  packageName = context?.packageName
+        val packageName = context?.packageName
         try {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
         }
         requireActivity().finishAffinity()
     }
@@ -173,7 +183,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        if (versionResult?.response?.force_update == true){
+        if (versionResult?.response?.force_update == true) {
             requireActivity().finishAffinity()
         } else {
             viewModel.continueToApp()
