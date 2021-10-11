@@ -91,10 +91,8 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
          */
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                if (!Utility.isTokenExpired()) {
                     bottomNavViewModel.showProgress.set(true)
                     homeViewModel.fetchData()
-                }
             } else {
                 homeViewModel.fetchOfflineData()
             }

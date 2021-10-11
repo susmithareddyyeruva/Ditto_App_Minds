@@ -71,14 +71,12 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
         Log.d("Testing", ">>>>>>   MyLibraryFragment onActivityCreated")
-        setTabsAdapter()
         setUpToolbar()
         setUpNavigationDrawer()
         toolbarViewModel.visibility.set(false)
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        setUIEvents()
         binding.closeFilter.setOnClickListener {
             binding.drawerLayoutMylib.closeDrawer(Gravity.RIGHT)
             //  setFilterMenuAdapter(0)
