@@ -41,7 +41,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedTailornovaID: ObservableField<String> = ObservableField("170a4ffb2d1b4fe4a8109d7f6ebffe84")
+    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -76,7 +76,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
 
     //fetch data from offline
     fun fetchOfflinePatterns() {
-        disposable += getPattern.getOfflinePatternById("170a4ffb2d1b4fe4a8109d7f6ebffe84")
+        disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -94,7 +94,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern("170a4ffb2d1b4fe4a8109d7f6ebffe84")
+        disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
