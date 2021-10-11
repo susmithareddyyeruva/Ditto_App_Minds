@@ -70,7 +70,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
             showProgress(true)
-            viewModel.fetchTailernovaDetails("170a4ffb2d1b4fe4a8109d7f6ebffe84") // fetching data from internal DB
+            viewModel.fetchTailernovaDetails("30644ba1e7aa41cfa9b17b857739968a") // fetching data from internal DB
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

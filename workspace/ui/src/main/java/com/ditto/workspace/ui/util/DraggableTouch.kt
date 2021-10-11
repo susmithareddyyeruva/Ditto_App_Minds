@@ -28,6 +28,7 @@ fun View.makeDraggable(
     workspaceItem: WorkspaceItems?,
     addedViews: MutableList<View>,
     isSelectAll: ObservableBoolean,
+    patternName: String?,
     draggableListener: DraggableListener? = null
 ) {
     var widgetDX = 0f
@@ -44,7 +45,8 @@ fun View.makeDraggable(
     var mDetector = GestureDetector(context,
         MyGestureListener(
             context,
-            workspaceItem?.imagePath
+            workspaceItem?.imageName,
+            patternName
         )
     )
     var mMultiTouchGestureDetector =
@@ -452,15 +454,21 @@ fun handleSplicedImageDragBack(
 /*
 Show pinch and zoom pop up
  */
-fun showPinchZoomPopup(context: Context, imagePath: String?, isReference: Boolean) {
+fun showPinchZoomPopup(
+    context: Context,
+    imageName: String?,
+    isReference: Boolean,
+    patternName: String?
+) {
     Utility.isPopupShowing.set(true)
     val intent = Intent(context, PinchAndZoom::class.java)
     //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
     intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-    intent.putExtra("ImageURL", imagePath)
+    intent.putExtra("ImageURL", imageName)
     intent.putExtra("isReference", isReference)
+    intent.putExtra("patternName", patternName)
     ContextCompat.startActivity(context, intent, null)
 }
 
@@ -540,11 +548,12 @@ private class MultiTouchGestureDetectorListener(draggableListener: DraggableList
     }
 }
 
-private class MyGestureListener(context: Context, path: String?) :
+private class MyGestureListener(context: Context, imageName: String?, patternName: String?) :
     GestureDetector.SimpleOnGestureListener() {
 
     var popUpContext = context
-    var imagePath = path
+    var imageName = imageName
+    var patternName = patternName
 
     override fun onDoubleTap(e: MotionEvent?): Boolean {
         Log.d("TAG", "DoubleTap: ")
@@ -553,8 +562,9 @@ private class MyGestureListener(context: Context, path: String?) :
             Utility.isDoubleTapTextVisible.set(false)
             showPinchZoomPopup(
                 popUpContext,
-                imagePath,
-                false
+                imageName,
+                false,
+                patternName
             )
         }
         return super.onDoubleTap(e)

@@ -41,7 +41,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-    val clickedTailornovaID: ObservableField<String> = ObservableField("170a4ffb2d1b4fe4a8109d7f6ebffe84")
+    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -76,7 +76,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
 
     //fetch data from offline
     fun fetchOfflinePatterns() {
-        disposable += getPattern.getOfflinePatternById("170a4ffb2d1b4fe4a8109d7f6ebffe84")
+        disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -94,7 +94,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern("170a4ffb2d1b4fe4a8109d7f6ebffe84")
+        disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -240,7 +240,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
                 runBlocking {
                     hashMap.forEach { (key, value) ->
                         Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                                if(!(key.equals("null"))){
+                                if(!(key.isNullOrEmpty())){
                                     downloadEachPatternPiece(
                                         imageUrl = value,
                                         filename = key,
@@ -280,7 +280,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             val path = Uri.fromFile(result)
             patternUri.set(path.toString())
             Log.d("PATTERN", patternUri.get() ?: "")
-
+            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
             temp.add(path.toString())
         }
     }
@@ -326,7 +326,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     fun imageFilesToDownload(hashMap: HashMap<String, String>): HashMap<String, String> {
         imagesToDownload.clear()
         hashMap.forEach { (key, value) ->
-            if(!(key.equals("null"))) {
+            if(!(key.isNullOrEmpty())) {
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
