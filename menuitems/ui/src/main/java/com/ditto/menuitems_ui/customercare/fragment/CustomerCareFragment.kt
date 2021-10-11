@@ -3,7 +3,6 @@ package com.ditto.menuitems_ui.customercare.fragment
 
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle

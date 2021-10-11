@@ -20,5 +20,8 @@ data class MyLibraryResult(
     @SerializedName("currentPageId")
     val currentPageId: Int?=0,
     @SerializedName("filter")
-    val menu: HashMap<String,List<String>>?= hashMapOf()
+    val menu: HashMap<String,List<String>>?= hashMapOf(),
+    @SerializedName("errorMsg")
+    val errorMsg:String?
+
 ): Serializable

@@ -1,9 +1,11 @@
 package com.ditto.mylibrary.ui
 
+import android.text.Editable
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
@@ -29,6 +31,11 @@ class MyLibraryViewModel @Inject constructor(
     var myLibraryTitle: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+    var  isSearchEnabled=ObservableBoolean()
+    var tabPosition: Int=0
+    private var patternSearchName = MutableLiveData<String?>()
+    var searchText: LiveData<String?>? = null
+        get() = patternSearchName
 
     init {
         // fetchOnBoardingData()
@@ -84,8 +91,11 @@ class MyLibraryViewModel @Inject constructor(
         object OnFilterClick : Event()
         object MyLibrarySync : Event()
         object OnSearchClick : Event()
+        object OnCancelClick :Event()
     }
-
+    fun onCancelSearchClick() {
+        uiEvents.post(Event.OnCancelClick)
+    }
     fun onFilterClick() {
         Log.d("pattern", "onFilterClick : viewModel")
         uiEvents.post(Event.OnFilterClick)
@@ -101,6 +111,8 @@ class MyLibraryViewModel @Inject constructor(
         uiEvents.post(Event.OnSearchClick)
     }
 
-
+    fun setPatternSearch(s: Editable){
+        patternSearchName.value = s.toString()
+    }
 
 }

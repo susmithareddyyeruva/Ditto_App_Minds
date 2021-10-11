@@ -51,12 +51,6 @@ class LoginViewModel @Inject constructor(
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
     }
-    init {
-        if (Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
-    }
-
     fun validateCredentials() {
         isEmailValidated.set(true)
         isPasswordValidated.set(true)

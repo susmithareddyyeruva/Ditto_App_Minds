@@ -18,9 +18,10 @@ fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
         locale = this.locale?:"",
         prod = this.prod?.map { it.toDomain() }?: emptyList(),
         queryString = this.queryString?:"",
-        currentPageId = this.currentPageId,
+        currentPageId = this.currentPageId?:0,
         totalPageCount = this.totalPageCount?:0,
-        totalPatternCount = this.totalPatternCount?:0
+        totalPatternCount = this.totalPatternCount?:0,
+        errorMsg = this.errorMsg?:""
     )
 }
 

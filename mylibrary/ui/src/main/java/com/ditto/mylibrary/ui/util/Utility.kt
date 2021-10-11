@@ -100,6 +100,9 @@ class Utility {
                 object : MyFolderListAdapter.OnItemFolderClicked {
                     override fun onItemClicked(itemName: String) {
                         alert.dismiss()
+                        /**
+                         * Adding pattern to a Folder
+                         */
                         viewmodel.onFolderClick(itemName)
                     }
                 })

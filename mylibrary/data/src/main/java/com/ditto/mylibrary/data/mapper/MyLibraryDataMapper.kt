@@ -24,12 +24,10 @@ internal fun List<Patterns>.toDomain(): List<MyLibraryData> {
             patternPieces = it.patternPieces,
             garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines,
             liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines,
-            interfaceWorkspaceItemOfflines =it.interfaceWorkspaceItemOfflines
+            interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines
         )
     }
 }
-
-
 
 
 internal fun Patterns.toDomain(): MyLibraryData {
@@ -47,20 +45,21 @@ internal fun Patterns.toDomain(): MyLibraryData {
         patternPieces = this.patternPieces,
         garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines,
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines,
-        interfaceWorkspaceItemOfflines =this.interfaceWorkspaceItemOfflines
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines
     )
 }
 
 fun MyLibraryResult.toDomain(): AllPatternsDomain {
     return AllPatternsDomain(
-        action = this.action?:"",
-        locale = this.locale?:"",
-        prod = this.prod?.map { it.toDomain() }?: emptyList(),
-        queryString = this.queryString?:"",
-        totalPatternCount = this.totalPatternCount?:0,
-        totalPageCount = this.totalPageCount?:0,
-        currentPageId = this.currentPageId?:0,
-        menuItem = this.menu?: hashMapOf()
+        action = this.action ?: "",
+        locale = this.locale ?: "",
+        prod = this.prod?.map { it.toDomain() } ?: emptyList(),
+        queryString = this.queryString ?: "",
+        totalPatternCount = this.totalPatternCount ?: 0,
+        totalPageCount = this.totalPageCount ?: 0,
+        currentPageId = this.currentPageId ?: 0,
+        menuItem = this.menu ?: hashMapOf(),
+        errorMsg = this.errorMsg?:""
 
     )
 }
@@ -68,38 +67,45 @@ fun MyLibraryResult.toDomain(): AllPatternsDomain {
 fun Prod.toDomain(): ProdDomain {
     return ProdDomain(
         iD = this.iD,
-        prodBrand = this.prodBrand?:"",
-        prodGender = this.prodGender?:"",
-        prodName = this.prodName?:"",
-        patternType = this.patternType?:"",
-        prodSize = this.prodSize?:"",
-        tailornovaDesignId = this.tailornovaDesignId?:"",
-        orderNo = this.orderNo?:"",
-        image = this.image?:"",
-        customization = this.customization?:"",
-        dateOfModification = this.dateOfModification?:"",
-      /*  description = this.description?:"",*/
-        occasion = this.occasion?:"",
-        season = this.season?:"",
-        status = this.status?:"",
-        subscriptionExpiryDate = this.subscriptionExpiryDate?:"",
-        suitableFor = this.suitableFor?:"",
-        type = this.type?:"",
-        isFavourite = this.isFavourite?:false
+        prodBrand = this.prodBrand ?: "",
+        prodGender = this.prodGender ?: "",
+        prodName = this.prodName ?: "",
+        patternType = this.patternType ?: "",
+        prodSize = this.prodSize ?: "",
+        tailornovaDesignId = this.tailornovaDesignId ?: "",
+        orderNo = this.orderNo ?: "",
+        image = this.image ?: "",
+        customization = this.customization ?: "",
+        dateOfModification = this.dateOfModification ?: "",
+        /*  description = this.description?:"",*/
+        occasion = this.occasion ?: "",
+        season = this.season ?: "",
+        status = this.status ?: "",
+        subscriptionExpiryDate = this.subscriptionExpiryDate ?: "",
+        suitableFor = this.suitableFor ?: "",
+        type = this.type ?: "",
+        isFavourite = this.isFavourite ?: false
 
     )
 
 }
-fun FavouriteResult.toDomain():AddFavouriteResultDomain{
-    return AddFavouriteResultDomain(action=this.action,
-    locale=this.locale,
-    queryString=this.queryString,
-    responseStatus=this.responseStatus)
+
+fun FavouriteResult.toDomain(): AddFavouriteResultDomain {
+    return AddFavouriteResultDomain(
+        action = this.action,
+        locale = this.locale,
+        queryString = this.queryString,
+        responseStatus = this.responseStatus,
+        errorMsg = this.errorMsg
+    )
 }
 
-fun FoldersResult.toDomain():FoldersResultDomain{
-    return FoldersResultDomain(action=this.action,
-        locale=this.locale,
-        queryString=this.queryString,
-        responseStatus=this.responseStatus)
+fun FoldersResult.toDomain(): FoldersResultDomain {
+    return FoldersResultDomain(
+        action = this.action,
+        locale = this.locale,
+        queryString = this.queryString,
+        responseStatus = this.responseStatus,
+        errorMsg = this.errorMsg
+    )
 }

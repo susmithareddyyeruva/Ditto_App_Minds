@@ -10,13 +10,13 @@ interface GetWorkspaceService {
     @Headers("Content-Type: application/json")
     //@GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/{id}?")// path id
     //@GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_3125c79dced64c46b92079b648c19c8f?")// path id
-    @GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_170a4ffb2d1b4fe4a8109d7f6ebffe84?")// path id
+    @GET(core.lib.BuildConfig.COMMON_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_30644ba1e7aa41cfa9b17b857739968a?")// path id
     fun getWorkspceDataFromApi(/*@Path ("id") id:String?,*/ @Query("client_id") client_id:String):Single<WorkspaceResult>
 
     @Headers("Content-Type: application/json")
     //@POST(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/{id}?method=PATCH")
     //@POST(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_3125c79dced64c46b92079b648c19c8f?method=PATCH")
-    @POST(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_170a4ffb2d1b4fe4a8109d7f6ebffe84?method=PATCH")
+    @POST(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_30644ba1e7aa41cfa9b17b857739968a?method=PATCH")
     fun updateWorkspaceDataFromApi(
        /* @Path("id") id: String?,*/
         @Query("client_id") client_id: String?,
@@ -26,7 +26,7 @@ interface GetWorkspaceService {
     @Headers("Content-Type: application/json")
     //@PUT(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/{id}?")
     //@PUT(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_3125c79dced64c46b92079b648c19c8f?")
-    @PUT(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_170a4ffb2d1b4fe4a8109d7f6ebffe84?")
+    @PUT(core.lib.BuildConfig.WORKSPACE_ENDURL+"custom_objects/traceWorkSpace/00008501_00002507_30644ba1e7aa41cfa9b17b857739968a?")
     fun createWorkspaceDataFromApi(
         /*@Path("id") id: String?,*/
         @Query("client_id") client_id: String?,

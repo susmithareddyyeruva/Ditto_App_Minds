@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="com.ditto.mylibrary.ui.MyLibraryViewModel" />
+        <import type="android.view.View" />
 
     </data>
     <androidx.drawerlayout.widget.DrawerLayout
@@ -32,6 +33,7 @@
                 android:id="@+id/pattern_library_appBar"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:visibility="@{viewModel.isSearchEnabled() ? View.GONE : View.VISIBLE}"
                 android:layout_marginTop="@dimen/dimen_5"
                 android:theme="@style/AppTheme.AppBarOverlay"
                 app:layout_constraintTop_toBottomOf="@id/topbar1">
@@ -75,7 +77,7 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/avenir_next_it_pro_bold"
                             android:gravity="center"
-                            android:text="@string/pattern_library"
+                            android:text="@{viewModel.myLibraryTitle}"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/size_pattern_lib_text"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -218,7 +220,8 @@
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:background="@color/white"
-                android:visibility="gone"
+                android:clickable="true"
+                android:visibility="@{viewModel.isSearchEnabled() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/tabLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -306,6 +309,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_12sp"
+                    android:onClick="@{() -> viewModel.onCancelSearchClick()}"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintEnd_toEndOf="@id/guidlineSearchEnd"
                     app:layout_constraintStart_toEndOf="@+id/relSearch"
