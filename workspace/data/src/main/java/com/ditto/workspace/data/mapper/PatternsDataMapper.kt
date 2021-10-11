@@ -104,7 +104,7 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
-        mirrorOption = this.mirrorOption,
+        isMirrorOption = this.mirrorOption,
         isCompleted = this.isCompleted
     )
 
@@ -215,7 +215,7 @@ internal fun com.ditto.workspace.domain.model.PatternPieces.toDomain(): PatternP
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
-        mirrorOption = this.mirrorOption,
+        mirrorOption = this.isMirrorOption,
         isCompleted = this.isCompleted
     )
 

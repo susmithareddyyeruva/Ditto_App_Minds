@@ -83,7 +83,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>?)
             it.toOldModel()
         },
         cutOnFold = this.cutOnFold.toString(),
-        mirrorOption = true,//Todo mirror
+        isMirrorOption = this.isMirrorOption,//Todo mirror
         isCompleted = patternPiece?.isCompleted ?: false
     )
 }
@@ -118,12 +118,12 @@ fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>?)
         pieceDescription = patternPiece?.pieceDescription,
         positionInTab = patternPiece?.positionInTab,
         tabCategory = patternPiece?.tabCategory,
-        cutQuantity = patternPiece?.cutQuantity ?: "", // todo check I used !!
+        cutQuantity = patternPiece?.cutQuantity ?: "",
         splice = patternPiece?.isSpliced ?: false,
         //spliceDirection = patternPiece?.spliceDirection,
         spliceScreenQuantity = patternPiece?.spliceScreenQuantity,
         cutOnFold = patternPiece?.cutOnFold.toString(),
-        mirrorOption = true,//todo check should come from tailornova
+        mirrorOption = patternPiece?.isMirrorOption,
         splicedImages = patternPiece?.splicedImages?.map { it.toOldModelSpliceImage() },
         xcoordinate = this.xcoordinate,
         ycoordinate = this.ycoordinate,
@@ -168,12 +168,12 @@ fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPiec
         pieceDescription = patternPiece?.pieceDescription,
         positionInTab = patternPiece?.positionInTab,
         tabCategory = patternPiece?.tabCategory,
-        cutQuantity = patternPiece?.cutQuantity ?: "", // todo check I used !!
+        cutQuantity = patternPiece?.cutQuantity ?: "",
         splice = patternPiece?.isSpliced ?: false,
         //spliceDirection = patternPiece?.spliceDirection,
         spliceScreenQuantity = patternPiece?.spliceScreenQuantity,
         cutOnFold = patternPiece?.cutOnFold.toString(),
-        mirrorOption = true,//todo check should come from tailornova
+        mirrorOption = patternPiece?.isMirrorOption,
         splicedImages = patternPiece?.splicedImages?.map { it.toOldModelSpliceImage() },
         xcoordinate = this.xcoordinate,
         ycoordinate = this.ycoordinate,
@@ -198,7 +198,7 @@ fun PatternPieceDataDomain.toOldModelOffline(patternPieces: List<PatternPieceSFC
         imageName = this.imageName,
         imagePath = this.imageUrl,
         isCompleted = patternPiece?.isCompleted ?: false,
-        mirrorOption = true,
+        isMirrorOption = this.isMirrorOption,
         parentPattern = "parentPattern",
         splice = this.isSpliced,
         tabCategory = this.tabCategory,
