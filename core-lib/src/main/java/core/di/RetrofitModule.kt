@@ -324,12 +324,9 @@ class TokenAuthenticator : Authenticator {
                     expirytime
                 )
             }
-
             response.request.newBuilder()
                 .header("Authorization", "Bearer ${responseMain.response?.access_token}")
                 .build()
-
-
         }
     }
 
