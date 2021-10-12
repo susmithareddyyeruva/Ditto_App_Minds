@@ -30,7 +30,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     YouTubePlayer.OnInitializedListener, View.OnClickListener,
     Utility.CustomCallbackDialogListener {
     private var mPlayer: YouTubePlayer? = null
-/*    private var mPlayButtonLayout: View? = null*/
+    /*    private var mPlayButtonLayout: View? = null*/
     private var mPlayTimeTextView: TextView? = null
     private var skipButton: TextView? = null
     private var mHandler: Handler? = null
@@ -48,7 +48,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             intent.data = Uri.parse("ONBACK")
             setResult(Activity.RESULT_OK, intent)
             finish()
-    }
+        }
     }
 
     override fun onResume() {
@@ -75,7 +75,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             findViewById<View>(R.id.video_view) as YouTubePlayerView
         youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
         //Add play button to explicitly play video in YouTubePlayerView
-    /*    mPlayButtonLayout = findViewById(R.id.video_control)*/
+        /*    mPlayButtonLayout = findViewById(R.id.video_control)*/
         findViewById<View>(R.id.play_video).setOnClickListener(this)
         findViewById<View>(R.id.close).setOnClickListener(this)
         findViewById<View>(R.id.skipButton).setOnClickListener(this)
@@ -131,7 +131,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             player.loadVideo(VIDEO_ID)
         }
         player.setPlayerStyle(PlayerStyle.CHROMELESS)
-      /*  mPlayButtonLayout!!.visibility = View.VISIBLE*/
+        /*  mPlayButtonLayout!!.visibility = View.VISIBLE*/
 
         // Add listeners to YouTubePlayer instance
         player.setPlayerStateChangeListener(mPlayerStateChangeListener)
@@ -219,7 +219,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
                 }
             }
             R.id.close -> {
-               onBackPressed()
+                onBackPressed()
             }
             R.id.skipButton -> {
                 val intent = Intent()
@@ -233,12 +233,17 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     private fun pauseVideo() {
         play_video.setImageResource(R.drawable.exo_icon_play)
-        mPlayer!!.pause()
+        if (mPlayer!=null) {
+            mPlayer!!.pause()
+        }
     }
 
     private fun playVideo() {
         play_video.setImageResource(R.drawable.exo_icon_pause)
-        mPlayer!!.play()
+        if (mPlayer!=null) {
+            mPlayer!!.play()
+        }
+
     }
 
     private fun displayCurrentTime() {
@@ -280,7 +285,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     companion object {
         //https://www.youtube.com/watch?v=<VIDEO_ID>
-         var VIDEO_ID = ""
+        var VIDEO_ID = ""
     }
 
     private fun getYoutubeVideoId(youtubeUrl: String?): String? {
@@ -303,7 +308,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private fun showAlert(message:String) {
         val errorMessage = message
         Utility.getCommonAlertDialogue(
-           this,
+            this,
             "",
             errorMessage,
             "",
