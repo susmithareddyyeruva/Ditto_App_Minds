@@ -53,7 +53,7 @@ class RetrofitModule {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
-            //.authenticator(TokenAuthenticator())
+            .authenticator(TokenAuthenticator())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -92,11 +92,11 @@ class RetrofitModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
-            val hv: HostnameVerifier =
-                HttpsURLConnection.getDefaultHostnameVerifier()
-            hv.verify("handmadewithjoann.com", session)
-        })
+//        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+//            val hv: HostnameVerifier =
+//                HttpsURLConnection.getDefaultHostnameVerifier()
+//            hv.verify("handmadewithjoann.com", session)
+//        })
         // add logging interceptor only for DEBUG builds
         if (BuildConfig.DEBUG)
             httpClient.addInterceptor(logging)
@@ -242,7 +242,7 @@ class HmacSignatureInterceptor : Interceptor {
         val signature = generateSignature(chain.request(), accessKeyId, timestamp)
         val userAgent = java.lang.String.format(
             "JOANN/%s %s",
-            AppState.getAppVersion(),
+            BuildConfig.VERSION_NAME,
             System.getProperty("http.agent")
         )
         var request = chain.request()
@@ -304,3 +304,56 @@ class HmacSignatureInterceptor : Interceptor {
         ).toLowerCase()
     }
 }
+
+class TokenAuthenticator : Authenticator {
+
+    override fun authenticate(route: Route?, response: Response): Request? {
+        return runBlocking {
+
+            // 1. Refresh your access_token using a synchronous api request
+            val responseMain = getUpdatedToken()
+            val expCal = Calendar.getInstance()
+            expCal.add(Calendar.MINUTE, responseMain.response?.expires_in ?: 0)
+            val expirytime = expCal.time.time
+            val token = responseMain?.response?.access_token ?: ""
+            Log.d("TOKEN==", token)
+            Log.d("TOKEN==>>>>> ", "inside Auth")
+            token.let {
+                AppState.saveToken(
+                    it,
+                    expirytime
+                )
+            }
+
+            response.request.newBuilder()
+                .header("Authorization", "Bearer ${responseMain.response?.access_token}")
+                .build()
+
+
+        }
+    }
+
+    private suspend fun getUpdatedToken(): TokenResult {
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(HmacSignatureInterceptor())
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.TOKEN_BASEURL)
+            .client(httpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+        val service = retrofit.create(ApiService::class.java)
+        return service.refreshTokenAuthentication()
+
+    }
+
+}
+
+
+
