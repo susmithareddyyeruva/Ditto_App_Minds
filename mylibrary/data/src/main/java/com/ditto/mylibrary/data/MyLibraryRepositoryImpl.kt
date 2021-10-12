@@ -19,11 +19,17 @@ import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
-import core.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import core.CONNECTION_EXCEPTION
+import core.ERROR_FETCH
+import core.OS
+import core.UNKNOWN_HOST_EXCEPTION
 import core.appstate.AppState
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
 import core.network.NetworkUtility
+import core.ui.errors.CommonError
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
@@ -31,7 +37,6 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
-import javax.net.ssl.HttpsURLConnection
 
 
 /**
@@ -78,16 +83,36 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
-                val error = it as HttpException
                 if (it is HttpException) {
-                    errorMessage = when (error.code()) {
-                        HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
-                        HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
-                        HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
-                        HttpsURLConnection.HTTP_BAD_REQUEST -> HTTP_BAD_REQUEST
-                        else -> ERROR_FETCH
+                    when (it.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
                     }
-                }else{
+                }
+                else{
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -136,17 +161,51 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 Result.withValue(it)
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
-                try {
-                    logger.d("try block")
-                    val error = it as HttpException
-                    if (error != null) {
-                        logger.d("Error Tailornova")
+                var errorMessage = ERROR_FETCH
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    when (it.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
                     }
-                } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
-                    errorMessage = e.message.toString()
                 }
+                else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
+                    }
+                }
+
                 Result.withError(
                     CommonApiFetchError(errorMessage, it)
                 )
@@ -197,11 +256,38 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                try {
-                    logger.d("try block")
-                } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
-                    errorMessage = when (e) {
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    when (it.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
+                    }
+                }
+                else{
+                    errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
                         }
@@ -214,7 +300,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     }
                 }
 
-                logger.d(it.localizedMessage)
+
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
@@ -248,15 +334,47 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                errorMessage = when (it) {
-                    is UnknownHostException -> {
-                        UNKNOWN_HOST_EXCEPTION
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    when (it.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
                     }
-                    is ConnectException -> {
-                        CONNECTION_EXCEPTION
-                    }
-                    else -> {
-                        it.localizedMessage
+                }
+                else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
                     }
                 }
 
@@ -295,17 +413,50 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                errorMessage = when (it) {
-                    is UnknownHostException -> {
-                        UNKNOWN_HOST_EXCEPTION
-                    }
-                    is ConnectException -> {
-                        CONNECTION_EXCEPTION
-                    }
-                    else -> {
-                        ERROR_FETCH
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    when (it.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
                     }
                 }
+                else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
+                    }
+                }
+
 
                 logger.d(it.localizedMessage)
                 Result.withError(
