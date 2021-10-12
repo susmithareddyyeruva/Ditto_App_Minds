@@ -60,11 +60,11 @@ class RetrofitModule {
 
 
 
-        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
-            val hv: HostnameVerifier =
-                HttpsURLConnection.getDefaultHostnameVerifier()
-            hv.verify("demandware.net", session)
-        })
+//        httpClient.hostnameVerifier(HostnameVerifier { hostname, session -> //return true;
+//            val hv: HostnameVerifier =
+//                HttpsURLConnection.getDefaultHostnameVerifier()
+//            hv.verify("demandware.net", session)
+//        })
 
 
         // add logging interceptor only for DEBUG builds

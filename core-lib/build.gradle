@@ -46,13 +46,13 @@ android {
            /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
             buildConfigField "String", "TOKEN_BASEURL", "\"https://staging.handmadewithjoann.com/ditto/\""
             buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/\""
-          /*  buildConfigField "String", "BASEURL", "\"https://development.na03.joann.demandware.net/\""*/
+            buildConfigField "String", "BASEURL", "\"https://development.dittopatterns.com/\""
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
-         /*   buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""*/
-            buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
+            buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
+            //buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
-          /*  buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
-            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
+            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
+            //buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
             //buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://splicing.tailornova.com/api/v1/patterns/\""
             //buildConfigField "String", "TAILORNOVA_ENDURL", "\"http://ditto-splicing.tailornova.com:9901/api/v1/patterns/\""
             buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://ditto-splicing.tailornova.com/api/v1/patterns/\""
