@@ -177,7 +177,7 @@ class HomeViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
-                var count : Int = result?.data?.size
+                var count: Int = result?.data?.size
                 Log.d("Home Screen", "$count")
                 productCount = count
                 AppState.setPatternCount(productCount)
@@ -209,7 +209,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun versionCheck(){
+    fun versionCheck() {
         utility.checkVersion()
     }
 

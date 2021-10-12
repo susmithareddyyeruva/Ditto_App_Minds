@@ -28,7 +28,7 @@ android {
           /*  buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
             buildConfigField "String", "TOKEN_BASEURL", "\"https://staging.handmadewithjoann.com/ditto/\""
            /* buildConfigField "String", "BASEURL", "\"https://development.na03.joann.demandware.net/\""*/
-            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/\""
+            buildConfigField "String", "BASEURL", "\"https://dev08-na03-joann.demandware.net/\""
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
           /*  buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""*/
             buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
