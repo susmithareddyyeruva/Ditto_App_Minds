@@ -397,7 +397,7 @@ class WorkspaceViewModel @Inject constructor(
             dragData.patternPieces?.spliceScreenQuantity ?: "",
             dragData.patternPieces?.splicedImages ?: emptyList(),
             dragData.patternPieces?.cutOnFold ?: "",
-            dragData.patternPieces?.mirrorOption ?: false,
+            dragData.patternPieces?.isMirrorOption ?: false,
             dragEvent.x,
             dragEvent.y,
             view.pivotX,
