@@ -7,6 +7,7 @@ import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.mylibrary.domain.model.OfflinePatternData
+import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.USER_FIRST_NAME
@@ -144,6 +145,25 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleOfflineFetchResult(it) }
     }
 
+    fun fetchTailornovaTrialPattern() {
+        disposable += useCase.fetchTailornovaTrialPatterns()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleTrialPatternResult(it) }
+    }
+
+    private fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
+        when (result){
+            is Result.OnSuccess -> {
+                Log.d("Home Screen", "Success : $result")
+            }
+
+            is Result.OnError -> {
+                Log.d("Home Screen", "Failed")
+            }
+        }
+    }
+
     /**
      * Handling fetch result here.....
      */
@@ -177,7 +197,7 @@ class HomeViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
-                var count : Int = result?.data?.size
+                var count: Int = result?.data?.size
                 Log.d("Home Screen", "$count")
                 productCount = count
                 AppState.setPatternCount(productCount)
@@ -209,7 +229,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun versionCheck(){
+    fun versionCheck() {
         utility.checkVersion()
     }
 

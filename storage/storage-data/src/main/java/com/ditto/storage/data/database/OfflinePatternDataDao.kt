@@ -4,13 +4,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ditto.storage.data.model.*
+import com.ditto.storage.data.model.NumberOfCompletedPiecesOffline
+import com.ditto.storage.data.model.OfflinePatterns
+import com.ditto.storage.data.model.PatternPiecesOffline
+import com.ditto.storage.data.model.WorkspaceItemOffline
 
 @Dao
 abstract class OfflinePatternDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertOfflinePatternData(offlinePatterns: OfflinePatterns): Long
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @JvmSuppressWildcards
+    abstract fun insertOfflinePatternDataList(offlinePatterns: List<OfflinePatterns>)
 
     @Query("SELECT * FROM offline_pattern_data")
     abstract fun getTailernovaData(): List<OfflinePatterns>

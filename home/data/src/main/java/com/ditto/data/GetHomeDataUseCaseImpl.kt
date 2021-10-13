@@ -5,6 +5,7 @@ import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.home.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.model.PatternIdData
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -18,5 +19,9 @@ class GetHomeDataUseCaseImpl @Inject constructor(
 
     override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {
         return homeRepository.getOfflinePatternDetails()
+    }
+
+    override fun fetchTailornovaTrialPatterns(): Single<Result<List<PatternIdData>>> {
+        return homeRepository.fetchTailornovaTrialPatterns()
     }
 }

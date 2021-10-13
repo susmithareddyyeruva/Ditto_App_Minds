@@ -2,48 +2,48 @@ package com.ditto.data.mapper
 
 import com.ditto.data.model.MyLibraryResult
 import com.ditto.data.model.Prod
-import com.ditto.home.domain.model.*
+import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.home.domain.model.ProdDomain
+import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.model.PatternPieceDataDomain
-import com.ditto.mylibrary.domain.model.SplicedImageDomain
 import com.ditto.storage.data.model.*
 import com.ditto.storage.data.model.PatternPieceData
 import com.ditto.storage.data.model.SelvageData
 import com.ditto.storage.data.model.SplicedImageData
+import core.appstate.AppState
 
-fun MyLibraryResult.toDomain():MyLibraryDetailsDomain{
+fun MyLibraryResult.toDomain(): MyLibraryDetailsDomain {
     return MyLibraryDetailsDomain(
-      action = this.action?:"",
-        locale = this.locale?:"",
-        prod = this.prod?.map { it.toDomain() }?: emptyList(),
-        queryString = this.queryString?:"",
-        currentPageId = this.currentPageId?:0,
-        totalPageCount = this.totalPageCount?:0,
-        totalPatternCount = this.totalPatternCount?:0,
-        errorMsg = this.errorMsg?:""
+        action = this.action ?: "",
+        locale = this.locale ?: "",
+        prod = this.prod?.map { it.toDomain() } ?: emptyList(),
+        queryString = this.queryString ?: "",
+        currentPageId = this.currentPageId ?: 0,
+        totalPageCount = this.totalPageCount ?: 0,
+        totalPatternCount = this.totalPatternCount ?: 0,
+        errorMsg = this.errorMsg ?: ""
     )
 }
 
 fun Prod.toDomain(): ProdDomain {
     return ProdDomain(
-        iD = this.iD?:"",
-        prodBrand = this.prodBrand?:"",
-        prodGender = this.prodGender?:"",
-        name = this.prodName?:"",
-        patternType = this.patternType?:"",
-        prodSize = this.prodSize?:"",
-        tailornovaDesignId = this.tailornovaDesignId?:"",
-        creationDate = this.creationDate?:"",
-        image = this.image?:"",
-        customization = this.customization?:"",
-        dateOfModification = this.dateOfModification?:"",
-        occasion = this.occasion?:"",
-        season = this.season?:"",
-        status = this.status?:"",
-        subscriptionExpiryDate = this.subscriptionExpiryDate?:"",
-        suitableFor = this.suitableFor?:"",
-        type = this.type?:""
+        iD = this.iD ?: "",
+        prodBrand = this.prodBrand ?: "",
+        prodGender = this.prodGender ?: "",
+        name = this.prodName ?: "",
+        patternType = this.patternType ?: "",
+        prodSize = this.prodSize ?: "",
+        tailornovaDesignId = this.tailornovaDesignId ?: "",
+        creationDate = this.creationDate ?: "",
+        image = this.image ?: "",
+        customization = this.customization ?: "",
+        dateOfModification = this.dateOfModification ?: "",
+        occasion = this.occasion ?: "",
+        season = this.season ?: "",
+        status = this.status ?: "",
+        subscriptionExpiryDate = this.subscriptionExpiryDate ?: "",
+        suitableFor = this.suitableFor ?: "",
+        type = this.type ?: ""
     )
 }
 
@@ -51,8 +51,7 @@ fun Prod.toDomain(): ProdDomain {
 //OfflinePatterns(DB table)>>OfflinePatternData(model)
 
 
-internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData>
-{
+internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData> {
     return this.map {
         OfflinePatternData(
             tailornaovaDesignId = it.tailornaovaDesignId,
@@ -139,17 +138,31 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         id = this.id,
         imageName = this.imageName,
         imageUrl = this.imageUrl,
-        thumbnailImageName=this.thumbnailImageName,
-        thumbnailImageUrl=this.thumbnailImageUrl,
+        thumbnailImageName = this.thumbnailImageName,
+        thumbnailImageUrl = this.thumbnailImageUrl,
         isSpliced = this.isSpliced,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
         size = this.size,
-        view=this.view,
+        view = this.view,
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
-        splicedImages = this.splicedImages?.map { it.toDomain() },
+        splicedImages = this.splicedImages?.map { it.toDomainn() },
         tabCategory = this.tabCategory
+    )
+}
+
+private fun SplicedImageData.toDomainn(): SplicedImageDomain {
+    return SplicedImageDomain(
+        column = this.column,
+        designId = this.designId,
+        id = this.id,
+        imageName = this.imageName,
+        imageUrl = this.imageUrl,
+        mapImageName = this.mapImageName,
+        mapImageUrl = this.mapImageUrl,
+        pieceId = this.pieceId,
+        row = this.row
     )
 }
 
@@ -215,3 +228,36 @@ fun PatternPiecesOffline.toDomain1(): OfflinePatternPieces {
     )
 }
 
+//PatternIdData>>OfflinePatterns
+
+internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
+    return this.map {
+        OfflinePatterns(
+            custId = AppState.getCustID(),
+            designId = it.instructionFileName.toString(),
+            tailornaovaDesignId = it.designId,
+            patternName = it.patternName,
+            description = it.description,
+            patternType = it.patternType,
+            numberOfCompletedPieces = it.numberOfPieces?.toDomain(),
+            numberOfPieces = it.numberOfPieces?.toDomain(),
+            orderModificationDate = it.orderModificationDate,
+            orderCreationDate = it.orderCreationDate,
+            instructionFileName = it.instructionFileName,
+            instructionUrl = it.instructionUrl,
+            thumbnailImageUrl = it.thumbnailImageUrl,
+            thumbnailImageName = it.thumbnailImageName,
+            thumbnailEnlargedImageName = it.thumbnailEnlargedImageName,
+            patternDescriptionImageUrl = it.patternDescriptionImageUrl,
+            selvages = it.selvages?.map { it.toDomain() },
+            patternPieces = it.patternPieces?.map { it.toDomain() },
+            brand = it.brand,
+            size = it.size,
+            gender = it.gender,
+            customization = it.customization,
+            dressType = it.dressType,
+            suitableFor = it.suitableFor,
+            occasion = it.occasion
+        )
+    }
+}

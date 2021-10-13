@@ -79,5 +79,6 @@ dependencies {
 
     implementation project(':logger')
     implementation project(path: ':mylibrary-domain')
+    implementation project(path: ':mylibrary-data')
 
 }

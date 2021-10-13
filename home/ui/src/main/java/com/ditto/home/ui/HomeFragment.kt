@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +21,8 @@ import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
-import core.network.NetworkUtility
 import core.data.model.SoftwareUpdateResult
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -91,8 +90,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
          */
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                    bottomNavViewModel.showProgress.set(true)
-                    homeViewModel.fetchData()
+                bottomNavViewModel.showProgress.set(true)
+                homeViewModel.fetchData()
+                homeViewModel.fetchTailornovaTrialPattern()
+
             } else {
                 homeViewModel.fetchOfflineData()
             }
@@ -118,7 +119,8 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         listenVersionEvents()
         try {
             val pInfo: PackageInfo =
-                context?.getPackageName()?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
+                context?.getPackageName()
+                    ?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
             val version = pInfo.versionName
             println("================= version = ${version}")
         } catch (e: PackageManager.NameNotFoundException) {
@@ -130,17 +132,17 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         versionDisposable = CompositeDisposable()
         versionDisposable?.plusAssign(
             RxBus.listen(RxBusEvent.checkVersion::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.isCheckVersion){
-                    !it.isCheckVersion
-                    bottomNavViewModel.showProgress.set(true)
-                    homeViewModel.versionCheck()
-                }
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.isCheckVersion) {
+                        !it.isCheckVersion
+                        bottomNavViewModel.showProgress.set(true)
+                        homeViewModel.versionCheck()
+                    }
+                })
         versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionReceived::class.java)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
+            .subscribe {
 
                 bottomNavViewModel.showProgress.set(false)
                 versionResult = it.versionReceived
@@ -150,7 +152,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
+            .subscribe {
                 bottomNavViewModel.showProgress.set(false)
                 showAlert(it.versionerrorReceived)
             })
@@ -179,8 +181,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             negativeText,
             positiveText,
             this,
-            Utility.AlertType.SOFTWARE_UPDATE
-            ,
+            Utility.AlertType.SOFTWARE_UPDATE,
             status
         )
 
@@ -276,12 +277,22 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        if (versionResult?.response?.version_update == true){
-            val  packageName = context?.packageName
+        if (versionResult?.response?.version_update == true) {
+            val packageName = context?.packageName
             try {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=$packageName")
+                    )
+                )
             } catch (e: ActivityNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    )
+                )
             }
         }
     }
@@ -291,13 +302,22 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         alertType: Utility.AlertType
     ) {
 
-        if (versionResult?.response?.force_update == true){
+        if (versionResult?.response?.force_update == true) {
             requireActivity().finishAffinity()
         }
 
     }
+
     private fun showAlert(versionerrorReceived: String) {
-        Utility.getCommonAlertDialogue(requireContext(),"",versionerrorReceived,"",getString(com.ditto.menuitems_ui.R.string.str_ok),this, Utility.AlertType.NETWORK
-            ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            versionerrorReceived,
+            "",
+            getString(com.ditto.menuitems_ui.R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
     }
 }

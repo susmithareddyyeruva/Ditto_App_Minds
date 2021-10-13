@@ -1,27 +1,37 @@
 package com.ditto.data
 
 import android.content.Context
+import android.util.Log
 import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.toDomain
+import com.ditto.data.mapper.toDomainn
 import com.ditto.home.domain.GetMyLibraryRepository
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
-import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.data.api.TailornovaApiService
+import com.ditto.mylibrary.domain.model.OfflinePatternData
+import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.storage.data.database.OfflinePatternDataDao
+import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.data.database.UserDao
 import core.appstate.AppState
+import core.lib.BuildConfig
+import core.models.CommonApiFetchError
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
+import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class MyLibraryRepositoryImpl @Inject constructor(
     private val homeService: @JvmSuppressWildcards HomeApiService,
+    private val tailornovaApiService: @JvmSuppressWildcards TailornovaApiService,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
     private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val loggerFactory: LoggerFactory
@@ -80,5 +90,56 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 Result.withError(HomeDataFetchError(""))
         }
     }
+
+    override fun fetchTailornovaTrialPatterns(): Single<Result<List<PatternIdData>>> {
+        return tailornovaApiService.getTrialPatterns(BuildConfig.TAILORNOVA_ENDURL + "Android/trial")
+            .doOnSuccess {
+                logger.d("Tailornova Success")
+                offlinePatternDataDao.insertOfflinePatternDataList(it.trial.toDomainn())
+                //PatternIdData>>OfflinePatterns
+
+                /*Executors.newSingleThreadExecutor()
+                    .execute(Runnable {offlinePatternDataDao.insertOfflinePatternDataList(it.trial.toDomainn()) })*/
+                Log.d("Tailornova", "insertofflinePatternsData complete")
+            }.map {
+            it.trial?.let { it1 -> Result.withValue(it1) }
+        }.onErrorReturn {
+            var errorMessage = "Error fetching data"
+
+            try {
+                logger.d("try block")
+                val error = it as HttpException
+                if (error != null) {
+                    logger.d("Error Tailornova")
+                }
+            } catch (e: Exception) {
+                //logger.d("Catch",e.message.toString())
+                errorMessage = e.message.toString()
+            }
+            Result.withError(
+                CommonApiFetchError(errorMessage, it)
+            )
+        }
+    }
+
+
+    /* return tailornovaApiService.getPatternDetailsByDesignId(
+
+     .onErrorReturn {
+         var errorMessage = "Error Fetching data"
+         try {
+             logger.d("try block")
+             val error = it as HttpException
+             if (error != null) {
+                 logger.d("Error Tailornova")
+             }
+         } catch (e: Exception) {
+             Log.d("Catch", e.localizedMessage)
+             errorMessage = e.message.toString()
+         }
+         Result.withError(
+             CommonApiFetchError(errorMessage, it)
+         )
+     }*/
 }
 

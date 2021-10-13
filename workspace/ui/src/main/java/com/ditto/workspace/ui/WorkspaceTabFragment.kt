@@ -1649,6 +1649,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
         Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageUrl} ")
+        Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageName} ")
         spliceImages?.mapImageUrl.let {
             getBitmapFromSvgPngDrawable(
                 spliceImages?.mapImageName,
