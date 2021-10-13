@@ -87,7 +87,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     when (it.code()) {
                         400 -> {
                             val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -261,7 +260,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     when (it.code()) {
                         400 -> {
                             val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -339,7 +337,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     when (it.code()) {
                         400 -> {
                             val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -418,7 +415,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     when (it.code()) {
                         400 -> {
                             val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
