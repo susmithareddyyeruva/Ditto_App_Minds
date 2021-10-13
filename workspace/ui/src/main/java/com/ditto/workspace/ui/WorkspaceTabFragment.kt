@@ -44,6 +44,7 @@ import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -876,6 +877,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickPatternInstructions -> {
                 if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+                    PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
                         bundleOf("PatternName" to viewModel.data.value?.patternPieces?.get(0)?.parentPattern)
                     findNavController().navigate(

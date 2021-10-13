@@ -251,6 +251,7 @@ fun combineTailornovaAndSFCCDetails(
         status = fetchWorkspaceResult.data.status,
         thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
+        instructionUrl = resultTailernova.data.instructionUrl,
         //descriptionImages TODO will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
         patternPieces = resultTailernova.data.patternPieces?.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
@@ -290,6 +291,7 @@ fun combineTailornovaAndSFCCDetails(
         status = resultTailernova.data.status,
         thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
+        instructionUrl = resultTailernova.data.instructionUrl,
         //descriptionImages TODO will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
         patternPieces = resultTailernova.data.patternPieces?.map {
