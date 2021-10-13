@@ -97,7 +97,7 @@ fun SplicedImageDomain.toOldModelSpliceImage(): SpliceImages {
         imageName = this.imageName,
         imagePath = this.imageUrl,
         mapImageUrl=this.mapImageUrl,
-        mapImageName=this.imageName
+        mapImageName=this.mapImageName
     )
 }
 
