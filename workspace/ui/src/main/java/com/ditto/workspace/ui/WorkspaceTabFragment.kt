@@ -157,7 +157,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,viewModel.data.value?.patternName)
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,isFromWS = true,viewModel.data.value?.patternName)
             }
         })
     }

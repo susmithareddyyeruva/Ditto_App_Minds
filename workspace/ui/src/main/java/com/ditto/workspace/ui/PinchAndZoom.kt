@@ -26,6 +26,7 @@ class PinchAndZoom : AppCompatActivity() {
             )
         val imagepath = intent.extras?.getString("ImageURL")
         val isReference = intent.extras?.getBoolean("isReference") ?: false
+        val isFromWS = intent.extras?.getBoolean("isFromWS") ?: false
         val patternName = intent.extras?.getString("patternName") ?: " "
         if (isReference) {
             binding.zoomTittle.text = getString(R.string.reference_layout)
@@ -49,7 +50,7 @@ class PinchAndZoom : AppCompatActivity() {
         }
         if (imagepath != null) {
             try {
-                if (isReference) {
+                if (isFromWS) {
                     var availableUri: Uri? = null
                     availableUri =
                         core.ui.common.Utility.isImageFileAvailable(imagepath, patternName)
@@ -61,10 +62,7 @@ class PinchAndZoom : AppCompatActivity() {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .placeholder(R.drawable.ic_placeholder)
                         .into(myZoomageView)
-                } else if (!imagepath.contains(".png",true)){
-                    val drawable = core.ui.common.Utility.getDrawableFromString(this, imagepath)
-                    myZoomageView?.setImageDrawable(drawable)
-                }else{
+                } else {
                     Glide.with(this)
                         .load(imagepath)
                         .placeholder(R.drawable.ic_placeholder)
