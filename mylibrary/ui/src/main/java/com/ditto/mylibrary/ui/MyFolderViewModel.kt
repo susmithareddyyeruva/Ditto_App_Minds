@@ -256,8 +256,8 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                 false
             ),
             MyFolderData(
-                R.drawable.ic_owned,
-                "Favorite",
+                null,
+                "Favorites",
                 false
             )
         )
@@ -308,18 +308,18 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                     FolderName = ""
                 ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
             )
-        } else if (myFolderDetailHeader == "Favorite") {
+        } else if (myFolderDetailHeader == "Favorites") {
             /**
              * If is owned folder Purchase pattern will be true and folder name will be empty
              */
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
-                    true,
+                    false,
                     AppState.getEmail(),
-                    purchasedPattern = false,
+                    purchasedPattern = true,
                     subscriptionList = false,
-                    trialPattern = false,
-                    FolderName = myFolderDetailHeader
+                    trialPattern = true,
+                    FolderName = "Favorite"
                 ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
             )
         } else {
