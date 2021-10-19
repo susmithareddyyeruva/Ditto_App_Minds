@@ -3,7 +3,6 @@ package com.ditto.menuitems_ui.customercare.fragment
 
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -74,11 +73,11 @@ class CustomerCareFragment : BaseFragment() {
 
     fun makecall(){
         val dialIntent = Intent(Intent.ACTION_DIAL)
-        dialIntent.data = Uri.parse("tel:" + context?.getString(R.string.str_mob_no))
+        dialIntent.data = Uri.parse("tel:${viewModel.mobileNumberValue.get().toString()}")
         startActivity(dialIntent)
     }
     fun sendmail(){
-        val mailto = context?.getString(R.string.str_get_email)
+        val mailto = viewModel.getEmailId()
         val emailIntent = Intent(
             Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", mailto, null

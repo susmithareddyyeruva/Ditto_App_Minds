@@ -59,9 +59,7 @@
             app:popUpTo="@id/nav_graph_id_home"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true" />
-     <!--   <action
-            android:id="@+id/action_allPatternsFragment_to_patternDescriptionFragment"
-            app:destination="@id/allPatternsFragment" />-->
+
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
@@ -82,6 +80,12 @@
         <action
             android:id="@+id/action_homeFragment_to_privacyAndSettingFragment"
             app:destination="@id/privacyAndSettingFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_nav_graph_softwareUpdate"
+            app:destination="@id/softwareupdate" />
+
+
     </fragment>
 
     <fragment
@@ -106,7 +110,7 @@
     <fragment
         android:id="@+id/nav_graph_mainfaq"
         android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
-        android:label="FAQ and Glossary"
+        android:label="@string/str_menu_faq"
         tools:layout="@layout/faq_glossary_mainfragment" >
         <action
             android:id="@+id/action_destination_faq_to_nav_graph_id_video"
@@ -134,6 +138,11 @@
         android:id="@+id/privacyAndSettingFragment"
         android:name="com.ditto.menuitems_ui.privacyandsettings.ui.PrivacyAndSettingFragment"
         android:label="PrivacyAndSettingFragment" />
+
+    <fragment
+        android:id="@+id/softwareupdate"
+        android:name="com.ditto.menuitems_ui.softwareupdate.SoftwareUpdateFragment"
+        android:label="SoftwareUpdateFragment" />
 
     <fragment
         android:id="@+id/patternDescriptionFragment"

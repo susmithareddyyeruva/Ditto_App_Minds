@@ -1,5 +1,6 @@
 package com.ditto.home.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ import core.binding.BindableAdapter
 /**
  * Adapter class to map List<HomeData> with RecyclerView
  */
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeHolder>(),
+class HomeAdapter(private val context: Context) : RecyclerView.Adapter<HomeAdapter.HomeHolder>(),
     BindableAdapter<List<HomeData>> {
 
     lateinit var viewModel: HomeViewModel
@@ -33,16 +34,22 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeHolder>(),
         return HomeHolder(binding,viewType)
     }
 
-    override fun getItemCount() = 4
+    override fun getItemCount() = homeData.size
 
     override fun onBindViewHolder(holder: HomeHolder, position: Int) {
         holder.rowHomeBinding.viewModel  = viewModel
         holder.rowHomeBinding.homeData  = homeData[position]
         holder.rowHomeBinding.imageView.setImageResource(images[position])
+        if (homeData[position].id==1) {
+            holder.rowHomeBinding.textHeader.setText(context.getString(R.string.pattern_library_count1,viewModel.productCount))
+        }else{
+            holder.rowHomeBinding.textHeader.setText(homeData[position].title)
+        }
     }
 
     inner class HomeHolder(val rowHomeBinding: HomeItemBinding, viewType: Int) :
         RecyclerView.ViewHolder(rowHomeBinding.root) {
+
     }
 }
 

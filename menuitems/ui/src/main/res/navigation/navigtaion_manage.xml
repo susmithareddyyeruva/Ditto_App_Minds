@@ -9,6 +9,6 @@
     <fragment
         android:id="@+id/manageDeviceFragment"
         android:name="com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment"
-        android:label="@string/manage_devices"
+        android:label="@string/str_menu_manage_projector"
         tools:layout="@layout/fragment_managedevices" />
 </navigation>

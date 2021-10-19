@@ -2,14 +2,15 @@ package core.appstate
 
 import android.content.Context
 import core.*
-import core.CUST_ID
 import core.models.Nsdservicedata
 
 object AppState {
     private var pref: PreferenceStorage? = null
     private const val KEY_IS_LOGGED = "logged"
     private const val KEY_TOKEN = "token"
+    private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
+    private const val APP_VERSION = ""
 
     fun init(context: Context) {
         pref = PreferenceStorageImpl(context)
@@ -52,9 +53,9 @@ object AppState {
         return custid
     }
 
-    fun getEmail(): String? {
+    fun getEmail(): String {
         val email = pref?.getString(USER_EMAIL)
-        return email
+        return email?:""
     }
 
     fun setEmail(email: String) {
@@ -81,5 +82,21 @@ object AppState {
     }
     fun getLastSavedServiceHost() : String?{
         return pref?.getString(CONNECTED_SERVICE_HOST)
+    }
+    fun setPatternCount(count: Int) {
+        pref?.saveInt(PATTERN_COUNT, count)
+    }
+
+    fun getPatternCount(): Int? {
+        val count = pref?.getInt(PATTERN_COUNT)
+        return count
+    }
+    fun getAppVersion(): String? {
+        val appversion = pref?.getString(APP_VERSION)
+        return appversion
+    }
+
+    fun saveAppVersion(version: String) {
+        pref?.saveString(APP_VERSION, version)
     }
 }

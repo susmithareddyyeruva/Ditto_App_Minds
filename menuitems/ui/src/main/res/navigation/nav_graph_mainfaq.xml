@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/destination_faq_glossary"
         android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
-        android:label="FAQ and Glossary"
+        android:label="@string/str_menu_faq"
         tools:layout="@layout/faq_glossary_mainfragment">
         <action
             android:id="@+id/action_destination_faq_to_nav_graph_id_video"

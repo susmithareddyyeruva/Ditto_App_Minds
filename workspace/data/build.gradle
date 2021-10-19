@@ -57,6 +57,13 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
+    //Retrofit Dependencies
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
     implementation project(path : ':core-lib')
     implementation project(path : ':non-core-lib')
 
@@ -68,5 +75,6 @@ dependencies {
 
     implementation project(':login-domain')
     implementation project(path: ':login-data')
+    implementation project(':logger')
 
 }

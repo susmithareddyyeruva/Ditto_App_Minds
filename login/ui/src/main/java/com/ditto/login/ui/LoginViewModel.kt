@@ -30,7 +30,8 @@ class LoginViewModel @Inject constructor(
     private val context: Context,
     val loggerFactory: LoggerFactory,
     val useCase: GetLoginDbUseCase,
-    val storageManager: StorageManager
+    val storageManager: StorageManager,
+     val utility: Utility
 ) : BaseViewModel() {
 
     var userName: ObservableField<String> = ObservableField<String>("")
@@ -50,7 +51,6 @@ class LoginViewModel @Inject constructor(
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
     }
-
     fun validateCredentials() {
         isEmailValidated.set(true)
         isPasswordValidated.set(true)
@@ -102,8 +102,8 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
 
-                    AppState.setCustID(result.data.customer_id!!)
-                    AppState.setEmail(result.data.email!!)
+                    AppState.setCustID(result.data.customer_id?: "")
+                    AppState.setEmail(result.data.email?: "")
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
                         result.data.cSpliceCutCompleteReminder

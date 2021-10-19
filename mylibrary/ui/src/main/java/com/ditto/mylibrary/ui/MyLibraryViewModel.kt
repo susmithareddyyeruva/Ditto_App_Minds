@@ -1,10 +1,13 @@
 package com.ditto.mylibrary.ui
 
+import android.text.Editable
 import android.util.Log
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.domain.GetMylibraryData
+import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -15,22 +18,27 @@ import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
-import non_core.lib.whileSubscribed
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
-    private val getMylibraryData: GetMylibraryData
+    private val getMylibraryData: MyLibraryUseCase
 ) : BaseViewModel() {
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var userId: Int = 0
+    var myLibraryTitle: ObservableField<String> = ObservableField("")
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+    var  isSearchEnabled=ObservableBoolean()
+    var tabPosition: Int=0
+    private var patternSearchName = MutableLiveData<String?>()
+    var searchText: LiveData<String?>? = null
+        get() = patternSearchName
 
     init {
-        fetchOnBoardingData()
+        // fetchOnBoardingData()
         fetchDbUser()
     }
 
@@ -40,13 +48,13 @@ class MyLibraryViewModel @Inject constructor(
     }
 
     //fetch data from repo (via usecase)
-    private fun fetchOnBoardingData() {
+/*    private fun fetchOnBoardingData() {
         disposable += getMylibraryData.invoke()
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
-    }
+    }*/
 
     private fun fetchDbUser() {
         dbLoadError.set(false)
@@ -71,27 +79,40 @@ class MyLibraryViewModel @Inject constructor(
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             else -> {
-                Log.d("MyLibraryViewModel","handleError")
+                Log.d("MyLibraryViewModel", "handleError")
             }
         }
-    }
-
-    fun activeProjects(){
-        Log.d("uiEvents","activeProjects")
-    }
-    fun completedProjects(){
-        uiEvents.post(Event.completedProjects)
-    }
-    fun allPatterns(){
-        Log.d("uiEvents","allPatterns")
     }
 
     /**
      * Events for this view model
      */
     sealed class Event {
-        object activeProjects : Event()
-        object completedProjects : Event()
-        object allPatterns : Event()
+        object OnFilterClick : Event()
+        object MyLibrarySync : Event()
+        object OnSearchClick : Event()
+        object OnCancelClick :Event()
     }
+    fun onCancelSearchClick() {
+        uiEvents.post(Event.OnCancelClick)
+    }
+    fun onFilterClick() {
+        Log.d("pattern", "onFilterClick : viewModel")
+        uiEvents.post(Event.OnFilterClick)
+    }
+
+    fun onSyncClick() {
+        Log.d("pattern", "onSyncClick : viewModel")
+        uiEvents.post(Event.MyLibrarySync)
+    }
+
+    fun onSearchClick() {
+        Log.d("pattern", "onSearchClick : viewModel")
+        uiEvents.post(Event.OnSearchClick)
+    }
+
+    fun setPatternSearch(s: Editable){
+        patternSearchName.value = s.toString()
+    }
+
 }

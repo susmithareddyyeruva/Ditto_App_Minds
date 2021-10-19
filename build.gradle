@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version = '1.3.72'
     ext.build_tools_version = '4.0.0'
     ext.gms_services_version = '4.3.3'
+    ext.firebase_crashlytics = '2.7.1'
 
     apply from: 'build-const.gradle'
     repositories {
@@ -15,6 +16,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_ui"
         classpath "com.google.gms:google-services:$gms_services_version"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics"
     }
 }
 

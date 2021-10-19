@@ -9,6 +9,7 @@ import io.reactivex.subjects.PublishSubject
  * Base class to aggregate UI events of certain type.
  */
 class UiEvents<T : Any> {
+    private val publisher = PublishSubject.create<Any>()
     private val internalEvents = PublishSubject.create<T>()
 
     /**
@@ -24,4 +25,12 @@ class UiEvents<T : Any> {
      * @return Observable, that contains all emitted UI events.
      */
     fun stream(): Observable<T> = internalEvents.hide()
+
+    fun publish(event: Any) {
+        publisher.onNext(event)
+    }
+
+    // Listen should return an Observable and not the publisher
+    // Using ofType we filter only events that match that class type
+    fun <T> listen(eventType: Class<T>): Observable<T> = publisher.ofType(eventType)
 }

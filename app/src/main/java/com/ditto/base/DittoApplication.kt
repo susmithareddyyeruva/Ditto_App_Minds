@@ -1,6 +1,8 @@
 package com.ditto.base
 
 
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import com.ditto.BuildConfig
 import com.ditto.base.core.di.DaggerAppComponent
 import com.facebook.stetho.Stetho
@@ -35,5 +37,17 @@ class DittoApplication : DaggerApplication() {
             Analytics::class.java, Crashes::class.java
         )
         AppState.init(this)
+        setAppVersion()
+    }
+
+    private fun setAppVersion() {
+        try {
+            val pInfo: PackageInfo =
+                this.getPackageManager().getPackageInfo(this.getPackageName(), 0)
+            val version = pInfo.versionName
+            AppState.saveAppVersion(version)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
     }
 }

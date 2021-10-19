@@ -19,10 +19,10 @@ class TabsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm,
 
     fun setListData(listData: List<HowToModel>) {
         tabdata = listData as ArrayList<HowToModel>
-        //for sewing
-        tabdata.removeAt(3)
-        //for cutting mat
-        tabdata.removeAt(3)
+//        //for sewing
+//        tabdata.removeAt(3)
+//        //for cutting mat
+//        tabdata.removeAt(3)
 
         notifyDataSetChanged()
     }

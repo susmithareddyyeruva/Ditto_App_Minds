@@ -15,21 +15,21 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.model.LoginUser
+import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
+import com.ditto.workspace.data.mapper.*
 import com.ditto.workspace.domain.GetWorkspaceData
-import com.ditto.workspace.domain.model.DragData
-import com.ditto.workspace.domain.model.PatternsData
-import com.ditto.workspace.domain.model.WorkspaceItems
+import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.util.Utility
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
+import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import non_core.lib.Result
 import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
@@ -40,17 +40,22 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class WorkspaceViewModel @Inject constructor(
     private val context: Context,
-    private val getWorkspaceData: GetWorkspaceData
+    private val getWorkspaceData: GetWorkspaceData,
+    private val utility: core.ui.common.Utility,
 ) : BaseViewModel() {
 
     var allPatterns: MutableLiveData<List<PatternsData>> = MutableLiveData()
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    var patternId: ObservableInt = ObservableInt(1)
+    var patternId: ObservableField<String> = ObservableField("")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")
+    var totalPieces: ObservableInt = ObservableInt(0)
+    var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
     var tabCategory: String = ""
     var selectedTab: ObservableInt = ObservableInt(0)
@@ -89,7 +94,9 @@ class WorkspaceViewModel @Inject constructor(
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
-
+    val patternUri: ObservableField<String> = ObservableField("")
+    val temp = ArrayList<String>()
+    val imagesToDownload = hashMapOf<String, String>()
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     var isHorizontalMirror: Boolean = false
@@ -98,21 +105,146 @@ class WorkspaceViewModel @Inject constructor(
     var isSingleDelete: Boolean = false
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
-    //fetch data from repo (via usecase)
-    fun fetchWorkspaceData() {
-        disposable += getWorkspaceData.invoke()
+    init {
+        if (core.ui.common.Utility.isTokenExpired()) {
+            utility.refreshToken()
+        }
+    }
+
+    //Fetching tailornova details from offline_pattern_data table
+    fun fetchTailernovaDetails(id: String) {
+        disposable += getWorkspaceData.getTailernovaDataByID(id)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResult(it) }
+            .subscribeBy { handleTailernovaResult(it) }
     }
 
-    fun insertData(value: PatternsData) {
+    //fetch data from SFCC server  //CustomerID_OrderNumebr_PatternID
+    fun fetchWorkspaceDataFromAPI(result: Result.OnSuccess<OfflinePatternData>, id: String) {
+        disposable += getWorkspaceData.getWorkspaceData(id)
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResultFromAPI(it, result) }
+    }
+
+
+    fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
+        disposable += getWorkspaceData.updateWorkspaceData(
+            "${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",
+            workspaceDataAPI
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleWSUpdateResult(it) }
+    }
+
+    fun updateWorkspaceDB(
+        tailornaovaDesignId: String?,
+        selectedTab: String?,
+        status: String?,
+        numberOfCompletedPiece: NumberOfPieces?,
+        patternPieces: List<PatternPieceSFCCAPI>?,
+        garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        workspaceDataAPI: WorkspaceDataAPI
+    ) {
+        disposable += getWorkspaceData.updateOfflineStorageData(
+            tailornaovaDesignId,
+            selectedTab,
+            status,
+            numberOfCompletedPiece,
+            patternPieces,
+            garmetWorkspaceItems,
+            liningWorkspaceItems,
+            interfaceWorkspaceItems
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleWSPatternDataStorage(it, workspaceDataAPI) }
+    }
+
+    fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
+        disposable += getWorkspaceData.createWorkspaceData(
+            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
+                patternId.get()
+            }", workspaceDataAPI
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleWSCreateResult(it) }
+    }
+
+    fun insertData(value: PatternsData, closeScreen: Boolean) {
         disposable += getWorkspaceData.insert(value)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleInsertDataResult(it) }
+            .subscribeBy { handleInsertDataResult(it, closeScreen) }
+    }
+
+
+    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
+        Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
+        when (result) {
+            is Result.OnSuccess -> {
+                Log.d("handleWSUpdateResult", "update api Success>>>>>>>>>>>>>>>>>>> $result")
+                uiEvents.post(Event.CloseScreen)
+            }
+
+            is Result.OnError -> {
+                uiEvents.post(Event.ApiFailed)
+                Log.d("WorkspaceViewModel", "update api Failed")
+            }
+        }
+    }
+
+    private fun handleWSCreateResult(result: Result<WSUpdateResultDomain>) {
+        Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
+        when (result) {
+            is Result.OnSuccess -> {
+                Log.d("WorkspaceViewModel456", "Success>>>>>>>>>>>>>>>>>>> $result")
+            }
+
+            is Result.OnError -> {
+                Log.d("WorkspaceViewModel", "Failed")
+            }
+        }
+    }
+
+    private fun handleWSPatternDataStorage(
+        result: Any?,
+        workspaceDataAPI: WorkspaceDataAPI
+    ) {
+        Log.d("handlWSPattenDtaStorage", "${result.toString()}")
+        if (result == 1) {
+            Log.d("handlWSPattenDtaStorage", "Success update storage")
+            updateWSAPI(workspaceDataAPI)
+        } else {
+            uiEvents.post(Event.ApiFailed)
+            Log.d("handlWSPattenDtaStorage", "failed update storage")
+        }
+    }
+
+
+    fun insertWSAPIDataToDB(value: WorkspaceDataAPI) {
+        disposable += getWorkspaceData.insertWorkspaceData(value)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleWSInsertResultDataToDB(it) }
+    }
+
+    private fun handleWSInsertResultDataToDB(result: Any?) {
+        when (result) {
+            is Result.OnSuccess<*> -> {
+                Log.d("handleUpdateDataResult", "OnSuccess")
+                uiEvents.post(Event.OnClickSaveAndExit)
+
+            }
+            is Result.OnError<*> -> handleError(result.error)
+        }
     }
 
     fun fetchWorkspaceSettingData() {
@@ -135,21 +267,24 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    private fun handleInsertDataResult(result: Any) {
+    private fun handleInsertDataResult(result: Any, closeScreen: Boolean) {
         when (result) {
             is Result.OnSuccess<*> -> {
                 Log.d("handleInsertDataResult", "OnSuccess")
             }
+            is Result.OnError<*> -> handleError(result.error)
         }
-        uiEvents.post(Event.CloseScreen)
+        if (closeScreen) {
+            uiEvents.post(Event.CloseScreen)
+        }
     }
 
     private fun handleFetchResult(result: Result<List<PatternsData>>) {
         when (result) {
             is Result.OnSuccess -> {
                 allPatterns.value = result.data
-                data.value = result.data.find { it.id == patternId.get() }
-//                workspacedata.value = data.value?.workspaceItems?.get(0)
+                data.value = result.data.find { it.id == patternId.get().toString() }
+                Log.d("WorkspaceViewModel098", "Combine patternsData: data.value >>${data.value} ")
                 activeInternetConnection.set(true)
                 uiEvents.post(Event.CalculateScrollButtonVisibility)
                 uiEvents.post(Event.OnDataUpdated)
@@ -159,10 +294,53 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
+
+    private fun handleFetchResultFromAPI(
+        fetchWorkspaceResult: Result<WorkspaceDataAPI>,
+        tailornovaResult: Result.OnSuccess<OfflinePatternData>
+    ) {
+        when (fetchWorkspaceResult) {
+            is Result.OnSuccess -> {
+                data.value = combineTailornovaAndSFCCDetails(tailornovaResult, fetchWorkspaceResult)
+                activeInternetConnection.set(true)
+                uiEvents.post(Event.HideProgressLoader)
+                setWorkspaceView()
+            }
+
+            is Result.OnError -> {
+                handleError(fetchWorkspaceResult.error)
+                Log.d("handleFetchResultAPI", "Failed")
+                data.value = combineTailornovaAndSFCCDetails(tailornovaResult)
+                setWorkspaceView()
+                uiEvents.post(Event.HideProgressLoader)
+            }
+        }
+    }
+
+    private fun handleTailernovaResult(result: Result<OfflinePatternData>?) {
+        when (result) {
+            is Result.OnSuccess -> {
+                // Fetching workspace data from SFCC server
+                fetchWorkspaceDataFromAPI(
+                    result,
+                    "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
+                )
+                Log.d("WorkspaceViewModel", "Tailernova Success $result")
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+
     //error handler for data fetch related flow
-    private fun handleError(error: Error) {
+    fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
+            is GetWorkspaceApiFetchError -> {
+                if (error.message.contains("key", true)) {
+                    Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
+                    createWSAPI(getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)))
+                }
+            }
             else -> {
                 Log.d("handleError", "WorkspaceViewModel")
             }
@@ -170,8 +348,9 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun setWorkspaceView() {
-        if (data.value?.workspaceItems?.size ?: 0 > 0) {
-//            data.value= getWorkspaceDimensions(data.value)
+        uiEvents.post(Event.CalculateScrollButtonVisibility)
+        uiEvents.post(Event.OnDataUpdated)
+        if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.liningWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.interfaceWorkspaceItemOfflines?.size ?: 0 > 0) {
             uiEvents.post(Event.PopulateWorkspace)
         }
     }
@@ -206,6 +385,7 @@ class WorkspaceViewModel @Inject constructor(
             id,
             dragData.patternPieces?.parentPattern ?: "",
             dragData.patternPieces?.imagePath ?: "",
+            dragData.patternPieces?.imageName ?: "",
             dragData.patternPieces?.size ?: "",
             dragData.patternPieces?.view ?: "",
             dragData.patternPieces?.pieceNumber ?: "",
@@ -213,12 +393,12 @@ class WorkspaceViewModel @Inject constructor(
             dragData.patternPieces?.positionInTab ?: "",
             dragData.patternPieces?.tabCategory ?: "",
             dragData.patternPieces?.cutQuantity ?: "",
-            dragData.patternPieces?.splice ?: "",
-            dragData.patternPieces?.spliceDirection ?: "",
+            dragData.patternPieces?.splice ?: false,
+            //dragData.patternPieces?.spliceDirection ?: 0,
             dragData.patternPieces?.spliceScreenQuantity ?: "",
             dragData.patternPieces?.splicedImages ?: emptyList(),
             dragData.patternPieces?.cutOnFold ?: "",
-            dragData.patternPieces?.mirrorOption ?: "",
+            dragData.patternPieces?.isMirrorOption ?: false,
             dragEvent.x,
             dragEvent.y,
             view.pivotX,
@@ -232,11 +412,19 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun setCompletedCount(progress: Int) {
-        val totalCount = Utility.progressCount.get() + progress
-        data.value?.completedPieces = totalCount
-        Log.d("TRACE", "Setting progress")
-        Utility.progressCount.set(totalCount)
+        completedPieces.set(completedPieces.get().plus(progress))
+        setCompletePieceCount()
         uiEvents.post(Event.updateProgressCount)
+    }
+
+    fun setCompletePieceCount() {
+        if (tabCategory.equals("Garment")) {
+            data.value?.numberOfCompletedPiece?.garment = completedPieces.get()
+        } else if (tabCategory.equals("Lining")) {
+            data.value?.numberOfCompletedPiece?.lining = completedPieces.get()
+        } else if (tabCategory.equals("Interfacing")) {
+            data.value?.numberOfCompletedPiece?.`interface` = completedPieces.get()
+        }
     }
 
     fun clickScrollLeft() {
@@ -264,24 +452,6 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun cutSelectAll(workspaceItems: List<WorkspaceItems>) {
-        cutCount = 0
-        cutType = core.ui.common.Utility.AlertType.CUT_BIN_ALL
-        for (workspaceItem in workspaceItems.distinctBy { it.parentPatternId }) {
-            if (!(data.value?.patternPieces?.find { it.id == workspaceItem?.parentPatternId }?.isCompleted
-                    ?: false)
-            ) {
-                cutCount += workspaceItem?.cutQuantity?.get(4)
-                    ?.let { Character.getNumericValue(it) }
-            }
-        }
-        if (cutCount > 1) {
-            uiEvents.post(Event.ShowCutBinDialog)
-        } else {
-            cutAllPiecesConfirmed(workspaceItems)
-        }
-    }
-
     fun cutIndividualPieces(workspaceItems: WorkspaceItems) {
         cutCount = 0
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
@@ -303,7 +473,8 @@ class WorkspaceViewModel @Inject constructor(
     fun cutIndividualPiecesConfirmed(workspaceItems: WorkspaceItems, cutCount: Int) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
+        completedPieces.set(completedPieces.get() + cutCount)
+        setCompletePieceCount()
         if (!data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
             data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }
                 ?.isCompleted = true
@@ -315,12 +486,13 @@ class WorkspaceViewModel @Inject constructor(
     fun cutAllPiecesConfirmed(workspaceItems: List<WorkspaceItems>?) {
         cutType = core.ui.common.Utility.AlertType.CUT_BIN
         println("TRACE: Setting progress")
-        Utility.progressCount.set(Utility.progressCount.get() + cutCount)
+        completedPieces.set(completedPieces.get() + cutCount)
+        setCompletePieceCount()
         workspaceItems?.forEach { workspaceItem ->
             if (!workspaceItem?.isCompleted) {
                 data.value?.patternPieces?.find { it.id == workspaceItem.parentPatternId }
                     ?.isCompleted = true
-                Utility.mPatternPieceList.add(workspaceItem.parentPatternId)
+                workspaceItem.parentPatternId?.let { Utility.mPatternPieceList.add(it) }
             }
             workspacedata = workspaceItem
         }
@@ -331,18 +503,21 @@ class WorkspaceViewModel @Inject constructor(
 
     fun cutCheckBoxClicked(count: Int?, isChecked: Boolean) {
         if (isChecked) {
-            Utility.progressCount.set(Utility.progressCount.get() + count!!)
+            completedPieces.set(completedPieces.get() + count!!)
+            setCompletePieceCount()
         } else {
-            Utility.progressCount.set(Utility.progressCount.get() - count!!)
+            completedPieces.set(completedPieces.get() - count!!)
+            setCompletePieceCount()
         }
     }
 
     fun clearPatternsSelected() {
-        data?.value?.patternPieces?.forEach { workspaceItem ->
-            if (workspaceItem?.isCompleted) {
-                workspaceItem?.isCompleted = false
+        data?.value?.patternPieces?.filter { it.tabCategory == tabCategory }?.toMutableList()
+            ?.forEach { workspaceItem ->
+                if (workspaceItem?.isCompleted) {
+                    workspaceItem?.isCompleted = false
+                }
             }
-        }
     }
 
     fun clickReset() {
@@ -350,21 +525,10 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.OnResetClicked)
     }
 
-    fun saveProject(projectName: String, isCompleted: Boolean?) {
-        if (data.value?.status.equals("New")) {
-            data.value?.status = "Active"
-            data.value?.id = System.currentTimeMillis().toInt()
-            data.value?.patternName = projectName
-            data.value?.completedPieces = Utility.progressCount.get()
-            data.value?.selectedTab = Utility.fragmentTabs.get().toString()
-        } else {
-            data.value?.patternName = projectName
-            data.value?.completedPieces = Utility.progressCount.get()
-            data.value?.selectedTab = Utility.fragmentTabs.get().toString()
-        }
-        if (isCompleted != null && isCompleted) {
-            data.value?.status = "Completed"
-        }
+    fun saveProject() {
+        data.value?.completedPieces = Utility.progressCount.get()
+        data.value?.selectedTab = Utility.fragmentTabs.get().toString()
+
         if (data.value?.completedPieces == data.value?.totalPieces) {
             data.value?.status = "Completed"
         }
@@ -376,41 +540,69 @@ class WorkspaceViewModel @Inject constructor(
                 }
             }
         }
-        Log.d(
-            "Coordinates",
-            "toSavedProject : " + data.value?.workspaceItems
+
+        var cTraceWorkSpacePatternInputData =
+            getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
+
+        updateWorkspaceDB(
+//            "30644ba1e7aa41cfa9b17b857739968a",
+            cTraceWorkSpacePatternInputData.tailornaovaDesignId,
+            cTraceWorkSpacePatternInputData.selectedTab,
+            cTraceWorkSpacePatternInputData.status,
+            cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
+            cTraceWorkSpacePatternInputData.patternPieces,
+            cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
+            cTraceWorkSpacePatternInputData.liningWorkspaceItems,
+            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems, cTraceWorkSpacePatternInputData
         )
-        insertData(setWorkspaceDimensions(data.value!!))
+
     }
 
     // Set workspace Dimensions to Virtual
-    fun setWorkspaceDimensions(value: PatternsData): PatternsData {
+    fun setWorkspaceDimensions(value: PatternsData?): PatternsData? {
         val patternsData = value
-        val workspaceItems: List<WorkspaceItems> =
-            patternsData?.workspaceItems ?: emptyList()
-        for (workspaceItem in workspaceItems) {
-            workspaceItem.xcoordinate = workspaceItem.xcoordinate.times(scaleFactor.get().toFloat())
-            workspaceItem.ycoordinate = workspaceItem.ycoordinate.times(scaleFactor.get().toFloat())
-            workspaceItem.pivotX = workspaceItem.pivotX.times(scaleFactor.get().toFloat())
-            workspaceItem.pivotY = workspaceItem.pivotY.times(scaleFactor.get().toFloat())
-
-        }
+        setWorkspaceVirtualDimensions(
+            patternsData?.garmetWorkspaceItemOfflines
+                ?: emptyList()
+        )
+        setWorkspaceVirtualDimensions(
+            patternsData?.liningWorkspaceItemOfflines
+                ?: emptyList()
+        )
+        setWorkspaceVirtualDimensions(
+            patternsData?.interfaceWorkspaceItemOfflines
+                ?: emptyList()
+        )
         return patternsData
     }
 
-    // Set workspace Dimensions to Virtual
-    fun getWorkspaceDimensions(value: PatternsData?): PatternsData? {
-        val patternsData = value
-        val workspaceItems: List<WorkspaceItems> =
-            patternsData?.workspaceItems ?: emptyList()
-        for (workspaceItem in workspaceItems) {
-            workspaceItem.xcoordinate = workspaceItem.xcoordinate.div(scaleFactor.get().toFloat())
-            workspaceItem.ycoordinate = workspaceItem.ycoordinate.div(scaleFactor.get().toFloat())
-            workspaceItem.pivotX = workspaceItem.pivotX.div(scaleFactor.get().toFloat())
-            workspaceItem.pivotY = workspaceItem.pivotY.div(scaleFactor.get().toFloat())
 
+    // Set workspace Dimensions to Virtual
+    fun setWorkspaceVirtualDimensions(workspaceItems: List<WorkspaceItems>): List<WorkspaceItems> {
+        for (workspaceItem in workspaceItems) {
+            workspaceItem.xcoordinate =
+                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat())
+            workspaceItem.ycoordinate =
+                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat())
+            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat())
+            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat())
         }
-        return patternsData
+        return workspaceItems
+    }
+
+    // Set workspace Dimensions to Virtual
+    fun getWorkspaceDimensions(workspaceItems: List<WorkspaceItems>?): List<WorkspaceItems>? {
+        if (workspaceItems != null) {
+            for (workspaceItem in workspaceItems) {
+                workspaceItem.xcoordinate =
+                    workspaceItem.xcoordinate?.div(scaleFactor.get().toFloat())
+                workspaceItem.ycoordinate =
+                    workspaceItem.ycoordinate?.div(scaleFactor.get().toFloat())
+                workspaceItem.pivotX = workspaceItem.pivotX?.div(scaleFactor.get().toFloat())
+                workspaceItem.pivotY = workspaceItem.pivotY?.div(scaleFactor.get().toFloat())
+            }
+        }
+        return workspaceItems
     }
 
     fun overridePattern(
@@ -432,11 +624,11 @@ class WorkspaceViewModel @Inject constructor(
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleInsertDataResult(it) }
+            .subscribeBy { handleInsertDataResult(it, true) }
     }
 
     fun checkMirroring() {
-        if (workspacedata?.mirrorOption.equals("YES")) {
+        if (workspacedata?.mirrorOption == true) {
             uiEvents.post(Event.EnableMirror)
         } else {
             uiEvents.post(Event.DisableMirror)
@@ -559,6 +751,9 @@ class WorkspaceViewModel @Inject constructor(
         object RemoveAllPatternPieces : Event()
         object updateProgressCount : Event()
         object OnDownloadComplete : Event()
+        object HideProgressLoader : Event()
+        object ShowProgressLoader : Event()
+        object ApiFailed : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -576,9 +771,9 @@ class WorkspaceViewModel @Inject constructor(
             var result: File? = null
             val url: URL = URL(url)
             val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val basicAuth =
+            /*val basicAuth =
                 "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-            conn.setRequestProperty("Authorization", basicAuth)
+            conn.setRequestProperty("Authorization", basicAuth)*/
             conn.requestMethod = "GET"
             conn.connect()
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -588,7 +783,7 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
+                result = convertInputStreamToFile(inputStream,filename,patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
@@ -597,12 +792,11 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun convertInputStreamToFile(
         inputStream: InputStream,
-        filename: String,
-        patternFolderName: String?
+        filename: String, patternFolderName: String?
     ): File? {
-        var result: File? = null
-        val outputFile: File? = null
-        var dittofolder: File? = null
+        var result : File? = null
+        val outputFile : File? = null
+        var dittofolder : File? = null
 
         val contextWrapper = ContextWrapper(context)
 
@@ -612,19 +806,54 @@ class WorkspaceViewModel @Inject constructor(
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+
         /*
-        code to create foler with pattern name
-        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}/Pattern Instruction")
-         file.mkdirs()*/
+        code for creating folder with pattern name
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
+        file.mkdirs()*/
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
 
-        val filename =
-            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
-
+        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}"
         result = File(dittofolder, filename)
+        if (!result.exists()) {
+            result.createNewFile()
+        }
+        result.copyInputStreamToFile(inputStream)
+        return result
+    }
+
+
+    private fun convertInputStreamToFileForPatterns(
+        inputStream: InputStream,
+        filename: String,
+        patternFolderName: String?
+    ): File? {
+        var result: File? = null
+        var dittofolder: File? = null
+        var subFolder: File? = null
+        dittofolder = File(
+            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+        )
+
+        subFolder = File(dittofolder, "/${patternFolderName}")
+
+        if (!dittofolder.exists()) {
+            dittofolder.mkdir()
+            if (!subFolder.exists()) {
+                subFolder.mkdirs()
+            }
+        } else {
+            if (!subFolder.exists()) {
+                subFolder.mkdirs()
+            } else {
+                Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
+            }
+        }
+
+        result = File(subFolder, filename)
         if (!result.exists()) {
             try {
                 result.createNewFile()
@@ -635,6 +864,7 @@ class WorkspaceViewModel @Inject constructor(
         return result
     }
 
+
     private fun File.copyInputStreamToFile(inputStream: InputStream) {
         try {
             this.outputStream().use { fileOut ->
@@ -644,5 +874,72 @@ class WorkspaceViewModel @Inject constructor(
             Log.d("Error", "", e)
         }
     }
-}
 
+    fun prepareDowloadList(hashMap: HashMap<String, String>) {
+        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("Download", "Hashmap size: ${hashMap?.size}")
+        temp.clear()
+        if (!hashMap.isEmpty()) {
+            GlobalScope.launch {
+
+                runBlocking {
+                    hashMap.forEach { (key, value) ->
+                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        downloadEachPatternPiece(
+                            imageUrl = value,
+                            filename = key,
+                            patternFolderName = data.value?.patternName ?: "Pattern Piece"
+                        )
+                    }
+                }
+                uiEvents.post(Event.OnDownloadComplete)
+            }
+        } else {
+            uiEvents.post(Event.OnDownloadComplete)
+        }
+    }
+
+    suspend fun downloadEachPatternPiece(
+        imageUrl: String,
+        filename: String,
+        patternFolderName: String?
+    ) {
+        withContext(Dispatchers.IO) {
+            val inputStream: InputStream
+            var result: File? = null
+            val url: URL = URL(imageUrl)
+            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connect()
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                patternpdfuri.set("")
+                return@withContext
+            }
+            inputStream = conn.inputStream
+            if (inputStream != null)
+                result =
+                    convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
+            val path = Uri.fromFile(result)
+            patternUri.set(path.toString())
+            Log.d("PATTERN", patternUri.get() ?: "")
+
+            temp.add(path.toString())
+        }
+    }
+
+    fun imageFilesToDownload(hashMap: HashMap<String, String>): HashMap<String, String> {
+        imagesToDownload.clear()
+        hashMap.forEach { (key, value) ->
+            val availableUri = key.let {
+                core.ui.common.Utility.isImageFileAvailable(
+                    it,
+                    "${data.value?.patternName}"
+                )
+            }
+            if (availableUri == null) {
+                imagesToDownload.put(key, value)
+            }
+        }
+        return imagesToDownload
+    }
+}

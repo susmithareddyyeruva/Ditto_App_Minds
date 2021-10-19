@@ -1,20 +1,28 @@
 package core.di
 
 
-import core.CLIENT_ID
-import core.OCAPI_PASSWORD
-import core.data.TokenRequest
-import core.data.TokenResultDomain
+import core.appstate.AppState
+import core.data.model.SoftwareUpdateResult
 import core.data.model.TokenResult
+import core.data.model.VersionResponse
+import core.lib.BuildConfig
 import io.reactivex.Single
-import retrofit2.http.*
-import non_core.lib.Result
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.Query
 
 interface ApiService {
+    @Headers("Content-Type: application/json")
+    @GET("session")
+    fun refreshToken(): Single<TokenResult>
 
-    @FormUrlEncoded
-    @Headers("Content-Type: application/x-www-form-urlencoded")
-    @POST("oauth2/access_token?client_id=$CLIENT_ID")
-    fun refreshToken(@FieldMap req : Map<String, String> ): Single <TokenResult>
+    @Headers("Content-Type: application/json")
+    @GET("session")
+    suspend fun refreshTokenAuthentication(): TokenResult
+
+    @Headers("Content-Type: application/json")
+    @GET("version")
+    fun checkVersion(@Query("v") appVersion: String? = AppState.getAppVersion(), @Query("o") appOS: String? = "android"): Single<VersionResponse>
 
 }

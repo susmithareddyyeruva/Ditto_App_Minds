@@ -101,7 +101,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
         setUIEvents()
-        //setupKeyboardListener(binding.root) // call in OnCreate or similar
+        requireActivity().window.navigationBarColor = resources.getColor(core.lib.R.color.nav_item_grey2);
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
 
     }
 

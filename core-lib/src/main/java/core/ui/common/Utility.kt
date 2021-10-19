@@ -7,6 +7,8 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
@@ -27,12 +29,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.TokenViewModel
+import core.ui.VersionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
@@ -40,7 +44,6 @@ import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.jvm.Throws
 import kotlin.math.PI
 
 
@@ -48,13 +51,18 @@ import kotlin.math.PI
  * Helper Utility class
  */
 class Utility @Inject constructor(
-    private val tokenViewModel: TokenViewModel
+    private val tokenViewModel: TokenViewModel,
+    private val versionViewModel: VersionViewModel
 ) {
 
 
     fun refreshToken(){
-        AppState.saveToken("",0)
+//        AppState.saveToken("",0)
         tokenViewModel.calltoken()
+    }
+
+    fun checkVersion(){
+        versionViewModel.checkVersion()
     }
 
     enum class AlertType {
@@ -72,12 +80,18 @@ class Utility @Inject constructor(
         PDF,
         CUT_COMPLETE,
         CONNECTIVITY,
-        SOC_CONNECT
+        SOC_CONNECT,
+        DELETE,
+        UPDATEAPIFAILED,
+        DOWNLOADFAILED,
+        RUNTIMEPERMISSION,
+        SOFTWARE_UPDATE
     }
 
     enum class Iconype {
         SUCCESS,
         FAILED,
+        WARNING,
         NONE
     }
 
@@ -303,18 +317,18 @@ class Utility @Inject constructor(
             )
         }
 
-        fun setSharedPref(context: Context, id: Int) {
+        fun setSharedPref(context: Context, id: String) {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
             var editor = sharedPreference.edit()
-            editor.putInt("PATTERN_ID", id)
+            editor.putString("PATTERN_ID", id)
             editor.commit()
         }
 
-        fun getSharedPref(context: Context): Int {
+        fun getSharedPref(context: Context): String? {
             val sharedPreference =
                 context.getSharedPreferences("PATTERN_DETAILS", Context.MODE_PRIVATE)
-            return sharedPreference.getInt("PATTERN_ID", 0)
+            return sharedPreference.getString("PATTERN_ID", "")
         }
 
         fun getOutputDirectory(context: Context): File {
@@ -455,6 +469,28 @@ class Utility @Inject constructor(
             return path
         }
 
+        fun isImageFileAvailable(filename: String?, patternFolderName: String?) : Uri? {
+
+            val directory = File(
+                Environment.getExternalStorageDirectory()
+                    .toString() + "/Ditto/$patternFolderName"
+            )
+
+           /* val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
+            //Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
+            val file = File(directory, filename)
+
+            var path : Uri? = null
+            if (file.exists()){
+                path = Uri.fromFile(file)
+            } else {
+                path = null
+            }
+            return path
+        }
+
 
 
         @SuppressLint("ResourceType")
@@ -481,7 +517,7 @@ class Utility @Inject constructor(
                 val lay_withoutimage =
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
-                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
+                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN ||alertType == AlertType.DELETE
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE
@@ -543,6 +579,8 @@ class Utility @Inject constructor(
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_success))
                     } else if (imgtyp.equals(Iconype.FAILED)) {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
+                    } else if (imgtyp.equals(Iconype.WARNING)) {
+                        icon.setImageDrawable(context.getDrawable(R.drawable.ic_warning))
                     } else {
                         icon.setImageDrawable(context.getDrawable(R.drawable.ic_failed))
                     }

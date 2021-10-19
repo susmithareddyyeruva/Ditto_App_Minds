@@ -215,10 +215,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
                         serviceFoundList.add(service)
                     }
-                 } else {
-                    if (service.serviceName.startsWith("DITTO")){
+                } else {
+                    //if (service.serviceName.startsWith("DITTO")){ //todo
                         serviceFoundList.add(service)
-                    }
+                    //}
                 }
 
             }
@@ -356,7 +356,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     AppState.saveCurrentService(mClickedService)
                     viewModel.isServiceError.set(false)
                     viewModel.isWifiError.set(false)
-                    GlobalScope.launch { Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected") }
+                    GlobalScope.launch {
+                        delay(200)
+                        Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected") }
                     showLayouts(false, false, false, true, false,"Successfully connected!")
 
                 } else {
@@ -739,7 +741,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             delay(25000)
             viewModel.isBLEConnected  = false
             viewModel.isServiceError.set(true)
-            showLayouts(false, false, false, true, false,"Bluetooth Connection failed")
+            showLayouts(false, false, false, true, false,"Bluetooth Handshake failed")
         }
     }
     private fun stopWaiting(){

@@ -1,7 +1,6 @@
 package core.di.scope
 
 import javax.inject.Qualifier
-import javax.inject.Scope
 import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Qualifier
@@ -21,3 +20,20 @@ annotation class WbTokenApiRetrofit
 @Qualifier
 @Retention(RUNTIME)
 annotation class WbTokenBaseUrl
+
+@Qualifier
+@Retention(RUNTIME)
+annotation class WbTailornovaApiRetrofit
+
+
+@Qualifier
+@Retention(RUNTIME)
+annotation class WbTailornovaBaseUrl
+
+@Qualifier
+@Retention(RUNTIME)
+annotation class WbMyLibraryApiRetrofit
+
+@Qualifier
+@Retention(RUNTIME)
+annotation class WbMyLibraryBaseUrl

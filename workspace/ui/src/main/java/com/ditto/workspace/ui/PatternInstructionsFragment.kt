@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.ditto.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import core.PDF_SAMPLE_URL
+import core.PDF_DOWNLOAD_URL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -98,7 +98,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
         downloadFileName =
-            PDF_SAMPLE_URL?.substring(PDF_SAMPLE_URL.lastIndexOf('/'), PDF_SAMPLE_URL.length)
+            PDF_DOWNLOAD_URL?.substring(PDF_DOWNLOAD_URL!!.lastIndexOf('/'), PDF_DOWNLOAD_URL!!.length)
         val availableUri = downloadFileName?.let { Utility.isFileAvailable(it,requireContext(),patternFolderName) }
         if (availableUri != null) {
             showPdfFromUri(availableUri)
@@ -114,7 +114,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!){
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
-                downloadFileName?.let { viewModel.downloadPDF(PDF_SAMPLE_URL, it,patternFolderName) }
+                downloadFileName?.let { viewModel.downloadPDF(PDF_DOWNLOAD_URL!!, it,patternFolderName) }
             }
         } else {
             showNeworkError()

@@ -59,17 +59,19 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         }
         return binding.root
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as BottomNavigationActivity).hideDrawerLayout()
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
         setUIEvents()
-        viewModel.mode.set(MODE_SERVICE)
-        checkBluetoothWifiPermission()
+        //viewModel.mode.set(MODE_SERVICE)
+        //checkBluetoothWifiPermission()
     }
 
     private fun setAdapter() {
@@ -120,7 +122,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             viewModel.numberOfProjectors.set(
                 getString(
                     R.string.str_projectorsfound,
-                    receivedServiceList!!.size.toString()
+                    (receivedServiceList?.size ?: 0).toString()
                 )
             )
             viewModel.isServiceNotFound.set(true)
@@ -139,7 +141,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             viewModel.numberOfProjectors.set(
                 getString(
                     R.string.str_projectorsfound,
-                    receivedServiceList!!.size.toString()
+                    (receivedServiceList?.size ?: 0).toString()
                 )
             )
             viewModel.isServiceNotFound.set(true)
@@ -152,23 +154,22 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      */
     private fun filterServiceListAfterWifi() {
         if (ConnectivityUtils.nsdSericeNameAfterWifi != null) {
+            var hostAddress : String = ""
+            var port : Int = 0
             for (item in receivedServiceList!!.indices) {
                 if (ConnectivityUtils.nsdSericeNameAfterWifi == receivedServiceList!![item].nsdServiceName) {
                     viewModel.clickedPosition.set(item)
-                    viewModel.connectToProjector(
-                        receivedServiceList!![item].nsdSericeHostAddress,
-                        receivedServiceList!![item].nsdServicePort,
-                        true
-                    )
+                    hostAddress= receivedServiceList!![item].nsdSericeHostAddress
+                    port = receivedServiceList!![item].nsdServicePort
                     break
                 }
             }
-
+            viewModel.connectToProjector(hostAddress, port, true)
         }
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
-                receivedServiceList!!.size.toString()
+                (receivedServiceList?.size ?: 0).toString()
             )
         )
         viewModel.isServiceNotFound.set(false)
@@ -195,14 +196,15 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
 
     /**
-        }
+    }
      * [Function] Filtering list to change to connection status of alredy connected wifi if any
      */
     private fun filterServiceList() {
         if (NetworkUtility.nsdSericeHostName != null) {
             for (item in receivedServiceList!!.indices) {
                 if (NetworkUtility.nsdSericeHostName == receivedServiceList!![item].nsdSericeHostAddress &&
-                        NetworkUtility.nsdSericePortName == receivedServiceList!![item].nsdServicePort) {
+                    NetworkUtility.nsdSericePortName == receivedServiceList!![item].nsdServicePort
+                ) {
                     viewModel.clickedPosition.set(item)
                     resetAdapter(true)
                     break
@@ -212,7 +214,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
-                receivedServiceList!!.size.toString()
+                (receivedServiceList?.size ?: 0).toString()
             )
         )
         viewModel.isServiceNotFound.set(false)
@@ -223,6 +225,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      * [Function] Starting connectivity module
      */
     private fun showConnectivityPopup() {
+        viewModel.numberOfProjectors.set("")
+        viewModel.isServiceNotFound.set(false)
         GlobalScope.launch {
             delay(100)
             val intent = Intent(requireContext(), ConnectivityActivity::class.java)
@@ -241,6 +245,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        viewModel.isFromBackground = false
         receivedServiceList = Utility.searchServieList
         if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
             when {
@@ -263,10 +268,11 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
-        (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.manage_devices))
+        (activity as BottomNavigationActivity).setToolbarTitle(getString(R.string.str_menu_manage_projector))
         (activity as BottomNavigationActivity).setToolbarIcon()
 
     }
+
     companion object {
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
         private const val REQUEST_CODE_PERMISSIONS = 111
@@ -431,7 +437,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     ) {
 
         when (alertType) {
-            Utility.AlertType.SOC_CONNECT ->{
+            Utility.AlertType.SOC_CONNECT -> {
                 viewModel.sendWaitingImage()
                 viewModel.connectToProjector(
                     receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
@@ -475,6 +481,29 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
             }
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.isFromBackground) {
+            viewModel.mode.set(MODE_SERVICE)
+            checkBluetoothWifiPermission()
+        }
+        viewModel.numberOfProjectors.set(
+            getString(
+                R.string.str_projectorsfound,
+                (receivedServiceList?.size ?: 0).toString()
+            )
+        )
+        viewModel.isServiceNotFound.set(receivedServiceList?.size == 0)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.isFromBackground = true
+        viewModel.numberOfProjectors.set("")
+        viewModel.isServiceNotFound.set(false)
     }
 
 }

@@ -6,12 +6,14 @@
     <string name="active_projects">Active Projects</string>
     <string name="completed_projects">Completed Projects</string>
     <string name="all_patterns">All Patterns</string>
-
+    <string name="offline_patterns">Offline Patterns</string>
+    <string name="my_folders">My Folders</string>
     <string name="connectivity">Connectivity</string>
     <string name="ble_wifi_connectivity">This app needs Bluetooth and WiFi connectivity.</string>
     <string name="later">Later</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_dialog">CANCEL</string>
     <string name="skips">Skip</string>
     <string name="ditto_connect">Ditto projector is not connected</string>
     <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>
@@ -51,13 +53,28 @@
     <string name="text_filter">Filters</string>
     <string name="text_new">New</string>
     <string name="text_clear_filter"><u>clear filters</u></string>
-    <string name="text_filter_result">Showing filtered results (09)
+    <string name="text_filter_result">Showing filtered results\u0020(%1$s)
     </string>Confirm setup and make sure red lighted rectangle is still within the white cutting mat border
     <string name="filters">Filters</string>
     <string name="apply">APPLY</string>
     <string name="clear_all"><u>clear all</u></string>
     <string name="launch_camera">LAUNCH CAMERA</string>
     <string name="pattern_instructions">Pattern Instructions</string>
-    <string name="pattern_details">Pattern details</string>
+    <string name="pattern_details">Pattern Details</string>
+    <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
+    <string name="myfolder_detail_count">%1$s\u0020(%2$d)</string>
+    <string name="myfolder">My Folders</string>
+    <string name="rename_folder">Rename Folder</string>
+    <string name="delete_folder">Delete Folder</string>
+    <string name="addfolder">Add Folder</string>
+    <string name="owned">Owned</string>
+    <string name="cancel_search">Cancel</string>
+    <string name="addto">Add to folder</string>
+    <string name="folder_name">Folder name</string>
+    <string name="new_folder">New folder</string>
+    <string name="are_you_sure_delete">Are you sure you want to delete this folder ?</string>
+    <string name="create_folder">CREATE FOLDER</string>
+    <string name="rename_folder_dialog">RENAME FOLDER</string>
+    <string name="defult_filter_text">Showing filtered results</string>
 
 </resources>

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -56,6 +57,13 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             showAlert()
         }
     }
+
+    override fun onPause() {
+        pauseVideo()
+        isPlay = true
+        super.onPause()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.custom_layout)
@@ -257,6 +265,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     }
 
     private val runnable: Runnable = object : Runnable {
+        @RequiresApi(Build.VERSION_CODES.N)
         override fun run() {
             displayCurrentTime()
             val playPercent =

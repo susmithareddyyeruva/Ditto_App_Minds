@@ -83,5 +83,7 @@ ext {
     timber='4.7.1'
     play_services_location='18.0.0'
     lottieVersion = "3.4.0"
-    glideVersion = "4.12.0"
+    //glideVersion = "4.12.0"
+    glideVersion = "3.6.0"
+    firebase_version = "28.4.0"
 }

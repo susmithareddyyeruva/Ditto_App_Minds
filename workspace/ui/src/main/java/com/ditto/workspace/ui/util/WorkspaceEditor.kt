@@ -3,7 +3,6 @@ package com.ditto.workspace.ui.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -44,26 +43,31 @@ class WorkspaceEditor private constructor(builder: Builder) {
      */
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun addImage(
-        drawable: Drawable?,
+        imageBitmap: Bitmap?,
         workspaceItem: WorkspaceItems?,
         scaleFactor: Double,
         showProjection: Boolean,
         isDraggedPiece: Boolean,
+        patternName: String?,
         dragListener: DraggableListener
     ) {
         mOnWorkspaceImageDragListener = dragListener
         val imageRootView = getLayout(IMAGE)
         val imageV =
             imageRootView?.findViewById<ImageView>(R.id.imgPhotoEditorImage)
-        val tempDrawable = drawable
+        val tempimageBitmap = imageBitmap
+//        imageV?.maxWidth =
+//            ceil(tempDrawable?.intrinsicWidth?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
+//        imageV?.maxHeight =
+//            ceil(tempDrawable?.intrinsicHeight?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
         imageV?.maxWidth =
-            ceil(tempDrawable?.intrinsicWidth?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
+            ceil(tempimageBitmap?.width?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
         imageV?.maxHeight =
-            ceil(tempDrawable?.intrinsicHeight?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
+            ceil(tempimageBitmap?.height?.toFloat()?.div(scaleFactor) ?: 1.0).toInt()
         Log.d("TAG", "maxWidth : " + imageV?.maxWidth)
         Log.d("TAG", "maxHeight : " + imageV?.maxHeight)
         imageV?.scaleType = ImageView.ScaleType.FIT_XY
-        imageV?.setImageDrawable(tempDrawable)
+        imageV?.setImageBitmap(tempimageBitmap)
         var sticky: Draggable.STICKY =
             Draggable.STICKY.NONE
         val params =
@@ -73,31 +77,37 @@ class WorkspaceEditor private constructor(builder: Builder) {
             )
         if (workspaceItem != null) {
             initialPosition(isDraggedPiece, workspaceItem, imageV)
-            if (workspaceItem.spliceDirection.equals("Splice Left-to-Right")) {
+           // if (workspaceItem.spliceDirection.equals("Splice Left-to-Right")) {
+            if (workspaceItem.splicedImages?.size ?: 0 > 1) {
                 workspaceItem.xcoordinate = 0F
-                params.addRule(if (workspaceItem.currentSplicedPieceColumn!=0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.addRule(if (workspaceItem.currentSplicedPieceColumn != 0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
                 sticky =
                     if (workspaceItem.currentSplicedPieceColumn!=0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
-            } else if (workspaceItem.spliceDirection.equals("Splice Top-to-Bottom")) {
+            //} else if (workspaceItem.spliceDirection.equals("Splice Top-to-Bottom")) {
+
+            } /*else if (workspaceItem.spliceDirection ?: 0 > 1) {
                 workspaceItem.ycoordinate = 0F
-                params.addRule(if (workspaceItem.currentSplicedPieceRow!=0) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
+                params.addRule(if (workspaceItem.currentSplicedPieceRow != 0) RelativeLayout.ALIGN_PARENT_BOTTOM else RelativeLayout.ALIGN_PARENT_TOP);
                 sticky =
                     if (workspaceItem.currentSplicedPieceRow!=0) Draggable.STICKY.AXIS_Y_END else Draggable.STICKY.AXIS_Y_START
-            } else if (workspaceItem.spliceDirection.equals("Splice Multiple-to-Multiple")) {
+            //} else if (workspaceItem.spliceDirection.equals("Splice Multiple-to-Multiple")) {
+            } else if (workspaceItem.spliceDirection ?: 0 > 1) {
+
                 workspaceItem.xcoordinate = 0F
-                params.addRule(if (workspaceItem.currentSplicedPieceColumn!=0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.addRule(if (workspaceItem.currentSplicedPieceColumn != 0) RelativeLayout.ALIGN_PARENT_LEFT else RelativeLayout.ALIGN_PARENT_RIGHT);
                 sticky =
-                    if (workspaceItem.currentSplicedPieceColumn!=0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
-            }
+                    if (workspaceItem.currentSplicedPieceColumn != 0) Draggable.STICKY.AXIS_X_START else Draggable.STICKY.AXIS_X_END
+            }*/
             imageRootView?.tag = workspaceItem.id
         }
         // checking overlapping only for dragged pieces
         // TODO : PUT isOverlappingEnabled true IF OVERLAPPING NEEDED
         if (Utility.isOverlappingEnabled.get() && isDraggedPiece && checkOverlappingCondition(
-                CollisionUtil.drawableToBitmap(
-                    drawable,
-                    scaleFactor
-                ),
+//                CollisionUtil.drawableToBitmap(
+//                    imageBitmap,
+//                    scaleFactor
+//                ),
+                imageBitmap,
                 null,
                 workspaceItem?.xcoordinate?.toInt(),
                 workspaceItem?.ycoordinate?.toInt()
@@ -112,6 +122,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
             workspaceItem,
             addedViews,
             isSelectAll,
+            patternName,
             object : DraggableListener {
                 override fun onPositionChanged(view: View, workspaceItem: WorkspaceItems?) {
                     workspaceItem?.xcoordinate = view.x
@@ -334,26 +345,35 @@ class WorkspaceEditor private constructor(builder: Builder) {
         }
 
         // For fixing Virtual image spliced issue
-        if (image?.spliceDirection.equals("Splice Left-to-Right")) {
-            image?.xcoordinate = if (image?.currentSplicedPieceRow!=0) 0F else {
+        //if (image?.spliceDirection?.equals("Splice Left-to-Right")!!) {
+        if (image?.splicedImages?.size?: 0>1) {
+            image?.xcoordinate = if (image?.currentSplicedPieceRow != 0) 0F else {
                 parentView?.width?.toFloat()
                     ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
                     ?: 0F
             }
         }
-        if (image?.spliceDirection.equals("Splice Top-to-Bottom")) {
-            image?.ycoordinate = if (image?.currentSplicedPieceColumn!=0) 0F else {
+        /*//if (image?.spliceDirection!!.equals("Splice Top-to-Bottom")) {
+        if (image?.spliceDirection?: 0>1) {
+            image?.ycoordinate = if (image?.currentSplicedPieceColumn != 0) 0F else {
                 parentView?.height?.toFloat()
                     ?.minus((imageV as ImageView)?.maxHeight?.toFloat() ?: 0F) ?: 0F
             }
         }
-        if (image?.spliceDirection.equals("Splice Multiple-to-Multiple")) {
-            image?.xcoordinate = if (image?.currentSplicedPieceRow!=0) 0F else {
+       // if (image?.spliceDirection!!.equals("Splice Multiple-to-Multiple")) {
+        if (image?.spliceDirection?: 0>1) {
+            image?.xcoordinate = if (image?.currentSplicedPieceRow != 0) 0F else {
                 parentView?.width?.toFloat()
                     ?.minus((imageV as ImageView)?.maxWidth?.toFloat() ?: 0F)
                     ?: 0F
             }
-        }
+        }*/
+
+        //todo testing pending
+        /*if(image?.splicedImages?.size ?:0 > 1){
+            image?.xcoordinate = 0F
+            image?.ycoordinate = 0F
+        }*/
         //
         rootView?.let { addedViews.add(it) }
         image?.let { addedViewsModel.add(it) }

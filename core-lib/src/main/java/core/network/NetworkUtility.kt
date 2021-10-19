@@ -12,7 +12,7 @@ class NetworkUtility {
 
     companion object {
 
-        var isServiceConnected : Boolean = false
+        var isServiceConnected : Boolean = false  // todo to remove if not needed
         var nsdSericeHostName: String = ""
         var nsdSericePortName: Int = 0
 
@@ -20,9 +20,9 @@ class NetworkUtility {
         /**
          * returns if network connection (Wifi/cellular) is available or not
          */
-        fun isNetworkAvailable(context: Context): Boolean {
+        fun isNetworkAvailable(context: Context?): Boolean {
             var result = false
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
                 if (capabilities != null) {

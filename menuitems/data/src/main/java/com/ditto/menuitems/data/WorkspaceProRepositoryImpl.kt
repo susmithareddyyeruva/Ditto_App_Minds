@@ -13,11 +13,21 @@ import com.ditto.menuitems.domain.WorkspaceProRepository
 import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import com.ditto.storage.data.database.UserDao
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import core.CLIENT_ID
+import core.CONNECTION_EXCEPTION
+import core.ERROR_FETCH
+import core.UNKNOWN_HOST_EXCEPTION
 import core.appstate.AppState
+import core.ui.errors.CommonError
 import io.reactivex.Single
 import non_core.lib.Result
+import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
+
 
 class WorkspaceProRepositoryImpl @Inject constructor(
     private val dbDataDao: @JvmSuppressWildcards UserDao,
@@ -61,27 +71,70 @@ class WorkspaceProRepositoryImpl @Inject constructor(
 
     override fun postSwitchData(data: WSSettingsInputData): Single<Result<WSProSettingDomain>> {
 
-        return ws_settings.postSettingRequest( AppState.getCustID(),CLIENT_ID,
+        return ws_settings.postSettingRequest(
+            AppState.getCustID(), CLIENT_ID,
             data,
-            "Bearer "+AppState.getToken()!!)
+            "Bearer " + AppState.getToken()!!
+        )
             .doOnSuccess {
-                dbDataDao.updateWSSettingUser(data.c_mirrorReminder,data.c_cuttingReminder,
-                data.c_spliceReminder,data.c_spliceMultiplePieceReminder)
-                Log.d("result_success","doOnSuccess >>> ${it.toString()}")
+                dbDataDao.updateWSSettingUser(
+                    data.c_mirrorReminder, data.c_cuttingReminder,
+                    data.c_spliceReminder, data.c_spliceMultiplePieceReminder
+                )
+                Log.d("result_success", "doOnSuccess >>> ${it.toString()}")
             }.map {
                 Result.withValue(it.toDomain())
             }.onErrorReturn {
                 var errorMessage = "Error Fetching data"
-                try {
-                    logger.d("try block")
-                    logger.d("${it.localizedMessage}")
-                } catch (e: Exception) {
-                    logger.d("Catch ${e.localizedMessage}")
-                    errorMessage = e.message.toString()
+                if (it is HttpException) {
+                    val httpException = it as HttpException
+                    when (httpException.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
+                    }
+
+                } else {
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
+                    }
                 }
+
                 Result.withError(
                     WSProSettingFetchError(errorMessage, it)
                 )
             }
+
     }
+
 }

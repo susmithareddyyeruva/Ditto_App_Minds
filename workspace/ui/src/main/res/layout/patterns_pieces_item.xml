@@ -26,7 +26,6 @@
             app:layout_constraintWidth_default="percent"
             android:gravity="center"
             android:padding="@dimen/margin_workspace"
-            android:tag="image_tag"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -22,6 +22,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
 
     val isServiceNotFound : ObservableBoolean = ObservableBoolean(false)
     val isShowServiceList : ObservableBoolean = ObservableBoolean(false)
+    var isFromBackground : Boolean = true;
     val clickedPosition : ObservableInt = ObservableInt(0)
     val numberOfProjectors: ObservableField<String> = ObservableField("")
     val mode: ObservableField<String> = ObservableField(MODE_SERVICE)
@@ -31,7 +32,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
     fun connectToProjector(hostAddress : String, port : Int, isShowProgress : Boolean){
         showProgress(isShowProgress)
         GlobalScope.launch {
-            delay(200)
+            delay(1000)
             startSocketConnection(hostAddress,port)
         }
     }
