@@ -1,0 +1,131 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectPlainTextFileTypeManager\">\r\n    <file url=\"file://$PROJECT_DIR$/workspace/ui/src/main/res/drawable/midneck_2_with_dots.xml\" />\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_7\" default=\"false\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n  <component name=\"masterDetails\">\r\n    <states>\r\n      <state key=\"ProjectJDKs.UI\">\r\n        <settings>\r\n          <last-edited>1.8</last-edited>\r\n          <splitter-proportions>\r\n            <option name=\"proportions\">\r\n              <list>\r\n                <option value=\"0.2\" />\r\n              </list>\r\n            </option>\r\n          </splitter-proportions>\r\n        </settings>\r\n      </state>\r\n    </states>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 8c1b0dcec7f4488618d3495c80cee8a17a3e8713)
++++ .idea/misc.xml	(date 1634536642660)
+@@ -3,7 +3,7 @@
+   <component name="ProjectPlainTextFileTypeManager">
+     <file url="file://$PROJECT_DIR$/workspace/ui/src/main/res/drawable/midneck_2_with_dots.xml" />
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"1.7\">\r\n      <module name=\"ditto-android-new2.app\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.calibration-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.calibration-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.calibration-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.connectivity-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.core-lib\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.dittoProjectorApp\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.home-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.home-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.home-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.howto-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.howto-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.howto-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.instructions-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.instructions-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.instructions-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.logger\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.login-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.login-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.login-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.menuitems-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.menuitems-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.menuitems-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.mylibrary-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.mylibrary-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.mylibrary-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.nav-graph\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.onboarding-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.onboarding-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.onboarding-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.splash-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.splash-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.splash-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.storage-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.tutorial-ui\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.videoplayer\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.workspace-data\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.workspace-domain\" target=\"11\" />\r\n      <module name=\"ditto-android-new2.workspace-ui\" target=\"11\" />\r\n      <module name=\"ditto-android.app\" target=\"1.8\" />\r\n      <module name=\"ditto-android.calibration-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.calibration-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.calibration-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.connectivity-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.core-lib\" target=\"1.8\" />\r\n      <module name=\"ditto-android.dittoProjectorApp\" target=\"1.8\" />\r\n      <module name=\"ditto-android.home-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.home-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.home-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.howto-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.howto-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.howto-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.instructions-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.instructions-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.instructions-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.logger\" target=\"1.8\" />\r\n      <module name=\"ditto-android.login-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.login-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.login-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.menuitems-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.menuitems-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.menuitems-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.mylibrary-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.mylibrary-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.mylibrary-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.nav-graph\" target=\"1.8\" />\r\n      <module name=\"ditto-android.onboarding-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.onboarding-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.onboarding-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.splash-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.splash-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.splash-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.storage-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.tutorial-ui\" target=\"1.8\" />\r\n      <module name=\"ditto-android.videoplayer\" target=\"1.8\" />\r\n      <module name=\"ditto-android.workspace-data\" target=\"1.8\" />\r\n      <module name=\"ditto-android.workspace-domain\" target=\"1.8\" />\r\n      <module name=\"ditto-android.workspace-ui\" target=\"1.8\" />\r\n      <module name=\"non-core-lib\" target=\"1.7\" />\r\n      <module name=\"storage-domain\" target=\"1.7\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision 8c1b0dcec7f4488618d3495c80cee8a17a3e8713)
++++ .idea/compiler.xml	(date 1634536642682)
+@@ -41,45 +41,45 @@
+       <module name="ditto-android-new2.workspace-data" target="11" />
+       <module name="ditto-android-new2.workspace-domain" target="11" />
+       <module name="ditto-android-new2.workspace-ui" target="11" />
+-      <module name="ditto-android.app" target="1.8" />
+-      <module name="ditto-android.calibration-data" target="1.8" />
+-      <module name="ditto-android.calibration-domain" target="1.8" />
+-      <module name="ditto-android.calibration-ui" target="1.8" />
+-      <module name="ditto-android.connectivity-ui" target="1.8" />
+-      <module name="ditto-android.core-lib" target="1.8" />
+-      <module name="ditto-android.dittoProjectorApp" target="1.8" />
+-      <module name="ditto-android.home-data" target="1.8" />
+-      <module name="ditto-android.home-domain" target="1.8" />
+-      <module name="ditto-android.home-ui" target="1.8" />
+-      <module name="ditto-android.howto-data" target="1.8" />
+-      <module name="ditto-android.howto-domain" target="1.8" />
+-      <module name="ditto-android.howto-ui" target="1.8" />
+-      <module name="ditto-android.instructions-data" target="1.8" />
+-      <module name="ditto-android.instructions-domain" target="1.8" />
+-      <module name="ditto-android.instructions-ui" target="1.8" />
+-      <module name="ditto-android.logger" target="1.8" />
+-      <module name="ditto-android.login-data" target="1.8" />
+-      <module name="ditto-android.login-domain" target="1.8" />
+-      <module name="ditto-android.login-ui" target="1.8" />
+-      <module name="ditto-android.menuitems-data" target="1.8" />
+-      <module name="ditto-android.menuitems-domain" target="1.8" />
+-      <module name="ditto-android.menuitems-ui" target="1.8" />
+-      <module name="ditto-android.mylibrary-data" target="1.8" />
+-      <module name="ditto-android.mylibrary-domain" target="1.8" />
+-      <module name="ditto-android.mylibrary-ui" target="1.8" />
+-      <module name="ditto-android.nav-graph" target="1.8" />
+-      <module name="ditto-android.onboarding-data" target="1.8" />
+-      <module name="ditto-android.onboarding-domain" target="1.8" />
+-      <module name="ditto-android.onboarding-ui" target="1.8" />
+-      <module name="ditto-android.splash-data" target="1.8" />
+-      <module name="ditto-android.splash-domain" target="1.8" />
+-      <module name="ditto-android.splash-ui" target="1.8" />
+-      <module name="ditto-android.storage-data" target="1.8" />
+-      <module name="ditto-android.tutorial-ui" target="1.8" />
+-      <module name="ditto-android.videoplayer" target="1.8" />
+-      <module name="ditto-android.workspace-data" target="1.8" />
+-      <module name="ditto-android.workspace-domain" target="1.8" />
+-      <module name="ditto-android.workspace-ui" target="1.8" />
++      <module name="ditto-android.app" target="11" />
++      <module name="ditto-android.calibration-data" target="11" />
++      <module name="ditto-android.calibration-domain" target="11" />
++      <module name="ditto-android.calibration-ui" target="11" />
++      <module name="ditto-android.connectivity-ui" target="11" />
++      <module name="ditto-android.core-lib" target="11" />
++      <module name="ditto-android.dittoProjectorApp" target="11" />
++      <module name="ditto-android.home-data" target="11" />
++      <module name="ditto-android.home-domain" target="11" />
++      <module name="ditto-android.home-ui" target="11" />
++      <module name="ditto-android.howto-data" target="11" />
++      <module name="ditto-android.howto-domain" target="11" />
++      <module name="ditto-android.howto-ui" target="11" />
++      <module name="ditto-android.instructions-data" target="11" />
++      <module name="ditto-android.instructions-domain" target="11" />
++      <module name="ditto-android.instructions-ui" target="11" />
++      <module name="ditto-android.logger" target="11" />
++      <module name="ditto-android.login-data" target="11" />
++      <module name="ditto-android.login-domain" target="11" />
++      <module name="ditto-android.login-ui" target="11" />
++      <module name="ditto-android.menuitems-data" target="11" />
++      <module name="ditto-android.menuitems-domain" target="11" />
++      <module name="ditto-android.menuitems-ui" target="11" />
++      <module name="ditto-android.mylibrary-data" target="11" />
++      <module name="ditto-android.mylibrary-domain" target="11" />
++      <module name="ditto-android.mylibrary-ui" target="11" />
++      <module name="ditto-android.nav-graph" target="11" />
++      <module name="ditto-android.onboarding-data" target="11" />
++      <module name="ditto-android.onboarding-domain" target="11" />
++      <module name="ditto-android.onboarding-ui" target="11" />
++      <module name="ditto-android.splash-data" target="11" />
++      <module name="ditto-android.splash-domain" target="11" />
++      <module name="ditto-android.splash-ui" target="11" />
++      <module name="ditto-android.storage-data" target="11" />
++      <module name="ditto-android.tutorial-ui" target="11" />
++      <module name="ditto-android.videoplayer" target="11" />
++      <module name="ditto-android.workspace-data" target="11" />
++      <module name="ditto-android.workspace-domain" target="11" />
++      <module name="ditto-android.workspace-ui" target="11" />
+       <module name="non-core-lib" target="1.7" />
+       <module name="storage-domain" target="1.7" />
+     </bytecodeTargetLevel>
+Index: .idea/runConfigurations.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/runConfigurations.xml	(date 1634534922838)
++++ .idea/runConfigurations.xml	(date 1634534922838)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RunConfigurationProducerService">
++    <option name="ignoredProducers">
++      <set>
++        <option value="com.android.tools.idea.compose.preview.runconfiguration.ComposePreviewRunConfigurationProducer" />
++      </set>
++    </option>
++  </component>
++</project>
+\ No newline at end of file

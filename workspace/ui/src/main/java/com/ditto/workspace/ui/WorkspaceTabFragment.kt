@@ -109,7 +109,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
-        arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
+        arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
@@ -799,8 +799,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata)
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -817,8 +816,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata);
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -834,8 +832,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata);
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -851,8 +848,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata)
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -920,7 +916,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     for (workspaceItem in workspaceItems) {
                         i++
                         viewModel.workspacedata = workspaceItem
-                        showToWorkspace(i == workspaceItems.size, false,workspaceItem)
+                        showToWorkspace(i == workspaceItems.size, false,workspaceItem,false)
                     }
                 } else {
                     logger.d("workspace item is null")
@@ -1205,7 +1201,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true,viewModel.workspacedata)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1262,7 +1258,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true,viewModel.workspacedata)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         }
                     }
                 }
@@ -1428,7 +1424,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
             }
             else -> {
-                Log.d("WorkspaceTabfragment", "onPositiveButtonClicked")
+                Log.d("WorkspaceTabFragment", "onPositiveButtonClicked")
             }
         }
 
@@ -1471,7 +1467,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 showSaveAndExitPopup()
             }
             else -> {
-                Log.d("WorkspaceTabfragment", "onNegativeButtonClicked")
+                Log.d("WorkspaceTabFragment", "onNegativeButtonClicked")
             }
         }
     }
@@ -1571,7 +1567,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     /*
     Displaying pieces in Workspace
      */
-    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?) {
+    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?, isSpliceArrowClicked: Boolean) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
@@ -1635,6 +1631,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             viewModel.data.value?.patternName,
                             this@WorkspaceTabFragment
                         )
+                        if(isSpliceArrowClicked){
+                            mWorkspaceEditor?.highlightSplicePiece()
+                        }
                     }
                 }
             } catch (e: Exception) {

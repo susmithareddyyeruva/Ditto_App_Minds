@@ -60,7 +60,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override fun updateOfflineStorageData(
-        tailornaovaDesignId: String,
+        tailornaovaDesignId: String?,
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
@@ -141,7 +141,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
                     logger.d("Error get WorkspaceData >>>>>>> $errorMessage")
                 }
             } catch (e: Exception) {
-                Log.d("Catch", e.localizedMessage)
+                Log.d("Catch", e.localizedMessage+ e.message)
                 errorMessage = e.message.toString()
             }
             Result.withError(

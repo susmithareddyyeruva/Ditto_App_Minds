@@ -52,8 +52,8 @@ class WorkspaceViewModel @Inject constructor(
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    var patternId: ObservableInt = ObservableInt(1)
-    var clickedOrderNumber: ObservableInt = ObservableInt(1)
+    var patternId: ObservableField<String> = ObservableField("")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
@@ -141,7 +141,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun updateWorkspaceDB(
-        tailornaovaDesignId: String,
+        tailornaovaDesignId: String?,
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
@@ -545,7 +545,8 @@ class WorkspaceViewModel @Inject constructor(
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
 
         updateWorkspaceDB(
-            "30644ba1e7aa41cfa9b17b857739968a",
+//            "30644ba1e7aa41cfa9b17b857739968a",
+            cTraceWorkSpacePatternInputData.tailornaovaDesignId,
             cTraceWorkSpacePatternInputData.selectedTab,
             cTraceWorkSpacePatternInputData.status,
             cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
