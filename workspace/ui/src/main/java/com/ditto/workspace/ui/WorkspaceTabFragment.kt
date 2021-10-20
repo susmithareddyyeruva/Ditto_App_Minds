@@ -44,6 +44,7 @@ import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -156,7 +157,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,viewModel.data.value?.patternName)
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,isFromWS = true,viewModel.data.value?.patternName)
             }
         })
     }
@@ -798,8 +799,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata)
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -816,8 +816,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata);
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -833,8 +832,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata);
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -850,8 +848,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata)
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -876,8 +873,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickPatternInstructions -> {
                 if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+                    PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternPieces?.get(0)?.parentPattern)
+                        bundleOf("PatternName" to viewModel.data.value?.patternName)
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -918,7 +916,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     for (workspaceItem in workspaceItems) {
                         i++
                         viewModel.workspacedata = workspaceItem
-                        showToWorkspace(i == workspaceItems.size, false,workspaceItem)
+                        showToWorkspace(i == workspaceItems.size, false,workspaceItem,false)
                     }
                 } else {
                     logger.d("workspace item is null")
@@ -1203,7 +1201,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true,viewModel.workspacedata)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1260,7 +1258,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true,viewModel.workspacedata)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         }
                     }
                 }
@@ -1426,7 +1424,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
             }
             else -> {
-                Log.d("WorkspaceTabfragment", "onPositiveButtonClicked")
+                Log.d("WorkspaceTabFragment", "onPositiveButtonClicked")
             }
         }
 
@@ -1469,7 +1467,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 showSaveAndExitPopup()
             }
             else -> {
-                Log.d("WorkspaceTabfragment", "onNegativeButtonClicked")
+                Log.d("WorkspaceTabFragment", "onNegativeButtonClicked")
             }
         }
     }
@@ -1584,7 +1582,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     /*
     Displaying pieces in Workspace
      */
-    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?) {
+    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?, isSpliceArrowClicked: Boolean) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
@@ -1648,6 +1646,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             viewModel.data.value?.patternName,
                             this@WorkspaceTabFragment
                         )
+                        if(isSpliceArrowClicked){
+                            mWorkspaceEditor?.highlightSplicePiece()
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -1663,6 +1664,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
+        Log.d("mapImageUrl123","mapImageName: ${spliceImages?.mapImageName}  ===  mapImageUrl:  ${spliceImages?.mapImageUrl} ")
         Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageUrl} ")
         Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageName} ")
         spliceImages?.mapImageUrl.let {

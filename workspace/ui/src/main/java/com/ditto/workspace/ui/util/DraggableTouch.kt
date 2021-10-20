@@ -458,6 +458,7 @@ fun showPinchZoomPopup(
     context: Context,
     imageName: String?,
     isReference: Boolean,
+    isFromWS: Boolean,
     patternName: String?
 ) {
     Utility.isPopupShowing.set(true)
@@ -468,6 +469,7 @@ fun showPinchZoomPopup(
     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
     intent.putExtra("ImageURL", imageName)
     intent.putExtra("isReference", isReference)
+    intent.putExtra("isFromWS", isFromWS)
     intent.putExtra("patternName", patternName)
     ContextCompat.startActivity(context, intent, null)
 }
@@ -564,6 +566,7 @@ private class MyGestureListener(context: Context, imageName: String?, patternNam
                 popUpContext,
                 imageName,
                 false,
+                true,
                 patternName
             )
         }

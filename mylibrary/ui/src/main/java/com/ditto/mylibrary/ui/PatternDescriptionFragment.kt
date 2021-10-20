@@ -729,8 +729,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         val bundle = bundleOf(
-            "PatternId" to viewModel.clickedTailornovaID.get() ,
-            "clickedOrderNumber" to 2
+            "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+            "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
         ) // todo shri see the pattern pieces
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
