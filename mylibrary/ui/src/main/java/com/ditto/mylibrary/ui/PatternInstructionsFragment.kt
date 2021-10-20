@@ -115,19 +115,23 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
-        downloadFileName =
-            PDF_DOWNLOAD_URL?.substring(PDF_DOWNLOAD_URL!!.lastIndexOf('/'), PDF_DOWNLOAD_URL!!.length)
-        val availableUri = downloadFileName?.let {
-            Utility.isFileAvailable(
-                it,
-                requireContext(),
-                patternFolderName
-            )
-        }
-        if (availableUri != null) {
-            showPdfFromUri(availableUri)
-        } else {
-            pdfdownload()
+        try {
+            downloadFileName =
+                PDF_DOWNLOAD_URL?.substring(PDF_DOWNLOAD_URL!!.lastIndexOf('/'), PDF_DOWNLOAD_URL!!.length)
+            val availableUri = downloadFileName?.let {
+                Utility.isFileAvailable(
+                    it,
+                    requireContext(),
+                    patternFolderName
+                )
+            }
+            if (availableUri != null) {
+                showPdfFromUri(availableUri)
+            } else {
+                pdfdownload()
+            }
+        } catch (e: Exception) {
+            Log.d("EXCEPTION",e.localizedMessage)
         }
 
     }
