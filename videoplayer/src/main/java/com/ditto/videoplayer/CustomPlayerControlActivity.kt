@@ -233,12 +233,16 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     private fun pauseVideo() {
         play_video.setImageResource(R.drawable.exo_icon_play)
-        mPlayer!!.pause()
+        if (mPlayer!=null) {
+            mPlayer!!.pause()
+        }
     }
 
     private fun playVideo() {
         play_video.setImageResource(R.drawable.exo_icon_pause)
-        mPlayer!!.play()
+        if (mPlayer!=null) {
+            mPlayer!!.play()
+        }
     }
 
     private fun displayCurrentTime() {
