@@ -54,8 +54,6 @@ class WorkspaceViewModel @Inject constructor(
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var patternId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")
-    var patternId: ObservableField<String> = ObservableField("")
-    var clickedOrderNumber: ObservableInt = ObservableInt(1)
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null

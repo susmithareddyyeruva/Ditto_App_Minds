@@ -55,9 +55,6 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             ).also {
                 arguments?.getString("clickedTailornovaID")?.let { viewModel.patternId.set(it) }
                 arguments?.getString("clickedOrderNumber")?.let { viewModel.clickedOrderNumber.set(it) }
-                arguments?.getString("PatternId")?.let { viewModel.patternId.set(it) }
-                arguments?.getInt("clickedOrderNumber")
-                    ?.let { viewModel.clickedOrderNumber.set(it) }
             }
         }
         return binding.root
@@ -73,8 +70,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             Utility.mPatternPieceList.clear()
             Utility.isDoubleTapTextVisible.set(true)
             showProgress(true)
-//            viewModel.fetchTailernovaDetails("30644ba1e7aa41cfa9b17b857739968a") // fetching data from internal DB
-            viewModel.fetchTailernovaDetails(viewModel.patternId.get()?:"") // fetching data from internal DB
+            viewModel.fetchTailernovaDetails("30644ba1e7aa41cfa9b17b857739968a") // fetching data from internal DB
+           // viewModel.fetchTailernovaDetails(viewModel.patternId.get()?:"") // fetching data from internal DB
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
