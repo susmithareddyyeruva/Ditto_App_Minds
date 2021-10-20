@@ -110,6 +110,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         super.onActivityCreated(savedInstanceState)
         //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
+        arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
@@ -1819,6 +1820,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PROJECTING_TIME = 10
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
+        private const val ORDER_NO = "clickedOrderNumber"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
