@@ -1,7 +1,6 @@
 package com.ditto.mylibrary.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
@@ -78,9 +77,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
-                val error = it as HttpException
                 if (it is HttpException) {
-                    errorMessage = when (error.code()) {
+                    errorMessage = when (it.code()) {
                         HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
                         HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
                         HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
@@ -137,15 +135,27 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = "Error Fetching data"
-                try {
-                    logger.d("try block")
-                    val error = it as HttpException
-                    if (error != null) {
-                        logger.d("Error Tailornova")
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    errorMessage = when (it.code()) {
+                        HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
+                        HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
+                        HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
+                        HttpsURLConnection.HTTP_BAD_REQUEST -> HTTP_BAD_REQUEST
+                        else -> ERROR_FETCH
                     }
-                } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
-                    errorMessage = e.message.toString()
+                }else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
+                    }
                 }
                 Result.withError(
                     CommonApiFetchError(errorMessage, it)
@@ -197,11 +207,17 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                try {
-                    logger.d("try block")
-                } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
-                    errorMessage = when (e) {
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    errorMessage = when (it.code()) {
+                        HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
+                        HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
+                        HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
+                        HttpsURLConnection.HTTP_BAD_REQUEST -> HTTP_BAD_REQUEST
+                        else -> ERROR_FETCH
+                    }
+                }else{
+                    errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
                         }
@@ -213,8 +229,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         }
                     }
                 }
-
-                logger.d(it.localizedMessage)
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
@@ -248,19 +262,28 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                errorMessage = when (it) {
-                    is UnknownHostException -> {
-                        UNKNOWN_HOST_EXCEPTION
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    errorMessage = when (it.code()) {
+                        HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
+                        HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
+                        HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
+                        HttpsURLConnection.HTTP_BAD_REQUEST -> HTTP_BAD_REQUEST
+                        else -> ERROR_FETCH
                     }
-                    is ConnectException -> {
-                        CONNECTION_EXCEPTION
-                    }
-                    else -> {
-                        it.localizedMessage
+                }else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
                     }
                 }
-
-                logger.d(it.localizedMessage)
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
@@ -295,19 +318,28 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }
             .onErrorReturn {
                 var errorMessage = ERROR_FETCH
-                errorMessage = when (it) {
-                    is UnknownHostException -> {
-                        UNKNOWN_HOST_EXCEPTION
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    errorMessage = when (it.code()) {
+                        HttpsURLConnection.HTTP_UNAUTHORIZED -> HTTP_UNAUTHORIZED4
+                        HttpsURLConnection.HTTP_FORBIDDEN -> HTTP_FORBIDDEN
+                        HttpsURLConnection.HTTP_INTERNAL_ERROR -> HTTP_INTERNAL_ERROR
+                        HttpsURLConnection.HTTP_BAD_REQUEST -> HTTP_BAD_REQUEST
+                        else -> ERROR_FETCH
                     }
-                    is ConnectException -> {
-                        CONNECTION_EXCEPTION
-                    }
-                    else -> {
-                        ERROR_FETCH
+                }else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
                     }
                 }
-
-                logger.d(it.localizedMessage)
                 Result.withError(
                     FilterError(errorMessage, it)
                 )
