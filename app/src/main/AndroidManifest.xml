@@ -35,8 +35,8 @@
                     android:scheme="https"
                     android:host="development.dittopatterns.com"
                     android:pathPrefix="/on/demandware.store/Sites-ditto-Site" />
-            </intent-filter>
-            <intent-filter>
+            </intent-filter >
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -47,7 +47,7 @@
                     android:host="development.dittopatterns.com"
                     android:pathPrefix="/myLibrary" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
