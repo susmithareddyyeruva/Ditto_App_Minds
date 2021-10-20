@@ -128,7 +128,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         return
 
                     }
-                    segmentId.endsWith("MyPatternLibrary-MyLibrary") -> {
+                    segmentId.endsWith("myLibrary") -> {
                         // PATTERN LIBRARY
                         val bundle = bundleOf(
                             "DEEPLINK" to "LIBRARY"
