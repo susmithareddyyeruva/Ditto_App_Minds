@@ -51,7 +51,7 @@ class WorkspaceViewModel @Inject constructor(
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    var patternId: ObservableInt = ObservableInt(1)
+    var patternId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableInt = ObservableInt(1)
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
@@ -319,11 +319,17 @@ class WorkspaceViewModel @Inject constructor(
     private fun handleTailernovaResult(result: Result<OfflinePatternData>?) {
         when (result) {
             is Result.OnSuccess -> {
-                // Fetching workspace data from SFCC server
-                fetchWorkspaceDataFromAPI(
-                    result,
-                    "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
-                )
+                if (AppState.getIsLogged()) {
+                    // Fetching workspace data from SFCC server
+                    fetchWorkspaceDataFromAPI(
+                        result,
+                        "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
+                    )
+                } else {
+                    data.value = combineTailornovaAndSFCCDetails(result)
+                    setWorkspaceView()
+                    uiEvents.post(Event.HideProgressLoader)
+                }
                 Log.d("WorkspaceViewModel", "Tailernova Success $result")
             }
             is Result.OnError -> handleError(result.error)
@@ -332,6 +338,7 @@ class WorkspaceViewModel @Inject constructor(
 
     //error handler for data fetch related flow
     fun handleError(error: Error) {
+        uiEvents.post(Event.HideProgressLoader)
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             is GetWorkspaceApiFetchError -> {
@@ -341,7 +348,7 @@ class WorkspaceViewModel @Inject constructor(
                 }
             }
             else -> {
-                Log.d("handleError", "WorkspaceViewModel")
+                Log.d("handleError", "WorkspaceViewModel else")
             }
         }
     }

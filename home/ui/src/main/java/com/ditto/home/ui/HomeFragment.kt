@@ -85,26 +85,32 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         toolbarViewModel.isShowTransparentActionBar.set(true)
         setHomeAdapter()
 
-        /**
-         * API call for getting pattern details....
-         */
-        if (AppState.getIsLogged()) {
-            if (NetworkUtility.isNetworkAvailable(context)) {
-                bottomNavViewModel.showProgress.set(true)
-                homeViewModel.fetchData()
-                homeViewModel.fetchTailornovaTrialPattern()
+        if (NetworkUtility.isNetworkAvailable(context)) {
+            // call show progress
+            homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
+        }else{
+            /**
+             * API call for getting pattern details....
+             */
+            if (AppState.getIsLogged()) {
+
+                homeViewModel.fetchOfflineData() // offline >> fetching from DB >> fetch Demo pattern
+
+                /*if (NetworkUtility.isNetworkAvailable(context)) {
+                    bottomNavViewModel.showProgress.set(true)
+                    homeViewModel.fetchData()// Sfcc api >> count
+
+                } else {
+                    homeViewModel.fetchOfflineData() // offline >> fetching from DB >> fetch Demo pattern
+                }*/
 
             } else {
-                homeViewModel.fetchOfflineData()
-            }
+                //homeViewModel.setHomeItems()
+                homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
 
-        } else {
-            homeViewModel.setHomeItems()
-            if (recycler_view != null) {
-                (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
-                (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
             }
         }
+
 
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())

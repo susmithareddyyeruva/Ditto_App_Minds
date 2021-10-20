@@ -108,7 +108,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
-        arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
+        arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
@@ -505,9 +505,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                 }
                 garments[0].imagePath.let {
-                    binding.imageSelvageHorizontal.setImageDrawable(
-                        getDrawableFromString(context, it)
-                    )
+                    /*binding.imageSelvageHorizontal.setImageDrawable(
+                        getDrawableFromString(context, it)//crSH
+                    )*/
                     getBitmapFromSvgPngDrawable(
                         garments[0].imageName,
                         binding.imageSelvageHorizontal.context,
@@ -1497,8 +1497,23 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
-        viewModel.saveProject()
-        context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+        if(AppState.getIsLogged()) {
+            viewModel.saveProject()
+            context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+        }else{
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                resources.getString(R.string.api_failed),
+                    resources.getString(R.string.guest_user_ws_exit_message),
+                resources.getString(R.string.empty_string),
+                resources.getString(R.string.ok),
+                this,
+                Utility.AlertType.UPDATEAPIFAILED,
+                Utility.Iconype.NONE
+            )
+        }
+
+
     }
 
     override fun onExitButtonClicked() {

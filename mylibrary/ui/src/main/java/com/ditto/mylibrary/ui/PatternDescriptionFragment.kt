@@ -7,8 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,7 +22,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -37,8 +34,9 @@ import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
-import core.network.NetworkUtility
+import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -119,9 +117,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ?.let { viewModel.clickedOrderNumber.set(it) }
             bottomNavViewModel.showProgress.set(true)
             if (NetworkUtility.isNetworkAvailable(context)) {
-                viewModel.fetchPattern()
+                if (AppState.getIsLogged()) {
+                    viewModel.fetchPattern()
+                } else {
+                    viewModel.fetchOfflinePatternDetails()
+                }
             } else {
-                viewModel.fetchOfflinePatterns()
+                viewModel.fetchOfflinePatternDetails()
             }
             setUIEvents()
         } else {
@@ -191,7 +193,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         setData()
-        when (viewModel.clickedTailornovaID.get()?.toInt()) {
+        setVisibilityForViews(
+            "WORKSPACE",
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+        )
+        /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
             1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
             4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
             8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
@@ -216,7 +228,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
-        }
+        }*/
         setPatternImage()
 
 
@@ -717,7 +729,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         val bundle = bundleOf(
-            "PatternId" to 1,
+            "PatternId" to viewModel.clickedTailornovaID.get() ,
             "clickedOrderNumber" to 2
         ) // todo shri see the pattern pieces
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {

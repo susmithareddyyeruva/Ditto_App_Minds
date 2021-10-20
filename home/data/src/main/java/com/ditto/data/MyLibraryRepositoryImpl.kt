@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
+import com.ditto.data.mapper.offlinetoDomain
 import com.ditto.data.mapper.toDomain
 import com.ditto.data.mapper.toDomainn
 import com.ditto.home.domain.GetMyLibraryRepository
@@ -11,8 +12,11 @@ import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.api.TailornovaApiService
+import com.ditto.mylibrary.data.error.TrialPatternError
+import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.data.database.UserDao
@@ -100,7 +104,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
                 /*Executors.newSingleThreadExecutor()
                     .execute(Runnable {offlinePatternDataDao.insertOfflinePatternDataList(it.trial.toDomainn()) })*/
-                Log.d("Tailornova", "insertofflinePatternsData complete")
+                Log.d("Tailornova", "insertofflinePatternsData complete: $it")
             }.map {
             it.trial?.let { it1 -> Result.withValue(it1) }
         }.onErrorReturn {
@@ -119,6 +123,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
             Result.withError(
                 CommonApiFetchError(errorMessage, it)
             )
+        }
+    }
+
+    override fun getTrialPatterns(): Single<Result<List<ProdDomain>>> {
+        return Single.fromCallable {
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern("Trial")
+            if (trialPatterns != null)
+                Result.withValue(trialPatterns.offlinetoDomain() )
+            else
+                Result.withError(TrialPatternError(""))
         }
     }
 

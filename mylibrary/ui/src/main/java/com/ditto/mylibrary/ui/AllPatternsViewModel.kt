@@ -95,6 +95,30 @@ class AllPatternsViewModel @Inject constructor(
             .subscribeBy { handleOfflineFetchResult(it) }
     }
 
+    fun fetchTrialPatterns(){
+        uiEvents.post(Event.OnAllPatternShowProgress)
+        disposable += libraryUseCase.getTrialPatterns()
+            .delay(600,java.util.concurrent.TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleTrialPatterns(it) }
+    }
+
+    private fun handleTrialPatterns(result: Result<List<ProdDomain>>?) {
+        uiEvents.post(Event.OnAllPatternHideProgress)
+        when(result){
+            is Result.OnSuccess ->{
+                patternList.value = result.data
+                totalPatternCount = patternList.value?.size ?: 0
+                logger.d("PATTERN COUNT == $totalPatternCount")
+                totalPageCount = totalPatternCount
+                currentPageId = totalPatternCount
+                uiEvents.post(Event.OnAllPatternResultSuccess)
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+
     private fun handleOfflineFetchResult(result: Result<List<ProdDomain>>) {
         uiEvents.post(Event.OnAllPatternHideProgress)
         when (result) {
@@ -207,19 +231,8 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     fun onItemClickPattern(id: String, orderNumber: String) {
-        if (id == "10140549") {
-            clickedTailornovaID.set("1")
-            clickedOrderNumber.set(orderNumber)
-        } else if (id == "10544781") {
-            clickedTailornovaID.set("2")
-            clickedOrderNumber.set(orderNumber)
-        } else if (id == "10140606") {
-            clickedTailornovaID.set("3")
-            clickedOrderNumber.set(orderNumber)
-        } else {
-            clickedTailornovaID.set("4")
-            clickedOrderNumber.set(orderNumber)
-        }
+        clickedTailornovaID.set(id)
+        clickedOrderNumber.set(orderNumber)
         uiEvents.post(Event.OnItemClick)
     }
 

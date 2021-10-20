@@ -219,7 +219,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun guestLogin() {
-        uiEvents.post(Event.OnSeeMoreClicked)
+        uiEvents.post(Event.OnGuestPreviewClicked)
     }
 
     fun deleteUserInfo() {
@@ -243,7 +243,7 @@ class LoginViewModel @Inject constructor(
         /**
          * Event emitted by [events] when the data updated successfully
          */
-        object OnSeeMoreClicked : Event()
+        object OnGuestPreviewClicked : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
         object OnLandingSuccess : Event()

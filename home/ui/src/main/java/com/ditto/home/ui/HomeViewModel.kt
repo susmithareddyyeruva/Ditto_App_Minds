@@ -8,6 +8,7 @@ import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.USER_FIRST_NAME
@@ -65,9 +66,9 @@ class HomeViewModel @Inject constructor(
 
             }
             1 -> {
-                if (AppState.getIsLogged()) {
+                //if (AppState.getIsLogged()) {
                     uiEvents.post(Event.OnClickMyPatterns)
-                }
+                //}
 
             }
             2 -> {
@@ -152,10 +153,41 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleTrialPatternResult(it) }
     }
 
+    fun fetchListOfTrialPatternFromInternalStorage() {
+        disposable += useCase.getTrialPatterns()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleTrialPatternResultForGuestUser(it) }
+    }
+
+    private fun handleTrialPatternResultForGuestUser(result: Result<List<ProdDomain>>?) {
+        when (result) {
+            is Result.OnSuccess -> {
+                uiEvents.post(Event.OnHideProgress)
+                var count: Int = result?.data?.size
+                Log.d("Home Screen", "$count")
+                productCount = count
+                AppState.setPatternCount(productCount)
+                setHomeItems()  //Preparing menu items
+                uiEvents.post(Event.OnResultSuccess)
+            }
+            is Result.OnError -> {
+                uiEvents.post(Event.OnHideProgress)
+                uiEvents.post(Event.OnResultFailed)
+                Log.d("Home Screen", "Failed")
+                handleError(result.error)
+            }
+        }
+    }
+
     private fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
         when (result){
             is Result.OnSuccess -> {
-                Log.d("Home Screen", "Success : $result")
+                if (AppState.getIsLogged()) {
+                    fetchData()
+                }else{
+                    fetchListOfTrialPatternFromInternalStorage()
+                }
             }
 
             is Result.OnError -> {

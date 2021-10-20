@@ -75,8 +75,9 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     //fetch data from offline
-    fun fetchOfflinePatterns() {
-        disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
+    fun fetchOfflinePatternDetails() {
+        //disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
+        disposable += getPattern.getOfflinePatternById(clickedTailornovaID.get().toString())
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

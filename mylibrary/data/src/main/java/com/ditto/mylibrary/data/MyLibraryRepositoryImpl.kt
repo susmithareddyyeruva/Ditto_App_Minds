@@ -8,6 +8,7 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.FilterError
+import com.ditto.mylibrary.data.error.TrialPatternError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
@@ -321,6 +322,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 Result.withValue(offlinePatternData.toDomain())
             else
                 Result.withError(FilterError(""))
+        }
+    }
+
+    override fun getTrialPatterns(): Single<Result<List<ProdDomain>>> {
+        return Single.fromCallable {
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern("Trial")
+            if (trialPatterns != null)
+                Result.withValue(trialPatterns.toDomain())
+            else
+                Result.withError(TrialPatternError(""))
         }
     }
 

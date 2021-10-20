@@ -79,7 +79,7 @@ internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData> {
             thumbnailEnlargedImageName = it.thumbnailEnlargedImageName,
             patternDescriptionImageUrl = it.patternDescriptionImageUrl,
             selvages = it.selvages?.map { it.toDomainStorage() },
-            patternPieces = it.patternPieces?.map { it.toDomainn() },
+            patternPieces = it.patternPiecesFromTailornova?.map { it.toDomainn() },
             brand = it.brand,
             size = it.size,
             gender = it.gender,
@@ -118,7 +118,7 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         patternDescriptionImageUrl = this.patternDescriptionImageUrl,
         selvages = this.selvages?.map { it.toDomainStorage() },
-        patternPieces = this.patternPieces?.map { it.toDomainn() },
+        patternPieces = this.patternPiecesFromTailornova?.map { it.toDomainn() },
         brand = this.brand,
         size = this.size,
         gender = this.gender,
@@ -234,12 +234,12 @@ internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
     return this.map {
         OfflinePatterns(
             custId = AppState.getCustID(),
-            designId = it.instructionFileName.toString(),
+            designId = it.designId,
             tailornaovaDesignId = it.designId,
             patternName = it.patternName,
             description = it.description,
             patternType = it.patternType,
-            numberOfCompletedPieces = it.numberOfPieces?.toDomain(),
+            numberOfCompletedPieces = null,
             numberOfPieces = it.numberOfPieces?.toDomain(),
             orderModificationDate = it.orderModificationDate,
             orderCreationDate = it.orderCreationDate,
@@ -250,7 +250,7 @@ internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             thumbnailEnlargedImageName = it.thumbnailEnlargedImageName,
             patternDescriptionImageUrl = it.patternDescriptionImageUrl,
             selvages = it.selvages?.map { it.toDomain() },
-            patternPieces = it.patternPieces?.map { it.toDomain() },
+            patternPiecesFromTailornova = it.patternPieces?.map { it.toDomain() },
             brand = it.brand,
             size = it.size,
             gender = it.gender,
@@ -258,6 +258,33 @@ internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             dressType = it.dressType,
             suitableFor = it.suitableFor,
             occasion = it.occasion
+        )
+    }
+}
+
+internal fun List<OfflinePatterns>.offlinetoDomain(): List<com.ditto.mylibrary.domain.model.ProdDomain> {
+    return this.map {
+        ProdDomain(
+            iD = it.designId,
+            image = it.thumbnailImageName,
+            prodName = it.patternName,
+            description = it.description,
+            creationDate = it.orderCreationDate,
+            patternType = it.patternType,
+            status = it.status,
+            subscriptionExpiryDate = "",
+            customization = "",
+            dateOfModification = it.orderModificationDate,
+            type = it.dressType,
+            season = "",
+            occasion = "",
+            suitableFor = "",
+            tailornovaDesignId = it.tailornaovaDesignId,
+            orderNo = "",
+            prodSize = "",
+            prodGender = "",
+            prodBrand = "",
+            isFavourite = false
         )
     }
 }

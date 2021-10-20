@@ -253,21 +253,21 @@ fun combineTailornovaAndSFCCDetails(
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
         //descriptionImages TODO will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
-        patternPieces = resultTailernova.data.patternPieces?.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
+        patternPieces = resultTailernova.data.patternPiecesTailornova?.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
         garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems?.map {
             it.toOldModel(
-                resultTailernova.data.patternPieces
+                resultTailernova.data.patternPiecesTailornova
             )
         }?.toMutableList(),
 
         liningWorkspaceItemOfflines = fetchWorkspaceResult.data.liningWorkspaceItems?.map {
             it.toOldModel(
-                resultTailernova.data.patternPieces
+                resultTailernova.data.patternPiecesTailornova
             )
         }?.toMutableList(),
         interfaceWorkspaceItemOfflines = fetchWorkspaceResult.data.interfaceWorkspaceItems?.map {
             it.toOldModel(
-                resultTailernova.data.patternPieces
+                resultTailernova.data.patternPiecesTailornova
             )
         }?.toMutableList()
     )
@@ -292,7 +292,7 @@ fun combineTailornovaAndSFCCDetails(
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
         //descriptionImages TODO will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
-        patternPieces = resultTailernova.data.patternPieces?.map {
+        patternPieces = resultTailernova.data.patternPiecesTailornova?.map {
             it.toOldModelOffline(
                 resultTailernova
                     .data
@@ -300,17 +300,17 @@ fun combineTailornovaAndSFCCDetails(
             )
         },
         garmetWorkspaceItemOfflines = resultTailernova.data.garmetWorkspaceItemOfflines.map {
-            it.toOldModelOffline(resultTailernova.data.patternPieces)
+            it.toOldModelOffline(resultTailernova.data.patternPiecesTailornova)
         }.toMutableList(),
 
         liningWorkspaceItemOfflines = resultTailernova.data.liningWorkspaceItemOfflines.map {
             it.toOldModelOffline(
-                resultTailernova.data.patternPieces
+                resultTailernova.data.patternPiecesTailornova
             )
         }.toMutableList(),
         interfaceWorkspaceItemOfflines = resultTailernova.data.interfaceWorkspaceItemOfflines.map {
             it.toOldModelOffline(
-                resultTailernova.data.patternPieces
+                resultTailernova.data.patternPiecesTailornova
             )
         }.toMutableList()
     )

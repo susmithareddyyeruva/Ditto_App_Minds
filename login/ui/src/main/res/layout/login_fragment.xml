@@ -353,7 +353,7 @@
                             android:gravity="center_horizontal"
                             android:onClick="@{()-> viewModel.guestLogin()}"
                             android:selectAllOnFocus="false"
-                            android:text="@string/see_more"
+                            android:text="@string/guest_preview"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_forgot_psw" />
 

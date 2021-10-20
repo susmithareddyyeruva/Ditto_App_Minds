@@ -20,11 +20,15 @@ abstract class OfflinePatternDataDao {
     @JvmSuppressWildcards
     abstract fun insertOfflinePatternDataList(offlinePatterns: List<OfflinePatterns>)
 
-    @Query("SELECT * FROM offline_pattern_data")
+    @Query("SELECT * FROM offline_pattern_data")//todo need to fetch respective of id i.e custmoer id
     abstract fun getTailernovaData(): List<OfflinePatterns>
 
     @Query("SELECT * FROM offline_pattern_data WHERE tailornaovaDesignId = :id")
     abstract fun getTailernovaDataByID(id: String): OfflinePatterns
+
+
+    @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type")
+    abstract fun getListOfTrialPattern(type: String): List<OfflinePatterns>
 
     @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId")
     abstract fun updateOfflinePatternData(

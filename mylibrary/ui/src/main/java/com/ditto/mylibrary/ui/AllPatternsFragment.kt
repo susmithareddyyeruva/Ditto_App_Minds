@@ -177,10 +177,14 @@ class AllPatternsFragment(
                     }
                 }
             } else {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.isLoading.set(true)
                 viewModel.fetchOfflinePatterns()
             }
-
-
+        }else{
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
+            viewModel.fetchTrialPatterns()
         }
 
     }
