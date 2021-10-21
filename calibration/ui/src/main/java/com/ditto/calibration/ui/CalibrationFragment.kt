@@ -778,8 +778,8 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         Utility.showAlertDialogue(
             requireContext(),
             R.drawable.ic_calibration_failure,
+            message,
 //            String.format(getString(R.string.calibration_failure), message),
-            String.format("", message),
             "TUTORIAL",
             "RETRY",
             "SKIP CALIBRATION",
