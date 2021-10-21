@@ -571,7 +571,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
-                    Log.d("DOWNLOAD", "ENDED >>>>>>>>>>>")
+                    Log.d("Download", "ENDED >>>>>>>>>>>")
                     checkSocketConnectionBeforeWorkspace()
 
                 } else {

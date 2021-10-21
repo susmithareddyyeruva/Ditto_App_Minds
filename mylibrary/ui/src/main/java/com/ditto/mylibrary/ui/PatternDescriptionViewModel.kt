@@ -77,8 +77,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
 
     //fetch data from offline
     fun fetchOfflinePatternDetails() {
-        disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
-        //disposable += getPattern.getOfflinePatternById(clickedTailornovaID.get().toString())
+        //disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
+        disposable += getPattern.getOfflinePatternById(clickedTailornovaID.get().toString())
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -96,8 +96,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     fun fetchPattern() {
-        disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
-        //disposable += getPattern.getPattern(clickedTailornovaID.get()?:"")
+        //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
+        disposable += getPattern.getPattern(clickedTailornovaID.get()?:"")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

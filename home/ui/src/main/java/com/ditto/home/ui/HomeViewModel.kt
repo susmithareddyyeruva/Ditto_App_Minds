@@ -147,6 +147,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchTailornovaTrialPattern() {
+        uiEvents.post(HomeViewModel.Event.OnShowProgress)
         disposable += useCase.fetchTailornovaTrialPatterns()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
