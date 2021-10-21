@@ -48,6 +48,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
         scaleFactor: Double,
         showProjection: Boolean,
         isDraggedPiece: Boolean,
+        patternName: String?,
         dragListener: DraggableListener
     ) {
         mOnWorkspaceImageDragListener = dragListener
@@ -121,6 +122,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
             workspaceItem,
             addedViews,
             isSelectAll,
+            patternName,
             object : DraggableListener {
                 override fun onPositionChanged(view: View, workspaceItem: WorkspaceItems?) {
                     workspaceItem?.xcoordinate = view.x

@@ -44,6 +44,7 @@ import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -108,7 +109,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
-        arguments?.getInt(PATTERN_ID)?.let { viewModel.patternId.set(it) }
+        arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
+        arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
@@ -156,7 +158,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true)
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,isFromWS = true,viewModel.data.value?.patternName)
             }
         })
     }
@@ -469,7 +471,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                              getDrawableFromString(context, it)
                          )*/
                         getBitmapFromSvgPngDrawable(
-                            selvage.imagePath,
+                            selvage.imageName,
                             binding.imageSelvageHorizontal.context,
                             binding.imageSelvageHorizontal
                         )
@@ -477,7 +479,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.clickedSize45.set(true)
                     viewModel.clickedSize60.set(false)
-                    viewModel.referenceImage.set(selvage.imagePath)
+                    viewModel.referenceImage.set(selvage.imageName)
                 }
                 if (viewModel.clickedSize60.get()) {
                     val selvage = garments.filter { it.fabricLength == "60" }[0]
@@ -486,7 +488,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                              getDrawableFromString(context, it)
                          )*/
                         getBitmapFromSvgPngDrawable(
-                            selvage.imagePath,
+                            selvage.imageName,
                             binding.imageSelvageHorizontal.context,
                             binding.imageSelvageHorizontal
                         )
@@ -494,7 +496,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.clickedSize45.set(false)
                     viewModel.clickedSize60.set(true)
-                    viewModel.referenceImage.set(selvage.imagePath)
+                    viewModel.referenceImage.set(selvage.imageName)
                 }
             } else {
                 if (garments?.get(0)!!.fabricLength == "45") {
@@ -511,12 +513,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getDrawableFromString(context, it)
                     )
                     getBitmapFromSvgPngDrawable(
-                        garments[0].imagePath,
+                        garments[0].imageName,
                         binding.imageSelvageHorizontal.context,
                         binding.imageSelvageHorizontal
                     )
                 }
-                viewModel.referenceImage.set(garments[0].imagePath)
+                viewModel.referenceImage.set(garments[0].imageName)
             }
         }
 
@@ -538,7 +540,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 */
 
                 getBitmapFromSvgPngDrawable(
-                    lining?.get(0)?.imagePath,
+                    lining?.get(0)?.imageName,
                     binding.imageSelvageHorizontal.context,
                     binding.imageSelvageHorizontal
                 )
@@ -554,7 +556,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             } else {
                 viewModel.clickedSize60.set(true)
             }
-            viewModel.referenceImage.set(lining?.get(0)?.imagePath)
+            viewModel.referenceImage.set(lining?.get(0)?.imageName)
         }
 
         if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.interfacing) }
@@ -573,7 +575,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )*/
 
                 getBitmapFromSvgPngDrawable(
-                    interfacing?.get(0)?.imagePath,
+                    interfacing?.get(0)?.imageName,
                     binding.imageSelvageHorizontal.context,
                     binding.imageSelvageHorizontal
                 )
@@ -590,7 +592,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.clickedSize60.set(true)
             }
 
-            viewModel.referenceImage.set(interfacing?.get(0)?.imagePath)
+            viewModel.referenceImage.set(interfacing?.get(0)?.imageName)
         }
     }
 
@@ -800,8 +802,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata)
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -818,8 +819,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata);
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -835,8 +835,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata);
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -852,8 +851,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false,viewModel.workspacedata)
-                    mWorkspaceEditor?.highlightSplicePiece()
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -878,8 +876,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickPatternInstructions -> {
                 if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
+                    PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternPieces?.get(0)?.parentPattern)
+                        bundleOf("PatternName" to viewModel.data.value?.patternName)
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -893,9 +892,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.CloseScreen -> {
                 showProgress(false)
-                baseViewModel.isSaveExitButtonClicked.set(true)
-                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-                activity?.onBackPressed()
+//                baseViewModel.isSaveExitButtonClicked.set(true)
+//                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+//                activity?.onBackPressed()
+                moveToLibrary()
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
@@ -920,7 +920,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     for (workspaceItem in workspaceItems) {
                         i++
                         viewModel.workspacedata = workspaceItem
-                        showToWorkspace(i == workspaceItems.size, false,workspaceItem)
+                        showToWorkspace(i == workspaceItems.size, false,workspaceItem,false)
                     }
                 } else {
                     logger.d("workspace item is null")
@@ -987,7 +987,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     showSaveAndExitPopup()
                 }else{
-
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(R.string.download_failed),
@@ -1205,7 +1204,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true,viewModel.workspacedata)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1262,7 +1261,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true,viewModel.workspacedata)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         }
                     }
                 }
@@ -1428,7 +1427,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
             }
             else -> {
-                Log.d("WorkspaceTabfragment", "onPositiveButtonClicked")
+                Log.d("WorkspaceTabFragment", "onPositiveButtonClicked")
             }
         }
 
@@ -1471,7 +1470,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 showSaveAndExitPopup()
             }
             else -> {
-                Log.d("WorkspaceTabfragment", "onNegativeButtonClicked")
+                Log.d("WorkspaceTabFragment", "onNegativeButtonClicked")
             }
         }
     }
@@ -1571,7 +1570,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     /*
     Displaying pieces in Workspace
      */
-    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?) {
+    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?, isSpliceArrowClicked: Boolean) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
@@ -1632,8 +1631,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             workSpaceImageData.scaleFactor,
                             workSpaceImageData.showProjection,
                             workSpaceImageData.isDraggedPiece,
+                            viewModel.data.value?.patternName,
                             this@WorkspaceTabFragment
                         )
+                        if(isSpliceArrowClicked){
+                            mWorkspaceEditor?.highlightSplicePiece()
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -1646,47 +1649,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
 
-    private fun getBitmapFromSvgPngDrawable(imagePath: String): Bitmap? {
-        var availableUri: Uri? = null
-        //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
-            Log.d("imageUri123", " availableUri: $availableUri")
-        //}
-        return if (imagePath.endsWith(".svg", true)) {
-            Glide
-                .with(context)
-                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */availableUri/*)*/)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.ic_launcher_background)
-                .imageDecoder(SvgBitmapDecoder(context))
-                .into(SIZE_ORIGINAL, SIZE_ORIGINAL)
-                .get()
-        } else if (imagePath.endsWith(".png", true)) {
-            Glide
-                .with(context)
-                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */availableUri/*)*/)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(SIZE_ORIGINAL, SIZE_ORIGINAL)
-                .get()
-        } else {
-            getBitmap(getDrawableFromString(context, imagePath) as VectorDrawable, false, false)
-        }
-    }
+
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
-        Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageUrl} ")
+        Log.d("mapImageUrl123","mapImageName: ${spliceImages?.mapImageName}  ===  mapImageUrl:  ${spliceImages?.mapImageUrl} ")
         spliceImages?.mapImageUrl.let {
             getBitmapFromSvgPngDrawable(
-                spliceImages?.mapImageUrl,
+                spliceImages?.mapImageName,
                 binding.imageSelvageHorizontal.context,
                 binding.imageSelvageHorizontal
             )
 
         }
-        viewModel.referenceImage.set(spliceImages?.mapImageUrl)
+        viewModel.referenceImage.set(spliceImages?.mapImageName)
     }
 
     private fun showSpliceArrows(row: Int?, column: Int?) {
@@ -1847,6 +1822,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PROJECTING_TIME = 10
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
+        private const val ORDER_NO = "clickedOrderNumber"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
@@ -2259,9 +2235,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.UPDATEAPIFAILED -> {
                 showProgress(false)
-                baseViewModel.isSaveExitButtonClicked.set(true)
-                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-                activity?.onBackPressed()
+//                baseViewModel.isSaveExitButtonClicked.set(true)
+//                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+//                activity?.onBackPressed()
+                moveToLibrary()
             }
             Utility.AlertType.DOWNLOADFAILED -> {
                showSaveAndExitPopup()
@@ -2322,33 +2299,69 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
+    private fun getBitmapFromSvgPngDrawable(imageName: String): Bitmap? {
+        var availableUri: Uri? = null
+        //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
+        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.data.value?.patternName}")
+        Log.d("imageUri123", " availableUri: $availableUri")
+        //}
+        return if (imageName.endsWith(".svg", true)) {
+            Glide
+                .with(context)
+                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */availableUri/*)*/)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_launcher_background)
+                .imageDecoder(SvgBitmapDecoder(context))
+                .into(SIZE_ORIGINAL, SIZE_ORIGINAL)
+                .get()
+        } else if (imageName.endsWith(".png", true)) {
+            Glide
+                .with(context)
+                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */availableUri/*)*/)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(SIZE_ORIGINAL, SIZE_ORIGINAL)
+                .get()
+        } else {
+            getBitmap(getDrawableFromString(context, imageName) as VectorDrawable, false, false)
+        }
+    }
 
     private fun getBitmapFromSvgPngDrawable(
-        imagePath: String?,
+        imageName: String?,
         context: Context,
         imageView: ImageView
     ) {
-        if (imagePath?.endsWith(".svg", true)!!) {
+
+        var availableUri: Uri? = null
+        //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
+        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.data.value?.patternName}")
+        Log.d("imageUri123", " availableUri: $availableUri >>>> ")
+        //}
+
+        if (imageName?.endsWith(".svg", true)!!) {
             Glide
                 .with(context)
-                .load(imagePath)
+                .load(availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
                 .imageDecoder(SvgBitmapDecoder(context))
                 .into(imageView)
 
-        } else if (imagePath.endsWith(".png", true)) {
+        } else if (imageName.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(imagePath)
+                .load(availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(imageView)
         } else {
             imageView.setImageDrawable(
-                Utility.getDrawableFromString(context, imagePath) as VectorDrawable,
+                Utility.getDrawableFromString(context, imageName) as VectorDrawable,
             )
         }
     }

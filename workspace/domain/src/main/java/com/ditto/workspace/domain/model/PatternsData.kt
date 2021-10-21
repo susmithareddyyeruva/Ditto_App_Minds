@@ -12,6 +12,7 @@ data class PatternsData(
     var status: String?,
     var thumbnailImagePath: String?,
     val thumbnailImageName: String?,
+    val instructionUrl: String?,
     var descriptionImages: List<DescriptionImages> = emptyList(),
     var selvages: List<Selvages>? = emptyList(),
     var patternPieces: List<PatternPieces>? = emptyList(),

@@ -8,7 +8,7 @@ import non_core.lib.Result
 interface GetWorkspaceData {
     fun insert(patternsData: PatternsData): Single<Any>//follow same
     fun updateOfflineStorageData(
-        tailornaovaDesignId: String,
+        tailornaovaDesignId: String?,
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
