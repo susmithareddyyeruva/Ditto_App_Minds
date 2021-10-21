@@ -890,9 +890,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.CloseScreen -> {
                 showProgress(false)
-                baseViewModel.isSaveExitButtonClicked.set(true)
-                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-                activity?.onBackPressed()
+//                baseViewModel.isSaveExitButtonClicked.set(true)
+//                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+//                activity?.onBackPressed()
+                moveToLibrary()
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
@@ -984,7 +985,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     showSaveAndExitPopup()
                 }else{
-
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(R.string.download_failed),
@@ -2233,9 +2233,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.UPDATEAPIFAILED -> {
                 showProgress(false)
-                baseViewModel.isSaveExitButtonClicked.set(true)
-                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-                activity?.onBackPressed()
+//                baseViewModel.isSaveExitButtonClicked.set(true)
+//                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+//                activity?.onBackPressed()
+                moveToLibrary()
             }
             Utility.AlertType.DOWNLOADFAILED -> {
                showSaveAndExitPopup()
