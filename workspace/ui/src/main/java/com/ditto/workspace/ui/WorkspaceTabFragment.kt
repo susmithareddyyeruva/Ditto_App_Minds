@@ -45,7 +45,6 @@ import com.ditto.workspace.ui.util.*
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.appstate.AppState
-import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
@@ -231,17 +230,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
-                if (isTablet(requireContext())) {
-                    com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
-                        0,
-                        view.rootView.height / 2
-                    )
+                if (isAdded && activity != null) {
+                    if (isTablet(requireContext())) {
+                        com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
+                            0,
+                            view.rootView.height / 2
+                        )
 
-                } else {
-                    com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
-                        1,
-                        view.rootView.height / 2
-                    )
+                    } else {
+                        com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
+                            1,
+                            view.rootView.height / 2
+                        )
+                    }
                 }
             } else {
                 com.ditto.workspace.ui.util.Utility.changeAlertPsoition(2, view.rootView.height / 2)
