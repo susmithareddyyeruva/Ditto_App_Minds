@@ -160,8 +160,7 @@ fun SplicedImageData.toDomain(): SplicedImageDomain {
         designId = this.designId,
         id = this.id,
         imageName = this.imageName,
-        imageUrl
-        = this.imageUrl,
+        imageUrl = this.imageUrl,
         mapImageName = this.mapImageName,
         mapImageUrl = this.mapImageUrl,
         pieceId = this.pieceId,

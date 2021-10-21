@@ -191,12 +191,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         setData()
-        when (viewModel.clickedTailornovaID.get()?.toInt()) {
-            1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
-            4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
-            8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
-            9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
-            10 -> setVisibilityForViews(
+        when (viewModel.clickedTailornovaID.get()) {
+            "1" -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+            "4" -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
+            "8" -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
+            "9" -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
+            "10" -> setVisibilityForViews(
                 "RENEW SUBSCRIPTION",
                 false,
                 true,
@@ -717,8 +717,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         val bundle = bundleOf(
-            "PatternId" to 1,
-            "clickedOrderNumber" to 2
+            "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+            "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
         ) // todo shri see the pattern pieces
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
