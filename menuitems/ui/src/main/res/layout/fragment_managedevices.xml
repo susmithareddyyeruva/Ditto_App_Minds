@@ -42,13 +42,12 @@
             android:id="@+id/textAvailable"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/top_margin"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:text="@string/available"
             android:textColor="@android:color/black"
             android:textSize="@dimen/available_projector_text_size"
-            app:layout_constraintBottom_toTopOf="@+id/textCount"
-            app:layout_constraintEnd_toStartOf="@+id/btnScan"
+            android:layout_marginTop="@dimen/top_margin"
+            app:layout_constraintEnd_toStartOf="@+id/guide_end"
             app:layout_constraintStart_toEndOf="@+id/guide_start"
             app:layout_constraintTop_toBottomOf="@+id/guide_top"
             app:layout_constraintVertical_chainStyle="packed">
@@ -65,8 +64,7 @@
             android:text="@{viewmodel.numberOfProjectors}"
             android:textColor="@color/text_disable2"
             android:textSize="@dimen/available_projector_text_size"
-            app:layout_constraintBottom_toTopOf="@+id/topDevider"
-            app:layout_constraintEnd_toStartOf="@+id/btnScan"
+            app:layout_constraintEnd_toStartOf="@+id/guide_end"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/guide_start"
             app:layout_constraintTop_toBottomOf="@+id/textAvailable">
@@ -82,21 +80,21 @@
             android:background="@drawable/bg_scandevice"
             android:drawableLeft="@drawable/bleicon_selector"
             android:drawablePadding="5dp"
-            android:singleLine="true"
+            android:ellipsize="none"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:gravity="center"
-            android:ellipsize="none"
+            android:onClick="@{() -> viewmodel.OnBluetoothClicked()}"
             android:paddingLeft="@dimen/button_padding_start"
             android:paddingRight="@dimen/button_padding_end"
+            android:singleLine="true"
             android:text="@string/scan"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/button_text_size"
-            android:onClick="@{() -> viewmodel.OnBluetoothClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/topDevider"
-            app:layout_constraintEnd_toStartOf="@+id/guide_end"
-            app:layout_constraintStart_toEndOf="@+id/textAvailable"
-            app:layout_constraintTop_toBottomOf="@id/guide_top">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textCount">
 
         </Button>
 
@@ -128,22 +126,21 @@
         </androidx.recyclerview.widget.RecyclerView>
 
 
-
         <TextView
             android:id="@+id/noProjAvailable"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/button_scan_width"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xx_large_padding"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:gravity="center_horizontal"
             android:text="@string/no_projector"
             android:textColor="@android:color/black"
             android:textSize="@dimen/available_projector_text_size"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/xx_large_padding"
             android:visibility="@{viewmodel.isServiceNotFound()}"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toEndOf="@id/btnScan"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/btnScan">
 
         </TextView>
 

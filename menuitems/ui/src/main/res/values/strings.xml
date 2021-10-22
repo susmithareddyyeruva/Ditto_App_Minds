@@ -17,7 +17,7 @@
     <string name="watch">Watch video</string>
     <string name="visit">Visit website</string>
     <string name="available">Available projectors in the Wi-Fi network</string>
-    <string name="scan">Scan for projectors</string>
+    <string name="scan">Search for projectors</string>
     <string name="disconnect">Disconnect</string>
     <string name="str_projectorsfound">%1$s projectors found</string>
     <string name="str_connection_failed">Projector Connection failed!</string>
