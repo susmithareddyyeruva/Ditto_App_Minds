@@ -64,7 +64,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             clickedTailornovaID.set("3")
             clickedOrderNumber.set(orderNumber)
         } else {
-            clickedTailornovaID.set("4")
+            clickedTailornovaID.set(id)
             clickedOrderNumber.set(orderNumber)
         }
         uiEvents.post(Event.OnMyFolderItemClick)
