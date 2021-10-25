@@ -1,7 +1,6 @@
 package com.ditto.mylibrary.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
@@ -165,12 +164,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
-                            val gson = Gson()
-                            val type = object : TypeToken<CommonError>() {}.type
-                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
-                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
                             logger.d("onError: BAD REQUEST")
 
                         }
