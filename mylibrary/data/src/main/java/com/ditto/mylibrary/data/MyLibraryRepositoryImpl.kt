@@ -20,11 +20,9 @@ import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.CONNECTION_EXCEPTION
-import core.ERROR_FETCH
-import core.OS
-import core.UNKNOWN_HOST_EXCEPTION
+import core.*
 import core.appstate.AppState
+import core.di.Encrypt
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
 import core.network.NetworkUtility
@@ -62,9 +60,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
+        val credential= "$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,credential)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
-            "Bearer " + AppState.getToken()!!
+            encryptedKey
         )
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {

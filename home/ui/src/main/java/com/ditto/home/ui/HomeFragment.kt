@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +21,8 @@ import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
-import core.network.NetworkUtility
 import core.data.model.SoftwareUpdateResult
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -254,16 +253,18 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private fun showAlert() {
         val errorMessage = homeViewModel.errorString.get() ?: ""
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            errorMessage,
-            "",
-            getString(R.string.str_ok),
-            this,
-            Utility.AlertType.NETWORK,
-            Utility.Iconype.FAILED
-        )
+        if (requireContext()!=null) {
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                errorMessage,
+                "",
+                getString(R.string.str_ok),
+                this,
+                Utility.AlertType.NETWORK,
+                Utility.Iconype.FAILED
+            )
+        }
     }
 
     private fun setHomeAdapter() {

@@ -14,15 +14,13 @@ import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.CONNECTION_EXCEPTION
-import core.ERROR_FETCH
-import core.UNKNOWN_HOST_EXCEPTION
-import core.appstate.AppState
+import core.*
 import core.network.NetworkUtility
 import core.ui.errors.CommonError
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
+import okhttp3.Credentials
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
@@ -45,7 +43,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return homeService.getHomeScreenDetails(requestData, "Bearer " + AppState.getToken()!!)
+        val credential= Credentials.basic(EN_USERNAME,EN_PASSWORD)
+       // val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,credential)
+        return homeService.getHomeScreenDetails(requestData, credential)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
                     logger.d("*****FETCH HOME SUCCESS 200 with Error **")
