@@ -65,6 +65,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
     lateinit var navViewHeaderBinding: NavDrawerHeaderBinding
     private lateinit var versionDisposable: Disposable
+
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +100,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 handleEvent(it)
             }
         window.navigationBarColor = resources.getColor(R.color.nav_item_grey2);
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -140,8 +142,15 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         return
 
                     }
-                    segmentId.endsWith("SubscriptionLibrary-MySubscriptionLibrary") -> {
+                    segmentId.equals("MyPatternLibrary-PatternShow") -> {
                         // PATTERN MySubscriptionLibrary
+                        val pid = appLinkData?.getQueryParameter("pid")
+                        val orderId = appLinkData?.getQueryParameter("orderID")
+                        val sizeId = appLinkData?.getQueryParameter("size")
+                        Log.d("DEEPLINK", " PID=$pid")
+                        Log.d("DEEPLINK", " ORDER ID=$orderId")
+                        Log.d("DEEPLINK", " SIZE=$sizeId")
+
                         val bundle = bundleOf(
                             "DEEPLINK" to "MySubscriptionLibrary"
                         )
@@ -152,25 +161,25 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         return
 
                     }
-                    appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
-                        // PATTERN DETAIL
-                        val ip = appLinkData.lastPathSegment
-                        Log.d("DEEPLINK", "$ip")
-                        val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
-                        if (isNumber(id)){
-                            val ClickedId = id?.toInt()
-                            val bundle = bundleOf(
-                                "DEEPLINK" to "DETAIL", "clickedID" to ClickedId
-                            )
-                            Log.d("PATTERN ID", "$ClickedId")
-                            navController.navigate(
-                                R.id.action_splashActivity_to_HomeFragment,
-                                bundle
-                            )
-                        }
-                        return
+                    /*    appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
+                            // PATTERN DETAIL
+                            val ip = appLinkData.lastPathSegment
+                            Log.d("DEEPLINK", "$ip")
+                            val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
+                            if (isNumber(id)){
+                                val ClickedId = id?.toInt()
+                                val bundle = bundleOf(
+                                    "DEEPLINK" to "DETAIL", "clickedID" to ClickedId
+                                )
+                                Log.d("PATTERN ID", "$ClickedId")
+                                navController.navigate(
+                                    R.id.action_splashActivity_to_HomeFragment,
+                                    bundle
+                                )
+                            }
+                            return
 
-                    }
+                        }*/
                 }
 
             }
