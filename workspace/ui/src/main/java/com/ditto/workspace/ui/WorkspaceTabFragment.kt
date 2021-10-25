@@ -509,9 +509,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                 }
                 garments[0].imagePath.let {
-                    binding.imageSelvageHorizontal.setImageDrawable(
-                        getDrawableFromString(context, it)
-                    )
+//                    binding.imageSelvageHorizontal.setImageDrawable(
+//                        getDrawableFromString(context, it)
+//                    )
                     getBitmapFromSvgPngDrawable(
                         garments[0].imageName,
                         binding.imageSelvageHorizontal.context,
