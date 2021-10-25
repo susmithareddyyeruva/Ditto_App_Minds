@@ -71,6 +71,7 @@ data class PatternPieceDataDomain(
     val thumbnailImageUrl: String? = "",
     val thumbnailImageName: String? = "",
     val isSpliced: Boolean,
+    val isMirrorOption: Boolean? = false,
     val pieceNumber: String? = "",
     val positionInTab: String? = "",
     val size: String? = "",

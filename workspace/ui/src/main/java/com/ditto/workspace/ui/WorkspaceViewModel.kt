@@ -1,6 +1,7 @@
 package com.ditto.workspace.ui
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -51,8 +52,8 @@ class WorkspaceViewModel @Inject constructor(
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    var patternId: ObservableInt = ObservableInt(1)
-    var clickedOrderNumber: ObservableInt = ObservableInt(1)
+    var patternId: ObservableField<String> = ObservableField("")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
@@ -131,7 +132,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.updateWorkspaceData(
-            "${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",
+            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}",
             workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
@@ -140,7 +141,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun updateWorkspaceDB(
-        tailornaovaDesignId: String,
+        tailornaovaDesignId: String?,
         selectedTab: String?,
         status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
@@ -397,7 +398,7 @@ class WorkspaceViewModel @Inject constructor(
             dragData.patternPieces?.spliceScreenQuantity ?: "",
             dragData.patternPieces?.splicedImages ?: emptyList(),
             dragData.patternPieces?.cutOnFold ?: "",
-            dragData.patternPieces?.mirrorOption ?: false,
+            dragData.patternPieces?.isMirrorOption ?: false,
             dragEvent.x,
             dragEvent.y,
             view.pivotX,
@@ -544,7 +545,8 @@ class WorkspaceViewModel @Inject constructor(
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
 
         updateWorkspaceDB(
-            "30644ba1e7aa41cfa9b17b857739968a",
+//            "30644ba1e7aa41cfa9b17b857739968a",
+            cTraceWorkSpacePatternInputData.tailornaovaDesignId,
             cTraceWorkSpacePatternInputData.selectedTab,
             cTraceWorkSpacePatternInputData.status,
             cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
@@ -769,9 +771,9 @@ class WorkspaceViewModel @Inject constructor(
             var result: File? = null
             val url: URL = URL(url)
             val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val basicAuth =
+            /*val basicAuth =
                 "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-            conn.setRequestProperty("Authorization", basicAuth)
+            conn.setRequestProperty("Authorization", basicAuth)*/
             conn.requestMethod = "GET"
             conn.connect()
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -781,7 +783,7 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, patternFolderName)
+                result = convertInputStreamToFile(inputStream,filename,patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
@@ -790,31 +792,39 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun convertInputStreamToFile(
         inputStream: InputStream,
-        patternFolderName: String?
+        filename: String, patternFolderName: String?
     ): File? {
-        var result: File? = null
-        var dittofolder: File? = null
+        var result : File? = null
+        val outputFile : File? = null
+        var dittofolder : File? = null
+
+        val contextWrapper = ContextWrapper(context)
+
         dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
+
+        // uncomment following line to save file in internal app memory
+        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
+
+        /*
+        code for creating folder with pattern name
+        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
+        file.mkdirs()*/
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
 
-        val filename =
-            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
-
+        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}"
         result = File(dittofolder, filename)
         if (!result.exists()) {
-            try {
-                result.createNewFile()
-            } catch (e: Exception) {
-            }
+            result.createNewFile()
         }
         result.copyInputStreamToFile(inputStream)
         return result
     }
+
 
     private fun convertInputStreamToFileForPatterns(
         inputStream: InputStream,

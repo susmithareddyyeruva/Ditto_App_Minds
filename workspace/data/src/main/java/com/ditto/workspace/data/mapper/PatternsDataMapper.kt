@@ -18,6 +18,7 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             status = it.status,
             thumbnailImagePath = it.thumbnailImagePath,
             thumbnailImageName =it.thumbnailImageName,
+            instructionUrl = "instructionUrl",
             numberOfCompletedPiece = it.numberOfCompletedPieces?.toDomainn(),
             totalNumberOfPieces =it.numberOfPieces?.toDomainn(),
             descriptionImages = it.descriptionImages.map { it.toDomain() },
@@ -41,6 +42,7 @@ internal fun Patterns.toDomain(): PatternsData {
         completedPieces = this.completedPieces,
         selectedTab = this.selectedTab,
         status = this.status,
+        instructionUrl = "instructionUrl",
         thumbnailImagePath = this.thumbnailImagePath,
         thumbnailImageName =this.thumbnailImageName,
         numberOfCompletedPiece = this.numberOfCompletedPieces?.toDomainn(),
@@ -104,7 +106,7 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
-        mirrorOption = this.mirrorOption,
+        isMirrorOption = this.mirrorOption,
         isCompleted = this.isCompleted
     )
 
@@ -215,7 +217,7 @@ internal fun com.ditto.workspace.domain.model.PatternPieces.toDomain(): PatternP
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
-        mirrorOption = this.mirrorOption,
+        mirrorOption = this.isMirrorOption,
         isCompleted = this.isCompleted
     )
 
