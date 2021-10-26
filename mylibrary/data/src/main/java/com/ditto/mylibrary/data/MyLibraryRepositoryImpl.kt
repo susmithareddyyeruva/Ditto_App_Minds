@@ -110,8 +110,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -190,8 +189,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -254,6 +252,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 Result.withValue(it.toDomain())
             }
             .onErrorReturn {
+                ERROR_FETCH=it.localizedMessage
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
@@ -283,8 +282,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -331,6 +329,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
+                ERROR_FETCH=it.localizedMessage
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
@@ -360,8 +359,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -369,10 +367,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         is ConnectException -> {
                             CONNECTION_EXCEPTION
                         }
+
                         else -> {
                             ERROR_FETCH
                         }
                     }
+
                 }
 
                 logger.d(it.localizedMessage)
@@ -409,6 +409,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
+                ERROR_FETCH=it.localizedMessage
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
@@ -438,8 +439,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
