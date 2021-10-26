@@ -30,6 +30,7 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -78,6 +79,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
+    var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -115,6 +117,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
                 ?.let { viewModel.clickedOrderNumber.set(it) }
+            clickedProduct = arguments?.get("product") as ProdDomain?
+            Log.d("12345","received is ${clickedProduct.toString()}")
             bottomNavViewModel.showProgress.set(true)
             if (NetworkUtility.isNetworkAvailable(context)) {
                 if (AppState.getIsLogged()) {
@@ -235,8 +239,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setData() {
-        viewModel.patternName.set(viewModel.data.value?.patternName)
-        viewModel.patternDescription.set(viewModel.data.value?.description)
+        viewModel.patternName.set(clickedProduct?.prodName)
+        viewModel.patternDescription.set(clickedProduct?.description)
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
@@ -557,7 +561,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ) {
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternName)
+                        bundleOf("PatternName" to clickedProduct?.prodName)
                     findNavController().navigate(
                         R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -617,7 +621,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
         Glide.with(requireContext())
-            .load(viewModel.data.value?.patternDescriptionImageUrl)
+            .load(clickedProduct?.image)
             .placeholder(R.drawable.ic_placeholder)
             .into(binding.imagePatternDesc)
     }
@@ -739,7 +743,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
-        Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ")
+        Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ${clickedProduct?.prodName}")
 
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
@@ -747,8 +751,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-            "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
-        ) // todo shri see the pattern pieces
+            "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+            "PatternName" to clickedProduct?.prodName
+        )
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
                 R.id.action_patternDescriptionFragment_to_WorkspaceFragment,

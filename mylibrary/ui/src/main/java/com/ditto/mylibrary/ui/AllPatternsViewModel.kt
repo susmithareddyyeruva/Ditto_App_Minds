@@ -95,10 +95,10 @@ class AllPatternsViewModel @Inject constructor(
             .subscribeBy { handleOfflineFetchResult(it) }
     }
 
-    fun fetchTrialPatterns(){
+    fun fetchTrialPatterns() {
         uiEvents.post(Event.OnAllPatternShowProgress)
         disposable += libraryUseCase.getTrialPatterns()
-            .delay(600,java.util.concurrent.TimeUnit.MILLISECONDS)
+            .delay(600, java.util.concurrent.TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleTrialPatterns(it) }
@@ -106,8 +106,8 @@ class AllPatternsViewModel @Inject constructor(
 
     private fun handleTrialPatterns(result: Result<List<ProdDomain>>?) {
         uiEvents.post(Event.OnAllPatternHideProgress)
-        when(result){
-            is Result.OnSuccess ->{
+        when (result) {
+            is Result.OnSuccess -> {
                 patternList.value = result.data
                 totalPatternCount = patternList.value?.size ?: 0
                 logger.d("PATTERN COUNT == $totalPatternCount")
@@ -230,9 +230,10 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnItemClick)
     }
 
-    fun onItemClickPattern(id: String, orderNumber: String) {
+    fun onItemClickPattern(id: String, orderNumber: String, pattern: ProdDomain) {
         clickedTailornovaID.set(id)
         clickedOrderNumber.set(orderNumber)
+        clickedProduct = pattern
         uiEvents.post(Event.OnItemClick)
     }
 
@@ -450,7 +451,6 @@ class AllPatternsViewModel @Inject constructor(
         Log.d("RESULT STRING===", resultString)
         return filterCriteria
     }
-
 
 
 }

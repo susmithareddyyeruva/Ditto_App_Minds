@@ -111,6 +111,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
+        arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
+
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }
@@ -157,7 +159,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,isFromWS = true,viewModel.data.value?.patternName)
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,isFromWS = true,viewModel.patternName.get())
             }
         })
     }
@@ -875,7 +877,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternName)
+                        bundleOf("PatternName" to viewModel.patternName.get())
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -1555,7 +1557,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSaveAndExitPopup() {
         baseViewModel.isSaveExitButtonClicked.set(false)
-        onSaveButtonClicked(viewModel.data.value?.patternName.toString(), false)
+        onSaveButtonClicked(viewModel.patternName.get() ?: "", false)
     }
 
     private fun getScaleFactor() {
@@ -1643,7 +1645,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             workSpaceImageData.scaleFactor,
                             workSpaceImageData.showProjection,
                             workSpaceImageData.isDraggedPiece,
-                            viewModel.data.value?.patternName,
+                            viewModel.patternName.get(),
                             this@WorkspaceTabFragment
                         )
                         if(isSpliceArrowClicked){
@@ -1835,6 +1837,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     companion object {
         private const val PROJECTING_TIME = 10
         private const val PATTERN_CATEGORY = "PatternCategory"
+        private const val PATTERN_NAME = "PatternName"
         private const val PATTERN_ID = "PatternId"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
@@ -2313,10 +2316,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun getBitmapFromSvgPngDrawable(imageName: String): Bitmap? {
         var availableUri: Uri? = null
-        //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.data.value?.patternName}")
-        Log.d("imageUri123", " availableUri: $availableUri")
-        //}
+        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.patternName.get()}")
+        Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri")
         return if (imageName.endsWith(".svg", true)) {
             Glide
                 .with(context)
@@ -2349,8 +2350,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.data.value?.patternName}")
-        Log.d("imageUri123", " availableUri: $availableUri >>>> ")
+        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.patternName.get()}")
+        Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri >>>> ")
         //}
 
         if (imageName?.endsWith(".svg", true)!!) {
