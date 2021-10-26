@@ -64,7 +64,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,credential)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
-            encryptedKey
+            credential
         )
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
