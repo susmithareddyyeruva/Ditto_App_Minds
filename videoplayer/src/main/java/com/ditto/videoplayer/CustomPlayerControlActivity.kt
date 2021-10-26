@@ -30,6 +30,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     YouTubePlayer.OnInitializedListener, View.OnClickListener,
     Utility.CustomCallbackDialogListener {
     private var mPlayer: YouTubePlayer? = null
+
     /*    private var mPlayButtonLayout: View? = null*/
     private var mPlayTimeTextView: TextView? = null
     private var skipButton: TextView? = null
@@ -94,7 +95,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             bundle?.getString("title")?.let { title = it }
             bundle?.getString("from")?.let { from = it }
             Log.d("VideoPlayer", " title: $title")
-            VIDEO_ID=getYoutubeVideoId(videoUrl)?:""
+            VIDEO_ID = getYoutubeVideoId(videoUrl) ?: ""
             Log.d("VideoPlayer ID==", " $videoUrl")
             if (from == "tutorial") {
                 findViewById<TextView>(R.id.skipButton).visibility = View.GONE
@@ -114,7 +115,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         provider: YouTubePlayer.Provider,
         result: YouTubeInitializationResult
     ) {
-        Log.d("Youtube","Failed to initialize.")
+        Log.d("Youtube", "Failed to initialize.")
     }
 
     override fun onInitializationSuccess(
@@ -163,7 +164,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
         override fun onPlaying() {
             play_video.setImageResource(R.drawable.exo_icon_pause)
-            isPlay=false
+            isPlay = false
             mHandler!!.postDelayed(runnable, 100)
             displayCurrentTime()
         }
@@ -179,11 +180,12 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     var mPlayerStateChangeListener: PlayerStateChangeListener = object : PlayerStateChangeListener {
         override fun onAdStarted() {}
         override fun onError(arg0: YouTubePlayer.ErrorReason) {
-            Log.d("YOUTUBE ERROR","$arg0")
+            Log.d("YOUTUBE ERROR", "$arg0")
             if (arg0 == YouTubePlayer.ErrorReason.NETWORK_ERROR) {
                 showAlert("No Internet Connection available !")
             }
         }
+
         override fun onLoaded(arg0: String) {}
         override fun onLoading() {}
         override fun onVideoEnded() {}
@@ -198,8 +200,10 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             fromUser: Boolean
         ) {
             if (fromUser) {
-                val lengthPlayed = mPlayer!!.durationMillis * progress / 100.toLong()
-                mPlayer!!.seekToMillis(lengthPlayed.toInt())
+                if (mPlayer != null) {
+                    val lengthPlayed = mPlayer!!.durationMillis * progress / 100.toLong()
+                    mPlayer!!.seekToMillis(lengthPlayed.toInt())
+                }
             }
         }
 
@@ -233,17 +237,16 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
 
     private fun pauseVideo() {
         play_video.setImageResource(R.drawable.exo_icon_play)
-        if (mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer!!.pause()
         }
     }
 
     private fun playVideo() {
         play_video.setImageResource(R.drawable.exo_icon_pause)
-        if (mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer!!.play()
         }
-
     }
 
     private fun displayCurrentTime() {
@@ -251,11 +254,6 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         val formattedTime =
             formatTime(mPlayer!!.durationMillis - mPlayer!!.currentTimeMillis)
         mPlayTimeTextView!!.text = formattedTime
-
-        val duration = formatTime(mPlayer!!.durationMillis)
-        val current = formatTime(mPlayer!!.currentTimeMillis)
-
-
     }
 
     private fun formatTime(millis: Int): String {
@@ -273,13 +271,16 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         @RequiresApi(Build.VERSION_CODES.N)
         override fun run() {
             displayCurrentTime()
-            val playPercent =
-                (mPlayer!!.currentTimeMillis.toFloat() / mPlayer!!.durationMillis
-                    .toFloat() * 100).toInt()
-            println("get youtube displayTime 2 : $playPercent")
-            // update live progress
-            mSeekBar!!.setProgress(playPercent, true)
-            mHandler!!.postDelayed(this, 100)
+            if (mPlayer != null) {
+                val playPercent =
+                    (mPlayer!!.currentTimeMillis.toFloat() / mPlayer!!.durationMillis
+                        .toFloat() * 100).toInt()
+                println("get youtube displayTime 2 : $playPercent")
+                // update live progress
+                mSeekBar!!.setProgress(playPercent, true)
+                mHandler!!.postDelayed(this, 100)
+            }
+
         }
     }
 
@@ -305,7 +306,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         }
         return videoId
     }
-    private fun showAlert(message:String) {
+
+    private fun showAlert(message: String) {
         val errorMessage = message
         Utility.getCommonAlertDialogue(
             this,
@@ -314,8 +316,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
-            ,
+            Utility.AlertType.NETWORK,
             Utility.Iconype.FAILED
         )
     }
@@ -343,22 +344,22 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
-            ,
+            Utility.AlertType.NETWORK,
             Utility.Iconype.FAILED
         )
     }
 
     override fun onDestroy() {
-        if (mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer?.release()
-            mPlayer=null
+            mPlayer = null
         }
         super.onDestroy()
     }
-    private fun fullScreenCall(){
+
+    private fun fullScreenCall() {
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)
-        val behavior =  WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        val behavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
         val type = WindowInsetsCompat.Type.systemBars()
         insetsController.systemBarsBehavior = behavior
         insetsController.hide(type)
