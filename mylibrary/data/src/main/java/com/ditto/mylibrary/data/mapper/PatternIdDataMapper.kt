@@ -70,7 +70,7 @@ internal fun PatternIdData.toDomain(): OfflinePatterns {
         patternName = this.patternName,
         description = this.description,
         patternType = this.patternType,
-        numberOfCompletedPieces = this.numberOfPieces?.toDomain(),
+        numberOfCompletedPieces = null,
         numberOfPieces = this.numberOfPieces?.toDomain(),
         orderModificationDate = this.orderModificationDate,
         orderCreationDate = this.orderCreationDate,
