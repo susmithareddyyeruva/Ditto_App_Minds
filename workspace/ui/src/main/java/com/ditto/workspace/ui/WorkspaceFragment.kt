@@ -105,7 +105,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             val garmentBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.garments),
                 PATTERN_ID to viewModel.patternId.get(),
-                PATTERN_NAME to viewModel.patternName.get()
+                PATTERN_NAME to viewModel.patternName.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentGarment = WorkspaceTabFragment()
             fragmentGarment.setArguments(garmentBundle)
@@ -113,7 +114,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             val liningBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.lining),
                 PATTERN_ID to viewModel.patternId.get(),
-                PATTERN_NAME to viewModel.patternName.get()
+                PATTERN_NAME to viewModel.patternName.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentLining = WorkspaceTabFragment()
             fragmentLining.setArguments(liningBundle)
@@ -121,8 +123,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             val interfacingBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.interfacing),
                 PATTERN_ID to viewModel.patternId.get(),
-                PATTERN_NAME to viewModel.patternName.get()
-
+                PATTERN_NAME to viewModel.patternName.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentInterface = WorkspaceTabFragment()
             fragmentInterface.setArguments(interfacingBundle)
@@ -380,6 +382,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
         private const val PATTERN_NAME = "PatternName"
+        private const val ORDER_NO = "clickedOrderNumber"
     }
 
     private fun showProgress(toShow: Boolean) {

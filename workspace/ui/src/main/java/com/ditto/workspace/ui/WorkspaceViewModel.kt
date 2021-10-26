@@ -133,7 +133,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.updateWorkspaceData(
-            "${AppState.getCustID()}_${clickedOrderNumber}_${patternId}",
+            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}",
             workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())

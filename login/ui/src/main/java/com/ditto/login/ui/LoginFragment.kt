@@ -63,11 +63,11 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
             val bundle = bundleOf("UserId" to 0)
             if (findNavController().currentDestination?.id == R.id.destination_login) {
-              if (AppState.getIsLogged()){
-                  getUserDetails(false)
-              }else{
-                  getUserDetails(true)
-              }
+                if (AppState.getIsLogged()) {
+                    getUserDetails(false)
+                } else {
+                    getUserDetails(true)
+                }
 
                 findNavController().navigate(
                     R.id.action_loginFragment_to_HomeFragment,
@@ -89,7 +89,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             .getPackageInfo(requireActivity().getPackageName(), 0)
         viewModel.versionName.set("Version " + pinfo.versionName)
         bottomNavViewModel.showProgress.set(true)
-        viewModel.getLandingScreenDetails()/**Fetch Landing screen Details.....*/
+        viewModel.getLandingScreenDetails()
+        /**Fetch Landing screen Details.....*/
         if (savedInstanceState == null) {
             viewModel.disposable += viewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -101,8 +102,10 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         Log.d("list123", "${viewModel.viewPagerData.value?.size}")
         setUIEvents()
-        requireActivity().window.navigationBarColor = resources.getColor(core.lib.R.color.nav_item_grey2);
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
+        requireActivity().window.navigationBarColor =
+            resources.getColor(core.lib.R.color.nav_item_grey2);
+        requireActivity().window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
 
     }
 
@@ -159,7 +162,10 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                         "title" to "Ditto application overview",
                         "from" to "LOGIN"
                     )
-                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
+                    val intent =
+                        Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(
+                            bundle
+                        )
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
                     startActivityForResult(intent, 200)
@@ -174,12 +180,16 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                // if (NetworkUtility.isNetworkAvailable(requireContext())){
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
-                        val bundle = bundleOf("UserId" to 0,
+                        val bundle = bundleOf(
+                            "UserId" to 0,
                             "videoPath" to viewModel.videoUrl,
                             "title" to "Ditto application overview",
                             "from" to "LOGIN"
                         )
-                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java).putExtras(bundle)
+                        val intent = Intent(
+                            requireContext(),
+                            CustomPlayerControlActivity::class.java
+                        ).putExtras(bundle)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         startActivityForResult(intent, 200)
                         // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
@@ -199,18 +209,21 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
             LoginViewModel.Event.OnHideProgress -> bottomNavViewModel.showProgress.set(false)
             LoginViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
-            LoginViewModel.Event.OnLandingSuccess ->{
-             setLandingImage()
+            LoginViewModel.Event.OnLandingSuccess -> {
+                setLandingImage()
             }
         }
 
     private fun setLandingImage() {
-        viewModel.imageUrl.let {
-            Glide.with( binding.ivViewpagerLogin.context)
-                .load(it.get())
-                .placeholder(R.drawable.ic_placeholder)
-                .into( binding.ivViewpagerLogin)
+        if (requireContext()!=null) {
+            viewModel.imageUrl.let {
+                Glide.with(requireContext())
+                    .load(it.get())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(binding.ivViewpagerLogin)
+            }
         }
+
     }
 
     private fun getUserDetails(isGuest: Boolean) {
@@ -250,8 +263,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             "",
             getString(R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK
-            ,
+            Utility.AlertType.NETWORK,
             Utility.Iconype.FAILED
         )
     }

@@ -110,6 +110,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         super.onActivityCreated(savedInstanceState)
         //viewModel.isOnline.set(NetworkUtility.isNetworkAvailable(requireContext()))
         arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
+        arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
 
@@ -233,17 +234,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
             if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
-                if (isTablet(requireContext())) {
-                    com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
-                        0,
-                        view.rootView.height / 2
-                    )
+                if (isAdded && activity != null) {
+                    if (isTablet(requireContext())) {
+                        com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
+                            0,
+                            view.rootView.height / 2
+                        )
 
-                } else {
-                    com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
-                        1,
-                        view.rootView.height / 2
-                    )
+                    } else {
+                        com.ditto.workspace.ui.util.Utility.changeAlertPsoition(
+                            1,
+                            view.rootView.height / 2
+                        )
+                    }
                 }
             } else {
                 com.ditto.workspace.ui.util.Utility.changeAlertPsoition(2, view.rootView.height / 2)
@@ -508,9 +511,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                 }
                 garments[0].imagePath.let {
-                    /*binding.imageSelvageHorizontal.setImageDrawable(
-                        getDrawableFromString(context, it)//crSH
-                    )*/
+//                    binding.imageSelvageHorizontal.setImageDrawable(
+//                        getDrawableFromString(context, it)
+//                    )
                     getBitmapFromSvgPngDrawable(
                         garments[0].imageName,
                         binding.imageSelvageHorizontal.context,
@@ -891,9 +894,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.CloseScreen -> {
                 showProgress(false)
-                baseViewModel.isSaveExitButtonClicked.set(true)
-                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-                activity?.onBackPressed()
+//                baseViewModel.isSaveExitButtonClicked.set(true)
+//                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+//                activity?.onBackPressed()
+                moveToLibrary()
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
@@ -985,7 +989,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     showSaveAndExitPopup()
                 }else{
-
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(R.string.download_failed),
@@ -1839,6 +1842,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_NAME = "PatternName"
         private const val PATTERN_ID = "PatternId"
+        private const val ORDER_NO = "clickedOrderNumber"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
@@ -2251,9 +2255,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.UPDATEAPIFAILED -> {
                 showProgress(false)
-                baseViewModel.isSaveExitButtonClicked.set(true)
-                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-                activity?.onBackPressed()
+//                baseViewModel.isSaveExitButtonClicked.set(true)
+//                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+//                activity?.onBackPressed()
+                moveToLibrary()
             }
             Utility.AlertType.DOWNLOADFAILED -> {
                showSaveAndExitPopup()
