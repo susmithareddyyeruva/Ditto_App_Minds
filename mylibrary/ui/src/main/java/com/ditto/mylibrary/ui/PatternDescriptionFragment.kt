@@ -571,10 +571,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
-                    Log.d("Download", "ENDED >>>>>>>>>>>")
+                    //Log.d("Download", "ENDED >>>>>>>>>>> ")
+                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in if ")
                     checkSocketConnectionBeforeWorkspace()
 
                 } else {
+                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(com.ditto.workspace.ui.R.string.download_failed),
@@ -586,6 +588,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         Utility.Iconype.NONE
                     )
                 }
+            }
+            PatternDescriptionViewModel.Event.OnNoNetworkToDownloadImage -> {
+                bottomNavViewModel.showProgress.set(false)
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    resources.getString(com.ditto.workspace.ui.R.string.download_failed),
+                    resources.getString(com.ditto.workspace.ui.R.string.guest_user_ws_enter_message),
+                    resources.getString(com.ditto.workspace.ui.R.string.empty_string),
+                    resources.getString(com.ditto.workspace.ui.R.string.ok),
+                    this,
+                    Utility.AlertType.DEFAULT,
+                    Utility.Iconype.NONE
+                )
             }
         }
 
@@ -724,6 +739,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
+        Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ")
+
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }

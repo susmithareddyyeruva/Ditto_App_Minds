@@ -85,4 +85,5 @@
     <string name="download_failed">Download Failed</string>
     <string name="download_failed_message">Downloading pattern pieces is not complete.</string>
     <string name="guest_user_ws_exit_message">Guest User dont have this feature</string>
+    <string name="guest_user_ws_enter_message">No all pattern pieces are downloaded</string>
 </resources>
