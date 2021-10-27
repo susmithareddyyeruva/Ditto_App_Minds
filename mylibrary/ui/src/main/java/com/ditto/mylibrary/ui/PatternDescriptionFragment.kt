@@ -122,7 +122,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             bottomNavViewModel.showProgress.set(true)
             if (NetworkUtility.isNetworkAvailable(context)) {
                 if (AppState.getIsLogged()) {
-                    viewModel.fetchPattern()
+                    if (clickedProduct?.patternType.equals("Trial")) {
+                        viewModel.fetchOfflinePatternDetails()
+                    } else {
+                        viewModel.fetchPattern()
+                    }
                 } else {
                     viewModel.fetchOfflinePatternDetails()
                 }

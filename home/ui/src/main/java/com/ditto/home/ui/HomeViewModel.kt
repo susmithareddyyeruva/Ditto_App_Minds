@@ -210,7 +210,10 @@ class HomeViewModel @Inject constructor(
             }
 
             is Result.OnError -> {
+                uiEvents.post(Event.OnHideProgress)
+                uiEvents.post(Event.OnResultFailed)
                 Log.d("Home Screen", "Failed")
+                handleError(result.error)
             }
         }
     }

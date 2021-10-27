@@ -896,7 +896,7 @@ class WorkspaceViewModel @Inject constructor(
                         downloadEachPatternPiece(
                             imageUrl = value,
                             filename = key,
-                            patternFolderName = data.value?.patternName ?: "Pattern Piece"
+                            patternFolderName = patternName.get() ?: "Pattern Piece"
                         )
                     }
                 }
@@ -941,7 +941,7 @@ class WorkspaceViewModel @Inject constructor(
             val availableUri = key.let {
                 core.ui.common.Utility.isImageFileAvailable(
                     it,
-                    "${data.value?.patternName}"
+                    "${patternName.get()}"
                 )
             }
             if (availableUri == null) {
