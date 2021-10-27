@@ -99,21 +99,24 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 WorkspaceAdapter(cfManager)
             val garmentBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.garments),
-                PATTERN_ID to viewModel.patternId.get()
+                PATTERN_ID to viewModel.patternId.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentGarment = WorkspaceTabFragment()
             fragmentGarment.setArguments(garmentBundle)
 
             val liningBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.lining),
-                PATTERN_ID to viewModel.patternId.get()
+                PATTERN_ID to viewModel.patternId.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentLining = WorkspaceTabFragment()
             fragmentLining.setArguments(liningBundle)
 
             val interfacingBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.interfacing),
-                PATTERN_ID to viewModel.patternId.get()
+                PATTERN_ID to viewModel.patternId.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentInterface = WorkspaceTabFragment()
             fragmentInterface.setArguments(interfacingBundle)
@@ -365,6 +368,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     companion object {
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
+        private const val ORDER_NO = "clickedOrderNumber"
     }
 
     private fun showProgress(toShow: Boolean) {

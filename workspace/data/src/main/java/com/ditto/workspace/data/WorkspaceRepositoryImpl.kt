@@ -121,7 +121,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
 
-        return getWorkspaceService.getWorkspceDataFromApi(/*id,*/CLIENT_ID).doOnSuccess {
+        return getWorkspaceService.getWorkspceDataFromApi(id,CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
             Log.d("WorkspaceRepositoryImpl","${it.c_traceWorkSpacePattern.toString()}")
@@ -159,7 +159,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.updateWorkspaceDataFromApi(
-            /*id,*/
+            id,
             CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
@@ -197,7 +197,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         val wsInputData = WSInputData(jsonString)
 
         return getWorkspaceService.createWorkspaceDataFromApi(
-            /*id,*/
+            id,
             CLIENT_ID, SITE_ID, wsInputData,
             "Bearer "+AppState.getToken()!!
         ).doOnSuccess {
