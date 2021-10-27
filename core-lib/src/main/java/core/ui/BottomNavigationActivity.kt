@@ -133,43 +133,72 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     }
                     segmentId.endsWith("myLibrary") -> {
                         // PATTERN LIBRARY
-                        val userId = appLinkData?.getQueryParameter("userId")
-                        Log.d("DEEPLINK","USER ID :$userId")
-                        if (userId.equals(AppState.getCustID())){
-                            val bundle = bundleOf(
-                                "DEEPLINK" to "LIBRARY"
-                            )
-                            navController.navigate(
-                                R.id.action_splashActivity_to_HomeFragment,
-                                bundle
-                            )
-                            return
-                        }else{
-                          showAlert("Customer doesn't match !")
+                        if (AppState.getIsLogged()) {
+                            val userId = appLinkData?.getQueryParameter("userId")
+                            Log.d("DEEPLINK","USER ID :$userId")
+                            if (userId.equals(AppState.getCustID())){
+                                val bundle = bundleOf(
+                                    "DEEPLINK" to "LIBRARY"
+                                )
+                                navController.navigate(
+                                    R.id.action_splashActivity_to_HomeFragment,
+                                    bundle
+                                )
+                                return
+                            }else{
+                              showAlert("Customer doesn't match !")
+                            }
                         }
 
 
                     }
                     segmentId.endsWith("MyPatternLibrary-PatternShow") -> {
                         // PATTERN MySubscriptionLibrary
-                        val pid = appLinkData?.getQueryParameter("pid")
-                        val orderId = appLinkData?.getQueryParameter("orderID")
-                        val sizeId = appLinkData?.getQueryParameter("size")
-                        Log.d("DEEPLINK", " PID=$pid")
-                        Log.d("DEEPLINK", " ORDER ID=$orderId")
-                        Log.d("DEEPLINK", " SIZE=$sizeId")
+                        if (AppState.getIsLogged()) {
+                            val userId = appLinkData?.getQueryParameter("userId")
+                            if (userId.equals(AppState.getCustID())) {
+                                val designId = appLinkData?.getQueryParameter("designId")
+                                val orderId = appLinkData?.getQueryParameter("orderId")
+                                val mannequinId = appLinkData?.getQueryParameter("mannequinId")
+                                Log.d("DEEPLINK", " USER ID=$userId")
+                                Log.d("DEEPLINK", " DESIGN ID=$designId")
+                                Log.d("DEEPLINK", " MANNEQUIN ID=$mannequinId")
+                                Log.d("DEEPLINK", " ORDER ID=$orderId")
 
-                        val bundle = bundleOf(
-                            "DEEPLINK" to "MySubscriptionLibrary"
-                        )
-                        navController.navigate(
-                            R.id.action_splashActivity_to_HomeFragment,
-                            bundle
-                        )
+                                val bundle = bundleOf(
+                                    "DEEPLINK" to "DETAIL", "clickedID" to designId,"clickedOrderNumber" to orderId
+                                )
+                                Log.d("PATTERN ID", "$designId")
+                                navController.navigate(
+                                    R.id.action_splashActivity_to_HomeFragment,
+                                    bundle
+                                )
+                            }else{
+                                showAlert("Customer doesn't match !")
+                            }
+                        }
+
                         return
-
                     }
+                    /*    appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
+                            // PATTERN DETAIL
+                            val ip = appLinkData.lastPathSegment
+                            Log.d("DEEPLINK", "$ip")
+                            val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
+                            if (isNumber(id)){
+                                val ClickedId = id?.toInt()
+                                val bundle = bundleOf(
+                                    "DEEPLINK" to "DETAIL", "clickedID" to ClickedId
+                                )
+                                Log.d("PATTERN ID", "$ClickedId")
+                                navController.navigate(
+                                    R.id.action_splashActivity_to_HomeFragment,
+                                    bundle
+                                )
+                            }
+                            return
 
+                        }*/
                 }
 
             }
