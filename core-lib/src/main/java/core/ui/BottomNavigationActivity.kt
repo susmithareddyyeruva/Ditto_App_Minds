@@ -39,6 +39,7 @@ import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
 import core.ui.adapter.ExpandableMenuListAdapter
 import core.ui.common.NoScrollExListView
+import core.ui.common.Utility
 import core.ui.rxbus.RxBus
 import core.ui.rxbus.RxBusEvent
 import dagger.android.AndroidInjection
@@ -55,7 +56,7 @@ import javax.inject.Inject
  * Main Bottom Navigation Activity launcher class holding navHost and initial position at Splash.
  */
 class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
-    NavigationView.OnNavigationItemSelectedListener {
+    NavigationView.OnNavigationItemSelectedListener,Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
@@ -132,17 +133,24 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     }
                     segmentId.endsWith("myLibrary") -> {
                         // PATTERN LIBRARY
-                        val bundle = bundleOf(
-                            "DEEPLINK" to "LIBRARY"
-                        )
-                        navController.navigate(
-                            R.id.action_splashActivity_to_HomeFragment,
-                            bundle
-                        )
-                        return
+                        val userId = appLinkData?.getQueryParameter("userId")
+                        Log.d("DEEPLINK","USER ID :$userId")
+                        if (userId.equals(AppState.getCustID())){
+                            val bundle = bundleOf(
+                                "DEEPLINK" to "LIBRARY"
+                            )
+                            navController.navigate(
+                                R.id.action_splashActivity_to_HomeFragment,
+                                bundle
+                            )
+                            return
+                        }else{
+                          showAlert("Customer doesn't match !")
+                        }
+
 
                     }
-                    segmentId.equals("MyPatternLibrary-PatternShow") -> {
+                    segmentId.endsWith("MyPatternLibrary-PatternShow") -> {
                         // PATTERN MySubscriptionLibrary
                         val pid = appLinkData?.getQueryParameter("pid")
                         val orderId = appLinkData?.getQueryParameter("orderID")
@@ -161,25 +169,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         return
 
                     }
-                    /*    appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
-                            // PATTERN DETAIL
-                            val ip = appLinkData.lastPathSegment
-                            Log.d("DEEPLINK", "$ip")
-                            val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
-                            if (isNumber(id)){
-                                val ClickedId = id?.toInt()
-                                val bundle = bundleOf(
-                                    "DEEPLINK" to "DETAIL", "clickedID" to ClickedId
-                                )
-                                Log.d("PATTERN ID", "$ClickedId")
-                                navController.navigate(
-                                    R.id.action_splashActivity_to_HomeFragment,
-                                    bundle
-                                )
-                            }
-                            return
 
-                        }*/
                 }
 
             }
@@ -633,5 +623,22 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         } else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
+    }
+    private fun showAlert(message: String) {
+        Utility.getCommonAlertDialogue(this,"",message,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
+            ,Utility.Iconype.FAILED)
+    }
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+       // TODO("Not yet implemented")
     }
 }
