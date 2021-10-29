@@ -43,10 +43,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        //val credential= Credentials.basic(EN_USERNAME,EN_PASSWORD)
             val input="$EN_USERNAME:$EN_PASSWORD"
        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
-        return homeService.getHomeScreenDetails(requestData, encryptedKey)
+        return homeService.getHomeScreenDetails(requestData, "Basic "+encryptedKey)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
                     logger.d("*****FETCH HOME SUCCESS 200 with Error **")

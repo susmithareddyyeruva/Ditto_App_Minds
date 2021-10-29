@@ -60,11 +60,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val credential= "$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,credential)
+        val input="$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
-            credential
+            "Basic "+encryptedKey
         )
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
@@ -231,8 +231,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
+        val input="$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
         return myLibraryService.getFoldersList(
-            requestdata, "Bearer " + AppState.getToken()!!,
+            requestdata, "Basic "+encryptedKey,
             method = methodName
         )
             .doOnSuccess {
@@ -305,8 +307,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
+        val input="$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
         return myLibraryService.addFolder(
-            requestdata, "Bearer " + AppState.getToken()!!,
+            requestdata, "Basic " + encryptedKey,
             method = methodName
         )
             .doOnSuccess {
@@ -382,8 +386,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
+        val input="$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
         return myLibraryService.renameFolder(
-            renameRequest, "Bearer " + AppState.getToken()!!,
+            renameRequest, "Basic " + encryptedKey,
             method = methodName
         )
             .doOnSuccess {
