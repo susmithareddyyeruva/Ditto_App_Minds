@@ -136,7 +136,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         if (AppState.getIsLogged()) {
                             val userId = appLinkData?.getQueryParameter("userId")
                             Log.d("DEEPLINK","USER ID :$userId")
-                            if (userId.equals(AppState.getCustID())){
+                            if (userId.equals(AppState.getCustNO())){
                                 val bundle = bundleOf(
                                     "DEEPLINK" to "LIBRARY"
                                 )
@@ -156,7 +156,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         // PATTERN MySubscriptionLibrary
                         if (AppState.getIsLogged()) {
                             val userId = appLinkData?.getQueryParameter("userId")
-                            if (userId.equals(AppState.getCustID())) {
+                            if (userId.equals(AppState.getCustNO())) {
                                 val designId = appLinkData?.getQueryParameter("designId")
                                 val orderId = appLinkData?.getQueryParameter("orderId")
                                 val mannequinId = appLinkData?.getQueryParameter("mannequinId")

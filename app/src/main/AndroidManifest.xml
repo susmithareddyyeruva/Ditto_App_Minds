@@ -56,7 +56,7 @@
                 <data
                     android:scheme="https"
                     android:host="development.dittopatterns.com"
-                    android:pathPrefix="/on/demandware.store/Sites-ditto-Site/default/SubscriptionLibrary-MySubscriptionLibrary" />
+                    android:pathPrefix="/on/demandware.store/Sites-ditto-Site/default/MyPatternLibrary-PatternShow" />
             </intent-filter>
         </activity>
 
