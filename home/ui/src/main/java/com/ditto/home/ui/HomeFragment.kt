@@ -22,8 +22,8 @@ import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
-import core.network.NetworkUtility
 import core.data.model.SoftwareUpdateResult
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -73,6 +73,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.d("HOME","ONACTIvity created")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -111,6 +112,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             .subscribe {
                 handleEvent(it)
             }
+
     }
 
     private fun setEventForDeeplink() {
@@ -150,6 +152,8 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     override fun onResume() {
         super.onResume()
         listenVersionEvents()
+        Log.d("HOME","onResume")
+        toolbarViewModel.isShowTransparentActionBar.set(true)
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
