@@ -91,10 +91,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             finish()
             return
         }
-        /**
-         * Deeplinking
-         */
-        handleIntent(intent)
+
         binding.bottomNavViewModel!!.disposable += binding.bottomNavViewModel!!.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -103,11 +100,23 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         window.navigationBarColor = resources.getColor(R.color.nav_item_grey2);
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; //For setting material color into black of the navigation bar
+
+        /**
+         * Deeplinking
+         */
+        handleIntent(intent)
+        binding.toolbar.setNavigationOnClickListener {
+            Log.d("NAVIGTAION","HERE=====")
+        }
+
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleIntent(intent)
+    }
+    fun  setToolbar(){
+        setSupportActionBar(binding.toolbar)
     }
 
     private fun handleIntent(intent: Intent) {

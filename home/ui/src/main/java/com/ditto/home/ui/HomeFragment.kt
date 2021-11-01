@@ -34,6 +34,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -85,6 +88,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
         setEventForDeeplink()
 
@@ -153,6 +157,13 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     override fun onResume() {
         super.onResume()
+        GlobalScope.launch {
+            delay(500)
+            (activity as BottomNavigationActivity).setToolbar()
+            bottomNavViewModel.visibility.set(false)
+            toolbarViewModel.isShowTransparentActionBar.set(true)
+            toolbarViewModel.isShowActionBar.set(false)
+        }
         listenVersionEvents()
         Log.d("HOME","onResume")
         try {
@@ -163,6 +174,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
     }
 
     private fun listenVersionEvents() {
@@ -263,7 +275,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 }
             }
             HomeViewModel.Event.OnResultSuccess -> {
-                toolbarViewModel.isShowTransparentActionBar.set(true)
                 bottomNavViewModel.showProgress.set(false)
                 if (recycler_view != null) {
                     (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
