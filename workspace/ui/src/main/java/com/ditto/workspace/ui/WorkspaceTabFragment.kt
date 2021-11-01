@@ -446,14 +446,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             showSpliceReference(splicePiece)
             return
         }
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size ?: 0 > 0 &&
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory.equals( getString(R.string.garments),true) }?.size ?: 0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
             val garments =
                 viewModel.data.value?.selvages?.filter {
-                    it.tabCategory == getString(
+                    it.tabCategory.equals( getString(
                         R.string.garments
-                    )
+                    ),true)
                 }
             if (garments?.size == 2) {
                 binding.txtSize45.isEnabled = true
@@ -524,15 +524,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
 
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.lining) }
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory .equals( getString(R.string.lining),true) }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
         ) {
             val lining =
                 viewModel.data.value?.selvages?.filter {
-                    it.tabCategory == getString(
+                    it.tabCategory .equals( getString(
                         R.string.lining
-                    )
+                    ),true)
                 }
             lining?.get(0)?.imagePath?.let {
 /*
@@ -561,15 +561,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.referenceImage.set(lining?.get(0)?.imageName)
         }
 
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.interfacing) }
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory .equals( getString(R.string.interfacing),true) }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
         ) {
             val interfacing =
                 viewModel.data.value?.selvages?.filter {
-                    it.tabCategory == getString(
+                    it.tabCategory.equals( getString(
                         R.string.interfacing
-                    )
+                    ),true)
                 }
             interfacing?.get(0)?.imagePath?.let {
                 /*binding.imageSelvageHorizontal.setImageDrawable(
@@ -1504,19 +1504,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.saveProject()
             context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
         }else{
-            Utility.getCommonAlertDialogue(
+
+            core.ui.common.Utility.getCommonAlertDialogue(
                 requireContext(),
-                resources.getString(R.string.api_failed),
-                    resources.getString(R.string.guest_user_ws_exit_message),
-                resources.getString(R.string.empty_string),
-                resources.getString(R.string.ok),
+                "",
+                getString(R.string.guest_user_ws_exit_message),
+                "",
+                getString(R.string.str_ok),
                 this,
-                Utility.AlertType.UPDATEAPIFAILED,
-                Utility.Iconype.NONE
+                core.ui.common.Utility.AlertType.UPDATEAPIFAILED,
+                core.ui.common.Utility.Iconype.NONE
             )
         }
-
-
     }
 
     override fun onExitButtonClicked() {

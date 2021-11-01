@@ -60,20 +60,33 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onResume() {
         super.onResume()
-        Log.d("Testing", ">>>>>>   Myfolder  onResume ")
-        viewModel.disposable = CompositeDisposable()
-        setUIEvents()
-        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
-            /**
-             * API call for getting Folders List
-             */
-            if (viewModel.folderList.isNullOrEmpty()) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.getFoldersList()
-            } else {
-                setAdapter()
-                (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
+        if(AppState.getIsLogged()) {
+            Log.d("Testing", ">>>>>>   Myfolder  onResume ")
+            viewModel.disposable = CompositeDisposable()
+            setUIEvents()
+            if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                /**
+                 * API call for getting Folders List
+                 */
+                if (viewModel.folderList.isNullOrEmpty()) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.getFoldersList()
+                } else {
+                    setAdapter()
+                    (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
+                }
             }
+        }else{
+            core.ui.common.Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                getString(R.string.guest_my_folder_message),
+                "",
+                getString(R.string.str_ok),
+                this,
+                core.ui.common.Utility.AlertType.GUEST_MYFOLDER,
+                core.ui.common.Utility.Iconype.NONE
+            )
         }
     }
 
@@ -202,13 +215,18 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         iconype: core.ui.common.Utility.Iconype,
         alertType: core.ui.common.Utility.AlertType
     ) {
-        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
-            bottomNavViewModel.showProgress.set(true)
-            viewModel.addToFolder(
-                product = ProdDomain(),
-                newFolderName = "",
-                action = viewModel.delete
-            )
+        when (alertType) {
+            core.ui.common.Utility.AlertType.DELETE ->
+                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.addToFolder(
+                        product = ProdDomain(),
+                        newFolderName = "",
+                        action = viewModel.delete
+                    )
+                }
+
+            core.ui.common.Utility.AlertType.GUEST_MYFOLDER ->  (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
         }
 
     }
