@@ -109,7 +109,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         //baseViewModel.activeSocketConnection.set(false)
 
-        if (viewModel.data.value == null) {
+        if (arguments?.getString("ISFROM").equals("DEEPLINK")){
+            logger.d("FROM DEEPLINK IN PATTERN DESCRIPTION")
             arguments?.getString("clickedTailornovaID").toString()
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
@@ -121,9 +122,25 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.fetchOfflinePatterns()
             }
             setUIEvents()
-        } else {
-            setPatternImage()
+        }else{
+            if (viewModel.data.value == null) {
+                arguments?.getString("clickedTailornovaID").toString()
+                    ?.let { viewModel.clickedTailornovaID.set(it) }
+                arguments?.getString("clickedOrderNumber").toString()
+                    ?.let { viewModel.clickedOrderNumber.set(it) }
+                bottomNavViewModel.showProgress.set(true)
+                if (NetworkUtility.isNetworkAvailable(context)) {
+                    viewModel.fetchPattern()
+                } else {
+                    viewModel.fetchOfflinePatterns()
+                }
+                setUIEvents()
+            } else {
+                setPatternImage()
+            }
         }
+
+
         outputDirectory = Utility.getOutputDirectory(requireContext())
     }
 

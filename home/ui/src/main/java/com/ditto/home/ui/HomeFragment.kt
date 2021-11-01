@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -133,10 +132,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 "DETAIL"->{
                     logger.d("HOMESCREEN  :DETAIL")
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                        val id=  arguments?.getInt("clickedID")
-                        logger.d("HOME PATTERN ID =$id")
+                        val designId=  arguments?.getString("clickedID")
+                       val  orderNumber=arguments?.getString("clickedOrderNumber")
+                        logger.d("HOME PATTERN ID =$designId")
                         val bundle = bundleOf(
-                           "clickedID" to id
+                           "clickedTailornovaID" to designId,"clickedOrderNumber" to orderNumber,
+                            "ISFROM" to "DEEPLINK"
                         )
                         this.arguments?.clear();
                         findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment,bundle)
