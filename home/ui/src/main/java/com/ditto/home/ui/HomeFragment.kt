@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME","ONACTIvity created")
+        Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -154,7 +155,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         super.onResume()
         listenVersionEvents()
         Log.d("HOME","onResume")
-        toolbarViewModel.isShowTransparentActionBar.set(true)
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
@@ -263,6 +263,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 }
             }
             HomeViewModel.Event.OnResultSuccess -> {
+                toolbarViewModel.isShowTransparentActionBar.set(true)
                 bottomNavViewModel.showProgress.set(false)
                 if (recycler_view != null) {
                     (recycler_view.adapter as HomeAdapter).setListData(homeViewModel.homeItem)
