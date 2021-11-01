@@ -56,7 +56,6 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popUpTo="@id/nav_graph_id_home"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true" />
 
