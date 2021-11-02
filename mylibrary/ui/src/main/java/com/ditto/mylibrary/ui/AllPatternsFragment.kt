@@ -276,9 +276,16 @@ class AllPatternsFragment(
                     viewModel.fetchOfflinePatterns()
                 }
             } else {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.isLoading.set(true)
-                viewModel.fetchTrialPatterns()
+                if(NetworkUtility.isNetworkAvailable(context)){
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isLoading.set(true)
+                    viewModel.fetchTrialPatterns()
+                }else{
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
+                    viewModel.fetchTrialPatterns()
+                }
+
             }
             logger.d("OnSyncClick : AllPatternsFragment")
 
