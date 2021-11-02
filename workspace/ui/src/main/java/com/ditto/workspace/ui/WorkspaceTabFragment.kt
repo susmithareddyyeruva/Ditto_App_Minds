@@ -1526,9 +1526,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
         baseViewModel.isSaveExitButtonClicked.set(true)
-        if ((findNavController().isOnBackStack(R.id.patternDescriptionFragment)) && (findNavController().isOnBackStack(
-                R.id.nav_graph_mylibrary
-            )) && (findNavController().isOnBackStack(R.id.nav_graph_id_home))
+        /**
+         * condition is added for Deeplinking scenario
+         */
+        if ((findNavController().isOnBackStack(R.id.patternDescriptionFragment)) || (findNavController().isOnBackStack(
+                R.id.nav_graph_mylibrary))
         ) {
             findNavController().popBackStack(R.id.patternDescriptionFragment, false)
             findNavController().popBackStack(R.id.nav_graph_mylibrary, false)
@@ -1540,6 +1542,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     fun NavController.isOnBackStack(@IdRes id: Int): Boolean = try {
         getBackStackEntry(id); true
     } catch (e: Throwable) {
+        Log.d("EXCEPTION+++++",e.localizedMessage)
         false
     }
 
