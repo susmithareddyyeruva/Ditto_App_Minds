@@ -90,7 +90,8 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         toolbarViewModel.isShowTransparentActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
-        setEventForDeeplink()
+
+
 
         /**
          * API call for getting pattern details....
@@ -281,7 +282,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
                 }
                 logger.d("PATTERNS=  :  $homeViewModel.homeDataResponse")
-
+                setEventForDeeplink()
             }
             HomeViewModel.Event.OnShowProgress -> {
                 bottomNavViewModel.showProgress.set(true)
@@ -301,6 +302,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 bottomNavViewModel.showProgress.set(false)
                 showAlert()
             }
+
         }
 
     private fun showAlert() {
