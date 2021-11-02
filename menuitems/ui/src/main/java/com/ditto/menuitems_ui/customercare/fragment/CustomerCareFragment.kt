@@ -93,7 +93,6 @@ class CustomerCareFragment : BaseFragment() {
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
         (activity as BottomNavigationActivity).setToolbarTitle("Customer Support")
-        (activity as BottomNavigationActivity).setToolbar()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
