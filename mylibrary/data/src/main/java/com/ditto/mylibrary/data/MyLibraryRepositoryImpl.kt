@@ -128,7 +128,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial("trial", AppState.getCustID())
+                offlinePatternDataDao.deletePatternsExceptTrial("Trial", AppState.getCustID())
                 offlinePatternDataDao.insertOfflinePatternData(it.toDomain())
                 //insert to db
             }.map {
