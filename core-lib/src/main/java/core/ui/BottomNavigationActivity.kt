@@ -614,13 +614,13 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
             ) {
                 navController.navigate(
-                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_fragments_to_customerCareFragment
+                    if (navController.currentDestination?.label?.equals("Home") == true) R.id.action_fragments_to_customerCareFragment
                     else R.id.action_pattern_description_to_customerCareFragment
                 )
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         } else if (selectedmenu.equals(this.getString(R.string.str_menu_faq))) {
-            if (navController.currentDestination?.label?.equals("Home")!! ||
+            if (navController.currentDestination?.label?.equals("Home") == true ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
                 (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
             ) {
