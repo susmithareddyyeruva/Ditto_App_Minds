@@ -357,9 +357,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTrialPatterns(): Single<Result<List<ProdDomain>>> {
+    override fun getTrialPatterns(patterntype:String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern("Trial")
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype)
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
