@@ -44,6 +44,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -84,6 +87,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -95,6 +99,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -114,10 +119,51 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         }
     }
 
+    private fun setEventForDeeplink() {
+        arguments?.getString("DEEPLINK")?.let {
 
+            when (it) {
+                "HOME" -> {
+
+                }
+                "LIBRARY" -> {
+                    logger.d("HOMESCREEN  :LIBRARY")
+                    if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        this.arguments?.clear();
+                        findNavController().navigate(R.id.action_home_to_my_library)
+                    }
+
+                }
+                "DETAIL"->{
+                    logger.d("HOMESCREEN  :DETAIL")
+                    if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        val designId=  arguments?.getString("clickedID")
+                        val  orderNumber=arguments?.getString("clickedOrderNumber")
+                        logger.d("HOME PATTERN ID =$designId")
+                        val bundle = bundleOf(
+                            "clickedTailornovaID" to designId,"clickedOrderNumber" to orderNumber,
+                            "ISFROM" to "DEEPLINK"
+                        )
+                        this.arguments?.clear();
+                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment,bundle)
+                    }
+
+                }
+            }
+
+        }
+    }
     override fun onResume() {
         super.onResume()
+        GlobalScope.launch {
+            delay(500)
+            (activity as BottomNavigationActivity).setToolbar()
+            bottomNavViewModel.visibility.set(false)
+            toolbarViewModel.isShowTransparentActionBar.set(true)
+            toolbarViewModel.isShowActionBar.set(false)
+        }
         listenVersionEvents()
+        Log.d("HOME","onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()
@@ -127,6 +173,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
     }
 
     private fun listenVersionEvents() {
@@ -232,7 +279,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
                 }
                 logger.d("PATTERNS=  :  $homeViewModel.homeDataResponse")
-
+                setEventForDeeplink()
             }
             HomeViewModel.Event.OnShowProgress -> {
                 bottomNavViewModel.showProgress.set(true)

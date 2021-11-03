@@ -247,7 +247,8 @@ class AllPatternsFragment(
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
-                    "product" to viewModel.clickedProduct
+                    "product" to viewModel.clickedProduct,
+                    "ISFROM" to "ALLPATTERN"
                 )
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
