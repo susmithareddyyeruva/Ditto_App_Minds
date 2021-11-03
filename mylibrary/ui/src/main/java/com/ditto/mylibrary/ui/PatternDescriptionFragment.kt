@@ -286,7 +286,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setData() {
         viewModel.patternName.set(clickedProduct?.prodName)
-        viewModel.patternDescription.set(clickedProduct?.description)
+        //viewModel.patternDescription.set(clickedProduct?.description)
+        viewModel.patternDescription.set(viewModel?.data?.value?.description?:"Some description")
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }

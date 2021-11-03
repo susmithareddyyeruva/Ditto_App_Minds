@@ -28,6 +28,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     val events = uiEvents.stream()
     var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    var clickedProduct: ProdDomain? = null
     var mutableLiveData: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var errorString: ObservableField<String> = ObservableField("")
     var userId: Int = 0
@@ -53,7 +54,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     var folderToRename: String = ""
     var myFolderDetailHeader: String = ""
 
-    fun onItemClickPattern(id: String, orderNumber: String) {
+    fun onItemClickPattern(id: String, orderNumber: String, pattern: ProdDomain) {
         if (id == "10140549") {
             clickedTailornovaID.set("1")
             clickedOrderNumber.set(orderNumber)
@@ -66,6 +67,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         } else {
             clickedTailornovaID.set(id)
             clickedOrderNumber.set(orderNumber)
+            clickedProduct = pattern
         }
         uiEvents.post(Event.OnMyFolderItemClick)
     }
