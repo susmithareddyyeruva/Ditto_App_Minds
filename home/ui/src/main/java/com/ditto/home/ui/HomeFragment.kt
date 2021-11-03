@@ -340,16 +340,18 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private fun showAlert() {
         val errorMessage = homeViewModel.errorString.get() ?: ""
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            errorMessage,
-            "",
-            getString(R.string.str_ok),
-            this,
-            Utility.AlertType.NETWORK,
-            Utility.Iconype.FAILED
-        )
+        if (requireContext()!=null) {
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                errorMessage,
+                "",
+                getString(R.string.str_ok),
+                this,
+                Utility.AlertType.NETWORK,
+                Utility.Iconype.FAILED
+            )
+        }
     }
 
     private fun setHomeAdapter() {

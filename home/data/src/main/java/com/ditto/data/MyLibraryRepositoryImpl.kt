@@ -23,7 +23,12 @@ import com.ditto.storage.data.database.UserDao
 import core.appstate.AppState
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import core.*
+import core.di.Encrypt
 import core.network.NetworkUtility
+import core.ui.errors.CommonError
 import io.reactivex.Single
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
@@ -51,7 +56,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        return homeService.getHomeScreenDetails(requestData, "Bearer " + AppState.getToken()!!)
+            val input="$EN_USERNAME:$EN_PASSWORD"
+       val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
+        return homeService.getHomeScreenDetails(requestData, "Basic "+encryptedKey)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
                     logger.d("*****FETCH HOME SUCCESS 200 with Error **")
@@ -67,18 +74,51 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
-                var errorMessage = "Error Fetching data"
-                errorMessage = when (it) {
-                    is UnknownHostException -> {
-                        "Unknown host!"
-                    }
-                    is ConnectException -> {
-                        "No Internet connection available !"
-                    }
-                    else -> {
-                        it.localizedMessage
+                var errorMessage = ERROR_FETCH
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    when (it.code()) {
+                        400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
+                            Log.d("LoginError", errorBody)
+                            val gson = Gson()
+                            val type = object : TypeToken<CommonError>() {}.type
+                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
                     }
                 }
+                else{
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
+                    }
+                }
+
                 Result.withError(
                     HomeDataFetchError(errorMessage, it)
                 )
