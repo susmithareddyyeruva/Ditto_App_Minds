@@ -123,7 +123,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             if (NetworkUtility.isNetworkAvailable(context)) {
                 viewModel.fetchPattern()
             } else {
-                viewModel.fetchOfflinePatterns()
+                viewModel.fetchOfflinePatternDetails()
             }
             setUIEvents()
         }else{
