@@ -79,7 +79,8 @@
             android:layout_height="@dimen/size_0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_lay"
-            app:layout_constraintStart_toStartOf="@+id/guide_container_start"
+            android:layout_marginLeft="@dimen/tutorial_content_start"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
