@@ -50,6 +50,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
+    val isFromDeepLinking: ObservableBoolean= ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
     val patternStatus: ObservableField<String> = ObservableField("")
