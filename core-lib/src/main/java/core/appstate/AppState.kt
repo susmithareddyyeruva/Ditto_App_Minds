@@ -47,12 +47,17 @@ object AppState {
     fun setCustID(customerID: String) {
         pref?.saveString(CUST_ID, customerID)
     }
-
+    fun setCustNumber(custno: String) {
+        pref?.saveString(CUST_NO, custno)
+    }
     fun getCustID(): String? {
         val custid = pref?.getString(CUST_ID)
         return custid
     }
-
+    fun getCustNO(): String? {
+        val custNo = pref?.getString(CUST_NO)
+        return custNo
+    }
     fun getEmail(): String {
         val email = pref?.getString(USER_EMAIL)
         return email?:""

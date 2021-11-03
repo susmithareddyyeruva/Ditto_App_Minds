@@ -7,8 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,7 +22,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -37,8 +34,8 @@ import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
-import core.network.NetworkUtility
 import core.data.model.SoftwareUpdateResult
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -112,7 +109,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         //baseViewModel.activeSocketConnection.set(false)
 
-        if (viewModel.data.value == null) {
+        if (arguments?.getString("ISFROM").equals("DEEPLINK")){
+            logger.d("FROM DEEPLINK IN PATTERN DESCRIPTION")
             arguments?.getString("clickedTailornovaID").toString()
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
@@ -124,9 +122,25 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.fetchOfflinePatterns()
             }
             setUIEvents()
-        } else {
-            setPatternImage()
+        }else{
+            if (viewModel.data.value == null) {
+                arguments?.getString("clickedTailornovaID").toString()
+                    ?.let { viewModel.clickedTailornovaID.set(it) }
+                arguments?.getString("clickedOrderNumber").toString()
+                    ?.let { viewModel.clickedOrderNumber.set(it) }
+                bottomNavViewModel.showProgress.set(true)
+                if (NetworkUtility.isNetworkAvailable(context)) {
+                    viewModel.fetchPattern()
+                } else {
+                    viewModel.fetchOfflinePatterns()
+                }
+                setUIEvents()
+            } else {
+                setPatternImage()
+            }
         }
+
+
         outputDirectory = Utility.getOutputDirectory(requireContext())
     }
 
@@ -943,13 +957,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
                 enterWorkspace()
             }
-
-            /*Utility.AlertType.RUNTIMEPERMISSION -> {
-                requestPermissions(
-                    REQUIRED_PERMISSIONS_DOWNLOAD,
-                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                )
-            }*/
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }

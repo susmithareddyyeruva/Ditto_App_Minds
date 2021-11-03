@@ -22,8 +22,8 @@ import com.ditto.logger.LoggerFactory
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
 import core.appstate.AppState
-import core.network.NetworkUtility
 import core.data.model.SoftwareUpdateResult
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -34,6 +34,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -73,6 +76,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -84,7 +88,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         }
         toolbarViewModel.isShowActionBar.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
+
+
 
         /**
          * API call for getting pattern details....
@@ -110,12 +117,56 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             .subscribe {
                 handleEvent(it)
             }
+
+    }
+
+    private fun setEventForDeeplink() {
+        arguments?.getString("DEEPLINK")?.let {
+
+            when (it) {
+                "HOME" -> {
+
+                }
+                "LIBRARY" -> {
+                   logger.d("HOMESCREEN  :LIBRARY")
+                    if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        this.arguments?.clear();
+                        findNavController().navigate(R.id.action_home_to_my_library)
+                    }
+
+                }
+                "DETAIL"->{
+                    logger.d("HOMESCREEN  :DETAIL")
+                    if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                        val designId=  arguments?.getString("clickedID")
+                       val  orderNumber=arguments?.getString("clickedOrderNumber")
+                        logger.d("HOME PATTERN ID =$designId")
+                        val bundle = bundleOf(
+                           "clickedTailornovaID" to designId,"clickedOrderNumber" to orderNumber,
+                            "ISFROM" to "DEEPLINK"
+                        )
+                        this.arguments?.clear();
+                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment,bundle)
+                    }
+
+                }
+            }
+
+        }
     }
 
 
     override fun onResume() {
         super.onResume()
+        GlobalScope.launch {
+            delay(500)
+            (activity as BottomNavigationActivity).setToolbar()
+            bottomNavViewModel.visibility.set(false)
+            toolbarViewModel.isShowTransparentActionBar.set(true)
+            toolbarViewModel.isShowActionBar.set(false)
+        }
         listenVersionEvents()
+        Log.d("HOME","onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()?.let { context?.getPackageManager()?.getPackageInfo(it, 0) }!!
@@ -124,6 +175,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
     }
 
     private fun listenVersionEvents() {
@@ -230,7 +282,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     (recycler_view.adapter as HomeAdapter).notifyDataSetChanged()
                 }
                 logger.d("PATTERNS=  :  $homeViewModel.homeDataResponse")
-
+                setEventForDeeplink()
             }
             HomeViewModel.Event.OnShowProgress -> {
                 bottomNavViewModel.showProgress.set(true)
@@ -250,6 +302,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 bottomNavViewModel.showProgress.set(false)
                 showAlert()
             }
+
         }
 
     private fun showAlert() {
