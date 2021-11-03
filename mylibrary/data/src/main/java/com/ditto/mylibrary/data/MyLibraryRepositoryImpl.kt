@@ -61,11 +61,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input="$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
+        val input = "$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
-            "Basic "+encryptedKey
+            "Basic " + encryptedKey
         )
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
@@ -110,8 +110,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -165,6 +164,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
+                            val errorBody = it.response()!!.errorBody()!!.string()
                             logger.d("onError: BAD REQUEST")
 
                         }
@@ -184,8 +184,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -232,10 +231,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input="$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
+        val input = "$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
         return myLibraryService.getFoldersList(
-            requestdata, "Basic "+encryptedKey,
+            requestdata, "Basic " + encryptedKey,
             method = methodName
         )
             .doOnSuccess {
@@ -250,6 +249,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 Result.withValue(it.toDomain())
             }
             .onErrorReturn {
+                ERROR_FETCH = it.localizedMessage
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
@@ -279,8 +279,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -308,8 +307,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input="$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
+        val input = "$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
         return myLibraryService.addFolder(
             requestdata, "Basic " + encryptedKey,
             method = methodName
@@ -329,6 +328,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
+                ERROR_FETCH = it.localizedMessage
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
@@ -358,8 +358,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -367,10 +366,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         is ConnectException -> {
                             CONNECTION_EXCEPTION
                         }
+
                         else -> {
                             ERROR_FETCH
                         }
                     }
+
                 }
 
                 logger.d(it.localizedMessage)
@@ -387,8 +388,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input="$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
+        val input = "$EN_USERNAME:$EN_PASSWORD"
+        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
         return myLibraryService.renameFolder(
             renameRequest, "Basic " + encryptedKey,
             method = methodName
@@ -409,6 +410,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
             }
             .onErrorReturn {
+                ERROR_FETCH = it.localizedMessage
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
@@ -438,8 +440,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION

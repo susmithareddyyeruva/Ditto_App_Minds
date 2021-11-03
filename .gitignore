@@ -81,4 +81,8 @@ lint/tmp/
 
 .DS_Store
 
+<<<<<<< HEAD
 '.idea'
+=======
+'.idea' 
+>>>>>>> bd4d78299731d800bb100470ba038635260e5edd
