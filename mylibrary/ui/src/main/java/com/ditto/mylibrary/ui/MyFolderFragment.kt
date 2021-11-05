@@ -205,7 +205,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 showAlert()
             }
             is MyFolderViewModel.Event.OnMyFolderShowAlert -> {
-                viewModel.errorString.set("Folder is already exist")
+                viewModel.errorString.set("Folder already exist !")
                 showAlert()
             }
 

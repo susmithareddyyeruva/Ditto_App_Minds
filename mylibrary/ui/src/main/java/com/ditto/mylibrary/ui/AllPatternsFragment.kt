@@ -438,8 +438,8 @@ class AllPatternsFragment(
     private fun addFolder(newFolderName: String, parent: String) {
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             if (parent.equals(viewModel.ADD)) {
-                if (newFolderName.equals("Favorites")  || newFolderName.equals("Owned")) {
-                    viewModel.errorString.set("Folder is already exist")
+                if (newFolderName.toLowerCase().equals("favorites")||newFolderName.toLowerCase().equals("favorite")||newFolderName.toLowerCase().equals("favourite") ||newFolderName.toLowerCase().equals("favourites") || newFolderName.toLowerCase().equals("owned")) {
+                    viewModel.errorString.set("Folder already exist !")
                     showAlert()
 
                 }else{

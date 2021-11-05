@@ -114,7 +114,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             hashMap[folderToDelete] = ArrayList()
         }
 
-            if ((action==rename||action==addFolder)&&(newFolderName.equals("Favorites")  || newFolderName.equals("Owned"))) {
+            if ((action==rename||action==addFolder)&&(newFolderName.toLowerCase().equals("favorites")||newFolderName.toLowerCase().equals("favorite")||newFolderName.toLowerCase().equals("favourite") ||newFolderName.toLowerCase().equals("favourites") || newFolderName.toLowerCase().equals("owned"))) {
                 uiEvents.post(Event.OnMyFolderShowAlert)
             }else{
                 val favReq = FolderRequest(
