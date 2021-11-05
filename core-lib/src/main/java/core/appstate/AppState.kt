@@ -11,6 +11,7 @@ object AppState {
     private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
     private const val APP_VERSION = ""
+    private const val EN_KEY = "key"
 
     fun init(context: Context) {
         pref = PreferenceStorageImpl(context)
@@ -66,6 +67,7 @@ object AppState {
     fun setEmail(email: String) {
         pref?.saveString(USER_EMAIL, email)
     }
+
     fun saveCurrentService(service : Nsdservicedata){
         pref?.saveString(CONNECTED_SERVICE_NAME,service.nsdServiceName)
         pref?.saveString(CONNECTED_SERVICE_HOST,service.nsdSericeHostAddress)
@@ -100,7 +102,13 @@ object AppState {
         val appversion = pref?.getString(APP_VERSION)
         return appversion
     }
-
+    fun getKey(): String? {
+        val key = pref?.getString(EN_KEY)
+        return key
+    }
+    fun saveKey(c_encryptionKey: String) {
+        pref?.saveString(EN_KEY, c_encryptionKey)
+    }
     fun saveAppVersion(version: String) {
         pref?.saveString(APP_VERSION, version)
     }
