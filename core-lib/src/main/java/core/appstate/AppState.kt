@@ -10,7 +10,7 @@ object AppState {
     private const val KEY_TOKEN = "token"
     private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
-    private const val APP_VERSION = ""
+    private const val APP_VERSION = "version"
     private const val EN_KEY = "key"
 
     fun init(context: Context) {
