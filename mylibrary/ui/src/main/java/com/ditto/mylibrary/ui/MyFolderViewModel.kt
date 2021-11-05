@@ -113,42 +113,50 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             methodName = "remove"
             hashMap[folderToDelete] = ArrayList()
         }
-        val favReq = FolderRequest(
-            OrderFilter(
-                true,
-                AppState.getEmail(),
-                purchasedPattern = true,
-                subscriptionList = true,
-                trialPattern = false
-            ),
-            FoldersConfig = hashMap
-        )
 
-
-        if (methodName != "rename") {
-            disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)
-                .subscribeOn(Schedulers.io())
-                .whileSubscribed { isLoading.set(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFolderApiResult(it, product) }
-        } else {
-            val renameReq = FolderRenameRequest(
-                OrderFilterRename(
-                    true,
-                    AppState.getEmail(),
-                    purchasedPattern = true,
-                    subscriptionList = true,
-                    trialPattern = false,
-                    oldname = folderToRename,
-                    newname = newFolderName
+            if ((action==rename||action==addFolder)&&(newFolderName.equals("Favorites")  || newFolderName.equals("Owned"))) {
+                uiEvents.post(Event.OnMyFolderShowAlert)
+            }else{
+                val favReq = FolderRequest(
+                    OrderFilter(
+                        true,
+                        AppState.getEmail(),
+                        purchasedPattern = true,
+                        subscriptionList = true,
+                        trialPattern = false
+                    ),
+                    FoldersConfig = hashMap
                 )
-            )
-            disposable += myLibraryUseCase.renameFolder(renameReq, methodName = methodName)
-                .subscribeOn(Schedulers.io())
-                .whileSubscribed { isLoading.set(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFolderApiResult(it, product) }
-        }
+                if (methodName != "rename") {
+                    disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)
+                        .subscribeOn(Schedulers.io())
+                        .whileSubscribed { isLoading.set(it) }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy { handleFolderApiResult(it, product) }
+                } else {
+                    val renameReq = FolderRenameRequest(
+                        OrderFilterRename(
+                            true,
+                            AppState.getEmail(),
+                            purchasedPattern = true,
+                            subscriptionList = true,
+                            trialPattern = false,
+                            oldname = folderToRename,
+                            newname = newFolderName
+                        )
+                    )
+                    disposable += myLibraryUseCase.renameFolder(renameReq, methodName = methodName)
+                        .subscribeOn(Schedulers.io())
+                        .whileSubscribed { isLoading.set(it) }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy { handleFolderApiResult(it, product) }
+                }
+            }
+
+
+
+
+
 
     }
 
@@ -413,6 +421,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         object OnMyFolderShowProgress : MyFolderViewModel.Event()
         object OnMyFolderHideProgress : MyFolderViewModel.Event()
         object OnMyFolderResultFailed : MyFolderViewModel.Event()
+        object OnMyFolderShowAlert : MyFolderViewModel.Event()
         object NoInternet : MyFolderViewModel.Event()
         object OnMyFolderUpdateFilterImage : MyFolderViewModel.Event()
         object OnMyFolderUpdateDefaultFilter : MyFolderViewModel.Event()

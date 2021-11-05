@@ -437,10 +437,18 @@ class AllPatternsFragment(
 
     private fun addFolder(newFolderName: String, parent: String) {
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.addToFolder(
-                product = viewModel.clickedProduct,
-                folderName = newFolderName
-            )
+            if (parent.equals(viewModel.ADD)) {
+                if (newFolderName.equals("Favorites")  || newFolderName.equals("Owned")) {
+                    viewModel.errorString.set("Folder is already exist")
+                    showAlert()
+
+                }else{
+                    viewModel.addToFolder(
+                        product = viewModel.clickedProduct,
+                        folderName = newFolderName
+                    )
+                }
+            }
         }
     }
 
