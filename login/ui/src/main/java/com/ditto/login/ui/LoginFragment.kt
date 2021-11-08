@@ -176,8 +176,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
                 }
             }
-            is LoginViewModel.Event.OnSeeMoreClicked -> {
-                if (NetworkUtility.isNetworkAvailable(requireContext())) {
+            is LoginViewModel.Event.OnGuestPreviewClicked -> {
+               // if (NetworkUtility.isNetworkAvailable(requireContext())){
                     if (findNavController().currentDestination?.id == R.id.destination_login) {
                         getUserDetails(true)
                         val bundle = bundleOf(
@@ -196,11 +196,11 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     } else {
 
                     }
-                } else {
+                /*} else {
                     bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))
                     showAlert()
-                }
+                }*/
 
             }
             is LoginViewModel.Event.OnLoginFailed -> {

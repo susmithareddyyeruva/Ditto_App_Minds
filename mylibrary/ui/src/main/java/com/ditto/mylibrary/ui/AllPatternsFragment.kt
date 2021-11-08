@@ -177,10 +177,14 @@ class AllPatternsFragment(
                     }
                 }
             } else {
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.isLoading.set(true)
                 viewModel.fetchOfflinePatterns()
             }
-
-
+        }else{
+            bottomNavViewModel.showProgress.set(true)
+            viewModel.isLoading.set(true)
+            viewModel.fetchTrialPatterns()
         }
 
     }
@@ -243,6 +247,7 @@ class AllPatternsFragment(
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+                    "product" to viewModel.clickedProduct,
                     "ISFROM" to "ALLPATTERN"
                 )
                 findNavController().navigate(
@@ -263,12 +268,18 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
-            if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
-                cleaFilterData()
+            if (AppState.getIsLogged()) {
+                if (NetworkUtility.isNetworkAvailable(context)) {
+                    cleaFilterData()
+                } else {
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
+                    viewModel.fetchOfflinePatterns()
+                }
             } else {
-                viewModel.errorString.set(getString(R.string.no_internet_available))
-                showAlert()
-                viewModel.fetchOfflinePatterns()
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.isLoading.set(true)
+                viewModel.fetchTrialPatterns()
             }
             logger.d("OnSyncClick : AllPatternsFragment")
 

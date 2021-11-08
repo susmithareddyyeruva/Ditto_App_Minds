@@ -30,10 +30,12 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
+import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
 import core.network.NetworkUtility
 import core.ui.BaseFragment
@@ -77,6 +79,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
+    var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -109,8 +112,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         //baseViewModel.activeSocketConnection.set(false)
 
-        if (arguments?.getString("ISFROM").equals("DEEPLINK")){
+
+        if (arguments?.getString("ISFROM").equals("DEEPLINK")) {
             logger.d("FROM DEEPLINK IN PATTERN DESCRIPTION")
+            viewModel.isFromDeepLinking.set(true)
             arguments?.getString("clickedTailornovaID").toString()
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
@@ -119,25 +124,36 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             if (NetworkUtility.isNetworkAvailable(context)) {
                 viewModel.fetchPattern()
             } else {
-                viewModel.fetchOfflinePatterns()
+                viewModel.fetchOfflinePatternDetails()
             }
             setUIEvents()
-        }else{
+        } else {
             if (viewModel.data.value == null) {
                 arguments?.getString("clickedTailornovaID").toString()
                     ?.let { viewModel.clickedTailornovaID.set(it) }
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
+                clickedProduct = arguments?.get("product") as ProdDomain?
+                Log.d("12345", "received is ${clickedProduct.toString()}")
                 bottomNavViewModel.showProgress.set(true)
                 if (NetworkUtility.isNetworkAvailable(context)) {
-                    viewModel.fetchPattern()
+                    if (AppState.getIsLogged()) {
+                        if (clickedProduct?.patternType.equals("Trial", true)) {
+                            viewModel.fetchOfflinePatternDetails()
+                        } else {
+                            viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                        }
+                    } else {
+                        viewModel.fetchOfflinePatternDetails()
+                    }
                 } else {
-                    viewModel.fetchOfflinePatterns()
+                    viewModel.fetchOfflinePatternDetails()
                 }
                 setUIEvents()
             } else {
                 setPatternImage()
             }
+
         }
 
 
@@ -204,23 +220,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setUIForLoggedInUser() {
-        setData()
-        when (viewModel.clickedTailornovaID.get()) {
-            "1" -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
-            "4" -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
-            "8" -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
-            "9" -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
-            "10" -> setVisibilityForViews(
-                "RENEW SUBSCRIPTION",
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
-            else -> setVisibilityForViews(
+        if(viewModel.isFromDeepLinking.get()){
+            viewModel.patternName.set(viewModel.data.value?.patternName)
+            viewModel.patternDescription.set(viewModel.data.value?.description)
+            Glide.with(requireContext())
+                .load(viewModel.data.value?.patternDescriptionImageUrl)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(binding.imagePatternDesc)
+
+            setVisibilityForViews(
                 "WORKSPACE",
                 false,
                 false,
@@ -230,15 +238,56 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
+        }else{
+            setData()
+            setVisibilityForViews(
+                "WORKSPACE",
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+            )
+            /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
+                1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+                4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
+                8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
+                9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
+                10 -> setVisibilityForViews(
+                    "RENEW SUBSCRIPTION",
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+                else -> setVisibilityForViews(
+                    "WORKSPACE",
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+            }*/
+            setPatternImage()
         }
-        setPatternImage()
+
+
 
 
     }
 
     private fun setData() {
-        viewModel.patternName.set(viewModel.data.value?.patternName)
-        viewModel.patternDescription.set(viewModel.data.value?.description)
+        viewModel.patternName.set(clickedProduct?.prodName)
+        //viewModel.patternDescription.set(clickedProduct?.description)
+        viewModel.patternDescription.set(viewModel?.data?.value?.description?:"Some description")
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
@@ -559,7 +608,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ) {
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternName)
+                        bundleOf("PatternName" to clickedProduct?.prodName)
                     findNavController().navigate(
                         R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -573,10 +622,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
-                    Log.d("DOWNLOAD", "ENDED >>>>>>>>>>>")
+                    //Log.d("Download", "ENDED >>>>>>>>>>> ")
+                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in if ")
                     checkSocketConnectionBeforeWorkspace()
 
                 } else {
+                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(com.ditto.workspace.ui.R.string.download_failed),
@@ -588,6 +639,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         Utility.Iconype.NONE
                     )
                 }
+            }
+            PatternDescriptionViewModel.Event.OnNoNetworkToDownloadImage -> {
+                bottomNavViewModel.showProgress.set(false)
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    resources.getString(com.ditto.workspace.ui.R.string.download_failed),
+                    resources.getString(com.ditto.workspace.ui.R.string.guest_user_ws_enter_message),
+                    resources.getString(com.ditto.workspace.ui.R.string.empty_string),
+                    resources.getString(com.ditto.workspace.ui.R.string.ok),
+                    this,
+                    Utility.AlertType.DEFAULT,
+                    Utility.Iconype.NONE
+                )
             }
         }
 
@@ -604,7 +668,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
         Glide.with(requireContext())
-            .load(viewModel.data.value?.patternDescriptionImageUrl)
+            .load(clickedProduct?.image)
             .placeholder(R.drawable.ic_placeholder)
             .into(binding.imagePatternDesc)
     }
@@ -726,14 +790,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
+        Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ${clickedProduct?.prodName}")
+
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-            "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
-        ) // todo shri see the pattern pieces
+            "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+            "PatternName" to clickedProduct?.prodName
+        )
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
                 R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
@@ -748,14 +815,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         var hashMap: HashMap<String, String> = HashMap<String, String>()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
-        for (patternItem in viewModel.data.value?.selvages?: emptyList()) {
+        for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
         }
-        for (patternItem in viewModel.data.value?.patternPieces?: emptyList()) {
+        for (patternItem in viewModel.data.value?.patternPieces ?: emptyList()) {
             hashMap[patternItem.thumbnailImageName.toString()] =
                 patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
-            for (splicedImage in patternItem.splicedImages?: emptyList()) {
+            for (splicedImage in patternItem.splicedImages ?: emptyList()) {
                 hashMap[splicedImage.imageName.toString()] = splicedImage.imageUrl.toString()
                 hashMap[splicedImage.mapImageName.toString()] = splicedImage.mapImageUrl.toString()
             }
@@ -1059,8 +1126,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         } else {
             //checkSocketConnectionBeforeWorkspace()
             // todo need dialog to ask for permission
-              Utility.getCommonAlertDialogue(requireContext(),"","Without this permission you will not able to use this feature","",getString(com.ditto.menuitems_ui.R.string.str_ok),this, Utility.AlertType.RUNTIMEPERMISSION
-                  ,Utility.Iconype.NONE)
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                "Without this permission you will not able to use this feature",
+                "",
+                getString(com.ditto.menuitems_ui.R.string.str_ok),
+                this,
+                Utility.AlertType.RUNTIMEPERMISSION,
+                Utility.Iconype.NONE
+            )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
             Log.d("onReqPermissionsResult", "permission denied")
         }

@@ -54,7 +54,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 inflater
             ).also {
                 arguments?.getString("clickedTailornovaID")?.let { viewModel.patternId.set(it) }
-                arguments?.getString("clickedOrderNumber")?.let { viewModel.clickedOrderNumber.set(it) }
+                arguments?.getString("clickedOrderNumber")
+                    ?.let { viewModel.clickedOrderNumber.set(it) }
+                arguments?.getString("PatternName")?.let { viewModel.patternName.set(it) }
+                Log.d("imageUri12345", "PatternName: ${viewModel.patternName.get()}")
             }
         }
         return binding.root
@@ -68,10 +71,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             logger.d("TRACE: Setting progress")
             Utility.progressCount.set(0)
             Utility.mPatternPieceList.clear()
-            Utility.isDoubleTapTextVisible.set(true)
+//            Utility.isDoubleTapTextVisible.set(true)
             showProgress(true)
-//            viewModel.fetchTailernovaDetails("30644ba1e7aa41cfa9b17b857739968a") // fetching data from internal DB
-            viewModel.fetchTailernovaDetails(viewModel.patternId.get()?:"") // fetching data from internal DB
+            //viewModel.fetchTailernovaDetails("30644ba1e7aa41cfa9b17b857739968a") // fetching data from internal DB
+            viewModel.fetchTailernovaDetails(
+                viewModel.patternId.get() ?: ""
+            ) // fetching data from internal DB
         }
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -100,6 +105,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             val garmentBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.garments),
                 PATTERN_ID to viewModel.patternId.get(),
+                PATTERN_NAME to viewModel.patternName.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentGarment = WorkspaceTabFragment()
@@ -108,6 +114,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             val liningBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.lining),
                 PATTERN_ID to viewModel.patternId.get(),
+                PATTERN_NAME to viewModel.patternName.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentLining = WorkspaceTabFragment()
@@ -116,6 +123,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             val interfacingBundle = bundleOf(
                 PATTERN_CATEGORY to getString(R.string.interfacing),
                 PATTERN_ID to viewModel.patternId.get(),
+                PATTERN_NAME to viewModel.patternName.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get()
             )
             fragmentInterface = WorkspaceTabFragment()
@@ -123,7 +131,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
             workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
             workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
-            workspacAdapter.addFragment(fragmentInterface,getString(R.string.interfacing))//Interfacing
+            workspacAdapter.addFragment(
+                fragmentInterface,
+                getString(R.string.interfacing)
+            )//Interfacing
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
@@ -173,11 +184,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun updateData() {
         if (viewModel.selectedTab.get() == 0) {
-            viewModel.data.value?.garmetWorkspaceItemOfflines = fragmentGarment.fetchWorkspaceData(0)
+            viewModel.data.value?.garmetWorkspaceItemOfflines =
+                fragmentGarment.fetchWorkspaceData(0)
         } else if (viewModel.selectedTab.get() == 1) {
             viewModel.data.value?.liningWorkspaceItemOfflines = fragmentLining.fetchWorkspaceData(1)
         } else {
-            viewModel.data.value?.interfaceWorkspaceItemOfflines = fragmentInterface.fetchWorkspaceData(2)
+            viewModel.data.value?.interfaceWorkspaceItemOfflines =
+                fragmentInterface.fetchWorkspaceData(2)
         }
         fragmentGarment.updateTabData(viewModel.data.value)
         fragmentLining.updateTabData(viewModel.data.value)
@@ -278,7 +291,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnDataUpdated -> {
-                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
+                Log.d("OnDataUpdated", " WSFragment OnDataUpdated")
                 clearWorkspace()
                 updateTab()
                 fragmentGarment.updateTabDataAndShowToUI(viewModel.data.value)
@@ -368,6 +381,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     companion object {
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
+        private const val PATTERN_NAME = "PatternName"
         private const val ORDER_NO = "clickedOrderNumber"
     }
 

@@ -295,7 +295,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         )
     }
 
-    private fun setTabsAdapter() {
+     fun setTabsAdapter() {
         Log.d(
             "Testing",
             ">>>>>>   MyLibraryFragment setTabsAdapter count  :" + binding.viewPager.adapter?.count
@@ -528,7 +528,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     override fun onPause() {
         super.onPause()
-        Log.d("Testing", ">>>>>>   All Patterns  onPause ")
+        Log.d("Testing", ">>>>>>   My LibraryFragment  onPause ")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }

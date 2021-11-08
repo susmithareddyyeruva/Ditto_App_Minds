@@ -54,6 +54,7 @@ class WorkspaceViewModel @Inject constructor(
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     var patternId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")
+    var patternName: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
@@ -320,11 +321,17 @@ class WorkspaceViewModel @Inject constructor(
     private fun handleTailernovaResult(result: Result<OfflinePatternData>?) {
         when (result) {
             is Result.OnSuccess -> {
-                // Fetching workspace data from SFCC server
-                fetchWorkspaceDataFromAPI(
-                    result,
-                    "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
-                )
+                if (AppState.getIsLogged()) {
+                    // Fetching workspace data from SFCC server
+                    fetchWorkspaceDataFromAPI(
+                        result,
+                        "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
+                    )
+                } else {
+                    data.value = combineTailornovaAndSFCCDetails(result)
+                    setWorkspaceView()
+                    uiEvents.post(Event.HideProgressLoader)
+                }
                 Log.d("WorkspaceViewModel", "Tailernova Success $result")
             }
             is Result.OnError -> handleError(result.error)
@@ -333,6 +340,7 @@ class WorkspaceViewModel @Inject constructor(
 
     //error handler for data fetch related flow
     fun handleError(error: Error) {
+        uiEvents.post(Event.HideProgressLoader)
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
             is GetWorkspaceApiFetchError -> {
@@ -342,7 +350,7 @@ class WorkspaceViewModel @Inject constructor(
                 }
             }
             else -> {
-                Log.d("handleError", "WorkspaceViewModel")
+                Log.d("handleError", "WorkspaceViewModel else")
             }
         }
     }
@@ -888,7 +896,7 @@ class WorkspaceViewModel @Inject constructor(
                         downloadEachPatternPiece(
                             imageUrl = value,
                             filename = key,
-                            patternFolderName = data.value?.patternName ?: "Pattern Piece"
+                            patternFolderName = patternName.get() ?: "Pattern Piece"
                         )
                     }
                 }
@@ -933,7 +941,7 @@ class WorkspaceViewModel @Inject constructor(
             val availableUri = key.let {
                 core.ui.common.Utility.isImageFileAvailable(
                     it,
-                    "${data.value?.patternName}"
+                    "${patternName.get()}"
                 )
             }
             if (availableUri == null) {

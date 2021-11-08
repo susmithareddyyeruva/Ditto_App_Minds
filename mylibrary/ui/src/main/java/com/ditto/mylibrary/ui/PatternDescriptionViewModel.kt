@@ -15,6 +15,7 @@ import com.ditto.mylibrary.domain.model.PatternIdData
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
+import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,27 +35,31 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class PatternDescriptionViewModel @Inject constructor(private val context: Context,
-                                                      val utility: Utility,
-                                                      private val getPattern: MyLibraryUseCase) :
+class PatternDescriptionViewModel @Inject constructor(
+    private val context: Context,
+    val utility: Utility,
+    private val getPattern: MyLibraryUseCase
+) :
     BaseViewModel() {
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
-//    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
+
+    //    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     val clickedTailornovaID: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
+    val isFromDeepLinking: ObservableBoolean= ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
     val patternStatus: ObservableField<String> = ObservableField("")
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
-    val resumeOrSubscription : ObservableField<String> =ObservableField("RESUME")
+    val resumeOrSubscription: ObservableField<String> = ObservableField("RESUME")
     val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
-    val isStatusLayoutVisible: ObservableBoolean= ObservableBoolean(false)
+    val isStatusLayoutVisible: ObservableBoolean = ObservableBoolean(false)
     val showActive: ObservableBoolean = ObservableBoolean(false)
     val showPurchased: ObservableBoolean = ObservableBoolean(false)
     val showLine: ObservableBoolean = ObservableBoolean(false)
@@ -76,9 +81,9 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     //fetch data from offline
-    fun fetchOfflinePatterns() {
-//        disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
-        disposable += getPattern.getOfflinePatternById(clickedTailornovaID.get()?:"")
+    fun fetchOfflinePatternDetails() {
+        //disposable += getPattern.getOfflinePatternById("30644ba1e7aa41cfa9b17b857739968a")
+        disposable += getPattern.getOfflinePatternById(clickedTailornovaID.get().toString())
             .delay(600, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -96,8 +101,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     }
 
     fun fetchPattern() {
-//        disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
-        disposable += getPattern.getPattern(clickedTailornovaID.get()?:"")
+        //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
+        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -118,15 +123,14 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
      * [Function] ViewPager Previous Button Click
      */
     fun onClickWorkSpace() {
-        if(resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION"){
+        if (resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION") {
             uiEvents.post(Event.onSubscriptionClicked)
-        }else if(resumeOrSubscription.get().toString()=="WORKSPACE"){
+        } else if (resumeOrSubscription.get().toString() == "WORKSPACE") {
             uiEvents.post(Event.OnWorkspaceButtonClicked)
-        }else{
+        } else {
             uiEvents.post(Event.OnWorkspaceButtonClicked)
         }
     }
-
 
 
     fun onClickInstructions() {
@@ -149,15 +153,16 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         object OnDownloadComplete : Event()
         object OnDataloadFailed : Event()
         object OnImageDownloadComplete : Event()
+        object OnNoNetworkToDownloadImage : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun downloadPDF(url: String, filename: String, patternFolderName: String?){
-        performtask(url,filename,patternFolderName)
+    suspend fun downloadPDF(url: String, filename: String, patternFolderName: String?) {
+        performtask(url, filename, patternFolderName)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun performtask(url: String, filename: String, patternFolderName: String?){
+    suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
 
         withContext(Dispatchers.IO) {
 
@@ -178,9 +183,9 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
                 return@withContext
             }
             inputStream = conn.inputStream
-            if(inputStream != null)
-                //result = convertInputStreamToFile(inputStream,filename,patternFolderName?.replace(" ",""))
-                result = convertInputStreamToFile(inputStream,filename,patternFolderName)
+            if (inputStream != null)
+            //result = convertInputStreamToFile(inputStream,filename,patternFolderName?.replace(" ",""))
+                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
@@ -191,9 +196,9 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         inputStream: InputStream,
         filename: String, patternFolderName: String?
     ): File? {
-        var result : File? = null
-        val outputFile : File? = null
-        var dittofolder : File? = null
+        var result: File? = null
+        val outputFile: File? = null
+        var dittofolder: File? = null
 
         val contextWrapper = ContextWrapper(context)
 
@@ -213,7 +218,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
             dittofolder.mkdir()
         }
 
-        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}"
+        val filename =
+            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
         result = File(dittofolder, filename)
         if (!result.exists()) {
             result.createNewFile()
@@ -228,7 +234,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
                 inputStream.copyTo(fileOut)
             }
         } catch (e: Exception) {
-            Log.d("Error","",e)
+            Log.d("Error", "", e)
         }
     }
 
@@ -238,22 +244,26 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         Log.d("Download", "Hashmap size: ${hashMap}")
         temp.clear()
         if (!hashMap.isEmpty()) {
-            GlobalScope.launch {
+            if (NetworkUtility.isNetworkAvailable(context)) {
+                GlobalScope.launch {
 
-                runBlocking {
-                    hashMap.forEach { (key, value) ->
-                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                                if(!(key.isNullOrEmpty())){
-                                    downloadEachPatternPiece(
-                                        imageUrl = value,
-                                        filename = key,
-                                        patternFolderName = patternName.get() ?: "Pattern Piece"
-                                    )
-                                }
+                    runBlocking {
+                        hashMap.forEach { (key, value) ->
+                            Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                            if (!(key.isNullOrEmpty())) {
+                                downloadEachPatternPiece(
+                                    imageUrl = value,
+                                    filename = key,
+                                    patternFolderName = patternName.get() ?: "Pattern Piece"
+                                )
+                            }
 
+                        }
                     }
+                    uiEvents.post(Event.OnImageDownloadComplete)
                 }
-                uiEvents.post(Event.OnImageDownloadComplete)
+            } else {
+                uiEvents.post(Event.OnNoNetworkToDownloadImage)
             }
         } else {
             uiEvents.post(Event.OnImageDownloadComplete)
@@ -329,7 +339,7 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
     fun imageFilesToDownload(hashMap: HashMap<String, String>): HashMap<String, String> {
         imagesToDownload.clear()
         hashMap.forEach { (key, value) ->
-            if(!(key.isNullOrEmpty())) {
+            if (!(key.isNullOrEmpty())) {
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
@@ -344,7 +354,8 @@ class PatternDescriptionViewModel @Inject constructor(private val context: Conte
         }
         return imagesToDownload
     }
-    fun versionCheck(){
+
+    fun versionCheck() {
         utility.checkVersion()
     }
 }

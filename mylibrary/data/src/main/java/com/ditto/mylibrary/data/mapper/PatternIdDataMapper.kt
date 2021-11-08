@@ -81,7 +81,7 @@ internal fun PatternIdData.toDomain(): OfflinePatterns {
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         patternDescriptionImageUrl = this.patternDescriptionImageUrl,
         selvages = this.selvages?.map { it.toDomain() },
-        patternPieces = this.patternPieces?.map { it.toDomain() },
+        patternPiecesFromTailornova = this.patternPieces?.map { it.toDomain() },
         brand = this.brand,
         size = this.size,
         gender = this.gender,
@@ -103,7 +103,7 @@ fun PatternPieceData.toDomain(): com.ditto.mylibrary.domain.model.PatternPieceDa
         thumbnailImageName = this.thumbnailImageName,
         thumbnailImageUrl = this.thumbnailImageUrl,
         isSpliced = this.isSpliced,
-        isMirrorOption = this.isMirrorOption,
+        mirrorOption = this.isMirrorOption,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
         size = this.size,
@@ -127,7 +127,7 @@ fun com.ditto.mylibrary.domain.model.PatternPieceData.toDomain(): PatternPieceDa
         thumbnailImageUrl = this.thumbnailImageUrl,
         thumbnailImageName = this.thumbnailImageName,
         isSpliced = this.isSpliced,
-        isMirrorOption = this.isMirrorOption,
+        isMirrorOption = this.mirrorOption,
         pieceNumber = this.pieceNumber,
         positionInTab = this.positionInTab,
         size = this.size,
@@ -139,8 +139,6 @@ fun com.ditto.mylibrary.domain.model.PatternPieceData.toDomain(): PatternPieceDa
     )
 
 }
-/*PatternPieceData>>PatternPieceData
-s>>m*/
 
 fun com.ditto.storage.data.model.SplicedImageData.toDomain(): SplicedImageData {
     return SplicedImageData(
@@ -224,9 +222,9 @@ internal fun OfflinePatterns.toPatternIDDomain(): PatternIdData {
         orderCreationDate = this.orderCreationDate,
         orderModificationDate = this.orderModificationDate,
         patternDescriptionImageUrl = this.patternDescriptionImageUrl,
-        patternPieces = emptyList(),
+        patternPieces = this.patternPiecesFromTailornova?.map { it.toDomain() },
         season = "",
-        selvages = emptyList(),
+        selvages = this.selvages?.map { it.toDomain() },
         size = this.size,
         suitableFor = this.suitableFor,
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,

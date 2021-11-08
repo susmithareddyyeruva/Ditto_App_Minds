@@ -23,7 +23,7 @@ data class OfflinePatternData(
     var thumbnailEnlargedImageName: String?,
     var patternDescriptionImageUrl: String?,
     var selvages: List<SelvageDomain>? = emptyList(),
-    var patternPieces: List<PatternPieceDataDomain>? = emptyList(),
+    var patternPiecesTailornova: List<PatternPieceDataDomain>? = emptyList(),
     var brand: String? = "",
     var size: String? = "",
     var gender: String? = "",

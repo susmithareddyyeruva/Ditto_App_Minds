@@ -114,6 +114,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(PATTERN_ID)?.let { viewModel.patternId.set(it) }
         arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
+        arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
+
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }
@@ -160,13 +162,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.imageSelvageHorizontal.setOnClickListener(object : DoubleClickListener(),
             View.OnClickListener {
             override fun onDoubleClick(v: View) {
-                showPinchZoomPopup(
-                    requireContext(),
-                    viewModel.referenceImage.get(),
-                    true,
-                    isFromWS = true,
-                    viewModel.data.value?.patternName
-                )
+                showPinchZoomPopup(requireContext(), viewModel.referenceImage.get(), true,isFromWS = true,viewModel.patternName.get())
             }
         })
     }
@@ -452,14 +448,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             showSpliceReference(splicePiece)
             return
         }
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.garments) }?.size ?: 0 > 0 &&
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory.equals( getString(R.string.garments),true) }?.size ?: 0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
             val garments =
                 viewModel.data.value?.selvages?.filter {
-                    it.tabCategory == getString(
+                    it.tabCategory.equals( getString(
                         R.string.garments
-                    )
+                    ),true)
                 }
             if (garments?.size == 2) {
                 binding.txtSize45.isEnabled = true
@@ -530,15 +526,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
 
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.lining) }
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory .equals( getString(R.string.lining),true) }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
         ) {
             val lining =
                 viewModel.data.value?.selvages?.filter {
-                    it.tabCategory == getString(
+                    it.tabCategory .equals( getString(
                         R.string.lining
-                    )
+                    ),true)
                 }
             lining?.get(0)?.imagePath?.let {
 /*
@@ -567,15 +563,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.referenceImage.set(lining?.get(0)?.imageName)
         }
 
-        if (viewModel.data.value?.selvages?.filter { it.tabCategory == getString(R.string.interfacing) }
+        if (viewModel.data.value?.selvages?.filter { it.tabCategory .equals( getString(R.string.interfacing),true) }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
         ) {
             val interfacing =
                 viewModel.data.value?.selvages?.filter {
-                    it.tabCategory == getString(
+                    it.tabCategory.equals( getString(
                         R.string.interfacing
-                    )
+                    ),true)
                 }
             interfacing?.get(0)?.imagePath?.let {
                 /*binding.imageSelvageHorizontal.setImageDrawable(
@@ -605,9 +601,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     // todo
-    fun fetchWorkspaceData(selectedTab: Int): MutableList<WorkspaceItems>? {
+    fun fetchWorkspaceData(selectedTab:Int): MutableList<WorkspaceItems>? {
 
-        if (selectedTab == 0) {
+        if ( selectedTab == 0) {
             viewModel.data.value?.garmetWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
             return viewModel.data.value?.garmetWorkspaceItemOfflines
@@ -768,7 +764,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
-                Log.d("OnDataUpdated", " WSFragment OnDataUpdated")
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 setSelvageImage()
                 getScaleFactor()
                 setInitialProgressCount()
@@ -812,7 +808,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true)
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -829,7 +825,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true);
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -845,7 +841,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true);
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -861,7 +857,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true)
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -888,7 +884,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.data.value?.patternName)
+                        bundleOf("PatternName" to viewModel.patternName.get())
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -930,7 +926,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     for (workspaceItem in workspaceItems) {
                         i++
                         viewModel.workspacedata = workspaceItem
-                        showToWorkspace(i == workspaceItems.size, false, workspaceItem, false)
+                        showToWorkspace(i == workspaceItems.size, false,workspaceItem,false)
                     }
                 } else {
                     logger.d("workspace item is null")
@@ -994,9 +990,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                  */
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
-                    Log.d("DOWNLOAD", "ENDED >>>>>>>>>>>")
+                    Log.d("DOWNLOAD","ENDED >>>>>>>>>>>")
                     showSaveAndExitPopup()
-                } else {
+                }else{
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(R.string.download_failed),
@@ -1053,43 +1049,43 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun downloadPatternPieces() {
         if (!baseViewModel.isProjecting.get()) {
-            binding.buttonSaveAndExit.isEnabled = false
-            val map = getPatternPieceListTailornova()
-            if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                if (dowloadPermissonGranted()) {
-                    bottomNavViewModel.showProgress.set(true)
-                    viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
-                } else {
-                    requestPermissions(
-                        REQUIRED_PERMISSIONS_DOWNLOAD,
-                        REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                    )
+                    binding.buttonSaveAndExit.isEnabled = false
+                    val map = getPatternPieceListTailornova()
+                    if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
 
+                        }
+                    } else {
+                        //no internet available
+                        showProgress(false)
+                        Utility.getCommonAlertDialogue(
+                            requireContext(),
+                            resources.getString(R.string.api_failed),
+                            resources.getString(R.string.api_failed_message),
+                            resources.getString(R.string.empty_string),
+                            resources.getString(R.string.ok),
+                            this@WorkspaceTabFragment,
+                            Utility.AlertType.UPDATEAPIFAILED,
+                            Utility.Iconype.NONE
+                        )
+                    }
+                } else {
+                    showWaitingMessage("Projection is under process.. Please wait")
                 }
-            } else {
-                //no internet available
-                showProgress(false)
-                Utility.getCommonAlertDialogue(
-                    requireContext(),
-                    resources.getString(R.string.api_failed),
-                    resources.getString(R.string.api_failed_message),
-                    resources.getString(R.string.empty_string),
-                    resources.getString(R.string.ok),
-                    this@WorkspaceTabFragment,
-                    Utility.AlertType.UPDATEAPIFAILED,
-                    Utility.Iconype.NONE
-                )
-            }
-        } else {
-            showWaitingMessage("Projection is under process.. Please wait")
-        }
     }
 
     fun updateTabData(patternsData: PatternsData?) {
         viewModel.data.value = patternsData
     }
 
-    fun updateTabDataAndShowToUI(patternsData: PatternsData?) {
+    fun updateTabDataAndShowToUI(patternsData: PatternsData?){
         viewModel.data.value = patternsData
         viewModel.setWorkspaceView()
     }
@@ -1214,7 +1210,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true, viewModel.workspacedata, false)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1271,7 +1267,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true, viewModel.workspacedata, false)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         }
                     }
                 }
@@ -1508,8 +1504,22 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
-        viewModel.saveProject()
-        context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+        if(AppState.getIsLogged()) {
+            viewModel.saveProject()
+            context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+        }else{
+
+            core.ui.common.Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                getString(R.string.guest_user_ws_exit_message),
+                "",
+                getString(R.string.str_ok),
+                this,
+                core.ui.common.Utility.AlertType.UPDATEAPIFAILED,
+                core.ui.common.Utility.Iconype.NONE
+            )
+        }
     }
 
     override fun onExitButtonClicked() {
@@ -1566,7 +1576,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSaveAndExitPopup() {
         baseViewModel.isSaveExitButtonClicked.set(false)
-        onSaveButtonClicked(viewModel.data.value?.patternName.toString(), false)
+        onSaveButtonClicked(viewModel.patternName.get() ?: "", false)
     }
 
     private fun getScaleFactor() {
@@ -1580,29 +1590,20 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun setInitialProgressCount() {
         if (viewModel.tabCategory.equals("Garment")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.garment ?: 0)
-            viewModel.completedPieces.set(
-                viewModel.data.value?.numberOfCompletedPiece?.garment ?: 0
-            )
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.garment ?: 0)
         } else if (viewModel.tabCategory.equals("Lining")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.lining ?: 0)
             viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.lining ?: 0)
         } else if (viewModel.tabCategory.equals("Interfacing")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.`interface` ?: 0)
-            viewModel.completedPieces.set(
-                viewModel.data.value?.numberOfCompletedPiece?.`interface` ?: 0
-            )
+            viewModel.completedPieces.set(viewModel.data.value?.numberOfCompletedPiece?.`interface` ?: 0)
         }
     }
 
     /*
     Displaying pieces in Workspace
      */
-    private fun showToWorkspace(
-        showProjection: Boolean,
-        isDraggedPiece: Boolean,
-        workspaceItem: WorkspaceItems?,
-        isSpliceArrowClicked: Boolean
-    ) {
+    private fun showToWorkspace(showProjection: Boolean, isDraggedPiece: Boolean,workspaceItem: WorkspaceItems?, isSpliceArrowClicked: Boolean) {
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
@@ -1664,10 +1665,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             workSpaceImageData.scaleFactor,
                             workSpaceImageData.showProjection,
                             workSpaceImageData.isDraggedPiece,
-                            viewModel.data.value?.patternName,
+                            viewModel.patternName.get(),
                             this@WorkspaceTabFragment
                         )
-                        if (isSpliceArrowClicked) {
+                        if(isSpliceArrowClicked){
                             mWorkspaceEditor?.highlightSplicePiece()
                         }
                     }
@@ -1682,11 +1683,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
 
+
+
     private fun showSpliceReference(spliceImages: SpliceImages?) {
-        Log.d(
-            "mapImageUrl123",
-            "mapImageName: ${spliceImages?.mapImageName}  ===  mapImageUrl:  ${spliceImages?.mapImageUrl} "
-        )
+        Log.d("mapImageUrl123","mapImageName: ${spliceImages?.mapImageName}  ===  mapImageUrl:  ${spliceImages?.mapImageUrl} ")
         spliceImages?.mapImageUrl.let {
             getBitmapFromSvgPngDrawable(
                 spliceImages?.mapImageName,
@@ -1800,11 +1800,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             var bitmap: Bitmap? = null
             runBlocking {
-                val job: Job = GlobalScope.launch {
+                 val job : Job = GlobalScope.launch {
                     try {
                         bitmap =
-                                /*if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else*/
-                            imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
+                        /*if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else*/ imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
                         withContext(Dispatchers.Main) {
                             if (imagename != null) {
                                 val matrix = Matrix()
@@ -1856,6 +1855,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     companion object {
         private const val PROJECTING_TIME = 10
         private const val PATTERN_CATEGORY = "PatternCategory"
+        private const val PATTERN_NAME = "PatternName"
         private const val PATTERN_ID = "PatternId"
         private const val ORDER_NO = "clickedOrderNumber"
         private const val SPLICE_NO = "NO"
@@ -1945,13 +1945,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         IntArray
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
+            Log.d("onReqPermissionsResult","permission granted")
             val map = getPatternPieceListTailornova()
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
-            } else {
+            }else{
                 Utility.getCommonAlertDialogue(
                     requireContext(),
                     "",
@@ -1959,13 +1959,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     "",
                     getString(R.string.str_ok),
                     this,
-                    Utility.AlertType.NETWORK,
+                    Utility.AlertType.NETWORK
+                    ,
                     Utility.Iconype.FAILED
                 )
             }
-        } else {
+        }else {
             showSaveAndExitPopup()
-            Log.d("onReqPermissionsResult", "permission denied")
+            Log.d("onReqPermissionsResult","permission denied")
         }
 
     }
@@ -2275,7 +2276,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 moveToLibrary()
             }
             Utility.AlertType.DOWNLOADFAILED -> {
-                showSaveAndExitPopup()
+               showSaveAndExitPopup()
             }
         }
 
@@ -2312,7 +2313,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.cutType = Utility.AlertType.CUT_BIN
             }
             Utility.AlertType.DOWNLOADFAILED -> {
-                Toast.makeText(requireContext(), "pending put download code", Toast.LENGTH_LONG)
+                Toast.makeText(requireContext(),"pending put download code",Toast.LENGTH_LONG)
                 val map = getPatternPieceListTailornova()
                 viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
@@ -2335,17 +2336,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun getBitmapFromSvgPngDrawable(imageName: String): Bitmap? {
         var availableUri: Uri? = null
-        //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-        availableUri =
-            Utility.isImageFileAvailable(imageName, "${viewModel.data.value?.patternName}")
-        Log.d("imageUri123", " availableUri: $availableUri")
-        //}
+        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.patternName.get()}")
+        Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri")
         return if (imageName.endsWith(".svg", true)) {
             Glide
                 .with(context)
-                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */
-                    availableUri/*)*/
-                )
+                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */availableUri/*)*/)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -2355,9 +2351,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else if (imageName.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */
-                    availableUri/*)*/
-                )
+                .load(/*(if(NetworkUtility.isNetworkAvailable(requireContext())) imagePath else */availableUri/*)*/)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -2376,9 +2370,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-        availableUri =
-            Utility.isImageFileAvailable(imageName, "${viewModel.data.value?.patternName}")
-        Log.d("imageUri123", " availableUri: $availableUri >>>> ")
+        availableUri = Utility.isImageFileAvailable(imageName,"${viewModel.patternName.get()}")
+        Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri >>>> ")
         //}
 
         if (imageName?.endsWith(".svg", true)!!) {

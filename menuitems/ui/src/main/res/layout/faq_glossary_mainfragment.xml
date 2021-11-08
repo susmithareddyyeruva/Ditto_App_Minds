@@ -72,7 +72,6 @@
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="bottom"
             app:tabMode="scrollable"
-            app:tabMaxWidth="132dp"
             app:tabMinWidth="132dp"
             app:tabPaddingEnd="@dimen/dimen_0"
             app:tabPaddingStart="@dimen/dimen_0"

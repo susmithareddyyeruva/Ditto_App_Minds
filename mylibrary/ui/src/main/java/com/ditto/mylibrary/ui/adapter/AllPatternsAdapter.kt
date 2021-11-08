@@ -116,7 +116,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         var availableUri: Uri? = null
         if(!(NetworkUtility.isNetworkAvailable(context))){
             availableUri = Utility.isImageFileAvailable(imagePath,"${foldername}")
-            Log.d("imageUri123", " availableUri: $availableUri")
+            Log.d("imageUri123", " $foldername availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide

@@ -85,7 +85,8 @@ class Utility @Inject constructor(
         UPDATEAPIFAILED,
         DOWNLOADFAILED,
         RUNTIMEPERMISSION,
-        SOFTWARE_UPDATE
+        SOFTWARE_UPDATE,
+        GUEST_MYFOLDER
     }
 
     enum class Iconype {

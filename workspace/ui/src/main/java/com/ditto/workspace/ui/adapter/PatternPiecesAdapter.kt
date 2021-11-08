@@ -184,8 +184,8 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
         var availableUri:Uri? = null
         if(!(NetworkUtility.isNetworkAvailable(context))){
-            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.data.value?.patternName}")
-            Log.d("imageUri123", " availableUri: $availableUri")
+            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.patternName.get()}")
+            Log.d("imageUri123", " \${viewModel.patternName.get()} availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide
