@@ -12,6 +12,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
@@ -50,7 +51,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
-    val isFromDeepLinking: ObservableBoolean= ObservableBoolean(false)
+    val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
     val patternStatus: ObservableField<String> = ObservableField("")
@@ -250,7 +251,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     runBlocking {
                         hashMap.forEach { (key, value) ->
                             Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                            if (!(key.isNullOrEmpty())) {
+                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
                                 downloadEachPatternPiece(
                                     imageUrl = value,
                                     filename = key,

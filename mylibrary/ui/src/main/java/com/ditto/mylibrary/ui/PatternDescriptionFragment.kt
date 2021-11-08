@@ -1,3 +1,4 @@
+
 package com.ditto.mylibrary.ui
 
 import android.Manifest
@@ -79,7 +80,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
-    var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -859,9 +859,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-            Utility.AlertType.DOWNLOADFAILED -> {
-                checkSocketConnectionBeforeWorkspace()
-            }
         }
     }
 
@@ -961,11 +958,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
             }
-            alertType == Utility.AlertType.DOWNLOADFAILED -> {
-                Toast.makeText(requireContext(), "pending put download code", Toast.LENGTH_LONG)
-                val map = getPatternPieceListTailornova()
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
-            }
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
@@ -1028,6 +1020,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
+            Utility.AlertType.DOWNLOADFAILED -> {
+                bottomNavViewModel.showProgress.set(false)
+                checkSocketConnectionBeforeWorkspace()
+            }
+
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.version_update == true) {
@@ -1078,6 +1075,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if (versionResult?.response?.force_update == true) {
                     requireActivity().finishAffinity()
                 }
+            }
+            alertType == Utility.AlertType.DOWNLOADFAILED -> {
+                val map = getPatternPieceListTailornova()
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
         }
     }

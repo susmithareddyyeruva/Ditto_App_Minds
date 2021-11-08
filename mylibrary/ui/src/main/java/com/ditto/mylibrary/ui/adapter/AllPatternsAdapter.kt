@@ -1,8 +1,6 @@
 package com.ditto.mylibrary.ui.adapter
 
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
