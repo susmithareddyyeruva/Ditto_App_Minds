@@ -89,6 +89,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
+        bottomNavViewModel.isShownCoachMark.set(AppState.isShownCoachMark())
         (activity as BottomNavigationActivity)?.refreshMenuItem()
         (activity as BottomNavigationActivity)?.setEmaildesc()
         if (AppState.getIsLogged()) {

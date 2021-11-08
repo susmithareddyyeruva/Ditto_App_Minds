@@ -56,7 +56,7 @@ import javax.inject.Inject
  * Main Bottom Navigation Activity launcher class holding navHost and initial position at Splash.
  */
 class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
-    NavigationView.OnNavigationItemSelectedListener,Utility.CustomCallbackDialogListener {
+    NavigationView.OnNavigationItemSelectedListener, Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
@@ -106,7 +106,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
          */
         handleIntent(intent)
         binding.toolbar.setNavigationOnClickListener {
-            Log.d("NAVIGTAION","HERE=====")
+            Log.d("NAVIGTAION", "HERE=====")
         }
 
     }
@@ -115,7 +115,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         super.onNewIntent(intent)
         handleIntent(intent)
     }
-    fun  setToolbar(){
+
+    fun setToolbar() {
         setSupportActionBar(binding.toolbar)
     }
 
@@ -144,8 +145,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                         // PATTERN LIBRARY
                         if (AppState.getIsLogged()) {
                             val userId = appLinkData?.getQueryParameter("userId")
-                            Log.d("DEEPLINK","USER ID :$userId")
-                            if (userId.equals(AppState.getCustNO())){
+                            Log.d("DEEPLINK", "USER ID :$userId")
+                            if (userId.equals(AppState.getCustNO())) {
                                 val bundle = bundleOf(
                                     "DEEPLINK" to "LIBRARY"
                                 )
@@ -154,8 +155,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                                     bundle
                                 )
                                 return
-                            }else{
-                              showAlert("Customer doesn't match !")
+                            } else {
+                                showAlert("Customer doesn't match !")
                             }
                         }
 
@@ -175,14 +176,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                                 Log.d("DEEPLINK", " ORDER ID=$orderId")
 
                                 val bundle = bundleOf(
-                                    "DEEPLINK" to "DETAIL", "clickedID" to designId,"clickedOrderNumber" to orderId
+                                    "DEEPLINK" to "DETAIL",
+                                    "clickedID" to designId,
+                                    "clickedOrderNumber" to orderId
                                 )
                                 Log.d("PATTERN ID", "$designId")
                                 navController.navigate(
                                     R.id.action_splashActivity_to_HomeFragment,
                                     bundle
                                 )
-                            }else{
+                            } else {
                                 showAlert("Customer doesn't match !")
                             }
                         }
@@ -662,10 +665,20 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
+
     private fun showAlert(message: String) {
-        Utility.getCommonAlertDialogue(this,"",message,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
-            ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            this,
+            "",
+            message,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
     }
+
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -677,6 +690,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-       // TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

@@ -6,6 +6,7 @@ import core.models.Nsdservicedata
 
 object AppState {
     private var pref: PreferenceStorage? = null
+    private const val IS_SHOWN_COACH_MARK = "shownCoachMark"
     private const val KEY_IS_LOGGED = "logged"
     private const val KEY_TOKEN = "token"
     private const val KEY_COUNT = "count"
@@ -32,6 +33,14 @@ object AppState {
 
     fun setIsLogged(guest: Boolean) {
         pref?.saveBoolean(KEY_IS_LOGGED, guest)
+    }
+
+    fun isShownCoachMark(): Boolean {
+        return pref?.getBoolean(IS_SHOWN_COACH_MARK) ?: false
+    }
+
+    fun setShowCoachMark(showCoachMark: Boolean) {
+        pref?.saveBoolean(IS_SHOWN_COACH_MARK, showCoachMark)
     }
 
     fun logout() {
