@@ -451,7 +451,7 @@ class AllPatternsFragment(
             if (parent.equals(viewModel.ADD)) {
 
                 if (newFolderName.equals("favorites", true) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName)) {
-                    viewModel.errorString.set("Folder already exist !")
+                    viewModel.errorString.set("Folder already exists !")
                     showAlert()
 
                 } else {
