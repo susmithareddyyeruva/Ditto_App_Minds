@@ -65,7 +65,6 @@ const val HTTP_BAD_REQUEST="Bad Request"
 const val HTTP_FORBIDDEN="Forbidden Request"
 const val EN_USERNAME="storefront"
 const val EN_PASSWORD="Testing4$"
-const val EN_KEY="DittoPatterns"
 
 
 

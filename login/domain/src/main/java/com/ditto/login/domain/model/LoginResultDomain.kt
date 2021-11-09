@@ -69,5 +69,6 @@ data class LoginResultDomain(
     val cSubscriptionPlanCurrency: String?,
     val cSubscriptionType: String?,
     val cSubscriptionPlanBillingEndDate: String?,
-    val cSubscriptionPlanBillingStartDate: String?
+    val cSubscriptionPlanBillingStartDate: String?,
+    val c_encryptionKey:String?=""
 )
