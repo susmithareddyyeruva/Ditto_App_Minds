@@ -116,6 +116,13 @@ class PatternDescriptionViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 data.value = result.data
                 uiEvents.post(Event.OnDataUpdated)
+                // insert to db here
+                data.value?.patternName = clickedProduct?.prodName
+                data.value?.description =clickedProduct?.description
+                //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
+                //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
+
+                insertTailornovaDetailsToDB(data.value!!)// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }

@@ -18,7 +18,7 @@ abstract class OfflinePatternDataDao {
     @Query("SELECT * FROM offline_pattern_data")//todo need to fetch respective of id i.e custmoer id
     abstract fun getTailernovaData(): List<OfflinePatterns>
 
-    @Query("SELECT * FROM offline_pattern_data WHERE tailornaovaDesignId = :id")
+    @Query("SELECT * FROM offline_pattern_data WHERE designId = :id")
     abstract fun getTailernovaDataByID(id: String): OfflinePatterns
 
 

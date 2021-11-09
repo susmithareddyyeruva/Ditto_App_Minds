@@ -112,14 +112,14 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
     ) {
 
         var availableUri: Uri? = null
-        if(!(NetworkUtility.isNetworkAvailable(context))){
+        //if(!(NetworkUtility.isNetworkAvailable(context))){
             availableUri = Utility.isImageFileAvailable(imagePath,"${foldername}")
             Log.d("imageUri123", " $foldername availableUri: $availableUri")
-        }
+       // }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide
                 .with(context)
-                .load(if(NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
+                .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else */availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
@@ -129,7 +129,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         } else if (imagePath.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(if(NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
+                .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else*/ availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
