@@ -107,9 +107,7 @@ class WorkspaceViewModel @Inject constructor(
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
     init {
-        if (core.ui.common.Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
+
     }
 
     //Fetching tailornova details from offline_pattern_data table
