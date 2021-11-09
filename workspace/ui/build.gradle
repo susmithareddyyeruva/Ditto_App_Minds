@@ -97,6 +97,7 @@ dependencies {
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':calibration-ui')
     implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':videoplayer')
 
 }
 
