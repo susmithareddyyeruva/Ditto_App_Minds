@@ -181,7 +181,7 @@ class AllPatternsFragment(
                 viewModel.isLoading.set(true)
                 viewModel.fetchOfflinePatterns()
             }
-        }else{
+        } else {
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
             viewModel.fetchTrialPatterns()
@@ -433,14 +433,34 @@ class AllPatternsFragment(
 
     override fun onCancelClicked() {
         logger.d("Cancel Clicked")
+
+    }
+
+    private fun isFolderPresent(newFolderName: String): Boolean {
+        viewModel.folderMainList.forEach {
+            if (it.folderName.equals(newFolderName,true)) {
+                Log.d("FOLDER", "ALready exist")
+                return true
+            }
+        }
+        return false
     }
 
     private fun addFolder(newFolderName: String, parent: String) {
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.addToFolder(
-                product = viewModel.clickedProduct,
-                folderName = newFolderName
-            )
+            if (parent.equals(viewModel.ADD)) {
+
+                if (newFolderName.equals("favorites", true) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName)) {
+                    viewModel.errorString.set("Folder already exists !")
+                    showAlert()
+
+                } else {
+                    viewModel.addToFolder(
+                        product = viewModel.clickedProduct,
+                        folderName = newFolderName
+                    )
+                }
+            }
         }
     }
 

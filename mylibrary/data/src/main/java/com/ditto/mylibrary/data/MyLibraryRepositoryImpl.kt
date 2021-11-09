@@ -23,7 +23,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import core.*
 import core.appstate.AppState
-import core.di.Encrypt
+import core.di.EncodeDecodeUtil
 import core.lib.BuildConfig
 import core.models.CommonApiFetchError
 import core.network.NetworkUtility
@@ -62,7 +62,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
+        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
             "Basic " + encryptedKey
@@ -232,7 +233,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
+        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getFoldersList(
             requestdata, "Basic " + encryptedKey,
             method = methodName
@@ -308,7 +310,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
+        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.addFolder(
             requestdata, "Basic " + encryptedKey,
             method = methodName
@@ -389,7 +392,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val encryptedKey = Encrypt.HMAC_SHA256(EN_KEY, input)
+        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.renameFolder(
             renameRequest, "Basic " + encryptedKey,
             method = methodName
