@@ -11,7 +11,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
-import com.ditto.mylibrary.domain.model.MannequinData
+import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
@@ -71,7 +71,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
-    var algorithmItems: ArrayList<MannequinData>? = ArrayList(emptyList())
+    var algorithmItems: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -94,13 +94,13 @@ class PatternDescriptionViewModel @Inject constructor(
     }
 
     fun initList() {
-        algorithmItems?.add(MannequinData("No Customization", "0"))
-        algorithmItems?.add(MannequinData("Summer Cloth", "341241423523"))
-        algorithmItems?.add(MannequinData("Womens Dress", "341241423525"))
-        algorithmItems?.add(MannequinData("Winter Wear", "341241423526"))
-        algorithmItems?.add(MannequinData("Jute Cloth", "341241423545"))
-        algorithmItems?.add(MannequinData("Pants", "341241423523"))
-        algorithmItems?.add(MannequinData("Girls Dress", "34124142755"))
+        algorithmItems?.add(MannequinDataDomain("No Customization", "0"))
+        algorithmItems?.add(MannequinDataDomain("Summer Cloth", "341241423523"))
+        algorithmItems?.add(MannequinDataDomain("Womens Dress", "341241423525"))
+        algorithmItems?.add(MannequinDataDomain("Winter Wear", "341241423526"))
+        algorithmItems?.add(MannequinDataDomain("Jute Cloth", "341241423545"))
+        algorithmItems?.add(MannequinDataDomain("Pants", "341241423523"))
+        algorithmItems?.add(MannequinDataDomain("Girls Dress", "34124142755"))
 
     }
 

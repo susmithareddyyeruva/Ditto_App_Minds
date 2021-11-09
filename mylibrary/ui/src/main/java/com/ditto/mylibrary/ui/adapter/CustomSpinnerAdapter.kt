@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.ditto.mylibrary.domain.model.MannequinData
+import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.ui.R
 
 
 
 
 
-class CustomSpinnerAdapter(val context: Context, var dataSource: List<MannequinData>) : BaseAdapter() {
+class CustomSpinnerAdapter(val context: Context, var dataSource: List<MannequinDataDomain>) : BaseAdapter() {
     private val ITEM_HEIGHT = ViewGroup.LayoutParams.WRAP_CONTENT
     override fun equals(other: Any?): Boolean {
         return super.equals(other)

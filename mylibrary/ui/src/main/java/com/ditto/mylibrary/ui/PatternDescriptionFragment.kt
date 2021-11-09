@@ -32,7 +32,7 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.mylibrary.domain.model.MannequinData
+import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
@@ -84,6 +84,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
     var clickedProduct: ProdDomain? = null
+    private var mannequinId: String? = ""
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -163,10 +164,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         outputDirectory = Utility.getOutputDirectory(requireContext())
         viewModel.initList()
+     /*   if (clickedProduct != null) {
+            if (clickedProduct!!.mannequin.isNullOrEmpty()) {
+                mannequinId = clickedProduct!!.purchasedSizeId
+                spinner.visibility = View.GONE
+            } else
+                spinner.visibility = View.VISIBLE
+        }*/
         // we pass our item list and context to our Adapter.
         val adapter = viewModel.algorithmItems?.let { CustomSpinnerAdapter(requireContext(), it) }
         spinner.adapter = adapter
-        spinner.setSelection(0,true)
+        spinner.setSelection(0, true)
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
@@ -176,9 +184,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
                 // It returns the clicked item.
-                val clickedItem: MannequinData = parent.getItemAtPosition(position) as MannequinData
+                val clickedItem: MannequinDataDomain =
+                    parent.getItemAtPosition(position) as MannequinDataDomain
                 val id: String = clickedItem.id
-                Log.d("ITEM SELECTED", "MANNEQUIN ID: $id")
+                mannequinId = id
+                Log.d("ITEM SELECTED", "MANNEQUIN ID: $mannequinId")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -676,7 +686,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     Utility.Iconype.NONE
                 )
             }
-            else ->{
+            else -> {
 
             }
 
