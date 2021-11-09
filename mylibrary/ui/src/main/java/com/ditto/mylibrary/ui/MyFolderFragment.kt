@@ -38,6 +38,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     }
     private val viewModel: MyFolderViewModel by ViewModelDelegate()
     lateinit var binding: MyfolderfragmentBinding
+    private var isDelete = false
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -60,7 +61,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onResume() {
         super.onResume()
-        if(AppState.getIsLogged()) {
+        if (AppState.getIsLogged()) {
             Log.d("Testing", ">>>>>>   Myfolder  onResume ")
             viewModel.disposable = CompositeDisposable()
             setUIEvents()
@@ -76,7 +77,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
                 }
             }
-        }else{
+        } else {
             core.ui.common.Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
@@ -104,7 +105,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     fun onSyncClick() {
         if (viewModel != null) {
-            if (AppState.getIsLogged()&&NetworkUtility.isNetworkAvailable(context)) {
+            if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
                 logger.d("onSyncClick : MyFolder Fragment")
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.getFoldersList()
@@ -169,13 +170,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
 
             }
-            /* is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
-                 bottomNavViewModel.showProgress.set(false)
-                 viewModel.isLoading.set(false)
-                 showAlert()
-             }*/
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
-                (parentFragment as MyLibraryFragment).isFolderDetailsClicked=true
+                (parentFragment as MyLibraryFragment).isFolderDetailsClicked = true
                 Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
@@ -203,6 +199,15 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
 
             }
+            is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
+                bottomNavViewModel.showProgress.set(false)
+                viewModel.isLoading.set(false)
+                showAlert()
+            }
+            is MyFolderViewModel.Event.OnMyFolderShowAlert -> {
+                viewModel.errorString.set("Folder already exists !")
+                showAlert()
+            }
 
             else -> {
                 logger.d("onSyncClick : MyLibraryViewModel.Event undefined")
@@ -225,10 +230,8 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         action = viewModel.delete
                     )
                 }
-
-            core.ui.common.Utility.AlertType.GUEST_MYFOLDER ->  (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
+            core.ui.common.Utility.AlertType.GUEST_MYFOLDER -> (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
         }
-
     }
 
     override fun onCustomNegativeButtonClicked(
@@ -289,6 +292,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onDeleteClicked(title: String) {
         viewModel.folderToDelete = title
+        isDelete = true
         core.ui.common.Utility.getCommonAlertDialogue(
             requireContext(),
             "",

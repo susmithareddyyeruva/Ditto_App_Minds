@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.IdRes
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
@@ -29,6 +30,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -712,14 +714,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-        hashMap[viewModel.data.value?.thumbnailImageName.toString()] = viewModel.data.value?.thumbnailImagePath.toString()
+        hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
+            viewModel.data.value?.thumbnailImagePath.toString()
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
         }
         for (patternItem in viewModel.data.value?.patternPieces ?: emptyList()) {
-            hashMap[patternItem.thumbnailImageName.toString()] = patternItem.thumbnailImageUrl.toString()
+            hashMap[patternItem.thumbnailImageName.toString()] =
+                patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
-               for (splicedImage in patternItem.splicedImages ?: emptyList()) {
+            for (splicedImage in patternItem.splicedImages ?: emptyList()) {
                 hashMap[splicedImage.imageName.toString()] = splicedImage.imagePath.toString()
                 hashMap[splicedImage.mapImageName.toString()] = splicedImage.mapImageUrl.toString()
             }
@@ -1532,11 +1536,24 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
         baseViewModel.isSaveExitButtonClicked.set(true)
-        findNavController().popBackStack(R.id.patternDescriptionFragment, false)
-        findNavController().popBackStack(R.id.nav_graph_mylibrary, false)
-        findNavController().navigate(R.id.nav_graph_id_home)
-
+        /**
+         * condition is added for Deeplinking scenario
+         */
+        if ((findNavController().isOnBackStack(R.id.patternDescriptionFragment)) || (findNavController().isOnBackStack(
+                R.id.nav_graph_mylibrary))
+        ) {
+            findNavController().popBackStack(R.id.patternDescriptionFragment, false)
+            findNavController().popBackStack(R.id.nav_graph_mylibrary, false)
+            findNavController().navigate(R.id.nav_graph_id_home)
+        }
         activity?.onBackPressed()
+    }
+
+    fun NavController.isOnBackStack(@IdRes id: Int): Boolean = try {
+        getBackStackEntry(id); true
+    } catch (e: Throwable) {
+        Log.d("EXCEPTION+++++",e.localizedMessage)
+        false
     }
 
     private fun enableMirror(status: Boolean) {
@@ -1631,7 +1648,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             try {
                 showProgress(toShow = true)
                 var workSpaceImageData = WorkspaceImageData(
-                    /*if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else*/ imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) },
+                    /*if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else*/
+                    imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) },
                     workspaceItem,
                     viewModel.scaleFactor.get(),
                     showProjection,
@@ -1669,8 +1687,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showSpliceReference(spliceImages: SpliceImages?) {
         Log.d("mapImageUrl123","mapImageName: ${spliceImages?.mapImageName}  ===  mapImageUrl:  ${spliceImages?.mapImageUrl} ")
-        Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageUrl} ")
-        Log.d("mapImageUrl123","mapImageUrl: ${spliceImages?.mapImageName} ")
         spliceImages?.mapImageUrl.let {
             getBitmapFromSvgPngDrawable(
                 spliceImages?.mapImageName,
@@ -1773,7 +1789,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     workspaceItem.currentSplicedPieceColumn,
                     workspaceItem.splicedImages
                 )?.imagePath
-                imagenameOffline =getSplicePiece(
+                imagenameOffline = getSplicePiece(
                     workspaceItem.currentSplicedPieceRow,
                     workspaceItem.currentSplicedPieceColumn,
                     workspaceItem.splicedImages

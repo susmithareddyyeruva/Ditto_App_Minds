@@ -112,31 +112,51 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         //baseViewModel.activeSocketConnection.set(false)
 
-        if (viewModel.data.value == null) {
+
+        if (arguments?.getString("ISFROM").equals("DEEPLINK")) {
+            logger.d("FROM DEEPLINK IN PATTERN DESCRIPTION")
+            viewModel.isFromDeepLinking.set(true)
             arguments?.getString("clickedTailornovaID").toString()
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
                 ?.let { viewModel.clickedOrderNumber.set(it) }
-            clickedProduct = arguments?.get("product") as ProdDomain?
-            Log.d("12345","received is ${clickedProduct.toString()}")
             bottomNavViewModel.showProgress.set(true)
             if (NetworkUtility.isNetworkAvailable(context)) {
-                if (AppState.getIsLogged()) {
-                    if (clickedProduct?.patternType.equals("trial",true)) {
-                        viewModel.fetchOfflinePatternDetails()
-                    } else {
-                        viewModel.fetchPattern()
-                    }
-                } else {
-                    viewModel.fetchOfflinePatternDetails()
-                }
+                viewModel.fetchPattern()
             } else {
                 viewModel.fetchOfflinePatternDetails()
             }
             setUIEvents()
         } else {
-            setPatternImage()
+            if (viewModel.data.value == null) {
+                arguments?.getString("clickedTailornovaID").toString()
+                    ?.let { viewModel.clickedTailornovaID.set(it) }
+                arguments?.getString("clickedOrderNumber").toString()
+                    ?.let { viewModel.clickedOrderNumber.set(it) }
+                clickedProduct = arguments?.get("product") as ProdDomain?
+                Log.d("12345", "received is ${clickedProduct.toString()}")
+                bottomNavViewModel.showProgress.set(true)
+                if (NetworkUtility.isNetworkAvailable(context)) {
+                    if (AppState.getIsLogged()) {
+                        if (clickedProduct?.patternType.equals("Trial", true)) {
+                            viewModel.fetchOfflinePatternDetails()
+                        } else {
+                            viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                        }
+                    } else {
+                        viewModel.fetchOfflinePatternDetails()
+                    }
+                } else {
+                    viewModel.fetchOfflinePatternDetails()
+                }
+                setUIEvents()
+            } else {
+                setPatternImage()
+            }
+
         }
+
+
         outputDirectory = Utility.getOutputDirectory(requireContext())
     }
 
@@ -200,33 +220,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setUIForLoggedInUser() {
-        setData()
-        setVisibilityForViews(
-            "WORKSPACE",
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true
-        )
-        /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
-            1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
-            4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
-            8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
-            9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
-            10 -> setVisibilityForViews(
-                "RENEW SUBSCRIPTION",
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
-            else -> setVisibilityForViews(
+        if(viewModel.isFromDeepLinking.get()){
+            viewModel.patternName.set(viewModel.data.value?.patternName)
+            viewModel.patternDescription.set(viewModel.data.value?.description)
+            Glide.with(requireContext())
+                .load(viewModel.data.value?.patternDescriptionImageUrl)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(binding.imagePatternDesc)
+
+            setVisibilityForViews(
                 "WORKSPACE",
                 false,
                 false,
@@ -236,15 +238,56 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
-        }*/
-        setPatternImage()
+        }else{
+            setData()
+            setVisibilityForViews(
+                "WORKSPACE",
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+            )
+            /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
+                1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+                4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
+                8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
+                9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
+                10 -> setVisibilityForViews(
+                    "RENEW SUBSCRIPTION",
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+                else -> setVisibilityForViews(
+                    "WORKSPACE",
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+            }*/
+            setPatternImage()
+        }
+
+
 
 
     }
 
     private fun setData() {
         viewModel.patternName.set(clickedProduct?.prodName)
-        viewModel.patternDescription.set(clickedProduct?.description)
+        //viewModel.patternDescription.set(clickedProduct?.description)
+        viewModel.patternDescription.set(viewModel?.data?.value?.description?:"Some description")
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
@@ -772,14 +815,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         var hashMap: HashMap<String, String> = HashMap<String, String>()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
-        for (patternItem in viewModel.data.value?.selvages?: emptyList()) {
+        for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
         }
-        for (patternItem in viewModel.data.value?.patternPieces?: emptyList()) {
+        for (patternItem in viewModel.data.value?.patternPieces ?: emptyList()) {
             hashMap[patternItem.thumbnailImageName.toString()] =
                 patternItem.thumbnailImageUrl.toString()
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
-            for (splicedImage in patternItem.splicedImages?: emptyList()) {
+            for (splicedImage in patternItem.splicedImages ?: emptyList()) {
                 hashMap[splicedImage.imageName.toString()] = splicedImage.imageUrl.toString()
                 hashMap[splicedImage.mapImageName.toString()] = splicedImage.mapImageUrl.toString()
             }
@@ -981,13 +1024,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
                 enterWorkspace()
             }
-
-            /*Utility.AlertType.RUNTIMEPERMISSION -> {
-                requestPermissions(
-                    REQUIRED_PERMISSIONS_DOWNLOAD,
-                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                )
-            }*/
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
@@ -1090,8 +1126,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         } else {
             //checkSocketConnectionBeforeWorkspace()
             // todo need dialog to ask for permission
-              Utility.getCommonAlertDialogue(requireContext(),"","Without this permission you will not able to use this feature","",getString(com.ditto.menuitems_ui.R.string.str_ok),this, Utility.AlertType.RUNTIMEPERMISSION
-                  ,Utility.Iconype.NONE)
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                "Without this permission you will not able to use this feature",
+                "",
+                getString(com.ditto.menuitems_ui.R.string.str_ok),
+                this,
+                Utility.AlertType.RUNTIMEPERMISSION,
+                Utility.Iconype.NONE
+            )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
             Log.d("onReqPermissionsResult", "permission denied")
         }

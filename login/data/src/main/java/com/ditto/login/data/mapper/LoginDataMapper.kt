@@ -144,7 +144,9 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cSubscriptionPlanCurrency = this.cSubscriptionPlanCurrency,
         cSubscriptionType = this.cSubscriptionType,
         cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
-        cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate
+        cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate,
+        c_encryptionKey = this.c_encryptionKey
+
 
     )
 

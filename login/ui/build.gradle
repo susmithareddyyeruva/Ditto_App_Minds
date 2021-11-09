@@ -26,15 +26,20 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SIGN_UP_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            //buildConfigField "String", "SIGN_UP_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
+            buildConfigField "String", "SIGN_UP_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
+            //buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
 
         }
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", "SIGN_UP_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            //buildConfigField "String", "SIGN_UP_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
+            buildConfigField "String", "SIGN_UP_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
+            //buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.na03.joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+
         }
     }
     buildFeatures{

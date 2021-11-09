@@ -246,7 +246,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.myfolderFragment) {
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get()
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+                    "product" to viewModel.clickedProduct,
                 )
                 findNavController().navigate(
                     R.id.action_mylibrary_to_patternDescriptionFragment,
