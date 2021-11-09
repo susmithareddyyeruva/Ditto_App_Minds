@@ -21,11 +21,11 @@ interface MyLibraryUseCase {
     fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>>
     fun getTrialPatterns(patternType:String): Single<Result<List<ProdDomain>>>
     fun getOfflinePatternById(id: String): Single<Result<PatternIdData>>
-
     fun getPatternDetails(get: Int): Single<Result<MyLibraryData>>
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>
     fun addFolder(createJson: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
+    fun insertTailornovaDetails(patternIdData: PatternIdData): Single<Any>
 
 }
 

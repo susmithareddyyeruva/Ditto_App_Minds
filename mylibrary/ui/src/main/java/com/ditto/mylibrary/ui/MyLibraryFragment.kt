@@ -25,9 +25,11 @@ import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
 import com.ditto.mylibrary.ui.databinding.MyLibraryFragmentBinding
 import com.google.android.material.tabs.TabLayout
+import core.appstate.AppState
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -37,7 +39,7 @@ import javax.inject.Inject
 
 
 class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
-    AllPatternsFragment.FilterIconSetListener {
+    AllPatternsFragment.FilterIconSetListener, Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -389,15 +391,29 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         when (event) {
 
             MyLibraryViewModel.Event.OnFilterClick -> {
-                val tabPosition = binding.tabLayout.selectedTabPosition
-                if (tabPosition == 0) {
-                    setFilterMenuAdapter(0)
-                    binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
-                    Log.d("pattern", "onFilterClick : AllPatternsFragment")
-                } else {
-                    setFilterMenuAdapter(0)
-                    binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
-                    Log.d("pattern", "onFilterClick : MyFolder Detail")
+                if(AppState.getIsLogged()) {
+                    val tabPosition = binding.tabLayout.selectedTabPosition
+                    if (tabPosition == 0) {
+                        setFilterMenuAdapter(0)
+                        binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
+                        Log.d("pattern", "onFilterClick : AllPatternsFragment")
+                    } else {
+                        setFilterMenuAdapter(0)
+                        binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
+                        Log.d("pattern", "onFilterClick : MyFolder Detail")
+                    }
+                }  else{
+                    Log.d("pattern", "onFilterClick : MyFolder Detail guest ")
+                    core.ui.common.Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        "",
+                        getString(R.string.guest_my_folder_message),
+                        "",
+                        getString(R.string.str_ok),
+                        this,
+                        core.ui.common.Utility.AlertType.GUEST_MYFOLDER,
+                        core.ui.common.Utility.Iconype.NONE
+                    )
                 }
             }
 
@@ -420,18 +436,32 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
             }
             MyLibraryViewModel.Event.OnSearchClick -> {
-                viewModel.isSearchEnabled.set(true)
-                //  hideToolbar()
-                binding.editSearch.requestFocus()
-                val imgr: InputMethodManager =
-                    requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imgr.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
-                val tabPosition = binding.tabLayout.selectedTabPosition
-                if (tabPosition == 0)
-                    allPatternsFragment.onSearchClick()
-                else {
-                    myFolderDetailFragment.onSearchClick()
+                if(AppState.getIsLogged()) {
+                    viewModel.isSearchEnabled.set(true)
+                    //  hideToolbar()
+                    binding.editSearch.requestFocus()
+                    val imgr: InputMethodManager =
+                        requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imgr.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
+                    val tabPosition = binding.tabLayout.selectedTabPosition
+                    if (tabPosition == 0)
+                        allPatternsFragment.onSearchClick()
+                    else {
+                        myFolderDetailFragment.onSearchClick()
 
+                    }
+                }else{
+                    Log.d("pattern", "OnSearchClick : MyFolder Detail guest ")
+                    core.ui.common.Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        "",
+                        getString(R.string.guest_my_folder_message),
+                        "",
+                        getString(R.string.str_ok),
+                        this,
+                        core.ui.common.Utility.AlertType.GUEST_MYFOLDER,
+                        core.ui.common.Utility.Iconype.NONE
+                    )
                 }
 
             }
@@ -531,5 +561,19 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         Log.d("Testing", ">>>>>>   My LibraryFragment  onPause ")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
+        TODO("Not yet implemented")
     }
 }
