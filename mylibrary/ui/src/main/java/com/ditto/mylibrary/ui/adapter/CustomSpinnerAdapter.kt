@@ -42,7 +42,11 @@ class CustomSpinnerAdapter(val context: Context, var dataSource: List<MannequinD
             layoutParams.height = ITEM_HEIGHT
             view.findViewById<TextView>(R.id.textMannequinId).setLayoutParams(layoutParams)
         }*/
-
+        if (position>0) {
+            view.setPadding(9,9,9,9)
+        }else if (position==0){
+            view.setPadding(3,9,9,9)
+        }
         vh.label.text = dataSource[position].name
         return view
     }

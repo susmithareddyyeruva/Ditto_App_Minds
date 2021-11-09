@@ -164,7 +164,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         outputDirectory = Utility.getOutputDirectory(requireContext())
         viewModel.initList()
         // we pass our item list and context to our Adapter.
-        // we pass our item list and context to our Adapter.
         val adapter = viewModel.algorithmItems?.let { CustomSpinnerAdapter(requireContext(), it) }
         spinner.adapter = adapter
         spinner.setSelection(0,true)
