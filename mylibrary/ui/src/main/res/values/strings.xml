@@ -76,5 +76,6 @@
     <string name="create_folder">CREATE FOLDER</string>
     <string name="rename_folder_dialog">RENAME FOLDER</string>
     <string name="defult_filter_text">Showing filtered results</string>
+    <string name="prompt">null</string>
 
 </resources>

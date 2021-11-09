@@ -15,6 +15,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -30,7 +32,9 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.MannequinData
 import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -158,6 +162,28 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
         outputDirectory = Utility.getOutputDirectory(requireContext())
+        viewModel.initList()
+        // we pass our item list and context to our Adapter.
+        // we pass our item list and context to our Adapter.
+        val adapter = viewModel.algorithmItems?.let { CustomSpinnerAdapter(requireContext(), it) }
+        spinner.adapter = adapter
+        spinner.setSelection(0,true)
+
+        spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+
+
+                // It returns the clicked item.
+                val clickedItem: MannequinData = parent.getItemAtPosition(position) as MannequinData
+                val id: String = clickedItem.id
+                Log.d("ITEM SELECTED", "MANNEQUIN ID: $id")
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
     companion object {
@@ -220,7 +246,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setUIForLoggedInUser() {
-        if(viewModel.isFromDeepLinking.get()){
+        if (viewModel.isFromDeepLinking.get()) {
             viewModel.patternName.set(viewModel.data.value?.patternName)
             viewModel.patternDescription.set(viewModel.data.value?.description)
             Glide.with(requireContext())
@@ -238,7 +264,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
-        }else{
+        } else {
             setData()
             setVisibilityForViews(
                 "WORKSPACE",
@@ -280,14 +306,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
 
 
-
-
     }
 
     private fun setData() {
         viewModel.patternName.set(clickedProduct?.prodName)
         //viewModel.patternDescription.set(clickedProduct?.description)
-        viewModel.patternDescription.set(viewModel?.data?.value?.description?:"Some description")
+        viewModel.patternDescription.set(viewModel?.data?.value?.description ?: "Some description")
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
@@ -653,6 +677,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     Utility.Iconype.NONE
                 )
             }
+            else ->{
+
+            }
+
         }
 
 

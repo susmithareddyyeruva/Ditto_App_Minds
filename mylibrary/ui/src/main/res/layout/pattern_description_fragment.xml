@@ -97,7 +97,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="@fraction/image_desc_guideline" />
-
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintBottom_toTopOf="@+id/content_header"
+                />
 
             <TextView
                 android:id="@+id/subscription"

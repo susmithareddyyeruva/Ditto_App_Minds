@@ -11,6 +11,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
+import com.ditto.mylibrary.domain.model.MannequinData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
@@ -34,6 +35,7 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class PatternDescriptionViewModel @Inject constructor(
     private val context: Context,
@@ -50,7 +52,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
-    val isFromDeepLinking: ObservableBoolean= ObservableBoolean(false)
+    val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
     val patternStatus: ObservableField<String> = ObservableField("")
@@ -69,6 +71,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
+    var algorithmItems: ArrayList<MannequinData>? = ArrayList(emptyList())
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -88,6 +91,17 @@ class PatternDescriptionViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleOfflineFetchResult(it) }
+    }
+
+    fun initList() {
+        algorithmItems?.add(MannequinData("No Customization", "0"))
+        algorithmItems?.add(MannequinData("Summer Cloth", "341241423523"))
+        algorithmItems?.add(MannequinData("Womens Dress", "341241423525"))
+        algorithmItems?.add(MannequinData("Winter Wear", "341241423526"))
+        algorithmItems?.add(MannequinData("Jute Cloth", "341241423545"))
+        algorithmItems?.add(MannequinData("Pants", "341241423523"))
+        algorithmItems?.add(MannequinData("Girls Dress", "34124142755"))
+
     }
 
     private fun handleOfflineFetchResult(result: Result<PatternIdData>) {
