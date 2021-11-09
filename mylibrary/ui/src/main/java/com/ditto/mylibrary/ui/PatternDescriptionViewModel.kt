@@ -70,6 +70,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
+    var clickedProduct: ProdDomain? = null
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -120,6 +121,27 @@ class PatternDescriptionViewModel @Inject constructor(
         }
     }
 
+    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData) {
+        disposable += getPattern.insertTailornovaDetails(patternIdData)
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                handleInsertTailornovaResult(it)
+            }
+    }
+
+    private fun handleInsertTailornovaResult(result: Any) {
+        when (result) {
+            is Result.OnSuccess<*> -> {
+                Log.d("handlInsertTailornovRes", "OnSuccess")
+            }
+            is Result.OnError<*> -> {
+                Log.d("handlInsertTailornovRes", "onFailed")
+                handleError(result.error)
+            }
+        }
+    }
     /**
      * [Function] ViewPager Previous Button Click
      */

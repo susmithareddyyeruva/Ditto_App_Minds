@@ -9,6 +9,13 @@ import org.jetbrains.annotations.NotNull
 @Entity(tableName = "offline_pattern_data")
 data class OfflinePatterns(
 
+    // tailernova response
+    @PrimaryKey
+    @ColumnInfo(name = "designId")
+    @SerializedName("designId")
+    @NotNull
+    var designId: String,
+
     //getWorkspace data response
 
     @ColumnInfo(name="custId")
@@ -47,12 +54,6 @@ data class OfflinePatterns(
     @SerializedName("interfaceWorkspaceItems")
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
-    // tailernova response
-    @PrimaryKey
-    @ColumnInfo(name = "designId")
-    @SerializedName("designId")
-    @NotNull
-    var designId: String,
 
     @ColumnInfo(name = "patternName")
     @SerializedName("patternName")
