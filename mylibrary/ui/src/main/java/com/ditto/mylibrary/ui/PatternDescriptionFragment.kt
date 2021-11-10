@@ -84,7 +84,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
     var clickedProduct: ProdDomain? = null
-    private var mannequinId: String? = ""
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -141,19 +140,35 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 clickedProduct = arguments?.get("product") as ProdDomain?
                 Log.d("12345", "received is ${clickedProduct.toString()}")
                 bottomNavViewModel.showProgress.set(true)
-                if (NetworkUtility.isNetworkAvailable(context)) {
-                    if (AppState.getIsLogged()) {
-                        if (clickedProduct?.patternType.equals("Trial", true)) {
-                            viewModel.fetchOfflinePatternDetails()
-                        } else {
-                            viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
-                        }
+                if (clickedProduct != null) {
+                    if (clickedProduct!!.mannequin.isNullOrEmpty()) {
+                        viewModel.mannequinId.set(clickedProduct!!.purchasedSizeId)
+                        spinner.visibility = View.GONE
                     } else {
-                        viewModel.fetchOfflinePatternDetails()
+                        spinner.visibility = View.VISIBLE
+                        // we pass our item list and context to our Adapter.
+                        viewModel.mannequinList?.add(MannequinDataDomain("", "No Customization"))
+                        clickedProduct!!.mannequin?.forEach {
+                            viewModel.mannequinList?.add(
+                                MannequinDataDomain(
+                                    it.mannequinId,
+                                    it.mannequinName
+                                )
+                            )
+                        }
+                        val adapter =
+                            viewModel.mannequinList?.let {
+                                CustomSpinnerAdapter(
+                                    requireContext(),
+                                    it
+                                )
+                            }
+                        spinner.adapter = adapter
+                        spinner.setSelection(0, true)
                     }
-                } else {
-                    viewModel.fetchOfflinePatternDetails()
+
                 }
+                fetchPatternDetails()
                 setUIEvents()
             } else {
                 setPatternImage()
@@ -163,29 +178,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
         outputDirectory = Utility.getOutputDirectory(requireContext())
-        if (clickedProduct != null) {
-            if (clickedProduct!!.mannequin.isNullOrEmpty()) {
-                mannequinId = clickedProduct!!.purchasedSizeId
-                spinner.visibility = View.GONE
-            } else {
-                spinner.visibility = View.VISIBLE
-                // we pass our item list and context to our Adapter.
-                viewModel.mannequinList?.add(MannequinDataDomain("", "No Customization"))
-                clickedProduct!!.mannequin?.forEach {
-                    viewModel.mannequinList?.add(
-                        MannequinDataDomain(
-                            it.mannequinId,
-                            it.mannequinName
-                        )
-                    )
-                }
-                val adapter =
-                    viewModel.mannequinList?.let { CustomSpinnerAdapter(requireContext(), it) }
-                spinner.adapter = adapter
-                spinner.setSelection(0, true)
-            }
 
-        }
 
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
@@ -199,11 +192,28 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 val clickedItem: MannequinDataDomain =
                     parent.getItemAtPosition(position) as MannequinDataDomain
                 val id: String = clickedItem.mannequinId
-                mannequinId = id
-                Log.d("ITEM SELECTED", "MANNEQUIN ID: $mannequinId")
+                viewModel.mannequinId.set(id)
+                fetchPatternDetails()
+                Log.d("ITEM SELECTED", "MANNEQUIN ID: " + viewModel.mannequinId.get())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+    private fun fetchPatternDetails() {
+        if (NetworkUtility.isNetworkAvailable(context)) {
+            if (AppState.getIsLogged()) {
+                if (clickedProduct?.patternType.equals("Trial", true)) {
+                    viewModel.fetchOfflinePatternDetails()
+                } else {
+                    viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                }
+            } else {
+                viewModel.fetchOfflinePatternDetails()
+            }
+        } else {
+            viewModel.fetchOfflinePatternDetails()
         }
     }
 
@@ -596,7 +606,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
-                if (mannequinId?.isNotEmpty() == true) {
+                if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
                     binding.textWatchvideo2.isEnabled = false
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
@@ -638,7 +648,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         logger.d("OnClick Workspace failed")
                     }
                 } else {
-                    showAlert(getString(R.string.please_selecte_mannequinid),Utility.AlertType.DEFAULT)
+                    showAlert(
+                        getString(R.string.please_selecte_mannequinid),
+                        Utility.AlertType.DEFAULT
+                    )
 
                 }
             }
@@ -854,7 +867,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
-            "mannequinId" to mannequinId,
+            "mannequinId" to viewModel.mannequinId.get(),
             "PatternName" to clickedProduct?.prodName
         )
 

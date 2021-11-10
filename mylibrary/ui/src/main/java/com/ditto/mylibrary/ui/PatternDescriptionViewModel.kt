@@ -49,6 +49,7 @@ class PatternDescriptionViewModel @Inject constructor(
 
     //    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     val clickedTailornovaID: ObservableField<String> = ObservableField("")
+    val mannequinId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -105,7 +106,7 @@ class PatternDescriptionViewModel @Inject constructor(
 
     fun fetchPattern() {
         //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
-        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "")
+        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "",mannequinId.get()?:"")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
