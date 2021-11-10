@@ -18,6 +18,13 @@
              app:popUpTo="@+id/nav_graph"
              app:popUpToInclusive="true" />-->
         <action
+            android:id="@+id/action_deeplink_to_patternDescriptionFragment"
+            app:destination="@id/patternDescriptionFragment"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"
+            />
+        <action
             android:id="@+id/action_splashActivity_to_LoginFragment"
             app:destination="@id/nav_graph_id_login"
             app:enterAnim="@anim/slide_in_right"
@@ -39,12 +46,9 @@
         <action
             android:id="@+id/action_home_to_my_library"
             app:destination="@id/nav_graph_mylibrary"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/nav_graph_mylibrary"
-            app:popUpToInclusive="true" />
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"  />
 
         <action
             android:id="@+id/action_home_to_tutorial"
@@ -138,6 +142,75 @@
         android:id="@+id/softwareupdate"
         android:name="com.ditto.menuitems_ui.softwareupdate.SoftwareUpdateFragment"
         android:label="SoftwareUpdateFragment" />
+    <fragment
+        android:id="@+id/patternInstructionsFragment"
+        android:name="com.ditto.workspace.ui.PatternInstructionsFragment"
+        android:label="Pattern Instructions"/>
 
+    <fragment
+        android:id="@+id/patternDescriptionFragment"
+        android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
+        android:label="PatternDescriptionFragment" >
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_WorkspaceFragment"
+            app:destination="@id/nav_graph_workspace"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/patternDescriptionFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
+            app:destination="@id/patternInstructionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_pattern_description_to_calibration"
+            app:destination="@id/calibration_nav_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_splashActivity_to_LoginFragment"
+            app:destination="@id/nav_graph_id_login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_customerCareFragment"
+            app:destination="@id/customerCareFragment" />
+        <action
+            android:id="@+id/action_pattern_description_to_FAQGlossaryfragment"
+            app:destination="@id/nav_graph_mainfaq" />
+        <action
+            android:id="@+id/action_pattern_description_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_wssettings_fragment"
+            app:destination="@id/nav_graph_settings_destination" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_nav_graph_manage"
+            app:destination="@id/manageDeviceFragment" />
+        <action
+            android:id="@+id/action_pattern_description_to_privacyAndSettingFragment"
+            app:destination="@id/privacyAndSettingFragment" />
+
+        <action
+            android:id="@+id/action_pattern_description_to_nav_graph_sotwareUpdate"
+            app:destination="@id/softwareupdate" />
+
+    </fragment>
 
 </navigation>

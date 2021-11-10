@@ -20,5 +20,6 @@
     <dimen name="dimen_padding_bottom_exo_progress">10dp</dimen>
     <dimen name="tab_padding">65dp</dimen>
     <dimen name="content_start">20dp</dimen>
+    <dimen name="tutorial_content_start">22dp</dimen>
 
 </resources>

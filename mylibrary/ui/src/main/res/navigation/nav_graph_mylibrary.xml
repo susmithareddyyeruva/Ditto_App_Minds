@@ -116,7 +116,7 @@
     <fragment
         android:id="@+id/patternInstructionsFragment"
         android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
-        android:label="Pattern Instructions"></fragment>
+        android:label="Pattern Instructions" />
     <fragment
         android:id="@+id/customerCareFragment"
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"

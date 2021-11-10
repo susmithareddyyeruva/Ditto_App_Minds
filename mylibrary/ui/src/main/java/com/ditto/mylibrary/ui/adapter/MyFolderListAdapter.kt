@@ -47,7 +47,7 @@ class MyFolderListAdapter(
                 )
             )
             holder.itemFoldersBinding.folderStatus.setImageResource(R.drawable.ic_red_new)
-        } else {
+        } else   {
             holder.itemFoldersBinding.textdialogHeading.setTextColor(
                 ContextCompat.getColor(
                     holder.itemFoldersBinding.dialogHeading.context,

@@ -245,7 +245,12 @@ fun combineTailornovaAndSFCCDetails(
         description = resultTailernova.data.description,
         totalPieces = 0,
         completedPieces = 0,
-        numberOfCompletedPiece = fetchWorkspaceResult.data.numberOfCompletedPiece,
+        numberOfCompletedPiece = if(fetchWorkspaceResult.data.numberOfCompletedPiece==null)
+            NumberOfPieces(
+                garment = 0,
+                lining = 0,
+                `interface` = 0
+            ) else fetchWorkspaceResult.data.numberOfCompletedPiece,
         totalNumberOfPieces = resultTailernova.data.numberOfPieces,
         selectedTab = fetchWorkspaceResult.data.selectedTab,
         status = fetchWorkspaceResult.data.status,

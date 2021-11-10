@@ -36,13 +36,8 @@
         <action
             android:id="@+id/action_splashActivity_to_HomeFragment"
             app:destination="@id/nav_graph_id_home"
-            app:launchSingleTop="true"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/destination_splash"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_splashActivity_to_Onboarding"
             app:destination="@id/nav_graph_id_onboarding"

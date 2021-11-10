@@ -13,14 +13,11 @@ import com.ditto.menuitems.domain.WorkspaceProRepository
 import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import com.ditto.storage.data.database.UserDao
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import core.CLIENT_ID
 import core.CONNECTION_EXCEPTION
 import core.ERROR_FETCH
 import core.UNKNOWN_HOST_EXCEPTION
 import core.appstate.AppState
-import core.ui.errors.CommonError
 import io.reactivex.Single
 import non_core.lib.Result
 import retrofit2.HttpException
@@ -90,12 +87,6 @@ class WorkspaceProRepositoryImpl @Inject constructor(
                     val httpException = it as HttpException
                     when (httpException.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
-                            val gson = Gson()
-                            val type = object : TypeToken<CommonError>() {}.type
-                            val errorResponse: CommonError? = gson.fromJson(errorBody, type)
-                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
                             logger.d("onError: BAD REQUEST")
 
                         }

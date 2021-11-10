@@ -16,7 +16,7 @@ interface MyLibraryFilterService {
     @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppMyLibrary-Shows")
     fun getAllPatternsPatterns(
         @Body body: MyLibraryFilterRequestData?,
-        @Header("Authorization") header: String
+        @Header("Authorization") header: String?
     ): Single<MyLibraryResult>
 
     @Headers("Content-Type: application/json")

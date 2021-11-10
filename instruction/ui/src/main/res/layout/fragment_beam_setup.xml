@@ -134,7 +134,7 @@
                 app:tabIndicatorGravity="bottom"
                 app:tabIndicatorColor="#A4211F"
                 app:tabMode="auto"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/content_start"
                 app:tabPaddingEnd="@dimen/size_14px"
                 app:tabRippleColor="@android:color/transparent"
                 app:tabSelectedTextColor="@color/black"

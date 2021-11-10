@@ -28,6 +28,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     val events = uiEvents.stream()
     var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    var clickedProduct: ProdDomain? = null
     var mutableLiveData: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var errorString: ObservableField<String> = ObservableField("")
     var userId: Int = 0
@@ -53,7 +54,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     var folderToRename: String = ""
     var myFolderDetailHeader: String = ""
 
-    fun onItemClickPattern(id: String, orderNumber: String) {
+    fun onItemClickPattern(id: String, orderNumber: String, pattern: ProdDomain) {
         if (id == "10140549") {
             clickedTailornovaID.set("1")
             clickedOrderNumber.set(orderNumber)
@@ -66,6 +67,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         } else {
             clickedTailornovaID.set(id)
             clickedOrderNumber.set(orderNumber)
+            clickedProduct = pattern
         }
         uiEvents.post(Event.OnMyFolderItemClick)
     }
@@ -97,6 +99,16 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             .subscribeBy { handleFetchResult(it) }
     }
 
+    private fun isFolderPresent(newFolderName: String): Boolean {
+        folderList.forEach {
+            if (it.title.equals(newFolderName, true)) {
+                Log.d("FOLDER", "ALready exist")
+                return true
+            }
+        }
+        return false
+    }
+
     fun addToFolder(product: ProdDomain, newFolderName: String, action: String) {
         uiEvents.post(Event.OnMyFolderShowProgress)
         val hashMap = HashMap<String, ArrayList<String>>()
@@ -111,42 +123,50 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             methodName = "remove"
             hashMap[folderToDelete] = ArrayList()
         }
-        val favReq = FolderRequest(
-            OrderFilter(
-                true,
-                AppState.getEmail(),
-                purchasedPattern = true,
-                subscriptionList = true,
-                trialPattern = false
-            ),
-            FoldersConfig = hashMap
-        )
 
-
-        if (methodName != "rename") {
-            disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)
-                .subscribeOn(Schedulers.io())
-                .whileSubscribed { isLoading.set(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFolderApiResult(it, product) }
+        if ((action == rename || action == addFolder) && (newFolderName.equals(
+                "favorites",
+                true
+            ) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName))
+        ) {
+            uiEvents.post(Event.OnMyFolderShowAlert)
         } else {
-            val renameReq = FolderRenameRequest(
-                OrderFilterRename(
+            val favReq = FolderRequest(
+                OrderFilter(
                     true,
                     AppState.getEmail(),
                     purchasedPattern = true,
                     subscriptionList = true,
-                    trialPattern = false,
-                    oldname = folderToRename,
-                    newname = newFolderName
-                )
+                    trialPattern = false
+                ),
+                FoldersConfig = hashMap
             )
-            disposable += myLibraryUseCase.renameFolder(renameReq, methodName = methodName)
-                .subscribeOn(Schedulers.io())
-                .whileSubscribed { isLoading.set(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFolderApiResult(it, product) }
+            if (methodName != "rename") {
+                disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)
+                    .subscribeOn(Schedulers.io())
+                    .whileSubscribed { isLoading.set(it) }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy { handleFolderApiResult(it, product) }
+            } else {
+                val renameReq = FolderRenameRequest(
+                    OrderFilterRename(
+                        true,
+                        AppState.getEmail(),
+                        purchasedPattern = true,
+                        subscriptionList = true,
+                        trialPattern = false,
+                        oldname = folderToRename,
+                        newname = newFolderName
+                    )
+                )
+                disposable += myLibraryUseCase.renameFolder(renameReq, methodName = methodName)
+                    .subscribeOn(Schedulers.io())
+                    .whileSubscribed { isLoading.set(it) }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy { handleFolderApiResult(it, product) }
+            }
         }
+
 
     }
 
@@ -254,6 +274,11 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                 R.drawable.ic_owned,
                 "Owned",
                 false
+            ),
+            MyFolderData(
+                null,
+                "Favorites",
+                false
             )
         )
         when (folderResult) {
@@ -301,6 +326,20 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                     subscriptionList = false,
                     trialPattern = false,
                     FolderName = ""
+                ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
+            )
+        } else if (myFolderDetailHeader == "Favorites") {
+            /**
+             * If is owned folder Purchase pattern will be true and folder name will be empty
+             */
+            filterCriteria = MyLibraryFilterRequestData(
+                OrderFilter(
+                    false,
+                    AppState.getEmail(),
+                    purchasedPattern = true,
+                    subscriptionList = false,
+                    trialPattern = true,
+                    FolderName = "Favorite"
                 ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
             )
         } else {
@@ -378,7 +417,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     }
 
 
-
     sealed class Event {
         object OnMyFolderItemClick : MyFolderViewModel.Event()
         object OnMyFolderListUpdated : MyFolderViewModel.Event()
@@ -393,6 +431,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         object OnMyFolderShowProgress : MyFolderViewModel.Event()
         object OnMyFolderHideProgress : MyFolderViewModel.Event()
         object OnMyFolderResultFailed : MyFolderViewModel.Event()
+        object OnMyFolderShowAlert : MyFolderViewModel.Event()
         object NoInternet : MyFolderViewModel.Event()
         object OnMyFolderUpdateFilterImage : MyFolderViewModel.Event()
         object OnMyFolderUpdateDefaultFilter : MyFolderViewModel.Event()
