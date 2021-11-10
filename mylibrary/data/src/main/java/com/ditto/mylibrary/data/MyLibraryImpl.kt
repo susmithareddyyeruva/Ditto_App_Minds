@@ -81,6 +81,10 @@ class MyLibraryImpl @Inject constructor(
         return  myLibraryRepository.getTrialPatterns(patternType)
     }
 
+    override fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>> {
+        return myLibraryRepository.getAllPatternsInDB()
+    }
+
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
         return myLibraryRepository.getOfflinePatternById(id)
     }

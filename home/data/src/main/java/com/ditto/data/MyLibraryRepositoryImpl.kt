@@ -125,7 +125,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaData()
+            val offlinePatternData = offlinePatternDataDao.getAllPatterns()
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else

@@ -7,6 +7,7 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.FilterError
+import com.ditto.mylibrary.data.error.PatternDBError
 import com.ditto.mylibrary.data.error.TrialPatternError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
@@ -153,7 +154,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial("trial", AppState.getCustID(),designeID)
+                offlinePatternDataDao.deletePatternsExceptTrial("Trial", AppState.getCustID(),designeID)
             }.map {
                 Result.withValue(it)
             }
@@ -466,7 +467,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaData()
+            val offlinePatternData = offlinePatternDataDao.getAllPatterns()
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
@@ -474,13 +475,24 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTrialPatterns(patterntype:String): Single<Result<List<ProdDomain>>> {
+    override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
             val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype)
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
                 Result.withError(TrialPatternError(""))
+        }
+    }
+
+    override fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>> {
+        return Single.fromCallable {
+            val patterns = offlinePatternDataDao.getAllPatterns()
+
+            if (patterns != null)
+                Result.withValue(patterns.toDomain())
+            else
+                Result.withError(PatternDBError(""))
         }
     }
 

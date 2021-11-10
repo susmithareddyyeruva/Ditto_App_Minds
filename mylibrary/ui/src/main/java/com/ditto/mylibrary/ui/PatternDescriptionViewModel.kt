@@ -35,6 +35,7 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class PatternDescriptionViewModel @Inject constructor(
     private val context: Context,
@@ -71,7 +72,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
     var clickedProduct: ProdDomain? = null
-
+    var patternsInDB: MutableList<ProdDomain>? = null
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -118,7 +119,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnDataUpdated)
                 // insert to db here
                 data.value?.patternName = clickedProduct?.prodName
-                data.value?.description =clickedProduct?.description
+                data.value?.description = clickedProduct?.description
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
@@ -149,6 +150,29 @@ class PatternDescriptionViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchDemoPatternList() {
+        disposable += getPattern.getAllPatternsInDB()
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleDemoResult(it) }
+    }
+
+    private fun handleDemoResult(result: Result<List<ProdDomain>>?) {
+        when (result) {
+            is Result.OnSuccess -> {
+                patternsInDB= result.data.toMutableList()
+                Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
+                uiEvents.post(Event.OnDeletePatternFolder)
+            }
+
+            is Result.OnError -> {
+
+            }
+        }
+    }
+
     /**
      * [Function] ViewPager Previous Button Click
      */
@@ -184,6 +208,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnDataloadFailed : Event()
         object OnImageDownloadComplete : Event()
         object OnNoNetworkToDownloadImage : Event()
+        object OnDeletePatternFolder : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

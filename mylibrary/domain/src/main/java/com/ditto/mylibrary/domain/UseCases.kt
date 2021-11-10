@@ -20,6 +20,7 @@ interface MyLibraryUseCase {
     fun invokeFolderList(createJson: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>>
     fun getTrialPatterns(patternType:String): Single<Result<List<ProdDomain>>>
+    fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>>
     fun getOfflinePatternById(id: String): Single<Result<PatternIdData>>
     fun getPatternDetails(get: Int): Single<Result<MyLibraryData>>
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>
