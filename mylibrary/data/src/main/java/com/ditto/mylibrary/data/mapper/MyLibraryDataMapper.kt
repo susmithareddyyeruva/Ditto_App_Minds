@@ -93,8 +93,8 @@ fun Prod.toDomain(): ProdDomain {
 
 fun MannequinData.toDomain(): MannequinDataDomain {
     return MannequinDataDomain(
-        name = this.name,
-        id = this.id
+        mannequinId = this.mannequinId?:"",
+        mannequinName = this.mannequinName?:""
     )
 }
 

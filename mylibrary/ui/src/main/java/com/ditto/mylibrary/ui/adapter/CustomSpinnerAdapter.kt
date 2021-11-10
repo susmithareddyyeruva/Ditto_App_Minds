@@ -47,7 +47,7 @@ class CustomSpinnerAdapter(val context: Context, var dataSource: List<MannequinD
         }else if (position==0){
             view.setPadding(3,9,9,9)
         }
-        vh.label.text = dataSource[position].name
+        vh.label.text = dataSource[position].mannequinName
         return view
     }
 

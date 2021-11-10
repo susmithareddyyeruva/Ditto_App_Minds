@@ -71,7 +71,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
-    var algorithmItems: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
+    var mannequinList: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -91,17 +91,6 @@ class PatternDescriptionViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleOfflineFetchResult(it) }
-    }
-
-    fun initList() {
-        algorithmItems?.add(MannequinDataDomain("No Customization", "0"))
-        algorithmItems?.add(MannequinDataDomain("Summer Cloth", "341241423523"))
-        algorithmItems?.add(MannequinDataDomain("Womens Dress", "341241423525"))
-        algorithmItems?.add(MannequinDataDomain("Winter Wear", "341241423526"))
-        algorithmItems?.add(MannequinDataDomain("Jute Cloth", "341241423545"))
-        algorithmItems?.add(MannequinDataDomain("Pants", "341241423523"))
-        algorithmItems?.add(MannequinDataDomain("Girls Dress", "34124142755"))
-
     }
 
     private fun handleOfflineFetchResult(result: Result<PatternIdData>) {

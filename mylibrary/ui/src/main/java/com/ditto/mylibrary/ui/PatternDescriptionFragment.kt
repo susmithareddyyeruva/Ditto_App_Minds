@@ -163,18 +163,30 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
         outputDirectory = Utility.getOutputDirectory(requireContext())
-        viewModel.initList()
-     /*   if (clickedProduct != null) {
+        if (clickedProduct != null) {
             if (clickedProduct!!.mannequin.isNullOrEmpty()) {
                 mannequinId = clickedProduct!!.purchasedSizeId
                 spinner.visibility = View.GONE
-            } else
+            } else {
                 spinner.visibility = View.VISIBLE
-        }*/
-        // we pass our item list and context to our Adapter.
-        val adapter = viewModel.algorithmItems?.let { CustomSpinnerAdapter(requireContext(), it) }
-        spinner.adapter = adapter
-        spinner.setSelection(0, true)
+                // we pass our item list and context to our Adapter.
+                viewModel.mannequinList?.add(MannequinDataDomain("", "No Customization"))
+                clickedProduct!!.mannequin?.forEach {
+                    viewModel.mannequinList?.add(
+                        MannequinDataDomain(
+                            it.mannequinId,
+                            it.mannequinName
+                        )
+                    )
+                }
+                val adapter =
+                    viewModel.mannequinList?.let { CustomSpinnerAdapter(requireContext(), it) }
+                spinner.adapter = adapter
+                spinner.setSelection(0, true)
+            }
+
+        }
+
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
@@ -186,7 +198,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 // It returns the clicked item.
                 val clickedItem: MannequinDataDomain =
                     parent.getItemAtPosition(position) as MannequinDataDomain
-                val id: String = clickedItem.id
+                val id: String = clickedItem.mannequinId
                 mannequinId = id
                 Log.d("ITEM SELECTED", "MANNEQUIN ID: $mannequinId")
             }
@@ -584,45 +596,50 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
-                binding.textWatchvideo2.isEnabled = false
-                if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                    || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                ) {
-                    //checkBluetoothWifiPermission()
-                    //forwardtoWorkspace()
-                    val map = getPatternPieceListTailornova()
-                    //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                    if (dowloadPermissonGranted()) {
-                        bottomNavViewModel.showProgress.set(true)
-                        viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                if (mannequinId?.isNotEmpty() == true) {
+                    binding.textWatchvideo2.isEnabled = false
+                    if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                        || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        //checkBluetoothWifiPermission()
+                        //forwardtoWorkspace()
+                        val map = getPatternPieceListTailornova()
+                        //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
+                        }
+                        /* } else {
+                             //no internet available
+                                 //todo changes message
+                             showProgress(false)
+                             Utility.getCommonAlertDialogue(
+                                 requireContext(),
+                                 resources.getString(com.ditto.workspace.ui.R.string.api_failed),
+                                 resources.getString(com.ditto.workspace.ui.R.string.api_failed_message),
+                                 resources.getString(com.ditto.workspace.ui.R.string.empty_string),
+                                 resources.getString(com.ditto.workspace.ui.R.string.ok),
+                                 this,
+                                 Utility.AlertType.UPDATEAPIFAILED,
+                                 Utility.Iconype.NONE
+                             )
+                         }*/
+
+                        /*=============================================*/
+
+                        //checkSocketConnectionBeforeWorkspace()
+
                     } else {
-                        requestPermissions(
-                            REQUIRED_PERMISSIONS_DOWNLOAD,
-                            REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                        )
+                        logger.d("OnClick Workspace failed")
                     }
-                    /* } else {
-                         //no internet available
-                             //todo changes message
-                         showProgress(false)
-                         Utility.getCommonAlertDialogue(
-                             requireContext(),
-                             resources.getString(com.ditto.workspace.ui.R.string.api_failed),
-                             resources.getString(com.ditto.workspace.ui.R.string.api_failed_message),
-                             resources.getString(com.ditto.workspace.ui.R.string.empty_string),
-                             resources.getString(com.ditto.workspace.ui.R.string.ok),
-                             this,
-                             Utility.AlertType.UPDATEAPIFAILED,
-                             Utility.Iconype.NONE
-                         )
-                     }*/
-
-                    /*=============================================*/
-
-                    //checkSocketConnectionBeforeWorkspace()
-
                 } else {
-                    logger.d("OnClick Workspace failed")
+                    showAlert(getString(R.string.please_selecte_mannequinid),Utility.AlertType.DEFAULT)
+
                 }
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
@@ -794,7 +811,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     bottomNavViewModel.showProgress.set(false)
-                    showAlert(it.versionerrorReceived)
+                    showAlert(it.versionerrorReceived, Utility.AlertType.NETWORK)
                 })
     }
 
@@ -826,6 +843,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         )
     }
 
+
     private fun enterWorkspace() {
         Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ${clickedProduct?.prodName}")
 
@@ -836,14 +854,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+            "mannequinId" to mannequinId,
             "PatternName" to clickedProduct?.prodName
         )
+
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
                 R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
                 bundle
             )
         }
+
     }
 
     //download the pattern pieces
@@ -1179,7 +1200,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     }
 
-    private fun showAlert(versionerrorReceived: String) {
+    private fun showAlert(versionerrorReceived: String, alertType: Utility.AlertType) {
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
@@ -1187,8 +1208,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             "",
             getString(com.ditto.menuitems_ui.R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK,
+            alertType,
             Utility.Iconype.FAILED
         )
     }
+
 }
