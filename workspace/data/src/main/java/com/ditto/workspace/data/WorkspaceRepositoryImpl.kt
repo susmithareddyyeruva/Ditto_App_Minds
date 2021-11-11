@@ -117,6 +117,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override fun getWorkspaceDataFromApi(id: String): Single<Result<WorkspaceDataAPI>> {
+        logger.d("WSISSUE >> id: $id")
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -186,6 +187,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override fun createWorkspaceDataFromApi(id:String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
+        logger.d("WSISSUE >> id: $id")
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
