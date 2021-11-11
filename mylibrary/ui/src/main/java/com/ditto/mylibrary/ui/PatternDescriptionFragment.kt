@@ -142,7 +142,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 bottomNavViewModel.showProgress.set(true)
                 if (clickedProduct != null) {
                     if (clickedProduct!!.mannequin.isNullOrEmpty()) {
-                        viewModel.mannequinId.set(clickedProduct!!.purchasedSizeId)
+                        viewModel.mannequinId.set(clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
                         spinner.visibility = View.GONE
                     } else {
                         spinner.visibility = View.VISIBLE
@@ -168,7 +168,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
 
                 }
-                fetchPatternDetails()
+                fetchPatternDetails()   //Fetching Pattern Details using design id
                 setUIEvents()
             } else {
                 setPatternImage()
@@ -193,7 +193,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     parent.getItemAtPosition(position) as MannequinDataDomain
                 val id: String = clickedItem.mannequinId
                 viewModel.mannequinId.set(id)
-                fetchPatternDetails()
+                fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
                 Log.d("ITEM SELECTED", "MANNEQUIN ID: " + viewModel.mannequinId.get())
             }
 
@@ -606,6 +606,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
+                /**
+                 * Restricting user to enter into workspace without selecting any customization
+                 */
                 if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
                     binding.textWatchvideo2.isEnabled = false
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
@@ -648,6 +651,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         logger.d("OnClick Workspace failed")
                     }
                 } else {
+                    /**
+                     * Restricting user to enter into workspace without selecting any customization
+                     */
                     showAlert(
                         getString(R.string.please_selecte_mannequinid),
                         Utility.AlertType.DEFAULT

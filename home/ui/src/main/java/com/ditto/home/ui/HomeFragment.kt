@@ -39,19 +39,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private lateinit var job: Job
+
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var versionResult: SoftwareUpdateResult? = null
@@ -86,7 +82,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME","onActivityCreated")
+        Log.d("HOME", "onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -103,14 +99,20 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                handleEvent(it)
+                if (isAdded) {
+                    handleEvent(it)
+                }
             }
 
+        fetchPatternData()
+    }
+
+    private fun fetchPatternData() {
         if (NetworkUtility.isNetworkAvailable(context)) {
             //homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
             if (AppState.getIsLogged()) {
                 homeViewModel.fetchData() // todo remove fetchData and uncomment above line
-            }else{
+            } else {
                 homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
             }
         } else {
@@ -137,18 +139,21 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     }
 
                 }
-                "DETAIL"->{
+                "DETAIL" -> {
                     logger.d("HOMESCREEN  :DETAIL")
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                        val designId=  arguments?.getString("clickedID")
-                        val  orderNumber=arguments?.getString("clickedOrderNumber")
+                        val designId = arguments?.getString("clickedID")
+                        val orderNumber = arguments?.getString("clickedOrderNumber")
                         logger.d("HOME PATTERN ID =$designId")
                         val bundle = bundleOf(
-                            "clickedTailornovaID" to designId,"clickedOrderNumber" to orderNumber,
+                            "clickedTailornovaID" to designId, "clickedOrderNumber" to orderNumber,
                             "ISFROM" to "DEEPLINK"
                         )
                         this.arguments?.clear();
-                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment,bundle)
+                        findNavController().navigate(
+                            R.id.action_deeplink_to_patternDescriptionFragment,
+                            bundle
+                        )
                     }
 
                 }
@@ -156,6 +161,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         }
     }
+
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
@@ -166,7 +172,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME","onResume")
+        Log.d("HOME", "onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()
@@ -340,7 +346,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private fun showAlert() {
         val errorMessage = homeViewModel.errorString.get() ?: ""
-        if (requireContext()!=null) {
+        if (requireContext() != null) {
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",

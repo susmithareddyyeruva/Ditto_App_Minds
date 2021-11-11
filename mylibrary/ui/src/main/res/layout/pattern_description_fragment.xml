@@ -57,7 +57,7 @@
                         android:text="@string/pattern_details"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/size_21dp" />
-<!--//todo -->
+                    <!--//todo -->
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
@@ -97,14 +97,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="@fraction/image_desc_guideline" />
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner"
-                android:layout_width="0dp"
-                android:layout_marginBottom="@dimen/margin_left_button"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/middle_guideline"
-                app:layout_constraintBottom_toTopOf="@+id/content_header"
-                />
+
 
             <TextView
                 android:id="@+id/subscription"
@@ -183,20 +176,29 @@
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription" />
 
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline"
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
+                app:layout_constraintBottom_toTopOf="@id/status_layout"
+                />
 
             <TextView
                 android:id="@+id/content_header"
-                android:layout_width="@dimen/dimen_0"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:text="@{viewModel.patternName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/pattern_name"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintStart_toEndOf="@id/start_guideline"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
-                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc" />
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
+                tools:text="Tulip Skirt" />
 
             <LinearLayout
                 android:id="@+id/status_layout"
@@ -269,10 +271,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:lineSpacingMultiplier="1.25"
                     android:text="@{viewModel.patternDescription}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_16sp"
-                    android:lineSpacingMultiplier="1.25"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum pellentesque eget sapien volutpat mollis. Odio ac sit purus tempor lacus consequat, cursus a. Mattis hendrerit nisl, eleifend vitae tempor. Faucibus pellentesque malesuada proin nulla orci enim ornare. Gravida euismod viverra potenti id." />
             </androidx.core.widget.NestedScrollView>
 
