@@ -61,7 +61,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onResume() {
         super.onResume()
-        if(AppState.getIsLogged()) {
+        if (AppState.getIsLogged()) {
             Log.d("Testing", ">>>>>>   Myfolder  onResume ")
             viewModel.disposable = CompositeDisposable()
             setUIEvents()
@@ -77,7 +77,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
                 }
             }
-        }else{
+        } else {
             core.ui.common.Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
@@ -204,6 +204,10 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 viewModel.isLoading.set(false)
                 showAlert()
             }
+            is MyFolderViewModel.Event.OnMyFolderShowAlert -> {
+                viewModel.errorString.set("Folder already exists !")
+                showAlert()
+            }
 
             else -> {
                 logger.d("onSyncClick : MyLibraryViewModel.Event undefined")
@@ -226,7 +230,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         action = viewModel.delete
                     )
                 }
-            core.ui.common.Utility.AlertType.GUEST_MYFOLDER ->  (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
+            core.ui.common.Utility.AlertType.GUEST_MYFOLDER -> (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
         }
     }
 
