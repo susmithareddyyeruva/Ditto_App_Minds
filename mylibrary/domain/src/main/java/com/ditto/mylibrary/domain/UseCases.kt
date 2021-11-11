@@ -25,7 +25,7 @@ interface MyLibraryUseCase {
     fun invokeFolderList(request: GetFolderRequest, methodName: String) :  Single<Result<FoldersResultDomain>>
     fun addFolder(createJson: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
-    fun insertTailornovaDetails(patternIdData: PatternIdData): Single<Any>
+    fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any>
 
 }
 

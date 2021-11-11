@@ -122,14 +122,14 @@ class PatternDescriptionViewModel @Inject constructor(
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(data.value!!)// todo uncomment this line
+                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo)// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }
     }
 
-    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData) {
-        disposable += getPattern.insertTailornovaDetails(patternIdData)
+    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData, orderNo: String?) {
+        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

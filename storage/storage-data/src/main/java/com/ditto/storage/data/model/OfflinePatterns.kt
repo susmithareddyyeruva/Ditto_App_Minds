@@ -137,5 +137,9 @@ data class OfflinePatterns(
 
     @ColumnInfo(name="occasion")
     @SerializedName("occasion")
-    var occasion:String?=""
+    var occasion:String?="",
+
+    @ColumnInfo(name="order_number")
+    @SerializedName("order_number")
+    var orderNumber:String?=""
 )
