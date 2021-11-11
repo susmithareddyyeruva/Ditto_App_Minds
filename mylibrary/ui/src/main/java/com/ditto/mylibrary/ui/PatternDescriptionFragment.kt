@@ -1169,29 +1169,39 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             val listOfCommonFiles: ArrayList<File> = ArrayList(emptyList())
             if (patterns != null) {
                 for (file in folders) {
+                    var fileName = file.name
+                    if (fileName.contains(".pdf")) {
+                        fileName = getNameWithoutExtension(fileName)
+                    }
                     patterns.forEach {
-                        if (it.prodName == file.name) {
-                                listOfCommonFiles.add(file)
+                        if (it.prodName == fileName) {
+                            listOfCommonFiles.add(file)
                         }
                     }
                 }
 
-                val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-                Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
-                for (file in filesToDelete) {
-                    val fileToDelete = File(
-                        Environment.getExternalStorageDirectory()
-                            .toString() + "/Ditto/${file.name}"
-                    )
+            }
 
-                    val d = deleteDirectory(fileToDelete)
-                    Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
-                }
+            val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
+            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            for (file in filesToDelete) {
+                val fileToDelete = File(
+                    Environment.getExternalStorageDirectory()
+                        .toString() + "/Ditto/${file.name}"
+                )
+
+                val d = deleteDirectory(fileToDelete)
+                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
             }
         }
     }
+
+
     fun deleteDirectory(path: File): Boolean {
         if (path.exists()) {
+            if (path.name.contains(".pdf")) {
+                return path.delete()
+            }
             val files = path.listFiles() ?: return true
             for (i in files.indices) {
                 if (files[i].isDirectory) {
@@ -1202,6 +1212,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
         return path.delete()
+    }
+
+    fun getNameWithoutExtension(fileName: String): String {
+        var dotIndex = fileName.lastIndexOf('.')
+        return if (dotIndex == -1) fileName else fileName.substring(0, dotIndex)
     }
 }
 
