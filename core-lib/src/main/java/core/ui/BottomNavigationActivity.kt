@@ -37,6 +37,7 @@ import core.appstate.AppState
 import core.lib.R
 import core.lib.databinding.ActivityBottomNavigationBinding
 import core.lib.databinding.NavDrawerHeaderBinding
+import core.network.NetworkUtility
 import core.ui.adapter.ExpandableMenuListAdapter
 import core.ui.common.NoScrollExListView
 import core.ui.common.Utility
@@ -56,7 +57,7 @@ import javax.inject.Inject
  * Main Bottom Navigation Activity launcher class holding navHost and initial position at Splash.
  */
 class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
-    NavigationView.OnNavigationItemSelectedListener,Utility.CustomCallbackDialogListener {
+    NavigationView.OnNavigationItemSelectedListener, Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
@@ -106,7 +107,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
          */
         handleIntent(intent)
         binding.toolbar.setNavigationOnClickListener {
-            Log.d("NAVIGTAION","HERE=====")
+            Log.d("NAVIGTAION", "HERE=====")
         }
 
     }
@@ -115,7 +116,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         super.onNewIntent(intent)
         handleIntent(intent)
     }
-    fun  setToolbar(){
+
+    fun setToolbar() {
         setSupportActionBar(binding.toolbar)
     }
 
@@ -123,9 +125,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         val appLinkAction = intent.action
         val appLinkData: Uri? = intent.data
         if (Intent.ACTION_VIEW == appLinkAction) {
+            navController.popBackStack( R.id.nav_graph,true)
+            navController.navigate( R.id.destination_splash)
+           /* navController.navigate(
+                R.id.destination_splash, null,
+                NavOptions.Builder().setPopUpTo(navController.graph.startDestination, true).build()
+            )*/
             appLinkData?.lastPathSegment?.also { segmentId ->
                 Log.d("DEEPLINK", segmentId)
                 when {
+
                     segmentId.endsWith("Sites-ditto-Site") -> {
                         // HOME
                         if (navController.currentDestination?.id == R.id.nav_graph_id_home) {
@@ -143,19 +152,24 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     segmentId.endsWith("myLibrary") -> {
                         // PATTERN LIBRARY
                         if (AppState.getIsLogged()) {
-                            val userId = appLinkData?.getQueryParameter("userId")
-                            Log.d("DEEPLINK","USER ID :$userId")
-                            if (userId.equals(AppState.getCustNO())){
-                                val bundle = bundleOf(
-                                    "DEEPLINK" to "LIBRARY"
-                                )
-                                navController.navigate(
-                                    R.id.action_splashActivity_to_HomeFragment,
-                                    bundle
-                                )
-                                return
-                            }else{
-                              showAlert("Customer doesn't match !")
+                            if (NetworkUtility.isNetworkAvailable(this)) {
+                                val userId = appLinkData?.getQueryParameter("userId")
+                                Log.d("DEEPLINK", "USER ID :$userId")
+                                if (userId.equals(AppState.getCustNO())) {
+                                    val bundle = bundleOf(
+                                        "DEEPLINK" to "LIBRARY"
+                                    )
+                                    navController.navigate(
+                                        R.id.action_splashActivity_to_HomeFragment,
+                                        bundle
+                                    )
+
+                                    return
+                                } else {
+                                    showAlert(getString(R.string.customer_not_match))
+                                }
+                            } else {
+                                showAlert(getString(R.string.no_internet_available))
                             }
                         }
 
@@ -164,50 +178,39 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     segmentId.endsWith("MyPatternLibrary-PatternShow") -> {
                         // PATTERN MySubscriptionLibrary
                         if (AppState.getIsLogged()) {
-                            val userId = appLinkData?.getQueryParameter("userId")
-                            if (userId.equals(AppState.getCustNO())) {
-                                val designId = appLinkData?.getQueryParameter("designId")
-                                val orderId = appLinkData?.getQueryParameter("orderId")
-                                val mannequinId = appLinkData?.getQueryParameter("mannequinId")
-                                Log.d("DEEPLINK", " USER ID=$userId")
-                                Log.d("DEEPLINK", " DESIGN ID=$designId")
-                                Log.d("DEEPLINK", " MANNEQUIN ID=$mannequinId")
-                                Log.d("DEEPLINK", " ORDER ID=$orderId")
+                            if (NetworkUtility.isNetworkAvailable(this)) {
+                                val userId = appLinkData?.getQueryParameter("userId")
+                                if (userId.equals(AppState.getCustNO())) {
+                                    val designId = appLinkData?.getQueryParameter("designId")
+                                    val orderId = appLinkData?.getQueryParameter("orderId")
+                                    val mannequinId = appLinkData?.getQueryParameter("mannequinId")
+                                    Log.d("DEEPLINK", " USER ID=$userId")
+                                    Log.d("DEEPLINK", " DESIGN ID=$designId")
+                                    Log.d("DEEPLINK", " MANNEQUIN ID=$mannequinId")
+                                    Log.d("DEEPLINK", " ORDER ID=$orderId")
 
-                                val bundle = bundleOf(
-                                    "DEEPLINK" to "DETAIL", "clickedID" to designId,"clickedOrderNumber" to orderId
-                                )
-                                Log.d("PATTERN ID", "$designId")
-                                navController.navigate(
-                                    R.id.action_splashActivity_to_HomeFragment,
-                                    bundle
-                                )
-                            }else{
-                                showAlert("Customer doesn't match !")
+                                    val bundle = bundleOf(
+                                        "DEEPLINK" to "DETAIL",
+                                        "clickedID" to designId,
+                                        "clickedOrderNumber" to orderId
+                                    )
+                                    Log.d("PATTERN ID", "$designId")
+                                    navController.navigate(
+                                        R.id.action_splashActivity_to_HomeFragment,
+                                        bundle
+                                    )
+
+                                } else {
+                                    showAlert(getString(R.string.customer_not_match))
+                                }
+                            } else {
+                                showAlert(getString(R.string.no_internet_available))
                             }
                         }
 
                         return
                     }
-                    /*    appLinkData?.pathSegments.contains("MyPatternLibrary-MyLibrary") -> {
-                            // PATTERN DETAIL
-                            val ip = appLinkData.lastPathSegment
-                            Log.d("DEEPLINK", "$ip")
-                            val id = ip?.substringAfter("MyPatternLibrary-MyLibrary/")
-                            if (isNumber(id)){
-                                val ClickedId = id?.toInt()
-                                val bundle = bundleOf(
-                                    "DEEPLINK" to "DETAIL", "clickedID" to ClickedId
-                                )
-                                Log.d("PATTERN ID", "$ClickedId")
-                                navController.navigate(
-                                    R.id.action_splashActivity_to_HomeFragment,
-                                    bundle
-                                )
-                            }
-                            return
 
-                        }*/
                 }
 
             }
@@ -662,10 +665,20 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
+
     private fun showAlert(message: String) {
-        Utility.getCommonAlertDialogue(this,"",message,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
-            ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            this,
+            "",
+            message,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
     }
+
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -677,6 +690,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-       // TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }
