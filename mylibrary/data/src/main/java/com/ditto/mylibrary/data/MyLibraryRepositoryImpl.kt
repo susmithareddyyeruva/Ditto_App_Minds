@@ -145,17 +145,15 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(get: String): Single<Result<PatternIdData>> {
+    override fun getPatternData(designeID: String): Single<Result<PatternIdData>> {
         return tailornovaApiService.getPatternDetailsByDesignId(
-            BuildConfig.TAILORNOVA_ENDURL + get,
+            BuildConfig.TAILORNOVA_ENDURL + designeID,
             OS
         )
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial("trial", AppState.getCustID())
-                offlinePatternDataDao.insertOfflinePatternData(it.toDomain())
-                //insert to db
+                offlinePatternDataDao.deletePatternsExceptTrial("trial", AppState.getCustID(),designeID)
             }.map {
                 Result.withValue(it)
             }
@@ -496,5 +494,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any> {
+        return Single.fromCallable {
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber))}
+    }
 
 }

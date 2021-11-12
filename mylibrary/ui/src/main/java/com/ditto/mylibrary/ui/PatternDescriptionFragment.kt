@@ -1,3 +1,4 @@
+
 package com.ditto.mylibrary.ui
 
 import android.Manifest
@@ -79,7 +80,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
-    var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -133,12 +133,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ?.let { viewModel.clickedTailornovaID.set(it) }
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
-                clickedProduct = arguments?.get("product") as ProdDomain?
-                Log.d("12345", "received is ${clickedProduct.toString()}")
+                viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
+                Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
                 bottomNavViewModel.showProgress.set(true)
                 if (NetworkUtility.isNetworkAvailable(context)) {
                     if (AppState.getIsLogged()) {
-                        if (clickedProduct?.patternType.equals("Trial", true)) {
+                        if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
                             viewModel.fetchOfflinePatternDetails()
                         } else {
                             viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
@@ -285,9 +285,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setData() {
-        viewModel.patternName.set(clickedProduct?.prodName)
+        viewModel.patternName.set(viewModel.clickedProduct?.prodName)
         //viewModel.patternDescription.set(clickedProduct?.description)
-        viewModel.patternDescription.set(viewModel?.data?.value?.description?:"Some description")
+        viewModel.patternDescription.set(viewModel.clickedProduct?.description?:"Some description")
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
     }
@@ -589,7 +589,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ) {
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to clickedProduct?.prodName)
+                        bundleOf("PatternName" to viewModel.clickedProduct?.prodName)
                     findNavController().navigate(
                         R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -649,7 +649,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
         Glide.with(requireContext())
-            .load(clickedProduct?.image)
+            .load(viewModel.clickedProduct?.image)
             .placeholder(R.drawable.ic_placeholder)
             .into(binding.imagePatternDesc)
     }
@@ -771,8 +771,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
-        Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ${clickedProduct?.prodName}")
-
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
@@ -780,7 +778,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
-            "PatternName" to clickedProduct?.prodName
+            "PatternName" to viewModel.clickedProduct?.prodName
         )
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
@@ -839,9 +837,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
-            }
-            Utility.AlertType.DOWNLOADFAILED -> {
-                checkSocketConnectionBeforeWorkspace()
             }
         }
     }
@@ -942,11 +937,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
             }
-            alertType == Utility.AlertType.DOWNLOADFAILED -> {
-                Toast.makeText(requireContext(), "pending put download code", Toast.LENGTH_LONG)
-                val map = getPatternPieceListTailornova()
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
-            }
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
@@ -1009,6 +999,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
+            Utility.AlertType.DOWNLOADFAILED -> {
+                bottomNavViewModel.showProgress.set(false)
+                checkSocketConnectionBeforeWorkspace()
+            }
+
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.version_update == true) {
@@ -1059,6 +1054,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if (versionResult?.response?.force_update == true) {
                     requireActivity().finishAffinity()
                 }
+            }
+            alertType == Utility.AlertType.DOWNLOADFAILED -> {
+                val map = getPatternPieceListTailornova()
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
         }
     }

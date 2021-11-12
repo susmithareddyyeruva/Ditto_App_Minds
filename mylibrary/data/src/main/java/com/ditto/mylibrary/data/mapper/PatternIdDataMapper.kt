@@ -27,10 +27,10 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             occasion = "",
             suitableFor = "",
             tailornovaDesignId = it.tailornaovaDesignId,
-            orderNo = "",
+            orderNo = it.orderNumber,
             prodSize = "",
-            prodGender = "",
-            prodBrand = "",
+            prodGender = it.gender,
+            prodBrand = it.brand,
             isFavourite = false
         )
     }
@@ -54,7 +54,7 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
         occasion = "",
         suitableFor = "",
         tailornovaDesignId = this.tailornaovaDesignId,
-        orderNo = "",
+        orderNo = this.orderNumber,
         prodSize = "",
         prodGender = "",
         prodBrand = "",
@@ -62,7 +62,7 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
     )
 }
 
-internal fun PatternIdData.toDomain(): OfflinePatterns {
+internal fun PatternIdData.toDomain(orderNumber: String?): OfflinePatterns {
     return OfflinePatterns(
         custId = AppState.getCustID(),
         designId = this.designId,
@@ -88,7 +88,8 @@ internal fun PatternIdData.toDomain(): OfflinePatterns {
         customization = this.customization,
         dressType = this.dressType,
         suitableFor = this.suitableFor,
-        occasion = this.occasion
+        occasion = this.occasion,
+        orderNumber = orderNumber
     )
 }
 

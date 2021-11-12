@@ -294,7 +294,7 @@ class HomeViewModel @Inject constructor(
         if (!hashMap.isEmpty()) {
             hashMap.forEach { (key, value) ->
                 Log.d("Download", "file not present for $$patternName: KEY: $key \t VALUE : $value")
-                if (!(key.isNullOrEmpty())) {
+                if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
                     downloadEachPatternPiece(
                         imageUrl = value,
                         filename = key,
