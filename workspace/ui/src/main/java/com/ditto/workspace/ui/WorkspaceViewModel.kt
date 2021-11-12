@@ -892,7 +892,7 @@ class WorkspaceViewModel @Inject constructor(
 
                 runBlocking {
                     hashMap.forEach { (key, value) ->
-                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        //Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
                         downloadEachPatternPiece(
                             imageUrl = value,
                             filename = key,
