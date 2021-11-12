@@ -2,7 +2,6 @@ package com.ditto.workspace.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.ActivityOptions
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
@@ -12,7 +11,6 @@ import android.graphics.*
 import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.os.Build
-import com.ditto.videoplayer.CustomPlayerControlActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.DisplayMetrics
@@ -20,7 +18,6 @@ import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
-import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -37,12 +34,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
@@ -143,7 +144,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.seekbarStatus.isEnabled = false
         binding.includeWorkspacearea?.layoutWorkspace?.setOnDragListener(this)
         binding.includeWorkspacearea?.layoutWorkspace?.let { mWorkspaceEditor?.selectAllDrag(it) }
-        showWorkspaceCoachMark()
         backpressCall =
             object : OnBackPressedCallback(
                 true
@@ -791,6 +791,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 mWorkspaceEditor?.flipHorizontal()
             }
             is WorkspaceViewModel.Event.CalculateScrollButtonVisibility -> {
+                showWorkspaceCoachMark()
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
@@ -935,6 +936,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
+
 
                 var workspaceItems: MutableList<WorkspaceItems>? = null
                 if (viewModel.tabCategory.equals("Garment")) {
@@ -1107,16 +1109,29 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun showWorkspaceCoachMark() {
         viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
         if (!viewModel.isWorkspaceShownCoachMark.get()) {
-            binding.groupCoachMarkWs.setVisibility(View.VISIBLE)
-            val animate = TranslateAnimation(
-                0F,  // fromXDelta
-                0F,  // toXDelta
-                binding.coachMarkPopup.height.toFloat(),  // fromYDelta
-                0F
-            ) // toYDelta
-            animate.startOffset = 1000
-            animate.duration = 500
-            binding.coachMarkPopup.startAnimation(animate)
+
+            val transition: Transition = Slide(Gravity.BOTTOM)
+            transition.setDuration(600)
+            transition.addListener(object : Transition.TransitionListener {
+                override fun onTransitionStart(transition: Transition) {
+                }
+
+                override fun onTransitionEnd(transition: Transition) {
+                    binding.groupCoachMarkWs.setVisibility(View.VISIBLE)
+                }
+
+                override fun onTransitionCancel(transition: Transition) {
+                }
+
+                override fun onTransitionPause(transition: Transition) {
+                }
+
+                override fun onTransitionResume(transition: Transition) {
+                }
+            })
+            transition.addTarget(binding.coachMarkPopup)
+            TransitionManager.beginDelayedTransition(binding.workspaceRoot, transition)
+            binding.coachMarkPopup.setVisibility(View.VISIBLE)
         }
     }
 
@@ -2246,7 +2261,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logger.d("On Activity Result")
-        if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
+        if (requestCode == REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL) {
+            viewModel.coachMarkClose()
+        }else if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
             if (data?.data.toString().equals("success")) {
                 showWaitingMessage("Connected to Ditto Projector!!")
                 baseViewModel.activeSocketConnection.set(true)

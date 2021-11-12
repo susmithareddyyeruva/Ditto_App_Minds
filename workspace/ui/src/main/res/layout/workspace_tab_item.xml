@@ -328,7 +328,7 @@
             android:id="@+id/button_save_and_exit"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@drawable/button_black_border_while_bg"
+            android:background="@drawable/button_coachmark_while_bg"
             android:elevation="@dimen/elevation_pieces_reference"
             android:enabled="true"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -358,7 +358,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/recycler_view_pieces"
             app:layout_constraintEnd_toStartOf="@+id/recycler_view_pieces"
-            app:layout_constraintStart_toEndOf="@+id/txt_recalibrate"
             app:layout_constraintTop_toTopOf="@+id/recycler_view_pieces" />
 
         <ImageView
