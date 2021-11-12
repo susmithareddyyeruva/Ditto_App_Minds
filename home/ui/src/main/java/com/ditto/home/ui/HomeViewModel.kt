@@ -68,9 +68,6 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        if (Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
         setHomeHeader()
 
     }
