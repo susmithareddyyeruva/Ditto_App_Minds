@@ -1,7 +1,6 @@
 package com.ditto.login.data.api
 
 import android.content.Context
-import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.error.LandingContentFetchError
@@ -76,28 +75,30 @@ class LoginRepositoryImpl @Inject constructor(
             basic
         )
             .doOnSuccess {
-                Log.d("Login", "*****Login Success**")
+                logger.d("*****Login Success*****")
+
             }
             .map {
-                Log.d("Login", "*****Login Success MAP**")
                 Result.withValue(it.toUserDomain())
 
             }
             .onErrorReturn {
                 var errorMessage = "Error Fetching data"
+                logger.d(it.localizedMessage)
                 try {
-                    Log.d("Try", "try block")
+                    logger.d("try block")
                     if (it is HttpException) {
                         val errorBody = it.response()?.errorBody()?.string()
-                        Log.d("LoginError", errorBody?:"")
+                        logger.d("LoginError: $errorBody")
                         val gson = Gson()
                         val type = object : TypeToken<LoginError>() {}.type
                         val errorResponse: LoginError? = gson.fromJson(errorBody, type)
                         errorMessage = errorResponse?.fault?.message ?: "Error Fetching data"
-                        Log.d("LoginErrorResponse", errorMessage)
+                        logger.d("LoginErrorResponse: $errorMessage")
+
                     }
                 } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
+                    logger.d("Catch: " + e.localizedMessage)
                     errorMessage = e.message.toString()
 
 
@@ -108,7 +109,6 @@ class LoginRepositoryImpl @Inject constructor(
                     LoginFetchError(errorMessage, it)
                 )
             }
-
 
 
     }
@@ -122,18 +122,19 @@ class LoginRepositoryImpl @Inject constructor(
     override fun getLandingDetails(): Single<Result<LandingContentDomain>> {
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
-        }else{
-            return  loginService.getLandingContentDetails(CLIENT_ID)
+        } else {
+            return loginService.getLandingContentDetails(CLIENT_ID)
                 .doOnSuccess {
-                    Log.d("Landing Content", "***** Success**")
+                    logger.d("*****Landing Content Success*****")
                 }
                 .map {
                     Result.withValue(it.toDomain())
 
                 }
                 .onErrorReturn {
-                    var errorMessage = "Error Fetching Landing Content"
-                    Log.d("Try", "try block")
+                    val errorMessage = "Error Fetching Landing Content"
+                    logger.d("try block")
+
 
 
                     Result.withError(
@@ -141,7 +142,7 @@ class LoginRepositoryImpl @Inject constructor(
                     )
                 }
         }
-        }
+    }
 
 }
 
