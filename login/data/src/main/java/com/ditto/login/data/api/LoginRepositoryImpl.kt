@@ -88,8 +88,8 @@ class LoginRepositoryImpl @Inject constructor(
                 try {
                     Log.d("Try", "try block")
                     if (it is HttpException) {
-                        val errorBody = it.response()!!.errorBody()!!.string()
-                        Log.d("LoginError", errorBody)
+                        val errorBody = it.response()?.errorBody()?.string()
+                        Log.d("LoginError", errorBody?:"")
                         val gson = Gson()
                         val type = object : TypeToken<LoginError>() {}.type
                         val errorResponse: LoginError? = gson.fromJson(errorBody, type)
