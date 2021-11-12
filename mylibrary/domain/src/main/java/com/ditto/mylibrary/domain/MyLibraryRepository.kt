@@ -23,7 +23,7 @@ interface MyLibraryRepository {
     fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>>
     fun getTrialPatterns():Single<Result<List<ProdDomain>>>
     fun getOfflinePatternById(id: String): Single<Result<PatternIdData>>
-
+    fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>
     fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>>

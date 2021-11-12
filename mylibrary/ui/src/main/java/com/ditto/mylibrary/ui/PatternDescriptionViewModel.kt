@@ -12,6 +12,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.PatternIdData
+import com.ditto.mylibrary.domain.model.ProdDomain
 import core.PDF_PASSWORD
 import core.PDF_USERNAME
 import core.event.UiEvents
@@ -50,7 +51,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
-    val isFromDeepLinking: ObservableBoolean= ObservableBoolean(false)
+    val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("")
     val patternStatus: ObservableField<String> = ObservableField("")
@@ -69,6 +70,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
+    var clickedProduct: ProdDomain? = null
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -114,11 +116,39 @@ class PatternDescriptionViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 data.value = result.data
                 uiEvents.post(Event.OnDataUpdated)
+                // insert to db here
+                data.value?.patternName = clickedProduct?.prodName
+                data.value?.description =clickedProduct?.description
+                //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
+                //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
+
+                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo)// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }
     }
 
+    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData, orderNo: String?) {
+        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo)
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                handleInsertTailornovaResult(it)
+            }
+    }
+
+    private fun handleInsertTailornovaResult(result: Any) {
+        when (result) {
+            is Result.OnSuccess<*> -> {
+                Log.d("handlInsertTailornovRes", "OnSuccess")
+            }
+            is Result.OnError<*> -> {
+                Log.d("handlInsertTailornovRes", "onFailed")
+                handleError(result.error)
+            }
+        }
+    }
     /**
      * [Function] ViewPager Previous Button Click
      */
@@ -250,7 +280,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     runBlocking {
                         hashMap.forEach { (key, value) ->
                             Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                            if (!(key.isNullOrEmpty())) {
+                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
                                 downloadEachPatternPiece(
                                     imageUrl = value,
                                     filename = key,
