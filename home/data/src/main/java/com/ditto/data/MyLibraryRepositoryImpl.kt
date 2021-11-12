@@ -13,20 +13,17 @@ import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.TrialPatternError
-import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.storage.data.database.OfflinePatternDataDao
-import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.data.database.UserDao
-import core.appstate.AppState
-import core.lib.BuildConfig
-import core.models.CommonApiFetchError
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import core.*
 import core.di.Encrypt
+import core.lib.BuildConfig
+import core.models.CommonApiFetchError
 import core.network.NetworkUtility
 import core.ui.errors.CommonError
 import io.reactivex.Single
@@ -35,7 +32,6 @@ import non_core.lib.error.NoNetworkError
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class MyLibraryRepositoryImpl @Inject constructor(
@@ -79,8 +75,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("HOME LIBRARY API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
