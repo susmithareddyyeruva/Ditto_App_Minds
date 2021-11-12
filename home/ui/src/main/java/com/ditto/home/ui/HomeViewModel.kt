@@ -328,8 +328,8 @@ class HomeViewModel @Inject constructor(
                     convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
             val path = Uri.fromFile(result)
             patternUri.set(path.toString())
-            Log.d("PATTERN", patternUri.get() ?: "")
-            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
+            //Log.d("PATTERN", patternUri.get() ?: "")
+            //Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
         }
     }
 

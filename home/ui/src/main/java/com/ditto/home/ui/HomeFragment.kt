@@ -39,13 +39,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -107,12 +102,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
 
         if (NetworkUtility.isNetworkAvailable(context)) {
-            //homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
-            if (AppState.getIsLogged()) {
+            homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
+            /*if (AppState.getIsLogged()) {
                 homeViewModel.fetchData() // todo remove fetchData and uncomment above line
             }else{
                 homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
-            }
+            }*/
         } else {
             if (AppState.getIsLogged()) {
                 homeViewModel.fetchOfflineData() // offline >> fetching from DB >> fetch Demo pattern
