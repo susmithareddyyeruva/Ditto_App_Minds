@@ -87,9 +87,8 @@ class LoginRepositoryImpl @Inject constructor(
                 var errorMessage = "Error Fetching data"
                 try {
                     Log.d("Try", "try block")
-                    val error = it as HttpException
-                    if (error!=null) {
-                        val errorBody = error.response()!!.errorBody()!!.string()
+                    if (it is HttpException) {
+                        val errorBody = it.response()!!.errorBody()!!.string()
                         Log.d("LoginError", errorBody)
                         val gson = Gson()
                         val type = object : TypeToken<LoginError>() {}.type
