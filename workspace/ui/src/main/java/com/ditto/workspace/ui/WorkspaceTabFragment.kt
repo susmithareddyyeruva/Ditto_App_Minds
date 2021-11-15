@@ -1,6 +1,8 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -16,8 +18,7 @@ import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
-import android.view.animation.OvershootInterpolator
-import android.view.animation.ScaleAnimation
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -936,8 +937,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
-
-
                 var workspaceItems: MutableList<WorkspaceItems>? = null
                 if (viewModel.tabCategory.equals("Garment")) {
                     workspaceItems =
@@ -1091,6 +1090,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         binding.coachMarkPopup.clearAnimation()
                         binding.groupCoachMarkWs.setVisibility(View.GONE)
                         AppState.setShowWorkspaceCoachMark(true)
+                        showCoachmarkEndPopup()
                     }
             }
             WorkspaceViewModel.Event.OnCoachmarkPlay -> {
@@ -1133,6 +1133,82 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             TransitionManager.beginDelayedTransition(binding.workspaceRoot, transition)
             binding.coachMarkPopup.setVisibility(View.VISIBLE)
         }
+    }
+
+    private fun showCoachmarkEndPopup() {
+        binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.VISIBLE)
+//        val animator: ObjectAnimator = ObejctAnimator.ofFloat(binding.includeWorkspacearea.coachMarkEndPopup, "translationX", 0, 25, 0)
+//        animator.interpolator = BounceInterpolator()
+//        animator.startDelay = 500
+//        animator.duration = 1500
+//        animator.start()
+
+
+        val animator = ValueAnimator.ofFloat(0f, -binding.includeWorkspacearea.coachMarkEndPopup.height.toFloat())
+        animator.addUpdateListener {
+            val value = it.animatedValue as Float
+            binding.includeWorkspacearea.coachMarkEndPopup.translationY = value
+        }
+        animator.repeatMode = ValueAnimator.REVERSE
+        animator.repeatCount = 1
+        animator.duration = 1500L
+        animator.start()
+
+//        binding.includeWorkspacearea.coachMarkEndPopup.animate()
+//            .scaleX(.8f)
+//            .scaleY(.8f)
+//            .setDuration(1500)
+//            .setInterpolator(BounceInterpolator())
+//            .withStartAction {
+//                binding.coachMarkClose.setVisibility(View.GONE)
+//            }
+//            .withEndAction {
+//                binding.includeWorkspacearea.coachMarkEndPopup.visibility = View.GONE
+//            }
+
+//        val transition: Transition = Scale()
+//        transition.setDuration(600)
+//        transition.addListener(object : Transition.TransitionListener {
+//            override fun onTransitionStart(transition: Transition) {
+//            }
+//
+//            override fun onTransitionEnd(transition: Transition) {
+//                binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.GONE)
+//            }
+//
+//            override fun onTransitionCancel(transition: Transition) {
+//            }
+//
+//            override fun onTransitionPause(transition: Transition) {
+//            }
+//
+//            override fun onTransitionResume(transition: Transition) {
+//            }
+//        })
+//        transition.addTarget(binding.includeWorkspacearea.coachMarkEndPopup)
+//        TransitionManager.beginDelayedTransition(binding.workspaceRoot, transition)
+
+//        val scale = ScaleAnimation(
+//            0.5F,
+//            1F,
+//            0.5F,
+//            1F,
+//            ScaleAnimation.RELATIVE_TO_SELF,
+//            .5f,
+//            ScaleAnimation.RELATIVE_TO_SELF,
+//            .5f
+//        )
+//        scale.duration = 1500
+//        scale.fillAfter = true
+//        scale.interpolator = BounceInterpolator()
+//        scale.setAnimationListener(object : Animation.AnimationListener {
+//            override fun onAnimationStart(animation: Animation) {}
+//            override fun onAnimationEnd(animation: Animation) {
+//                binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.GONE)
+//            }
+//            override fun onAnimationRepeat(animation: Animation) {}
+//        })
+//        binding.includeWorkspacearea.coachMarkEndPopup.startAnimation(scale)
     }
 
     fun downloadPatternPieces() {
@@ -1394,24 +1470,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             onDragCompleted()
         }
-    }
-
-
-    private fun detectTouchedView(view: View) {
-        val scale = ScaleAnimation(
-            0.5F,
-            1F,
-            0.5F,
-            1F,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            .5f,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            .5f
-        )
-        scale.duration = 1500
-        scale.fillAfter = true
-        scale.interpolator = OvershootInterpolator()
-        view.startAnimation(scale)
     }
 
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {

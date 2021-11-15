@@ -432,7 +432,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:elevation="@dimen/elevation_card"
-            android:src="@drawable/coach_mark_ws"
+            android:src="@drawable/coachmark_workspace_popup"
             android:animateLayoutChanges="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"

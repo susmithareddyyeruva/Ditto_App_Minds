@@ -52,4 +52,6 @@
     <dimen name="calibrate_alert_textsize">26sp</dimen>
     <dimen name="tab_title_heading">28sp</dimen>
     <dimen name="tab_head_text">22sp</dimen>
+    <dimen name="coachMarkEndPopupWidth">216dp</dimen>
+    <dimen name="coachMarkEndPopupHeight">62dp</dimen>
 </resources>
