@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME","onActivityCreated")
+        Log.d("HOME", "onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -98,7 +98,9 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                handleEvent(it)
+                if (activity!= null && context!= null &&isAdded) {
+                    handleEvent(it)
+                }
             }
 
         if (NetworkUtility.isNetworkAvailable(context)) {
@@ -132,18 +134,21 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     }
 
                 }
-                "DETAIL"->{
+                "DETAIL" -> {
                     logger.d("HOMESCREEN  :DETAIL")
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                        val designId=  arguments?.getString("clickedID")
-                        val  orderNumber=arguments?.getString("clickedOrderNumber")
+                        val designId = arguments?.getString("clickedID")
+                        val orderNumber = arguments?.getString("clickedOrderNumber")
                         logger.d("HOME PATTERN ID =$designId")
                         val bundle = bundleOf(
-                            "clickedTailornovaID" to designId,"clickedOrderNumber" to orderNumber,
+                            "clickedTailornovaID" to designId, "clickedOrderNumber" to orderNumber,
                             "ISFROM" to "DEEPLINK"
                         )
                         this.arguments?.clear();
-                        findNavController().navigate(R.id.action_deeplink_to_patternDescriptionFragment,bundle)
+                        findNavController().navigate(
+                            R.id.action_deeplink_to_patternDescriptionFragment,
+                            bundle
+                        )
                     }
 
                 }
@@ -151,6 +156,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         }
     }
+
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
@@ -161,7 +167,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME","onResume")
+        Log.d("HOME", "onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()
@@ -306,10 +312,14 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
                     }
                 } else {
-                    requestPermissions(
-                        REQUIRED_PERMISSIONS_DOWNLOAD,
-                        REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                    )
+                    if (activity!= null && context!= null &&isAdded) {
+                        requestPermissions(
+                            REQUIRED_PERMISSIONS_DOWNLOAD,
+                            REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                        )
+                    }else{
+
+                    }
                 }
             }
             HomeViewModel.Event.OnImageDownloadComplete -> {
@@ -335,7 +345,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private fun showAlert() {
         val errorMessage = homeViewModel.errorString.get() ?: ""
-        if (requireContext()!=null) {
+        if (requireContext() != null) {
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",

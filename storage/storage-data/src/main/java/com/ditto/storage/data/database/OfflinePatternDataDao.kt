@@ -11,7 +11,7 @@ abstract class OfflinePatternDataDao {
     abstract fun insertOfflinePatternData(offlinePatterns: OfflinePatterns): Long
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     @JvmSuppressWildcards
     abstract fun insertOfflinePatternDataList(offlinePatterns: List<OfflinePatterns>)
 
@@ -99,4 +99,40 @@ abstract class OfflinePatternDataDao {
         customization: Boolean?,
         selvages: List<SelvageData>?
     ): Int
+
+    @Transaction
+    open fun upsertList(offlinePatterns: List<OfflinePatterns>) {
+        for(obj in offlinePatterns) {
+            val id: Long = insertOfflinePatternData(obj)
+            Log.d("offlinePatternDataDao", "upsertList insert $id")
+            if (id == -1L) {
+                val i = updateTailornovaOfflineData(
+                    obj.designId,
+                    obj.patternName,
+                    obj.description,
+                    obj.patternType,
+                    obj.numberOfPieces,
+                    obj.orderModificationDate,
+                    obj.orderCreationDate,
+                    obj.instructionFileName,
+                    obj.instructionUrl,
+                    obj.thumbnailImageUrl,
+                    obj.thumbnailImageName,
+                    obj.thumbnailEnlargedImageName,
+                    obj.brand,
+                    obj.size,
+                    obj.patternPiecesFromTailornova,
+                    obj.gender,
+                    obj.dressType,
+                    obj.suitableFor,
+                    obj.occasion,
+                    obj.patternDescriptionImageUrl,
+                    obj.customization,
+                    obj.selvages
+                )
+                Log.d("offlinePatternDataDao", "upsertList update $i")
+            }
+        }
+    }
+
 }
