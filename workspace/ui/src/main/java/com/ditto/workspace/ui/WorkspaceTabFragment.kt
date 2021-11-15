@@ -52,9 +52,11 @@ import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
 import core.ui.common.Utility
+import core.ui.common.Utility.Companion.createMirrorBitmap
 import core.ui.common.Utility.Companion.getAlertDialogue
 import core.ui.common.Utility.Companion.getBitmap
 import core.ui.common.Utility.Companion.getDrawableFromString
+import core.ui.common.Utility.Companion.getRotation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -1859,6 +1861,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         bitmap =
                                 /*if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else*/
                             imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
+                        if (bitmap != null) {
+                            bitmap =
+                                createMirrorBitmap(
+                                    bitmap!!,
+                                    workspaceItem.isMirrorV,
+                                    workspaceItem.isMirrorH
+                                )
+                        }
                         withContext(Dispatchers.Main) {
                             if (imagename != null) {
                                 val matrix = Matrix()
