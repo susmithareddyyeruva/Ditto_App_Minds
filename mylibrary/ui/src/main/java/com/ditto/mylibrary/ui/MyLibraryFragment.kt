@@ -53,7 +53,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
     private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
-    private var offlinePatternFragment: AllPatternsFragment = AllPatternsFragment(this, this)
     var isFolderDetailsClicked = false
 
     override fun onCreateView(
@@ -197,7 +196,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     val tabPosition = binding.tabLayout.selectedTabPosition
                     if (isEnabled) {
 
-                        if (tabPosition == 1 && childFragmentManager.fragments.size > 3) {  //Detail screen
+                        if (tabPosition == 1 && childFragmentManager.fragments.size > 2) {  //Detail screen
                             hideFilterComponents()
                             setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
                             removeAll()
@@ -306,42 +305,22 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             ">>>>>>   MyLibraryFragment setTabsAdapter count  :" + binding.viewPager.adapter?.count
         )
         if (NetworkUtility.isNetworkAvailable(context)) {
+            binding.tabLayout.getTabAt(0)?.text = getString(R.string.all_patterns)
             showFilterComponents()
             (tabLayout.getTabAt(0)!!.view as LinearLayout).visibility = View.VISIBLE
             (tabLayout.getTabAt(1)!!.view as LinearLayout).visibility = View.VISIBLE
-            (tabLayout.getTabAt(2)!!.view as LinearLayout).visibility = View.GONE
-            // binding.viewPager.invalidate()
+
             val tabPosition = binding.tabLayout.selectedTabPosition
             viewModel.passEventForAllPattern()
 
-
-            /*if (tabPosition==0) {
-
-            }*/
-            //  binding.tabLayout.removeTabAt(2)
-            /* binding.tabLayout.getChildAt(1).setVisibility(View.VISIBLE)
-             binding.tabLayout.getChildAt(2).setVisibility(View.GONE)*/
-
-
         } else {
-            hideFilterComponents()
-            (tabLayout.getTabAt(0)!!.view as LinearLayout).visibility = View.GONE
+            binding.tabLayout.getTabAt(0)?.select()
+            (tabLayout.getTabAt(0)!!.view as LinearLayout).visibility = View.VISIBLE
             (tabLayout.getTabAt(1)!!.view as LinearLayout).visibility = View.GONE
-            (tabLayout.getTabAt(2)!!.view as LinearLayout).visibility = View.VISIBLE
             binding.tabLayout.isSelected = true
             viewModel.passEventForAllPattern()
-
-            // binding.viewPager.invalidate()
-            /*  binding.tabLayout.removeTabAt(0)
-              binding.tabLayout.removeTabAt(0)*/
-            /*   binding.tabLayout.getChildAt(0).setVisibility(View.GONE)
-               binding.tabLayout.getChildAt(1).setVisibility(View.GONE)
-               binding.tabLayout.getChildAt(2).setVisibility(View.VISIBLE)*/
-            /* adapter.addFragment(
-                 allPatternsFragment, getString(
-                     R.string.offline_patterns
-                 ), this, this
-             )*/
+            binding.tabLayout.getTabAt(0)?.text = getString(R.string.offline_patterns)
+            hideFilterComponents()
         }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -415,18 +394,18 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             ), this, this
         )
 
-        if (offlinePatternFragment.isAdded) {
-            adapter.remove(
-                offlinePatternFragment, getString(
-                    R.string.offline_patterns
-                )
-            )
-        }
-        adapter.addFragment(
-            offlinePatternFragment, getString(
-                R.string.offline_patterns
-            ), this, this
-        )
+        /*  if (offlinePatternFragment.isAdded) {
+              adapter.remove(
+                  offlinePatternFragment, getString(
+                      R.string.offline_patterns
+                  )
+              )
+          }
+          adapter.addFragment(
+              offlinePatternFragment, getString(
+                  R.string.offline_patterns
+              ), this, this
+          )*/
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(view_pager)
     }
@@ -469,7 +448,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     allPatternsFragment.onSyncClick()
                 } else {
                     if (NetworkUtility.isNetworkAvailable(context)) {
-                        if (childFragmentManager.fragments.size == 3) {
+                        if (childFragmentManager.fragments.size == 2) {
                             myFolderFragment.onSyncClick()
                         } else
                             myFolderDetailFragment.onSyncClick()
@@ -524,13 +503,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                 }
 
             }
-            MyLibraryViewModel.Event.OnNetworkConnected -> {
+            MyLibraryViewModel.Event.OnNetworkCheck -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
-                if (tabPosition==0){
+                if (tabPosition == 0) {
                     allPatternsFragment.resetListValues()
                     allPatternsFragment.fetchPatternLibrary()
-                }else{
-                    if (childFragmentManager.fragments.size == 3) {
+                } else {
+                    if (childFragmentManager.fragments.size == 2) {
                         myFolderFragment.onSyncClick()
                     } else
                         myFolderDetailFragment.onSyncClick()

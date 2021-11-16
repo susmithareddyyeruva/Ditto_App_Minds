@@ -64,7 +64,7 @@ class MyLibraryViewModel @Inject constructor(
             .subscribeBy { it }
     }
     fun passEventForAllPattern(){
-        uiEvents.post(Event.OnNetworkConnected)
+        uiEvents.post(Event.OnNetworkCheck)
     }
 
     private fun handleFetchResult(result: Result<List<MyLibraryData>>) {
@@ -95,7 +95,7 @@ class MyLibraryViewModel @Inject constructor(
         object MyLibrarySync : Event()
         object OnSearchClick : Event()
         object OnCancelClick :Event()
-        object OnNetworkConnected :Event()
+        object OnNetworkCheck :Event()
     }
     fun onCancelSearchClick() {
         uiEvents.post(Event.OnCancelClick)
