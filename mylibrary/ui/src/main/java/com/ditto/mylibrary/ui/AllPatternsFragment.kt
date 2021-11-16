@@ -129,6 +129,7 @@ class AllPatternsFragment(
 
     private fun updatePatterns() {
         // Updating the adapter
+        binding.recyclerViewPatterns.recycledViewPool.clear()
         allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
         val count = String.format("%02d", viewModel.totalPatternCount)
         binding.tvFilterResult.text =

@@ -197,7 +197,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     val tabPosition = binding.tabLayout.selectedTabPosition
                     if (isEnabled) {
 
-                        if (tabPosition == 1 && childFragmentManager.fragments.size > 2) {  //Detail screen
+                        if (tabPosition == 1 && childFragmentManager.fragments.size > 3) {  //Detail screen
                             hideFilterComponents()
                             setToolbarTittle(getString(R.string.my_folders))  //My Folder fragment will visible
                             removeAll()
@@ -469,7 +469,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     allPatternsFragment.onSyncClick()
                 } else {
                     if (NetworkUtility.isNetworkAvailable(context)) {
-                        if (childFragmentManager.fragments.size == 2) {
+                        if (childFragmentManager.fragments.size == 3) {
                             myFolderFragment.onSyncClick()
                         } else
                             myFolderDetailFragment.onSyncClick()
@@ -525,8 +525,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             }
             MyLibraryViewModel.Event.OnNetworkConnected -> {
-                allPatternsFragment.resetListValues()
-                allPatternsFragment.fetchPatternLibrary()
+                val tabPosition = binding.tabLayout.selectedTabPosition
+                if (tabPosition==0){
+                    allPatternsFragment.resetListValues()
+                    allPatternsFragment.fetchPatternLibrary()
+                }else{
+                    if (childFragmentManager.fragments.size == 3) {
+                        myFolderFragment.onSyncClick()
+                    } else
+                        myFolderDetailFragment.onSyncClick()
+                }
+
             }
         }
 
