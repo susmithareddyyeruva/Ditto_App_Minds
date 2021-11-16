@@ -65,7 +65,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             Log.d("Testing", ">>>>>>   Myfolder  onResume ")
             viewModel.disposable = CompositeDisposable()
             setUIEvents()
-            if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            if (AppState.getIsLogged()) {
                 /**
                  * API call for getting Folders List
                  */
@@ -190,7 +190,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 bottomNavViewModel.showProgress.set(false)
             }
             is MyFolderViewModel.Event.OnNewFolderAdded, MyFolderViewModel.Event.OnFolderRemoved, MyFolderViewModel.Event.OnFolderRenamed -> {
-                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                if (AppState.getIsLogged()) {
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.folderList.clear()
                     viewModel.getFoldersList()
@@ -222,7 +222,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     ) {
         when (alertType) {
             core.ui.common.Utility.AlertType.DELETE ->
-                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                if (AppState.getIsLogged()) {
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.addToFolder(
                         product = ProdDomain(),
@@ -242,7 +242,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     }
 
     fun getFoldersList() {
-        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.folderList.clear()
             viewModel.getFoldersList()
@@ -255,7 +255,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         /**
          * API call for Rename Folder
          */
-        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.addToFolder(
                 product = ProdDomain(),

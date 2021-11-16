@@ -44,11 +44,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
 
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
 
-    init {
-        if (Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
-    }
+
 
     val logger: Logger by lazy {
         loggerFactory.create(WSProSettingViewModel::class.java.simpleName)

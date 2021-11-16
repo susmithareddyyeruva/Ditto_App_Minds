@@ -7,8 +7,6 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
@@ -29,9 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
-import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
-import core.appstate.AppState
 import core.lib.R
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
@@ -56,10 +52,7 @@ class Utility @Inject constructor(
 ) {
 
 
-    fun refreshToken(){
-//        AppState.saveToken("",0)
-        tokenViewModel.calltoken()
-    }
+
 
     fun checkVersion(){
         versionViewModel.checkVersion()
@@ -102,16 +95,6 @@ class Utility @Inject constructor(
 
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
-
-        fun isTokenExpired():Boolean{
-            if (AppState.getExpiryTime()?.equals(0)!!){
-                return true
-            } else {
-                val currentTime : Long = Calendar.getInstance().time.time
-                val expiryTime : Long? = AppState.getExpiryTime()
-                return currentTime > expiryTime!!
-            }
-        }
 
         fun getAlertDialogue(
             context: Context?,

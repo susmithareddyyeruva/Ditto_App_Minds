@@ -116,7 +116,7 @@ class AllPatternsFragment(
     }
 
     fun applyFilter() {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged() ) {
             currentPage = 1
             isLastPage = false
             viewModel.patternList.value = ArrayList()
@@ -167,25 +167,23 @@ class AllPatternsFragment(
     fun fetchPatternLibrary() {
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                if (!Utility.isTokenExpired()) {
-                    if (viewModel.patternList.value.isNullOrEmpty()) {
-                        Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
-                        bottomNavViewModel.showProgress.set(true)
-                        viewModel.isLoading.set(true)
-                        viewModel.fetchOnPatternData(
-                            viewModel.createJson(
-                                currentPage,
-                                value = ""
-                            )
-                        )  //Initial API call
-                    } else {
-                        updatePatterns()
-                        //  setFilterMenuAdapter(0)
-                        if (viewModel.isFilter == true) {
-                            filterIconSetListener.onFilterApplied(true)
-                        } else
-                            filterIconSetListener.onFilterApplied(false)
-                    }
+                if (viewModel.patternList.value.isNullOrEmpty()) {
+                    Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isLoading.set(true)
+                    viewModel.fetchOnPatternData(
+                        viewModel.createJson(
+                            currentPage,
+                            value = ""
+                        )
+                    )  //Initial API call
+                } else {
+                    updatePatterns()
+                    //  setFilterMenuAdapter(0)
+                    if (viewModel.isFilter == true) {
+                        filterIconSetListener.onFilterApplied(true)
+                    } else
+                        filterIconSetListener.onFilterApplied(false)
                 }
             } else {
                 bottomNavViewModel.showProgress.set(true)
@@ -234,7 +232,7 @@ class AllPatternsFragment(
                 //you have to call loadmore items to get more data
 
                 if (currentPage <= viewModel.totalPageCount) {
-                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                    if (AppState.getIsLogged()) {
                         bottomNavViewModel.showProgress.set(true)
                         viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
@@ -457,7 +455,7 @@ class AllPatternsFragment(
     }
 
     private fun addFolder(newFolderName: String, parent: String) {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             if (parent.equals(viewModel.ADD)) {
 
                 if (newFolderName.equals("favorites", true) || newFolderName.equals(
