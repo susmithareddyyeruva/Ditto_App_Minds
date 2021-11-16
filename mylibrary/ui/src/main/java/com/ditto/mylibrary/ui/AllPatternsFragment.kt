@@ -100,6 +100,8 @@ class AllPatternsFragment(
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
+
+
     fun callSearchResult(terms: String) {
         /**
          * Search is Happened only in filtered results
@@ -154,6 +156,14 @@ class AllPatternsFragment(
         Log.d("Testing", ">>>>>>   All Patterns  onResume ")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
+        fetchPatternLibrary()
+
+    }
+    fun resetListValues(){
+        viewModel.patternList.value=ArrayList()
+    }
+
+    fun fetchPatternLibrary() {
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
                 if (!Utility.isTokenExpired()) {
@@ -186,7 +196,6 @@ class AllPatternsFragment(
             viewModel.isLoading.set(true)
             viewModel.fetchTrialPatterns()
         }
-
     }
 
     override fun onPause() {
@@ -438,7 +447,7 @@ class AllPatternsFragment(
 
     private fun isFolderPresent(newFolderName: String): Boolean {
         viewModel.folderMainList.forEach {
-            if (it.folderName.equals(newFolderName,true)) {
+            if (it.folderName.equals(newFolderName, true)) {
                 Log.d("FOLDER", "ALready exist")
                 return true
             }
@@ -450,7 +459,11 @@ class AllPatternsFragment(
         if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
             if (parent.equals(viewModel.ADD)) {
 
-                if (newFolderName.equals("favorites", true) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName)) {
+                if (newFolderName.equals("favorites", true) || newFolderName.equals(
+                        "owned",
+                        true
+                    ) || isFolderPresent(newFolderName)
+                ) {
                     viewModel.errorString.set("Folder already exists !")
                     showAlert()
 
