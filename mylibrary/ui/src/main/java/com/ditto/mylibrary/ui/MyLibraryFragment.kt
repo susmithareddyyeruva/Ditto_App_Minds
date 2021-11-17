@@ -506,8 +506,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             MyLibraryViewModel.Event.OnNetworkCheck -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
-                    allPatternsFragment.resetListValues()
-                    allPatternsFragment.fetchPatternLibrary()
+                    allPatternsFragment.onSyncClick()
                 } else {
                     if (childFragmentManager.fragments.size == 2) {
                         myFolderFragment.onSyncClick()
