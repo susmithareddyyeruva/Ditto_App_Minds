@@ -454,9 +454,10 @@
 
         <ImageView
             android:id="@+id/coach_mark_close"
-            android:layout_width="@dimen/close_image"
-            android:layout_height="@dimen/close_image"
+            android:layout_width="@dimen/top_margin_enlarge_text"
+            android:layout_height="@dimen/top_margin_enlarge_text"
             android:elevation="@dimen/elevation_card"
+            android:layout_marginEnd="@dimen/dimen_2"
             android:animateLayoutChanges="true"
             android:src="@drawable/ic_close"
             android:onClick="@{() -> viewModel.coachMarkClose()}"

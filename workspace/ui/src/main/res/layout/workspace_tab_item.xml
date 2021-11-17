@@ -459,11 +459,12 @@
 
         <ImageView
             android:id="@+id/coach_mark_close"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="@dimen/dimen_cut_checkbox"
+            android:layout_height="@dimen/dimen_cut_checkbox"
             android:elevation="@dimen/elevation_card"
             android:animateLayoutChanges="true"
             android:src="@drawable/ic_close"
+            android:layout_marginEnd="@dimen/dimen_1"
             android:onClick="@{() -> viewModel.coachMarkClose()}"
             app:layout_constraintEnd_toEndOf="@+id/coach_mark_popup"
             app:layout_constraintTop_toTopOf="@+id/coach_mark_popup"/>
