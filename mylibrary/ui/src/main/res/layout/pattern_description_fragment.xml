@@ -180,10 +180,11 @@
                 android:id="@+id/spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_small_5"
+                android:background="@drawable/ic_custom_spinner"
+                app:layout_constraintBottom_toTopOf="@+id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline"
-                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
-                app:layout_constraintBottom_toTopOf="@id/status_layout"
-                />
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc" />
 
             <TextView
                 android:id="@+id/content_header"
