@@ -460,7 +460,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.garments),
                     true
-                )
+                ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }?.size ?: 0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
@@ -470,9 +470,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.garments
                         ), true
-                    )
+                    ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
-            if (garments?.size?:0 >= 2) {
+            if (garments?.size ?: 0 >= 2) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -517,7 +517,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else {
+            } else if(garments?.size ?: 0 != 0){
                 if (garments?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
@@ -542,7 +542,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.lining),
                     true
-                )
+                )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
@@ -553,7 +553,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.lining
                         ), true
-                    )
+                    ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
 //            lining?.get(0)?.imagePath?.let {
 //                getBitmapFromSvgPngDrawable(
@@ -574,7 +574,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //            }
 //            viewModel.referenceImage.set(lining?.get(0)?.imageName)
 
-            if (lining?.size?:0 >= 2) {
+            if (lining?.size ?: 0 >= 2) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -612,7 +612,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else {
+            } else if(lining?.size ?: 0 != 0){
                 if (lining?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
@@ -637,7 +637,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.interfacing),
                     true
-                )
+                )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
@@ -648,7 +648,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.interfacing
                         ), true
-                    )
+                    )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
 //            interfacing?.get(0)?.imagePath?.let {
 //                /*binding.imageSelvageHorizontal.setImageDrawable(
@@ -675,7 +675,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //
 //            viewModel.referenceImage.set(interfacing?.get(0)?.imageName)
 
-            if (interfacing?.size?:0 >= 2) {
+            if (interfacing?.size ?: 0 >= 2) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -685,13 +685,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(false)
                 }
                 if (viewModel.clickedSize45.get()) {
-                    val selvage = interfacing?.filter { it.fabricLength == "45" }?.get(0)
-
+                    val selvage = interfacing?.filter { it.fabricLength == "45" }?.getOrNull(0)
                     logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
                     selvage?.imagePath.let {
-                        /* binding.imageSelvageHorizontal.setImageDrawable(
-                             getDrawableFromString(context, it)
-                         )*/
                         getBitmapFromSvgPngDrawable(
                             selvage?.imageName,
                             binding.imageSelvageHorizontal.context,
@@ -704,7 +700,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
                 if (viewModel.clickedSize60.get()) {
-                    val selvage = interfacing?.filter { it.fabricLength == "60" }?.get(0)
+                    val selvage = interfacing?.filter { it.fabricLength == "60" }?.getOrNull(0)
                     selvage?.imagePath.let {
                         /* binding.imageSelvageHorizontal.setImageDrawable(
                              getDrawableFromString(context, it)
@@ -720,7 +716,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else {
+            } else if(interfacing?.size ?: 0 != 0){
                 if (interfacing?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
