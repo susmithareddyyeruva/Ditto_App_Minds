@@ -50,10 +50,6 @@ class Utility @Inject constructor(
     private val tokenViewModel: TokenViewModel,
     private val versionViewModel: VersionViewModel
 ) {
-
-
-
-
     fun checkVersion(){
         versionViewModel.checkVersion()
     }
@@ -127,7 +123,6 @@ class Utility @Inject constructor(
                 alert.show()
             }
         }
-
         fun getAlertDialogue(
             context: Context?,
             title: String,
@@ -165,7 +160,7 @@ class Utility @Inject constructor(
                 alert.show()
             }
         }
-        fun getAlertDialogueForCaliberate(
+     /*   fun getAlertDialogueForCaliberate(
             context: Context,
             title: String,
             message: String,
@@ -189,7 +184,7 @@ class Utility @Inject constructor(
             val alert = dialogBuilder.create()
             alert.setTitle(title)
             alert.show()
-        }
+        }*/
         fun showSnackBar(message: String, view: View) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }
