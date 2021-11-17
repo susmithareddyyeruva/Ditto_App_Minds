@@ -278,6 +278,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
             if (AppState.getIsLogged()) {
                 if (NetworkUtility.isNetworkAvailable(context)) {
+                    Log.d("APICALL=====","OnAllPatternSyncClick")
                     cleaFilterData()
                 } else {
                     viewModel.errorString.set(getString(R.string.no_internet_available))

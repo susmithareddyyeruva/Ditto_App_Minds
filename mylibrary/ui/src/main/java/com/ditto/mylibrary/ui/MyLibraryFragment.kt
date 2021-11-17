@@ -506,6 +506,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             MyLibraryViewModel.Event.OnNetworkCheck -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
+                    Log.d("APICALL=====","MY LIBRARY")
                     allPatternsFragment.resetListValues()
                     allPatternsFragment.fetchPatternLibrary()
                 } else {
