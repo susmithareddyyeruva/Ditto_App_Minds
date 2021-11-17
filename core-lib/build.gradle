@@ -14,7 +14,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "0.17(01)"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -25,12 +25,12 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-          /*  buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
+            /*  buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
             buildConfigField "String", "TOKEN_BASEURL", "\"https://staging.handmadewithjoann.com/ditto/\""
-           /* buildConfigField "String", "BASEURL", "\"https://development.na03.joann.demandware.net/\""*/
+            /* buildConfigField "String", "BASEURL", "\"https://development.na03.joann.demandware.net/\""*/
             buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/\""
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
-          /*  buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""*/
+            /*  buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""*/
             buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             /*buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
@@ -43,20 +43,27 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-           /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
+            /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
             buildConfigField "String", "TOKEN_BASEURL", "\"https://staging.handmadewithjoann.com/ditto/\""
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
             // dev
-            buildConfigField "String", "BASEURL", "\"https://development.dittopatterns.com/\""
-            buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
-            buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
-            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
+//            buildConfigField "String", "SERVER", "\"dev\""
+//            buildConfigField "String", "BASEURL", "\"https://development.dittopatterns.com/\""
+//            buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
+//            buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
+//            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
             // devo2
 //            buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/\""
 //            buildConfigField "String", "COMMON_ENDURL", "\"s/JoAnn/dw/shop/v19_1/\""
 //            rebuildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
 //            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-JoAnn-Site/default/\""
 
+            // dev11
+            buildConfigField "String", "SERVER", "\"staging\""
+            buildConfigField "String", "BASEURL", "\"https://dev11-na03-joann.demandware.net/\""
+            buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
+            buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
+            buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
             //buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://splicing.tailornova.com/api/v1/patterns/\""
             //buildConfigField "String", "TAILORNOVA_ENDURL", "\"http://ditto-splicing.tailornova.com:9901/api/v1/patterns/\""
             buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://ditto-splicing.tailornova.com/api/v1/patterns/\""
@@ -127,11 +134,11 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     /**
-    * Lottie progress
-    */
+     * Lottie progress
+     */
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-      implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
 //    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
     implementation project(':non-core-lib')

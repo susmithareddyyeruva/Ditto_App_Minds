@@ -77,7 +77,7 @@ fun Prod.toDomain(): ProdDomain {
         image = this.image ?: "",
         customization = this.customization ?: "",
         dateOfModification = this.dateOfModification ?: "",
-        /*  description = this.description?:"",*/
+        description = this.description?:"",
         occasion = this.occasion ?: "",
         season = this.season ?: "",
         status = this.status ?: "",

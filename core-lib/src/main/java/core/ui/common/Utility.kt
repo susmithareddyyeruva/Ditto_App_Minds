@@ -285,6 +285,36 @@ class Utility @Inject constructor(
             return bitmap
         }
 
+        fun createMirrorBitmap(source: Bitmap, mirrorVertical: Boolean, mirrorHorizontal: Boolean): Bitmap? {
+            val matrix = Matrix()
+            matrix.postScale(
+                if (mirrorHorizontal) -1F else 1F,
+                if (mirrorVertical) -1F else 1F,
+                source.width / 2f,
+                source.height / 2f
+            )
+            return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+        }
+
+        fun getRotation(
+            bitmap: Bitmap,
+            mirrorVertical: Boolean,
+            mirrorHorizontal: Boolean
+        ): Bitmap? {
+            val canvas = Canvas(bitmap)
+            canvas.scale(
+                if (mirrorHorizontal) -1F
+                else
+                    1F,
+                if (mirrorVertical) -1F
+                else
+                    1F,
+                bitmap.width / 2.toFloat(),
+                bitmap.height / 2.toFloat()
+            )
+            return bitmap
+        }
+
         fun scaleDownBitmap(
             realImage: Bitmap, maxImageSize: Float,
             filter: Boolean

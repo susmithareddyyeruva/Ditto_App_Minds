@@ -137,7 +137,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         return tailornovaApiService.getTrialPatterns(BuildConfig.TAILORNOVA_ENDURL + "Android/trial")
             .doOnSuccess {
                 logger.d("Tailornova Success")
-                offlinePatternDataDao.insertOfflinePatternDataList(it.trial.toDomainn())
+                offlinePatternDataDao.upsertList(it.trial.toDomainn())
                 //PatternIdData>>OfflinePatterns
 
                 /*Executors.newSingleThreadExecutor()

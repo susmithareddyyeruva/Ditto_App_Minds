@@ -9,10 +9,6 @@ import core.TRACKING_ID
 import core.appstate.AppState
 import core.data.model.TokenResult
 import core.di.scope.*
-import core.di.scope.WbApiRetrofit
-import core.di.scope.WbBaseUrl
-import core.di.scope.WbTokenApiRetrofit
-import core.di.scope.WbTokenBaseUrl
 import core.lib.BuildConfig
 import core.network.RxCallAdapterWrapperFactory
 import dagger.Module
@@ -35,7 +31,9 @@ import java.util.concurrent.TimeUnit
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Singleton
-import javax.net.ssl.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManagerFactory
 
 
 @Module(
@@ -239,6 +237,7 @@ class HmacSignatureInterceptor : Interceptor {
         val accessKeyId =
             java.lang.String.format("ANDROID%s", BuildConfig.VERSION_NAME)
         val timestamp = "" + System.currentTimeMillis() / 1000
+        val connect = BuildConfig.SERVER
         val signature = generateSignature(chain.request(), accessKeyId, timestamp)
         val userAgent = java.lang.String.format(
             "JOANN/%s %s",
@@ -250,6 +249,7 @@ class HmacSignatureInterceptor : Interceptor {
             .addQueryParameter("AccessKeyId", accessKeyId)
             .addQueryParameter("Timestamp", timestamp)
             .addQueryParameter("Signature", signature)
+            .addQueryParameter("Connect",connect)
             .build()
         request = request.newBuilder().url(httpUrl)
             .addHeader("User-Agent", userAgent)
@@ -268,9 +268,11 @@ class HmacSignatureInterceptor : Interceptor {
         val method = request.method
         val domain = request.url.host
         val path = request.url.encodedPath
+        val connect = BuildConfig.SERVER
         val paramsUrl = request.url.newBuilder()
             .addQueryParameter("AccessKeyId", accessKeyId)
             .addQueryParameter("Timestamp", timestamp)
+            .addQueryParameter("Connect", connect)
             .build()
         val params = paramsUrl.encodedQuery
         val stringToHash =

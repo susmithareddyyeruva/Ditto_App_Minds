@@ -153,6 +153,7 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 var temp: ArrayList<ProdDomain> =
                     if (patternList.value == null) ArrayList() else patternList.value as ArrayList<ProdDomain>
+                //temp?.clear()
                 temp?.addAll(result.data.prod)
                 patternList.value = temp
 

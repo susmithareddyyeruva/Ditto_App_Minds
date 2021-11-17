@@ -8,7 +8,7 @@ data class Prod(
     @SerializedName("ID") val iD : String?="",
     @SerializedName("image") val image : String?="",
     @SerializedName("name") val prodName : String?="",
-   /* @SerializedName("description") val description : String?="",*/
+    @SerializedName("description") val description : String?="",
     @SerializedName("patternType") val patternType : String?="",
     @SerializedName("status") val status : String?="",
     @SerializedName("subscriptionExpiryDate") val subscriptionExpiryDate : String?="",
