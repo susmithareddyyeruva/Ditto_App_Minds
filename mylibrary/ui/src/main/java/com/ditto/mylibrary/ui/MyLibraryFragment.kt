@@ -307,16 +307,16 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         if (NetworkUtility.isNetworkAvailable(context)) {
             binding.tabLayout.getTabAt(0)?.text = getString(R.string.all_patterns)
             showFilterComponents()
-            (tabLayout.getTabAt(0)!!.view as LinearLayout).visibility = View.VISIBLE
-            (tabLayout.getTabAt(1)!!.view as LinearLayout).visibility = View.VISIBLE
+            ( binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
+            ( binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.VISIBLE
 
             val tabPosition = binding.tabLayout.selectedTabPosition
             viewModel.passEventForAllPattern()
 
         } else {
             binding.tabLayout.getTabAt(0)?.select()
-            (tabLayout.getTabAt(0)!!.view as LinearLayout).visibility = View.VISIBLE
-            (tabLayout.getTabAt(1)!!.view as LinearLayout).visibility = View.GONE
+            ( binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
+            ( binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.GONE
             binding.tabLayout.isSelected = true
             viewModel.passEventForAllPattern()
             binding.tabLayout.getTabAt(0)?.text = getString(R.string.offline_patterns)
