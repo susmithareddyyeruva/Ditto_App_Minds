@@ -230,7 +230,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         action = viewModel.delete
                     )
                 }
-            core.ui.common.Utility.AlertType.GUEST_MYFOLDER -> (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
+            core.ui.common.Utility.AlertType.GUEST_MYFOLDER -> (parentFragment as MyLibraryFragment?)?.setTabsAdapter("GUEST")
         }
     }
 
