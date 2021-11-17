@@ -156,6 +156,7 @@ class AllPatternsViewModel @Inject constructor(
                 //temp?.clear()
                 temp?.addAll(result.data.prod)
                 patternList.value = temp
+                logger.d("PATTERN  COUNT TEMP== ${temp.size}")
 
                 /*result.data.prod.forEach {
                       patternArrayList.add(it)

@@ -160,9 +160,11 @@ class AllPatternsFragment(
         fetchPatternLibrary()
 
     }
+    fun resetListValues(){
+        viewModel.patternList.value=ArrayList()
+    }
 
-
-    private fun fetchPatternLibrary() {
+    fun fetchPatternLibrary() {
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
                 if (viewModel.patternList.value.isNullOrEmpty()) {
