@@ -432,7 +432,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:elevation="@dimen/elevation_card"
-            android:src="@drawable/coachmark_workspace_popup"
+            android:src="@drawable/coachmark_video_popup_small"
             android:animateLayoutChanges="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -459,8 +459,8 @@
 
         <ImageView
             android:id="@+id/coach_mark_close"
-            android:layout_width="@dimen/close_image"
-            android:layout_height="@dimen/close_image"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:elevation="@dimen/elevation_card"
             android:animateLayoutChanges="true"
             android:src="@drawable/ic_close"

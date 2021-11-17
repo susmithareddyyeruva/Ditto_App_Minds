@@ -89,7 +89,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
-        bottomNavViewModel.isShownCoachMark.set(AppState.isShownCoachMark())
+
         (activity as BottomNavigationActivity)?.refreshMenuItem()
         (activity as BottomNavigationActivity)?.setEmaildesc()
         if (AppState.getIsLogged()) {
@@ -101,6 +101,19 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         toolbarViewModel.isShowTransparentActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
+        if (!AppState.isShownCoachMark()) {
+            bottomNavViewModel.isShownCoachMark.set(AppState.isShownCoachMark())
+            bottomNavViewModel.coachmarkFlowFinished.observe(viewLifecycleOwner, {
+                if(it){
+                    loadHomeFragment()
+                }
+            })
+        } else {
+            loadHomeFragment()
+        }
+    }
+
+    private fun loadHomeFragment() {
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -111,7 +124,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             //homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
             if (AppState.getIsLogged()) {
                 homeViewModel.fetchData() // todo remove fetchData and uncomment above line
-            }else{
+            } else {
                 homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
             }
         } else {

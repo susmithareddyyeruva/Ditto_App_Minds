@@ -29,7 +29,7 @@
     <string name="coach_mark_skip">Skip</string>
 
     <integer-array name="coach_mark_images">
-        <item>@drawable/coachmark_home_menu</item>
+        <item>@drawable/coachmark_home_menu4</item>
         <item>@drawable/coachmark_home_library</item>
         <item>@drawable/coachmark_library_swipe</item>
         <item>@drawable/coachmark_library_search</item>

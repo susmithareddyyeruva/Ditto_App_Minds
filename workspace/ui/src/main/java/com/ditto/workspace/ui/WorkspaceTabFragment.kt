@@ -1,8 +1,8 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -1137,78 +1137,29 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showCoachmarkEndPopup() {
         binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.VISIBLE)
-//        val animator: ObjectAnimator = ObejctAnimator.ofFloat(binding.includeWorkspacearea.coachMarkEndPopup, "translationX", 0, 25, 0)
-//        animator.interpolator = BounceInterpolator()
-//        animator.startDelay = 500
-//        animator.duration = 1500
-//        animator.start()
 
-
-        val animator = ValueAnimator.ofFloat(0f, -binding.includeWorkspacearea.coachMarkEndPopup.height.toFloat())
-        animator.addUpdateListener {
-            val value = it.animatedValue as Float
-            binding.includeWorkspacearea.coachMarkEndPopup.translationY = value
+        val animatorSet = AnimatorSet()
+        val bounceY = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup,
+            View.SCALE_Y, 0.8f,1f).apply {
+            interpolator = BounceInterpolator()
+            duration = 1000
         }
-        animator.repeatMode = ValueAnimator.REVERSE
-        animator.repeatCount = 1
-        animator.duration = 1500L
-        animator.start()
-
-//        binding.includeWorkspacearea.coachMarkEndPopup.animate()
-//            .scaleX(.8f)
-//            .scaleY(.8f)
-//            .setDuration(1500)
-//            .setInterpolator(BounceInterpolator())
-//            .withStartAction {
-//                binding.coachMarkClose.setVisibility(View.GONE)
-//            }
-//            .withEndAction {
-//                binding.includeWorkspacearea.coachMarkEndPopup.visibility = View.GONE
-//            }
-
-//        val transition: Transition = Scale()
-//        transition.setDuration(600)
-//        transition.addListener(object : Transition.TransitionListener {
-//            override fun onTransitionStart(transition: Transition) {
-//            }
-//
-//            override fun onTransitionEnd(transition: Transition) {
-//                binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.GONE)
-//            }
-//
-//            override fun onTransitionCancel(transition: Transition) {
-//            }
-//
-//            override fun onTransitionPause(transition: Transition) {
-//            }
-//
-//            override fun onTransitionResume(transition: Transition) {
-//            }
-//        })
-//        transition.addTarget(binding.includeWorkspacearea.coachMarkEndPopup)
-//        TransitionManager.beginDelayedTransition(binding.workspaceRoot, transition)
-
-//        val scale = ScaleAnimation(
-//            0.5F,
-//            1F,
-//            0.5F,
-//            1F,
-//            ScaleAnimation.RELATIVE_TO_SELF,
-//            .5f,
-//            ScaleAnimation.RELATIVE_TO_SELF,
-//            .5f
-//        )
-//        scale.duration = 1500
-//        scale.fillAfter = true
-//        scale.interpolator = BounceInterpolator()
-//        scale.setAnimationListener(object : Animation.AnimationListener {
-//            override fun onAnimationStart(animation: Animation) {}
-//            override fun onAnimationEnd(animation: Animation) {
-//                binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.GONE)
-//            }
-//            override fun onAnimationRepeat(animation: Animation) {}
-//        })
-//        binding.includeWorkspacearea.coachMarkEndPopup.startAnimation(scale)
+        val bounceX = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup,
+            View.SCALE_X, 0.9f,1f).apply {
+            interpolator = BounceInterpolator()
+            duration = 1000
+        }
+        val fadeOutCoachMarkEndPopup = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup, View.ALPHA, 1f, 0f).apply {
+            interpolator = AccelerateInterpolator()
+            duration = 2000
+            startDelay = 700
+        }
+        animatorSet.playTogether(bounceX, bounceY)
+        animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
+        animatorSet.start()
     }
 
     fun downloadPatternPieces() {

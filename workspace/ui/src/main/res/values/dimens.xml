@@ -53,4 +53,5 @@
     <dimen name="tab_head_text">14sp</dimen>
     <dimen name="coachMarkEndPopupWidth">216dp</dimen>
     <dimen name="coachMarkEndPopupHeight">62dp</dimen>
+    <dimen name="coachmark_popup_text">12sp</dimen>
 </resources>

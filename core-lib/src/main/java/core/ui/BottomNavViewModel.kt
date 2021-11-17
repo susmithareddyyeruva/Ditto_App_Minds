@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import core.appstate.AppState
 import core.event.UiEvents
 import core.lib.R
@@ -21,10 +22,10 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     val visibility = ObservableBoolean(true)
     val showProgress = ObservableBoolean(false)
     val isShownCoachMark = ObservableBoolean(true)// initially true not to show in splash
-    val showCoachImage : ObservableInt = ObservableInt(R.drawable.coachmark_home_menu)
+    val showCoachImage : ObservableInt = ObservableInt(R.drawable.coachmark_home_menu4)
     val coachImageCount : ObservableInt = ObservableInt(0)
     val coachMarkImages = intArrayOf(
-        R.drawable.coachmark_home_menu,
+        R.drawable.coachmark_home_menu4,
         R.drawable.coachmark_home_library,
         R.drawable.coachmark_library_swipe,
         R.drawable.coachmark_library_search,
@@ -35,6 +36,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         R.drawable.coachmark_description_instruction,
         R.drawable.coachmark_description_workspace
     )
+    var coachmarkFlowFinished = MutableLiveData(false)
     val menuTitle: ObservableField<String> = ObservableField("")
     val menuDescription: ObservableField<String> = ObservableField("")
     val menuNumberOfDaysForSubscription: ObservableField<String> = ObservableField("")
@@ -175,6 +177,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     fun coachMarkSkip() {
         AppState.setShowCoachMark(true)
         isShownCoachMark.set(AppState.isShownCoachMark())
+        coachmarkFlowFinished.value = true
     }
 
     fun coachMarkNext() {
