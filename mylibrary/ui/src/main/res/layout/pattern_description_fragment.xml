@@ -182,6 +182,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_custom_spinner"
                 android:paddingStart="@dimen/padding_9"
+                app:layout_constraintTop_toTopOf="@+id/content_header"
+                app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline" />
 
