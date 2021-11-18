@@ -12,7 +12,7 @@ import non_core.lib.Result
 interface MyLibraryUseCase {
     fun getPatterns(filterRequestData: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getUser(): Single<Result<LoginUser>>
-    fun getPattern(get: String): Single<Result<PatternIdData>>
+    fun getPattern(get: String,mannequinId:String): Single<Result<PatternIdData>>
     //fun addProject( id : Int): Single<Any>
     fun removeProject(patternId: String): Single<Any>
     fun completeProject(patternId: String): Single<Any>

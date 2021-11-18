@@ -15,7 +15,7 @@ import non_core.lib.Result
 interface MyLibraryRepository {
     fun getMyLibraryData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getUserData(): Single<Result<LoginUser>>
-    fun getPatternData(get:String): Single<Result<PatternIdData>>
+    fun getPatternData(get:String,mannequinId:String): Single<Result<PatternIdData>>
     fun completeProject(patternId:String): Single<Any>
     fun removePattern(patternId: String): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>

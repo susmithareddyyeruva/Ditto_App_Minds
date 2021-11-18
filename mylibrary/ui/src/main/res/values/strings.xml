@@ -76,5 +76,8 @@
     <string name="create_folder">CREATE FOLDER</string>
     <string name="rename_folder_dialog">RENAME FOLDER</string>
     <string name="defult_filter_text">Showing filtered results</string>
+    <string name="prompt">null</string>
+    <string name="no_cust">No Customization</string>
+    <string name="please_selecte_mannequinid">Please select any customization</string>
 
 </resources>

@@ -58,6 +58,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 arguments?.getString("PatternName")?.let { viewModel.patternName.set(it) }
                 Log.d("imageUri12345", "PatternName: ${viewModel.patternName.get()}")
+                arguments?.getString("mannequinId")?.let { viewModel.mannequinId.set(it) }
+                Log.d("ARGUMENTS", "MANNEQUINID: ${viewModel.mannequinId.get()}")
             }
         }
         return binding.root

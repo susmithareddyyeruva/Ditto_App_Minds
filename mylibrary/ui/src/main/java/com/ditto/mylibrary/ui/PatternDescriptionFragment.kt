@@ -1,4 +1,3 @@
-
 package com.ditto.mylibrary.ui
 
 import android.Manifest
@@ -16,6 +15,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -31,7 +32,9 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -80,6 +83,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
+    var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -154,10 +158,81 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setPatternImage()
             }
 
+                if (clickedProduct != null) {
+                    if (clickedProduct!!.mannequin.isNullOrEmpty()) {
+                        viewModel.mannequinId.set(clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
+                        spinner.visibility = View.GONE
+                    } else {
+                        spinner.visibility = View.VISIBLE
+                        // we pass our item list and context to our Adapter.
+                        viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
+                        clickedProduct!!.mannequin?.forEach {
+                            viewModel.mannequinList?.add(
+                                MannequinDataDomain(
+                                    it.mannequinId,
+                                    it.mannequinName
+                                )
+                            )
+                        }
+                        val adapter =
+                            viewModel.mannequinList?.let {
+                                CustomSpinnerAdapter(
+                                    requireContext(),
+                                    it
+                                )
+                            }
+                        spinner.adapter = adapter
+                        spinner.setSelection(0, true)
+                    }
+
+                }
+                fetchPatternDetails()   //Fetching Pattern Details using design id
+                setUIEvents()
+            } else {
+                setPatternImage()
+            }
+
         }
 
 
         outputDirectory = Utility.getOutputDirectory(requireContext())
+
+
+
+        spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+
+
+                // It returns the clicked item.
+                val clickedItem: MannequinDataDomain =
+                    parent.getItemAtPosition(position) as MannequinDataDomain
+                val id: String = clickedItem.mannequinId
+                viewModel.mannequinId.set(id)
+                fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
+                Log.d("ITEM SELECTED", "MANNEQUIN ID: " + viewModel.mannequinId.get())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+    private fun fetchPatternDetails() {
+        if (NetworkUtility.isNetworkAvailable(context)) {
+            if (AppState.getIsLogged()) {
+                if (clickedProduct?.patternType.equals("Trial", true)) {
+                    viewModel.fetchOfflinePatternDetails()
+                } else {
+                    viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                }
+            } else {
+                viewModel.fetchOfflinePatternDetails()
+            }
+        } else {
+            viewModel.fetchOfflinePatternDetails()
+        }
     }
 
     companion object {
@@ -551,6 +626,46 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
+                /**
+                 * Restricting user to enter into workspace without selecting any customization
+                 */
+                if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
+                    binding.textWatchvideo2.isEnabled = false
+                    if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                        || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        //checkBluetoothWifiPermission()
+                        //forwardtoWorkspace()
+                        val map = getPatternPieceListTailornova()
+                        //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                        } else {
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
+                        }
+                        /* } else {
+                             //no internet available
+                                 //todo changes message
+                             showProgress(false)
+                             Utility.getCommonAlertDialogue(
+                                 requireContext(),
+                                 resources.getString(com.ditto.workspace.ui.R.string.api_failed),
+                                 resources.getString(com.ditto.workspace.ui.R.string.api_failed_message),
+                                 resources.getString(com.ditto.workspace.ui.R.string.empty_string),
+                                 resources.getString(com.ditto.workspace.ui.R.string.ok),
+                                 this,
+                                 Utility.AlertType.UPDATEAPIFAILED,
+                                 Utility.Iconype.NONE
+                             )
+                         }*/
+
+                        /*=============================================*/
+
+                        //checkSocketConnectionBeforeWorkspace()
                 binding.textWatchvideo2.isEnabled = false
                 if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                     || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
@@ -569,8 +684,18 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         )
                     }
 
+                    } else {
+                        logger.d("OnClick Workspace failed")
+                    }
                 } else {
-                    logger.d("OnClick Workspace failed")
+                    /**
+                     * Restricting user to enter into workspace without selecting any customization
+                     */
+                    showAlert(
+                        getString(R.string.please_selecte_mannequinid),
+                        Utility.AlertType.DEFAULT
+                    )
+
                 }
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
@@ -738,7 +863,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     bottomNavViewModel.showProgress.set(false)
-                    showAlert(it.versionerrorReceived)
+                    showAlert(it.versionerrorReceived, Utility.AlertType.NETWORK)
                 })
     }
 
@@ -771,6 +896,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
+        Log.d("Download123", "ENDED >>>>>>>>>>> enterWorkspace in if ${clickedProduct?.prodName}")
+
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
         }
@@ -778,7 +905,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
-            "PatternName" to viewModel.clickedProduct?.prodName
+            "mannequinId" to viewModel.mannequinId.get(),
+            "PatternName" to clickedProduct?.prodName
         )
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
@@ -837,6 +965,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
+            }
+            Utility.AlertType.DOWNLOADFAILED -> {
+                checkSocketConnectionBeforeWorkspace()
             }
         }
     }
@@ -936,6 +1067,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alertType == Utility.AlertType.QUICK_CHECK -> {
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
+            }
+            alertType == Utility.AlertType.DOWNLOADFAILED -> {
+                Toast.makeText(requireContext(), "pending put download code", Toast.LENGTH_LONG)
+                val map = getPatternPieceListTailornova()
+                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
@@ -1122,7 +1258,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     }
 
-    private fun showAlert(versionerrorReceived: String) {
+    private fun showAlert(versionerrorReceived: String, alertType: Utility.AlertType) {
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
@@ -1130,7 +1266,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             "",
             getString(com.ditto.menuitems_ui.R.string.str_ok),
             this,
-            Utility.AlertType.NETWORK,
+            alertType,
             Utility.Iconype.FAILED
         )
     }

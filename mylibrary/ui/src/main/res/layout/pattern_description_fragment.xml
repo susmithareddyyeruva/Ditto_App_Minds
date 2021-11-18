@@ -177,20 +177,35 @@
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription" />
 
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_custom_spinner"
+                android:paddingStart="@dimen/padding_9"
+                app:layout_constraintTop_toTopOf="@+id/content_header"
+                app:layout_constraintTop_toBottomOf="@id/subscription"
+                app:layout_constraintBottom_toTopOf="@id/status_layout"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline" />
 
             <TextView
                 android:id="@+id/content_header"
-                android:layout_width="@dimen/dimen_0"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_start"
+                android:ellipsize="end"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:lines="1"
+                android:paddingVertical="2dp"
                 android:text="@{viewModel.patternName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/pattern_name"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintEnd_toStartOf="@+id/spinner"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
-                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc" />
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
+                tools:text="Tulip Skirt" />
 
             <LinearLayout
                 android:id="@+id/status_layout"

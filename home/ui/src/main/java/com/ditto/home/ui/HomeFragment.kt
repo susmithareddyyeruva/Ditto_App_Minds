@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME", "onActivityCreated")
+        Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
         (activity as BottomNavigationActivity)?.refreshMenuItem()
@@ -156,7 +156,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         }
     }
-
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
@@ -167,7 +166,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME", "onResume")
+        Log.d("HOME","onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()

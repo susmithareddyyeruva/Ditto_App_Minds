@@ -87,7 +87,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("MY LIBRARY API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -145,10 +146,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(designeID: String): Single<Result<PatternIdData>> {
+    override fun getPatternData(get: String, mannequinId: String): Single<Result<PatternIdData>> {
         return tailornovaApiService.getPatternDetailsByDesignId(
-            BuildConfig.TAILORNOVA_ENDURL + designeID,
-            OS
+            BuildConfig.TAILORNOVA_ENDURL + get,
+            OS, mannequinId
         )
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
@@ -163,8 +164,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
-                            logger.d("onError: BAD REQUEST")
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("Tailornova  API: $errorBody")
 
                         }
                         401 -> {
@@ -255,7 +256,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("FOLDER  API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -335,7 +337,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("ADD  FOLDER  API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -418,7 +421,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("RENAME  FOLDER  API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)

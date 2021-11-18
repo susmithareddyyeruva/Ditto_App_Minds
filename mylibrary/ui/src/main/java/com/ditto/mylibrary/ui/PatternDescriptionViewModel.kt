@@ -11,6 +11,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.mylibrary.domain.MyLibraryUseCase
+import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
 import core.PDF_PASSWORD
@@ -35,6 +36,7 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class PatternDescriptionViewModel @Inject constructor(
     private val context: Context,
@@ -48,6 +50,7 @@ class PatternDescriptionViewModel @Inject constructor(
 
     //    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     val clickedTailornovaID: ObservableField<String> = ObservableField("")
+    val mannequinId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -70,6 +73,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
+    var mannequinList: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
     var clickedProduct: ProdDomain? = null
 
     //error handler for data fetch related flow
@@ -104,7 +108,7 @@ class PatternDescriptionViewModel @Inject constructor(
 
     fun fetchPattern() {
         //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
-        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "")
+        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "",mannequinId.get()?:"")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
