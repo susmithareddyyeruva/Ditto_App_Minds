@@ -18,7 +18,6 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import non_core.lib.Result
 import non_core.lib.error.Error
@@ -48,7 +47,6 @@ class SplashViewModel @Inject constructor(
     }
 
     fun initialDelayWithDataFetch() {
-        utility.refreshToken()
         getUserDetails()
         GlobalScope.launch {
 
@@ -63,11 +61,6 @@ class SplashViewModel @Inject constructor(
          * getting patterns data
          */
         updateDb()
-    }
-
-    fun callToken() {
-        utility.refreshToken()
-
     }
 
     private fun updateDb() {

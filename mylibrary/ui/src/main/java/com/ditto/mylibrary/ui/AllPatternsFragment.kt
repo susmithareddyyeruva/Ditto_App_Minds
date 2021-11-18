@@ -114,7 +114,7 @@ class AllPatternsFragment(
     }
 
     fun applyFilter() {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged() ) {
             currentPage = 1
             isLastPage = false
             viewModel.patternList.value = ArrayList()
@@ -156,7 +156,6 @@ class AllPatternsFragment(
         setUIEvents()
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                if (!Utility.isTokenExpired()) {
                     if (viewModel.patternList.value.isNullOrEmpty()) {
                         Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
                         bottomNavViewModel.showProgress.set(true)
@@ -175,7 +174,7 @@ class AllPatternsFragment(
                         } else
                             filterIconSetListener.onFilterApplied(false)
                     }
-                }
+
             } else {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.isLoading.set(true)
@@ -224,7 +223,7 @@ class AllPatternsFragment(
                 //you have to call loadmore items to get more data
 
                 if (currentPage <= viewModel.totalPageCount) {
-                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                    if (AppState.getIsLogged()) {
                         bottomNavViewModel.showProgress.set(true)
                         viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
@@ -277,9 +276,16 @@ class AllPatternsFragment(
                     viewModel.fetchOfflinePatterns()
                 }
             } else {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.isLoading.set(true)
-                viewModel.fetchTrialPatterns()
+                if(NetworkUtility.isNetworkAvailable(context)){
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isLoading.set(true)
+                    viewModel.fetchTrialPatterns()
+                }else{
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
+                    viewModel.fetchTrialPatterns()
+                }
+
             }
             logger.d("OnSyncClick : AllPatternsFragment")
 
@@ -447,7 +453,7 @@ class AllPatternsFragment(
     }
 
     private fun addFolder(newFolderName: String, parent: String) {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             if (parent.equals(viewModel.ADD)) {
 
                 if (newFolderName.equals("favorites", true) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName)) {

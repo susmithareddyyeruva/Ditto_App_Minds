@@ -271,7 +271,6 @@ class PatternDescriptionViewModel @Inject constructor(
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
         Log.d("Download", ">>>>>>>>>>>>>>>>>>>> STARTED")
         Log.d("Download", "Hashmap size: ${hashMap?.size}")
-        Log.d("Download", "Hashmap size: ${hashMap}")
         temp.clear()
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {

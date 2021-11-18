@@ -17,7 +17,6 @@ import com.google.gson.Gson
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
-import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -154,6 +153,7 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 var temp: ArrayList<ProdDomain> =
                     if (patternList.value == null) ArrayList() else patternList.value as ArrayList<ProdDomain>
+                //temp?.clear()
                 temp?.addAll(result.data.prod)
                 patternList.value = temp
 
@@ -319,7 +319,7 @@ class AllPatternsViewModel @Inject constructor(
          * API call for adding product to a Folder
          */
         logger.d("onFolderClick : ALL PATTERN VIEW MODEL")
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             addToFolder(
                 product = clickedProduct,
                 folderName = folderName

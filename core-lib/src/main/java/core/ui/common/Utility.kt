@@ -7,8 +7,6 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
@@ -29,7 +27,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
-import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import core.appstate.AppState
 import core.lib.R
@@ -54,12 +51,6 @@ class Utility @Inject constructor(
     private val tokenViewModel: TokenViewModel,
     private val versionViewModel: VersionViewModel
 ) {
-
-
-    fun refreshToken(){
-//        AppState.saveToken("",0)
-        tokenViewModel.calltoken()
-    }
 
     fun checkVersion(){
         versionViewModel.checkVersion()
@@ -299,6 +290,36 @@ class Utility @Inject constructor(
                 vectorDrawable.intrinsicHeight / 2.toFloat()
             )
             vectorDrawable.draw(canvas)
+            return bitmap
+        }
+
+        fun createMirrorBitmap(source: Bitmap, mirrorVertical: Boolean, mirrorHorizontal: Boolean): Bitmap? {
+            val matrix = Matrix()
+            matrix.postScale(
+                if (mirrorHorizontal) -1F else 1F,
+                if (mirrorVertical) -1F else 1F,
+                source.width / 2f,
+                source.height / 2f
+            )
+            return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+        }
+
+        fun getRotation(
+            bitmap: Bitmap,
+            mirrorVertical: Boolean,
+            mirrorHorizontal: Boolean
+        ): Bitmap? {
+            val canvas = Canvas(bitmap)
+            canvas.scale(
+                if (mirrorHorizontal) -1F
+                else
+                    1F,
+                if (mirrorVertical) -1F
+                else
+                    1F,
+                bitmap.width / 2.toFloat(),
+                bitmap.height / 2.toFloat()
+            )
             return bitmap
         }
 

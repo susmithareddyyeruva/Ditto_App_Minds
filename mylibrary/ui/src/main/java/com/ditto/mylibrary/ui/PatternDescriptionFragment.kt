@@ -568,25 +568,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             REQUEST_CODE_PERMISSIONS_DOWNLOAD
                         )
                     }
-                    /* } else {
-                         //no internet available
-                             //todo changes message
-                         showProgress(false)
-                         Utility.getCommonAlertDialogue(
-                             requireContext(),
-                             resources.getString(com.ditto.workspace.ui.R.string.api_failed),
-                             resources.getString(com.ditto.workspace.ui.R.string.api_failed_message),
-                             resources.getString(com.ditto.workspace.ui.R.string.empty_string),
-                             resources.getString(com.ditto.workspace.ui.R.string.ok),
-                             this,
-                             Utility.AlertType.UPDATEAPIFAILED,
-                             Utility.Iconype.NONE
-                         )
-                     }*/
-
-                    /*=============================================*/
-
-                    //checkSocketConnectionBeforeWorkspace()
 
                 } else {
                     logger.d("OnClick Workspace failed")
