@@ -132,7 +132,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.updateWorkspaceData(
-            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}",
+            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}",
             workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
@@ -169,8 +169,7 @@ class WorkspaceViewModel @Inject constructor(
     fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.createWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
-                patternId.get()
-            }", workspaceDataAPI
+                patternId.get()}_${mannequinId.get()}", workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -324,7 +323,7 @@ class WorkspaceViewModel @Inject constructor(
                     // Fetching workspace data from SFCC server
                     fetchWorkspaceDataFromAPI(
                         result,
-                        "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
+                        "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}"
                     )
                 } else {
                     data.value = combineTailornovaAndSFCCDetails(result)
