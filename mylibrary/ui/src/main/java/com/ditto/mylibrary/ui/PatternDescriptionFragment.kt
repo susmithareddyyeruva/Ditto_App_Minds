@@ -82,7 +82,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
-    var clickedProduct: ProdDomain? = null
+    // var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -135,8 +135,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ?.let { viewModel.clickedTailornovaID.set(it) }
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
-                clickedProduct = arguments?.get("product") as ProdDomain?
-                Log.d("12345", "received is ${clickedProduct.toString()}")
+                viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
+                Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
                 bottomNavViewModel.showProgress.set(true)
                 if (NetworkUtility.isNetworkAvailable(context)) {
                     if (AppState.getIsLogged()) {
@@ -155,15 +155,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setPatternImage()
             }
 
-            if (clickedProduct != null) {
-                if (clickedProduct!!.mannequin.isNullOrEmpty()) {
-                    viewModel.mannequinId.set(clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
+            if (viewModel.clickedProduct != null) {
+                if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
+                    viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
                     spinner.visibility = View.GONE
                 } else {
                     spinner.visibility = View.VISIBLE
                     // we pass our item list and context to our Adapter.
                     viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
-                    clickedProduct!!.mannequin?.forEach {
+                    viewModel.clickedProduct!!.mannequin?.forEach {
                         viewModel.mannequinList?.add(
                             MannequinDataDomain(
                                 it.mannequinId,
@@ -214,7 +214,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun fetchPatternDetails() {
         if (NetworkUtility.isNetworkAvailable(context)) {
             if (AppState.getIsLogged()) {
-                if (clickedProduct?.patternType.equals("Trial", true)) {
+                if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
                     viewModel.fetchOfflinePatternDetails()
                 } else {
                     viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
@@ -615,7 +615,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
 
-    private  fun handleEvent(event: PatternDescriptionViewModel.Event) =
+    private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
                 /**
@@ -639,49 +639,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                 REQUEST_CODE_PERMISSIONS_DOWNLOAD
                             )
                         }
-                        /* } else {
-                             //no internet available
-                                 //todo changes message
-                             showProgress(false)
-                             Utility.getCommonAlertDialogue(
-                                 requireContext(),
-                                 resources.getString(com.ditto.workspace.ui.R.string.api_failed),
-                                 resources.getString(com.ditto.workspace.ui.R.string.api_failed_message),
-                                 resources.getString(com.ditto.workspace.ui.R.string.empty_string),
-                                 resources.getString(com.ditto.workspace.ui.R.string.ok),
-                                 this,
-                                 Utility.AlertType.UPDATEAPIFAILED,
-                                 Utility.Iconype.NONE
-                             )
-                         }*/
 
-                        /*=============================================*/
-
-                        //checkSocketConnectionBeforeWorkspace()
-                        binding.textWatchvideo2.isEnabled = false
-                        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                            || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                        ) {
-                            //checkBluetoothWifiPermission()
-                            //forwardtoWorkspace()
-                            val map = getPatternPieceListTailornova()
-                            //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                            if (dowloadPermissonGranted()) {
-                                bottomNavViewModel.showProgress.set(true)
-                                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
-                            } else {
-                                requestPermissions(
-                                    REQUIRED_PERMISSIONS_DOWNLOAD,
-                                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                                )
-                            }
-
-                        } else {
-                            logger.d("OnClick Workspace failed")
-                        }
                     } else {
+                        logger.d("OnClick Workspace failed")
                     }
-
                 } else {
                     /**
                      * Restricting user to enter into workspace without selecting any customization
@@ -899,7 +860,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun enterWorkspace() {
         Log.d(
             "Download123",
-            "ENDED >>>>>>>>>>> enterWorkspace in if ${clickedProduct?.prodName}"
+            "ENDED >>>>>>>>>>> enterWorkspace in if ${viewModel.clickedProduct?.prodName}"
         )
 
         if (baseViewModel.activeSocketConnection.get()) {
@@ -915,7 +876,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
             "mannequinId" to viewModel.mannequinId.get(),
-            "PatternName" to clickedProduct?.prodName
+            "PatternName" to viewModel.clickedProduct?.prodName
         )
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
@@ -1072,7 +1033,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         alertCalibration.show()
     }
 
-    override  fun onNegativeButtonClicked(
+    override fun onNegativeButtonClicked(
         alertType: Utility.AlertType
     ) {
         when {
@@ -1089,15 +1050,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alertType == Utility.AlertType.QUICK_CHECK -> {
                 showProgress(toShow = true)
                 GlobalScope.launch { projectBorderImage() }
-            }
-            alertType == Utility.AlertType.DOWNLOADFAILED -> {
-                Toast.makeText(
-                    requireContext(),
-                    "pending put download code",
-                    Toast.LENGTH_LONG
-                )
-                val map = getPatternPieceListTailornova()
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
             alertType == Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
