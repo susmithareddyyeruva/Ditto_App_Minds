@@ -332,12 +332,16 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             val map = getPatternPieceListTailornova(it)
             Log.d("Download", "OnTrialPatternSuccess forEach >> ${it.patternName}")
             runBlocking {
-                homeViewModel.prepareDowloadList(
-                    homeViewModel.imageFilesToDownload(
-                        map,
-                        it.patternName
-                    ), it.patternName
-                )
+                try {
+                    homeViewModel.prepareDowloadList(
+                        homeViewModel.imageFilesToDownload(
+                            map,
+                            it.patternName
+                        ), it.patternName
+                    )
+                } catch (e: Throwable) {
+                    Log.d("Download", "Erro! ${e.message}")
+                }
             }
         }
     }
