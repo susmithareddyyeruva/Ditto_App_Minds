@@ -245,7 +245,7 @@ class AllPatternsFragment(
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),//empty here
                     "product" to viewModel.clickedProduct,
                     "ISFROM" to "ALLPATTERN"
                 )
@@ -276,9 +276,16 @@ class AllPatternsFragment(
                     viewModel.fetchOfflinePatterns()
                 }
             } else {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.isLoading.set(true)
-                viewModel.fetchTrialPatterns()
+                if(NetworkUtility.isNetworkAvailable(context)){
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isLoading.set(true)
+                    viewModel.fetchTrialPatterns()
+                }else{
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
+                    viewModel.fetchTrialPatterns()
+                }
+
             }
             logger.d("OnSyncClick : AllPatternsFragment")
 

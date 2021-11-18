@@ -24,7 +24,7 @@ interface MyLibraryRepository {
     fun getTrialPatterns(patternType:String):Single<Result<List<ProdDomain>>>
     fun getAllPatternsInDB():Single<Result<List<ProdDomain>>>
     fun getOfflinePatternById(id: String): Single<Result<PatternIdData>>
-    fun insertTailornovaDetails(patternIdData: PatternIdData): Single<Any>
+    fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>
     fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>>

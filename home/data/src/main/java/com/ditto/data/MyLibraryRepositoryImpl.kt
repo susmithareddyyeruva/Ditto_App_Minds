@@ -136,8 +136,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
     override fun fetchTailornovaTrialPatterns(): Single<Result<List<PatternIdData>>> {
         return tailornovaApiService.getTrialPatterns(BuildConfig.TAILORNOVA_ENDURL + "Android/trial")
             .doOnSuccess {
-                logger.d("Tailornova Trial api Success")
-                offlinePatternDataDao.insertOfflinePatternDataList(it.trial.toDomainn())
+                logger.d(" Trial api  Success")
+                offlinePatternDataDao.upsertList(it.trial.toDomainn())
                 //PatternIdData>>OfflinePatterns
 
                  Log.d("Tailornova", "insertofflinePatternsData complete: $it")

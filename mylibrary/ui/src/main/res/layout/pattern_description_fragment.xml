@@ -15,6 +15,7 @@
             type="core.ui.ToolbarViewModel" />
 
         <import type="android.view.View" />
+        <import type="androidx.core.text.HtmlCompat"/>
     </data>
 
 
@@ -262,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
-                    android:text="@{viewModel.patternDescription}"
+                    android:text="@{HtmlCompat.fromHtml(viewModel.patternDescription,HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_16sp"
                     android:lineSpacingMultiplier="1.25"
