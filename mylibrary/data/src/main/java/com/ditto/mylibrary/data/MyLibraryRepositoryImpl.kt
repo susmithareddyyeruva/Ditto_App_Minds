@@ -146,9 +146,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(get: String, mannequinId: String): Single<Result<PatternIdData>> {
+    override fun getPatternData(designeID: String, mannequinId: String): Single<Result<PatternIdData>> {
         return tailornovaApiService.getPatternDetailsByDesignId(
-            BuildConfig.TAILORNOVA_ENDURL + get,
+            BuildConfig.TAILORNOVA_ENDURL + designeID,
             OS, mannequinId
         )
             .doOnSuccess {
