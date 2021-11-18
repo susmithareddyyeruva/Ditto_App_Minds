@@ -147,7 +147,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     } else {
                         spinner.visibility = View.VISIBLE
                         // we pass our item list and context to our Adapter.
-                        viewModel.mannequinList?.add(MannequinDataDomain("", "No Customization"))
+                        viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
                         clickedProduct!!.mannequin?.forEach {
                             viewModel.mannequinList?.add(
                                 MannequinDataDomain(

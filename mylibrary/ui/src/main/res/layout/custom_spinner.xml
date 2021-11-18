@@ -11,7 +11,7 @@
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/avenir_next_lt_pro_regular"
         android:hint="Summer Cloth"
-        android:padding="@dimen/padding_small"
+        android:padding="@dimen/padding_smallx"
         android:textColor="@color/black"
         android:textSize="@dimen/text_piece_name"
         app:layout_constraintEnd_toEndOf="parent"
