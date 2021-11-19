@@ -24,7 +24,8 @@ data class PatternIdData(
     val suitableFor: String? ="",
     val thumbnailEnlargedImageName: String? ="",
     val thumbnailImageName: String? ="",
-    var thumbnailImageUrl: String? =""
+    var thumbnailImageUrl: String? ="",
+    var mannequinId:String?=""
 )
 
 data class NumberOfPiecesData(

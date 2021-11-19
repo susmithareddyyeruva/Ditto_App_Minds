@@ -275,7 +275,8 @@ fun combineTailornovaAndSFCCDetails(
             it.toOldModel(
                 resultTailernova.data.patternPiecesTailornova
             )
-        }?.toMutableList()
+        }?.toMutableList(),
+        mannequin = resultTailernova.data.mannequin
     )
 }
 
@@ -324,7 +325,8 @@ fun combineTailornovaAndSFCCDetails(
             it.toOldModelOffline(
                 resultTailernova.data.patternPiecesTailornova
             )
-        }.toMutableList()
+        }.toMutableList(),
+        mannequin = resultTailernova.data.mannequin
     )
 }
 

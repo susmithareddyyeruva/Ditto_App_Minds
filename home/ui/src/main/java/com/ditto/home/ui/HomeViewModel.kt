@@ -287,7 +287,7 @@ class HomeViewModel @Inject constructor(
 
     suspend fun prepareDowloadList(hashMap: HashMap<String, String>, patternName: String?) {
         Log.d("Download", ">>>>>>>>>>>>>>>>>>>> STARTED for $patternName")
-        Log.d("Download", "Hashmap size: $patternName: >>  ${hashMap?.size}")
+        Log.d("Download", "Hashmap size Home: $patternName: >>  ${hashMap?.size}")
         if (!hashMap.isEmpty()) {
             hashMap.forEach { (key, value) ->
                 Log.d("Download", "file not present for $$patternName: KEY: $key \t VALUE : $value")

@@ -59,7 +59,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 arguments?.getString("PatternName")?.let { viewModel.patternName.set(it) }
                 Log.d("imageUri12345", "PatternName: ${viewModel.patternName.get()}")
                 arguments?.getString("mannequinId")?.let { viewModel.mannequinId.set(it) }
-                Log.d("ARGUMENTS", "MANNEQUINID: ${viewModel.mannequinId.get()}")
+                Log.d("ARGUMENTS", "MANNEQUINID IN WORKSSPACE FRAGMENT: ${viewModel.mannequinId.get()}")
             }
         }
         return binding.root
@@ -108,7 +108,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.garments),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
-                ORDER_NO to viewModel.clickedOrderNumber.get()
+                ORDER_NO to viewModel.clickedOrderNumber.get(),
+                MANNEQUINID to viewModel.mannequinId.get()
             )
             fragmentGarment = WorkspaceTabFragment()
             fragmentGarment.setArguments(garmentBundle)
@@ -117,7 +118,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.lining),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
-                ORDER_NO to viewModel.clickedOrderNumber.get()
+                ORDER_NO to viewModel.clickedOrderNumber.get(),
+                MANNEQUINID to viewModel.mannequinId.get()
             )
             fragmentLining = WorkspaceTabFragment()
             fragmentLining.setArguments(liningBundle)
@@ -126,7 +128,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.interfacing),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
-                ORDER_NO to viewModel.clickedOrderNumber.get()
+                ORDER_NO to viewModel.clickedOrderNumber.get(),
+                MANNEQUINID to viewModel.mannequinId.get()
             )
             fragmentInterface = WorkspaceTabFragment()
             fragmentInterface.setArguments(interfacingBundle)
@@ -385,6 +388,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         private const val PATTERN_ID = "PatternId"
         private const val PATTERN_NAME = "PatternName"
         private const val ORDER_NO = "clickedOrderNumber"
+        private const val MANNEQUINID = "mannequinId"
     }
 
     private fun showProgress(toShow: Boolean) {

@@ -70,4 +70,8 @@ data class Patterns(
     @ColumnInfo(name = "interfaceWorkspaceItems")
     @SerializedName("interfaceWorkspaceItems")
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
+
+    @ColumnInfo(name = "mannequin")
+    @SerializedName("mannequin")
+    var mannequin: String? = "",
 )

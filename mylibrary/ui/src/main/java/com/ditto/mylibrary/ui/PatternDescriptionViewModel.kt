@@ -123,17 +123,18 @@ class PatternDescriptionViewModel @Inject constructor(
                 // insert to db here
                 data.value?.patternName = clickedProduct?.prodName
                 data.value?.description =clickedProduct?.description
+                data.value?.mannequinId=mannequinId.get()
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo)// todo uncomment this line
+                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo,mannequinId.get())// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }
     }
 
-    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData, orderNo: String?) {
-        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo)
+    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData, orderNo: String?,mannequinId: String?) {
+        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo,mannequinId)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

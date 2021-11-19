@@ -498,9 +498,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any> {
+    override fun insertTailornovaDetails(
+        patternIdData: PatternIdData,
+        orderNumber: String?,
+        mannequinId: String?
+    ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber))}
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,mannequinId))}
     }
 
 }

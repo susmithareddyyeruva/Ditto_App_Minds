@@ -138,19 +138,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
                 Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
                 bottomNavViewModel.showProgress.set(true)
-                if (NetworkUtility.isNetworkAvailable(context)) {
-                    if (AppState.getIsLogged()) {
-                        if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
-                            viewModel.fetchOfflinePatternDetails()
-                        } else {
-                            viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
-                        }
-                    } else {
-                        viewModel.fetchOfflinePatternDetails()
-                    }
-                } else {
-                    viewModel.fetchOfflinePatternDetails()
-                }
             } else {
                 setPatternImage()
             }
@@ -159,6 +146,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                     viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
                     spinner.visibility = View.GONE
+                    if (NetworkUtility.isNetworkAvailable(context)) {
+                        if (AppState.getIsLogged()) {
+                            if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
+                                viewModel.fetchOfflinePatternDetails()
+                            } else {
+                                viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                            }
+                        } else {
+                            viewModel.fetchOfflinePatternDetails()
+                        }
+                    } else {
+                        viewModel.fetchOfflinePatternDetails()
+                    }
                 } else {
                     spinner.visibility = View.VISIBLE
                     // we pass our item list and context to our Adapter.
@@ -183,7 +183,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
 
             }
-            fetchPatternDetails()   //Fetching Pattern Details using design id
+            bottomNavViewModel.showProgress.set(false)
+            setUpUiBasedOnLoggedIn()
+            // fetchPatternDetails()   //Fetching Pattern Details using design id
 
         }
         setUIEvents()

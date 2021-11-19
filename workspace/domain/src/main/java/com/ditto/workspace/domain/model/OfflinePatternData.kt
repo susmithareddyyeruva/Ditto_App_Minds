@@ -2,6 +2,7 @@ package com.ditto.workspace.domain.model
 
 data class OfflinePatternData(
     var tailornaovaDesignId: String,
+    var mannequin:String?,
     var selectedTab: String?,
     var status: String,
     var numberOfCompletedPieces: NumberOfPieces?,

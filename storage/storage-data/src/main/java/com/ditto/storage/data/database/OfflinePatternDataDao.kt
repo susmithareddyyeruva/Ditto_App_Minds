@@ -68,13 +68,14 @@ abstract class OfflinePatternDataDao {
                 obj.occasion,
                 obj.patternDescriptionImageUrl,
                 obj.customization,
-                obj.selvages
+                obj.selvages,
+                obj.mannequinId
             )
             Log.d("offlinePatternDataDao", "update $i")
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova WHERE designId= :designId")
+    @Query("UPDATE offline_pattern_data SET patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,mannequinId=:mannequin WHERE designId= :designId")
     abstract fun updateTailornovaOfflineData(
         designId: String,
         patternName: String?,
@@ -97,7 +98,8 @@ abstract class OfflinePatternDataDao {
         occasion: String?,
         patternDescriptionImageUrl: String?,
         customization: Boolean?,
-        selvages: List<SelvageData>?
+        selvages: List<SelvageData>?,
+        mannequin: String?
     ): Int
 
     @Transaction
@@ -128,7 +130,8 @@ abstract class OfflinePatternDataDao {
                     obj.occasion,
                     obj.patternDescriptionImageUrl,
                     obj.customization,
-                    obj.selvages
+                    obj.selvages,
+                    obj.mannequinId
                 )
                 Log.d("offlinePatternDataDao", "upsertList update $i")
             }

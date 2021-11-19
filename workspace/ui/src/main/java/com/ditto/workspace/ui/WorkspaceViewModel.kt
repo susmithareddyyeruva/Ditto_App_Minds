@@ -882,7 +882,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("DOWNLOAD", "prepareDowloadList >>>>>>>>>>>>>>>>>>>> STARTED")
         Log.d("Download", "Hashmap size: ${hashMap?.size}")
         temp.clear()
         if (!hashMap.isEmpty()) {
