@@ -621,15 +621,49 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
                 /**
-                 * Restricting user to enter into workspace without selecting any customization
+                 * Restricting user to enter into workspace without selecting any customization if Network is Connected
                  */
-                if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
+                if (NetworkUtility.isNetworkAvailable(requireContext())) {
+                    if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
+                        binding.textWatchvideo2.isEnabled = false
+                        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                            || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                        ) {
+                            //checkBluetoothWifiPermission()
+                            //forwardtoWorkspace()
+                            val map = getPatternPieceListTailornova()
+                            //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                            if (dowloadPermissonGranted()) {
+                                bottomNavViewModel.showProgress.set(true)
+                                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                            } else {
+                                requestPermissions(
+                                    REQUIRED_PERMISSIONS_DOWNLOAD,
+                                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                                )
+                            }
+
+                        } else {
+                            logger.d("OnClick Workspace failed")
+                        }
+                    } else {
+                        /**
+                         * Showing Dialog to  selecting any customization
+                         */
+                        showAlert(
+                            getString(R.string.please_selecte_mannequinid),
+                            Utility.AlertType.DEFAULT
+                        )
+
+                    }
+                } else {
+                    /**
+                     * Allowing user to enter into workspace using offline data
+                     */
                     binding.textWatchvideo2.isEnabled = false
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
-                        //checkBluetoothWifiPermission()
-                        //forwardtoWorkspace()
                         val map = getPatternPieceListTailornova()
                         //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
@@ -645,14 +679,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     } else {
                         logger.d("OnClick Workspace failed")
                     }
-                } else {
-                    /**
-                     * Restricting user to enter into workspace without selecting any customization
-                     */
-                    showAlert(
-                        getString(R.string.please_selecte_mannequinid),
-                        Utility.AlertType.DEFAULT
-                    )
 
                 }
             }
