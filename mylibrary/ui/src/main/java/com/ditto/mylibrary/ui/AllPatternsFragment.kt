@@ -157,7 +157,8 @@ class AllPatternsFragment(
         Log.d("Testing", ">>>>>>   All Patterns  onResume ")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
-        fetchPatternLibrary()
+        Log.d("EVENT===","onResume")
+       // fetchPatternLibrary()
 
     }
     fun resetListValues(){

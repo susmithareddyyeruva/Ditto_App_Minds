@@ -327,15 +327,17 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             val tabPosition = binding.tabLayout.selectedTabPosition
             if (event != "SYNC") {
+                Log.d("EVENT===","ONLINE")
                 viewModel.passEventForAllPattern()
             }
 
         } else {
-           // binding.tabLayout.getTabAt(0)?.select()
+            binding.tabLayout.getTabAt(0)?.select()
             ( binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
             ( binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.GONE
             binding.tabLayout.isSelected = true
             if (event != "SYNC") {
+                Log.d("EVENT===","OFFLINE")
                 viewModel.passEventForAllPattern()
             }
             binding.tabLayout.getTabAt(0)?.text = getString(R.string.offline_patterns)
