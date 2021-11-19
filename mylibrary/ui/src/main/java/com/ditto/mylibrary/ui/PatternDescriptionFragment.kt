@@ -145,9 +145,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             if (viewModel.clickedProduct != null) {
                 if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                     viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
-                    spinner.visibility = View.GONE
+                    //spinner.visibility = View.GONE
                     if (NetworkUtility.isNetworkAvailable(context)) {
                         if (AppState.getIsLogged()) {
+                            binding.textMannequinName.visibility=View.GONE
                             if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
                                 viewModel.fetchOfflinePatternDetails()
                             } else {
@@ -157,10 +158,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             viewModel.fetchOfflinePatternDetails()
                         }
                     } else {
+                        binding.textMannequinName.visibility=View.VISIBLE
                         viewModel.fetchOfflinePatternDetails()
                     }
                 } else {
-                    spinner.visibility = View.VISIBLE
+                    //spinner.visibility = View.VISIBLE
                     // we pass our item list and context to our Adapter.
                     viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
                     viewModel.clickedProduct!!.mannequin?.forEach {

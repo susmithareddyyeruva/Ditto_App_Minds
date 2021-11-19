@@ -15,7 +15,8 @@
             type="core.ui.ToolbarViewModel" />
 
         <import type="android.view.View" />
-        <import type="androidx.core.text.HtmlCompat"/>
+
+        <import type="androidx.core.text.HtmlCompat" />
     </data>
 
 
@@ -58,7 +59,7 @@
                         android:text="@string/pattern_details"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/size_21dp" />
-<!--//todo -->
+                    <!--//todo -->
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
@@ -183,10 +184,28 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_custom_spinner"
                 android:paddingStart="@dimen/padding_9"
-                app:layout_constraintTop_toTopOf="@+id/content_header"
-                app:layout_constraintTop_toBottomOf="@id/subscription"
+                android:visibility="@{viewModel.mannequinList.size > 0 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toStartOf="@id/end_guideline" />
+                app:layout_constraintEnd_toStartOf="@id/end_guideline"
+                app:layout_constraintTop_toBottomOf="@id/subscription"
+                app:layout_constraintTop_toTopOf="@+id/content_header" />
+
+            <TextView
+                android:id="@+id/textMannequinName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin20"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:padding="@dimen/padding_9"
+                android:text="@{viewModel.mannequinName}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_10"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline"
+                app:layout_constraintTop_toBottomOf="@id/subscription"
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
+                tools:text="Casual" />
 
             <TextView
                 android:id="@+id/content_header"
@@ -278,10 +297,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:lineSpacingMultiplier="1.25"
                     android:text="@{HtmlCompat.fromHtml(viewModel.patternDescription,HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_16sp"
-                    android:lineSpacingMultiplier="1.25"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum pellentesque eget sapien volutpat mollis. Odio ac sit purus tempor lacus consequat, cursus a. Mattis hendrerit nisl, eleifend vitae tempor. Faucibus pellentesque malesuada proin nulla orci enim ornare. Gravida euismod viverra potenti id." />
             </androidx.core.widget.NestedScrollView>
 

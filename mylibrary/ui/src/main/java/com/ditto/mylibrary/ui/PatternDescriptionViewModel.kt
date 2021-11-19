@@ -101,6 +101,7 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
+                mannequinName.set(result.data.mannequinName)
                 uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> handleError(result.error)
