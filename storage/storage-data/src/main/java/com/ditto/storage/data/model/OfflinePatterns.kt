@@ -146,4 +146,8 @@ data class OfflinePatterns(
     @ColumnInfo(name = "mannequinId")
     @SerializedName("mannequin")
     var mannequinId: String? = "",
+
+    @ColumnInfo(name = "mannequinName")
+    @SerializedName("mannequinName")
+    var mannequinName: String? = "",
 )

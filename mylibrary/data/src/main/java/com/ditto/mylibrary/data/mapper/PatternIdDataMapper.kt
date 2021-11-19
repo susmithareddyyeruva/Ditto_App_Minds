@@ -32,7 +32,8 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             prodGender = it.gender,
             prodBrand = it.brand,
             isFavourite = false,
-            mannequinId = it.mannequinId
+            mannequinId = it.mannequinId,
+            mannequinName = it.mannequinName
 
         )
     }
@@ -64,7 +65,11 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
     )
 }
 
-internal fun PatternIdData.toDomain(orderNumber: String?, mannequinId: String?): OfflinePatterns {
+internal fun PatternIdData.toDomain(
+    orderNumber: String?,
+    mannequinId: String?,
+    mannequinName: String?
+): OfflinePatterns {
     return OfflinePatterns(
         custId = AppState.getCustID(),
         designId = this.designId,
@@ -92,7 +97,8 @@ internal fun PatternIdData.toDomain(orderNumber: String?, mannequinId: String?):
         suitableFor = this.suitableFor,
         occasion = this.occasion,
         orderNumber = orderNumber,
-        mannequinId = mannequinId
+        mannequinId = mannequinId,
+        mannequinName = mannequinName
     )
 }
 
@@ -234,7 +240,8 @@ internal fun OfflinePatterns.toPatternIDDomain(): PatternIdData {
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         thumbnailImageName = this.thumbnailImageName,
         thumbnailImageUrl = this.thumbnailImageUrl,
-        mannequinId=this.mannequinId
+        mannequinId=this.mannequinId,
+        mannequinName=this.mannequinName
     )
 }
 

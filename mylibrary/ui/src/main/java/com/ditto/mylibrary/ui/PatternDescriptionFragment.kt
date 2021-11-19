@@ -204,9 +204,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 val clickedItem: MannequinDataDomain =
                     parent.getItemAtPosition(position) as MannequinDataDomain
                 val id: String = clickedItem.mannequinId
+                val name=clickedItem.mannequinName
                 viewModel.mannequinId.set(id)
+                viewModel.mannequinName.set(name)
                 fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
-                Log.d("ITEM SELECTED", "MANNEQUIN ID: " + viewModel.mannequinId.get())
+                Log.d("ITEM SELECTED********", "MANNEQUIN ID: " + viewModel.mannequinId.get())
+                Log.d("ITEM SELECTED********", "MANNEQUIN NAME: " + viewModel.mannequinName.get())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}

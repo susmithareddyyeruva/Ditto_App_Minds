@@ -51,6 +51,7 @@ class PatternDescriptionViewModel @Inject constructor(
     //    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     val clickedTailornovaID: ObservableField<String> = ObservableField("")
     val mannequinId: ObservableField<String> = ObservableField("")
+    val mannequinName: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -123,18 +124,23 @@ class PatternDescriptionViewModel @Inject constructor(
                 // insert to db here
                 data.value?.patternName = clickedProduct?.prodName
                 data.value?.description =clickedProduct?.description
-                data.value?.mannequinId=mannequinId.get()
+                data.value?.mannequinId=mannequinId.get()//getting selected MANNEQUIN ID
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo,mannequinId.get())// todo uncomment this line
+                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo,mannequinId.get(),mannequinName.get())// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }
     }
 
-    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData, orderNo: String?,mannequinId: String?) {
-        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo,mannequinId)
+    private fun insertTailornovaDetailsToDB(
+        patternIdData: PatternIdData,
+        orderNo: String?,
+        mannequinId: String?,
+        mannequinName: String?
+    ) {
+        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo,mannequinId,mannequinName)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

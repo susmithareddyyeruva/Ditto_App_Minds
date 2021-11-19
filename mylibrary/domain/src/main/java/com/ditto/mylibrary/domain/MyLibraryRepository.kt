@@ -26,7 +26,8 @@ interface MyLibraryRepository {
     fun insertTailornovaDetails(
         patternIdData: PatternIdData,
         orderNumber: String?,
-        mannequinId: String?
+        mannequinId: String?,
+        mannequinName: String?
     ): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>

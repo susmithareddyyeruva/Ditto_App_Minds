@@ -28,7 +28,8 @@ interface MyLibraryUseCase {
     fun insertTailornovaDetails(
         patternIdData: PatternIdData,
         orderNumber: String?,
-        mannequinId: String?
+        mannequinId: String?,
+        mannequinName: String?
     ): Single<Any>
 
 }
