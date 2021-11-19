@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_custom_spinner"
                 android:paddingStart="@dimen/padding_9"
-                android:visibility="@{viewModel.mannequinList.size > 0 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.mannequinList.size > 0 ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
@@ -197,14 +197,16 @@
                 android:layout_marginEnd="@dimen/margin20"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
+                android:background="@drawable/ic_mannequinbg"
                 android:padding="@dimen/padding_9"
                 android:text="@{viewModel.mannequinName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_10"
                 android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
-                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
+                app:layout_constraintTop_toTopOf="@+id/content_header"
                 tools:text="Casual" />
 
             <TextView

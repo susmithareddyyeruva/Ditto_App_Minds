@@ -161,7 +161,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         viewModel.fetchOfflinePatternDetails()
                     }
                 } else {
-                    binding.textMannequinName.visibility = View.VISIBLE
+                    if (!viewModel.clickedProduct?.patternType.equals("Trial", true)) {
+                        binding.textMannequinName.visibility = View.VISIBLE
+                    }
                     viewModel.fetchOfflinePatternDetails()
                 }
 
@@ -1229,16 +1231,18 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun showDataFailedAlert() {
         bottomNavViewModel.showProgress.set(false)
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            getString(R.string.str_fetch_error),
-            "",
-            getString(R.string.str_ok),
-            this,
-            Utility.AlertType.NETWORK,
-            Utility.Iconype.FAILED
-        )
+        if (activity!=null&&context!=null) {
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                getString(R.string.str_fetch_error),
+                "",
+                getString(R.string.str_ok),
+                this,
+                Utility.AlertType.NETWORK,
+                Utility.Iconype.FAILED
+            )
+        }
     }
 
     /**
