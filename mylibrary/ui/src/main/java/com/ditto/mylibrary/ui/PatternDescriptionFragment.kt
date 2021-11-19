@@ -770,10 +770,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun setPatternImage() {
-        Glide.with(requireContext())
-            .load(viewModel.clickedProduct?.image)
-            .placeholder(R.drawable.ic_placeholder)
-            .into(binding.imagePatternDesc)
+        if (activity != null && context != null) {
+            Glide.with(requireContext())
+                .load(viewModel.clickedProduct?.image)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(binding.imagePatternDesc)
+        }
     }
 
     override fun onActivityResult(
