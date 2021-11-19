@@ -143,45 +143,26 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             if (viewModel.clickedProduct != null) {
-                if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
-                    viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
-                    //spinner.visibility = View.GONE
-                    if (NetworkUtility.isNetworkAvailable(context)) {
-                        if (AppState.getIsLogged()) {
-                            binding.textMannequinName.visibility=View.GONE
-                            if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
-                                viewModel.fetchOfflinePatternDetails()
-                            } else {
-                                viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
-                            }
-                        } else {
+                if (NetworkUtility.isNetworkAvailable(context)) {
+                    if (AppState.getIsLogged()) {
+                        binding.textMannequinName.visibility = View.GONE
+                        if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
                             viewModel.fetchOfflinePatternDetails()
+                        } else {  //Online Scenario
+                            if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
+                                viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
+                            } else {
+                                setSpinner()// Setting Dropdown with Mannequin ID
+                            }
+
+                            viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
                         }
                     } else {
-                        binding.textMannequinName.visibility=View.VISIBLE
                         viewModel.fetchOfflinePatternDetails()
                     }
                 } else {
-                    //spinner.visibility = View.VISIBLE
-                    // we pass our item list and context to our Adapter.
-                    viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
-                    viewModel.clickedProduct!!.mannequin?.forEach {
-                        viewModel.mannequinList?.add(
-                            MannequinDataDomain(
-                                it.mannequinId,
-                                it.mannequinName
-                            )
-                        )
-                    }
-                    val adapter =
-                        viewModel.mannequinList?.let {
-                            CustomSpinnerAdapter(
-                                requireContext(),
-                                it
-                            )
-                        }
-                    spinner.adapter = adapter
-                    spinner.setSelection(0, true)
+                    binding.textMannequinName.visibility = View.VISIBLE
+                    viewModel.fetchOfflinePatternDetails()
                 }
 
             }
@@ -206,7 +187,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 val clickedItem: MannequinDataDomain =
                     parent.getItemAtPosition(position) as MannequinDataDomain
                 val id: String = clickedItem.mannequinId
-                val name=clickedItem.mannequinName
+                val name = clickedItem.mannequinName
                 viewModel.mannequinId.set(id)
                 viewModel.mannequinName.set(name)
                 fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
@@ -216,6 +197,29 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+
+    private fun setSpinner() {
+        //spinner.visibility = View.VISIBLE
+        // we pass our item list and context to our Adapter.
+        viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
+        viewModel.clickedProduct!!.mannequin?.forEach {
+            viewModel.mannequinList?.add(
+                MannequinDataDomain(
+                    it.mannequinId,
+                    it.mannequinName
+                )
+            )
+        }
+        val adapter =
+            viewModel.mannequinList?.let {
+                CustomSpinnerAdapter(
+                    requireContext(),
+                    it
+                )
+            }
+        spinner.adapter = adapter
+        spinner.setSelection(0, true)
     }
 
     private fun fetchPatternDetails() {
