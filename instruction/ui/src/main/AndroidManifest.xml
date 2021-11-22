@@ -2,6 +2,11 @@
     package="com.ditto.instructions.ui" >
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- Android 12 bluetooth permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <application>
 
         <activity android:name="com.ditto.instructions.ui.PopUpWindow"
