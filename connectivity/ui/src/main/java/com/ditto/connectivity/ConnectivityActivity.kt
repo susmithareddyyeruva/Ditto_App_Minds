@@ -23,10 +23,8 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.BaseAdapter
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -615,10 +613,18 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
         const val REQUEST_CODE_PERMISSIONS = 10
         const val NSD_SERVICE_TYPE: String = "_http._tcp."
-        val REQUIRED_PERMISSIONS = arrayOf(
-            Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN,
-            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
-        )
+        val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        }
 
         private fun makeGattUpdateIntentFilter(): IntentFilter {
             val intentFilter = IntentFilter()

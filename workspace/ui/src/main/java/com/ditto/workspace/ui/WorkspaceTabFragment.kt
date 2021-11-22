@@ -56,7 +56,6 @@ import core.ui.common.Utility.Companion.createMirrorBitmap
 import core.ui.common.Utility.Companion.getAlertDialogue
 import core.ui.common.Utility.Companion.getBitmap
 import core.ui.common.Utility.Companion.getDrawableFromString
-import core.ui.common.Utility.Companion.getRotation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -2040,7 +2039,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(Manifest.permission.BLUETOOTH)
+        }
         private val REQUIRED_PERMISSIONS_DOWNLOAD =
             arrayOf(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,

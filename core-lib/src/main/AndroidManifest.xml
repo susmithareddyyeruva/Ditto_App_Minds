@@ -2,7 +2,8 @@
     package="core.lib">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
     <!-- Android 12 bluetooth permissions -->
     <!-- Needed only if your app looks for Bluetooth devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />

@@ -10,6 +10,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -26,7 +27,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
-import com.ditto.howto.utils.Common
 import com.ditto.instructions.ui.adapter.InstructionAdapter
 import com.ditto.instructions.ui.adapter.InstructionCalibrationAdapter
 import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
@@ -36,7 +36,6 @@ import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.Observable
@@ -765,7 +764,15 @@ class InstructionFragment constructor(
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(Manifest.permission.BLUETOOTH)
+        }
     }
 
 }
