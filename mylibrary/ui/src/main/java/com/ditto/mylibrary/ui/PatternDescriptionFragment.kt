@@ -790,6 +790,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 } else {
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
+                    bottomNavViewModel.showProgress.set(false)
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(com.ditto.workspace.ui.R.string.download_failed),
@@ -1049,9 +1050,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-            Utility.AlertType.DOWNLOADFAILED -> {
+            /*Utility.AlertType.DOWNLOADFAILED -> {
                 checkSocketConnectionBeforeWorkspace()
-            }
+            }*/
         }
     }
 
@@ -1231,10 +1232,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            Utility.AlertType.DOWNLOADFAILED -> {
+            /*Utility.AlertType.DOWNLOADFAILED -> {
                 bottomNavViewModel.showProgress.set(false)
                 checkSocketConnectionBeforeWorkspace()
-            }
+            }*/
 
 
             Utility.AlertType.SOFTWARE_UPDATE -> {

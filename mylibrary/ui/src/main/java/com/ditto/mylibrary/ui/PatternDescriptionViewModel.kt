@@ -336,8 +336,8 @@ class PatternDescriptionViewModel @Inject constructor(
             val path = Uri.fromFile(result)
             patternUri.set(path.toString())
             Log.d("PATTERN", patternUri.get() ?: "")
-            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
             temp.add(path.toString())
+            Log.d("DOWNLOAD", "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} ")
         }
     }
 
