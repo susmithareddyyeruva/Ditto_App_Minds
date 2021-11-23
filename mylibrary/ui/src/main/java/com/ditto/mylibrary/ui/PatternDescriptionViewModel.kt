@@ -103,6 +103,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 data.value = result.data
                 mannequinName.set(result.data.mannequinName)
                 uiEvents.post(Event.OnDataUpdated)
+                uiEvents.post(Event.OnShowMannequinData)
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -192,6 +193,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object onSubscriptionClicked : Event()
         object OnInstructionsButtonClicked : Event()
         object OnDataUpdated : Event()
+        object OnShowMannequinData : Event()
         object OnDownloadComplete : Event()
         object OnDataloadFailed : Event()
         object OnImageDownloadComplete : Event()

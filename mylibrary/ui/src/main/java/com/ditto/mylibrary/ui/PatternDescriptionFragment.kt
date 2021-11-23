@@ -630,11 +630,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
 
-                if (NetworkUtility.isNetworkAvailable(requireContext())){  //Network Connected
+                if (NetworkUtility.isNetworkAvailable(requireContext())) {  //Network Connected
                     /**
                      * Allowing user to enter into workspace  using trial Pattern if Network is Connected
                      */
-                    if (viewModel.clickedProduct?.patternType.toString().equals("Trial",true)){
+                    if (viewModel.clickedProduct?.patternType.toString().equals("Trial", true)) {
                         binding.textWatchvideo2.isEnabled = false
                         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                             || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
@@ -653,10 +653,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                 )
                             }
 
-                        }else {
+                        } else {
                             logger.d("OnClick Workspace failed")
                         }
-                    }else{//Pattern TYPE not  Trial and Network Connected
+                    } else {//Pattern TYPE not  Trial and Network Connected
                         /**
                          * Allowing user to enter into workspace  which is not  trial Pattern if Network is Connected
                          */
@@ -696,29 +696,29 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                     }
 
-                }else{   //No Network Connected
+                } else {   //No Network Connected
                     /**
                      * Allowing user to enter into workspace using offline data for both pattern type
                      */
-                        binding.textWatchvideo2.isEnabled = false
-                        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                            || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                        ) {
-                            val map = getPatternPieceListTailornova()
-                            //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                            if (dowloadPermissonGranted()) {
-                                bottomNavViewModel.showProgress.set(true)
-                                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
-                            } else {
-                                requestPermissions(
-                                    REQUIRED_PERMISSIONS_DOWNLOAD,
-                                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                                )
-                            }
-
+                    binding.textWatchvideo2.isEnabled = false
+                    if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                        || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        val map = getPatternPieceListTailornova()
+                        //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                        if (dowloadPermissonGranted()) {
+                            bottomNavViewModel.showProgress.set(true)
+                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
                         } else {
-                            logger.d("OnClick Workspace failed")
+                            requestPermissions(
+                                REQUIRED_PERMISSIONS_DOWNLOAD,
+                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                            )
                         }
+
+                    } else {
+                        logger.d("OnClick Workspace failed")
+                    }
 
 
                 }
@@ -727,13 +727,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
                 bottomNavViewModel.showProgress.set(false)
-                if (viewModel.clickedProduct?.patternType.toString().equals("Trial",true)) {
+                if (viewModel.clickedProduct?.patternType.toString().equals("Trial", true)) {
                     binding.textMannequinName.visibility = View.GONE
-                }else{
-                    if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
+                }/*else{
+                    *//*if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
                         binding.textMannequinName.visibility = View.VISIBLE
-                    }
-                }
+                    }*//*
+                }*/
                 setUpUiBasedOnLoggedIn()
             }
 
@@ -797,6 +797,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
 
+            }
+            PatternDescriptionViewModel.Event.OnShowMannequinData -> {
+                if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
+                    binding.textMannequinName.visibility = View.VISIBLE
+                }else{
+
+                }
             }
         }
 
@@ -1270,7 +1277,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun showDataFailedAlert() {
         bottomNavViewModel.showProgress.set(false)
-        if (activity!=null&&context!=null) {
+        if (activity != null && context != null) {
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
