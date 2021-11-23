@@ -49,7 +49,9 @@ fun WorkspaceItem.toDomain(): WorkspaceItemDomain {
         isMirrorH = this.isMirrorH,
         isMirrorV = this.isMirrorV,
         showMirrorDialog = this.showMirrorDialog,
-        currentSplicedPieceNo = this.currentSplicedPieceNo
+        currentSplicedPieceNo = this.currentSplicedPieceNo,
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn,
+        currentSplicedPieceRow = this.currentSplicedPieceRow
     )
 }
 
@@ -162,6 +164,8 @@ fun WorkspaceItemDomain.toDomain(): com.ditto.storage.data.model.WorkspaceItemOf
         isMirrorV = this.isMirrorV,
         showMirrorDialog = this.showMirrorDialog,
         currentSplicedPieceNo = this.currentSplicedPieceNo,
+        currentSplicedPieceColumn=this.currentSplicedPieceColumn,
+        currentSplicedPieceRow =this.currentSplicedPieceRow
     )
 }
 
