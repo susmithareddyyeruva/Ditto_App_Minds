@@ -633,6 +633,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
     }
 
+    private fun setPrepareDownloadList(map: HashMap<String, String>) {
+        viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+    }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         context?.let { it1 ->
             ContextCompat.checkSelfPermission(
@@ -662,7 +666,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             if (dowloadPermissonGranted()) {
                                 Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
                                 bottomNavViewModel.showProgress.set(true)
-                                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                                if (!::job.isInitialized || !job.isActive) {
+                                    job = GlobalScope.launch {
+                                        setPrepareDownloadList(map)
+                                    }
+                                }else{
+
+                                }
                             } else {
                                 requestPermissions(
                                     REQUIRED_PERMISSIONS_DOWNLOAD,
@@ -690,7 +700,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                 if (dowloadPermissonGranted()) {
                                     Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
                                     bottomNavViewModel.showProgress.set(true)
-                                    viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                                    if (!::job.isInitialized || !job.isActive) {
+                                        job = GlobalScope.launch {
+                                            setPrepareDownloadList(map)
+                                        }
+                                    }else{
+
+                                    }
+
                                 } else {
                                     requestPermissions(
                                         REQUIRED_PERMISSIONS_DOWNLOAD,
@@ -1291,11 +1308,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             alertType == Utility.AlertType.DOWNLOADFAILED -> {
                 val map = getPatternPieceListTailornova()
                 Log.d("prepare>>>>>", "DOWNLOADFAILED")
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                if (!::job.isInitialized || !job.isActive) {
+                    job = GlobalScope.launch {
+                        setPrepareDownloadList(map)
+                    }
+                }
+
             }
         }
     }
-
 
 
     private fun showDataFailedAlert() {
@@ -1329,7 +1350,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
                 Log.d("prepare>>>>>", "onRequestPermissionsResult")
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                if (!::job.isInitialized || !job.isActive) {
+                    job = GlobalScope.launch {
+                        setPrepareDownloadList(viewModel.imageFilesToDownload(map))
+                    }
+                }
+
+
             } else {
                 Utility.getCommonAlertDialogue(
                     requireContext(),
