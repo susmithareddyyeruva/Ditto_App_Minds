@@ -54,10 +54,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.pattern_description_fragment.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.File
@@ -82,6 +79,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     private val CONNNECTION_FAILED = "Projector Connection failed. Try again!!" // Compliant
     var versionResult: SoftwareUpdateResult? = null
+    private lateinit var job: Job
     // var clickedProduct: ProdDomain? = null
 
     override fun onCreateView(
@@ -150,8 +148,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         } else {  //Online Scenario
                             if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
-                                bottomNavViewModel.showProgress.set(true)
-                                viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                                if (viewModel.data.value == null) {
+                                    bottomNavViewModel.showProgress.set(true)
+                                    viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
+                                }
                             } else {
                                 setSpinner()// Setting Dropdown with Mannequin ID
                             }
@@ -202,18 +202,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun setSpinner() {
         //spinner.visibility = View.VISIBLE
         // we pass our item list and context to our Adapter.
+        viewModel.mannequinList?.clear()
         viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
-        viewModel.mannequinList?.add(MannequinDataDomain("1", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("2", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("3", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("4", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("5", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("6", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("7", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("8", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("9", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("10", "Summer"))
-        viewModel.mannequinList?.add(MannequinDataDomain("11", "Summer"))
         viewModel.clickedProduct!!.mannequin?.forEach {
             viewModel.mannequinList?.add(
                 MannequinDataDomain(
@@ -231,6 +221,21 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         binding.spinner.adapter = adapter
         binding.spinner.setSelection(0, true)
+/*        try {
+            val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
+            popup.setAccessible(true)
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            val popupWindow = popup.get(spinner) as ListPopupWindow
+
+            // Set popupWindow height to 500px
+            popupWindow.height = 150
+        } catch (e: NoClassDefFoundError) {
+            // silently fail...
+        } catch (e: ClassCastException) {
+        } catch (e: NoSuchFieldException) {
+        } catch (e: IllegalAccessException) {
+        }*/
     }
 
     private fun fetchPatternDetails() {
@@ -655,6 +660,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             val map = getPatternPieceListTailornova()
                             //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                             if (dowloadPermissonGranted()) {
+                                Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
                                 bottomNavViewModel.showProgress.set(true)
                                 viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
                             } else {
@@ -682,6 +688,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                 val map = getPatternPieceListTailornova()
                                 //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                                 if (dowloadPermissonGranted()) {
+                                    Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
                                     bottomNavViewModel.showProgress.set(true)
                                     viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
                                 } else {
@@ -719,6 +726,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
                             bottomNavViewModel.showProgress.set(true)
+                            Log.d("prepare>>>>>", "OnWorkspaceButtonClicked no network")
                             viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
                         } else {
                             requestPermissions(
@@ -1281,10 +1289,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             alertType == Utility.AlertType.DOWNLOADFAILED -> {
                 val map = getPatternPieceListTailornova()
+                Log.d("prepare>>>>>", "DOWNLOADFAILED")
                 viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             }
         }
     }
+
+
 
     private fun showDataFailedAlert() {
         bottomNavViewModel.showProgress.set(false)
@@ -1316,6 +1327,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
+                Log.d("prepare>>>>>", "onRequestPermissionsResult")
                 viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
             } else {
                 Utility.getCommonAlertDialogue(
