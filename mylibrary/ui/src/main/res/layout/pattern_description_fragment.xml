@@ -203,7 +203,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_piece_name"
                 android:visibility="gone"
-                android:spinnerMode="dialog"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
