@@ -1088,8 +1088,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     .withEndAction {
                         binding.coachMarkPopup.clearAnimation()
-                        binding.groupCoachMarkWs.setVisibility(View.GONE)
                         AppState.setShowWorkspaceCoachMark(true)
+                        (parentFragment as WorkspaceFragment).closeVideoPopup()
                         showCoachmarkEndPopup()
                     }
             }
