@@ -183,7 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_custom_spinner"
-                android:paddingStart="@dimen/spinner_padding_start"
+                android:paddingHorizontal="@dimen/spinner_padding_start"
                 android:verticalScrollbarPosition="left"
                 android:dropDownVerticalOffset="45dp"
                 android:spinnerMode="dropdown"

@@ -49,5 +49,5 @@
     <dimen name="ble_icon_height">14dp</dimen>
     <dimen name="margin_x">12dp</dimen>
     <dimen name="search_height">32dp</dimen>
-    <dimen name="spinner_padding_start">9dp</dimen>
+    <dimen name="spinner_padding_start">7dp</dimen>
 </resources>
