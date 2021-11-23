@@ -68,9 +68,6 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        if (Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
         setHomeHeader()
 
     }
@@ -294,7 +291,7 @@ class HomeViewModel @Inject constructor(
         if (!hashMap.isEmpty()) {
             hashMap.forEach { (key, value) ->
                 Log.d("Download", "file not present for $$patternName: KEY: $key \t VALUE : $value")
-                if (!(key.isNullOrEmpty())) {
+                if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
                     downloadEachPatternPiece(
                         imageUrl = value,
                         filename = key,
@@ -331,8 +328,8 @@ class HomeViewModel @Inject constructor(
                     convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
             val path = Uri.fromFile(result)
             patternUri.set(path.toString())
-            Log.d("PATTERN", patternUri.get() ?: "")
-            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
+            //Log.d("PATTERN", patternUri.get() ?: "")
+            //Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
         }
     }
 

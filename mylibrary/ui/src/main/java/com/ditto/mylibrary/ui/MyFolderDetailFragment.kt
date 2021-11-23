@@ -96,7 +96,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         super.onResume()
         logger.d("***********onResume")
         viewModel.disposable = CompositeDisposable()
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             /* viewModel.myfolderList.value = emptyList()
              myFolderDetailListAdapter.setListData(
                  items = viewModel.myfolderList.value ?: emptyList()
@@ -160,7 +160,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     }
 
     fun applyFilter() {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             currentPage = 1
             isLastPage = false
             // viewModel.myfolderArryList.clear()
@@ -225,7 +225,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
                 //you have to call loadmore items to get more data
 
                 if (currentPage <= viewModel.totalPageCount) {
-                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                    if (AppState.getIsLogged()) {
                         bottomNavViewModel.showProgress.set(true)
                         viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))

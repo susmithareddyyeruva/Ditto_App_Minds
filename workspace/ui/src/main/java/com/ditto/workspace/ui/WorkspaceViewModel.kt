@@ -108,9 +108,7 @@ class WorkspaceViewModel @Inject constructor(
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
     init {
-        if (core.ui.common.Utility.isTokenExpired()) {
-            utility.refreshToken()
-        }
+
     }
 
     //Fetching tailornova details from offline_pattern_data table
@@ -905,11 +903,13 @@ class WorkspaceViewModel @Inject constructor(
                 runBlocking {
                     hashMap.forEach { (key, value) ->
                         Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                        downloadEachPatternPiece(
-                            imageUrl = value,
-                            filename = key,
-                            patternFolderName = patternName.get() ?: "Pattern Piece"
-                        )
+                        if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
+                            downloadEachPatternPiece(
+                                imageUrl = value,
+                                filename = key,
+                                patternFolderName = patternName.get() ?: "Pattern Piece"
+                            )
+                        }
                     }
                 }
                 uiEvents.post(Event.OnDownloadComplete)

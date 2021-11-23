@@ -13,20 +13,18 @@ import com.ditto.home.domain.request.MyLibraryFilterRequestData
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.TrialPatternError
-import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.storage.data.database.OfflinePatternDataDao
-import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.data.database.UserDao
-import core.appstate.AppState
-import core.lib.BuildConfig
-import core.models.CommonApiFetchError
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import core.*
-import core.di.Encrypt
+import core.appstate.AppState
+import core.di.EncodeDecodeUtil
+import core.lib.BuildConfig
+import core.models.CommonApiFetchError
 import core.network.NetworkUtility
 import core.ui.errors.CommonError
 import io.reactivex.Single
@@ -35,7 +33,6 @@ import non_core.lib.error.NoNetworkError
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class MyLibraryRepositoryImpl @Inject constructor(
@@ -57,7 +54,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
             val input="$EN_USERNAME:$EN_PASSWORD"
-       val encryptedKey= Encrypt.HMAC_SHA256(EN_KEY,input)
+        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+       val encryptedKey= EncodeDecodeUtil.HMAC_SHA256(key,input)
         return homeService.getHomeScreenDetails(requestData, "Basic "+encryptedKey)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
@@ -139,7 +137,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         return tailornovaApiService.getTrialPatterns(BuildConfig.TAILORNOVA_ENDURL + "Android/trial")
             .doOnSuccess {
                 logger.d("Tailornova Success")
-                offlinePatternDataDao.insertOfflinePatternDataList(it.trial.toDomainn())
+                offlinePatternDataDao.upsertList(it.trial.toDomainn())
                 //PatternIdData>>OfflinePatterns
 
                 /*Executors.newSingleThreadExecutor()

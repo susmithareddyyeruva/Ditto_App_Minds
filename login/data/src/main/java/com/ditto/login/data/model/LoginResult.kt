@@ -136,6 +136,8 @@ data class LoginResult(
     @SerializedName("c_subscriptionPlanBillingEndDate")
     val cSubscriptionPlanBillingEndDate: String,
     @SerializedName("c_subscriptionPlanBillingStartDate")
-    val cSubscriptionPlanBillingStartDate: String
+    val cSubscriptionPlanBillingStartDate: String,
+    @SerializedName("c_encryptionKey")
+    val c_encryptionKey:String?
 
 )

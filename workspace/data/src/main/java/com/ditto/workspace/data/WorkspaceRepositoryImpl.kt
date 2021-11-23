@@ -117,6 +117,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override fun getWorkspaceDataFromApi(id: String): Single<Result<WorkspaceDataAPI>> {
+        logger.d("WSISSUE >> id: $id")
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -124,12 +125,12 @@ class WorkspaceRepositoryImpl @Inject constructor(
         return getWorkspaceService.getWorkspceDataFromApi(id,CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
-            Log.d("WorkspaceRepositoryImpl","${it.c_traceWorkSpacePattern.toString()}")
+            Log.d("WorkspaceRepositoryImpl","getWorkspaceDataFromApi ${it.c_traceWorkSpacePattern.toString()}")
             Result.withValue(it.c_traceWorkSpacePattern?.toDomain())
         }.onErrorReturn {
             var errorMessage = "Error Fetching data"
             try {
-                logger.d("try block123")
+                logger.d("getWorkspaceDataFromApi try block123 ")
                 val error = it as HttpException
                 if (error != null) {
                     val errorBody = error.response()!!.errorBody()!!.string()
@@ -151,6 +152,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override fun updateWorkspaceDataFromApi(id: String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
+        logger.d("WSISSUE >> id: $id")
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
@@ -169,7 +171,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }.onErrorReturn {
             var errorMessage = "Error Fetching data"
             try {
-                logger.d("try block")
+                logger.d("try block updateWorkspaceDataFromApi")
                 val error = it as HttpException
                 if (error != null) {
                     logger.d("Error update WorkspaceData")
@@ -185,14 +187,15 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override fun createWorkspaceDataFromApi(id:String, workspaceDataAPI: WorkspaceDataAPI): Single<Result<WSUpdateResultDomain>> {
+        logger.d("WSISSUE >> id: $id")
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val jsonobj = Gson().toJson(workspaceDataAPI)
-        Log.d("WorkspaceRepositoryImpl", "json object is: $jsonobj")
+        Log.d("WorkspaceRepositoryImpl", "createWorkspaceDataFromApi >>json object is: $jsonobj")
 
         val jsonString = jsonobj.toString()
-        Log.d("WorkspaceRepositoryImpl", "json string is: $jsonString")
+        Log.d("WorkspaceRepositoryImpl", "createWorkspaceDataFromApi >>json string is: $jsonString")
 
         val wsInputData = WSInputData(jsonString)
 
@@ -207,10 +210,10 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }.onErrorReturn {
             var errorMessage = "Error Fetching data"
             try {
-                logger.d("try block")
+                logger.d("try block createWorkspaceDataFromApi")
                 val error = it as HttpException
                 if (error != null) {
-                    logger.d("Error update WorkspaceData")
+                    logger.d("Error createWorkspaceDataFromApi")
                 }
             } catch (e: Exception) {
                 Log.d("Catch", e.localizedMessage)

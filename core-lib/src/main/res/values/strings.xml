@@ -40,4 +40,5 @@
         <item>@drawable/coachmark_description_instruction</item>
         <item>@drawable/coachmark_description_workspace</item>
     </integer-array>
+    <string name="customer_not_match">Customer doesn\'t match !</string>
 </resources>

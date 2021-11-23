@@ -61,11 +61,11 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onResume() {
         super.onResume()
-        if(AppState.getIsLogged()) {
+        if (AppState.getIsLogged()) {
             Log.d("Testing", ">>>>>>   Myfolder  onResume ")
             viewModel.disposable = CompositeDisposable()
             setUIEvents()
-            if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+            if (AppState.getIsLogged()) {
                 /**
                  * API call for getting Folders List
                  */
@@ -77,7 +77,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
                 }
             }
-        }else{
+        } else {
             core.ui.common.Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
@@ -190,7 +190,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 bottomNavViewModel.showProgress.set(false)
             }
             is MyFolderViewModel.Event.OnNewFolderAdded, MyFolderViewModel.Event.OnFolderRemoved, MyFolderViewModel.Event.OnFolderRenamed -> {
-                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                if (AppState.getIsLogged() ) {
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.folderList.clear()
                     viewModel.getFoldersList()
@@ -202,6 +202,10 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             is MyFolderViewModel.Event.OnMyFolderResultFailed, MyFolderViewModel.Event.NoInternet -> {
                 bottomNavViewModel.showProgress.set(false)
                 viewModel.isLoading.set(false)
+                showAlert()
+            }
+            is MyFolderViewModel.Event.OnMyFolderShowAlert -> {
+                viewModel.errorString.set("Folder already exists !")
                 showAlert()
             }
 
@@ -218,7 +222,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     ) {
         when (alertType) {
             core.ui.common.Utility.AlertType.DELETE ->
-                if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+                if (AppState.getIsLogged()) {
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.addToFolder(
                         product = ProdDomain(),
@@ -226,7 +230,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                         action = viewModel.delete
                     )
                 }
-            core.ui.common.Utility.AlertType.GUEST_MYFOLDER ->  (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
+            core.ui.common.Utility.AlertType.GUEST_MYFOLDER -> (parentFragment as MyLibraryFragment?)?.setTabsAdapter()
         }
     }
 
@@ -238,7 +242,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     }
 
     fun getFoldersList() {
-        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.folderList.clear()
             viewModel.getFoldersList()
@@ -251,7 +255,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
         /**
          * API call for Rename Folder
          */
-        if (AppState.getIsLogged() && !core.ui.common.Utility.isTokenExpired()) {
+        if (AppState.getIsLogged()) {
             bottomNavViewModel.showProgress.set(true)
             viewModel.addToFolder(
                 product = ProdDomain(),

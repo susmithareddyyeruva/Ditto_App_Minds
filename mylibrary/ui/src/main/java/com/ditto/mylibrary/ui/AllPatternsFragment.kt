@@ -114,7 +114,7 @@ class AllPatternsFragment(
     }
 
     fun applyFilter() {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+        if (AppState.getIsLogged() ) {
             currentPage = 1
             isLastPage = false
             viewModel.patternList.value = ArrayList()
@@ -156,7 +156,6 @@ class AllPatternsFragment(
         setUIEvents()
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                if (!Utility.isTokenExpired()) {
                     if (viewModel.patternList.value.isNullOrEmpty()) {
                         Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
                         bottomNavViewModel.showProgress.set(true)
@@ -175,13 +174,13 @@ class AllPatternsFragment(
                         } else
                             filterIconSetListener.onFilterApplied(false)
                     }
-                }
+
             } else {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.isLoading.set(true)
                 viewModel.fetchOfflinePatterns()
             }
-        }else{
+        } else {
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
             viewModel.fetchTrialPatterns()
@@ -224,7 +223,7 @@ class AllPatternsFragment(
                 //you have to call loadmore items to get more data
 
                 if (currentPage <= viewModel.totalPageCount) {
-                    if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
+                    if (AppState.getIsLogged()) {
                         bottomNavViewModel.showProgress.set(true)
                         viewModel.isLoading.set(true)
                         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
@@ -246,7 +245,7 @@ class AllPatternsFragment(
             if (findNavController().currentDestination?.id == R.id.myLibraryFragment || findNavController().currentDestination?.id == R.id.allPatternsFragment) {
                 val bundle = bundleOf(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),//empty here
                     "product" to viewModel.clickedProduct,
                     "ISFROM" to "ALLPATTERN"
                 )
@@ -277,9 +276,16 @@ class AllPatternsFragment(
                     viewModel.fetchOfflinePatterns()
                 }
             } else {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.isLoading.set(true)
-                viewModel.fetchTrialPatterns()
+                if(NetworkUtility.isNetworkAvailable(context)){
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isLoading.set(true)
+                    viewModel.fetchTrialPatterns()
+                }else{
+                    viewModel.errorString.set(getString(R.string.no_internet_available))
+                    showAlert()
+                    viewModel.fetchTrialPatterns()
+                }
+
             }
             logger.d("OnSyncClick : AllPatternsFragment")
 
@@ -433,14 +439,34 @@ class AllPatternsFragment(
 
     override fun onCancelClicked() {
         logger.d("Cancel Clicked")
+
+    }
+
+    private fun isFolderPresent(newFolderName: String): Boolean {
+        viewModel.folderMainList.forEach {
+            if (it.folderName.equals(newFolderName,true)) {
+                Log.d("FOLDER", "ALready exist")
+                return true
+            }
+        }
+        return false
     }
 
     private fun addFolder(newFolderName: String, parent: String) {
-        if (AppState.getIsLogged() && !Utility.isTokenExpired()) {
-            viewModel.addToFolder(
-                product = viewModel.clickedProduct,
-                folderName = newFolderName
-            )
+        if (AppState.getIsLogged()) {
+            if (parent.equals(viewModel.ADD)) {
+
+                if (newFolderName.equals("favorites", true) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName)) {
+                    viewModel.errorString.set("Folder already exists !")
+                    showAlert()
+
+                } else {
+                    viewModel.addToFolder(
+                        product = viewModel.clickedProduct,
+                        folderName = newFolderName
+                    )
+                }
+            }
         }
     }
 

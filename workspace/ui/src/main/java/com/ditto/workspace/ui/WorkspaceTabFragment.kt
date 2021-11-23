@@ -57,9 +57,11 @@ import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
 import core.ui.common.Utility
+import core.ui.common.Utility.Companion.createMirrorBitmap
 import core.ui.common.Utility.Companion.getAlertDialogue
 import core.ui.common.Utility.Companion.getBitmap
 import core.ui.common.Utility.Companion.getDrawableFromString
+import core.ui.common.Utility.Companion.getRotation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -462,7 +464,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.garments),
                     true
-                )
+                ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }?.size ?: 0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
@@ -472,9 +474,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.garments
                         ), true
-                    )
+                    ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
-            if (garments?.size == 2) {
+            if (garments?.size ?: 0 >= 2) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -484,15 +486,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(false)
                 }
                 if (viewModel.clickedSize45.get()) {
-                    val selvage = garments.filter { it.fabricLength == "45" }[0]
+                    val selvage = garments?.filter { it.fabricLength == "45" }?.get(0)
 
-                    logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage.imagePath}")
-                    selvage.imagePath.let {
+                    logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
+                    selvage?.imagePath.let {
                         /* binding.imageSelvageHorizontal.setImageDrawable(
                              getDrawableFromString(context, it)
                          )*/
                         getBitmapFromSvgPngDrawable(
-                            selvage.imageName,
+                            selvage?.imageName,
                             binding.imageSelvageHorizontal.context,
                             binding.imageSelvageHorizontal
                         )
@@ -500,16 +502,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.clickedSize45.set(true)
                     viewModel.clickedSize60.set(false)
-                    viewModel.referenceImage.set(selvage.imageName)
+                    viewModel.referenceImage.set(selvage?.imageName)
                 }
                 if (viewModel.clickedSize60.get()) {
-                    val selvage = garments.filter { it.fabricLength == "60" }[0]
-                    selvage.imagePath.let {
+                    val selvage = garments?.filter { it.fabricLength == "60" }?.get(0)
+                    selvage?.imagePath.let {
                         /* binding.imageSelvageHorizontal.setImageDrawable(
                              getDrawableFromString(context, it)
                          )*/
                         getBitmapFromSvgPngDrawable(
-                            selvage.imageName,
+                            selvage?.imageName,
                             binding.imageSelvageHorizontal.context,
                             binding.imageSelvageHorizontal
                         )
@@ -517,9 +519,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.clickedSize45.set(false)
                     viewModel.clickedSize60.set(true)
-                    viewModel.referenceImage.set(selvage.imageName)
+                    viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else {
+            } else if(garments?.size ?: 0 != 0){
                 if (garments?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
@@ -530,9 +532,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                 }
                 garments[0].imagePath.let {
-//                    binding.imageSelvageHorizontal.setImageDrawable(
-//                        getDrawableFromString(context, it)
-//                    )
                     getBitmapFromSvgPngDrawable(
                         garments[0].imageName,
                         binding.imageSelvageHorizontal.context,
@@ -547,7 +546,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.lining),
                     true
-                )
+                )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
@@ -558,40 +557,91 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.lining
                         ), true
+                    ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
+                }
+//            lining?.get(0)?.imagePath?.let {
+//                getBitmapFromSvgPngDrawable(
+//                    lining?.get(0)?.imageName,
+//                    binding.imageSelvageHorizontal.context,
+//                    binding.imageSelvageHorizontal
+//                )
+//            }
+//            binding.txtSize45.isEnabled = lining?.get(0)?.fabricLength == "45"
+//            binding.txtSize60.isEnabled = lining?.get(0)?.fabricLength == "60"
+//            viewModel.enableSize45.set(lining?.get(0)?.fabricLength == "45")
+//            viewModel.enableSize60.set(lining?.get(0)?.fabricLength == "60")
+//
+//            if (lining?.get(0)?.fabricLength == "45") {
+//                viewModel.clickedSize45.set(true)
+//            } else {
+//                viewModel.clickedSize60.set(true)
+//            }
+//            viewModel.referenceImage.set(lining?.get(0)?.imageName)
+
+            if (lining?.size ?: 0 >= 2) {
+                binding.txtSize45.isEnabled = true
+                binding.txtSize60.isEnabled = true
+                viewModel.enableSize45.set(true)
+                viewModel.enableSize60.set(true)
+                if (!viewModel.clickedSize45.get() && !viewModel.clickedSize60.get()) {
+                    viewModel.clickedSize45.set(true)
+                    viewModel.clickedSize60.set(false)
+                }
+                if (viewModel.clickedSize45.get()) {
+                    val selvage = lining?.filter { it.fabricLength == "45" }?.get(0)
+                    logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
+                    selvage?.imagePath.let {
+                        getBitmapFromSvgPngDrawable(
+                            selvage?.imageName,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
+
+                    }
+                    viewModel.clickedSize45.set(true)
+                    viewModel.clickedSize60.set(false)
+                    viewModel.referenceImage.set(selvage?.imageName)
+                }
+                if (viewModel.clickedSize60.get()) {
+                    val selvage = lining?.filter { it.fabricLength == "60" }?.get(0)
+                    selvage?.imagePath.let {
+                        getBitmapFromSvgPngDrawable(
+                            selvage?.imageName,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
+
+                    }
+                    viewModel.clickedSize45.set(false)
+                    viewModel.clickedSize60.set(true)
+                    viewModel.referenceImage.set(selvage?.imageName)
+                }
+            } else if(lining?.size ?: 0 != 0){
+                if (lining?.get(0)!!.fabricLength == "45") {
+                    binding.txtSize45.isEnabled = true
+                    viewModel.enableSize45.set(true)
+                    viewModel.clickedSize45.set(true)
+                } else if (lining[0].fabricLength == "60") {
+                    binding.txtSize60.isEnabled = true
+                    viewModel.enableSize60.set(true)
+                    viewModel.clickedSize60.set(true)
+                }
+                lining[0].imagePath.let {
+                    getBitmapFromSvgPngDrawable(
+                        lining[0].imageName,
+                        binding.imageSelvageHorizontal.context,
+                        binding.imageSelvageHorizontal
                     )
                 }
-            lining?.get(0)?.imagePath?.let {
-/*
-                binding.imageSelvageHorizontal.setImageDrawable(
-                    getDrawableFromString(context, it)
-                )
-*/
-
-                getBitmapFromSvgPngDrawable(
-                    lining?.get(0)?.imageName,
-                    binding.imageSelvageHorizontal.context,
-                    binding.imageSelvageHorizontal
-                )
-
+                viewModel.referenceImage.set(lining[0].imageName)
             }
-            binding.txtSize45.isEnabled = lining?.get(0)?.fabricLength == "45"
-            binding.txtSize60.isEnabled = lining?.get(0)?.fabricLength == "60"
-            viewModel.enableSize45.set(lining?.get(0)?.fabricLength == "45")
-            viewModel.enableSize60.set(lining?.get(0)?.fabricLength == "60")
-
-            if (lining?.get(0)?.fabricLength == "45") {
-                viewModel.clickedSize45.set(true)
-            } else {
-                viewModel.clickedSize60.set(true)
-            }
-            viewModel.referenceImage.set(lining?.get(0)?.imageName)
         }
 
         if (viewModel.data.value?.selvages?.filter {
                 it.tabCategory.equals(
                     getString(R.string.interfacing),
                     true
-                )
+                )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
@@ -602,32 +652,93 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.interfacing
                         ), true
+                    )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
+                }
+//            interfacing?.get(0)?.imagePath?.let {
+//                /*binding.imageSelvageHorizontal.setImageDrawable(
+//                    getDrawableFromString(context, it)
+//                )*/
+//
+//                getBitmapFromSvgPngDrawable(
+//                    interfacing?.get(0)?.imageName,
+//                    binding.imageSelvageHorizontal.context,
+//                    binding.imageSelvageHorizontal
+//                )
+//
+//            }
+//            binding.txtSize45.isEnabled = interfacing?.get(0)?.fabricLength == "45"
+//            binding.txtSize60.isEnabled = interfacing?.get(0)?.fabricLength == "60"
+//            viewModel.enableSize45.set(interfacing?.get(0)?.fabricLength == "45")
+//            viewModel.enableSize60.set(interfacing?.get(0)?.fabricLength == "60")
+//
+//            if (interfacing?.get(0)?.fabricLength == "45") {
+//                viewModel.clickedSize45.set(true)
+//            } else {
+//                viewModel.clickedSize60.set(true)
+//            }
+//
+//            viewModel.referenceImage.set(interfacing?.get(0)?.imageName)
+
+            if (interfacing?.size ?: 0 >= 2) {
+                binding.txtSize45.isEnabled = true
+                binding.txtSize60.isEnabled = true
+                viewModel.enableSize45.set(true)
+                viewModel.enableSize60.set(true)
+                if (!viewModel.clickedSize45.get() && !viewModel.clickedSize60.get()) {
+                    viewModel.clickedSize45.set(true)
+                    viewModel.clickedSize60.set(false)
+                }
+                if (viewModel.clickedSize45.get()) {
+                    val selvage = interfacing?.filter { it.fabricLength == "45" }?.getOrNull(0)
+                    logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
+                    selvage?.imagePath.let {
+                        getBitmapFromSvgPngDrawable(
+                            selvage?.imageName,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
+
+                    }
+                    viewModel.clickedSize45.set(true)
+                    viewModel.clickedSize60.set(false)
+                    viewModel.referenceImage.set(selvage?.imageName)
+                }
+                if (viewModel.clickedSize60.get()) {
+                    val selvage = interfacing?.filter { it.fabricLength == "60" }?.getOrNull(0)
+                    selvage?.imagePath.let {
+                        /* binding.imageSelvageHorizontal.setImageDrawable(
+                             getDrawableFromString(context, it)
+                         )*/
+                        getBitmapFromSvgPngDrawable(
+                            selvage?.imageName,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
+
+                    }
+                    viewModel.clickedSize45.set(false)
+                    viewModel.clickedSize60.set(true)
+                    viewModel.referenceImage.set(selvage?.imageName)
+                }
+            } else if(interfacing?.size ?: 0 != 0){
+                if (interfacing?.get(0)!!.fabricLength == "45") {
+                    binding.txtSize45.isEnabled = true
+                    viewModel.enableSize45.set(true)
+                    viewModel.clickedSize45.set(true)
+                } else if (interfacing[0].fabricLength == "60") {
+                    binding.txtSize60.isEnabled = true
+                    viewModel.enableSize60.set(true)
+                    viewModel.clickedSize60.set(true)
+                }
+                interfacing[0].imagePath.let {
+                    getBitmapFromSvgPngDrawable(
+                        interfacing[0].imageName,
+                        binding.imageSelvageHorizontal.context,
+                        binding.imageSelvageHorizontal
                     )
                 }
-            interfacing?.get(0)?.imagePath?.let {
-                /*binding.imageSelvageHorizontal.setImageDrawable(
-                    getDrawableFromString(context, it)
-                )*/
-
-                getBitmapFromSvgPngDrawable(
-                    interfacing?.get(0)?.imageName,
-                    binding.imageSelvageHorizontal.context,
-                    binding.imageSelvageHorizontal
-                )
-
+                viewModel.referenceImage.set(interfacing[0].imageName)
             }
-            binding.txtSize45.isEnabled = interfacing?.get(0)?.fabricLength == "45"
-            binding.txtSize60.isEnabled = interfacing?.get(0)?.fabricLength == "60"
-            viewModel.enableSize45.set(interfacing?.get(0)?.fabricLength == "45")
-            viewModel.enableSize60.set(interfacing?.get(0)?.fabricLength == "60")
-
-            if (interfacing?.get(0)?.fabricLength == "45") {
-                viewModel.clickedSize45.set(true)
-            } else {
-                viewModel.clickedSize60.set(true)
-            }
-
-            viewModel.referenceImage.set(interfacing?.get(0)?.imageName)
         }
     }
 
@@ -796,7 +907,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
-                Log.d("OnDataUpdated", " WSFragment OnDataUpdated")
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 setSelvageImage()
                 getScaleFactor()
                 setInitialProgressCount()
@@ -840,7 +951,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true)
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -857,7 +968,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true);
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -873,7 +984,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true);
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -889,7 +1000,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true)
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -937,6 +1048,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.PopulateWorkspace -> {
                 //Loading only the current tab while populating
+
                 var workspaceItems: MutableList<WorkspaceItems>? = null
                 if (viewModel.tabCategory.equals("Garment")) {
                     workspaceItems =
@@ -1183,7 +1295,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 Utility.getCommonAlertDialogue(
                     requireContext(),
                     resources.getString(R.string.api_failed),
-                    resources.getString(R.string.api_failed_message),
+                    resources.getString(R.string.no_internet_available),
                     resources.getString(R.string.empty_string),
                     resources.getString(R.string.ok),
                     this@WorkspaceTabFragment,
@@ -1200,7 +1312,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.data.value = patternsData
     }
 
-    fun updateTabDataAndShowToUI(patternsData: PatternsData?) {
+    fun updateTabDataAndShowToUI(patternsData: PatternsData?){
         viewModel.data.value = patternsData
         viewModel.setWorkspaceView()
     }
@@ -1325,7 +1437,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true, viewModel.workspacedata, false)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1601,22 +1713,38 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
-        if (AppState.getIsLogged()) {
-            viewModel.saveProject()
-            context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
-        } else {
+        //check network
 
-            core.ui.common.Utility.getCommonAlertDialogue(
+        if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
+            if (AppState.getIsLogged()) {
+                viewModel.saveProject()
+                context?.let { Utility.setSharedPref(it, viewModel.data.value?.id!!) }
+            } else {
+                core.ui.common.Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    getString(R.string.guest_user_ws_exit_message),
+                    "",
+                    getString(R.string.str_ok),
+                    this,
+                    core.ui.common.Utility.AlertType.UPDATEAPIFAILED,
+                    core.ui.common.Utility.Iconype.NONE
+                )
+            }
+        } else {
+            Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
-                getString(R.string.guest_user_ws_exit_message),
+                getString(R.string.no_internet_available),
                 "",
                 getString(R.string.str_ok),
                 this,
-                core.ui.common.Utility.AlertType.UPDATEAPIFAILED,
-                core.ui.common.Utility.Iconype.NONE
+                Utility.AlertType.NETWORK,
+                Utility.Iconype.FAILED
             )
+
         }
+
     }
 
     override fun onExitButtonClicked() {
@@ -1913,6 +2041,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         bitmap =
                                 /*if(NetworkUtility.isNetworkAvailable(requireContext())) imagename?.let { getBitmapFromSvgPngDrawable(it) } else*/
                             imagenameOffline?.let { getBitmapFromSvgPngDrawable(it) }
+                        if (bitmap != null) {
+                            bitmap =
+                                createMirrorBitmap(
+                                    bitmap!!,
+                                    workspaceItem.isMirrorV,
+                                    workspaceItem.isMirrorH
+                                )
+                        }
                         withContext(Dispatchers.Main) {
                             if (imagename != null) {
                                 val matrix = Matrix()
