@@ -176,7 +176,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
@@ -218,8 +218,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     it
                 )
             }
-        spinner.adapter = adapter
-        spinner.setSelection(0, true)
+        binding.spinner.adapter = adapter
+        binding.spinner.setSelection(0, true)
     }
 
     private fun fetchPatternDetails() {
