@@ -54,8 +54,8 @@ object AppState {
     }
 
     fun logout() {
-        pref?.clear()
-
+        pref?.clearAllPreferenceExceptCoachMark(IS_SHOWN_COACH_MARK, IS_SHOWN_WORKSPACE_COACH_MARK)
+        //pref?.clear()
     }
 
     fun getExpiryTime(): Long? {

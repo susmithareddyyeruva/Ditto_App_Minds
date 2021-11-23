@@ -1,8 +1,6 @@
 package core.ui
 
 import android.content.Context
-import android.content.res.Resources
-import android.content.res.TypedArray
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -177,6 +175,8 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     fun coachMarkSkip() {
         AppState.setShowCoachMark(true)
         isShownCoachMark.set(AppState.isShownCoachMark())
+        coachImageCount.set(0)
+        showCoachImage.set(coachMarkImages[coachImageCount.get()])
         coachmarkFlowFinished.value = true
     }
 
