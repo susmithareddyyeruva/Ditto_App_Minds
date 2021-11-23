@@ -16,9 +16,7 @@ import com.bumptech.glide.Glide
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.databinding.LoginFragmentBinding
-import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.appstate.AppState
-import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -153,12 +151,13 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         when (event) {
 
             is LoginViewModel.Event.OnLoginClicked -> {
-                getUserDetails(false)
+                redirectToHomeScreen()
+                /*getUserDetails(false)
                 //Re directing to Video Screen
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     val bundle = bundleOf(
                         "UserId" to 0,
-                        "videoPath" to viewModel.videoUrl,
+                           "videoPath" to viewModel.videoUrl,
                         "title" to "Ditto application overview",
                         "from" to "LOGIN"
                     )
@@ -174,28 +173,31 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 } else {
                     logger.d("condition false")
 
-                }
+                }*/
             }
             is LoginViewModel.Event.OnGuestPreviewClicked -> {
-               // if (NetworkUtility.isNetworkAvailable(requireContext())){
-                    if (findNavController().currentDestination?.id == R.id.destination_login) {
-                        getUserDetails(true)
-                        val bundle = bundleOf(
-                            "UserId" to 0,
-                            "videoPath" to viewModel.videoUrl,
-                            "title" to "Ditto application overview",
-                            "from" to "LOGIN"
-                        )
-                        val intent = Intent(
-                            requireContext(),
-                            CustomPlayerControlActivity::class.java
-                        ).putExtras(bundle)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivityForResult(intent, 200)
-                        // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
-                    } else {
 
-                    }
+                redirectToHomeScreen()
+
+                /*// if (NetworkUtility.isNetworkAvailable(requireContext())){
+                     if (findNavController().currentDestination?.id == R.id.destination_login) {
+                         getUserDetails(true)
+                         val bundle = bundleOf(
+                             "UserId" to 0,
+                             "videoPath" to viewModel.videoUrl,
+                             "title" to "Ditto application overview",
+                             "from" to "LOGIN"
+                         )
+                         val intent = Intent(
+                             requireContext(),
+                             CustomPlayerControlActivity::class.java
+                         ).putExtras(bundle)
+                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                         startActivityForResult(intent, 200)
+                         // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
+                     } else {
+
+                     }*/
                 /*} else {
                     bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))
@@ -213,6 +215,24 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 setLandingImage()
             }
         }
+
+    private fun redirectToHomeScreen() {
+        val bundle = bundleOf("UserId" to 0)
+        if (findNavController().currentDestination?.id == R.id.destination_login) {
+            if (AppState.getIsLogged()) {
+                getUserDetails(false)
+            } else {
+                getUserDetails(true)
+            }
+
+            findNavController().navigate(
+                R.id.action_loginFragment_to_HomeFragment,
+                bundle
+            )
+        } else {
+
+        }
+    }
 
     private fun setLandingImage() {
         if (requireContext()!=null) {
