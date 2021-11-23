@@ -137,7 +137,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
                 Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
-                bottomNavViewModel.showProgress.set(true)
             } else {
                 setPatternImage()
             }
@@ -190,6 +189,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 val name = clickedItem.mannequinName
                 viewModel.mannequinId.set(id)
                 viewModel.mannequinName.set(name)
+                bottomNavViewModel.showProgress.set(true)
                 fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
                 Log.d("ITEM SELECTED********", "MANNEQUIN ID: " + viewModel.mannequinId.get())
                 Log.d("ITEM SELECTED********", "MANNEQUIN NAME: " + viewModel.mannequinName.get())
@@ -771,6 +771,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 } else {
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
+                    bottomNavViewModel.showProgress.set(false)
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(com.ditto.workspace.ui.R.string.download_failed),
@@ -1030,9 +1031,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-            Utility.AlertType.DOWNLOADFAILED -> {
+            /*Utility.AlertType.DOWNLOADFAILED -> {
                 checkSocketConnectionBeforeWorkspace()
-            }
+            }*/
         }
     }
 
@@ -1212,10 +1213,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            Utility.AlertType.DOWNLOADFAILED -> {
+            /*Utility.AlertType.DOWNLOADFAILED -> {
                 bottomNavViewModel.showProgress.set(false)
                 checkSocketConnectionBeforeWorkspace()
-            }
+            }*/
 
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
