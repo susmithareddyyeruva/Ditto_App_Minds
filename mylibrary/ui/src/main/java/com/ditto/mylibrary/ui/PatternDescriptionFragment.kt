@@ -137,7 +137,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
                 Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
-                bottomNavViewModel.showProgress.set(true)
             } else {
                 setPatternImage()
             }
@@ -151,6 +150,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         } else {  //Online Scenario
                             if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
+                                bottomNavViewModel.showProgress.set(true)
                                 viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
                             } else {
                                 setSpinner()// Setting Dropdown with Mannequin ID
@@ -166,7 +166,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 }
 
             }
-            bottomNavViewModel.showProgress.set(false)
             setUpUiBasedOnLoggedIn()
             // fetchPatternDetails()   //Fetching Pattern Details using design id
 
@@ -190,6 +189,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 val name = clickedItem.mannequinName
                 viewModel.mannequinId.set(id)
                 viewModel.mannequinName.set(name)
+                bottomNavViewModel.showProgress.set(true)
                 fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
                 Log.d("ITEM SELECTED********", "MANNEQUIN ID: " + viewModel.mannequinId.get())
                 Log.d("ITEM SELECTED********", "MANNEQUIN NAME: " + viewModel.mannequinName.get())
@@ -203,6 +203,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         //spinner.visibility = View.VISIBLE
         // we pass our item list and context to our Adapter.
         viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
+        viewModel.mannequinList?.add(MannequinDataDomain("1", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("2", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("3", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("4", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("5", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("6", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("7", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("8", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("9", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("10", "Summer"))
+        viewModel.mannequinList?.add(MannequinDataDomain("11", "Summer"))
         viewModel.clickedProduct!!.mannequin?.forEach {
             viewModel.mannequinList?.add(
                 MannequinDataDomain(
@@ -801,7 +812,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnShowMannequinData -> {
                 if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
                     binding.textMannequinName.visibility = View.VISIBLE
-                }else{
+                } else {
 
                 }
             }
