@@ -1,6 +1,8 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -16,8 +18,7 @@ import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
-import android.view.animation.OvershootInterpolator
-import android.view.animation.ScaleAnimation
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -34,12 +35,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
@@ -138,7 +143,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.recyclerViewPieces.setOnDragListener(this)
-        //binding.imageCutBin.setOnDragListener(this)
         binding.cutbinLay?.setOnDragListener(this)
         binding.seekbarStatus.isEnabled = false
         binding.includeWorkspacearea?.layoutWorkspace?.setOnDragListener(this)
@@ -899,10 +903,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 mWorkspaceEditor?.flipHorizontal()
             }
             is WorkspaceViewModel.Event.CalculateScrollButtonVisibility -> {
+                showWorkspaceCoachMark()
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
-                Log.d("OnDataUpdated", " WSFragment OnDataUpdated")
+                Log.d("OnDataUpdated"," WSFragment OnDataUpdated")
                 setSelvageImage()
                 getScaleFactor()
                 setInitialProgressCount()
@@ -946,7 +951,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.plus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true)
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -963,7 +968,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceColumn =
                         viewModel.workspacedata?.currentSplicedPieceColumn?.minus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true);
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -979,7 +984,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.minus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true);
+                    showToWorkspace(true, false,viewModel.workspacedata,true);
                     enableClear(true)
                 } else {
                     //TODO
@@ -995,7 +1000,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ) {
                     viewModel.workspacedata?.currentSplicedPieceRow =
                         viewModel.workspacedata?.currentSplicedPieceRow?.plus(1) ?: 0
-                    showToWorkspace(true, false, viewModel.workspacedata, true)
+                    showToWorkspace(true, false,viewModel.workspacedata,true)
                     enableClear(true)
                 } else {
                     //TODO
@@ -1183,7 +1188,91 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Utility.Iconype.NONE
                 )
             }
+            WorkspaceViewModel.Event.OnCoachmarkClose -> {
+                binding.coachMarkPopup.animate()
+                    .scaleX(0.2f)
+                    .scaleY(0.2f)
+                    .x(binding.includeWorkspacearea.txtTutorial.x)
+                    .y(binding.includeWorkspacearea.txtTutorial.y)
+                    .setDuration(500)
+                    .withStartAction {
+                        binding.coachMarkClose.setVisibility(View.GONE)
+                    }
+                    .withEndAction {
+                        binding.coachMarkPopup.clearAnimation()
+                        AppState.setShowWorkspaceCoachMark(true)
+                        (parentFragment as WorkspaceFragment).closeVideoPopup()
+                        showCoachmarkEndPopup()
+                    }
+            }
+            WorkspaceViewModel.Event.OnCoachmarkPlay -> {
+                val videoPath = "https://www.youtube.com/watch?v=IH1ZNEE_bwc"
+                val bundle = bundleOf(
+                    "videoPath" to videoPath,
+                    "title" to "Workspace",
+                    "from" to "tutorial"
+                )
+                val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                intent.putExtras(bundle)
+                startActivityForResult(intent,REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL)
+            }
         }
+
+    private fun showWorkspaceCoachMark() {
+        viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
+        if (!viewModel.isWorkspaceShownCoachMark.get()) {
+
+            val transition: Transition = Slide(Gravity.BOTTOM)
+            transition.setDuration(600)
+            transition.addListener(object : Transition.TransitionListener {
+                override fun onTransitionStart(transition: Transition) {
+                }
+
+                override fun onTransitionEnd(transition: Transition) {
+                    binding.groupCoachMarkWs.setVisibility(View.VISIBLE)
+                }
+
+                override fun onTransitionCancel(transition: Transition) {
+                }
+
+                override fun onTransitionPause(transition: Transition) {
+                }
+
+                override fun onTransitionResume(transition: Transition) {
+                }
+            })
+            transition.addTarget(binding.coachMarkPopup)
+            TransitionManager.beginDelayedTransition(binding.workspaceRoot, transition)
+            binding.coachMarkPopup.setVisibility(View.VISIBLE)
+        }
+    }
+
+    private fun showCoachmarkEndPopup() {
+        binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.VISIBLE)
+
+        val animatorSet = AnimatorSet()
+        val bounceY = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup,
+            View.SCALE_Y, 0.8f,1f).apply {
+            interpolator = BounceInterpolator()
+            duration = 1000
+        }
+        val bounceX = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup,
+            View.SCALE_X, 0.9f,1f).apply {
+            interpolator = BounceInterpolator()
+            duration = 1000
+        }
+        val fadeOutCoachMarkEndPopup = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup, View.ALPHA, 1f, 0f).apply {
+            interpolator = AccelerateInterpolator()
+            duration = 2000
+            startDelay = 700
+        }
+        animatorSet.playTogether(bounceX, bounceY)
+        animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
+        animatorSet.start()
+    }
 
     fun downloadPatternPieces() {
         if (!baseViewModel.isProjecting.get()) {
@@ -1223,7 +1312,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.data.value = patternsData
     }
 
-    fun updateTabDataAndShowToUI(patternsData: PatternsData?) {
+    fun updateTabDataAndShowToUI(patternsData: PatternsData?){
         viewModel.data.value = patternsData
         viewModel.setWorkspaceView()
     }
@@ -1348,7 +1437,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 view, dragEvent, dragData,
                                 com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
                             )
-                            showToWorkspace(true, true, viewModel.workspacedata, false)
+                            showToWorkspace(true, true,viewModel.workspacedata,false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
                                 if (viewModel.userData.value?.cSpliceMultiplePieceReminder
@@ -1444,24 +1533,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             onDragCompleted()
         }
-    }
-
-
-    private fun detectTouchedView(view: View) {
-        val scale = ScaleAnimation(
-            0.5F,
-            1F,
-            0.5F,
-            1F,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            .5f,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            .5f
-        )
-        scale.duration = 1500
-        scale.fillAfter = true
-        scale.interpolator = OvershootInterpolator()
-        view.startAnimation(scale)
     }
 
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
@@ -2040,6 +2111,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
+        private const val REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL = 141
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
         private val REQUIRED_PERMISSIONS_DOWNLOAD =
             arrayOf(
@@ -2334,7 +2406,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logger.d("On Activity Result")
-        if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
+        if (requestCode == REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL) {
+            viewModel.coachMarkClose()
+        }else if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
             if (data?.data.toString().equals("success")) {
                 showWaitingMessage("Connected to Ditto Projector!!")
                 baseViewModel.activeSocketConnection.set(true)

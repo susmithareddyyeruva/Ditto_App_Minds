@@ -328,7 +328,7 @@
             android:id="@+id/button_save_and_exit"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@drawable/button_black_border_while_bg"
+            android:background="@drawable/button_coachmark_while_bg"
             android:elevation="@dimen/elevation_pieces_reference"
             android:enabled="true"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -358,7 +358,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/recycler_view_pieces"
             app:layout_constraintEnd_toStartOf="@+id/recycler_view_pieces"
-            app:layout_constraintStart_toEndOf="@+id/txt_recalibrate"
             app:layout_constraintTop_toTopOf="@+id/recycler_view_pieces" />
 
         <ImageView
@@ -425,6 +424,59 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/cutbin_lay" />
+
+
+        <ImageView
+            android:id="@+id/coach_mark_popup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="@dimen/elevation_card"
+            android:src="@drawable/coachmark_video_popup_small"
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".9"
+            app:layout_constraintVertical_bias=".9"/>
+
+
+
+        <ImageView
+            android:id="@+id/coach_mark_play"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/large_paddingxx"
+            android:elevation="@dimen/elevation_card"
+            android:onClick="@{() -> viewModel.coachMarkPlay()}"
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="@+id/coach_mark_popup"
+            app:layout_constraintEnd_toEndOf="@+id/coach_mark_popup"
+            app:layout_constraintStart_toStartOf="@+id/coach_mark_popup"
+            app:layout_constraintTop_toTopOf="@+id/coach_mark_popup" />
+
+
+        <ImageView
+            android:id="@+id/coach_mark_close"
+            android:layout_width="@dimen/dimen_cut_checkbox"
+            android:layout_height="@dimen/dimen_cut_checkbox"
+            android:elevation="@dimen/elevation_card"
+            android:animateLayoutChanges="true"
+            android:src="@drawable/ic_close"
+            android:layout_marginEnd="@dimen/dimen_1"
+            android:onClick="@{() -> viewModel.coachMarkClose()}"
+            app:layout_constraintEnd_toEndOf="@+id/coach_mark_popup"
+            app:layout_constraintTop_toTopOf="@+id/coach_mark_popup"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_coach_mark_ws"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:visibility="gone"
+            app:constraint_referenced_ids="coach_mark_popup,coach_mark_close,coach_mark_play" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

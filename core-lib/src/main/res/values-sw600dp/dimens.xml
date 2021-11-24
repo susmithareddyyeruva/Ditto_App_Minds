@@ -16,4 +16,8 @@
     <dimen name="process_text_top">60dp</dimen>
     <dimen name="end_margin_yes">58dp</dimen>
     <dimen name="brand_name_width">120dp</dimen>
+    <dimen name="coachmark_skip_button_text">25sp</dimen>
+    <string name="coackmark_skip_button_ratio">159:68</string>
+    <dimen name="coachmark_skip_padding">30dp</dimen>
+    <dimen name="coachmark_skip_margin">40dp</dimen>
 </resources>

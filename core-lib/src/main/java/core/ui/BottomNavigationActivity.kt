@@ -107,7 +107,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
          */
         handleIntent(intent)
         binding.toolbar.setNavigationOnClickListener {
-            Log.d("NAVIGTAION","HERE=====")
+            Log.d("NAVIGTAION", "HERE=====")
         }
 
     }
@@ -116,7 +116,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         super.onNewIntent(intent)
         handleIntent(intent)
     }
-    fun  setToolbar(){
+
+    fun setToolbar() {
         setSupportActionBar(binding.toolbar)
     }
 
@@ -668,6 +669,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
+
     private fun showAlert(message: String) {
         Utility.getCommonAlertDialogue(this,"",message,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
             ,Utility.Iconype.FAILED)
