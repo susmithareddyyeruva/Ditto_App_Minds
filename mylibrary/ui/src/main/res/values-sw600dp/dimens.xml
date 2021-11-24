@@ -111,4 +111,5 @@
     <dimen name="spinner_width">220dp</dimen>
     <dimen name="spinner_height">55dp</dimen>
     <dimen name="spinner_padding_start">12dp</dimen>
+    <dimen name="offset">60dp</dimen>
 </resources>

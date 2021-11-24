@@ -157,4 +157,5 @@
     <dimen name="spinner_width">168dp</dimen>
     <dimen name="spinner_height">43dp</dimen>
     <dimen name="margin20">20dp</dimen>
+    <dimen name="offset">45dp</dimen>
 </resources>

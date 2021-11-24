@@ -183,7 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_custom_spinner"
-                android:dropDownVerticalOffset="45dp"
+                android:dropDownVerticalOffset="@dimen/offset"
                 android:paddingHorizontal="@dimen/spinner_padding_start"
                 android:popupBackground="@drawable/bg_dropdown"
                 android:spinnerMode="dropdown"
