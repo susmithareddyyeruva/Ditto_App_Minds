@@ -467,7 +467,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getAllPatterns()
+            val offlinePatternData = offlinePatternDataDao.getAllPatterns(AppState.getCustID())
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
@@ -477,7 +477,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype)
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype,AppState.getCustID())
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
@@ -487,7 +487,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val patterns = offlinePatternDataDao.getAllPatterns()
+            val patterns = offlinePatternDataDao.getAllPatterns(AppState.getCustID())
 
             if (patterns != null)
                 Result.withValue(patterns.toDomain())
@@ -498,7 +498,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id)
+            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,AppState.getCustID())
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toPatternIDDomain())
             else

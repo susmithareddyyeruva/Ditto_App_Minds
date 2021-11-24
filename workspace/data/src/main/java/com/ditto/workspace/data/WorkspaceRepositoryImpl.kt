@@ -70,7 +70,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int> {
         return Single.fromCallable{
-            offlinePatternDataDao.updateOfflinePatternData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece?.toDomain(),
+            offlinePatternDataDao.updateOfflinePatternData(AppState.getCustID(),tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece?.toDomain(),
                 patternPieces?.map { it.toDomain() },
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 liningWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
@@ -108,7 +108,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override fun getTailernovaDataByID(id: String): Single<Result<OfflinePatternData>> {
         return Single.fromCallable{
 
-            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id)
+            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,AppState.getCustID())
             if(offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomainn())
             else

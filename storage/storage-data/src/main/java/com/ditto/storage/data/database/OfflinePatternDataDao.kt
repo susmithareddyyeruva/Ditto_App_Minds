@@ -15,18 +15,19 @@ abstract class OfflinePatternDataDao {
     @JvmSuppressWildcards
     abstract fun insertOfflinePatternDataList(offlinePatterns: List<OfflinePatterns>)
 
-    @Query("SELECT * FROM offline_pattern_data")//todo need to fetch respective of id i.e custmoer id
-    abstract fun getAllPatterns(): List<OfflinePatterns>
+    @Query("SELECT * FROM offline_pattern_data where custId = :custId")//todo need to fetch respective of id i.e custmoer id
+    abstract fun getAllPatterns(custId: String?): List<OfflinePatterns>
 
-    @Query("SELECT * FROM offline_pattern_data WHERE designId = :id")
-    abstract fun getTailernovaDataByID(id: String): OfflinePatterns
+    @Query("SELECT * FROM offline_pattern_data WHERE designId = :id and custId = :custId")
+    abstract fun getTailernovaDataByID(id: String,custId:String?): OfflinePatterns
 
 
-    @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type")
-    abstract fun getListOfTrialPattern(type: String): List<OfflinePatterns>
+    @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type and custId = :custId")
+    abstract fun getListOfTrialPattern(type: String,custId: String?): List<OfflinePatterns>
 
-    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId")
+    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
     abstract fun updateOfflinePatternData(
+        custId: String?,
         tailornaovaDesignId: String?,
         selectedTab: String?,
         status: String?,
@@ -47,6 +48,7 @@ abstract class OfflinePatternDataDao {
         Log.d("offlinePatternDataDao", "insert $id")
         if (id == -1L) {
             val i = updateTailornovaOfflineData(
+                obj.custId,
                 obj.designId,
                 obj.patternName,
                 obj.description,
@@ -74,8 +76,9 @@ abstract class OfflinePatternDataDao {
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova WHERE designId= :designId")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova WHERE designId= :designId ")
     abstract fun updateTailornovaOfflineData(
+        custId:String?,
         designId: String,
         patternName: String?,
         description: String?,
@@ -107,6 +110,7 @@ abstract class OfflinePatternDataDao {
             Log.d("offlinePatternDataDao", "upsertList insert $id")
             if (id == -1L) {
                 val i = updateTailornovaOfflineData(
+                    obj.custId,
                     obj.designId,
                     obj.patternName,
                     obj.description,
