@@ -76,6 +76,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val temp = ArrayList<String>()
     var mannequinList: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
     var clickedProduct: ProdDomain? = null
+    val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {

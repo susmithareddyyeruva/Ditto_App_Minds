@@ -148,7 +148,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         } else {  //Online Scenario
                             if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
-                                if (viewModel.mannequinId.get()?.isNotEmpty() == true) {//API cal  will happen only mannequin id is not empty
+                                if (viewModel.mannequinId.get()
+                                        ?.isNotEmpty() == true
+                                ) {//API cal  will happen only mannequin id is not empty
                                     bottomNavViewModel.showProgress.set(true)
                                     viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
                                 }
@@ -200,7 +202,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setSpinner() {
-        //spinner.visibility = View.VISIBLE
+        viewModel.isShowSpinner.set(true)
         // we pass our item list and context to our Adapter.
         viewModel.mannequinList?.clear()
         viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
@@ -670,7 +672,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                     job = GlobalScope.launch {
                                         setPrepareDownloadList(map)
                                     }
-                                }else{
+                                } else {
 
                                 }
                             } else {
@@ -704,7 +706,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                         job = GlobalScope.launch {
                                             setPrepareDownloadList(map)
                                         }
-                                    }else{
+                                    } else {
 
                                     }
 
@@ -838,6 +840,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnShowMannequinData -> {
                 if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
                     binding.textMannequinName.visibility = View.VISIBLE
+                    viewModel.isShowSpinner.set(false)
                 } else {
 
                 }

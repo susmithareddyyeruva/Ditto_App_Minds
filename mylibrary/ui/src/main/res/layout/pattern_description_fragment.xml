@@ -188,7 +188,7 @@
                 android:popupBackground="@drawable/bg_dropdown"
                 android:spinnerMode="dropdown"
                 android:theme="@style/AlwaysEnableScrollBar"
-                android:visibility="@{viewModel.mannequinList.size > 0 ? View.VISIBLE : View.INVISIBLE}"
+                android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
