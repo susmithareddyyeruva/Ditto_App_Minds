@@ -148,8 +148,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         } else {  //Online Scenario
                             if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
-                                if (viewModel.data.value == null) {
-                                    bottomNavViewModel.showProgress.set(true)
+                                bottomNavViewModel.showProgress.set(true)
+                                if (viewModel.mannequinId.get()?.isNotEmpty() == true) {//API cal  will happen only mannequin id is not empty
                                     viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
                                 }
                             } else {
