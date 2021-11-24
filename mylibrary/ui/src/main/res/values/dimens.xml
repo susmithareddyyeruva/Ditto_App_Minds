@@ -154,7 +154,7 @@
     <dimen name="close_filter_text">7dp</dimen>
     <dimen name="carview_top">15dp</dimen>
     <dimen name="checkbox_dimens">16dp</dimen>
-    <dimen name="spinner_width">168dp</dimen>
+    <dimen name="spinner_width">186dp</dimen>
     <dimen name="spinner_height">43dp</dimen>
     <dimen name="margin20">20dp</dimen>
     <dimen name="offset">45dp</dimen>
