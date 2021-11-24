@@ -108,8 +108,9 @@
     <dimen name="close_filter_text">13dp</dimen>
     <dimen name="carview_top">5dp</dimen>
     <dimen name="checkbox_dimens">25dp</dimen>
-    <dimen name="spinner_width">220dp</dimen>
+    <dimen name="spinner_width">225dp</dimen>
     <dimen name="spinner_height">55dp</dimen>
-    <dimen name="spinner_padding_start">10dp</dimen>
-    <dimen name="offset">60dp</dimen>
+    <dimen name="spinner_padding_start">14dp</dimen>
+    <dimen name="spinner_padding_content">14dp</dimen>
+    <dimen name="offset">55dp</dimen>
 </resources>
