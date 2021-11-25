@@ -28,7 +28,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
-import core.appstate.AppState
 import core.lib.R
 import core.models.Nsdservicedata
 import core.network.NetworkUtility
@@ -51,7 +50,6 @@ class Utility @Inject constructor(
     private val tokenViewModel: TokenViewModel,
     private val versionViewModel: VersionViewModel
 ) {
-
     fun checkVersion(){
         versionViewModel.checkVersion()
     }
@@ -94,16 +92,6 @@ class Utility @Inject constructor(
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
 
-        fun isTokenExpired():Boolean{
-            if (AppState.getExpiryTime()?.equals(0)!!){
-                return true
-            } else {
-                val currentTime : Long = Calendar.getInstance().time.time
-                val expiryTime : Long? = AppState.getExpiryTime()
-                return currentTime > expiryTime!!
-            }
-        }
-
         fun getAlertDialogue(
             context: Context?,
             title: String,
@@ -135,7 +123,6 @@ class Utility @Inject constructor(
                 alert.show()
             }
         }
-
         fun getAlertDialogue(
             context: Context?,
             title: String,
@@ -173,7 +160,7 @@ class Utility @Inject constructor(
                 alert.show()
             }
         }
-        fun getAlertDialogueForCaliberate(
+     /*   fun getAlertDialogueForCaliberate(
             context: Context,
             title: String,
             message: String,
@@ -197,7 +184,7 @@ class Utility @Inject constructor(
             val alert = dialogBuilder.create()
             alert.setTitle(title)
             alert.show()
-        }
+        }*/
         fun showSnackBar(message: String, view: View) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }

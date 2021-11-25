@@ -316,6 +316,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         super.onDestroyView()
         logger.d("onDestroyView")
     }
+/*
 
     private fun onTabSwitchAlert() {
         core.ui.common.Utility.getAlertDialogue(
@@ -329,6 +330,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         )
 
     }
+*/
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onPositiveButtonClicked(alertType: core.ui.common.Utility.AlertType) {

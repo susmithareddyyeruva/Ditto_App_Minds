@@ -108,10 +108,6 @@ class WorkspaceViewModel @Inject constructor(
     var isSingleDelete: Boolean = false
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
-    init {
-
-    }
-
     //Fetching tailornova details from offline_pattern_data table
     fun fetchTailernovaDetails(id: String) {
         disposable += getWorkspaceData.getTailernovaDataByID(id)
