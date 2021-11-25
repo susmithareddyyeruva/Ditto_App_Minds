@@ -26,5 +26,5 @@ data class Prod(
     @SerializedName("brand") val prodBrand : String?="",
     @SerializedName("isFavourite") val isFavourite : Boolean?=false,
     @SerializedName("purchasedSizeId")var purchasedSizeId:String?="",
-    @SerializedName("mannequin")var mannequin:List<MannequinData>?=null
+    @SerializedName("mannequin")var mannequin:List<MannequinData>?= emptyList()
 ):Serializable
