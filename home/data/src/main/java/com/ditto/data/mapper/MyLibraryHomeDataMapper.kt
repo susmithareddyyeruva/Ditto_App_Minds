@@ -256,8 +256,8 @@ internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             customization = it.customization,
             dressType = it.dressType,
             suitableFor = it.suitableFor,
-            occasion = it.occasion
-        )
+            occasion = it.occasion,
+            )
     }
 }
 

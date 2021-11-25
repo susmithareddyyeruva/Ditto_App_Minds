@@ -27,7 +27,8 @@ interface MyLibraryRepository {
         patternIdData: PatternIdData,
         orderNumber: String?,
         mannequinId: String?,
-        mannequinName: String?
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
     ): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>

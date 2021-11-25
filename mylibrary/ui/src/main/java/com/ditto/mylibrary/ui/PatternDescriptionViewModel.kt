@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
@@ -102,7 +103,9 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
-                mannequinName.set(result.data.mannequinName)
+                mannequinName.set(result.data.selectedMannequinName)
+                clickedProduct?.mannequin =
+                    result.data.mannequin?.map { it.toDomain12() }  //Saving arraylist of mannequin
                 uiEvents.post(Event.OnDataUpdated)
                 uiEvents.post(Event.OnShowMannequinData)
             }
@@ -112,7 +115,10 @@ class PatternDescriptionViewModel @Inject constructor(
 
     fun fetchPattern() {
         //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
-        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "",mannequinId.get()?:"")
+        disposable += getPattern.getPattern(
+            clickedTailornovaID.get() ?: "",
+            mannequinId.get() ?: ""
+        )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -126,12 +132,18 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnDataUpdated)
                 // insert to db here
                 data.value?.patternName = clickedProduct?.prodName
-                data.value?.description =clickedProduct?.description
-                data.value?.mannequinId=mannequinId.get()//getting selected MANNEQUIN ID
+                data.value?.description = clickedProduct?.description
+                data.value?.selectedMannequinId = mannequinId.get()//getting selected MANNEQUIN ID
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo,mannequinId.get(),mannequinName.get())// todo uncomment this line
+                insertTailornovaDetailsToDB(
+                    data.value!!,
+                    clickedProduct?.orderNo,
+                    mannequinId.get(),
+                    mannequinName.get(),
+                    clickedProduct?.mannequin
+                )// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -141,9 +153,16 @@ class PatternDescriptionViewModel @Inject constructor(
         patternIdData: PatternIdData,
         orderNo: String?,
         mannequinId: String?,
-        mannequinName: String?
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
     ) {
-        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo,mannequinId,mannequinName)
+        disposable += getPattern.insertTailornovaDetails(
+            patternIdData,
+            orderNo,
+            mannequinId,
+            mannequinName,
+            mannequin
+        )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -163,6 +182,7 @@ class PatternDescriptionViewModel @Inject constructor(
             }
         }
     }
+
     /**
      * [Function] ViewPager Previous Button Click
      */
@@ -338,7 +358,10 @@ class PatternDescriptionViewModel @Inject constructor(
             patternUri.set(path.toString())
             Log.d("PATTERN", patternUri.get() ?: "")
             temp.add(path.toString())
-            Log.d("DOWNLOAD", "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} ")
+            Log.d(
+                "DOWNLOAD",
+                "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} "
+            )
         }
     }
 

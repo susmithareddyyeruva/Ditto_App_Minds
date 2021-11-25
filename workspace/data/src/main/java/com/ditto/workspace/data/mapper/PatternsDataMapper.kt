@@ -28,8 +28,7 @@ internal fun List<Patterns>.toDomain(): List<PatternsData> {
             garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines?.map { it.toDomain() }
                 ?.toMutableList(),
             interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
-                ?.toMutableList(),
-            mannequin = it.mannequin
+                ?.toMutableList()
         )
     }
 }
@@ -56,8 +55,7 @@ internal fun Patterns.toDomain(): PatternsData {
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
-            ?.toMutableList(),
-        mannequin = this.mannequin
+            ?.toMutableList()
     )
 }
 

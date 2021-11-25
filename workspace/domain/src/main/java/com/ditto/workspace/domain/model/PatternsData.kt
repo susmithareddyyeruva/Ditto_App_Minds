@@ -18,6 +18,6 @@ data class PatternsData(
     var patternPieces: List<PatternPieces>? = emptyList(),
     var liningWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
-    var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
-    var mannequin:String?
+    var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList()
+
 )

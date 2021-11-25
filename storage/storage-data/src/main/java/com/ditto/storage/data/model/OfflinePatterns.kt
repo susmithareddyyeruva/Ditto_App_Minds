@@ -143,11 +143,15 @@ data class OfflinePatterns(
     @SerializedName("order_number")
     var orderNumber: String? = "",
 
-    @ColumnInfo(name = "mannequinId")
-    @SerializedName("mannequin")
-    var mannequinId: String? = "",
+    @ColumnInfo(name = "selectedMannequinId")
+    @SerializedName("selectedMannequinId")
+    var selectedMannequinId: String? = "",
 
-    @ColumnInfo(name = "mannequinName")
-    @SerializedName("mannequinName")
-    var mannequinName: String? = "",
+    @ColumnInfo(name = "selectedMannequinName")
+    @SerializedName("selectedMannequinName")
+    var selectedMannequinName: String? = "",
+
+    @ColumnInfo(name = "mannequinArray")
+    @SerializedName("mannequinArray")
+    var mannequin: List<MannequinData>? = emptyList()
 )

@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.domain.model
 
 
+
 data class PatternIdData(
     val brand: String? = "",
     val customization: Boolean? = false,
@@ -25,8 +26,9 @@ data class PatternIdData(
     val thumbnailEnlargedImageName: String? = "",
     val thumbnailImageName: String? = "",
     var thumbnailImageUrl: String? = "",
-    var mannequinId: String? = "",
-    var mannequinName: String? = ""
+    var selectedMannequinId: String? = "",
+    var selectedMannequinName: String? = "",
+    var mannequin:List<MannequinData>?= emptyList()
 )
 
 data class NumberOfPiecesData(
@@ -34,7 +36,10 @@ data class NumberOfPiecesData(
     val `interface`: Int?,
     val lining: Int?
 )
-
+data class MannequinData(
+    val mannequinId: String? = "",
+    val mannequinName: String? = ""
+)
 data class PatternPieceData(
     val cutOnFold: Boolean,
     val cutQuantity: String = "",

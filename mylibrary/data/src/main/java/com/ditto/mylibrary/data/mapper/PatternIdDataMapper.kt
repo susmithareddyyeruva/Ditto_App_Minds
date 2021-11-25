@@ -1,9 +1,7 @@
 package com.ditto.mylibrary.data.mapper
 
-import com.ditto.mylibrary.domain.model.NumberOfPiecesData
-import com.ditto.mylibrary.domain.model.PatternIdData
-import com.ditto.mylibrary.domain.model.ProdDomain
-import com.ditto.mylibrary.domain.model.SplicedImageData
+import com.ditto.mylibrary.domain.model.*
+import com.ditto.storage.data.model.MannequinData
 import com.ditto.storage.data.model.OfflinePatterns
 import com.ditto.storage.data.model.PatternPieceData
 import com.ditto.storage.data.model.SelvageData
@@ -32,13 +30,12 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             prodGender = it.gender,
             prodBrand = it.brand,
             isFavourite = false,
-            mannequinId = it.mannequinId,
-            mannequinName = it.mannequinName
-
+            selectedMannequinId = it.selectedMannequinId,
+            selectedMannequinName = it.selectedMannequinName,
+            mannequin = it.mannequin?.map { it.toDomain() }
         )
     }
 }
-
 
 internal fun OfflinePatterns.toDomain(): ProdDomain {
     return ProdDomain(
@@ -67,8 +64,9 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
 
 internal fun PatternIdData.toDomain(
     orderNumber: String?,
-    mannequinId: String?,
-    mannequinName: String?
+    selectedMnnequinId: String?,
+    selectedMannequinName: String?,
+    mannequin: List<MannequinDataDomain>?
 ): OfflinePatterns {
     return OfflinePatterns(
         custId = AppState.getCustID(),
@@ -97,11 +95,25 @@ internal fun PatternIdData.toDomain(
         suitableFor = this.suitableFor,
         occasion = this.occasion,
         orderNumber = orderNumber,
-        mannequinId = mannequinId,
-        mannequinName = mannequinName
+        selectedMannequinId = selectedMnnequinId,
+        selectedMannequinName = selectedMannequinName,
+        mannequin = mannequin?.map { it.toDomain() }
+
+    )
+}
+fun MannequinDataDomain.toDomain(): MannequinData {
+    return MannequinData(
+        mannequinId = this.mannequinId?:"",
+        mannequinName = this.mannequinName?:""
     )
 }
 
+fun com.ditto.mylibrary.domain.model.MannequinData.toDomain12(): MannequinDataDomain {
+    return MannequinDataDomain(
+        mannequinId = this.mannequinId?:"",
+        mannequinName = this.mannequinName?:""
+    )
+}
 fun PatternPieceData.toDomain(): com.ditto.mylibrary.domain.model.PatternPieceData {
     return com.ditto.mylibrary.domain.model.PatternPieceData(
         cutOnFold = this.cutOnFold,
@@ -187,7 +199,12 @@ fun SelvageData.toDomain(): com.ditto.mylibrary.domain.model.SelvageData {
         tabCategory = this.tabCategory
     )
 }
-
+fun MannequinData.toDomains(): com.ditto.mylibrary.domain.model.MannequinData {
+    return com.ditto.mylibrary.domain.model.MannequinData(
+        mannequinId=this.mannequinId,
+        mannequinName=this.mannequinName
+    )
+}
 fun com.ditto.mylibrary.domain.model.SelvageData.toDomain(): SelvageData {
     return SelvageData(
         fabricLength = this.fabricLength,
@@ -205,6 +222,7 @@ fun NumberOfPiecesData.toDomain(): com.ditto.storage.data.model.NumberOfComplete
         `interface` = this.`interface`
     )
 }
+
 
 fun com.ditto.storage.data.model.NumberOfCompletedPiecesOffline.toDomain(): NumberOfPiecesData {
     return NumberOfPiecesData(
@@ -240,8 +258,9 @@ internal fun OfflinePatterns.toPatternIDDomain(): PatternIdData {
         thumbnailEnlargedImageName = this.thumbnailEnlargedImageName,
         thumbnailImageName = this.thumbnailImageName,
         thumbnailImageUrl = this.thumbnailImageUrl,
-        mannequinId=this.mannequinId,
-        mannequinName=this.mannequinName
+        selectedMannequinId = this.selectedMannequinId,
+        selectedMannequinName = this.selectedMannequinName,
+        mannequin = this.mannequin?.map { it.toDomains() }
     )
 }
 

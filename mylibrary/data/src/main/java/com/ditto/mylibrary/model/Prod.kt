@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.model
 
 
+import com.ditto.mylibrary.domain.model.MannequinData
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 

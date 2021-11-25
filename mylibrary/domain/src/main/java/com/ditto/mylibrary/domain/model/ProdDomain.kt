@@ -24,7 +24,7 @@ data class ProdDomain(
     val prodBrand: String? = "",
     var isFavourite: Boolean? = false,
     var purchasedSizeId:String?="",
-    var mannequin:List<MannequinDataDomain>?=null,
-    var mannequinId: String? = "",
-    var mannequinName:String?=""
+    var selectedMannequinId: String? = "",
+    var selectedMannequinName:String?="",
+    var mannequin:List<MannequinDataDomain>?=null
 ) : Serializable

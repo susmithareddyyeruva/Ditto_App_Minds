@@ -69,9 +69,10 @@ class MyLibraryImpl @Inject constructor(
         patternIdData: PatternIdData,
         orderNumber: String?,
         mannequinId: String?,
-        mannequinName: String?
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
     ): Single<Any> {
-        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,mannequinId,mannequinName)
+        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,mannequinId,mannequinName,mannequin)
     }
 
     override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {

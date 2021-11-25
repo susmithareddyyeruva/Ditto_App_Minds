@@ -502,10 +502,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
         patternIdData: PatternIdData,
         orderNumber: String?,
         mannequinId: String?,
-        mannequinName: String?
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
     ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,mannequinId,mannequinName))}
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,mannequinId,mannequinName,mannequin))}
     }
 
 }

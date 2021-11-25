@@ -1,7 +1,11 @@
 package com.ditto.mylibrary.data.mapper
 
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.model.*
+import com.ditto.mylibrary.model.FavouriteResult
+import com.ditto.mylibrary.model.FoldersResult
+import com.ditto.mylibrary.model.MyLibraryResult
+import com.ditto.mylibrary.model.Prod
+import com.ditto.storage.data.model.MannequinData
 import com.ditto.storage.data.model.Patterns
 
 
@@ -83,7 +87,7 @@ fun Prod.toDomain(): ProdDomain {
         type = this.type ?: "",
         isFavourite = this.isFavourite ?: false,
         purchasedSizeId = this.purchasedSizeId ?: "",
-        mannequin = this.mannequin?.map { it.toDomain() }
+        mannequin = this.mannequin?.map { it.toDomain12() }
 
 
     )

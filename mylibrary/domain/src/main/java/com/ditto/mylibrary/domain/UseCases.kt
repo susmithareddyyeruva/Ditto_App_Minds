@@ -29,7 +29,8 @@ interface MyLibraryUseCase {
         patternIdData: PatternIdData,
         orderNumber: String?,
         mannequinId: String?,
-        mannequinName: String?
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
     ): Single<Any>
 
 }

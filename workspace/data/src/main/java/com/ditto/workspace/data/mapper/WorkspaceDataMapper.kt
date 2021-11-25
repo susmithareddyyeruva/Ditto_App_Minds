@@ -205,7 +205,8 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         dressType = this.dressType,
         suitableFor = this.suitableFor,
         occasion = this.occasion,
-        mannequin = this.mannequinId
+        selectedMannequinId = this.selectedMannequinId,
+        selectedMannequinName = this.selectedMannequinName
 
     )
 }
