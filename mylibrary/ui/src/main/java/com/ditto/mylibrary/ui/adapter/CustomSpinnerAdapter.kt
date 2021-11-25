@@ -51,6 +51,18 @@ class CustomSpinnerAdapter(val context: Context, var dataSource: List<MannequinD
         return view
     }
 
+/*    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        var  viewMain=super.getDropDownView(position, convertView, parent)
+        if (convertView != null) {
+            viewMain=convertView
+            convertView.visibility = View.VISIBLE;
+            val p = convertView!!.layoutParams
+            p.height = 100 // set the height
+            convertView!!.layoutParams = p
+        }
+        return viewMain
+    }*/
+
     override fun getItem(position: Int): Any? {
         return dataSource[position];
     }

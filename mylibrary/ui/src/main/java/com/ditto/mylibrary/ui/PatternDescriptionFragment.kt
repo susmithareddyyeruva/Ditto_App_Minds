@@ -223,15 +223,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         binding.spinner.adapter = adapter
         binding.spinner.setSelection(0, true)
-/*        try {
-            val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
-            popup.setAccessible(true)
+   /*     try {
+            val popup = Spinner::class.java.getDeclaredField("mPopup")
+            popup.isAccessible = true
 
             // Get private mPopup member variable and try cast to ListPopupWindow
-            val popupWindow = popup.get(spinner) as ListPopupWindow
+            val popupWindow = popup[binding.spinner] as ListPopupWindow
 
             // Set popupWindow height to 500px
-            popupWindow.height = 150
+            popupWindow.height = 106
         } catch (e: NoClassDefFoundError) {
             // silently fail...
         } catch (e: ClassCastException) {

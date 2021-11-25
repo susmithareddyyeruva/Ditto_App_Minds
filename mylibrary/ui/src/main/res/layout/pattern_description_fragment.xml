@@ -182,7 +182,6 @@
                 android:id="@+id/spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimen_25"
                 android:background="@drawable/ic_custom_spinner"
                 android:dropDownVerticalOffset="@dimen/offset"
                 android:paddingHorizontal="@dimen/spinner_padding_start"
@@ -191,7 +190,7 @@
                 android:theme="@style/AlwaysEnableScrollBar"
                 android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header" />
 
@@ -199,7 +198,6 @@
                 android:id="@+id/textMannequinName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimen_25"
                 android:background="@drawable/ic_mannequinbg"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:gravity="center"
@@ -208,8 +206,8 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_12sp"
                 android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header"
                 tools:text="Casual" />
