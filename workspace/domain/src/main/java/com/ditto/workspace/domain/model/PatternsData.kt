@@ -19,4 +19,5 @@ data class PatternsData(
     var liningWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList(),
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItems>? = ArrayList()
+
 )

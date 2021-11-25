@@ -18,21 +18,21 @@ data class OfflinePatterns(
 
     //getWorkspace data response
 
-    @ColumnInfo(name="custId")
+    @ColumnInfo(name = "custId")
     @SerializedName("custId")
     var custId: String?,
 
-    @ColumnInfo(name="tailornaovaDesignId")
+    @ColumnInfo(name = "tailornaovaDesignId")
     @SerializedName("tailornaovaDesignId")
     var tailornaovaDesignId: String,
 
-    @ColumnInfo(name="selectedTab")
+    @ColumnInfo(name = "selectedTab")
     @SerializedName("selectedTab")
-    var selectedTab: String? ="",
+    var selectedTab: String? = "",
 
-    @ColumnInfo(name="status")
+    @ColumnInfo(name = "status")
     @SerializedName("status")
-    var status:String="",
+    var status: String = "",
 
     @ColumnInfo(name = "numberOfCompletedPiece")
     @SerializedName("numberOfCompletedPiece")
@@ -57,51 +57,51 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "patternName")
     @SerializedName("patternName")
-    var patternName:String? ="",
+    var patternName: String? = "",
 
     @ColumnInfo(name = "description")
     @SerializedName("description")
-    var description:String?="",
+    var description: String? = "",
 
     @ColumnInfo(name = "patternType")
     @SerializedName("patternType")
-    var patternType:String?="",
+    var patternType: String? = "",
 
     @ColumnInfo(name = "totalNumberOfPieces")
     @SerializedName("totalNumberOfPieces")
-    var numberOfPieces:NumberOfCompletedPiecesOffline?,
+    var numberOfPieces: NumberOfCompletedPiecesOffline?,
 
     @ColumnInfo(name = "orderModificationDate")
     @SerializedName("orderModificationDate")
-    var orderModificationDate: String?="",
+    var orderModificationDate: String? = "",
 
     @ColumnInfo(name = "orderCreationDate")
     @SerializedName("orderCreationDate")
-    var orderCreationDate:String?="",
+    var orderCreationDate: String? = "",
 
     @ColumnInfo(name = "instructionFileName")
     @SerializedName("instructionFileName")
-    var instructionFileName:String?="",
+    var instructionFileName: String? = "",
 
-    @ColumnInfo(name="instructionUrl")
+    @ColumnInfo(name = "instructionUrl")
     @SerializedName("instructionUrl")
-    var instructionUrl:String?="",
+    var instructionUrl: String? = "",
 
-    @ColumnInfo(name="thumbnailImageUrl")
+    @ColumnInfo(name = "thumbnailImageUrl")
     @SerializedName("thumbnailImageUrl")
-    var thumbnailImageUrl:String?="",
+    var thumbnailImageUrl: String? = "",
 
-    @ColumnInfo(name="thumbnailImageName")
+    @ColumnInfo(name = "thumbnailImageName")
     @SerializedName("thumbnailImageName")
-    var thumbnailImageName:String?="",
+    var thumbnailImageName: String? = "",
 
-    @ColumnInfo(name="thumbnailEnlargedImageName")
+    @ColumnInfo(name = "thumbnailEnlargedImageName")
     @SerializedName("thumbnailEnlargedImageName")
-    var thumbnailEnlargedImageName:String?="",
+    var thumbnailEnlargedImageName: String? = "",
 
-    @ColumnInfo(name="patternDescriptionImageUrl")
+    @ColumnInfo(name = "patternDescriptionImageUrl")
     @SerializedName("patternDescriptionImageUrl")
-    var patternDescriptionImageUrl:String?="",
+    var patternDescriptionImageUrl: String? = "",
 
     @ColumnInfo(name = "selvages")
     @SerializedName("selvages")
@@ -111,35 +111,47 @@ data class OfflinePatterns(
     @SerializedName("patternPiecesTailornova")
     var patternPiecesFromTailornova: List<PatternPieceData>? = emptyList(),
 
-    @ColumnInfo(name="brand")
+    @ColumnInfo(name = "brand")
     @SerializedName("brand")
-    var brand:String?="",
+    var brand: String? = "",
 
-    @ColumnInfo(name="size")
+    @ColumnInfo(name = "size")
     @SerializedName("size")
-    var size:String?="",
+    var size: String? = "",
 
-    @ColumnInfo(name="gender")
+    @ColumnInfo(name = "gender")
     @SerializedName("gender")
-    var gender:String?="",
+    var gender: String? = "",
 
-    @ColumnInfo(name="customization")
+    @ColumnInfo(name = "customization")
     @SerializedName("customization")
-    var customization:Boolean?=false,
+    var customization: Boolean? = false,
 
-    @ColumnInfo(name="dressType")
+    @ColumnInfo(name = "dressType")
     @SerializedName("dressType")
-    var dressType:String?="",
+    var dressType: String? = "",
 
-    @ColumnInfo(name="suitableFor")
+    @ColumnInfo(name = "suitableFor")
     @SerializedName("suitableFor")
-    var suitableFor:String?="",
+    var suitableFor: String? = "",
 
-    @ColumnInfo(name="occasion")
+    @ColumnInfo(name = "occasion")
     @SerializedName("occasion")
-    var occasion:String?="",
+    var occasion: String? = "",
 
-    @ColumnInfo(name="order_number")
+    @ColumnInfo(name = "order_number")
     @SerializedName("order_number")
-    var orderNumber:String?=""
+    var orderNumber: String? = "",
+
+    @ColumnInfo(name = "selectedMannequinId")
+    @SerializedName("selectedMannequinId")
+    var selectedMannequinId: String? = "",
+
+    @ColumnInfo(name = "selectedMannequinName")
+    @SerializedName("selectedMannequinName")
+    var selectedMannequinName: String? = "",
+
+    @ColumnInfo(name = "mannequinArray")
+    @SerializedName("mannequinArray")
+    var mannequin: List<MannequinData>? = emptyList()
 )

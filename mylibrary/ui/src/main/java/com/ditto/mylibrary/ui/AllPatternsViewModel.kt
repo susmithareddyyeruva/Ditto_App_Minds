@@ -153,9 +153,12 @@ class AllPatternsViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 var temp: ArrayList<ProdDomain> =
                     if (patternList.value == null) ArrayList() else patternList.value as ArrayList<ProdDomain>
-                //temp?.clear()
                 temp?.addAll(result.data.prod)
+               /* val filteredList=  temp.distinctBy {
+                    it.iD
+                }*/
                 patternList.value = temp
+                logger.d("PATTERN  COUNT TEMP== ${temp.size}")
 
                 /*result.data.prod.forEach {
                       patternArrayList.add(it)

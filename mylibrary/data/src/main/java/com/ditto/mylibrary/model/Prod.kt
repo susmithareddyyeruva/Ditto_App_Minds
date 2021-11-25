@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.model
 
 
+import com.ditto.mylibrary.domain.model.MannequinData
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -23,5 +24,7 @@ data class Prod(
     @SerializedName("size") val prodSize : String?="",
     @SerializedName("gender") val prodGender : String?="",
     @SerializedName("brand") val prodBrand : String?="",
-    @SerializedName("isFavourite") val isFavourite : Boolean?=false
+    @SerializedName("isFavourite") val isFavourite : Boolean?=false,
+    @SerializedName("purchasedSizeId")var purchasedSizeId:String?="",
+    @SerializedName("mannequin")var mannequin:List<MannequinData>?= emptyList()
 ):Serializable

@@ -57,7 +57,7 @@ import javax.inject.Inject
  * Main Bottom Navigation Activity launcher class holding navHost and initial position at Splash.
  */
 class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
-    NavigationView.OnNavigationItemSelectedListener,Utility.CustomCallbackDialogListener {
+    NavigationView.OnNavigationItemSelectedListener, Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
@@ -671,9 +671,18 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     private fun showAlert(message: String) {
-        Utility.getCommonAlertDialogue(this,"",message,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
-            ,Utility.Iconype.FAILED)
+        Utility.getCommonAlertDialogue(
+            this,
+            "",
+            message,
+            "",
+            getString(R.string.str_ok),
+            this,
+            Utility.AlertType.NETWORK,
+            Utility.Iconype.FAILED
+        )
     }
+
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
@@ -685,6 +694,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-       // TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

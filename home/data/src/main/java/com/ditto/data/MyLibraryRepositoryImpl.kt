@@ -77,8 +77,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
-                            Log.d("LoginError", errorBody)
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("HOME LIBRARY API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)

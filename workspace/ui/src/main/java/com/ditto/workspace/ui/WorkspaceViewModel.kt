@@ -55,6 +55,7 @@ class WorkspaceViewModel @Inject constructor(
     var patternId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")
     var patternName: ObservableField<String> = ObservableField("")
+    var mannequinId: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
@@ -107,10 +108,6 @@ class WorkspaceViewModel @Inject constructor(
     var isSingleDelete: Boolean = false
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
-    init {
-
-    }
-
     //Fetching tailornova details from offline_pattern_data table
     fun fetchTailernovaDetails(id: String) {
         disposable += getWorkspaceData.getTailernovaDataByID(id)
@@ -132,7 +129,7 @@ class WorkspaceViewModel @Inject constructor(
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.updateWorkspaceData(
-            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}",
+            "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}",
             workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
@@ -169,8 +166,7 @@ class WorkspaceViewModel @Inject constructor(
     fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.createWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
-                patternId.get()
-            }", workspaceDataAPI
+                patternId.get()}_${mannequinId.get()}", workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -324,7 +320,7 @@ class WorkspaceViewModel @Inject constructor(
                     // Fetching workspace data from SFCC server
                     fetchWorkspaceDataFromAPI(
                         result,
-                        "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}"
+                        "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}"
                     )
                 } else {
                     data.value = combineTailornovaAndSFCCDetails(result)
@@ -894,7 +890,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("DOWNLOAD", ">>>>>>>>>>>>>>>>>>>> STARTED")
+        Log.d("DOWNLOAD", "prepareDowloadList >>>>>>>>>>>>>>>>>>>> STARTED")
         Log.d("Download", "Hashmap size: ${hashMap?.size}")
         temp.clear()
         if (!hashMap.isEmpty()) {

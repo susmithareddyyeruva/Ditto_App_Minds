@@ -116,6 +116,7 @@ class Converters {
     fun patternPiecesFromApiListToString(someObjects: List<PatternPiecesOffline>): String {
         return Gson().toJson(someObjects)
     }
+
     @TypeConverter
     fun stringToNumberOfPieces(string: String?): NumberOfCompletedPiecesOffline? {
         return Gson().fromJson(string, NumberOfCompletedPiecesOffline::class.java)
@@ -163,12 +164,28 @@ class Converters {
         return Gson().fromJson(data, listType)
     }
 
+
     @TypeConverter
     fun SelvageDataListToString(someObjects: List<SelvageData>): String {
         return Gson().toJson(someObjects)
     }
 
+    @TypeConverter
+    fun MannequinDataListToString(someObjects: List<MannequinData>): String {
+        return Gson().toJson(someObjects)
+    }
 
+
+    @TypeConverter
+    fun stringToMannequinDataList(data: String?): List<MannequinData> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<MannequinData>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
 
     @TypeConverter
     fun stringToPatternPieceDataList(data: String?): List<PatternPieceData> {

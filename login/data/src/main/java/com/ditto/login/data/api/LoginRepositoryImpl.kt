@@ -82,7 +82,6 @@ class LoginRepositoryImpl @Inject constructor(
                 Log.d("Login", "*****Login Success**")
             }
             .map {
-                Log.d("Login", "*****Login Success MAP**")
                 Result.withValue(it.toUserDomain())
 
             }
@@ -111,7 +110,6 @@ class LoginRepositoryImpl @Inject constructor(
                     LoginFetchError(errorMessage, it)
                 )
             }
-
 
 
     }

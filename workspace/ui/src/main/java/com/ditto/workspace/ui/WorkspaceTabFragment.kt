@@ -61,7 +61,6 @@ import core.ui.common.Utility.Companion.createMirrorBitmap
 import core.ui.common.Utility.Companion.getAlertDialogue
 import core.ui.common.Utility.Companion.getBitmap
 import core.ui.common.Utility.Companion.getDrawableFromString
-import core.ui.common.Utility.Companion.getRotation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -122,6 +121,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
+        arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
 
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
@@ -2103,6 +2103,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PATTERN_NAME = "PatternName"
         private const val PATTERN_ID = "PatternId"
         private const val ORDER_NO = "clickedOrderNumber"
+        private const val MANNEQUIN_ID = "mannequinId"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"

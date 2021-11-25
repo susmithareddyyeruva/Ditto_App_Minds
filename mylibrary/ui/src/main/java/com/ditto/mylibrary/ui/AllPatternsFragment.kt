@@ -100,6 +100,8 @@ class AllPatternsFragment(
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
     }
 
+
+
     fun callSearchResult(terms: String) {
         /**
          * Search is Happened only in filtered results
@@ -127,6 +129,7 @@ class AllPatternsFragment(
 
     private fun updatePatterns() {
         // Updating the adapter
+        binding.recyclerViewPatterns.recycledViewPool.clear()
         allPatternAdapter.setListData(items = viewModel.patternList.value ?: emptyList())
         val count = String.format("%02d", viewModel.totalPatternCount)
         binding.tvFilterResult.text =
@@ -154,27 +157,35 @@ class AllPatternsFragment(
         Log.d("Testing", ">>>>>>   All Patterns  onResume ")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
+        Log.d("EVENT===","onResume")
+       // fetchPatternLibrary()
+
+    }
+    fun resetListValues(){
+        viewModel.patternList.value=ArrayList()
+    }
+
+    fun fetchPatternLibrary() {
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                    if (viewModel.patternList.value.isNullOrEmpty()) {
-                        Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
-                        bottomNavViewModel.showProgress.set(true)
-                        viewModel.isLoading.set(true)
-                        viewModel.fetchOnPatternData(
-                            viewModel.createJson(
-                                currentPage,
-                                value = ""
-                            )
-                        )  //Initial API call
-                    } else {
-                        updatePatterns()
-                        //  setFilterMenuAdapter(0)
-                        if (viewModel.isFilter == true) {
-                            filterIconSetListener.onFilterApplied(true)
-                        } else
-                            filterIconSetListener.onFilterApplied(false)
-                    }
-
+                if (viewModel.patternList.value.isNullOrEmpty()) {
+                    Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isLoading.set(true)
+                    viewModel.fetchOnPatternData(
+                        viewModel.createJson(
+                            currentPage,
+                            value = ""
+                        )
+                    )  //Initial API call
+                } else {
+                    updatePatterns()
+                    //  setFilterMenuAdapter(0)
+                    if (viewModel.isFilter == true) {
+                        filterIconSetListener.onFilterApplied(true)
+                    } else
+                        filterIconSetListener.onFilterApplied(false)
+                }
             } else {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.isLoading.set(true)
@@ -185,7 +196,6 @@ class AllPatternsFragment(
             viewModel.isLoading.set(true)
             viewModel.fetchTrialPatterns()
         }
-
     }
 
     override fun onPause() {
@@ -269,6 +279,7 @@ class AllPatternsFragment(
         is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
             if (AppState.getIsLogged()) {
                 if (NetworkUtility.isNetworkAvailable(context)) {
+                    Log.d("APICALL=====","OnAllPatternSyncClick")
                     cleaFilterData()
                 } else {
                     viewModel.errorString.set(getString(R.string.no_internet_available))
@@ -276,16 +287,9 @@ class AllPatternsFragment(
                     viewModel.fetchOfflinePatterns()
                 }
             } else {
-                if(NetworkUtility.isNetworkAvailable(context)){
-                    bottomNavViewModel.showProgress.set(true)
-                    viewModel.isLoading.set(true)
-                    viewModel.fetchTrialPatterns()
-                }else{
-                    viewModel.errorString.set(getString(R.string.no_internet_available))
-                    showAlert()
-                    viewModel.fetchTrialPatterns()
-                }
-
+                bottomNavViewModel.showProgress.set(true)
+                viewModel.isLoading.set(true)
+                viewModel.fetchTrialPatterns()
             }
             logger.d("OnSyncClick : AllPatternsFragment")
 
@@ -444,7 +448,7 @@ class AllPatternsFragment(
 
     private fun isFolderPresent(newFolderName: String): Boolean {
         viewModel.folderMainList.forEach {
-            if (it.folderName.equals(newFolderName,true)) {
+            if (it.folderName.equals(newFolderName, true)) {
                 Log.d("FOLDER", "ALready exist")
                 return true
             }
@@ -456,7 +460,11 @@ class AllPatternsFragment(
         if (AppState.getIsLogged()) {
             if (parent.equals(viewModel.ADD)) {
 
-                if (newFolderName.equals("favorites", true) || newFolderName.equals("owned", true) || isFolderPresent(newFolderName)) {
+                if (newFolderName.equals("favorites", true) || newFolderName.equals(
+                        "owned",
+                        true
+                    ) || isFolderPresent(newFolderName)
+                ) {
                     viewModel.errorString.set("Folder already exists !")
                     showAlert()
 

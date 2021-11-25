@@ -55,7 +55,6 @@ class OnboardingViewModel @Inject constructor(
     var userId: Int = 0
 
     init {
-
         fetchDbUser()
     }
 

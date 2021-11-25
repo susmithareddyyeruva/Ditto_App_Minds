@@ -5,6 +5,7 @@ import com.ditto.mylibrary.model.FavouriteResult
 import com.ditto.mylibrary.model.FoldersResult
 import com.ditto.mylibrary.model.MyLibraryResult
 import com.ditto.mylibrary.model.Prod
+import com.ditto.storage.data.model.MannequinData
 import com.ditto.storage.data.model.Patterns
 
 
@@ -59,7 +60,7 @@ fun MyLibraryResult.toDomain(): AllPatternsDomain {
         totalPageCount = this.totalPageCount ?: 0,
         currentPageId = this.currentPageId ?: 0,
         menuItem = this.menu ?: hashMapOf(),
-        errorMsg = this.errorMsg?:""
+        errorMsg = this.errorMsg ?: ""
 
     )
 }
@@ -84,10 +85,21 @@ fun Prod.toDomain(): ProdDomain {
         subscriptionExpiryDate = this.subscriptionExpiryDate ?: "",
         suitableFor = this.suitableFor ?: "",
         type = this.type ?: "",
-        isFavourite = this.isFavourite ?: false
+        isFavourite = this.isFavourite ?: false,
+        purchasedSizeId = this.purchasedSizeId ?: "",
+        mannequin = this.mannequin?.map { it.toDomain12() }
+
 
     )
 
+
+}
+
+fun MannequinData.toDomain(): MannequinDataDomain {
+    return MannequinDataDomain(
+        mannequinId = this.mannequinId?:"",
+        mannequinName = this.mannequinName?:""
+    )
 }
 
 fun FavouriteResult.toDomain(): AddFavouriteResultDomain {

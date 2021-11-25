@@ -76,13 +76,16 @@ abstract class OfflinePatternDataDao {
                 obj.occasion,
                 obj.patternDescriptionImageUrl,
                 obj.customization,
-                obj.selvages
+                obj.selvages,
+                obj.selectedMannequinId,
+                obj.selectedMannequinName,
+                obj.mannequin
             )
             Log.d("offlinePatternDataDao", "update $i")
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova WHERE designId= :designId ")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId")
     abstract fun updateTailornovaOfflineData(
         custId: String?,
         designId: String,
@@ -148,8 +151,10 @@ abstract class OfflinePatternDataDao {
         patternPiecesFromApi: List<PatternPiecesOffline>,
         garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
-        interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>
-
+        interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
+        selectedMannequinId: String?,
+        selectedMannequinName: String?,
+        mannequin: List<MannequinData>?
     ): Int
 
     @Transaction
@@ -192,7 +197,10 @@ abstract class OfflinePatternDataDao {
                             obj.patternPiecesFromApi,
                             obj.garmetWorkspaceItemOfflines,
                             obj.liningWorkspaceItemOfflines,
-                            obj.interfaceWorkspaceItemOfflines
+                            obj.interfaceWorkspaceItemOfflines,
+                            obj.selectedMannequinId,
+                            obj.selectedMannequinName,
+                            obj.mannequin
                         )
                         Log.d("offlinePatternDataDao", "upsertList update trial if  different user $i")
 
