@@ -113,4 +113,5 @@
     <dimen name="spinner_padding_start">12dp</dimen>
     <dimen name="spinner_padding_content">14dp</dimen>
     <dimen name="offset">55dp</dimen>
+    <dimen name="margin_dropdown_end">32dp</dimen>
 </resources>
