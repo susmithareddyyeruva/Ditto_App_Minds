@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import core.appstate.AppState
 import core.event.UiEvents
 import core.lib.R
@@ -12,13 +14,30 @@ import core.ui.common.Utility
 import java.util.*
 import javax.inject.Inject
 
+
 class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
     val visibility = ObservableBoolean(true)
     val showProgress = ObservableBoolean(false)
+    val isShownCoachMark = ObservableBoolean(true)// initially true not to show in splash
+    val showCoachImage : ObservableInt = ObservableInt(R.drawable.coachmark_home_menu4)
+    val coachImageCount : ObservableInt = ObservableInt(0)
+    val coachMarkImages = intArrayOf(
+        R.drawable.coachmark_home_menu4,
+        R.drawable.coachmark_home_library,
+        R.drawable.coachmark_library_swipe,
+        R.drawable.coachmark_library_search,
+        R.drawable.coachmark_library_filter,
+        R.drawable.coachmark_library_folder,
+        R.drawable.coachmark_library_add_to_folder,
+        R.drawable.coachmark_library_item,
+        R.drawable.coachmark_description_instruction,
+        R.drawable.coachmark_description_workspace
+    )
+    var coachmarkFlowFinished = MutableLiveData(false)
     val menuTitle: ObservableField<String> = ObservableField("")
     val menuDescription: ObservableField<String> = ObservableField("")
-    val menuNumberOfDaysForSubscription:ObservableField<String> = ObservableField("")
+    val menuNumberOfDaysForSubscription: ObservableField<String> = ObservableField("")
 
     val isGuestBase: ObservableBoolean = ObservableBoolean(false)
     var userEmailBase: ObservableField<String> = ObservableField("")
@@ -49,11 +68,13 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         } else {
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
-           // menuDescription.set(userEmailBase.get())
-            if(subscriptionEndDateBase.get().toString().isEmpty() || subscriptionEndDateBase.get()==null){
+            // menuDescription.set(userEmailBase.get())
+            if (subscriptionEndDateBase.get().toString()
+                    .isEmpty() || subscriptionEndDateBase.get() == null
+            ) {
                 menuNumberOfDaysForSubscription.set("0 days")
-            }else{
-                val days=Utility.getTotalNumberOfDays(subscriptionEndDateBase.get())
+            } else {
+                val days = Utility.getTotalNumberOfDays(subscriptionEndDateBase.get())
                 menuNumberOfDaysForSubscription.set("$days days")
             }
 
@@ -98,7 +119,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             "ic_ws_settings_icon",
             null
         )
-        if(AppState.getIsLogged()){
+        if (AppState.getIsLogged()) {
             childModelsList.add(childModel)
         }
 
@@ -146,19 +167,39 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         uiEvents.post(Event.NavigateToLogin)
         isLogoutEvent.set(true)
     }
+
     fun sigin() {
         uiEvents.post(Event.NavigateToLogin)
     }
+
+    fun coachMarkSkip() {
+        AppState.setShowCoachMark(true)
+        isShownCoachMark.set(AppState.isShownCoachMark())
+        coachImageCount.set(0)
+        showCoachImage.set(coachMarkImages[coachImageCount.get()])
+        coachmarkFlowFinished.value = true
+    }
+
+    fun coachMarkNext() {
+        if(coachImageCount.get() < coachMarkImages.size-1){
+            coachImageCount.set(coachImageCount.get()+1)
+            showCoachImage.set(coachMarkImages[coachImageCount.get()])
+        }else{
+            coachMarkSkip()
+        }
+    }
+
+
     sealed class Event {
         object NavigateToLogin : Event()
         object onClickSignIn : Event()
     }
 
 
-    fun onClickSignin(){
-        Log.d("viewmodel","button click  ")
-            if (isGuestBase?.get() != false) {
-                uiEvents.post(Event.onClickSignIn)
-            }
+    fun onClickSignin() {
+        Log.d("viewmodel", "button click  ")
+        if (isGuestBase?.get() != false) {
+            uiEvents.post(Event.onClickSignIn)
+        }
     }
 }

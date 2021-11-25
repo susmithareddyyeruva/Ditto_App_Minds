@@ -49,6 +49,11 @@
     <dimen name="process_text_top">20dp</dimen>
     <dimen name="end_margin_yes">30dp</dimen>
     <dimen name="brand_name_width">120dp</dimen>
+    <dimen name="coach_mark_play_width">100dp</dimen>
+    <dimen name="coachmark_skip_button_text">12sp</dimen>
+    <string name="coackmark_skip_button_ratio">80:34</string>
+    <dimen name="coachmark_skip_padding">10dp</dimen>
+    <dimen name="coachmark_skip_margin">20dp</dimen>
 
 
 </resources>

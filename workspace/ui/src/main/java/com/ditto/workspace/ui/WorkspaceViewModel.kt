@@ -96,6 +96,7 @@ class WorkspaceViewModel @Inject constructor(
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
+    val isWorkspaceShownCoachMark: ObservableBoolean = ObservableBoolean(false)
     val patternUri: ObservableField<String> = ObservableField("")
     val temp = ArrayList<String>()
     val imagesToDownload = hashMapOf<String, String>()
@@ -701,6 +702,14 @@ class WorkspaceViewModel @Inject constructor(
         isSpliceBottomVisible.set(false)
     }
 
+    fun coachMarkClose() {
+        uiEvents.post(Event.OnCoachmarkClose)
+    }
+
+    fun coachMarkPlay() {
+        uiEvents.post(Event.OnCoachmarkPlay)
+    }
+
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
     }
@@ -757,6 +766,8 @@ class WorkspaceViewModel @Inject constructor(
         object RemoveAllPatternPieces : Event()
         object updateProgressCount : Event()
         object OnDownloadComplete : Event()
+        object OnCoachmarkPlay : Event()
+        object OnCoachmarkClose : Event()
         object HideProgressLoader : Event()
         object ShowProgressLoader : Event()
         object ApiFailed : Event()
@@ -789,7 +800,7 @@ class WorkspaceViewModel @Inject constructor(
             }
             inputStream = conn.inputStream
             if (inputStream != null)
-                result = convertInputStreamToFile(inputStream,filename,patternFolderName)
+                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
             val path = Uri.fromFile(result)
             patternpdfuri.set(path.toString())
             onFinished()
@@ -800,9 +811,9 @@ class WorkspaceViewModel @Inject constructor(
         inputStream: InputStream,
         filename: String, patternFolderName: String?
     ): File? {
-        var result : File? = null
-        val outputFile : File? = null
-        var dittofolder : File? = null
+        var result: File? = null
+        val outputFile: File? = null
+        var dittofolder: File? = null
 
         val contextWrapper = ContextWrapper(context)
 
@@ -822,7 +833,8 @@ class WorkspaceViewModel @Inject constructor(
             dittofolder.mkdir()
         }
 
-        val filename = "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}"
+        val filename =
+            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
         result = File(dittofolder, filename)
         if (!result.exists()) {
             result.createNewFile()

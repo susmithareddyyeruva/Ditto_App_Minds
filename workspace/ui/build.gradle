@@ -40,6 +40,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.android.material:material:$material_version"
+    implementation project(path: ':videoplayer')
     testImplementation "junit:junit:$junit_test_version"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
@@ -97,6 +98,7 @@ dependencies {
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':calibration-ui')
     implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':videoplayer')
 
 }
 

@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -61,6 +62,7 @@ import java.io.File
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,
@@ -254,6 +256,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         } else {
             viewModel.fetchOfflinePatternDetails()
         }
+
+
+        outputDirectory = Utility.getOutputDirectory(requireContext())
     }
 
     companion object {
@@ -316,7 +321,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setUIForLoggedInUser() {
-        if (viewModel.isFromDeepLinking.get()) {
+        if(viewModel.isFromDeepLinking.get()){
             viewModel.patternName.set(viewModel.data.value?.patternName)
             viewModel.patternDescription.set(viewModel.data.value?.description)
             Glide.with(requireContext())
@@ -334,7 +339,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
-        } else {
+        }else{
             setData()
             setVisibilityForViews(
                 "WORKSPACE",
@@ -374,8 +379,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }*/
             setPatternImage()
         }
-
-
     }
 
     private fun setData() {
@@ -663,6 +666,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         ) {
                             //checkBluetoothWifiPermission()
                             //forwardtoWorkspace()
+                            viewModel.fetchDemoPatternList()
                             val map = getPatternPieceListTailornova()
                             //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                             if (dowloadPermissonGranted()) {
@@ -697,6 +701,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             ) {
                                 //checkBluetoothWifiPermission()
                                 //forwardtoWorkspace()
+                                viewModel.fetchDemoPatternList()
                                 val map = getPatternPieceListTailornova()
                                 //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                                 if (dowloadPermissonGranted()) {
@@ -834,8 +839,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     Utility.AlertType.DEFAULT,
                     Utility.Iconype.NONE
                 )
-
-
             }
             PatternDescriptionViewModel.Event.OnShowMannequinData -> {
                 if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
@@ -844,6 +847,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 } else {
 
                 }
+            }
+
+            PatternDescriptionViewModel.Event.OnDeletePatternFolder -> {
+                deleteFolder(viewModel.patternsInDB)
             }
         }
 
@@ -1058,21 +1065,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.QUICK_CHECK -> {
                 // to clear out workspace projection
                 if (baseViewModel.activeSocketConnection.get()) {
-                    GlobalScope.launch {
-                        Utility.sendDittoImage(
-                            requireActivity(),
-                            "solid_black"
-                        )
-                    }
+                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
                 }
                 enterWorkspace()
             }
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
             }
-            /*Utility.AlertType.DOWNLOADFAILED -> {
-                checkSocketConnectionBeforeWorkspace()
-            }*/
         }
     }
 
@@ -1252,10 +1251,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            /*Utility.AlertType.DOWNLOADFAILED -> {
+            Utility.AlertType.DOWNLOADFAILED -> {
                 bottomNavViewModel.showProgress.set(false)
                 checkSocketConnectionBeforeWorkspace()
-            }*/
+            }
 
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
@@ -1320,7 +1319,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
     }
-
 
     private fun showDataFailedAlert() {
         bottomNavViewModel.showProgress.set(false)
@@ -1406,4 +1404,67 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.Iconype.FAILED
         )
     }
+
+
+    private fun deleteFolder(patterns: MutableList<ProdDomain>?) {
+        val directory = File(
+            Environment.getExternalStorageDirectory()
+                .toString() + "/Ditto"
+        )
+
+        if (directory.exists()) {
+            val folders = directory.listFiles()
+            val listOfCommonFiles: ArrayList<File> = ArrayList(emptyList())
+            if (patterns != null) {
+                for (file in folders) {
+                    var fileName = file.name
+                    if (fileName.contains(".pdf")) {
+                        fileName = getNameWithoutExtension(fileName)
+                    }
+                    patterns.forEach {
+                        if (it.prodName == fileName) {
+                            listOfCommonFiles.add(file)
+                        }
+                    }
+                }
+
+            }
+
+            val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
+            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            for (file in filesToDelete) {
+                val fileToDelete = File(
+                    Environment.getExternalStorageDirectory()
+                        .toString() + "/Ditto/${file.name}"
+                )
+
+                val d = deleteDirectory(fileToDelete)
+                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
+            }
+        }
+    }
+
+
+    fun deleteDirectory(path: File): Boolean {
+        if (path.exists()) {
+            if (path.name.contains(".pdf")) {
+                return path.delete()
+            }
+            val files = path.listFiles() ?: return true
+            for (i in files.indices) {
+                if (files[i].isDirectory) {
+                    deleteDirectory(files[i])
+                } else {
+                    files[i].delete()
+                }
+            }
+        }
+        return path.delete()
+    }
+
+    fun getNameWithoutExtension(fileName: String): String {
+        var dotIndex = fileName.lastIndexOf('.')
+        return if (dotIndex == -1) fileName else fileName.substring(0, dotIndex)
+    }
 }
+

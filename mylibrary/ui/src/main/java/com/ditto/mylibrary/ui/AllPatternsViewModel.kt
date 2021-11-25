@@ -96,7 +96,7 @@ class AllPatternsViewModel @Inject constructor(
 
     fun fetchTrialPatterns() {
         uiEvents.post(Event.OnAllPatternShowProgress)
-        disposable += libraryUseCase.getTrialPatterns()
+        disposable += libraryUseCase.getTrialPatterns("Trial")
             .delay(600, java.util.concurrent.TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

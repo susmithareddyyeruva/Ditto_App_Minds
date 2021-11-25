@@ -394,4 +394,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     private fun showProgress(toShow: Boolean) {
         bottomNavViewModel.showProgress.set(toShow)
     }
+
+    fun closeVideoPopup() {
+        fragmentGarment?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
+        fragmentInterface?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
+        fragmentLining?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
+    }
 }

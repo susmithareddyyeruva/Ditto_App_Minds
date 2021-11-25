@@ -24,4 +24,10 @@ limitations under the License. -->
     <item name="android:progressTint">@color/app_red</item>
     <item name="android:colorControlActivated">@color/app_red</item>
   </style>
+
+  <style name="BaseAppTheme" parent="android:Theme.Material">
+    <!-- enable window content transitions -->
+    <item name="android:windowActivityTransitions">true</item>
+
+  </style>
 </resources>

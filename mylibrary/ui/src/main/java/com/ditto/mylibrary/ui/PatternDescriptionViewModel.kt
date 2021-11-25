@@ -79,6 +79,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedProduct: ProdDomain? = null
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
 
+    var patternsInDB: MutableList<ProdDomain>? = null
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -183,6 +184,28 @@ class PatternDescriptionViewModel @Inject constructor(
         }
     }
 
+    fun fetchDemoPatternList() {
+        disposable += getPattern.getAllPatternsInDB()
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleDemoResult(it) }
+    }
+
+    private fun handleDemoResult(result: Result<List<ProdDomain>>?) {
+        when (result) {
+            is Result.OnSuccess -> {
+                patternsInDB= result.data.toMutableList()
+                Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
+                uiEvents.post(Event.OnDeletePatternFolder)
+            }
+
+            is Result.OnError -> {
+
+            }
+        }
+    }
+
     /**
      * [Function] ViewPager Previous Button Click
      */
@@ -219,6 +242,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnDataloadFailed : Event()
         object OnImageDownloadComplete : Event()
         object OnNoNetworkToDownloadImage : Event()
+        object OnDeletePatternFolder : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -357,6 +381,7 @@ class PatternDescriptionViewModel @Inject constructor(
             val path = Uri.fromFile(result)
             patternUri.set(path.toString())
             Log.d("PATTERN", patternUri.get() ?: "")
+            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
             temp.add(path.toString())
             Log.d(
                 "DOWNLOAD",

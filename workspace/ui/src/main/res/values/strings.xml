@@ -35,7 +35,7 @@
     <string name="api_failed">API Failed</string>
     <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string> <!--// mirror reminder done-->
     <string name="api_failed_message">Unable to save to Workspace</string>
-    <string name="launch_camera">LAUNCH CAMERA</string>
+    <string name="launch_camera">Continue</string>
     <string name="cancel">CANCEL</string>
     <string name="empty_string"></string>
     <string name="ok">OK</string>
@@ -86,4 +86,5 @@
     <string name="download_failed_message">Downloading pattern pieces is not completed.</string>
     <string name="guest_user_ws_exit_message">Guest User do not have save functionality.</string>
     <string name="guest_user_ws_enter_message">All pattern pieces are not downloaded.</string>
+    <string name="tutorial_for_workspace">Tutorial for workspace</string>
 </resources>
