@@ -63,7 +63,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
@@ -154,7 +154,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial("Trial", AppState.getCustID(),designeID)
+                offlinePatternDataDao.deletePatternsExceptTrial(
+                    "Trial",
+                    AppState.getCustID(),
+                    designeID
+                )
             }.map {
                 Result.withValue(it)
             }
@@ -232,7 +236,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getFoldersList(
             requestdata, "Basic " + encryptedKey,
@@ -309,7 +313,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.addFolder(
             requestdata, "Basic " + encryptedKey,
@@ -391,7 +395,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.renameFolder(
             renameRequest, "Basic " + encryptedKey,
@@ -477,12 +481,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype,if (AppState.getIsLogged()
-            ) {
-                AppState.getCustID()
-            } else {
-                "0"
-            })
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype, AppState.getCustID())
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
@@ -493,7 +492,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
     override fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
             val patterns = offlinePatternDataDao.getAllPatterns(AppState.getCustID())
-
             if (patterns != null)
                 Result.withValue(patterns.toDomain())
             else
@@ -503,13 +501,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,
-                if (AppState.getIsLogged()
+            val offlinePatternData = if (AppState.getIsLogged()
             ) {
-                AppState.getCustID()
+                offlinePatternDataDao.getTailernovaDataByID(id, AppState.getCustID())
             } else {
-                "0"
-            })
+                offlinePatternDataDao.getTailernovaDataByIDTrial(id)
+            }
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toPatternIDDomain())
             else
@@ -517,9 +514,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any> {
+    override fun insertTailornovaDetails(
+        patternIdData: PatternIdData,
+        orderNumber: String?
+    ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber))}
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber))
+        }
     }
 
 }

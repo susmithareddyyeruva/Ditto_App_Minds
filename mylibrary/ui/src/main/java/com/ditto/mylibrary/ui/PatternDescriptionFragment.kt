@@ -634,7 +634,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             PatternDescriptionViewModel.Event.OnDeletePatternFolder -> {
-                deleteFolder(viewModel.patternsInDB)
+                if(AppState.getIsLogged()) {
+                    deleteFolder(viewModel.patternsInDB)
+                }else{
+                }
             }
 
         }

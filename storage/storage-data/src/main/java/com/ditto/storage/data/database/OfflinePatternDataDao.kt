@@ -15,9 +15,7 @@ abstract class OfflinePatternDataDao {
     @JvmSuppressWildcards
     abstract fun insertOfflinePatternDataList(offlinePatterns: List<OfflinePatterns>)
 
-//    @Query("SELECT * FROM offline_pattern_data where custId = :custId and patternType !='Trial' ")//todo need to fetch respective of id i.e custmoer id
-
-    @Query("SELECT * FROM offline_pattern_data where custId = :custId")//todo need to fetch respective of id i.e custmoer id
+    @Query("SELECT * FROM offline_pattern_data where patternType ='Trial' or custId = :custId")//todo need to fetch respective of id i.e custmoer id
     abstract fun getAllPatterns(custId: String?): List<OfflinePatterns>
 
     @Query("SELECT * FROM offline_pattern_data WHERE designId = :id and custId = :custId")
@@ -26,9 +24,8 @@ abstract class OfflinePatternDataDao {
     @Query("SELECT * FROM offline_pattern_data WHERE designId = :id")
     abstract fun getTailernovaDataByIDTrial(id: String): OfflinePatterns
 
-
-    @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type and custId = :custId")
-    abstract fun getListOfTrialPattern(type: String,custId: String?): List<OfflinePatterns>
+    @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type or custId = :custId")
+    abstract fun getListOfTrialPattern(type: String, custId: String?): List<OfflinePatterns>
 
     @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , status = :status , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
     abstract fun updateOfflinePatternData(
