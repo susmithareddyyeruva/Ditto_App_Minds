@@ -78,6 +78,6 @@
     <string name="defult_filter_text">Showing filtered results</string>
     <string name="prompt">null</string>
     <string name="no_cust">No Customization</string>
-    <string name="please_selecte_mannequinid">Please select any customization</string>
+    <string name="please_selecte_mannequinid">Please select any customization to continue !</string>
 
 </resources>
