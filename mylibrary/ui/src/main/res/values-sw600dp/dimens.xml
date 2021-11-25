@@ -110,7 +110,7 @@
     <dimen name="checkbox_dimens">25dp</dimen>
     <dimen name="spinner_width">225dp</dimen>
     <dimen name="spinner_height">55dp</dimen>
-    <dimen name="spinner_padding_start">14dp</dimen>
+    <dimen name="spinner_padding_start">12dp</dimen>
     <dimen name="spinner_padding_content">14dp</dimen>
     <dimen name="offset">55dp</dimen>
 </resources>
