@@ -205,7 +205,7 @@
                 android:id="@+id/textMannequinName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_spinner"
+                android:background="@drawable/ic_mannequinbg"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:gravity="center"
                 android:padding="@dimen/padding_9"
