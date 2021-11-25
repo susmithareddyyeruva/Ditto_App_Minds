@@ -94,6 +94,13 @@
                 app:layout_constraintGuide_percent=".94" />
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/end_guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".95" />
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/bottom_guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -190,7 +197,7 @@
                 android:theme="@style/AlwaysEnableScrollBar"
                 android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toStartOf="@id/end_guideline"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline2"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header" />
 
@@ -206,8 +213,8 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_12sp"
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/end_guideline"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline2"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header"
                 tools:text="Casual" />
