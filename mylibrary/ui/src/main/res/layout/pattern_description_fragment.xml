@@ -197,7 +197,7 @@
                 android:theme="@style/AlwaysEnableScrollBar"
                 android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline2"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline2"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header" />
 
@@ -205,7 +205,7 @@
                 android:id="@+id/textMannequinName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_mannequinbg"
+                android:background="@drawable/ic_spinner"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:gravity="center"
                 android:padding="@dimen/padding_9"
@@ -214,7 +214,7 @@
                 android:textSize="@dimen/size_12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline2"
+                app:layout_constraintEnd_toStartOf="@id/end_guideline2"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header"
                 tools:text="Casual" />
