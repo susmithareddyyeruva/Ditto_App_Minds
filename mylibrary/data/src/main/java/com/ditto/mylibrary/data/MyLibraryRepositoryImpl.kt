@@ -477,7 +477,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype,AppState.getCustID())
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype,if (AppState.getIsLogged()
+            ) {
+                AppState.getCustID()
+            } else {
+                "0"
+            })
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
@@ -498,7 +503,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,AppState.getCustID())
+            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,
+                if (AppState.getIsLogged()
+            ) {
+                AppState.getCustID()
+            } else {
+                "0"
+            })
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toPatternIDDomain())
             else

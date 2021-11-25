@@ -53,10 +53,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-            val input="$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
-       val encryptedKey= EncodeDecodeUtil.HMAC_SHA256(key,input)
-        return homeService.getHomeScreenDetails(requestData, "Basic "+encryptedKey)
+        val input = "$EN_USERNAME:$EN_PASSWORD"
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
+        return homeService.getHomeScreenDetails(requestData, "Basic " + encryptedKey)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
                     logger.d("*****FETCH HOME SUCCESS 200 with Error **")
@@ -102,8 +102,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD GATEWAY")
                         }
                     }
-                }
-                else{
+                } else {
                     errorMessage = when (it) {
                         is UnknownHostException -> {
                             UNKNOWN_HOST_EXCEPTION
@@ -125,7 +124,14 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternDetails(): Single<Result<List<OfflinePatternData>>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getAllPatterns(AppState.getCustID())
+            val offlinePatternData = offlinePatternDataDao.getAllPatterns(
+                if (AppState.getIsLogged()
+                ) {
+                    AppState.getCustID()
+                } else {
+                    "0"
+                }
+            )
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
@@ -137,36 +143,42 @@ class MyLibraryRepositoryImpl @Inject constructor(
         return tailornovaApiService.getTrialPatterns(BuildConfig.TAILORNOVA_ENDURL + "Android/trial")
             .doOnSuccess {
                 logger.d(" Trial api  Success")
-                offlinePatternDataDao.upsertList(it.trial.toDomainn())
+                offlinePatternDataDao.upsertList(it.trial.toDomainn(),AppState.getCustID())
                 //PatternIdData>>OfflinePatterns
 
-                 Log.d("Tailornova", "insertofflinePatternsData complete: $it")
+                Log.d("Tailornova", "insertofflinePatternsData complete: $it")
             }.map {
-            it.trial?.let { it1 -> Result.withValue(it1) }
-        }.onErrorReturn {
-            var errorMessage = "Error fetching data"
+                it.trial?.let { it1 -> Result.withValue(it1) }
+            }.onErrorReturn {
+                var errorMessage = "Error fetching data"
 
-            try {
-                logger.d("try block")
-                val error = it as HttpException
-                if (error != null) {
-                    logger.d("Error Tailornova")
+                try {
+                    logger.d("try block")
+                    val error = it as HttpException
+                    if (error != null) {
+                        logger.d("Error Tailornova")
+                    }
+                } catch (e: Exception) {
+                    //logger.d("Catch",e.message.toString())
+                    errorMessage = e.message.toString()
                 }
-            } catch (e: Exception) {
-                //logger.d("Catch",e.message.toString())
-                errorMessage = e.message.toString()
+                Result.withError(
+                    CommonApiFetchError(errorMessage, it)
+                )
             }
-            Result.withError(
-                CommonApiFetchError(errorMessage, it)
-            )
-        }
     }
 
     override fun getTrialPatterns(): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern("Trial",AppState.getCustID())
+            val trialPatterns =
+                offlinePatternDataDao.getListOfTrialPattern("Trial", if (AppState.getIsLogged()
+                ) {
+                    AppState.getCustID()
+                } else {
+                    "0"
+                })
             if (trialPatterns != null)
-                Result.withValue(trialPatterns.offlinetoDomain() )
+                Result.withValue(trialPatterns.offlinetoDomain())
             else
                 Result.withError(TrialPatternError(""))
         }

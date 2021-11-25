@@ -15,6 +15,7 @@ import com.ditto.login.domain.model.LandingContentDomain
 import com.ditto.login.domain.model.LoginInputData
 import com.ditto.login.domain.model.LoginResultDomain
 import com.ditto.login.domain.model.LoginUser
+import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -35,6 +36,7 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
     private val loginService: @JvmSuppressWildcards LoginService,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
+    private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val loggerFactory: LoggerFactory
 ) : LoginRepository {
     @Inject
@@ -76,6 +78,7 @@ class LoginRepositoryImpl @Inject constructor(
             basic
         )
             .doOnSuccess {
+                offlinePatternDataDao.deleteOtherUserRecord(it.customerId)
                 Log.d("Login", "*****Login Success**")
             }
             .map {

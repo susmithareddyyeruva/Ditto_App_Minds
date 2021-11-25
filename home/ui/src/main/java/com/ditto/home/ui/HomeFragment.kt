@@ -118,7 +118,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
 
         if (NetworkUtility.isNetworkAvailable(context)) {
-            homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
+            homeViewModel.fetchTailornovaTrialPattern() // fetch trial pattern api from tailornova saving to db >> showing count also
             /*if (AppState.getIsLogged()) {
                 homeViewModel.fetchData() // todo remove fetchData and uncomment above line
             } else {

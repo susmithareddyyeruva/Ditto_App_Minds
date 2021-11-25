@@ -108,7 +108,12 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override fun getTailernovaDataByID(id: String): Single<Result<OfflinePatternData>> {
         return Single.fromCallable{
 
-            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,AppState.getCustID())
+            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id,if (AppState.getIsLogged()
+            ) {
+                AppState.getCustID()
+            } else {
+                "0"
+            })
             if(offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomainn())
             else

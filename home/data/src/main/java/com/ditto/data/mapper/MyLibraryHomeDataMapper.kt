@@ -232,7 +232,8 @@ fun PatternPiecesOffline.toDomain1(): OfflinePatternPieces {
 internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
     return this.map {
         OfflinePatterns(
-            custId = AppState.getCustID(),
+            custId= if(AppState.getIsLogged()){AppState.getCustID()}else{"0"},
+            //custId = AppState.getCustID(),
             designId = it.designId,
             tailornaovaDesignId = it.designId,
             patternName = it.patternName,
