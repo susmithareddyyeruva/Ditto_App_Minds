@@ -26,5 +26,5 @@ data class ProdDomain(
     var purchasedSizeId:String?="",
     var selectedMannequinId: String? = "",
     var selectedMannequinName:String?="",
-    var mannequin:List<MannequinDataDomain>?=null
+    var mannequin:List<MannequinDataDomain>?= emptyList()
 ) : Serializable
