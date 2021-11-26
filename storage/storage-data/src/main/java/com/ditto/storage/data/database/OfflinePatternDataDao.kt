@@ -19,7 +19,7 @@ abstract class OfflinePatternDataDao {
     abstract fun getAllPatterns(custId: String?): List<OfflinePatterns>
 
     @Query("SELECT * FROM offline_pattern_data WHERE designId = :id and custId = :custId")
-    abstract fun getTailernovaDataByID(id: String,custId:String?): OfflinePatterns
+    abstract fun getTailernovaDataByID(id: String, custId: String?): OfflinePatterns
 
     @Query("SELECT * FROM offline_pattern_data WHERE designId = :id")
     abstract fun getTailernovaDataByIDTrial(id: String): OfflinePatterns
@@ -42,9 +42,9 @@ abstract class OfflinePatternDataDao {
 
     //if patternType!= trial >> delete it (keeping trial patterns only)
     @Query("DELETE from offline_pattern_data where patternType  != :patternType and custId == :custId  and designId != :designId")// for specific user
-    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?,designId: String)
+    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?, designId: String)
 
-//    Delete pattern in offline pttern where custId != nivedh.custID and custId != 0
+    //    Delete pattern in offline pttern where custId != nivedh.custID and custId != 0
     @Query("DELETE from offline_pattern_data where custId != :custId  and custId != 0")
     abstract fun deleteOtherUserRecord(custId: String?)
 
@@ -109,7 +109,10 @@ abstract class OfflinePatternDataDao {
         occasion: String?,
         patternDescriptionImageUrl: String?,
         customization: Boolean?,
-        selvages: List<SelvageData>?/*,
+        selvages: List<SelvageData>?,
+        selectedMannequinId: String?,
+        selectedMannequinName: String?,
+        mannequin: List<MannequinData>?/*,
         selectedTab: String?,
         status: String,
         numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
@@ -120,7 +123,7 @@ abstract class OfflinePatternDataDao {
 
     ): Int
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedTab=:selectedTab,status=:status, numberOfCompletedPiece=:numberOfCompletedPieces, patternPieces= :patternPiecesFromApi,garmetWorkspaceItems=:garmetWorkspaceItemOfflines,liningWorkspaceItems=:liningWorkspaceItemOfflines,interfaceWorkspaceItems= :interfaceWorkspaceItemOfflines WHERE designId= :designId ")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedTab=:selectedTab,status=:status, numberOfCompletedPiece=:numberOfCompletedPieces, patternPieces= :patternPiecesFromApi,garmetWorkspaceItems=:garmetWorkspaceItemOfflines,liningWorkspaceItems=:liningWorkspaceItemOfflines,interfaceWorkspaceItems= :interfaceWorkspaceItemOfflines,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId ")
     abstract fun updateTailornovaTrailForPatternDifferentUser(
         custId: String?,
         designId: String,
@@ -159,87 +162,90 @@ abstract class OfflinePatternDataDao {
 
     @Transaction
     open fun upsertList(trialPatternList: List<OfflinePatterns>, custID: String?) {
-        for(obj in trialPatternList) {
+        for (obj in trialPatternList) {
             val id: Long = insertOfflinePatternData(obj)
             val objInDB = getTailernovaDataByIDTrial(obj.designId) // obj2 cust id inside db
             Log.d("offlinePatternDataDao", "upsertList insert $id")
             if (id == -1L) {
                 //todo need to updaate the other like garment and all
-                    if(obj.custId != objInDB.custId){
-                        //1. if logged in custId is != Db custID we will insert garment lining
-                        val i = updateTailornovaTrailForPatternDifferentUser(
-                            obj.custId,
-                            obj.designId,
-                            obj.patternName,
-                            obj.description,
-                            obj.patternType,
-                            obj.numberOfPieces,
-                            obj.orderModificationDate,
-                            obj.orderCreationDate,
-                            obj.instructionFileName,
-                            obj.instructionUrl,
-                            obj.thumbnailImageUrl,
-                            obj.thumbnailImageName,
-                            obj.thumbnailEnlargedImageName,
-                            obj.brand,
-                            obj.size,
-                            obj.patternPiecesFromTailornova,
-                            obj.gender,
-                            obj.dressType,
-                            obj.suitableFor,
-                            obj.occasion,
-                            obj.patternDescriptionImageUrl,
-                            obj.customization,
-                            obj.selvages,
-                            obj.selectedTab,
-                            obj.status,
-                            obj.numberOfCompletedPieces,
-                            obj.patternPiecesFromApi,
-                            obj.garmetWorkspaceItemOfflines,
-                            obj.liningWorkspaceItemOfflines,
-                            obj.interfaceWorkspaceItemOfflines,
-                            obj.selectedMannequinId,
-                            obj.selectedMannequinName,
-                            obj.mannequin
-                        )
-                        Log.d("offlinePatternDataDao", "upsertList update trial if  different user $i")
+                if (obj.custId != objInDB.custId) {
+                    //1. if logged in custId is != Db custID we will insert garment lining
+                    val i = updateTailornovaTrailForPatternDifferentUser(
+                        obj.custId,
+                        obj.designId,
+                        obj.patternName,
+                        obj.description,
+                        obj.patternType,
+                        obj.numberOfPieces,
+                        obj.orderModificationDate,
+                        obj.orderCreationDate,
+                        obj.instructionFileName,
+                        obj.instructionUrl,
+                        obj.thumbnailImageUrl,
+                        obj.thumbnailImageName,
+                        obj.thumbnailEnlargedImageName,
+                        obj.brand,
+                        obj.size,
+                        obj.patternPiecesFromTailornova,
+                        obj.gender,
+                        obj.dressType,
+                        obj.suitableFor,
+                        obj.occasion,
+                        obj.patternDescriptionImageUrl,
+                        obj.customization,
+                        obj.selvages,
+                        obj.selectedTab,
+                        obj.status,
+                        obj.numberOfCompletedPieces,
+                        obj.patternPiecesFromApi,
+                        obj.garmetWorkspaceItemOfflines,
+                        obj.liningWorkspaceItemOfflines,
+                        obj.interfaceWorkspaceItemOfflines,
+                        obj.selectedMannequinId,
+                        obj.selectedMannequinName,
+                        obj.mannequin
+                    )
+                    Log.d("offlinePatternDataDao", "upsertList update trial if  different user $i")
 
 
-                    }else {
-                        val i = updateTailornovaOfflineData(
-                            obj.custId,
-                            obj.designId,
-                            obj.patternName,
-                            obj.description,
-                            obj.patternType,
-                            obj.numberOfPieces,
-                            obj.orderModificationDate,
-                            obj.orderCreationDate,
-                            obj.instructionFileName,
-                            obj.instructionUrl,
-                            obj.thumbnailImageUrl,
-                            obj.thumbnailImageName,
-                            obj.thumbnailEnlargedImageName,
-                            obj.brand,
-                            obj.size,
-                            obj.patternPiecesFromTailornova,
-                            obj.gender,
-                            obj.dressType,
-                            obj.suitableFor,
-                            obj.occasion,
-                            obj.patternDescriptionImageUrl,
-                            obj.customization,
-                            obj.selvages,
-                            /*obj.selectedTab,
-                    obj.garmetWorkspaceItemOfflines,
-                    obj.liningWorkspaceItemOfflines,
-                    obj.interfaceWorkspaceItemOfflines,
-                    obj.status,
-                    obj.numberOfCompletedPieces,
-                    obj.patternPiecesFromApi*/
-                        )
-                        Log.d("offlinePatternDataDao", "upsertList update trial pattern  $i")
-                    }
+                } else {
+                    val i = updateTailornovaOfflineData(
+                        obj.custId,
+                        obj.designId,
+                        obj.patternName,
+                        obj.description,
+                        obj.patternType,
+                        obj.numberOfPieces,
+                        obj.orderModificationDate,
+                        obj.orderCreationDate,
+                        obj.instructionFileName,
+                        obj.instructionUrl,
+                        obj.thumbnailImageUrl,
+                        obj.thumbnailImageName,
+                        obj.thumbnailEnlargedImageName,
+                        obj.brand,
+                        obj.size,
+                        obj.patternPiecesFromTailornova,
+                        obj.gender,
+                        obj.dressType,
+                        obj.suitableFor,
+                        obj.occasion,
+                        obj.patternDescriptionImageUrl,
+                        obj.customization,
+                        obj.selvages,
+                        obj.selectedMannequinId,
+                        obj.selectedMannequinName,
+                        obj.mannequin
+                        /*obj.selectedTab,
+                obj.garmetWorkspaceItemOfflines,
+                obj.liningWorkspaceItemOfflines,
+                obj.interfaceWorkspaceItemOfflines,
+                obj.status,
+                obj.numberOfCompletedPieces,
+                obj.patternPiecesFromApi*/
+                    )
+                    Log.d("offlinePatternDataDao", "upsertList update trial pattern  $i")
+                }
             }
         }
     }
