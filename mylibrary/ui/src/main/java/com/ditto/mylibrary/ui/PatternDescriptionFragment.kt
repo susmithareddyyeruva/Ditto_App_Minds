@@ -1003,7 +1003,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch {
                 Utility.sendDittoImage(
-                    requireActivity(),
+                    requireContext(),
                     "solid_black"
                 )
             }
