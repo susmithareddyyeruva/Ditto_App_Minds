@@ -466,7 +466,8 @@ class Utility @Inject constructor(
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
             var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
             Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
-            val pdfFile = File(directory, "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
+//            val pdfFile = File(directory, "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
+            val pdfFile = File(directory, "${patternFolderName.toString()}.pdf")
 
             var path : Uri? = null
             if (pdfFile.exists()){

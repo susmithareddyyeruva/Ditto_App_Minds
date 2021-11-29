@@ -831,8 +831,10 @@ class WorkspaceViewModel @Inject constructor(
             dittofolder.mkdir()
         }
 
+//        val filename =
+//            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
         val filename =
-            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
+            "${patternFolderName.toString()}.pdf"
         result = File(dittofolder, filename)
         if (!result.exists()) {
             result.createNewFile()
