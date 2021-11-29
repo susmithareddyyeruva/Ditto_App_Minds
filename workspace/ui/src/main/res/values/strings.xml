@@ -35,7 +35,7 @@
     <string name="api_failed">API Failed</string>
     <string name="mirror_message">Piece will be replaced in workspace with a mirrored version.</string> <!--// mirror reminder done-->
     <string name="api_failed_message">Unable to save to Workspace</string>
-    <string name="launch_camera">Continue</string>
+    <string name="launch_camera">CONTINUE</string>
     <string name="cancel">CANCEL</string>
     <string name="empty_string"></string>
     <string name="ok">OK</string>

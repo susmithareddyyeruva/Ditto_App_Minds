@@ -106,6 +106,7 @@ class WorkspaceViewModel @Inject constructor(
     var cutCount: Int = 0
     var cutPiecePosition: Int = 0
     var isSingleDelete: Boolean = false
+    var isCompleteButtonClickable: Boolean = true
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
 
     //Fetching tailornova details from offline_pattern_data table
@@ -428,6 +429,7 @@ class WorkspaceViewModel @Inject constructor(
         } else if (tabCategory.equals("Interfacing")) {
             data.value?.numberOfCompletedPiece?.`interface` = completedPieces.get()
         }
+        isCompleteButtonClickable = true
     }
 
     fun clickScrollLeft() {

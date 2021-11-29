@@ -789,18 +789,31 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
-                if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                    || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                ) {
-                    PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
-                    val bundle =
-                        bundleOf("PatternName" to viewModel.clickedProduct?.prodName)
-                    findNavController().navigate(
-                        R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
-                        bundle
+                /**
+                 * Allowing user to enter into instruction if mannequinId is present
+                 */
+                if (NetworkUtility.isNetworkAvailable(requireContext()) && viewModel.mannequinId?.get()?.isEmpty() == true && !(viewModel.clickedProduct?.patternType.toString().equals("Trial", true))){
+                    /**
+                     * Restricting user to enter into Instructions without selecting any customization if Network is Connected
+                     */
+                    showAlert(
+                        getString(R.string.please_selecte_mannequinid),
+                        Utility.AlertType.DEFAULT
                     )
-                } else
-                    Unit
+                }else{
+                    if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                        || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
+                        val bundle =
+                            bundleOf("PatternName" to viewModel.clickedProduct?.prodName)
+                        findNavController().navigate(
+                            R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
+                            bundle
+                        )
+                    } else
+                        Unit
+                }
             }
             PatternDescriptionViewModel.Event.OnDownloadComplete -> TODO()
             PatternDescriptionViewModel.Event.OnDataloadFailed -> showDataFailedAlert()
@@ -1003,7 +1016,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (baseViewModel.activeSocketConnection.get()) {
             GlobalScope.launch {
                 Utility.sendDittoImage(
-                    requireActivity(),
+                    requireContext(),
                     "solid_black"
                 )
             }
