@@ -104,6 +104,7 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
+                mannequinId.set(result.data.selectedMannequinId)
                 mannequinName.set(result.data.selectedMannequinName)
                 clickedProduct?.mannequin =
                     result.data.mannequin?.map { it.toDomain12() }  //Saving arraylist of mannequin
@@ -335,8 +336,7 @@ class PatternDescriptionViewModel @Inject constructor(
         temp.clear()
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                GlobalScope.launch {
-
+//                GlobalScope.launch {
                     runBlocking {
                         hashMap.forEach { (key, value) ->
                             Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
@@ -351,7 +351,7 @@ class PatternDescriptionViewModel @Inject constructor(
                         }
                     }
                     uiEvents.post(Event.OnImageDownloadComplete)
-                }
+//                }
             } else {
                 uiEvents.post(Event.OnNoNetworkToDownloadImage)
             }

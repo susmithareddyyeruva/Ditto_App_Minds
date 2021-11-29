@@ -206,6 +206,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun setSpinner() {
         viewModel.isShowSpinner.set(true)
         // we pass our item list and context to our Adapter.
+        viewModel.mannequinId?.set("")
+        viewModel.mannequinName?.set("")
         viewModel.mannequinList?.clear()
         viewModel.mannequinList?.add(MannequinDataDomain("", "Add Customization"))
         viewModel.clickedProduct!!.mannequin?.forEach {
@@ -225,21 +227,21 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         binding.spinner.adapter = adapter
         binding.spinner.setSelection(0, true)
-   /*     try {
-            val popup = Spinner::class.java.getDeclaredField("mPopup")
-            popup.isAccessible = true
+        /*     try {
+                 val popup = Spinner::class.java.getDeclaredField("mPopup")
+                 popup.isAccessible = true
 
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            val popupWindow = popup[binding.spinner] as ListPopupWindow
+                 // Get private mPopup member variable and try cast to ListPopupWindow
+                 val popupWindow = popup[binding.spinner] as ListPopupWindow
 
-            // Set popupWindow height to 500px
-            popupWindow.height = 106
-        } catch (e: NoClassDefFoundError) {
-            // silently fail...
-        } catch (e: ClassCastException) {
-        } catch (e: NoSuchFieldException) {
-        } catch (e: IllegalAccessException) {
-        }*/
+                 // Set popupWindow height to 500px
+                 popupWindow.height = 106
+             } catch (e: NoClassDefFoundError) {
+                 // silently fail...
+             } catch (e: ClassCastException) {
+             } catch (e: NoSuchFieldException) {
+             } catch (e: IllegalAccessException) {
+             }*/
     }
 
     private fun fetchPatternDetails() {
@@ -321,7 +323,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setUIForLoggedInUser() {
-        if(viewModel.isFromDeepLinking.get()){
+        if (viewModel.isFromDeepLinking.get()) {
             viewModel.patternName.set(viewModel.data.value?.patternName)
             viewModel.patternDescription.set(viewModel.data.value?.description)
             Glide.with(requireContext())
@@ -339,7 +341,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
-        }else{
+        } else {
             setData()
             setVisibilityForViews(
                 "WORKSPACE",
@@ -655,103 +657,26 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
 
-                if (NetworkUtility.isNetworkAvailable(requireContext())) {  //Network Connected
-                    /**
-                     * Allowing user to enter into workspace  using trial Pattern if Network is Connected
-                     */
-                    if (viewModel.clickedProduct?.patternType.toString().equals("Trial", true)) {
-                        binding.textWatchvideo2.isEnabled = false
-                        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                            || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                        ) {
-                            //checkBluetoothWifiPermission()
-                            //forwardtoWorkspace()
-                            viewModel.fetchDemoPatternList()
-                            val map = getPatternPieceListTailornova()
-                            //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                            if (dowloadPermissonGranted()) {
-                                Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
-                                bottomNavViewModel.showProgress.set(true)
-                                if (!::job.isInitialized || !job.isActive) {
-                                    job = GlobalScope.launch {
-                                        setPrepareDownloadList(map)
-                                    }
-                                } else {
-
-                                }
-                            } else {
-                                requestPermissions(
-                                    REQUIRED_PERMISSIONS_DOWNLOAD,
-                                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                                )
-                            }
-
-                        } else {
-                            logger.d("OnClick Workspace failed")
-                        }
-                    } else {//Pattern TYPE not  Trial and Network Connected
-                        /**
-                         * Allowing user to enter into workspace  which is not  trial Pattern if Network is Connected
-                         */
-
-                        if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
-                            binding.textWatchvideo2.isEnabled = false
-                            if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                                || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                            ) {
-                                //checkBluetoothWifiPermission()
-                                //forwardtoWorkspace()
-                                viewModel.fetchDemoPatternList()
-                                val map = getPatternPieceListTailornova()
-                                //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                                if (dowloadPermissonGranted()) {
-                                    Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
-                                    bottomNavViewModel.showProgress.set(true)
-                                    if (!::job.isInitialized || !job.isActive) {
-                                        job = GlobalScope.launch {
-                                            setPrepareDownloadList(map)
-                                        }
-                                    } else {
-
-                                    }
-
-                                } else {
-                                    requestPermissions(
-                                        REQUIRED_PERMISSIONS_DOWNLOAD,
-                                        REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                                    )
-                                }
-
-                            } else {
-                                logger.d("OnClick Workspace failed")
-                            }
-                        } else {
-                            /**
-                             * Restricting user to enter into workspace without selecting any customization if Network is Connected
-                             */
-                            showAlert(
-                                getString(R.string.please_selecte_mannequinid),
-                                Utility.AlertType.DEFAULT
-                            )
-
-                        }
-
-                    }
-
-                } else {   //No Network Connected
-                    /**
-                     * Allowing user to enter into workspace using offline data for both pattern type
-                     */
+                if (viewModel.clickedProduct?.patternType.toString().equals("Trial", true)) {
                     binding.textWatchvideo2.isEnabled = false
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
+                        //checkBluetoothWifiPermission()
+                        //forwardtoWorkspace()
+                        viewModel.fetchDemoPatternList()
                         val map = getPatternPieceListTailornova()
                         //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
+                            Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
                             bottomNavViewModel.showProgress.set(true)
-                            Log.d("prepare>>>>>", "OnWorkspaceButtonClicked no network")
-                            viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                            if (!::job.isInitialized || !job.isActive) {
+                                job = GlobalScope.launch {
+                                    setPrepareDownloadList(map)
+                                }
+                            } else {
+
+                            }
                         } else {
                             requestPermissions(
                                 REQUIRED_PERMISSIONS_DOWNLOAD,
@@ -762,10 +687,54 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     } else {
                         logger.d("OnClick Workspace failed")
                     }
+                } else {//Pattern TYPE not  Trial and Network Connected
+                    /**
+                     * Allowing user to enter into workspace  which is not  trial Pattern if Network is Connected
+                     */
 
+                    if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
+                        binding.textWatchvideo2.isEnabled = false
+                        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                            || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                        ) {
+                            //checkBluetoothWifiPermission()
+                            //forwardtoWorkspace()
+                            viewModel.fetchDemoPatternList()
+                            val map = getPatternPieceListTailornova()
+                            //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                            if (dowloadPermissonGranted()) {
+                                Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
+                                bottomNavViewModel.showProgress.set(true)
+                                if (!::job.isInitialized || !job.isActive) {
+                                    job = GlobalScope.launch {
+                                        setPrepareDownloadList(map)
+                                    }
+                                } else {
+
+                                }
+
+                            } else {
+                                requestPermissions(
+                                    REQUIRED_PERMISSIONS_DOWNLOAD,
+                                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                                )
+                            }
+
+                        } else {
+                            logger.d("OnClick Workspace failed")
+                        }
+                    } else {
+                        /**
+                         * Restricting user to enter into workspace without selecting any customization if Network is Connected
+                         */
+                        showAlert(
+                            getString(R.string.please_selecte_mannequinid),
+                            Utility.AlertType.DEFAULT
+                        )
+
+                    }
 
                 }
-
 
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
@@ -792,7 +761,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 /**
                  * Allowing user to enter into instruction if mannequinId is present
                  */
-                if (NetworkUtility.isNetworkAvailable(requireContext()) && viewModel.mannequinId?.get()?.isEmpty() == true && !(viewModel.clickedProduct?.patternType.toString().equals("Trial", true))){
+                if (viewModel.mannequinId?.get()
+                        ?.isEmpty() == true && !(viewModel.clickedProduct?.patternType.toString()
+                        .equals("Trial", true))
+                ) {
                     /**
                      * Restricting user to enter into Instructions without selecting any customization if Network is Connected
                      */
@@ -800,7 +772,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         getString(R.string.please_selecte_mannequinid),
                         Utility.AlertType.DEFAULT
                     )
-                }else{
+                } else {
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
@@ -863,9 +835,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             PatternDescriptionViewModel.Event.OnDeletePatternFolder -> {
-                if(AppState.getIsLogged()) {
+                if (AppState.getIsLogged()) {
                     deleteFolder(viewModel.patternsInDB)
-                }else{
+                } else {
                 }
             }
         }
