@@ -792,7 +792,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 /**
                  * Allowing user to enter into instruction if mannequinId is present
                  */
-                if (viewModel.mannequinId?.get()?.isNotEmpty() == true || viewModel.clickedProduct?.patternType.toString().equals("Trial", true)){
+                if (NetworkUtility.isNetworkAvailable(requireContext()) && viewModel.mannequinId?.get()?.isEmpty() == true && !(viewModel.clickedProduct?.patternType.toString().equals("Trial", true))){
+                    /**
+                     * Restricting user to enter into Instructions without selecting any customization if Network is Connected
+                     */
+                    showAlert(
+                        getString(R.string.please_selecte_mannequinid),
+                        Utility.AlertType.DEFAULT
+                    )
+                }else{
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
@@ -805,14 +813,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         )
                     } else
                         Unit
-                }else{
-                    /**
-                     * Restricting user to enter into Instructions without selecting any customization if Network is Connected
-                     */
-                    showAlert(
-                        getString(R.string.please_selecte_mannequinid),
-                        Utility.AlertType.DEFAULT
-                    )
                 }
             }
             PatternDescriptionViewModel.Event.OnDownloadComplete -> TODO()
