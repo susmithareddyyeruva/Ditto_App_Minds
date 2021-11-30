@@ -10,7 +10,9 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
+import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
 import core.PDF_PASSWORD
@@ -35,6 +37,7 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class PatternDescriptionViewModel @Inject constructor(
     private val context: Context,
@@ -48,6 +51,8 @@ class PatternDescriptionViewModel @Inject constructor(
 
     //    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     val clickedTailornovaID: ObservableField<String> = ObservableField("")
+    val mannequinId: ObservableField<String> = ObservableField("")
+    val mannequinName: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
@@ -70,8 +75,11 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternUri: ObservableField<String> = ObservableField("")
     val imagesToDownload = hashMapOf<String, String>()
     val temp = ArrayList<String>()
+    var mannequinList: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
     var clickedProduct: ProdDomain? = null
+    val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
 
+    var patternsInDB: MutableList<ProdDomain>? = null
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -96,7 +104,12 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
+                mannequinId.set(result.data.selectedMannequinId)
+                mannequinName.set(result.data.selectedMannequinName)
+                clickedProduct?.mannequin =
+                    result.data.mannequin?.map { it.toDomain12() }  //Saving arraylist of mannequin
                 uiEvents.post(Event.OnDataUpdated)
+                uiEvents.post(Event.OnShowMannequinData)
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -104,7 +117,10 @@ class PatternDescriptionViewModel @Inject constructor(
 
     fun fetchPattern() {
         //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
-        disposable += getPattern.getPattern(clickedTailornovaID.get() ?: "")
+        disposable += getPattern.getPattern(
+            clickedTailornovaID.get() ?: "",
+            mannequinId.get() ?: ""
+        )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -118,18 +134,37 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnDataUpdated)
                 // insert to db here
                 data.value?.patternName = clickedProduct?.prodName
-                data.value?.description =clickedProduct?.description
+                data.value?.description = clickedProduct?.description
+                data.value?.selectedMannequinId = mannequinId.get()//getting selected MANNEQUIN ID
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(data.value!!,clickedProduct?.orderNo)// todo uncomment this line
+                insertTailornovaDetailsToDB(
+                    data.value!!,
+                    clickedProduct?.orderNo,
+                    mannequinId.get(),
+                    mannequinName.get(),
+                    clickedProduct?.mannequin
+                )// todo uncomment this line
             }
             is Result.OnError -> handleError(result.error)
         }
     }
 
-    private fun insertTailornovaDetailsToDB(patternIdData: PatternIdData, orderNo: String?) {
-        disposable += getPattern.insertTailornovaDetails(patternIdData,orderNo)
+    private fun insertTailornovaDetailsToDB(
+        patternIdData: PatternIdData,
+        orderNo: String?,
+        mannequinId: String?,
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
+    ) {
+        disposable += getPattern.insertTailornovaDetails(
+            patternIdData,
+            orderNo,
+            mannequinId,
+            mannequinName,
+            mannequin
+        )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -149,6 +184,29 @@ class PatternDescriptionViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchDemoPatternList() {
+        disposable += getPattern.getAllPatternsInDB()
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleDemoResult(it) }
+    }
+
+    private fun handleDemoResult(result: Result<List<ProdDomain>>?) {
+        when (result) {
+            is Result.OnSuccess -> {
+                patternsInDB= result.data.toMutableList()
+                Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
+                uiEvents.post(Event.OnDeletePatternFolder)
+            }
+
+            is Result.OnError -> {
+
+            }
+        }
+    }
+
     /**
      * [Function] ViewPager Previous Button Click
      */
@@ -180,10 +238,12 @@ class PatternDescriptionViewModel @Inject constructor(
         object onSubscriptionClicked : Event()
         object OnInstructionsButtonClicked : Event()
         object OnDataUpdated : Event()
+        object OnShowMannequinData : Event()
         object OnDownloadComplete : Event()
         object OnDataloadFailed : Event()
         object OnImageDownloadComplete : Event()
         object OnNoNetworkToDownloadImage : Event()
+        object OnDeletePatternFolder : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -248,8 +308,10 @@ class PatternDescriptionViewModel @Inject constructor(
             dittofolder.mkdir()
         }
 
+//        val filename =
+//            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
         val filename =
-            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
+            "${patternFolderName.toString()}.pdf"
         result = File(dittofolder, filename)
         if (!result.exists()) {
             result.createNewFile()
@@ -274,8 +336,7 @@ class PatternDescriptionViewModel @Inject constructor(
         temp.clear()
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
-                GlobalScope.launch {
-
+//                GlobalScope.launch {
                     runBlocking {
                         hashMap.forEach { (key, value) ->
                             Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
@@ -290,7 +351,7 @@ class PatternDescriptionViewModel @Inject constructor(
                         }
                     }
                     uiEvents.post(Event.OnImageDownloadComplete)
-                }
+//                }
             } else {
                 uiEvents.post(Event.OnNoNetworkToDownloadImage)
             }
@@ -324,6 +385,10 @@ class PatternDescriptionViewModel @Inject constructor(
             Log.d("PATTERN", patternUri.get() ?: "")
             Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
             temp.add(path.toString())
+            Log.d(
+                "DOWNLOAD",
+                "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} "
+            )
         }
     }
 

@@ -160,7 +160,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
     }
 
     fun applyFilter() {
-        if (AppState.getIsLogged()) {
+        if (AppState.getIsLogged() ) {
             currentPage = 1
             isLastPage = false
             // viewModel.myfolderArryList.clear()

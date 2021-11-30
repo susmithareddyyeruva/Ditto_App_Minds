@@ -44,9 +44,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
 
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
 
-    init {
 
-    }
 
     val logger: Logger by lazy {
         loggerFactory.create(WSProSettingViewModel::class.java.simpleName)

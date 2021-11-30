@@ -1,6 +1,8 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -16,8 +18,7 @@ import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
-import android.view.animation.OvershootInterpolator
-import android.view.animation.ScaleAnimation
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -34,12 +35,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
@@ -116,6 +121,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
+        arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
 
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
@@ -137,7 +143,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.recyclerViewPieces.setOnDragListener(this)
-        //binding.imageCutBin.setOnDragListener(this)
         binding.cutbinLay?.setOnDragListener(this)
         binding.seekbarStatus.isEnabled = false
         binding.includeWorkspacearea?.layoutWorkspace?.setOnDragListener(this)
@@ -481,13 +486,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(false)
                 }
                 if (viewModel.clickedSize45.get()) {
-                    val selvage = garments?.filter { it.fabricLength == "45" }?.get(0)
-
+                    val selvage = garments?.filter { it.fabricLength == "45" }?.getOrNull(0)
                     logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
                     selvage?.imagePath.let {
-                        /* binding.imageSelvageHorizontal.setImageDrawable(
-                             getDrawableFromString(context, it)
-                         )*/
                         getBitmapFromSvgPngDrawable(
                             selvage?.imageName,
                             binding.imageSelvageHorizontal.context,
@@ -500,11 +501,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
                 if (viewModel.clickedSize60.get()) {
-                    val selvage = garments?.filter { it.fabricLength == "60" }?.get(0)
+                    val selvage = garments?.filter { it.fabricLength == "60" }?.getOrNull(0)
                     selvage?.imagePath.let {
-                        /* binding.imageSelvageHorizontal.setImageDrawable(
-                             getDrawableFromString(context, it)
-                         )*/
                         getBitmapFromSvgPngDrawable(
                             selvage?.imageName,
                             binding.imageSelvageHorizontal.context,
@@ -516,7 +514,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else if(garments?.size ?: 0 != 0){
+            } else if (garments?.size ?: 0 != 0) {
                 if (garments?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
@@ -541,7 +539,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.lining),
                     true
-                )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
+                ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
@@ -583,7 +581,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(false)
                 }
                 if (viewModel.clickedSize45.get()) {
-                    val selvage = lining?.filter { it.fabricLength == "45" }?.get(0)
+                    val selvage = lining?.filter { it.fabricLength == "45" }?.getOrNull(0)
                     logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
                     selvage?.imagePath.let {
                         getBitmapFromSvgPngDrawable(
@@ -598,7 +596,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
                 if (viewModel.clickedSize60.get()) {
-                    val selvage = lining?.filter { it.fabricLength == "60" }?.get(0)
+                    val selvage = lining?.filter { it.fabricLength == "60" }?.getOrNull(0)
                     selvage?.imagePath.let {
                         getBitmapFromSvgPngDrawable(
                             selvage?.imageName,
@@ -611,7 +609,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else if(lining?.size ?: 0 != 0){
+            } else if (lining?.size ?: 0 != 0) {
                 if (lining?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
@@ -636,7 +634,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 it.tabCategory.equals(
                     getString(R.string.interfacing),
                     true
-                )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
+                ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
             }
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
@@ -647,7 +645,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         getString(
                             R.string.interfacing
                         ), true
-                    )&& (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
+                    ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
 //            interfacing?.get(0)?.imagePath?.let {
 //                /*binding.imageSelvageHorizontal.setImageDrawable(
@@ -701,9 +699,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (viewModel.clickedSize60.get()) {
                     val selvage = interfacing?.filter { it.fabricLength == "60" }?.getOrNull(0)
                     selvage?.imagePath.let {
-                        /* binding.imageSelvageHorizontal.setImageDrawable(
-                             getDrawableFromString(context, it)
-                         )*/
                         getBitmapFromSvgPngDrawable(
                             selvage?.imageName,
                             binding.imageSelvageHorizontal.context,
@@ -715,7 +710,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.clickedSize60.set(true)
                     viewModel.referenceImage.set(selvage?.imageName)
                 }
-            } else if(interfacing?.size ?: 0 != 0){
+            } else if (interfacing?.size ?: 0 != 0) {
                 if (interfacing?.get(0)!!.fabricLength == "45") {
                     binding.txtSize45.isEnabled = true
                     viewModel.enableSize45.set(true)
@@ -898,6 +893,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 mWorkspaceEditor?.flipHorizontal()
             }
             is WorkspaceViewModel.Event.CalculateScrollButtonVisibility -> {
+                showWorkspaceCoachMark()
                 calculateScrollButtonVisibility()
             }
             is WorkspaceViewModel.Event.OnDataUpdated -> {
@@ -1182,7 +1178,94 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Utility.Iconype.NONE
                 )
             }
+            WorkspaceViewModel.Event.OnCoachmarkClose -> {
+                binding.coachMarkPopup.animate()
+                    .scaleX(0.2f)
+                    .scaleY(0.2f)
+                    .x(binding.includeWorkspacearea.txtTutorial.x)
+                    .y(binding.includeWorkspacearea.txtTutorial.y)
+                    .setDuration(500)
+                    .withStartAction {
+                        binding.coachMarkClose.setVisibility(View.GONE)
+                    }
+                    .withEndAction {
+                        binding.coachMarkPopup.clearAnimation()
+                        AppState.setShowWorkspaceCoachMark(true)
+                        (parentFragment as WorkspaceFragment).closeVideoPopup()
+                        showCoachmarkEndPopup()
+                    }
+            }
+            WorkspaceViewModel.Event.OnCoachmarkPlay -> {
+                val videoPath = "https://www.youtube.com/watch?v=IH1ZNEE_bwc"
+                val bundle = bundleOf(
+                    "videoPath" to videoPath,
+                    "title" to "Workspace",
+                    "from" to "tutorial"
+                )
+                val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                intent.putExtras(bundle)
+                startActivityForResult(intent, REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL)
+            }
         }
+
+    private fun showWorkspaceCoachMark() {
+        viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
+        if (!viewModel.isWorkspaceShownCoachMark.get()) {
+
+            val transition: Transition = Slide(Gravity.BOTTOM)
+            transition.setDuration(600)
+            transition.addListener(object : Transition.TransitionListener {
+                override fun onTransitionStart(transition: Transition) {
+                }
+
+                override fun onTransitionEnd(transition: Transition) {
+                    binding.groupCoachMarkWs.setVisibility(View.VISIBLE)
+                }
+
+                override fun onTransitionCancel(transition: Transition) {
+                }
+
+                override fun onTransitionPause(transition: Transition) {
+                }
+
+                override fun onTransitionResume(transition: Transition) {
+                }
+            })
+            transition.addTarget(binding.coachMarkPopup)
+            TransitionManager.beginDelayedTransition(binding.workspaceRoot, transition)
+            binding.coachMarkPopup.setVisibility(View.VISIBLE)
+        }
+    }
+
+    private fun showCoachmarkEndPopup() {
+        binding.includeWorkspacearea.coachMarkEndPopup.setVisibility(View.VISIBLE)
+
+        val animatorSet = AnimatorSet()
+        val bounceY = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup,
+            View.SCALE_Y, 0.8f, 1f
+        ).apply {
+            interpolator = BounceInterpolator()
+            duration = 1000
+        }
+        val bounceX = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup,
+            View.SCALE_X, 0.9f, 1f
+        ).apply {
+            interpolator = BounceInterpolator()
+            duration = 1000
+        }
+        val fadeOutCoachMarkEndPopup = ObjectAnimator.ofFloat(
+            binding.includeWorkspacearea.coachMarkEndPopup, View.ALPHA, 1f, 0f
+        ).apply {
+            interpolator = AccelerateInterpolator()
+            duration = 2000
+            startDelay = 700
+        }
+        animatorSet.playTogether(bounceX, bounceY)
+        animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
+        animatorSet.start()
+    }
 
     fun downloadPatternPieces() {
         if (!baseViewModel.isProjecting.get()) {
@@ -1445,24 +1528,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-
-    private fun detectTouchedView(view: View) {
-        val scale = ScaleAnimation(
-            0.5F,
-            1F,
-            0.5F,
-            1F,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            .5f,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            .5f
-        )
-        scale.duration = 1500
-        scale.fillAfter = true
-        scale.interpolator = OvershootInterpolator()
-        view.startAnimation(scale)
-    }
-
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
@@ -1611,6 +1676,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.PATTERN_RENAME -> {
                 showSaveAndExitPopup()
+            }
+            Utility.AlertType.CUT_COMPLETE -> {
+                viewModel.isCompleteButtonClickable = true
             }
             else -> {
                 Log.d("WorkspaceTabFragment", "onNegativeButtonClicked")
@@ -2031,6 +2099,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PATTERN_NAME = "PatternName"
         private const val PATTERN_ID = "PatternId"
         private const val ORDER_NO = "clickedOrderNumber"
+        private const val MANNEQUIN_ID = "mannequinId"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
@@ -2039,6 +2108,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
+        private const val REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL = 141
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
         private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,
@@ -2341,7 +2412,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logger.d("On Activity Result")
-        if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
+        if (requestCode == REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL) {
+            viewModel.coachMarkClose()
+        } else if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
             if (data?.data.toString().equals("success")) {
                 showWaitingMessage("Connected to Ditto Projector!!")
                 baseViewModel.activeSocketConnection.set(true)
@@ -2496,6 +2569,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 Toast.makeText(requireContext(), "pending put download code", Toast.LENGTH_LONG)
                 val map = getPatternPieceListTailornova()
                 viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+            }
+            Utility.AlertType.CUT_COMPLETE -> {
+                viewModel.isCompleteButtonClickable = true
             }
 
         }

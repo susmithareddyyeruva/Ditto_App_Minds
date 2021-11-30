@@ -52,4 +52,14 @@ class PreferenceStorageImpl(private val context: Context) : PreferenceStorage {
         val clear = pref.edit().clear().apply()
     }
 
+    override fun clearAllPreferenceExceptCoachMark(key1: String, key2: String) {
+        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val prefList: MutableMap<String, *> = pref.all
+        if (prefList.containsKey(key1)) prefList.remove(key1)
+        if (prefList.containsKey(key2)) prefList.remove(key2)
+
+        for ((key) in prefList) {
+            pref.edit().remove(key).apply()
+        }
+    }
 }

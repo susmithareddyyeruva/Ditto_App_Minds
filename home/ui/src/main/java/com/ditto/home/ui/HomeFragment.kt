@@ -81,9 +81,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME", "onActivityCreated")
+        Log.d("HOME","onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
+
         (activity as BottomNavigationActivity)?.refreshMenuItem()
         (activity as BottomNavigationActivity)?.setEmaildesc()
         if (AppState.getIsLogged()) {
@@ -95,6 +96,19 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         toolbarViewModel.isShowTransparentActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
+        if (!AppState.isShownCoachMark()) {
+            bottomNavViewModel.isShownCoachMark.set(AppState.isShownCoachMark())
+            bottomNavViewModel.coachmarkFlowFinished.observe(viewLifecycleOwner, {
+                if(it){
+                    loadHomeFragment()
+                }
+            })
+        } else {
+            loadHomeFragment()
+        }
+    }
+
+    private fun loadHomeFragment() {
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -104,10 +118,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
 
         if (NetworkUtility.isNetworkAvailable(context)) {
-            homeViewModel.fetchTailornovaTrialPattern() // fetch pattern from tailornova saving to db >> showing count also
+            homeViewModel.fetchTailornovaTrialPattern() // fetch trial pattern api from tailornova saving to db >> showing count also
             /*if (AppState.getIsLogged()) {
                 homeViewModel.fetchData() // todo remove fetchData and uncomment above line
-            }else{
+            } else {
                 homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
             }*/
         } else {
@@ -156,7 +170,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         }
     }
-
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
@@ -167,7 +180,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME", "onResume")
+        Log.d("HOME","onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()

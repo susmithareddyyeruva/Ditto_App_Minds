@@ -125,29 +125,30 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
                 R.drawable.checkbox_checked_ws else R.drawable.checkbox_unchecked_ws
         )
         holder.patternsPiecesBinding.cutCompleteLay.setOnClickListener {
-            val count = patternPieces[position].cutQuantity?.get(4)
-                ?.let { Character.getNumericValue(it) }
-            if (count != null) {
-
-                viewModel.cutCount = count
-            }
-            viewModel.cutPiecePosition = position
-            if (patternPieces[position].isCompleted){
-                patternPieces[position].isCompleted = !patternPieces[position].isCompleted
-                notifyDataSetChanged()
-                viewModel.cutCheckBoxClicked(count,false)
-            } else {
+            if(viewModel.isCompleteButtonClickable){
+                viewModel.isCompleteButtonClickable = false
+                val count = patternPieces[position].cutQuantity?.get(4)
+                    ?.let { Character.getNumericValue(it) }
                 if (count != null) {
-                    if (count > 1){
-                        viewModel.onPaternItemCheckboxClicked()
-                    } else {
-                        patternPieces[position].isCompleted = !patternPieces[position].isCompleted
-                        notifyDataSetChanged()
-                        viewModel.cutCheckBoxClicked(count,true)
+                    viewModel.cutCount = count
+                }
+                viewModel.cutPiecePosition = position
+                if (patternPieces[position].isCompleted){
+                    patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+                    notifyDataSetChanged()
+                    viewModel.cutCheckBoxClicked(count,false)
+                } else {
+                    if (count != null) {
+                        if (count > 1){
+                            viewModel.onPaternItemCheckboxClicked()
+                        } else {
+                            patternPieces[position].isCompleted = !patternPieces[position].isCompleted
+                            notifyDataSetChanged()
+                            viewModel.cutCheckBoxClicked(count,true)
+                        }
                     }
                 }
             }
-
         }
         holder.patternsPiecesBinding.imageView.setOnLongClickListener {
             val state = DragData(

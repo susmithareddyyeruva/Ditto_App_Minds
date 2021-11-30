@@ -15,6 +15,7 @@ import com.ditto.login.domain.model.LandingContentDomain
 import com.ditto.login.domain.model.LoginInputData
 import com.ditto.login.domain.model.LoginResultDomain
 import com.ditto.login.domain.model.LoginUser
+import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -35,6 +36,7 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
     private val loginService: @JvmSuppressWildcards LoginService,
     private val dbDataDao: @JvmSuppressWildcards UserDao,
+    private val offlinePatternDataDao: @JvmSuppressWildcards OfflinePatternDataDao,
     private val loggerFactory: LoggerFactory
 ) : LoginRepository {
     @Inject
@@ -76,10 +78,10 @@ class LoginRepositoryImpl @Inject constructor(
             basic
         )
             .doOnSuccess {
+                offlinePatternDataDao.deleteOtherUserRecord(it.customerId)
                 Log.d("Login", "*****Login Success**")
             }
             .map {
-                Log.d("Login", "*****Login Success MAP**")
                 Result.withValue(it.toUserDomain())
 
             }
@@ -87,10 +89,9 @@ class LoginRepositoryImpl @Inject constructor(
                 var errorMessage = "Error Fetching data"
                 try {
                     Log.d("Try", "try block")
-                    val error = it as HttpException
-                    if (error!=null) {
-                        val errorBody = error.response()!!.errorBody()!!.string()
-                        Log.d("LoginError", errorBody)
+                    if (it is HttpException) {
+                        val errorBody = it.response()?.errorBody()?.string()
+                        Log.d("LoginError", errorBody?:"")
                         val gson = Gson()
                         val type = object : TypeToken<LoginError>() {}.type
                         val errorResponse: LoginError? = gson.fromJson(errorBody, type)
@@ -109,7 +110,6 @@ class LoginRepositoryImpl @Inject constructor(
                     LoginFetchError(errorMessage, it)
                 )
             }
-
 
 
     }

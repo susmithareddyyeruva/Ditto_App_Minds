@@ -30,5 +30,9 @@ data class WorkspaceItem(
     @SerializedName("showMirrorDialog")
     val showMirrorDialog: Boolean = false,
     @SerializedName("currentSplicedPieceNo")
-    val currentSplicedPieceNo: String? = ""
+    val currentSplicedPieceNo: String? = "",
+    @SerializedName("currentSplicedPieceColumn")
+    val currentSplicedPieceColumn: Int = 0,
+    @SerializedName("currentSplicedPieceRow")
+    val currentSplicedPieceRow: Int = 0
 )

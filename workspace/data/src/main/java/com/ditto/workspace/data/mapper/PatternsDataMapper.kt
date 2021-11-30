@@ -5,8 +5,7 @@ import com.ditto.workspace.domain.model.NumberOfPieces
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
-internal fun List<Patterns>.toDomain(): List<PatternsData>
-{
+internal fun List<Patterns>.toDomain(): List<PatternsData> {
     return this.map {
         PatternsData(
             id = it.id,
@@ -17,10 +16,10 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
             selectedTab = it.selectedTab,
             status = it.status,
             thumbnailImagePath = it.thumbnailImagePath,
-            thumbnailImageName =it.thumbnailImageName,
+            thumbnailImageName = it.thumbnailImageName,
             instructionUrl = "instructionUrl",
             numberOfCompletedPiece = it.numberOfCompletedPieces?.toDomainn(),
-            totalNumberOfPieces =it.numberOfPieces?.toDomainn(),
+            totalNumberOfPieces = it.numberOfPieces?.toDomainn(),
             descriptionImages = it.descriptionImages.map { it.toDomain() },
             selvages = it.selvages?.map { it.toDomain() },
             patternPieces = it.patternPieces?.map { it.toDomain() },
@@ -33,6 +32,7 @@ internal fun List<Patterns>.toDomain(): List<PatternsData>
         )
     }
 }
+
 internal fun Patterns.toDomain(): PatternsData {
     return PatternsData(
         id = this.id,
@@ -44,15 +44,18 @@ internal fun Patterns.toDomain(): PatternsData {
         status = this.status,
         instructionUrl = "instructionUrl",
         thumbnailImagePath = this.thumbnailImagePath,
-        thumbnailImageName =this.thumbnailImageName,
+        thumbnailImageName = this.thumbnailImageName,
         numberOfCompletedPiece = this.numberOfCompletedPieces?.toDomainn(),
-        totalNumberOfPieces =this.numberOfPieces?.toDomainn(),
+        totalNumberOfPieces = this.numberOfPieces?.toDomainn(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages?.map { it.toDomain() },
         patternPieces = this.patternPieces?.map { it.toDomain() },
-        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
-        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
-        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList()
     )
 }
 
@@ -91,9 +94,9 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         id = this.id,
         parentPattern = this.parentPattern,
         imagePath = this.imagePath,
-        imageName=this.imageName,
-        thumbnailImageUrl= this.thumbnailImageUrl,
-        thumbnailImageName=this.thumbnailImageName,
+        imageName = this.imageName,
+        thumbnailImageUrl = this.thumbnailImageUrl,
+        thumbnailImageName = this.thumbnailImageName,
         size = this.size,
         view = this.view,
         pieceNumber = this.pieceNumber,
@@ -143,6 +146,7 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         currentSplicedPieceColumn = this.currentSplicedPieceColumn
     )
 }
+
 //todo check below
 internal fun PatternsData.toDomain(): Patterns {
     return Patterns(
@@ -154,21 +158,24 @@ internal fun PatternsData.toDomain(): Patterns {
         selectedTab = this.selectedTab,
         status = this.status,
         thumbnailImagePath = this.thumbnailImagePath,
-        numberOfCompletedPieces= this.numberOfCompletedPiece?.toDomain(),
-        numberOfPieces= this.totalNumberOfPieces?.toDomain(),
+        numberOfCompletedPieces = this.numberOfCompletedPiece?.toDomain(),
+        numberOfPieces = this.totalNumberOfPieces?.toDomain(),
         descriptionImages = this.descriptionImages.map { it.toDomain() },
         selvages = this.selvages?.map { it.toDomain() },
         patternPieces = this.patternPieces?.map { it.toDomain() },
-        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
-        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList(),
-        interfaceWorkspaceItemOfflines= this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }?.toMutableList()
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList()
     )
 }
 
 fun NumberOfCompletedPiecesOffline.toDomainn(): NumberOfPieces {
     return NumberOfPieces(
-        garment=this.garment,
-        lining=this.lining,
+        garment = this.garment,
+        lining = this.lining,
         `interface` = this.`interface`
     )
 }

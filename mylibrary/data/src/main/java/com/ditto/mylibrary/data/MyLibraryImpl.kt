@@ -24,8 +24,8 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getUserData()
     }
 
-    override fun getPattern(get: String): Single<Result<PatternIdData>> {
-        return myLibraryRepository.getPatternData(get)
+    override fun getPattern(get: String,mannequinId:String): Single<Result<PatternIdData>> {
+        return myLibraryRepository.getPatternData(get,mannequinId)
     }
 
     override fun removeProject(patternId: String): Single<Any> {
@@ -65,8 +65,14 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.renameFolder(createJson, methodName)
     }
 
-    override fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any> {
-        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber)
+    override fun insertTailornovaDetails(
+        patternIdData: PatternIdData,
+        orderNumber: String?,
+        mannequinId: String?,
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
+    ): Single<Any> {
+        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,mannequinId,mannequinName,mannequin)
     }
 
     override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
@@ -77,8 +83,12 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getOfflinePatternDetails()
     }
 
-    override fun getTrialPatterns(): Single<Result<List<ProdDomain>>> {
-        return  myLibraryRepository.getTrialPatterns()
+    override fun getTrialPatterns(patternType:String): Single<Result<List<ProdDomain>>> {
+        return  myLibraryRepository.getTrialPatterns(patternType)
+    }
+
+    override fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>> {
+        return myLibraryRepository.getAllPatternsInDB()
     }
 
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {

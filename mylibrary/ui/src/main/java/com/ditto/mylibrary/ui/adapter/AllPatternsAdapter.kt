@@ -47,7 +47,12 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         holder.patternsItemBinding.viewModel = viewModel
         val data=patterns[position]
        // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
-        setImageFromSvgPngDrawable(patterns.get(position).prodName,patterns.get(position).image,holder.patternsItemBinding.imagePattern.context,holder.patternsItemBinding.imagePattern)
+        setImageFromSvgPngDrawable(
+            patterns.get(position).prodName,
+            patterns.get(position).image,
+            holder.patternsItemBinding.imagePattern.context,
+            holder.patternsItemBinding.imagePattern
+        )
 
 //        val res: Resources = viewGroup!!.resources
 //        Glide.with(holder.patternsItemBinding.imagePattern.context)
@@ -113,7 +118,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(context))){
-            availableUri = Utility.isImageFileAvailable(imagePath,"${foldername}")
+            availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}")
             Log.d("imageUri123", " $foldername availableUri: $availableUri")
        // }
         if (imagePath?.endsWith(".svg", true)!!) {
@@ -137,7 +142,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         } else {
             Glide
                 .with(context)
-                .load(if(NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
+                .load(if (NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)

@@ -2,7 +2,6 @@
     <string name="drawable_string">drawable</string>
     <string name="about_the_app_amp_policies">About the App &amp; Policies</string>
     <string name="image_slide_menu">Image Slide Menu</string>
-    <string name="skip">Skip</string>
     <string name="hi_there">Hi there</string>
     <string name="sign_in_to_explore_more">Sign in to explore more</string>
     <string name="subscription">Subscription</string>
@@ -25,5 +24,21 @@
     <string name="pattern_library_count1">Pattern Library\u0020(%1$d)</string>
     <string name="about_app_policies">About the app &amp; policies</string>
     <string name="str_fetch_error">Error Fetching Data!!</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="coach_mark_skip">Skip</string>
+
+    <integer-array name="coach_mark_images">
+        <item>@drawable/coachmark_home_menu4</item>
+        <item>@drawable/coachmark_home_library</item>
+        <item>@drawable/coachmark_library_swipe</item>
+        <item>@drawable/coachmark_library_search</item>
+        <item>@drawable/coachmark_library_filter</item>
+        <item>@drawable/coachmark_library_folder</item>
+        <item>@drawable/coachmark_library_add_to_folder</item>
+        <item>@drawable/coachmark_library_item</item>
+        <item>@drawable/coachmark_description_instruction</item>
+        <item>@drawable/coachmark_description_workspace</item>
+    </integer-array>
     <string name="customer_not_match">Customer doesn\'t match !</string>
 </resources>

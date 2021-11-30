@@ -7,6 +7,7 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.FilterError
+import com.ditto.mylibrary.data.error.PatternDBError
 import com.ditto.mylibrary.data.error.TrialPatternError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
@@ -62,7 +63,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
@@ -87,7 +88,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("MY LIBRARY API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -145,15 +147,19 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(designeID: String): Single<Result<PatternIdData>> {
+    override fun getPatternData(designeID: String, mannequinId: String): Single<Result<PatternIdData>> {
         return tailornovaApiService.getPatternDetailsByDesignId(
             BuildConfig.TAILORNOVA_ENDURL + designeID,
-            OS
+            OS, mannequinId
         )
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
                 // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial("trial", AppState.getCustID(),designeID)
+                offlinePatternDataDao.deletePatternsExceptTrial(
+                    "Trial",
+                    AppState.getCustID(),
+                    designeID
+                )
             }.map {
                 Result.withValue(it)
             }
@@ -163,8 +169,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
-                            logger.d("onError: BAD REQUEST")
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("Tailornova  API: $errorBody")
 
                         }
                         401 -> {
@@ -231,7 +237,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getFoldersList(
             requestdata, "Basic " + encryptedKey,
@@ -255,7 +261,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("FOLDER  API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -308,7 +315,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.addFolder(
             requestdata, "Basic " + encryptedKey,
@@ -335,7 +342,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("ADD  FOLDER  API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -390,7 +398,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_PASSWORD"
-        val key=EncodeDecodeUtil.decodeBase64(AppState.getKey())
+        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.renameFolder(
             renameRequest, "Basic " + encryptedKey,
@@ -418,7 +426,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()!!.errorBody()!!.string()
+                            val errorBody = it.response()?.errorBody()?.string()
+                            logger.d("RENAME  FOLDER  API: $errorBody")
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
@@ -466,7 +475,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getOfflinePatternDetails(): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaData()
+            val offlinePatternData = offlinePatternDataDao.getAllPatterns(AppState.getCustID())
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
@@ -474,9 +483,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTrialPatterns(): Single<Result<List<ProdDomain>>> {
+    override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern("Trial")
+            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype, AppState.getCustID())
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
@@ -484,9 +493,24 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getAllPatternsInDB(): Single<Result<List<ProdDomain>>> {
+        return Single.fromCallable {
+            val patterns = offlinePatternDataDao.getAllPatterns(AppState.getCustID())
+            if (patterns != null)
+                Result.withValue(patterns.toDomain())
+            else
+                Result.withError(PatternDBError(""))
+        }
+    }
+
     override fun getOfflinePatternById(id: String): Single<Result<PatternIdData>> {
         return Single.fromCallable {
-            val offlinePatternData = offlinePatternDataDao.getTailernovaDataByID(id)
+            val offlinePatternData = if (AppState.getIsLogged()
+            ) {
+                offlinePatternDataDao.getTailernovaDataByID(id, AppState.getCustID())
+            } else {
+                offlinePatternDataDao.getTailernovaDataByIDTrial(id)
+            }
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toPatternIDDomain())
             else
@@ -494,9 +518,15 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertTailornovaDetails(patternIdData: PatternIdData,orderNumber:String?): Single<Any> {
+    override fun insertTailornovaDetails(
+        patternIdData: PatternIdData,
+        orderNumber: String?,
+        mannequinId: String?,
+        mannequinName: String?,
+        mannequin: List<MannequinDataDomain>?
+    ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber))}
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,mannequinId,mannequinName,mannequin))}
     }
 
 }
