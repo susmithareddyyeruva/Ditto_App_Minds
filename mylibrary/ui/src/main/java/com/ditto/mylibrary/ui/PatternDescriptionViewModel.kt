@@ -400,11 +400,13 @@ class PatternDescriptionViewModel @Inject constructor(
         var result: File? = null
         var dittofolder: File? = null
         var subFolder: File? = null
-        dittofolder = File(
+        val contextWrapper = ContextWrapper(context)
+        dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
+       /* dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        )*/
 
-        subFolder = File(dittofolder, "/${patternFolderName}")
+        subFolder = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}")
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
@@ -437,7 +439,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
-                        "${patternName.get()}"
+                        "${patternName.get()}",
+                        context
                     )
                 }
 

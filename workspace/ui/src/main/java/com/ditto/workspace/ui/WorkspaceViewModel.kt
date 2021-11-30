@@ -815,9 +815,11 @@ class WorkspaceViewModel @Inject constructor(
 
         val contextWrapper = ContextWrapper(context)
 
-        dittofolder = File(
+        /*dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        )*/
+
+        dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
@@ -856,7 +858,7 @@ class WorkspaceViewModel @Inject constructor(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
 
-        subFolder = File(dittofolder, "/${patternFolderName}")
+        subFolder = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}")
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
@@ -953,7 +955,8 @@ class WorkspaceViewModel @Inject constructor(
             val availableUri = key.let {
                 core.ui.common.Utility.isImageFileAvailable(
                     it,
-                    "${patternName.get()}"
+                    "${patternName.get()}",
+                    context
                 )
             }
             if (availableUri == null) {

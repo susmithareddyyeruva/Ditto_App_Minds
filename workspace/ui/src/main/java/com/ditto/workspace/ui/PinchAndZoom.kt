@@ -53,7 +53,7 @@ class PinchAndZoom : AppCompatActivity() {
                 if (isFromWS) {
                     var availableUri: Uri? = null
                     availableUri =
-                        core.ui.common.Utility.isImageFileAvailable(imagepath, patternName)
+                        core.ui.common.Utility.isImageFileAvailable(imagepath, patternName,this)
                     Log.d("imageUri123", " pinch and zoom availableUri: $availableUri >>>> ")
                     Glide
                         .with(this)

@@ -1,7 +1,8 @@
 package com.ditto.home.ui
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -37,6 +38,7 @@ import kotlin.collections.component1
 import kotlin.collections.component2
 
 class HomeViewModel @Inject constructor(
+    private val context: Context,
     val storageManager: StorageManager,
     val useCase: HomeUsecase,
     private val utility: Utility
@@ -342,11 +344,13 @@ class HomeViewModel @Inject constructor(
         var result: File? = null
         var dittofolder: File? = null
         var subFolder: File? = null
-        dittofolder = File(
+       /* dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        )*/
+        val contextWrapper = ContextWrapper(context)
+        dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
 
-        subFolder = File(dittofolder, "/${patternFolderName}")
+        subFolder = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}")
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
@@ -392,7 +396,8 @@ class HomeViewModel @Inject constructor(
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
-                        "$patternName"
+                        "$patternName",
+                        context
                     )
                 }
 
