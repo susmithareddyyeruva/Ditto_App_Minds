@@ -1239,11 +1239,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            Utility.AlertType.DOWNLOADFAILED -> {
+           /* Utility.AlertType.DOWNLOADFAILED -> {
                 bottomNavViewModel.showProgress.set(false)
                 checkSocketConnectionBeforeWorkspace()
             }
-
+*/
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.version_update == true) {
