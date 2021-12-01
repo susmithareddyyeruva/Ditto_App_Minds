@@ -90,6 +90,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var isBinded = false
     lateinit var screenName : String
     lateinit var screenMode : String
+    var isPreciseLocationRequested: Boolean = false
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -912,26 +913,49 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     OnGPSListener {
                     override fun gpsStatus(isGPSEnable: Boolean) {
                         viewModel.isLocationEnabled.set(isGPSEnable)
-                        if(isGPSEnable){
-                            Log.d(ConnectivityUtils.TAG,"GPS enabled")
+                        if (isGPSEnable) {
+                            Log.d(ConnectivityUtils.TAG, "GPS enabled")
                             getWIFIname()
                             wifiname.setText(connSSID)
                             searchNSDservice()
-                        }else{
-                            Log.d(ConnectivityUtils.TAG,"GPS disabled")
+                        } else {
+                            Log.d(ConnectivityUtils.TAG, "GPS disabled")
                         }
                     }
                 })
             } else {
-                if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(
                         this,
-                        "Please provide precise location permission to get bluetooth scan results.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
-                        REQUEST_CODE_PERMISSIONS)
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+
+                    if(!isPreciseLocationRequested) {
+                        Toast.makeText(
+                            this,
+                            "Please provide precise location permission to get bluetooth scan results.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        requestPermissions(
+                            arrayOf(
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            ),
+                            REQUEST_CODE_PERMISSIONS
+                        )
+                        isPreciseLocationRequested = true
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Please provide precise location permission to get bluetooth scan results.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
+                    }
                 } else {
                     Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
                     Toast.makeText(
@@ -939,6 +963,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         "App will not work properly without this permission. Please turn on the permission from settings",
                         Toast.LENGTH_LONG
                     ).show()
+                    finish()
                 }
             }
         }
