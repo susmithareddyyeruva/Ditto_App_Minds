@@ -2214,6 +2214,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Utility.Iconype.FAILED
                 )
             }
+        } else if (allPermissionsGranted() && requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!Utility.getBluetoothstatus()) {
+                Log.d("onReqPermissionsResult", Utility.getBluetoothstatus().toString())
+                showBluetoothDialogue()
+                Log.d("onReqPermissionsResult", "shownBluetoothDialogue" )
+            } else if (!Utility.getWifistatus(requireContext())) {
+                showWifiDialogue()
+            } else {
+                showConnectivityPopup()
+            }
         } else {
             showSaveAndExitPopup()
             Log.d("onReqPermissionsResult", "permission denied")
