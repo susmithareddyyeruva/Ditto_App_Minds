@@ -20,10 +20,10 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     val visibility = ObservableBoolean(true)
     val showProgress = ObservableBoolean(false)
     val isShownCoachMark = ObservableBoolean(true)// initially true not to show in splash
-    val showCoachImage : ObservableInt = ObservableInt(R.drawable.coachmark_home_menu4)
+    val showCoachImage : ObservableInt = ObservableInt(R.drawable.coachmark_home_menu)
     val coachImageCount : ObservableInt = ObservableInt(0)
     val coachMarkImages = intArrayOf(
-        R.drawable.coachmark_home_menu4,
+        R.drawable.coachmark_home_menu,
         R.drawable.coachmark_home_library,
         R.drawable.coachmark_library_swipe,
         R.drawable.coachmark_library_search,
