@@ -468,8 +468,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }?.size ?: 0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
-            binding.txtSize45.text=getString(R.string._45text,"45")
-            binding.txtSize60.text=getString(R.string._60text,"60")
+            binding.txtSize45.text=getString(R.string._45)
+            binding.txtSize60.text=getString(R.string._60)
             val garments =
                 viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
@@ -546,8 +546,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
         ) {
-            binding.txtSize45.text=getString(R.string._45text,"45")
-            binding.txtSize60.text=getString(R.string._60text,"60")
+            binding.txtSize45.text=getString(R.string._45)
+            binding.txtSize60.text=getString(R.string._60)
             val lining =
                 viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
@@ -643,8 +643,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
         ) {
-            binding.txtSize45.text=getString(R.string._45text,"20")
-            binding.txtSize60.text=getString(R.string._60text,"45")
+            binding.txtSize45.text=getString(R.string._20)
+            binding.txtSize60.text=getString(R.string._45text)
             val interfacing =
                 viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
