@@ -923,12 +923,23 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     }
                 })
             } else {
-                Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
-                Toast.makeText(
-                    this,
-                    "App will not work properly without this permission. Please turn on the permission from settings",
-                    Toast.LENGTH_LONG
-                ).show()
+                if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(
+                        this,
+                        "Please provide precise location permission to get bluetooth scan results.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_CODE_PERMISSIONS)
+                } else {
+                    Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
+                    Toast.makeText(
+                        this,
+                        "App will not work properly without this permission. Please turn on the permission from settings",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
