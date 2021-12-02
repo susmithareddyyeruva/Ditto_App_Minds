@@ -1239,10 +1239,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            Utility.AlertType.DOWNLOADFAILED -> {
+            /*Utility.AlertType.DOWNLOADFAILED -> {
                 bottomNavViewModel.showProgress.set(false)
                 checkSocketConnectionBeforeWorkspace()
-            }
+            }*/
 
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
@@ -1297,7 +1297,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             alertType == Utility.AlertType.DOWNLOADFAILED -> {
                 val map = getPatternPieceListTailornova()
-                Log.d("prepare>>>>>", "DOWNLOADFAILED")
                 if (!::job.isInitialized || !job.isActive) {
                     job = GlobalScope.launch {
                         setPrepareDownloadList(map)
