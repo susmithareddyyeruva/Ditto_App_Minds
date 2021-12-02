@@ -704,7 +704,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         showProgress(false)
         when (calibrationResponse) {
             Util.CalibrationType.Success -> {
-                transform()  //On calibration response
+               // transform()  //On calibration response
                 //Currently transformed image will get if from asset no need to perform transform
                 val bitmap =
                     Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
