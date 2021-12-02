@@ -4,6 +4,7 @@ package com.ditto.calibration.ui
  * Created by Vishnu A V on  10/08/2020.
  * Fragment for Calibration Screen
  */
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -39,10 +40,8 @@ import com.joann.fabrictracetransform.calibrate.performCalibration
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
-
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -682,8 +681,10 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     private fun sendCalibrationPattern() {
         viewModel.isShowDialog.set(false)    //Lottie Displayed.....
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
-        viewModel.disposable += Observable.fromCallable {
+        //val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
+        val bitmap = Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
+        //Currently transformed image will get if from asset no need to perform transform
+     /*   viewModel.disposable += Observable.fromCallable {
             performTransform(
                 bitmap,
                 context?.applicationContext,
@@ -693,7 +694,15 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleResult(it, true) }
+            .subscribeBy { handleResult(it, true) }*/
+
+        GlobalScope.launch {
+            sendTransformedImage(
+                Utility.addBlackBackgroundToBitmap(
+                    bitmap                            //Passing transformed Image from asset in order to gain perform transform  delay
+                ), isRecalibration = true
+            )
+        }
     }
 
 
