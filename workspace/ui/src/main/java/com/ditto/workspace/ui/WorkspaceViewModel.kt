@@ -167,7 +167,8 @@ class WorkspaceViewModel @Inject constructor(
     fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
         disposable += getWorkspaceData.createWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
-                patternId.get()}_${mannequinId.get()}", workspaceDataAPI
+                patternId.get()
+            }_${mannequinId.get()}", workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -778,30 +779,33 @@ class WorkspaceViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
+        try {
+            withContext(Dispatchers.IO) {
 
-        withContext(Dispatchers.IO) {
-
-            val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
-            val inputStream: InputStream
-            var result: File? = null
-            val url: URL = URL(url)
-            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            /*val basicAuth =
-                "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-            conn.setRequestProperty("Authorization", basicAuth)*/
-            conn.requestMethod = "GET"
-            conn.connect()
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                patternpdfuri.set("")
+                val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
+                val inputStream: InputStream
+                var result: File? = null
+                val url: URL = URL(url)
+                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                /*val basicAuth =
+                        "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
+                    conn.setRequestProperty("Authorization", basicAuth)*/
+                conn.requestMethod = "GET"
+                conn.connect()
+                if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    patternpdfuri.set("")
+                    onFinished()
+                    return@withContext
+                }
+                inputStream = conn.inputStream
+                if (inputStream != null)
+                    result = convertInputStreamToFile(inputStream, filename, patternFolderName)
+                val path = Uri.fromFile(result)
+                patternpdfuri.set(path.toString())
                 onFinished()
-                return@withContext
             }
-            inputStream = conn.inputStream
-            if (inputStream != null)
-                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
-            val path = Uri.fromFile(result)
-            patternpdfuri.set(path.toString())
-            onFinished()
+        } catch (e: Exception) {
+            Log.d("WorkspaceViewModel", "${e.message}")
         }
     }
 
@@ -858,7 +862,10 @@ class WorkspaceViewModel @Inject constructor(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
         )
 
-        subFolder = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}")
+        subFolder = File(
+            dittofolder,
+            "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}"
+        )
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
@@ -926,26 +933,34 @@ class WorkspaceViewModel @Inject constructor(
         filename: String,
         patternFolderName: String?
     ) {
-        withContext(Dispatchers.IO) {
-            val inputStream: InputStream
-            var result: File? = null
-            val url: URL = URL(imageUrl)
-            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            conn.requestMethod = "GET"
-            conn.connect()
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                patternpdfuri.set("")
-                return@withContext
-            }
-            inputStream = conn.inputStream
-            if (inputStream != null)
-                result =
-                    convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
-            val path = Uri.fromFile(result)
-            patternUri.set(path.toString())
-            Log.d("PATTERN", patternUri.get() ?: "")
+        try {
+            withContext(Dispatchers.IO) {
+                val inputStream: InputStream
+                var result: File? = null
+                val url: URL = URL(imageUrl)
+                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.connect()
+                if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    patternpdfuri.set("")
+                    return@withContext
+                }
+                inputStream = conn.inputStream
+                if (inputStream != null)
+                    result =
+                        convertInputStreamToFileForPatterns(
+                            inputStream,
+                            filename,
+                            patternFolderName
+                        )
+                val path = Uri.fromFile(result)
+                patternUri.set(path.toString())
+                Log.d("PATTERN", patternUri.get() ?: "")
 
-            temp.add(path.toString())
+                temp.add(path.toString())
+            }
+        }catch (e: Exception){
+            Log.d("WorkspaceViewModel", "${e.message}")
         }
     }
 

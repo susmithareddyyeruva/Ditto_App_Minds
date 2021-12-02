@@ -314,25 +314,33 @@ class HomeViewModel @Inject constructor(
         filename: String,
         patternFolderName: String?
     ) {
-        withContext(Dispatchers.IO) {
-            val inputStream: InputStream
-            var result: File? = null
-            val url: URL = URL(imageUrl)
-            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            conn.requestMethod = "GET"
-            conn.connect()
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                patternUri.set("")
-                return@withContext
+        try {
+            withContext(Dispatchers.IO) {
+                val inputStream: InputStream
+                var result: File? = null
+                val url: URL = URL(imageUrl)
+                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.connect()
+                if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    patternUri.set("")
+                    return@withContext
+                }
+                inputStream = conn.inputStream
+                if (inputStream != null)
+                    result =
+                        convertInputStreamToFileForPatterns(
+                            inputStream,
+                            filename,
+                            patternFolderName
+                        )
+                val path = Uri.fromFile(result)
+                patternUri.set(path.toString())
+                Log.d("PATTERN", patternUri.get() ?: "")
+                Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
             }
-            inputStream = conn.inputStream
-            if (inputStream != null)
-                result =
-                    convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
-            val path = Uri.fromFile(result)
-            patternUri.set(path.toString())
-            Log.d("PATTERN", patternUri.get() ?: "")
-            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
+        }catch (e: Exception){
+            Log.d("HomeViewModel", "${e.message}")
         }
     }
 
