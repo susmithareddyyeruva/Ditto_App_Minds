@@ -428,11 +428,11 @@
 
         <ImageView
             android:id="@+id/coach_mark_popup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/coachmark_popup_width"
+            android:layout_height="@dimen/coachmark_popup_height"
             android:background="@android:color/transparent"
             android:elevation="@dimen/elevation_card"
-            android:src="@drawable/coachmark_video_popup_small"
+            android:src="@drawable/coachmark_video_popup"
             android:animateLayoutChanges="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -461,6 +461,7 @@
             android:id="@+id/coach_mark_close"
             android:layout_width="@dimen/dimen_cut_checkbox"
             android:layout_height="@dimen/dimen_cut_checkbox"
+            android:paddingStart="3dp"
             android:elevation="@dimen/elevation_card"
             android:animateLayoutChanges="true"
             android:src="@drawable/ic_close"
