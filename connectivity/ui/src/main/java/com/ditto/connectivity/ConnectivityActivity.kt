@@ -935,11 +935,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 ) {
 
                     if(!isPreciseLocationRequested) {
-                        Toast.makeText(
-                            this,
-                            "Please provide precise location permission to get bluetooth scan results.",
-                            Toast.LENGTH_LONG
-                        ).show()
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -951,7 +946,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     } else {
                         Toast.makeText(
                             this,
-                            "Please provide precise location permission to get bluetooth scan results.",
+                            "Please provide precise location permission to get bluetooth scan results from settings.",
                             Toast.LENGTH_LONG
                         ).show()
                         finish()
