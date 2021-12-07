@@ -490,13 +490,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (viewModel.clickedSize45.get()) {
                     val selvage = garments?.filter { it.fabricLength == "45" }?.getOrNull(0)
                     logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
-                    selvage?.imagePath.let {
-                        getBitmapFromSvgPngDrawable(
-                            selvage?.imageName,
-                            binding.imageSelvageHorizontal.context,
-                            binding.imageSelvageHorizontal
-                        )
+                    if (selvage!=null) {
+                        selvage?.imagePath.let {
+                            getBitmapFromSvgPngDrawable(
+                                selvage?.imageName,
+                                binding.imageSelvageHorizontal.context,
+                                binding.imageSelvageHorizontal
+                            )
 
+                        }
                     }
                     viewModel.clickedSize45.set(true)
                     viewModel.clickedSize60.set(false)
