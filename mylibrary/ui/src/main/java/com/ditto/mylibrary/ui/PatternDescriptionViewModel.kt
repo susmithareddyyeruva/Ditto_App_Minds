@@ -58,8 +58,9 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternName: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
-    val patternDescription: ObservableField<String> = ObservableField("")
+    val patternDescription: ObservableField<String> = ObservableField("NA")
     val patternStatus: ObservableField<String> = ObservableField("")
+    val isFromDeeplink: ObservableBoolean = ObservableBoolean(false)
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
@@ -80,6 +81,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
 
     var patternsInDB: MutableList<ProdDomain>? = null
+
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -133,19 +135,36 @@ class PatternDescriptionViewModel @Inject constructor(
                 data.value = result.data
                 uiEvents.post(Event.OnDataUpdated)
                 // insert to db here
-                data.value?.patternName = clickedProduct?.prodName
-                data.value?.description = clickedProduct?.description
-                data.value?.selectedMannequinId = mannequinId.get()//getting selected MANNEQUIN ID
+                if (isFromDeepLinking.get()) {
+                    data.value?.patternName = result.data?.patternName
+                    data.value?.description = result.data?.description
+                    data.value?.selectedMannequinId =
+                        mannequinId.get()//getting selected MANNEQUIN ID
+                    insertTailornovaDetailsToDB(
+                        data.value!!,
+                        clickedOrderNumber.get(),
+                        mannequinId.get(),
+                        mannequinName.get(),
+                        emptyList()
+                    )// todo uncomment this line
+                } else {
+                    data.value?.patternName = clickedProduct?.prodName
+                    data.value?.description = clickedProduct?.description
+                    data.value?.selectedMannequinId =
+                        mannequinId.get()//getting selected MANNEQUIN ID
+                    insertTailornovaDetailsToDB(
+                        data.value!!,
+                        clickedProduct?.orderNo,
+                        mannequinId.get(),
+                        mannequinName.get(),
+                        clickedProduct?.mannequin
+                    )// todo uncomment this line
+                }
+
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(
-                    data.value!!,
-                    clickedProduct?.orderNo,
-                    mannequinId.get(),
-                    mannequinName.get(),
-                    clickedProduct?.mannequin
-                )// todo uncomment this line
+
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -196,7 +215,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun handleDemoResult(result: Result<List<ProdDomain>>?) {
         when (result) {
             is Result.OnSuccess -> {
-                patternsInDB= result.data.toMutableList()
+                patternsInDB = result.data.toMutableList()
                 Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
                 uiEvents.post(Event.OnDeletePatternFolder)
             }
@@ -337,20 +356,20 @@ class PatternDescriptionViewModel @Inject constructor(
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
 //                GlobalScope.launch {
-                    runBlocking {
-                        hashMap.forEach { (key, value) ->
-                            Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
-                                downloadEachPatternPiece(
-                                    imageUrl = value,
-                                    filename = key,
-                                    patternFolderName = patternName.get() ?: "Pattern Piece"
-                                )
-                            }
-
+                runBlocking {
+                    hashMap.forEach { (key, value) ->
+                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
+                            downloadEachPatternPiece(
+                                imageUrl = value,
+                                filename = key,
+                                patternFolderName = patternName.get() ?: "Pattern Piece"
+                            )
                         }
+
                     }
-                    uiEvents.post(Event.OnImageDownloadComplete)
+                }
+                uiEvents.post(Event.OnImageDownloadComplete)
 //                }
             } else {
                 uiEvents.post(Event.OnNoNetworkToDownloadImage)
