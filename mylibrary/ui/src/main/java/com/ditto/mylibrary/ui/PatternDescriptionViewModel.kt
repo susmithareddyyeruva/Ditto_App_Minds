@@ -133,34 +133,21 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
-                uiEvents.post(Event.OnDataUpdated)
+                data.value?.selectedMannequinId =
+                    mannequinId.get()//getting selected MANNEQUIN ID
                 // insert to db here
-                if (isFromDeepLinking.get()) {
-                    data.value?.patternName = result.data?.patternName
-                    data.value?.description = result.data?.description
-                    data.value?.selectedMannequinId =
-                        mannequinId.get()//getting selected MANNEQUIN ID
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedOrderNumber.get(),
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        emptyList()
-                    )// todo uncomment this line
-                } else {
+                if (!isFromDeepLinking.get()) {
                     data.value?.patternName = clickedProduct?.prodName
                     data.value?.description = clickedProduct?.description
-                    data.value?.selectedMannequinId =
-                        mannequinId.get()//getting selected MANNEQUIN ID
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedProduct?.orderNo,
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        clickedProduct?.mannequin
-                    )// todo uncomment this line
                 }
-
+                uiEvents.post(Event.OnDataUpdated)
+                insertTailornovaDetailsToDB(
+                    data.value!!,
+                   clickedOrderNumber.get(),
+                    mannequinId.get(),
+                    mannequinName.get(),
+                    clickedProduct?.mannequin ?: emptyList()
+                )// todo uncomment this line
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
