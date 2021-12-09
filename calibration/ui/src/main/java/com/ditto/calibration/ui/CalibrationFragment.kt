@@ -681,9 +681,16 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
     private fun sendCalibrationPattern() {
         viewModel.isShowDialog.set(false)    //Lottie Displayed.....
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
-
-
+        val bitmap =
+            Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
+        GlobalScope.launch {
+            sendTransformedImage(
+                Utility.addBlackBackgroundToBitmap(
+                    bitmap
+                ), isRecalibration = true
+            )
+        }
+/*
         viewModel.disposable += Observable.fromCallable {
             performTransform(
                 bitmap,
@@ -694,7 +701,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleResult(it, true) }
+            .subscribeBy { handleResult(it, true) }*/
     }
 
 
@@ -704,17 +711,8 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         showProgress(false)
         when (calibrationResponse) {
             Util.CalibrationType.Success -> {
-               // transform()  //On calibration response
-                //Currently transformed image will get if from asset no need to perform transform
-                val bitmap =
-                    Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
-                GlobalScope.launch {
-                    sendTransformedImage(
-                        Utility.addBlackBackgroundToBitmap(
-                            bitmap
-                        ), isRecalibration = true
-                    )
-                }
+                transform()  //On calibration response
+
             }
 
             Util.CalibrationType.InvalidImageFormat -> {

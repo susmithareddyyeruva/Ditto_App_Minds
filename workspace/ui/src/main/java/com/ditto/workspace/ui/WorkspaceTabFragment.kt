@@ -2304,22 +2304,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun sendCalibrationPattern() {
         logger.d("TRACE_ Projection : sendCalibrationPattern start " + Calendar.getInstance().timeInMillis)
         showProgress(true)
+        //Currently transformed image will get if from asset no need to perform transform
         val bitmap =
-            Utility.getBitmapFromDrawable(
-                "calibration_pattern",
-                requireContext()
-            )
-        viewModel.disposable += Observable.fromCallable {
-            performTransform(
-                bitmap,
-                context?.applicationContext,
-                Utility.unityTransParmsString,
-                false
+            Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
+        logger.d("TRACE_ Projection :TransformErrorCode.Success " + Calendar.getInstance().timeInMillis)
+        GlobalScope.launch {
+            projectWorkspaceImage(
+               bitmap,
+                viewModel.isFromQuickCheck.get(),
+                true
             )
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleResult(it, true) }
     }
 
     private fun sendQuickCheckImage() {

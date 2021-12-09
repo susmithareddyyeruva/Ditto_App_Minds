@@ -26,7 +26,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
-import com.ditto.howto.utils.Common
 import com.ditto.instructions.ui.adapter.InstructionAdapter
 import com.ditto.instructions.ui.adapter.InstructionCalibrationAdapter
 import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
@@ -34,16 +33,11 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.joann.fabrictracetransform.transform.TransformErrorCode
-import com.joann.fabrictracetransform.transform.performTransform
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.instruction_adapter.view.*
 import kotlinx.android.synthetic.main.instruction_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -628,18 +622,25 @@ class InstructionFragment constructor(
     private fun sendCalibrationPattern() {
         showProgress(true)
         logger.d("TRACE_ Projection : sendCalibrationPattern " + Calendar.getInstance().timeInMillis)
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
-        viewModel.disposable += Observable.fromCallable {
-            performTransform(
-                bitmap,
-                context?.applicationContext,
-                Utility.unityTransParmsString,
-                false
+        val bitmap =
+            Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
+        GlobalScope.launch {
+            sendSampleImage(
+                bitmap, true
             )
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleResult(it) }
+
+        /*   viewModel.disposable += Observable.fromCallable {
+               performTransform(
+                   bitmap,
+                   context?.applicationContext,
+                   Utility.unityTransParmsString,
+                   false
+               )
+           }
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribeBy { handleResult(it) }*/
     }
 
     private fun handleResult(result: Pair<TransformErrorCode, Bitmap>) {
