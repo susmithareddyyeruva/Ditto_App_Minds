@@ -17,7 +17,7 @@ import com.ditto.onboarding.domain.model.OnboardingData
 import com.ditto.storage.data.database.OnBoardingDao
 import com.ditto.storage.data.database.UserDao
 import com.ditto.storage.data.model.OnBoarding
-import core.CLIENT_ID
+import core.lib.BuildConfig
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
@@ -60,7 +60,7 @@ class OnBoardingRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         return onBoardingService.getContentApi(
-            CLIENT_ID,
+            BuildConfig.CLIENT_ID,
         )
             .doOnSuccess {
                 logger.d("*****Onboarding Success**")

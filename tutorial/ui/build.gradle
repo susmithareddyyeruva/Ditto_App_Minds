@@ -30,6 +30,10 @@ android {
             debuggable true
             minifyEnabled false
         }
+        staging {
+            debuggable true
+            minifyEnabled false
+        }
     }
 
     dataBinding {

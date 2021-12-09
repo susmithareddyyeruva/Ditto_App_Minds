@@ -40,6 +40,10 @@ android {
             debuggable true
             minifyEnabled false
         }
+        staging {
+            debuggable true
+            minifyEnabled false
+        }
     }
     buildFeatures {
         dataBinding = true // for data binding

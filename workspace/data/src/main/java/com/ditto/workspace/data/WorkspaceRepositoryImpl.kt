@@ -19,9 +19,9 @@ import com.ditto.workspace.domain.WorkspaceRepository
 import com.ditto.workspace.domain.model.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.CLIENT_ID
 import core.SITE_ID
 import core.appstate.AppState
+import core.lib.BuildConfig
 import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
@@ -136,7 +136,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
 
-        return getWorkspaceService.getWorkspceDataFromApi(id, CLIENT_ID).doOnSuccess {
+        return getWorkspaceService.getWorkspceDataFromApi(id,   BuildConfig.CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
             Log.d(
@@ -183,7 +183,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
         return getWorkspaceService.updateWorkspaceDataFromApi(
             id,
-            CLIENT_ID, SITE_ID, wsInputData,
+            BuildConfig.CLIENT_ID, SITE_ID, wsInputData,
             "Bearer " + AppState.getToken()!!
         ).doOnSuccess {
             logger.d("**Update Workspace Success**")
@@ -225,7 +225,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
         return getWorkspaceService.createWorkspaceDataFromApi(
             id,
-            CLIENT_ID, SITE_ID, wsInputData,
+            BuildConfig.CLIENT_ID, SITE_ID, wsInputData,
             "Bearer " + AppState.getToken()!!
         ).doOnSuccess {
             logger.d("*****Create Workspace Success**")

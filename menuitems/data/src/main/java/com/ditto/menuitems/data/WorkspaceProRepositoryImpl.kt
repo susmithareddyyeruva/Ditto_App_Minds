@@ -13,11 +13,11 @@ import com.ditto.menuitems.domain.WorkspaceProRepository
 import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import com.ditto.storage.data.database.UserDao
-import core.CLIENT_ID
 import core.CONNECTION_EXCEPTION
 import core.ERROR_FETCH
 import core.UNKNOWN_HOST_EXCEPTION
 import core.appstate.AppState
+import core.lib.BuildConfig
 import io.reactivex.Single
 import non_core.lib.Result
 import retrofit2.HttpException
@@ -69,7 +69,7 @@ class WorkspaceProRepositoryImpl @Inject constructor(
     override fun postSwitchData(data: WSSettingsInputData): Single<Result<WSProSettingDomain>> {
 
         return ws_settings.postSettingRequest(
-            AppState.getCustID(), CLIENT_ID,
+            AppState.getCustID(),   BuildConfig.CLIENT_ID,
             data,
             "Bearer " + AppState.getToken()!!
         )

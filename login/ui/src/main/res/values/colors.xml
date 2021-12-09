@@ -4,7 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="edittext_fill">#4DC0C0C0</color>
     <color name="edittext_fill_white">#FFFFFF</color>
     <color name="edittext_fill_stroke">#707070</color>
     <color name="textview_diito_site">#6F7170</color>
@@ -14,7 +13,6 @@
     <color name="blue">#053EF1</color>
     <color name="btn_we_got_this">#AD201A</color>
     <color name="color_login_image_desc_background">#F24A4A4A</color>
-    <color name="color_login_image_desc">#FFEFEFEF</color>
 
 
 </resources>
