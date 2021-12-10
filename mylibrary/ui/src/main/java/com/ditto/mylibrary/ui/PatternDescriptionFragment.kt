@@ -525,18 +525,26 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun sendCalibrationPattern() {
         logger.d("TRACE_ Projection : performTransform  Start " + Calendar.getInstance().timeInMillis)
         showProgress(true)
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
-        viewModel.disposable += Observable.fromCallable {
-            performTransform(
+        val bitmap =
+            Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
+
+        GlobalScope.launch {
+            sendSampleImage(
                 bitmap,
-                context?.applicationContext,
-                Utility.unityTransParmsString,
                 false
             )
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleResult(it, false) }
+        /* viewModel.disposable += Observable.fromCallable {
+             performTransform(
+                 bitmap,
+                 context?.applicationContext,
+                 Utility.unityTransParmsString,
+                 false
+             )
+         }
+             .subscribeOn(Schedulers.io())
+             .observeOn(AndroidSchedulers.mainThread())
+             .subscribeBy { handleResult(it, false) }*/
     }
 
     private fun sendQuickCheckImage() {
