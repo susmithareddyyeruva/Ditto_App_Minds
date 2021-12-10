@@ -340,7 +340,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     runBlocking {
                         hashMap.forEach { (key, value) ->
                             Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
+                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())&&(value!="null")) {
                                 downloadEachPatternPiece(
                                     imageUrl = value,
                                     filename = key,
