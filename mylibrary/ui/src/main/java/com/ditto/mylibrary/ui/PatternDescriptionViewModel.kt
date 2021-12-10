@@ -58,8 +58,9 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternName: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
-    val patternDescription: ObservableField<String> = ObservableField("")
+    val patternDescription: ObservableField<String> = ObservableField("NA")
     val patternStatus: ObservableField<String> = ObservableField("")
+    val isFromDeeplink: ObservableBoolean = ObservableBoolean(false)
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
@@ -132,21 +133,25 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
-                uiEvents.post(Event.OnDataUpdated)
+                data.value?.selectedMannequinId =
+                    mannequinId.get()//getting selected MANNEQUIN ID
                 // insert to db here
-                data.value?.patternName = clickedProduct?.prodName
-                data.value?.description = clickedProduct?.description
-                data.value?.selectedMannequinId = mannequinId.get()//getting selected MANNEQUIN ID
+                if (!isFromDeepLinking.get()) {
+                    data.value?.patternName = clickedProduct?.prodName
+                    data.value?.description = clickedProduct?.description
+                }
+                uiEvents.post(Event.OnDataUpdated)
+                insertTailornovaDetailsToDB(
+                    data.value!!,
+                   clickedOrderNumber.get(),
+                    mannequinId.get(),
+                    mannequinName.get(),
+                    clickedProduct?.mannequin ?: emptyList()
+                )// todo uncomment this line
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(
-                    data.value!!,
-                    clickedProduct?.orderNo,
-                    mannequinId.get(),
-                    mannequinName.get(),
-                    clickedProduct?.mannequin
-                )// todo uncomment this line
+
             }
             is Result.OnError -> handleError(result.error)
         }
