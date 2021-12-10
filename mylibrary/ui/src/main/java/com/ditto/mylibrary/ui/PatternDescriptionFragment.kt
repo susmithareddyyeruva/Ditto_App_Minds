@@ -63,6 +63,7 @@ import java.net.Socket
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,
@@ -649,6 +650,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setPrepareDownloadList(map: HashMap<String, String>) {
+      /*  val filterd=map.filter {
+            it.value != "null"&&!it.value.isNullOrEmpty()
+        } as HashMap<String,String>*/
         viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
     }
 
@@ -1023,7 +1027,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
-            hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
+            hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }
         for (patternItem in viewModel.data.value?.patternPieces ?: emptyList()) {
             hashMap[patternItem.thumbnailImageName.toString()] =
@@ -1247,11 +1251,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            Utility.AlertType.DOWNLOADFAILED -> {
-                bottomNavViewModel.showProgress.set(false)
-                checkSocketConnectionBeforeWorkspace()
-            }
-
+            /* Utility.AlertType.DOWNLOADFAILED -> {
+                 bottomNavViewModel.showProgress.set(false)
+                 checkSocketConnectionBeforeWorkspace()
+             }
+ */
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.version_update == true) {
