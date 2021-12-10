@@ -58,8 +58,9 @@ class PatternDescriptionViewModel @Inject constructor(
     val patternName: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
-    val patternDescription: ObservableField<String> = ObservableField("")
+    val patternDescription: ObservableField<String> = ObservableField("NA")
     val patternStatus: ObservableField<String> = ObservableField("")
+    val isFromDeeplink: ObservableBoolean = ObservableBoolean(false)
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
@@ -80,6 +81,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
 
     var patternsInDB: MutableList<ProdDomain>? = null
+
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -131,21 +133,25 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 data.value = result.data
-                uiEvents.post(Event.OnDataUpdated)
+                data.value?.selectedMannequinId =
+                    mannequinId.get()//getting selected MANNEQUIN ID
                 // insert to db here
-                data.value?.patternName = clickedProduct?.prodName
-                data.value?.description = clickedProduct?.description
-                data.value?.selectedMannequinId = mannequinId.get()//getting selected MANNEQUIN ID
+                if (!isFromDeepLinking.get()) {
+                    data.value?.patternName = clickedProduct?.prodName
+                    data.value?.description = clickedProduct?.description
+                }
+                uiEvents.post(Event.OnDataUpdated)
+                insertTailornovaDetailsToDB(
+                    data.value!!,
+                   clickedOrderNumber.get(),
+                    mannequinId.get(),
+                    mannequinName.get(),
+                    clickedProduct?.mannequin ?: emptyList()
+                )// todo uncomment this line
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
-                insertTailornovaDetailsToDB(
-                    data.value!!,
-                    clickedProduct?.orderNo,
-                    mannequinId.get(),
-                    mannequinName.get(),
-                    clickedProduct?.mannequin
-                )// todo uncomment this line
+
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -196,7 +202,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun handleDemoResult(result: Result<List<ProdDomain>>?) {
         when (result) {
             is Result.OnSuccess -> {
-                patternsInDB= result.data.toMutableList()
+                patternsInDB = result.data.toMutableList()
                 Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
                 uiEvents.post(Event.OnDeletePatternFolder)
             }
@@ -253,32 +259,35 @@ class PatternDescriptionViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
+        try {
+            withContext(Dispatchers.IO) {
 
-        withContext(Dispatchers.IO) {
-
-            val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
-            val inputStream: InputStream
-            var result: File? = null
-            val url: URL = URL(url)
-            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            //If the pdf hosted site is to be authorized.
-            /*val basicAuth =
-                "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-            conn.setRequestProperty("Authorization", basicAuth)*/
-            conn.requestMethod = "GET"
-            conn.connect()
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                patternpdfuri.set("")
+                val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
+                val inputStream: InputStream
+                var result: File? = null
+                val url: URL = URL(url)
+                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                //If the pdf hosted site is to be authorized.
+                /*val basicAuth =
+                        "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
+                    conn.setRequestProperty("Authorization", basicAuth)*/
+                conn.requestMethod = "GET"
+                conn.connect()
+                if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    patternpdfuri.set("")
+                    onFinished()
+                    return@withContext
+                }
+                inputStream = conn.inputStream
+                if (inputStream != null)
+                //result = convertInputStreamToFile(inputStream,filename,patternFolderName?.replace(" ",""))
+                    result = convertInputStreamToFile(inputStream, filename, patternFolderName)
+                val path = Uri.fromFile(result)
+                patternpdfuri.set(path.toString())
                 onFinished()
-                return@withContext
             }
-            inputStream = conn.inputStream
-            if (inputStream != null)
-            //result = convertInputStreamToFile(inputStream,filename,patternFolderName?.replace(" ",""))
-                result = convertInputStreamToFile(inputStream, filename, patternFolderName)
-            val path = Uri.fromFile(result)
-            patternpdfuri.set(path.toString())
-            onFinished()
+        } catch (e: Exception) {
+            Log.d("PatternDescriptionViMol", "${e.message}")
         }
     }
 
@@ -348,9 +357,9 @@ class PatternDescriptionViewModel @Inject constructor(
                                 )
                             }
 
-                        }
                     }
-                    uiEvents.post(Event.OnImageDownloadComplete)
+                }
+                uiEvents.post(Event.OnImageDownloadComplete)
 //                }
             } else {
                 uiEvents.post(Event.OnNoNetworkToDownloadImage)
@@ -365,30 +374,38 @@ class PatternDescriptionViewModel @Inject constructor(
         filename: String,
         patternFolderName: String?
     ) {
-        withContext(Dispatchers.IO) {
-            val inputStream: InputStream
-            var result: File? = null
-            val url: URL = URL(imageUrl)
-            val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-            conn.requestMethod = "GET"
-            conn.connect()
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                patternpdfuri.set("")
-                return@withContext
+        try {
+            withContext(Dispatchers.IO) {
+                val inputStream: InputStream
+                var result: File? = null
+                val url: URL = URL(imageUrl)
+                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.connect() //conection failed
+                if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    patternpdfuri.set("")
+                    return@withContext
+                }
+                inputStream = conn.inputStream
+                if (inputStream != null)
+                    result =
+                        convertInputStreamToFileForPatterns(
+                            inputStream,
+                            filename,
+                            patternFolderName
+                        )
+                val path = Uri.fromFile(result)
+                patternUri.set(path.toString())
+                Log.d("PATTERN", patternUri.get() ?: "")
+                Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
+                temp.add(path.toString())
+                Log.d(
+                    "DOWNLOAD",
+                    "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} "
+                )
             }
-            inputStream = conn.inputStream
-            if (inputStream != null)
-                result =
-                    convertInputStreamToFileForPatterns(inputStream, filename, patternFolderName)
-            val path = Uri.fromFile(result)
-            patternUri.set(path.toString())
-            Log.d("PATTERN", patternUri.get() ?: "")
-            Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
-            temp.add(path.toString())
-            Log.d(
-                "DOWNLOAD",
-                "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} "
-            )
+        } catch (e: Exception) {
+            Log.d("PatternDescriptionViMol", "${e.message}")
         }
     }
 
@@ -400,11 +417,16 @@ class PatternDescriptionViewModel @Inject constructor(
         var result: File? = null
         var dittofolder: File? = null
         var subFolder: File? = null
-        dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        val contextWrapper = ContextWrapper(context)
+        dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
+        /* dittofolder = File(
+             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+         )*/
 
-        subFolder = File(dittofolder, "/${patternFolderName}")
+        subFolder = File(
+            dittofolder,
+            "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}"
+        )
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
@@ -437,7 +459,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
-                        "${patternName.get()}"
+                        "${patternName.get()}",
+                        context
                     )
                 }
 

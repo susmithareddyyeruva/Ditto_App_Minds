@@ -2,9 +2,7 @@ package com.ditto.mylibrary.ui
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
-import android.content.ActivityNotFoundException
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -124,13 +122,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
                 ?.let { viewModel.clickedOrderNumber.set(it) }
+            arguments?.getString("mannequinId").toString()
+                ?.let { viewModel.mannequinId.set(it) }
             bottomNavViewModel.showProgress.set(true)
             if (NetworkUtility.isNetworkAvailable(context)) {
                 viewModel.fetchPattern()
             } else {
                 viewModel.fetchOfflinePatternDetails()
             }
+            viewModel.isFromDeeplink.set(true)
         } else {
+            viewModel.isFromDeeplink.set(false)
             if (viewModel.data.value == null) {
                 arguments?.getString("clickedTailornovaID").toString()
                     ?.let { viewModel.clickedTailornovaID.set(it) }
@@ -857,6 +859,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnDeletePatternFolder -> {
                 if (AppState.getIsLogged()) {
                     deleteFolder(viewModel.patternsInDB)
+                    deletePDF(viewModel.patternsInDB)
                 } else {
                 }
             }
@@ -1259,11 +1262,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("alertType", "DEFAULT")
             }
 
-            /* Utility.AlertType.DOWNLOADFAILED -> {
-                 bottomNavViewModel.showProgress.set(false)
-                 checkSocketConnectionBeforeWorkspace()
-             }
- */
+            /*Utility.AlertType.DOWNLOADFAILED -> {
+                bottomNavViewModel.showProgress.set(false)
+                checkSocketConnectionBeforeWorkspace()
+            }*/
+
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.version_update == true) {
@@ -1317,7 +1320,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             alertType == Utility.AlertType.DOWNLOADFAILED -> {
                 val map = getPatternPieceListTailornova()
-                Log.d("prepare>>>>>", "DOWNLOADFAILED")
                 if (!::job.isInitialized || !job.isActive) {
                     job = GlobalScope.launch {
                         setPrepareDownloadList(map)
@@ -1415,10 +1417,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun deleteFolder(patterns: MutableList<ProdDomain>?) {
-        val directory = File(
+        /*val directory = File(
             Environment.getExternalStorageDirectory()
                 .toString() + "/Ditto"
-        )
+        )*/
+
+
+        val contextWrapper = ContextWrapper(context)
+        val directory = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
 
         if (directory.exists()) {
             val folders = directory.listFiles()
@@ -1430,7 +1436,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         fileName = getNameWithoutExtension(fileName)
                     }
                     patterns.forEach {
-                        if (it.prodName == fileName) {
+                        if (it.prodName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")) {
                             listOfCommonFiles.add(file)
                         }
                     }
@@ -1441,17 +1447,50 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
             Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
             for (file in filesToDelete) {
-                val fileToDelete = File(
-                    Environment.getExternalStorageDirectory()
-                        .toString() + "/Ditto/${file.name}"
-                )
-
-                val d = deleteDirectory(fileToDelete)
+                val d = deleteDirectory(file)
                 Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
             }
         }
     }
 
+
+
+    private fun deletePDF(patterns: MutableList<ProdDomain>?) {
+        val directory = File(
+            Environment.getExternalStorageDirectory()
+                .toString() + "/Ditto"
+        )
+
+
+        /*val contextWrapper = ContextWrapper(context)
+        val directory = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)*/
+
+        if (directory.exists()) {
+            val folders = directory.listFiles()
+            val listOfCommonFiles: ArrayList<File> = ArrayList(emptyList())
+            if (patterns != null) {
+                for (file in folders) {
+                    var fileName = file.name
+                    if (fileName.contains(".pdf")) {
+                        fileName = getNameWithoutExtension(fileName)
+                    }
+                    patterns.forEach {
+                        if (it.prodName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")) {
+                            listOfCommonFiles.add(file)
+                        }
+                    }
+                }
+
+            }
+
+            val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
+            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            for (file in filesToDelete) {
+                val d = deleteDirectory(file)
+                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
+            }
+        }
+    }
 
     fun deleteDirectory(path: File): Boolean {
         if (path.exists()) {

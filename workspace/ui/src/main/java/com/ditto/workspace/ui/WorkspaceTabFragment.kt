@@ -2604,7 +2604,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun getBitmapFromSvgPngDrawable(imageName: String): Bitmap? {
         var availableUri: Uri? = null
-        availableUri = Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}")
+        availableUri = Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}",requireContext())
         Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri")
         return if (imageName.endsWith(".svg", true)) {
             Glide
@@ -2642,7 +2642,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-        availableUri = Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}")
+        availableUri = Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}",context)
         Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri >>>> ")
         //}
 
