@@ -10,4 +10,9 @@
             android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask"/>
     </application>
+    <queries>
+        <intent>
+            <action android:name="com.google.android.youtube.api.service.START"/>
+        </intent>
+    </queries>
 </manifest>
