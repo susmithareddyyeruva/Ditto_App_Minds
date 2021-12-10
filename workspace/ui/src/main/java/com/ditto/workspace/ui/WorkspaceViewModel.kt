@@ -819,11 +819,11 @@ class WorkspaceViewModel @Inject constructor(
 
         val contextWrapper = ContextWrapper(context)
 
-        /*dittofolder = File(
+        dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )*/
+        )
 
-        dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
+        //dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
@@ -858,9 +858,12 @@ class WorkspaceViewModel @Inject constructor(
         var result: File? = null
         var dittofolder: File? = null
         var subFolder: File? = null
-        dittofolder = File(
+        val contextWrapper = ContextWrapper(context)
+        dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
+
+        /*dittofolder = File(
             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        )*/
 
         subFolder = File(
             dittofolder,
