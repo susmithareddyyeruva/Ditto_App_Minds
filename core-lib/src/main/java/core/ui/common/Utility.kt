@@ -500,7 +500,7 @@ class Utility @Inject constructor(
             val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
             var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")
-            )
+
             Log.d("DOWNLOAD UTIL", "received is $filename")
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
