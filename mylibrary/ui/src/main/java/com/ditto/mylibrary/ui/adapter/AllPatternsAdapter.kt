@@ -118,7 +118,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(context))){
-            availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}")
+            availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}",context)
             Log.d("imageUri123", " $foldername availableUri: $availableUri")
        // }
         if (imagePath?.endsWith(".svg", true)!!) {
