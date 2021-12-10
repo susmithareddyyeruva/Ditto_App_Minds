@@ -81,7 +81,6 @@ class PatternDescriptionViewModel @Inject constructor(
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
 
     var patternsInDB: MutableList<ProdDomain>? = null
-
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
@@ -202,7 +201,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun handleDemoResult(result: Result<List<ProdDomain>>?) {
         when (result) {
             is Result.OnSuccess -> {
-                patternsInDB = result.data.toMutableList()
+                patternsInDB= result.data.toMutableList()
                 Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
                 uiEvents.post(Event.OnDeletePatternFolder)
             }
@@ -343,20 +342,20 @@ class PatternDescriptionViewModel @Inject constructor(
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
 //                GlobalScope.launch {
-                runBlocking {
-                    hashMap.forEach { (key, value) ->
-                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                        if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
-                            downloadEachPatternPiece(
-                                imageUrl = value,
-                                filename = key,
-                                patternFolderName = patternName.get() ?: "Pattern Piece"
-                            )
-                        }
+                    runBlocking {
+                        hashMap.forEach { (key, value) ->
+                            Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())&&(value!="null")) {
+                                downloadEachPatternPiece(
+                                    imageUrl = value,
+                                    filename = key,
+                                    patternFolderName = patternName.get() ?: "Pattern Piece"
+                                )
+                            }
 
+                        }
                     }
-                }
-                uiEvents.post(Event.OnImageDownloadComplete)
+                    uiEvents.post(Event.OnImageDownloadComplete)
 //                }
             } else {
                 uiEvents.post(Event.OnNoNetworkToDownloadImage)

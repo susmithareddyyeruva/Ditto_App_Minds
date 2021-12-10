@@ -485,7 +485,7 @@ class Utility @Inject constructor(
                 Environment.getExternalStorageDirectory()
                     .toString() + "/Ditto/$patternFolderName"
             )
-
+            Log.d("DOWNLOAD UTIL", "received is $filename")
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
             var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
