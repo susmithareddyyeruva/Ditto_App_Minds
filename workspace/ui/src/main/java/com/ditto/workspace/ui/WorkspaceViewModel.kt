@@ -364,10 +364,10 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.onProject)
     }
 
-    fun clickSize(isSize45: Boolean) {
+    fun clickSize(isSize20: Boolean) {
         clickedSplice.set(false)
-        clickedSize45.set(isSize45)
-        clickedSize60.set(!isSize45)
+        clickedSize45.set(isSize20)
+        clickedSize60.set(!isSize20)
         uiEvents.post(Event.OnClickInch)
     }
 

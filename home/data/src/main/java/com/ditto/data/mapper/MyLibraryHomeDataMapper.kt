@@ -39,11 +39,11 @@ fun Prod.toDomain(): ProdDomain {
         customization = this.customization ?: "",
         dateOfModification = this.dateOfModification ?: "",
         occasion = this.occasion ?: "",
-        season = this.season ?: "",
+       // season = this.season ?: "",
         status = this.status ?: "",
         subscriptionExpiryDate = this.subscriptionExpiryDate ?: "",
         suitableFor = this.suitableFor ?: "",
-        type = this.type ?: ""
+       // type = this.type ?: ""
     )
 }
 
@@ -276,8 +276,8 @@ internal fun List<OfflinePatterns>.offlinetoDomain(): List<com.ditto.mylibrary.d
             subscriptionExpiryDate = "",
             customization = "",
             dateOfModification = it.orderModificationDate,
-            type = it.dressType,
-            season = "",
+          //  type = it.dressType,
+          //  season = "",
             occasion = "",
             suitableFor = "",
             tailornovaDesignId = it.tailornaovaDesignId,

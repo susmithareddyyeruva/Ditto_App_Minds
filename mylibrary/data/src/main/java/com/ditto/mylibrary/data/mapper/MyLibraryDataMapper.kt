@@ -80,11 +80,11 @@ fun Prod.toDomain(): ProdDomain {
         dateOfModification = this.dateOfModification ?: "",
         description = this.description?:"",
         occasion = this.occasion ?: "",
-        season = this.season ?: "",
+       // season = this.season ?: "",
         status = this.status ?: "",
         subscriptionExpiryDate = this.subscriptionExpiryDate ?: "",
         suitableFor = this.suitableFor ?: "",
-        type = this.type ?: "",
+      //  type = this.type ?: "",
         isFavourite = this.isFavourite ?: false,
         purchasedSizeId = this.purchasedSizeId ?: "",
         mannequin = this.mannequin?.map { it.toDomain12() }

@@ -341,16 +341,16 @@ class PatternDescriptionViewModel @Inject constructor(
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
 //                GlobalScope.launch {
-                runBlocking {
-                    hashMap.forEach { (key, value) ->
-                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
-                        if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
-                            downloadEachPatternPiece(
-                                imageUrl = value,
-                                filename = key,
-                                patternFolderName = patternName.get() ?: "Pattern Piece"
-                            )
-                        }
+                    runBlocking {
+                        hashMap.forEach { (key, value) ->
+                            Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())&&(value!="null")) {
+                                downloadEachPatternPiece(
+                                    imageUrl = value,
+                                    filename = key,
+                                    patternFolderName = patternName.get() ?: "Pattern Piece"
+                                )
+                            }
 
                     }
                 }

@@ -61,6 +61,7 @@ import java.net.Socket
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,
@@ -522,18 +523,26 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun sendCalibrationPattern() {
         logger.d("TRACE_ Projection : performTransform  Start " + Calendar.getInstance().timeInMillis)
         showProgress(true)
-        val bitmap = Utility.getBitmapFromDrawable("calibration_pattern", requireContext())
-        viewModel.disposable += Observable.fromCallable {
-            performTransform(
+        val bitmap =
+            Utility.getBitmapFromDrawable("calibration_transformed", requireContext())
+
+        GlobalScope.launch {
+            sendSampleImage(
                 bitmap,
-                context?.applicationContext,
-                Utility.unityTransParmsString,
                 false
             )
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleResult(it, false) }
+        /* viewModel.disposable += Observable.fromCallable {
+             performTransform(
+                 bitmap,
+                 context?.applicationContext,
+                 Utility.unityTransParmsString,
+                 false
+             )
+         }
+             .subscribeOn(Schedulers.io())
+             .observeOn(AndroidSchedulers.mainThread())
+             .subscribeBy { handleResult(it, false) }*/
     }
 
     private fun sendQuickCheckImage() {
@@ -639,6 +648,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setPrepareDownloadList(map: HashMap<String, String>) {
+      /*  val filterd=map.filter {
+            it.value != "null"&&!it.value.isNullOrEmpty()
+        } as HashMap<String,String>*/
         viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
     }
 
@@ -1014,7 +1026,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
-            hashMap[patternItem.imageName.toString()] = patternItem.imageUrl.toString()
+            hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }
         for (patternItem in viewModel.data.value?.patternPieces ?: emptyList()) {
             hashMap[patternItem.thumbnailImageName.toString()] =
