@@ -124,13 +124,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ?.let { viewModel.clickedTailornovaID.set(it) }
             arguments?.getString("clickedOrderNumber").toString()
                 ?.let { viewModel.clickedOrderNumber.set(it) }
+            arguments?.getString("mannequinId").toString()
+                ?.let { viewModel.mannequinId.set(it) }
             bottomNavViewModel.showProgress.set(true)
             if (NetworkUtility.isNetworkAvailable(context)) {
                 viewModel.fetchPattern()
             } else {
                 viewModel.fetchOfflinePatternDetails()
             }
+            viewModel.isFromDeeplink.set(true)
         } else {
+            viewModel.isFromDeeplink.set(false)
             if (viewModel.data.value == null) {
                 arguments?.getString("clickedTailornovaID").toString()
                     ?.let { viewModel.clickedTailornovaID.set(it) }

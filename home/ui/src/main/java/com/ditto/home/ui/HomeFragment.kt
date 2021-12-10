@@ -153,9 +153,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                     if (findNavController().currentDestination?.id == R.id.homeFragment) {
                         val designId = arguments?.getString("clickedID")
                         val orderNumber = arguments?.getString("clickedOrderNumber")
+                        val mannequinId = arguments?.getString("mannequinId")
                         logger.d("HOME PATTERN ID =$designId")
                         val bundle = bundleOf(
-                            "clickedTailornovaID" to designId, "clickedOrderNumber" to orderNumber,
+                            "clickedTailornovaID" to designId, "clickedOrderNumber" to orderNumber, "mannequinId" to mannequinId,
                             "ISFROM" to "DEEPLINK"
                         )
                         this.arguments?.clear();
