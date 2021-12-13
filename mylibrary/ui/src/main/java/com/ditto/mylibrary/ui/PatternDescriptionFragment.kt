@@ -116,6 +116,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
         if (arguments?.getString("ISFROM").equals("DEEPLINK")) {
+            (activity as BottomNavigationActivity).setEmaildesc()
             logger.d("FROM DEEPLINK IN PATTERN DESCRIPTION")
             viewModel.isFromDeepLinking.set(true)
             arguments?.getString("clickedTailornovaID").toString()
