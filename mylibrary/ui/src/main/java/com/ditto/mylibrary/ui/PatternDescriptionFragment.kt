@@ -660,9 +660,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun setPrepareDownloadList(map: HashMap<String, String>) {
-      /*  val filterd=map.filter {
-            it.value != "null"&&!it.value.isNullOrEmpty()
-        } as HashMap<String,String>*/
+        /*  val filterd=map.filter {
+              it.value != "null"&&!it.value.isNullOrEmpty()
+          } as HashMap<String,String>*/
         viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
     }
 
@@ -1017,12 +1017,20 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
         //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
+        /* var  bundle = bundleOf(
+             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+             "mannequinId" to viewModel.mannequinId.get(),
+             "PatternName" to viewModel.clickedProduct?.prodName
+         )*/
+
         val bundle = bundleOf(
             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
             "mannequinId" to viewModel.mannequinId.get(),
-            "PatternName" to viewModel.clickedProduct?.prodName
+            "PatternName" to viewModel.data?.value?.patternName
         )
+
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
                 R.id.action_patternDescriptionFragment_to_WorkspaceFragment,
@@ -1436,7 +1444,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         fileName = getNameWithoutExtension(fileName)
                     }
                     patterns.forEach {
-                        if (it.prodName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")) {
+                        if (it.prodName.toString()
+                                .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
+                                .replace("[^A-Za-z0-9 ]".toRegex(), "")
+                        ) {
                             listOfCommonFiles.add(file)
                         }
                     }
@@ -1452,7 +1463,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
     }
-
 
 
     private fun deletePDF(patterns: MutableList<ProdDomain>?) {
@@ -1475,7 +1485,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         fileName = getNameWithoutExtension(fileName)
                     }
                     patterns.forEach {
-                        if (it.prodName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")) {
+                        if (it.prodName.toString()
+                                .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
+                                .replace("[^A-Za-z0-9 ]".toRegex(), "")
+                        ) {
                             listOfCommonFiles.add(file)
                         }
                     }
