@@ -1456,11 +1456,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun deletePDF(patterns: MutableList<ProdDomain>?) {
-        val directory = File(
-            Environment.getExternalStorageDirectory()
-                .toString() + "/Ditto"
-        )
-
+        val directory = if (Build.VERSION.SDK_INT >= 30) {
+            File(
+                context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                    .toString() + "/" + "Ditto"
+            )
+        } else {
+            File(
+                Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+            )
+        }
 
         /*val contextWrapper = ContextWrapper(context)
         val directory = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)*/
