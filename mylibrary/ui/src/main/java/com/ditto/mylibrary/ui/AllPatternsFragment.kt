@@ -162,6 +162,8 @@ class AllPatternsFragment(
 
     }
     fun resetListValues(){
+        isLastPage=false
+        currentPage=1
         viewModel.patternList.value=ArrayList()
     }
 
