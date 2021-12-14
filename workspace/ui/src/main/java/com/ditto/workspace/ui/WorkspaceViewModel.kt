@@ -819,9 +819,16 @@ class WorkspaceViewModel @Inject constructor(
 
         val contextWrapper = ContextWrapper(context)
 
-        dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        dittofolder = if (Build.VERSION.SDK_INT >= 30) {
+            File(
+                context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                    .toString() + "/" + "Ditto"
+            )
+        } else {
+            File(
+                Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+            )
+        }
 
         //dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
 
