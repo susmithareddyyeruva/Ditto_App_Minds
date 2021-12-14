@@ -402,6 +402,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         if (AppState.getIsLogged()) {
             val email = AppState.getEmail()
             navViewHeaderBinding.textEmail.text = "$email"
+            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
+            if (AppState.getSubDate()
+                    .isEmpty() || AppState.getSubDate() == null
+            ) {
+                navViewHeaderBinding.subscriptionDays.text ="0 days"
+            } else {
+                val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
+                navViewHeaderBinding.subscriptionDays.text ="$days days"
+            }
+            navViewHeaderBinding.textPhone.text =AppState.getMobile()
         } else {
             setUnderlinestyle(navViewHeaderBinding)
         }

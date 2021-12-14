@@ -87,10 +87,39 @@ object AppState {
         return email ?: ""
     }
 
+    fun getFirstName(): String {
+        val first = pref?.getString(USER_FIRST_NAME)
+        return first ?: ""
+    }
+    fun setFirstName(first: String) {
+        pref?.saveString(USER_FIRST_NAME, first)
+    }
+
+    fun getLastName(): String {
+        val last = pref?.getString(USER_LAST_NAME)
+        return last ?: ""
+    }
+    fun setLastName(lastName: String) {
+        pref?.saveString(USER_LAST_NAME, lastName)
+    }
+    fun getSubDate(): String {
+        val dateEnd = pref?.getString(SUBSCRIPTION_END_DATE)
+        return dateEnd ?: ""
+    }
+    fun setSubscriptionDate(date: String) {
+        pref?.saveString(SUBSCRIPTION_END_DATE, date)
+    }
+
     fun setEmail(email: String) {
         pref?.saveString(USER_EMAIL, email)
     }
-
+    fun getMobile(): String {
+        val mobile = pref?.getString(USER_PHONE)
+        return mobile ?: ""
+    }
+    fun setMobile(mob: String) {
+        pref?.saveString(USER_PHONE, mob)
+    }
     fun saveCurrentService(service : Nsdservicedata){
         pref?.saveString(CONNECTED_SERVICE_NAME,service.nsdServiceName)
         pref?.saveString(CONNECTED_SERVICE_HOST,service.nsdSericeHostAddress)
