@@ -959,10 +959,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             RxBus.listen(RxBusEvent.versionReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-
                     bottomNavViewModel.showProgress.set(false)
-                    versionResult = it.versionReceived
-                    showVersionPopup()
+                    if (it.versionReceived.response.version!=null) {
+                        versionResult = it.versionReceived
+                        showVersionPopup()
+                    }
 
                 })
 
