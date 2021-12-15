@@ -276,7 +276,15 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     companion object {
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
         private const val REQUEST_CODE_PERMISSIONS = 111
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.BLUETOOTH)
+        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(Manifest.permission.BLUETOOTH)
+        }
     }
 
     /**

@@ -106,6 +106,10 @@ class LoginViewModel @Inject constructor(
                     AppState.setCustID(result.data.customer_id?: "")
                     AppState.setCustNumber(result.data.customer_no?: "")
                     AppState.setEmail(result.data.email?: "")
+                    AppState.setFirstName(result.data.first_name?: "")
+                    AppState.setLastName(result.data.last_name?: "")
+                    AppState.setSubscriptionDate(result.data.cSubscriptionPlanEndDate?: "")
+                    AppState.setMobile(result.data.phone_home?: "")
                     AppState.saveKey(result.data.c_encryptionKey?:"")
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,

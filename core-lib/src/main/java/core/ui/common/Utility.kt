@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
@@ -50,7 +51,7 @@ class Utility @Inject constructor(
     private val tokenViewModel: TokenViewModel,
     private val versionViewModel: VersionViewModel
 ) {
-    fun checkVersion(){
+    fun checkVersion() {
         versionViewModel.checkVersion()
     }
 
@@ -160,31 +161,31 @@ class Utility @Inject constructor(
                 alert.show()
             }
         }
-     /*   fun getAlertDialogueForCaliberate(
-            context: Context,
-            title: String,
-            message: String,
-            negativeButton: String,
-            positiveButton: String,
-            callbackDialogListener: CallbackDialogListener,
-            alertType: AlertType
-        ) {
-            val dialogBuilder = AlertDialog.Builder(context)
-            dialogBuilder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onPositiveButtonClicked(alertType)
-                })
-                .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                    callbackDialogListener.onNegativeButtonClicked(alertType)
-                })
+        /*   fun getAlertDialogueForCaliberate(
+               context: Context,
+               title: String,
+               message: String,
+               negativeButton: String,
+               positiveButton: String,
+               callbackDialogListener: CallbackDialogListener,
+               alertType: AlertType
+           ) {
+               val dialogBuilder = AlertDialog.Builder(context)
+               dialogBuilder.setMessage(message)
+                   .setCancelable(false)
+                   .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
+                       dialog.dismiss()
+                       callbackDialogListener.onPositiveButtonClicked(alertType)
+                   })
+                   .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
+                       dialog.dismiss()
+                       callbackDialogListener.onNegativeButtonClicked(alertType)
+                   })
 
-            val alert = dialogBuilder.create()
-            alert.setTitle(title)
-            alert.show()
-        }*/
+               val alert = dialogBuilder.create()
+               alert.setTitle(title)
+               alert.show()
+           }*/
         fun showSnackBar(message: String, view: View) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }
@@ -280,7 +281,11 @@ class Utility @Inject constructor(
             return bitmap
         }
 
-        fun createMirrorBitmap(source: Bitmap, mirrorVertical: Boolean, mirrorHorizontal: Boolean): Bitmap? {
+        fun createMirrorBitmap(
+            source: Bitmap,
+            mirrorVertical: Boolean,
+            mirrorHorizontal: Boolean
+        ): Bitmap? {
             val matrix = Matrix()
             matrix.postScale(
                 if (mirrorHorizontal) -1F else 1F,
@@ -349,7 +354,7 @@ class Utility @Inject constructor(
         }
 
         fun galleryAddPic(context: Context?, file: String) {
-            if (context != null){
+            if (context != null) {
                 Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
                     val f = File(file)
                     mediaScanIntent.data = Uri.fromFile(f)
@@ -389,7 +394,7 @@ class Utility @Inject constructor(
 
         suspend fun sendDittoImage(context: Context?, imageName: String) {
             if (context == null) return
-            Log.d("TRACE_ Projection :","Send Ditto start " + Calendar. getInstance().timeInMillis)
+            Log.d("TRACE_ Projection :", "Send Ditto start " + Calendar.getInstance().timeInMillis)
             val uri = Uri.parse(
                 "android.resource://" + context.packageName
                     .toString() + "/drawable/$imageName"
@@ -418,16 +423,19 @@ class Utility @Inject constructor(
                     }
                 } catch (e: Exception) {
                     println("Projector Connection failed")
-                   /* withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context,
-                            "Socket Connection failed. Try again!!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }*/
+                    /* withContext(Dispatchers.Main) {
+                         Toast.makeText(
+                             context,
+                             "Socket Connection failed. Try again!!",
+                             Toast.LENGTH_SHORT
+                         ).show()
+                     }*/
                 } finally {
                     soc?.close()
-                    Log .d("TRACE_ Projection :","Send Ditto Finish " + Calendar. getInstance().timeInMillis)
+                    Log.d(
+                        "TRACE_ Projection :",
+                        "Send Ditto Finish " + Calendar.getInstance().timeInMillis
+                    )
                 }
             }
         }
@@ -452,15 +460,17 @@ class Utility @Inject constructor(
             context.startActivity(intent)
         }
 
-        fun isFileAvailable(filename: String, context: Context, patternFolderName: String?) : Uri? {
-
-
-
-            val directory = File(
-                Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto"
-            )
-
+        fun isFileAvailable(filename: String, context: Context, patternFolderName: String?): Uri? {
+            val directory = if (Build.VERSION.SDK_INT >= 30) {
+                File(
+                    context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                        .toString() + "/" + "Ditto"
+                )
+            } else {
+                File(
+                    Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+                )
+            }
 
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
@@ -469,8 +479,8 @@ class Utility @Inject constructor(
 //            val pdfFile = File(directory, "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
             val pdfFile = File(directory, "${patternFolderName.toString()}.pdf")
 
-            var path : Uri? = null
-            if (pdfFile.exists()){
+            var path: Uri? = null
+            if (pdfFile.exists()) {
                 path = Uri.fromFile(pdfFile)
             } else {
                 path = null
@@ -479,28 +489,40 @@ class Utility @Inject constructor(
             return path
         }
 
-        fun isImageFileAvailable(filename: String?, patternFolderName: String?) : Uri? {
+        fun isImageFileAvailable(
+            filename: String?,
+            patternFolderName: String?,
+            context: Context
+        ): Uri? {
 
-            val directory = File(
+            /*val directory = File(
                 Environment.getExternalStorageDirectory()
                     .toString() + "/Ditto/$patternFolderName"
-            )
+            )*/
 
+            val contextWrapper = ContextWrapper(context)
+            val directory = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
+            var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")
+
+            Log.d("DOWNLOAD UTIL", "received is $filename")
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
             var p = patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")*/
             //Log.d("Utility","${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".svg"}")
-            val file = File(directory, filename)
-
-            var path : Uri? = null
-            if (file.exists()){
-                path = Uri.fromFile(file)
+            val patternfolder = File(directory,patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), ""))
+            var path: Uri? = null
+            if (patternfolder.exists()) {
+                val file = File(patternfolder, filename)
+                if (file.exists()) {
+                    path = Uri.fromFile(file)
+                } else {
+                    path = null
+                }
             } else {
                 path = null
             }
             return path
         }
-
 
 
         @SuppressLint("ResourceType")
@@ -511,8 +533,8 @@ class Utility @Inject constructor(
             negativeButton: String,
             positiveButton: String,
             customcallbackDialogListener: CustomCallbackDialogListener,
-            alertType:AlertType,
-            imgtyp : Iconype
+            alertType: AlertType,
+            imgtyp: Iconype
         ) {
             if (context != null) {
                 val mDialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert, null)
@@ -527,7 +549,7 @@ class Utility @Inject constructor(
                 val lay_withoutimage =
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
-                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN ||alertType == AlertType.DELETE
+                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN || alertType == AlertType.DELETE
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE
@@ -615,12 +637,12 @@ class Utility @Inject constructor(
         @SuppressLint("ResourceType")
         fun showAlertDialogue(
             context: Context?,
-            resourceDrawable : Int,
+            resourceDrawable: Int,
             alertmessage: String,
             negativeButton: String,
             positiveButton: String,
             callbackDialogListener: CallbackDialogListener,
-            alertType:AlertType
+            alertType: AlertType
         ) {
             if (context != null) {
                 val mDialogView =
@@ -653,13 +675,13 @@ class Utility @Inject constructor(
         @SuppressLint("ResourceType")
         fun showAlertDialogue(
             context: Context?,
-            resourceDrawable : Int,
+            resourceDrawable: Int,
             alertmessage: String,
             nutralButton: String,
             negativeButton: String,
             positiveButton: String,
             callbackDialogListener: CallbackDialogListener,
-            alertType:AlertType
+            alertType: AlertType
         ) {
             if (context != null) {
                 val mDialogView =
@@ -696,8 +718,8 @@ class Utility @Inject constructor(
             }
         }
 
-         fun getTotalNumberOfDays(endDate:String?):String{
-             val formatter = SimpleDateFormat("dd/MM/yyyy")
+        fun getTotalNumberOfDays(endDate: String?): String {
+            val formatter = SimpleDateFormat("dd/MM/yyyy")
             val date = Date()
             println(formatter.format(date))
             val filterData = endDate!!.split(" ")[0]
@@ -706,7 +728,7 @@ class Utility @Inject constructor(
              return longValue.toString()
         }
 
-        fun printDifference(startDate: Date, endDate: Date) :Long{
+        fun printDifference(startDate: Date, endDate: Date): Long {
             //milliseconds
             var different = endDate.time - startDate.time
             println("startDate : $startDate")
@@ -736,8 +758,8 @@ class Utility @Inject constructor(
     }
 
     interface CustomCallbackDialogListener {
-        fun onCustomPositiveButtonClicked(iconype: Iconype,alertType: AlertType)
-        fun onCustomNegativeButtonClicked(iconype: Iconype,alertType: AlertType)
+        fun onCustomPositiveButtonClicked(iconype: Iconype, alertType: AlertType)
+        fun onCustomNegativeButtonClicked(iconype: Iconype, alertType: AlertType)
     }
 
 }

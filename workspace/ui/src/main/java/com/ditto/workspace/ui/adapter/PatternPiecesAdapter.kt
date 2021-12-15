@@ -185,7 +185,7 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
 
         var availableUri:Uri? = null
         if(!(NetworkUtility.isNetworkAvailable(context))){
-            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.patternName.get()}")
+            availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.patternName.get()}",context)
             Log.d("imageUri123", " \${viewModel.patternName.get()} availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {

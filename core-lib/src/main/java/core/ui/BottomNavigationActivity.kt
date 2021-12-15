@@ -184,7 +184,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                                 val userId = appLinkData?.getQueryParameter("userId")
                                 if (userId.equals(AppState.getCustNO())) {
                                     val designId = appLinkData?.getQueryParameter("designId")
-                                    val orderId = appLinkData?.getQueryParameter("orderId")
+                                    val orderId = appLinkData?.getQueryParameter("orderID")
                                     val mannequinId = appLinkData?.getQueryParameter("mannequinId")
                                     Log.d("DEEPLINK", " USER ID=$userId")
                                     Log.d("DEEPLINK", " DESIGN ID=$designId")
@@ -195,7 +195,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                                         val bundle = bundleOf(
                                             "DEEPLINK" to "DETAIL",
                                             "clickedID" to designId,
-                                            "clickedOrderNumber" to orderId
+                                            "clickedOrderNumber" to orderId,
+                                            "mannequinId" to mannequinId
                                         )
                                         Log.d("PATTERN ID", "$designId")
                                         navController.navigate(
@@ -401,6 +402,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         if (AppState.getIsLogged()) {
             val email = AppState.getEmail()
             navViewHeaderBinding.textEmail.text = "$email"
+            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
+            if (AppState.getSubDate()
+                    .isEmpty() || AppState.getSubDate() == null
+            ) {
+                navViewHeaderBinding.subscriptionDays.text ="0 days"
+            } else {
+                val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
+                navViewHeaderBinding.subscriptionDays.text ="$days days"
+            }
+            navViewHeaderBinding.textPhone.text =AppState.getMobile()
         } else {
             setUnderlinestyle(navViewHeaderBinding)
         }
