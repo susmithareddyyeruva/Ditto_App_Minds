@@ -19,6 +19,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentManagedevicesBinding
 import com.ditto.menuitems_ui.managedevices.adapter.ManageDeviceAdapter
+import com.google.android.material.snackbar.Snackbar
 import core.MODE_SERVICE
 import core.SCREEN_MANAGE_DEVICE
 import core.SEARCH_COMPLETE
@@ -70,8 +71,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
         setUIEvents()
-        //viewModel.mode.set(MODE_SERVICE)
-        //checkBluetoothWifiPermission()
+        viewModel.mode.set(MODE_SERVICE)
+        checkBluetoothWifiPermission()
     }
 
     private fun setAdapter() {
@@ -106,7 +107,11 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 resetAdapter(false)
             }
             ManageDeviceViewModel.Event.OnConnectClick -> showConnectPopup()
-            ManageDeviceViewModel.Event.OnBleConnectClick -> showConnectivityPopup()
+            ManageDeviceViewModel.Event.OnBleConnectClick -> {
+                //showConnectivityPopup()
+                viewModel.mode.set(MODE_SERVICE)
+                checkBluetoothWifiPermission()
+            }
             ManageDeviceViewModel.Event.OnConnectedImageSent -> sendConnectImage()
             ManageDeviceViewModel.Event.OnWaitingImageSent -> sendWaitingImage()
         }
@@ -248,12 +253,30 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.isFromBackground = false
         receivedServiceList = Utility.searchServieList
         if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
+            val isAnyPermissionDenied: Boolean =
+                data?.getBooleanExtra("ANY_PERMISSION_DENIED", false) ?: false
+            val isPreciseLocationPermissionDenied: Boolean =
+                data?.getBooleanExtra("PRECISE_LOCATION_PERMISSION_DENIED", false) ?: false
             when {
                 data?.data.toString().equals(SEARCH_COMPLETE) -> {
                     bindAdapter()
                 }
                 data?.data.toString().equals(SEARCH_COMPLETE_AFTER_WIFI) -> {
                     bindAdapterAfterWifi()
+                }
+                isAnyPermissionDenied -> {
+                    Utility.showSnackBar(
+                        "App will not work properly without this permission. Please turn on the permission from settings",
+                        binding.root,
+                        Snackbar.LENGTH_LONG
+                    )
+                }
+                isPreciseLocationPermissionDenied -> {
+                    Utility.showSnackBar(
+                        "Please provide precise location permission to get bluetooth scan results from settings",
+                        binding.root,
+                        Snackbar.LENGTH_LONG
+                    )
                 }
             }
         }
@@ -401,7 +424,31 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         }
     }
 
-    /**
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                if (!Utility.getBluetoothstatus()) {
+                    showBluetoothDialogue()
+                } else if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            } else {
+                logger.d("Permission Denied by the user")
+                Utility.showSnackBar(
+                    "App will not work properly without this permission. Please turn on the permission from settings",
+                    binding.root,
+                    Snackbar.LENGTH_LONG
+                )
+            }
+        }
+    }
+
+        /**
      * [Function] Popup to show Bluetooth Connection
      */
     private fun showBluetoothDialogue() {
@@ -494,10 +541,11 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
     override fun onResume() {
         super.onResume()
-        if (viewModel.isFromBackground) {
+        //commented this code as it was going in loop
+      /*  if (viewModel.isFromBackground) {
             viewModel.mode.set(MODE_SERVICE)
             checkBluetoothWifiPermission()
-        }
+        }*/
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,

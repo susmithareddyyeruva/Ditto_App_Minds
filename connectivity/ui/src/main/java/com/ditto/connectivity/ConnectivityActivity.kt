@@ -944,24 +944,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         )
                         isPreciseLocationRequested = true
                     } else {
-                        Toast.makeText(
-                            this,
-                            "Please provide precise location permission to get bluetooth scan results from settings.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+                        //send result and show snackBar
+                        sendResult("PRECISE_LOCATION_PERMISSION_DENIED")
                     }
                 } else {
                     Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
-                    Toast.makeText(
-                        this,
-                        "App will not work properly without this permission. Please turn on the permission from settings",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    finish()
+                    sendResult("ANY_PERMISSION_DENIED")
                 }
             }
         }
+    }
+
+    private fun sendResult(key: String) {
+        val intent = Intent()
+        intent.putExtra(key, true)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     fun turnGPSOn(onGpsListener: OnGPSListener?) {

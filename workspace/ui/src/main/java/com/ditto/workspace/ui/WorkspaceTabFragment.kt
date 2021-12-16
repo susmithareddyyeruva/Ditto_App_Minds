@@ -49,6 +49,7 @@ import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
+import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
@@ -67,6 +68,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
+import kotlinx.android.synthetic.main.workspace_tab_item.*
 import kotlinx.coroutines.*
 import java.io.*
 import java.net.Socket
@@ -2427,6 +2429,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (requestCode == REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL) {
             viewModel.coachMarkClose()
         } else if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
+            val isAnyPermissionDenied: Boolean =
+                data?.getBooleanExtra("ANY_PERMISSION_DENIED", false) ?: false
+            val isPreciseLocationPermissionDenied: Boolean =
+                data?.getBooleanExtra("PRECISE_LOCATION_PERMISSION_DENIED", false) ?: false
             if (data?.data.toString().equals("success")) {
                 showWaitingMessage("Connected to Ditto Projector!!")
                 baseViewModel.activeSocketConnection.set(true)
@@ -2440,6 +2446,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
 
+            } else if(isPreciseLocationPermissionDenied) {
+                Utility.showSnackBar(
+                    getString(R.string.provide_location_permission_message),
+                    this.workspace_root,
+                    Snackbar.LENGTH_LONG
+                )
+            } else if(isAnyPermissionDenied) {
+                Utility.showSnackBar(
+                    getString(R.string.turn_on_permissions),
+                    this.workspace_root,
+                    Snackbar.LENGTH_LONG
+                )
             } else {
                 baseViewModel.activeSocketConnection.set(false)
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())

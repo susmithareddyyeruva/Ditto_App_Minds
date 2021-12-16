@@ -186,8 +186,8 @@ class Utility @Inject constructor(
                alert.setTitle(title)
                alert.show()
            }*/
-        fun showSnackBar(message: String, view: View) {
-            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
+        fun showSnackBar(message: String, view: View, duration: Int = Snackbar.LENGTH_SHORT) {
+            Snackbar.make(view, message, duration).show()
         }
 
         fun getBluetoothstatus(): Boolean {

@@ -76,7 +76,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         setUIEvents()
         setToolbar()
         setHeadingTitle()
-        checkBluetoothWifiPermission()
+       // checkBluetoothWifiPermission()
         logger.d(bottomNavViewModel.userFirstNameBase.get().toString())
     }
 
@@ -124,7 +124,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                checkBluetoothWifiPermission()
+              //  checkBluetoothWifiPermission()
             } else {
                 logger.d("Permission Denied by the user")
                 Toast.makeText(

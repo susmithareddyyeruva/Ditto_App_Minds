@@ -36,6 +36,7 @@ import com.ditto.calibration.R
 import com.ditto.calibration.databinding.CalibrationFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.calibrate.performCalibration
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -571,11 +572,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 startCamera()
             } else {
                 logger.d("Permission Denied by the user")
-                Toast.makeText(
-                    requireContext(),
-                    "App will not work properly without this permission. Please turn on the permission from settings",
-                    Toast.LENGTH_LONG
-                ).show()
+                Utility.showSnackBar(getString(R.string.turn_on_permission), binding.root, Snackbar.LENGTH_LONG)
             }
         }
     }
