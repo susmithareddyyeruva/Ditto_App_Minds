@@ -301,9 +301,16 @@ class PatternDescriptionViewModel @Inject constructor(
 
         val contextWrapper = ContextWrapper(context)
 
-        dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )
+        dittofolder = if (Build.VERSION.SDK_INT >= 30) {
+            File(
+                context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                    .toString() + "/" + "Ditto"
+            )
+        } else {
+            File(
+                Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+            )
+        }
 
         // uncomment following line to save file in internal app memory
         //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)

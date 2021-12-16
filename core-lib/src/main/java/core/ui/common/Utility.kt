@@ -461,13 +461,16 @@ class Utility @Inject constructor(
         }
 
         fun isFileAvailable(filename: String, context: Context, patternFolderName: String?): Uri? {
-
-
-            val directory = File(
-                Environment.getExternalStorageDirectory()
-                    .toString() + "/Ditto"
-            )
-
+            val directory = if (Build.VERSION.SDK_INT >= 30) {
+                File(
+                    context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                        .toString() + "/" + "Ditto"
+                )
+            } else {
+                File(
+                    Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+                )
+            }
 
            /* val contextWrapper = ContextWrapper(context)
             val directory = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)

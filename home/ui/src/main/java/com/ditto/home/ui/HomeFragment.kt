@@ -47,6 +47,7 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private lateinit var job: Job
+
     @Inject
     lateinit var loggerFactory: LoggerFactory
     var versionResult: SoftwareUpdateResult? = null
@@ -81,7 +82,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME","onActivityCreated")
+        Log.d("HOME", "onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
 
@@ -99,7 +100,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         if (!AppState.isShownCoachMark()) {
             bottomNavViewModel.isShownCoachMark.set(AppState.isShownCoachMark())
             bottomNavViewModel.coachmarkFlowFinished.observe(viewLifecycleOwner, {
-                if(it){
+                if (it) {
                     loadHomeFragment()
                 }
             })
@@ -112,7 +113,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         homeViewModel.disposable += homeViewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                if (activity!= null && context!= null &&isAdded) {
+                if (activity != null && context != null && isAdded) {
                     handleEvent(it)
                 }
             }
@@ -156,7 +157,9 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                         val mannequinId = arguments?.getString("mannequinId")
                         logger.d("HOME PATTERN ID =$designId")
                         val bundle = bundleOf(
-                            "clickedTailornovaID" to designId, "clickedOrderNumber" to orderNumber, "mannequinId" to mannequinId,
+                            "clickedTailornovaID" to designId,
+                            "clickedOrderNumber" to orderNumber,
+                            "mannequinId" to mannequinId,
                             "ISFROM" to "DEEPLINK"
                         )
                         this.arguments?.clear();
@@ -171,6 +174,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         }
     }
+
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
@@ -181,7 +185,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME","onResume")
+        Log.d("HOME", "onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()
@@ -211,8 +215,11 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             .subscribe {
 
                 bottomNavViewModel.showProgress.set(false)
-                versionResult = it.versionReceived
-                showVersionPopup()
+                if (it.versionReceived.response.version != null) {
+                    versionResult = it.versionReceived
+                    showVersionPopup()
+                }
+
 
             })
 
@@ -326,12 +333,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
                     }
                 } else {
-                    if (activity!= null && context!= null &&isAdded) {
+                    if (activity != null && context != null && isAdded) {
                         requestPermissions(
                             REQUIRED_PERMISSIONS_DOWNLOAD,
                             REQUEST_CODE_PERMISSIONS_DOWNLOAD
                         )
-                    }else{
+                    } else {
 
                     }
                 }
