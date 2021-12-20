@@ -36,6 +36,7 @@ import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
+import core.ERROR_FETCH
 import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
@@ -963,6 +964,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if (it.versionReceived.response.version!=null) {
                         versionResult = it.versionReceived
                         showVersionPopup()
+                    }else{
+                        showAlert(
+                            ERROR_FETCH,
+                            Utility.AlertType.DEFAULT
+                        )
                     }
 
                 })

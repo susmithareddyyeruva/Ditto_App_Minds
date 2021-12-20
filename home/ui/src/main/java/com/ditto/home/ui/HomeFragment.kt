@@ -26,6 +26,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.example.home_ui.R
 import com.example.home_ui.databinding.HomeFragmentBinding
+import core.ERROR_FETCH
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
 import core.network.NetworkUtility
@@ -218,6 +219,9 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 if (it.versionReceived.response.version != null) {
                     versionResult = it.versionReceived
                     showVersionPopup()
+                } else {
+                    homeViewModel.errorString.set(ERROR_FETCH) ?: ""
+                    showAlert()
                 }
 
 
