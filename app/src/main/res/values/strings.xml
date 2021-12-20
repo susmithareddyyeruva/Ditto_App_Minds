@@ -1,12 +1,3 @@
 <resources>
     <string name="app_name">Ditto</string>
-    <string name="asset_statements">[{
-"relation": ["delegate_permission/common.handle_all_urls"],
-"target": {
-"namespace": "android_app",
-"package_name": "com.joann.ditto",
-"sha256_cert_fingerprints":
-["51:60:01:D5:C8:A9:62:A7:93:49:1A:B1:2A:85:28:97:21:46:4F:72:AB:78:DD:FE:3F:CE:46:76:C2:E6:19:9F"]
-}
-}]</string>
 </resources>

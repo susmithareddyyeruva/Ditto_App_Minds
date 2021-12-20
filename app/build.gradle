@@ -22,6 +22,14 @@ android {
             keyAlias 'key0'
             keyPassword 'Demo@123'
         }
+        debug {
+            //Ideally these details are maintained outside source - build server and picked up by CI/CD pipeline
+            storeFile file("keystore.jks")
+            storePassword 'Demo@123'
+            keyAlias 'key0'
+            keyPassword 'Demo@123'
+        }
+
     }
 
     packagingOptions {
