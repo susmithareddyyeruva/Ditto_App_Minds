@@ -2,8 +2,10 @@ package com.ditto.menuitems_ui.managedevices.fragment
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -38,7 +40,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
+class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
+    Utility.CallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -439,11 +442,28 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 }
             } else {
                 logger.d("Permission Denied by the user")
-                Utility.showSnackBar(
-                    "App will not work properly without this permission. Please turn on the permission from settings",
-                    binding.root,
-                    Snackbar.LENGTH_LONG
-                )
+                //Bluetooth permission dialog is shown only in api 31 and above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Utility.getAlertDialogue(
+                        requireContext(),
+                        getString(R.string.permissions_required),
+                        getString(R.string.bluetooth_pemissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
+                } else {
+                    Utility.getAlertDialogue(
+                        requireContext(),
+                        getString(R.string.permissions_required),
+                        getString(R.string.permissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
+                }
             }
         }
     }
@@ -560,6 +580,26 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.isFromBackground = true
         viewModel.numberOfProjectors.set("")
         viewModel.isServiceNotFound.set(false)
+    }
+
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        val context: Context = requireContext()
+        val intent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.parse("package:${context.packageName}")
+        ).apply {
+            addCategory(Intent.CATEGORY_DEFAULT)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(intent)
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+
+    }
+
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
+
     }
 
 }

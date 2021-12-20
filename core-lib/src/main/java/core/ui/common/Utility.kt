@@ -76,7 +76,8 @@ class Utility @Inject constructor(
         DOWNLOADFAILED,
         RUNTIMEPERMISSION,
         SOFTWARE_UPDATE,
-        GUEST_MYFOLDER
+        GUEST_MYFOLDER,
+        PERMISSION_DENIED
     }
 
     enum class Iconype {
@@ -121,6 +122,12 @@ class Utility @Inject constructor(
 
                 val alert = dialogBuilder.create()
                 alert.setTitle(title)
+                alert.setOnShowListener {
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        .setTextColor(context.getResources().getColor(android.R.color.black))
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setTextColor(context.getResources().getColor(android.R.color.black))
+                }
                 alert.show()
             }
         }

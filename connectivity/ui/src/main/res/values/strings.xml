@@ -42,4 +42,10 @@
     <string name="select_projector">Select projector</string>
     <string name="no_projector">No projectors found!!</string>
     <string name="connect_projector_to_wifi">CONNECT PROJECTOR TO WIFI</string>
+    <string name="permissions_required">Permissions required</string>
+    <string name="precise_location_permissions_denied">Please provide Precise location permission to get bluetooth scan results from settings.</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="bluetooth_pemissions_denied">Please provide Bluetooth permission to get bluetooth scan results from settings.</string>
+    <string name="location_permissions_denied">Please provide location permission to get bluetooth scan results from settings.</string>
+    <string name="permissions_denied">App will not work properly without this permission. Please turn on the permission from settings.</string>
 </resources>

@@ -1644,6 +1644,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
             }
+            Utility.AlertType.PERMISSION_DENIED -> {
+                //go to app settings
+                val intent = Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:${requireContext().packageName}")
+                ).apply {
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+            }
             else -> {
                 Log.d("WorkspaceTabFragment", "onPositiveButtonClicked")
             }
@@ -2224,15 +2235,28 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Utility.Iconype.FAILED
                 )
             }
-        } else if (allPermissionsGranted() && requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (!Utility.getBluetoothstatus()) {
-                Log.d("onReqPermissionsResult", Utility.getBluetoothstatus().toString())
-                showBluetoothDialogue()
-                Log.d("onReqPermissionsResult", "shownBluetoothDialogue" )
-            } else if (!Utility.getWifistatus(requireContext())) {
-                showWifiDialogue()
+        }
+        else if (requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (allPermissionsGranted()) {
+                if (!Utility.getBluetoothstatus()) {
+                    Log.d("onReqPermissionsResult", Utility.getBluetoothstatus().toString())
+                    showBluetoothDialogue()
+                    Log.d("onReqPermissionsResult", "shownBluetoothDialogue")
+                } else if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
             } else {
-                showConnectivityPopup()
+                Utility.getAlertDialogue(
+                    requireContext(),
+                    getString(R.string.permissions_required),
+                    getString(R.string.bluetooth_pemissions_denied),
+                    getString(R.string.cancel),
+                    getString(R.string.go_to_settings),
+                    this,
+                    Utility.AlertType.PERMISSION_DENIED
+                )
             }
         } else {
             showSaveAndExitPopup()
