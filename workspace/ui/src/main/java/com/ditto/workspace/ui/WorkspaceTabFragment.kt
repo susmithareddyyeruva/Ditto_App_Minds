@@ -2464,10 +2464,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (requestCode == REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL) {
             viewModel.coachMarkClose()
         } else if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
-            val isAnyPermissionDenied: Boolean =
-                data?.getBooleanExtra("ANY_PERMISSION_DENIED", false) ?: false
-            val isPreciseLocationPermissionDenied: Boolean =
-                data?.getBooleanExtra("PRECISE_LOCATION_PERMISSION_DENIED", false) ?: false
             if (data?.data.toString().equals("success")) {
                 showWaitingMessage("Connected to Ditto Projector!!")
                 baseViewModel.activeSocketConnection.set(true)
@@ -2481,18 +2477,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     )
                 }
 
-            } else if(isPreciseLocationPermissionDenied) {
-                Utility.showSnackBar(
-                    getString(R.string.provide_location_permission_message),
-                    this.workspace_root,
-                    Snackbar.LENGTH_LONG
-                )
-            } else if(isAnyPermissionDenied) {
-                Utility.showSnackBar(
-                    getString(R.string.turn_on_permissions),
-                    this.workspace_root,
-                    Snackbar.LENGTH_LONG
-                )
             } else {
                 baseViewModel.activeSocketConnection.set(false)
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())

@@ -2,10 +2,8 @@ package com.ditto.menuitems_ui.managedevices.fragment
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -21,7 +19,6 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentManagedevicesBinding
 import com.ditto.menuitems_ui.managedevices.adapter.ManageDeviceAdapter
-import com.google.android.material.snackbar.Snackbar
 import core.MODE_SERVICE
 import core.SCREEN_MANAGE_DEVICE
 import core.SEARCH_COMPLETE
@@ -256,30 +253,12 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.isFromBackground = false
         receivedServiceList = Utility.searchServieList
         if (requestCode == REQUEST_ACTIVITY_RESULT_CODE) {
-            val isAnyPermissionDenied: Boolean =
-                data?.getBooleanExtra("ANY_PERMISSION_DENIED", false) ?: false
-            val isPreciseLocationPermissionDenied: Boolean =
-                data?.getBooleanExtra("PRECISE_LOCATION_PERMISSION_DENIED", false) ?: false
             when {
                 data?.data.toString().equals(SEARCH_COMPLETE) -> {
                     bindAdapter()
                 }
                 data?.data.toString().equals(SEARCH_COMPLETE_AFTER_WIFI) -> {
                     bindAdapterAfterWifi()
-                }
-                isAnyPermissionDenied -> {
-                    Utility.showSnackBar(
-                        "App will not work properly without this permission. Please turn on the permission from settings",
-                        binding.root,
-                        Snackbar.LENGTH_LONG
-                    )
-                }
-                isPreciseLocationPermissionDenied -> {
-                    Utility.showSnackBar(
-                        "Please provide precise location permission to get bluetooth scan results from settings",
-                        binding.root,
-                        Snackbar.LENGTH_LONG
-                    )
                 }
             }
         }
