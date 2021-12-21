@@ -583,15 +583,9 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        val context: Context = requireContext()
-        val intent = Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.parse("package:${context.packageName}")
-        ).apply {
-            addCategory(Intent.CATEGORY_DEFAULT)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(requireContext())
         }
-        startActivity(intent)
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {

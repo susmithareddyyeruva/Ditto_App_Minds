@@ -45,7 +45,8 @@ import java.util.*
 import javax.inject.Inject
 
 
-class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
+class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
+    Utility.CallbackDialogListener {
 
     private lateinit var job: Job
 
@@ -514,19 +515,28 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         } else {
             //checkSocketConnectionBeforeWorkspace()
             // todo need dialog to ask for permission
-            Utility.getCommonAlertDialogue(
+            Utility.getAlertDialogue(
                 requireContext(),
-                "",
-                "Without this permission you will not able to use this feature",
-                "",
-                getString(com.ditto.menuitems_ui.R.string.str_ok),
+                getString(R.string.permissions_required),
+                getString(R.string.storage_permissions),
+                getString(R.string.cancel),
+                getString(R.string.go_to_settings),
                 this,
-                Utility.AlertType.RUNTIMEPERMISSION,
-                Utility.Iconype.NONE
+                Utility.AlertType.PERMISSION_DENIED
             )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
             Log.d("onReqPermissionsResult", "permission denied")
         }
 
     }
+
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(requireContext())
+        }
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {}
+
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) { }
 }

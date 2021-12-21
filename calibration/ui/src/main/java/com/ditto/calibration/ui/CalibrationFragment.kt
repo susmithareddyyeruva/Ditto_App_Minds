@@ -572,7 +572,15 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 startCamera()
             } else {
                 logger.d("Permission Denied by the user")
-                Utility.showSnackBar(getString(R.string.turn_on_permission), binding.root, Snackbar.LENGTH_LONG)
+                Utility.getAlertDialogue(
+                    requireContext(),
+                    getString(R.string.permissions_required),
+                    getString(R.string.permissions_denied),
+                    getString(R.string.cancel),
+                    getString(R.string.go_to_settings),
+                    this,
+                    Utility.AlertType.PERMISSION_DENIED
+                )
             }
         }
     }
@@ -601,6 +609,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(requireContext())
+        }
         baseViewModel.isSetUpError.set(false)
         if (!baseViewModel.isCalibrated.get()) {
             baseViewModel.isCalibrated.set(true)

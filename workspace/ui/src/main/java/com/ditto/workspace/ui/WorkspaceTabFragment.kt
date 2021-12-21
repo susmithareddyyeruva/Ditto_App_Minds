@@ -2216,27 +2216,38 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
-        if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
-            val map = getPatternPieceListTailornova()
+        if (requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
+            if (dowloadPermissonGranted()) {
+                Log.d("onReqPermissionsResult", "permission granted")
+                val map = getPatternPieceListTailornova()
 
-            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                } else {
+                    Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        "",
+                        getString(R.string.no_internet_available),
+                        "",
+                        getString(R.string.str_ok),
+                        this,
+                        Utility.AlertType.NETWORK,
+                        Utility.Iconype.FAILED
+                    )
+                }
             } else {
-                Utility.getCommonAlertDialogue(
+                Utility.getAlertDialogue(
                     requireContext(),
-                    "",
-                    getString(R.string.no_internet_available),
-                    "",
-                    getString(R.string.str_ok),
+                    getString(R.string.permissions_required),
+                    getString(R.string.storage_permissions_denied),
+                    getString(R.string.cancel),
+                    getString(R.string.go_to_settings),
                     this,
-                    Utility.AlertType.NETWORK,
-                    Utility.Iconype.FAILED
+                    Utility.AlertType.PERMISSION_DENIED
                 )
             }
-        }
-        else if (requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        } else if (requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (allPermissionsGranted()) {
                 if (!Utility.getBluetoothstatus()) {
                     Log.d("onReqPermissionsResult", Utility.getBluetoothstatus().toString())

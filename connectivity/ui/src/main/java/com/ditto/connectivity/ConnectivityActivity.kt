@@ -1201,16 +1201,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
         //navigate to app settings
-        val context: Context = applicationContext
-        val intent = Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.parse("package:${context.packageName}")
-        ).apply {
-            addCategory(Intent.CATEGORY_DEFAULT)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(this)
+            finish()
         }
-        startActivity(intent)
-        finish()
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
