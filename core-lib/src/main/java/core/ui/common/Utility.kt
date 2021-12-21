@@ -104,7 +104,7 @@ class Utility @Inject constructor(
             alertType: AlertType
         ) {
             if (context != null) {
-                val dialogBuilder = AlertDialog.Builder(context)
+                val dialogBuilder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
                 dialogBuilder.setMessage(message)
                     .setCancelable(false)
                     .setPositiveButton(
@@ -122,12 +122,6 @@ class Utility @Inject constructor(
 
                 val alert = dialogBuilder.create()
                 alert.setTitle(title)
-                alert.setOnShowListener {
-                    alert.getButton(AlertDialog.BUTTON_NEGATIVE)
-                        .setTextColor(context.getResources().getColor(android.R.color.black))
-                    alert.getButton(AlertDialog.BUTTON_POSITIVE)
-                        .setTextColor(context.getResources().getColor(android.R.color.black))
-                }
                 alert.show()
             }
         }
