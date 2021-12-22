@@ -261,8 +261,6 @@ class PatternDescriptionViewModel @Inject constructor(
     suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
         try {
             withContext(Dispatchers.IO) {
-
-                val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(url)
