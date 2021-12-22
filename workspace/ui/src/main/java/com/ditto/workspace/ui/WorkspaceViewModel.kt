@@ -20,8 +20,6 @@ import com.ditto.workspace.data.mapper.*
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.util.Utility
-import core.PDF_PASSWORD
-import core.PDF_USERNAME
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel

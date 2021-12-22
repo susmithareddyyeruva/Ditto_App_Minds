@@ -15,8 +15,6 @@ import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
-import core.PDF_PASSWORD
-import core.PDF_USERNAME
 import core.event.UiEvents
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
