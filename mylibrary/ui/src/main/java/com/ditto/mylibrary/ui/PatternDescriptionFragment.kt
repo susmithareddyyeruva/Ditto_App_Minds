@@ -343,7 +343,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .load(viewModel.data.value?.patternDescriptionImageUrl)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(binding.imagePatternDesc)
-
+            //todo need to check for type
             setVisibilityForViews(
                 "WORKSPACE",
                 false,
@@ -356,7 +356,56 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         } else {
             setData()
-            setVisibilityForViews(
+
+            if(viewModel.clickedProduct?.patternType.equals("Subscribed",true)){
+                val days= Utility.getTotalNumberOfDays(viewModel.clickedProduct?.subscriptionExpiryDate)
+                logger.d("days: $days")
+                if(days.toInt() > 0 )
+                    setVisibilityForViews(
+                    "RENEW SUBSCRIPTION",
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )else if(viewModel.clickedProduct?.status.equals("New",true)){
+                        setVisibilityForViews(
+                            "WORKSPACE",
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            true
+                        )
+
+                    }else{
+                    setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+                }
+
+            } else if(viewModel.clickedProduct?.patternType.equals("Purchased",true) || viewModel.clickedProduct?.patternType.equals("Trial",true)){
+
+
+                if(viewModel.clickedProduct?.status.equals("New",true)){
+                    setVisibilityForViews(
+                        "WORKSPACE",
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        true
+                    )
+
+                }else{
+                    setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+                }
+            }
+           /* setVisibilityForViews(
                 "WORKSPACE",
                 false,
                 false,
@@ -365,7 +414,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 false,
                 true
-            )
+            )*/
             /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
                 1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
                 4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
@@ -776,8 +825,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             is PatternDescriptionViewModel.Event.onSubscriptionClicked -> {
                 logger.d("onSubscriptionClicked")
                 Utility.redirectToExternalBrowser(
-                    requireContext(),
-                    "http://www.dittopatterns.com"
+                    requireContext(),BuildConfig.SUBSCRIPTION_URL
+                    //"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"
                 )
 
             }
