@@ -298,21 +298,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             getString(R.string.pattern_library)
         )
     }
-   /* private fun setTabHeaders(){
-        if (NetworkUtility.isNetworkAvailable(context)) {
-            binding.tabLayout.getTabAt(0)?.text = getString(R.string.all_patterns)
-            showFilterComponents()
-            ( binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
-            ( binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.VISIBLE
-
-        } else {
-            // binding.tabLayout.getTabAt(0)?.select()
-            ( binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
-            ( binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.GONE
-            binding.tabLayout.getTabAt(0)?.text = getString(R.string.offline_patterns)
-            hideFilterComponents()
-        }
-    }*/
 
     fun setTabsAdapter(event:String) {
         Log.d(
@@ -415,18 +400,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             ), this, this
         )
 
-        /*  if (offlinePatternFragment.isAdded) {
-              adapter.remove(
-                  offlinePatternFragment, getString(
-                      R.string.offline_patterns
-                  )
-              )
-          }
-          adapter.addFragment(
-              offlinePatternFragment, getString(
-                  R.string.offline_patterns
-              ), this, this
-          )*/
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(view_pager)
     }
