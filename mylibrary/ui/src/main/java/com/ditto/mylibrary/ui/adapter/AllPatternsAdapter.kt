@@ -69,7 +69,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
             holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
             if (patterns[position].status?.toUpperCase()
                     .equals("NEW") || patterns[position].status?.toUpperCase().equals("OWNED")
-                || patterns[position].status?.toUpperCase().equals("TRIAL")|| patterns[position].status?.toUpperCase().equals("•SUBSCRIBED")
+                || patterns[position].status?.toUpperCase().equals("TRIAL")|| patterns[position].status?.toUpperCase().equals("SUBSCRIBED")
             ) {
                 holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
                     (ContextCompat.getColor(
