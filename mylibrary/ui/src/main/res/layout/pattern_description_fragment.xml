@@ -179,7 +179,7 @@
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="@dimen/size_16dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
                 app:layout_constraintEnd_toStartOf="@id/image_vertical"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
