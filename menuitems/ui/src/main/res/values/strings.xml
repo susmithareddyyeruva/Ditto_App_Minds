@@ -35,5 +35,5 @@
     <string name="cut_number_reminder">Cut Number Reminder</string>
     <string name="splicing_notification">Splicing Notification</string>
     <string name="multidirectional_splicing_notification">Multidirectional Splicing Notification</string>
-    <string name="guest_my_folder_message">Guest User do not have this functionality.</string>
+    <string name="guest_my_folder_message">Guest User does not have this functionality.</string>
 </resources>
