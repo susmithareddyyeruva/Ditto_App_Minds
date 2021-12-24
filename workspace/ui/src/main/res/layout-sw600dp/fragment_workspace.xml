@@ -64,21 +64,21 @@
             android:text="@{viewModel.patternName}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/tab_heading"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideline_top"
             app:layout_constraintEnd_toStartOf="@+id/tabLayout_workspace"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout_workspace"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/tab_height"
-            android:background="@drawable/tab_background"
             android:layout_marginEnd="@dimen/small_padding_x"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/tab_background"
             app:layout_constraintBottom_toTopOf="@+id/guideline_top"
             app:layout_constraintEnd_toEndOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toTopOf="parent"
             app:tabBackground="@drawable/tab_item_background"
             app:tabIndicatorHeight="@dimen/dimen_0"
             app:tabMode="fixed"
@@ -86,6 +86,14 @@
             app:tabSelectedTextColor="@android:color/white"
             app:tabTextAppearance="@style/TabLayoutTextStyle"
             app:tabTextColor="@color/tab_text_color" />
+
+        <RelativeLayout
+            android:id="@+id/coach_mark_mask"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_max_width"
+            android:clickable="true"
+            android:elevation="@dimen/elevation_card"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
