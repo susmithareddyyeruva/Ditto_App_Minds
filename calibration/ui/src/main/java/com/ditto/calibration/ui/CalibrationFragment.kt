@@ -575,7 +575,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 Utility.getAlertDialogue(
                     requireContext(),
                     getString(R.string.permissions_required),
-                    getString(R.string.permissions_denied),
+                    getString(R.string.camera_permissions_denied),
                     getString(R.string.cancel),
                     getString(R.string.go_to_settings),
                     this,

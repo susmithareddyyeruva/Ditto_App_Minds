@@ -50,4 +50,5 @@
     <string name="storage_permissions_denied">Please provide Storage permission from settings to use this feature.</string>
     <string name="permissions_denied">App will not work properly without this permission. Please turn on the permission from settings.</string>
     <string name="storage_permissions">Without this permission you will not able to use this feature</string>
+    <string name="camera_permissions_denied">Please provide Camera permission from settings to use this feature.</string>
 </resources>

@@ -941,6 +941,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        Log.d("PatternSCreen", "onResume-PatternDescription")
+        if(viewModel.disposable.size() == 0) {
+            setUIEvents()
+        }
         listenVersionEvents()
     }
 
@@ -987,6 +991,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onPause()
         versionDisposable?.clear()
         versionDisposable?.dispose()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("PatternSCreen", "onStop-PatternDescription")
+        viewModel.disposable.clear()
     }
 
     private fun showVersionPopup() {
