@@ -49,6 +49,7 @@ android {
             // dev
             buildConfigField "String", "SERVER", "\"dev\""
             buildConfigField "String", "BASEURL", "\"https://development.dittopatterns.com/\""
+            buildConfigField "String", "JOANN_URL", "\"https://www.joann.com/\""
             buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
@@ -61,6 +62,7 @@ android {
             // dev11
            /* buildConfigField "String", "SERVER", "\"staging\""
             buildConfigField "String", "BASEURL", "\"https://dev11-na03-joann.demandware.net/\""
+            buildConfigField "String", "JOANN_URL", "\"https://www.joann.com/\""
             buildConfigField "String", "COMMON_ENDURL", "\"s/ditto/dw/shop/v19_1/\""
             buildConfigField "String", "WORKSPACE_ENDURL", "\"s/-/dw/data/v19_1/\""
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""*/
