@@ -2,6 +2,7 @@ package com.ditto.workspace.domain.model
 
 
 data class WorkspaceDataAPI (
+    var time:String? = "",
     val tailornaovaDesignId:String? = "",
     val selectedTab:String? = "",
     val status:String? = "",

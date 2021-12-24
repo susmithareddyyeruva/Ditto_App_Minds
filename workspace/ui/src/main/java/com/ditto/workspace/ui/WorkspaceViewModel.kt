@@ -129,6 +129,7 @@ class WorkspaceViewModel @Inject constructor(
 
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
+        workspaceDataAPI.time=Calendar.getInstance().timeInMillis.toString()
         disposable += getWorkspaceData.updateWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}",
             workspaceDataAPI
