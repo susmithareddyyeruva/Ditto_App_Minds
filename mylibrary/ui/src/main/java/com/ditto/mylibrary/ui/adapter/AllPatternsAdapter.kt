@@ -61,6 +61,8 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 //            .into(holder.patternsItemBinding.imagePattern)
 
         if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(holder.patternsItemBinding.likeImage.context)) {
+            holder.patternsItemBinding.likeImage.visibility = View.VISIBLE
+            holder.patternsItemBinding.imageAdd.visibility = View.VISIBLE
             if (data.isFavourite == true) {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_like)
             } else {
