@@ -157,6 +157,50 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.imageCloseSearch.setOnClickListener {
             binding.editSearch.editSearch?.text?.clear()
         }
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                if (tab?.position == 0) {
+                    removeAll()
+                    /**
+                     * To Show My Folders screen always  While Switching tab between all pattern and myfolder
+                     * without showing My Folder Detail Screen
+                     */
+
+                    showFilterComponents()
+                    if (baseViewModel.totalCount.equals(0)) {
+                        viewModel.myLibraryTitle.set(
+                            getString(R.string.pattern_library)
+                        )
+                    } else {
+                        viewModel.myLibraryTitle.set(
+                            getString(R.string.pattern_library_count, baseViewModel.totalCount)
+                        )
+                    }
+
+
+                } else if (tab?.position == 1 && childFragmentManager.fragments.size == 2) {
+                    if (NetworkUtility.isNetworkAvailable(context)) {
+                        hideFilterComponents()
+                        if (AppState.getIsLogged()) {
+                            viewModel.myLibraryTitle.set(getString(R.string.my_folders))
+                        } else {
+                            //Preventing click for MyFolder for Guest User
+                            SwicthToAllPattern()
+                        }
+                    } else
+                        setTabsAdapter("TABLISTENER")
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                logger.d("onTabUnselected")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                logger.d("onTabReselected")
+            }
+        })
 
 
         handleBackPressCallback()
@@ -344,50 +388,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             hideFilterComponents()
         }
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
 
-                if (tab?.position == 0) {
-                    removeAll()
-                    /**
-                     * To Show My Folders screen always  While Switching tab between all pattern and myfolder
-                     * without showing My Folder Detail Screen
-                     */
-
-                    showFilterComponents()
-                    if (baseViewModel.totalCount.equals(0)) {
-                        viewModel.myLibraryTitle.set(
-                            getString(R.string.pattern_library)
-                        )
-                    } else {
-                        viewModel.myLibraryTitle.set(
-                            getString(R.string.pattern_library_count, baseViewModel.totalCount)
-                        )
-                    }
-
-
-                } else if (tab?.position == 1 && childFragmentManager.fragments.size == 2) {
-                    if (NetworkUtility.isNetworkAvailable(context)) {
-                        hideFilterComponents()
-                        if (AppState.getIsLogged()) {
-                            viewModel.myLibraryTitle.set(getString(R.string.my_folders))
-                        } else {
-                            //Preventing click for MyFolder for Guest User
-                            SwicthToAllPattern()
-                        }
-                    } else
-                        setTabsAdapter("TABLISTENER")
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                logger.d("onTabUnselected")
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                logger.d("onTabReselected")
-            }
-        })
     }
 
     private fun SwicthToAllPattern() {
