@@ -430,6 +430,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="@dimen/elevation_card"
+            android:visibility="gone"
             android:clickable="true"/>
 
         <ImageView

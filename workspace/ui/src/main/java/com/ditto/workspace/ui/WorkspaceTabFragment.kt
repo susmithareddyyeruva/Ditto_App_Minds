@@ -1221,10 +1221,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
 
     private fun showWorkspaceCoachMark() {
-        (parentFragment as WorkspaceFragment).maskCoachMark(true)
         viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
         if (!viewModel.isWorkspaceShownCoachMark.get()) {
-
+            (parentFragment as WorkspaceFragment).maskCoachMark(true)
             val transition: Transition = Slide(Gravity.BOTTOM)
             transition.setDuration(600)
             transition.addListener(object : Transition.TransitionListener {
