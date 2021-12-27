@@ -5,7 +5,7 @@ data class OfflinePatternData(
     var selectedMannequinId:String?,
     var selectedMannequinName:String?,
     var selectedTab: String?,
-    var status: String,
+    var status: String?,
     var numberOfCompletedPieces: NumberOfPieces?,
     var patternPiecesFromApi: List<PatternPieceSFCCAPI> = emptyList(),
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),

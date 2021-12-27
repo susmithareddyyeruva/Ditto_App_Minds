@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -26,6 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
@@ -34,6 +36,7 @@ import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
+import com.ditto.workspace.ui.util.SvgBitmapDecoder
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.ERROR_FETCH
@@ -426,6 +429,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setData() {
         viewModel.patternName.set(viewModel.clickedProduct?.prodName)
+        viewModel.prodSize.set(viewModel.clickedProduct?.prodSize)
+
+        if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+            viewModel.tailornovaDesignpatternName.set(viewModel.clickedProduct?.prodName)
+        } else {
+            viewModel.tailornovaDesignpatternName.set(viewModel.clickedProduct?.tailornovaDesignName)
+        }
         //viewModel.patternDescription.set(clickedProduct?.description)
         viewModel.patternDescription.set(
             viewModel.clickedProduct?.description ?: "Some description"
@@ -829,8 +839,21 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
                         PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
-                        val bundle =
-                            bundleOf("PatternName" to viewModel.clickedProduct?.prodName)
+                        var bundle = Bundle()
+                        if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+                            bundle =
+                                bundleOf(
+                                    "PatternName" to viewModel.clickedProduct?.prodName,
+                                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName
+                                )
+                        } else {
+                            bundle =
+                                bundleOf(
+                                    "PatternName" to viewModel.clickedProduct?.prodName,
+                                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
+                                )
+
+                        }
                         findNavController().navigate(
                             R.id.action_patternDescriptionFragment_to_pattern_instructions_Fragment,
                             bundle
@@ -906,11 +929,20 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun setPatternImage() {
-        if (activity != null && context != null) {
-            Glide.with(requireContext())
-                .load(viewModel.clickedProduct?.image)
-                .placeholder(R.drawable.ic_placeholder)
-                .into(binding.imagePatternDesc)
+        if ((NetworkUtility.isNetworkAvailable(context))) {
+            if (activity != null && context != null) {
+                Glide.with(requireContext())
+                    .load(viewModel.clickedProduct?.image)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(binding.imagePatternDesc)
+            }
+        } else {
+            setImageFromSvgPngDrawable(
+                viewModel.patternName.get(),
+                viewModel.clickedProduct?.image,
+                binding.imagePatternDesc.context,
+                binding.imagePatternDesc
+            )
         }
     }
 
@@ -1060,12 +1092,27 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
              "PatternName" to viewModel.clickedProduct?.prodName
          )*/
 
-        val bundle = bundleOf(
-            "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-            "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
-            "mannequinId" to viewModel.mannequinId.get(),
-            "PatternName" to viewModel.data?.value?.patternName
-        )
+        var bundle = bundleOf()
+
+        if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+            bundle =
+                bundleOf(
+                    "PatternName" to viewModel.clickedProduct?.prodName,
+                    "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+                    "mannequinId" to viewModel.mannequinId.get(),
+                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName
+                )
+        } else {
+            bundle =
+                bundleOf(
+                    "PatternName" to viewModel.clickedProduct?.prodName,
+                    "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
+                    "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
+                    "mannequinId" to viewModel.mannequinId.get(),
+                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
+                )
+        }
 
         if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment) || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)) {
             findNavController().navigate(
@@ -1566,6 +1613,46 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     fun getNameWithoutExtension(fileName: String): String {
         var dotIndex = fileName.lastIndexOf('.')
         return if (dotIndex == -1) fileName else fileName.substring(0, dotIndex)
+    }
+
+    private fun setImageFromSvgPngDrawable(
+        foldername: String?,
+        imagePath: String?,
+        context: Context,
+        imageView: ImageView
+    ) {
+
+        var availableUri: Uri? = null
+        availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}", context)
+        Log.d("imageUri123", " $foldername availableUri: $availableUri")
+
+        if (imagePath?.endsWith(".svg", true)!!) {
+            Glide
+                .with(context)
+                .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else */availableUri)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
+                .imageDecoder(SvgBitmapDecoder(context))
+                .into(imageView)
+
+        } else if (imagePath.endsWith(".png", true)) {
+            Glide
+                .with(context)
+                .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else*/ availableUri)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
+                .into(imageView)
+        } else {
+            Glide
+                .with(context)
+                .load(if (NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
+                .into(imageView)
+        }
     }
 }
 

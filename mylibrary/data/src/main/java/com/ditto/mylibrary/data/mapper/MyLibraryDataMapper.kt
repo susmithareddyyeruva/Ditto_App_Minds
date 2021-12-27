@@ -74,6 +74,7 @@ fun Prod.toDomain(): ProdDomain {
         patternType = this.patternType ?: "",
         prodSize = this.prodSize ?: "",
         tailornovaDesignId = this.tailornovaDesignId ?: "",
+        tailornovaDesignName = this.tailornovaDesignName ?: "",
         orderNo = this.orderNo ?: "",
         image = this.image ?: "",
         customization = this.customization ?: "",

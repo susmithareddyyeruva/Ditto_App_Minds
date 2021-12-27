@@ -10,7 +10,6 @@ interface GetWorkspaceData {
     fun updateOfflineStorageData(
         tailornaovaDesignId: String?,
         selectedTab: String?,
-        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,

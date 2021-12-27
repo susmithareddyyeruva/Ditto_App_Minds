@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -61,7 +60,7 @@
             android:layout_width="@dimen/size_0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
-            android:text="@{viewModel.patternName}"
+            android:text="@{viewModel.tailornovaDesignName}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/tab_heading"
             app:layout_constraintTop_toTopOf="parent"
