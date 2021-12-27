@@ -1,6 +1,8 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -28,6 +30,8 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -1219,7 +1223,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun showWorkspaceCoachMark() {
         viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
         if (!viewModel.isWorkspaceShownCoachMark.get()) {
-
+            (parentFragment as WorkspaceFragment).maskCoachMark(true)
             val transition: Transition = Slide(Gravity.BOTTOM)
             transition.setDuration(600)
             transition.addListener(object : Transition.TransitionListener {
@@ -1272,6 +1276,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
         animatorSet.playTogether(bounceX, bounceY)
         animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
+        animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                (parentFragment as WorkspaceFragment).maskCoachMark(false)
+            }
+        })
         animatorSet.start()
     }
 

@@ -425,6 +425,13 @@
             app:layout_constraintStart_toStartOf="@+id/txt_size_45"
             app:layout_constraintTop_toBottomOf="@+id/cutbin_lay" />
 
+        <RelativeLayout
+            android:id="@+id/coach_mark_mask_inner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="@dimen/elevation_card"
+            android:visibility="gone"
+            android:clickable="true"/>
 
         <ImageView
             android:id="@+id/coach_mark_popup"
