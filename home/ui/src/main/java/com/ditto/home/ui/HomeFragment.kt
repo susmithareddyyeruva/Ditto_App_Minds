@@ -47,6 +47,7 @@ import javax.inject.Inject
 
 class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
+    private var isUiEventsDisposableSet: Boolean = false
     private lateinit var job: Job
 
     @Inject
@@ -111,13 +112,17 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     }
 
     private fun loadHomeFragment() {
-        homeViewModel.disposable += homeViewModel.events
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (activity != null && context != null && isAdded) {
-                    handleEvent(it)
+        if(homeViewModel.disposable.size() == 0) {
+            homeViewModel.disposable += homeViewModel.events
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (activity != null && context != null && isAdded) {
+                        handleEvent(it)
+                    }
+                    isUiEventsDisposableSet = true
                 }
-            }
+
+        }
 
         if (NetworkUtility.isNetworkAvailable(context)) {
             homeViewModel.fetchTailornovaTrialPattern() // fetch trial pattern api from tailornova saving to db >> showing count also
@@ -178,6 +183,17 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     override fun onResume() {
         super.onResume()
+        if(homeViewModel.disposable.size() == 0 && !isUiEventsDisposableSet){
+            homeViewModel.disposable = CompositeDisposable()
+            homeViewModel.disposable += homeViewModel.events
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (activity != null && context != null && isAdded) {
+                        handleEvent(it)
+                    }
+                }
+        }
+
         GlobalScope.launch {
             delay(500)
             (activity as BottomNavigationActivity).setToolbar()
@@ -236,9 +252,11 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     }
 
     override fun onStop() {
-        super.onStop()
         versionDisposable?.clear()
         versionDisposable?.dispose()
+        homeViewModel.disposable.clear()
+        isUiEventsDisposableSet = false
+        super.onStop()
     }
 
     private fun showVersionPopup() {
