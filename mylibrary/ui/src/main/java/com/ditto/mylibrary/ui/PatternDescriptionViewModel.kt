@@ -143,7 +143,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnDataUpdated)
                 insertTailornovaDetailsToDB(
                     data.value!!,
-                   clickedOrderNumber.get(),
+                    clickedOrderNumber.get(),
+                    clickedProduct?.status,
                     mannequinId.get(),
                     mannequinName.get(),
                     clickedProduct?.mannequin ?: emptyList()
@@ -160,6 +161,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun insertTailornovaDetailsToDB(
         patternIdData: PatternIdData,
         orderNo: String?,
+        status: String?,
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?
@@ -167,6 +169,7 @@ class PatternDescriptionViewModel @Inject constructor(
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
             orderNo,
+            status,
             mannequinId,
             mannequinName,
             mannequin

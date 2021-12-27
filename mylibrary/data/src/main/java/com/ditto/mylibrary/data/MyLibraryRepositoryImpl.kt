@@ -521,12 +521,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
     override fun insertTailornovaDetails(
         patternIdData: PatternIdData,
         orderNumber: String?,
+        status: String?,
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?
     ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,mannequinId,mannequinName,mannequin))}
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,status,mannequinId,mannequinName,mannequin))}
     }
 
 }

@@ -64,6 +64,7 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
 
 internal fun PatternIdData.toDomain(
     orderNumber: String?,
+    status: String?,
     selectedMnnequinId: String?,
     selectedMannequinName: String?,
     mannequin: List<MannequinDataDomain>?
@@ -95,6 +96,7 @@ internal fun PatternIdData.toDomain(
         suitableFor = this.suitableFor,
         occasion = this.occasion,
         orderNumber = orderNumber,
+        status = status,
         selectedMannequinId = selectedMnnequinId,
         selectedMannequinName = selectedMannequinName,
         mannequin = mannequin?.map { it.toDomain() }

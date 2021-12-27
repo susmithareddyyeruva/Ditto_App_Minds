@@ -32,7 +32,7 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "status")
     @SerializedName("status")
-    var status: String = "",
+    var status: String? = "",
 
     @ColumnInfo(name = "numberOfCompletedPiece")
     @SerializedName("numberOfCompletedPiece")
