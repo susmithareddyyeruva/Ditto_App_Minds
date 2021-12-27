@@ -146,7 +146,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }.map {
                 it.trial?.let { it1 -> Result.withValue(it1) }
             }.onErrorReturn {
-                var errorMessage = "Error fetching data"
+                var errorMessage = ERROR_FETCH
 /*
                 try {
                     logger.d("try block")
