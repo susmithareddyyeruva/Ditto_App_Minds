@@ -310,7 +310,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUpUiForGuestUser() {
         setData()
-        setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
+        setVisibilityForViews("WORKSPACE", true, false, false, false, false, false, true)
         setPatternImage()
 
     }
@@ -349,7 +349,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             //todo need to check for type
             setVisibilityForViews(
                 "WORKSPACE",
-                false,
+                true,
                 false,
                 false,
                 false,
@@ -363,7 +363,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
-                    false,
+                    true,
                     true,
                     false,
                     false,
@@ -374,7 +374,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (viewModel.clickedProduct?.status.equals("New", true)) {
                 setVisibilityForViews(
                     "WORKSPACE",
-                    false,
+                    true,
                     false,
                     false,
                     false,
