@@ -688,6 +688,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ) {
                         //checkBluetoothWifiPermission()
                         //forwardtoWorkspace()
+                        // delete folder and PDF flow starting here
                         viewModel.fetchDemoPatternList()
                         val map = getPatternPieceListTailornova()
                         //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
