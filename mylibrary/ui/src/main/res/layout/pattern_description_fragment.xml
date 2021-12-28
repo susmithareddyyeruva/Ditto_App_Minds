@@ -255,7 +255,7 @@
                 android:orientation="horizontal"
                 android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
                 android:weightSum="100"
-                app:layout_constraintHeight_percent="0.04"
+                app:layout_constraintHeight_percent="0.055"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/content_header"
                 app:layout_constraintWidth_percent="0.4">
