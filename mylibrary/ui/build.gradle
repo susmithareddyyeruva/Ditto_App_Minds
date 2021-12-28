@@ -35,10 +35,12 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
         }
         debug {
             debuggable true
             minifyEnabled false
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
         }
     }
     buildFeatures {

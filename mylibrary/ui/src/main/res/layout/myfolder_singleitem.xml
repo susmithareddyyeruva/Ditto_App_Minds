@@ -67,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/image_pattern">
 
             <TextView
+                android:id="@+id/textview_pattern_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
@@ -79,7 +80,6 @@
                 android:paddingStart="@dimen/padding_small"
                 android:paddingEnd="@dimen/padding_11"
                 android:singleLine="true"
-                android:text="@{product.prodName}"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/size_14sp"
                 tools:text="Vogue Patterns Misses Pants V8909" />

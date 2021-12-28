@@ -179,11 +179,19 @@
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="@dimen/size_16dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
                 app:layout_constraintEnd_toStartOf="@id/image_vertical"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription" />
+
+
+            <androidx.constraintlayout.widget.Barrier
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/manniquen_barrier"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="spinner,textMannequinName"/>
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner"
@@ -191,11 +199,12 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_custom_spinner"
                 android:dropDownVerticalOffset="@dimen/offset"
-                android:paddingHorizontal="@dimen/spinner_padding_start"
+                android:paddingStart="@dimen/spinner_padding_start"
+                android:paddingEnd="25dp"
                 android:popupBackground="@drawable/bg_dropdown"
                 android:spinnerMode="dropdown"
                 android:theme="@style/AlwaysEnableScrollBar"
-                android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.INVISIBLE}"
+                android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toStartOf="@id/end_guideline2"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
@@ -208,7 +217,8 @@
                 android:background="@drawable/ic_mannequinbg"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:gravity="center"
-                android:padding="@dimen/padding_9"
+                android:paddingStart="@dimen/spinner_padding_start"
+                android:paddingEnd="25dp"
                 android:text="@{viewModel.mannequinName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_12sp"
@@ -223,16 +233,15 @@
                 android:id="@+id/content_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_start"
                 android:ellipsize="end"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:lines="1"
                 android:paddingVertical="2dp"
-                android:text="@{viewModel.patternName}"
+                android:text="@{viewModel.tailornovaDesignpatternName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/pattern_name"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toStartOf="@+id/spinner"
+                app:layout_constraintEnd_toStartOf="@+id/manniquen_barrier"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
@@ -242,52 +251,42 @@
                 android:id="@+id/status_layout"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dimen_8"
                 android:orientation="horizontal"
                 android:visibility="@{viewModel.isStatusLayoutVisible()?View.VISIBLE:View.GONE}"
                 android:weightSum="100"
-                app:layout_constraintHeight_percent="0.04"
+                app:layout_constraintHeight_percent="0.055"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/content_header"
                 app:layout_constraintWidth_percent="0.4">
 
                 <TextView
                     android:id="@+id/active_pattern"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="25"
-                    android:drawableLeft="@drawable/ic_cutting_with_a_scissor_on_broken_line"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
-                    android:gravity="center"
-                    android:text="Active"
-                    android:textColor="#AD201A"
-                    android:textSize="@dimen/size_14sp"
-                    android:visibility="@{viewModel.showActive?View.VISIBLE:View.GONE}" />
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:gravity="start"
+                    android:textColor="@color/black"
+                    android:text="@{viewModel.patternName}"
+                    android:textSize="@dimen/size_14sp" />
 
-                <View
-                    android:id="@+id/line"
-                    android:layout_width="0.8dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/size_8dp"
-                    android:background="#707070"
-                    android:visibility="@{viewModel.showLine?View.VISIBLE:View.GONE}" />
 
                 <TextView
                     android:id="@+id/purchased_pattern"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="80"
-                    android:drawableLeft="@drawable/ic_cart"
                     android:drawablePadding="8dp"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
-                    android:gravity="center|start"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:gravity="start"
                     android:paddingLeft="12dp"
-                    android:text="Owned"
-                    android:textColor="#CEA10B"
+                    android:textColor="@color/black"
+                    android:text="@{HtmlCompat.fromHtml(String.format(@string/size_text,viewModel.prodSize),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
                     android:textSize="@dimen/size_14sp"
-                    android:visibility="@{viewModel.showPurchased?View.VISIBLE:View.GONE}" />
+                     />
 
 
             </LinearLayout>
