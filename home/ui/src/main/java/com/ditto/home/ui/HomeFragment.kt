@@ -29,6 +29,7 @@ import com.example.home_ui.databinding.HomeFragmentBinding
 import core.ERROR_FETCH
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
+import core.lib.BuildConfig
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
@@ -286,14 +287,16 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         when (event) {
             is HomeViewModel.Event.OnClickDitto -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                    findNavController().navigate(R.id.action_home_to_buy_pattern)
+//                    findNavController().navigate(R.id.action_home_to_buy_pattern)
+                    Utility.redirectToExternalBrowser(context, BuildConfig.BASEURL)
                 } else {
                     logger.d("OnClickBuyPattern failed")
                 }
             }
             is HomeViewModel.Event.OnClickJoann -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
-                    findNavController().navigate(R.id.action_homeFragment_to_ShopFragment)
+//                    findNavController().navigate(R.id.action_homeFragment_to_ShopFragment)
+                    Utility.redirectToExternalBrowser(context, BuildConfig.JOANN_URL)
                 } else {
                     logger.d("OnClickJoann failed")
                 }
