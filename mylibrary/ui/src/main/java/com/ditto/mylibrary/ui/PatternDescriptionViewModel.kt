@@ -143,7 +143,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     data.value?.description = clickedProduct?.description
                 }
                 uiEvents.post(Event.OnDataUpdated)
-                /*insertTailornovaDetailsToDB(
+                insertTailornovaDetailsToDB(
                     data.value!!,
                     clickedOrderNumber.get(),
                     tailornovaDesignpatternName.get(),
@@ -152,7 +152,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     mannequinId.get(),
                     mannequinName.get(),
                     clickedProduct?.mannequin ?: emptyList()
-                )*/// todo uncomment this line
+                )// todo uncomment this line
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
@@ -231,22 +231,8 @@ class PatternDescriptionViewModel @Inject constructor(
         if (resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION") {
             uiEvents.post(Event.onSubscriptionClicked)
         } else if (resumeOrSubscription.get().toString() == "WORKSPACE") {
-            insertTailornovaDetailsToDB(
-                data.value!!,
-                clickedOrderNumber.get(),
-                mannequinId.get(),
-                mannequinName.get(),
-                clickedProduct?.mannequin ?: emptyList()
-            )
             uiEvents.post(Event.OnWorkspaceButtonClicked)
         } else {
-            insertTailornovaDetailsToDB(
-                data.value!!,
-                clickedOrderNumber.get(),
-                mannequinId.get(),
-                mannequinName.get(),
-                clickedProduct?.mannequin ?: emptyList()
-            )
             uiEvents.post(Event.OnWorkspaceButtonClicked)
         }
     }
