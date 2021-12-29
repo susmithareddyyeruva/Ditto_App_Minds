@@ -18,6 +18,7 @@ data class ProdDomain(
     val occasion: String? = "",
     val suitableFor: String? = "",
     val tailornovaDesignId: String? = "",
+    val tailornovaDesignName: String? = "",
     val orderNo: String? = "",
     val prodSize: String? = "",
     val prodGender: String? = "",

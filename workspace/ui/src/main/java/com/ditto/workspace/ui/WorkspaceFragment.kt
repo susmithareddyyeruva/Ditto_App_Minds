@@ -57,6 +57,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 arguments?.getString("clickedOrderNumber")
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 arguments?.getString("PatternName")?.let { viewModel.patternName.set(it) }
+                arguments?.getString("tailornovaDesignName")?.let { viewModel.tailornovaDesignName.set(it) }
                 Log.d("imageUri12345", "PatternName: ${viewModel.patternName.get()}")
                 arguments?.getString("mannequinId")?.let { viewModel.mannequinId.set(it) }
                 Log.d(

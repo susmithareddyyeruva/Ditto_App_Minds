@@ -29,6 +29,9 @@ interface MyLibraryUseCase {
     fun insertTailornovaDetails(
         patternIdData: PatternIdData,
         orderNumber: String?,
+        tailornovaDesignName: String?,
+        prodSize: String?,
+        status: String?,
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?

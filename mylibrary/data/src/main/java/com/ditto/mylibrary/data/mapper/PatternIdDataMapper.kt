@@ -25,8 +25,9 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             occasion = "",
             suitableFor = "",
             tailornovaDesignId = it.tailornaovaDesignId,
+            tailornovaDesignName = it.tailornovaDesignName,
             orderNo = it.orderNumber,
-            prodSize = "",
+            prodSize = it.prodSize,
             prodGender = it.gender,
             prodBrand = it.brand,
             isFavourite = false,
@@ -64,6 +65,9 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
 
 internal fun PatternIdData.toDomain(
     orderNumber: String?,
+    tailornovaDesignName: String?,
+    prodSize: String?,
+    status: String?,
     selectedMnnequinId: String?,
     selectedMannequinName: String?,
     mannequin: List<MannequinDataDomain>?
@@ -95,6 +99,9 @@ internal fun PatternIdData.toDomain(
         suitableFor = this.suitableFor,
         occasion = this.occasion,
         orderNumber = orderNumber,
+        tailornovaDesignName = tailornovaDesignName,
+        prodSize = prodSize,
+        status = status,
         selectedMannequinId = selectedMnnequinId,
         selectedMannequinName = selectedMannequinName,
         mannequin = mannequin?.map { it.toDomain() }
@@ -240,6 +247,7 @@ internal fun OfflinePatterns.toPatternIDDomain(): PatternIdData {
         description = this.description,
         patternType = this.patternType,
         designId = this.tailornaovaDesignId,
+        tailornovaDesignName = this.tailornovaDesignName,
         dressType = this.dressType,
         gender = this.gender,
         instructionFileName = this.instructionFileName,

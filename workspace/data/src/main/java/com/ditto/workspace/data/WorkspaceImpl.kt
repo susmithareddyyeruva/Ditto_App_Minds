@@ -20,14 +20,13 @@ class WorkspaceImpl @Inject constructor(
     override fun updateOfflineStorageData(
         tailornaovaDesignId: String?,
         selectedTab: String?,
-        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems:MutableList<WorkspaceItemDomain>?
     ): Single<Int> {
-        return workspaceRepository.updateOfflineStorageData(tailornaovaDesignId,selectedTab,status,numberOfCompletedPiece,patternPieces,
+        return workspaceRepository.updateOfflineStorageData(tailornaovaDesignId,selectedTab,numberOfCompletedPiece,patternPieces,
         garmetWorkspaceItems,liningWorkspaceItems,interfaceWorkspaceItems)
     }
 

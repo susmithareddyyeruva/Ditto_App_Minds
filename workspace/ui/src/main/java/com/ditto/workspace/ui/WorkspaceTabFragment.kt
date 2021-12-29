@@ -1636,7 +1636,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
             }
-            Utility.AlertType.PATTERN_RENAME -> {
+            /*Utility.AlertType.PATTERN_RENAME -> {
                 if (baseViewModel.activeSocketConnection.get()) {
                     GlobalScope.launch {
                         Utility.sendDittoImage(
@@ -1646,7 +1646,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                 }
                 viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
-            }
+            }*/
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
@@ -1691,9 +1691,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.cutType = Utility.AlertType.CUT_BIN
 
             }
-            Utility.AlertType.PATTERN_RENAME -> {
+            /*Utility.AlertType.PATTERN_RENAME -> {
                 showSaveAndExitPopup()
-            }
+            }*/
             Utility.AlertType.CUT_COMPLETE -> {
                 viewModel.isCompleteButtonClickable = true
             }
@@ -2516,7 +2516,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
             }
-            Utility.AlertType.PATTERN_RENAME -> {
+            /*Utility.AlertType.PATTERN_RENAME -> {
                 if (baseViewModel.activeSocketConnection.get()) {
                     GlobalScope.launch {
                         Utility.sendDittoImage(
@@ -2526,7 +2526,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                 }
                 viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
-            }
+            }*/
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
