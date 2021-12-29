@@ -26,6 +26,15 @@ data class OfflinePatterns(
     @SerializedName("tailornaovaDesignId")
     var tailornaovaDesignId: String,
 
+    @ColumnInfo(name = "tailornovaDesignName")
+    @SerializedName("tailornovaDesignName")
+    var tailornovaDesignName: String?="",
+
+
+    @ColumnInfo(name = "prodSize")
+    @SerializedName("prodSize")
+    var prodSize: String?="",
+
     @ColumnInfo(name = "selectedTab")
     @SerializedName("selectedTab")
     var selectedTab: String? = "",

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.MyFolderViewModel
 import com.ditto.mylibrary.ui.R
@@ -43,10 +44,18 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
         val res: Resources = viewGroup!!.resources
         Glide.with(holder.patternsItemBinding?.imagePattern.context)
             .load(patterns.get(position).image)
-            .placeholder(R.drawable.ic_placeholder)
+            .asBitmap()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
             .into(holder.patternsItemBinding.imagePattern)
 
         if (AppState.getIsLogged()) {
+            if(patterns.get(position).tailornovaDesignName.isNullOrEmpty()){
+                holder.patternsItemBinding.textviewPatternName.text = patterns.get(position).prodName
+            }else{
+                holder.patternsItemBinding.textviewPatternName.text = patterns.get(position).tailornovaDesignName
+            }
+
             if (data.isFavourite == true) {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_like)
             } else {

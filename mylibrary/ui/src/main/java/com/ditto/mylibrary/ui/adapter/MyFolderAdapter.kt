@@ -46,6 +46,13 @@ private val deleteClicked: OnDeleteClicked) :
       //  Utility.increaseTouch(holder.itemSingleMyfolderBinding.imgIconClose,10f)
 
         holder.itemSingleMyfolderBinding.prodName.text = data?.title
+
+        /*if(patterns.get(position).tailornovaDesignName.isNullOrEmpty()){
+            holder.patternsItemBinding.textPatternName.text = patterns.get(position).prodName
+        }else{
+            holder.patternsItemBinding.textPatternName.text = patterns.get(position).tailornovaDesignName
+        }*/
+
         if (data?.url != 0) {
             holder.itemSingleMyfolderBinding.itemImage.setImageResource(
                 data?.url ?: 0

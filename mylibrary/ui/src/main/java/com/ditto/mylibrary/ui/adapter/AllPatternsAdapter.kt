@@ -54,6 +54,11 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
             holder.patternsItemBinding.imagePattern
         )
 
+        if(patterns.get(position).tailornovaDesignName.isNullOrEmpty()){
+            holder.patternsItemBinding.textPatternName.text = patterns.get(position).prodName
+        }else{
+            holder.patternsItemBinding.textPatternName.text = patterns.get(position).tailornovaDesignName
+        }
 //        val res: Resources = viewGroup!!.resources
 //        Glide.with(holder.patternsItemBinding.imagePattern.context)
 //            .load(patterns.get(position).image)

@@ -20,6 +20,7 @@ data class Prod(
     @SerializedName("occasion") val occasion : String?="",
     @SerializedName("suitableFor") val suitableFor : String?="",
     @SerializedName("tailornovaDesignId") val tailornovaDesignId : String?="",
+    @SerializedName("tailornovaDesignName") val tailornovaDesignName : String?="",
     @SerializedName("orderNo") val orderNo : String?="",
     @SerializedName("size") val prodSize : String?="",
     @SerializedName("gender") val prodGender : String?="",

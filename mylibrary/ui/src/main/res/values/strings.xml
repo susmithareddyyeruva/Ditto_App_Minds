@@ -63,6 +63,7 @@
     <string name="pattern_details">Pattern Details</string>
     <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
     <string name="myfolder_detail_count">%1$s\u0020(%2$d)</string>
+    <string name="size_text"> Size : %1$s </string>
     <string name="myfolder">My Folders</string>
     <string name="rename_folder">Rename Folder</string>
     <string name="delete_folder">Delete Folder</string>
