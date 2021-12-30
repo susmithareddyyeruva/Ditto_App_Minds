@@ -8,6 +8,7 @@ data class PatternIdData(
     var description: String? = "",
     val patternType: String? = "",
     val designId: String,
+    val tailornovaDesignName: String?,
     val dressType: String? = "",
     val gender: String? = "",
     val instructionFileName: String? = "",

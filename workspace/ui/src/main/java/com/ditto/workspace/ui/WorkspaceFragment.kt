@@ -57,9 +57,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 arguments?.getString("clickedOrderNumber")
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 arguments?.getString("PatternName")?.let { viewModel.patternName.set(it) }
+                arguments?.getString("tailornovaDesignName")?.let { viewModel.tailornovaDesignName.set(it) }
                 Log.d("imageUri12345", "PatternName: ${viewModel.patternName.get()}")
                 arguments?.getString("mannequinId")?.let { viewModel.mannequinId.set(it) }
-                Log.d("ARGUMENTS", "MANNEQUINID IN WORKSSPACE FRAGMENT: ${viewModel.mannequinId.get()}")
+                Log.d(
+                    "ARGUMENTS",
+                    "MANNEQUINID IN WORKSSPACE FRAGMENT: ${viewModel.mannequinId.get()}"
+                )
             }
         }
         return binding.root
@@ -395,6 +399,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
 
     private fun showProgress(toShow: Boolean) {
         bottomNavViewModel.showProgress.set(toShow)
+    }
+
+    fun maskCoachMark(toMask: Boolean) {
+        binding.coachMarkMask.setVisibility(if (toMask) View.VISIBLE else View.GONE)
+        fragmentGarment?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
+        fragmentInterface?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
+        fragmentLining?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
     }
 
     fun closeVideoPopup() {

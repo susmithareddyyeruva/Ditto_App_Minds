@@ -65,6 +65,7 @@ class HomeViewModel @Inject constructor(
         object OnHideProgress : HomeViewModel.Event()
         object OnResultFailed : HomeViewModel.Event()
         object NoInternet : HomeViewModel.Event()
+       // object OnListenVersionEvent : HomeViewModel.Event()
         object OnTrialPatternSuccess : HomeViewModel.Event()
         object OnImageDownloadComplete : HomeViewModel.Event()
     }
@@ -191,8 +192,8 @@ class HomeViewModel @Inject constructor(
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-                uiEvents.post(Event.OnResultFailed)
-                Log.d("Home Screen", "Failed")
+               // uiEvents.post(Event.OnResultFailed)
+                Log.d("DEBUG>>>>","handleTrialPatternResultForGuestUser error")
                 handleError(result.error)
             }
         }
@@ -201,18 +202,21 @@ class HomeViewModel @Inject constructor(
     private fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
         when (result) {
             is Result.OnSuccess -> {
+                Log.d("DEBUG>>>>","handleTrialPatternResult Success")
                 trialPatternData = result.data as ArrayList<PatternIdData>
                 if (AppState.getIsLogged()) {
                     fetchData()
                 } else {
+                    Log.d("DEBUG>>>>","fetchListOfTrialPatternFromInternalStorage success")
                     fetchListOfTrialPatternFromInternalStorage()
                 }
             }
 
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-                uiEvents.post(Event.OnResultFailed)
+               // uiEvents.post(Event.OnResultFailed)
                 Log.d("Home Screen", "Failed")
+                Log.d("DEBUG>>>>","handleTrialPatternResultError")
                 handleError(result.error)
             }
         }
@@ -225,6 +229,7 @@ class HomeViewModel @Inject constructor(
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
+                Log.d("DEBUG>>>>","handleFetchResult Success")
                 uiEvents.post(Event.OnTrialPatternSuccess)
                 uiEvents.post(Event.OnHideProgress)
                 homeDataResponse.value = result.data
@@ -234,11 +239,12 @@ class HomeViewModel @Inject constructor(
                 Log.d("Home Screen", "${productCount}")
                 setHomeItems()  //Preparing menu items
                 uiEvents.post(Event.OnResultSuccess)
+               // uiEvents.post(Event.OnListenVersionEvent)
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-                uiEvents.post(Event.OnResultFailed)
-                Log.d("Home Screen", "Failed")
+                //uiEvents.post(Event.OnResultFailed)
+                Log.d("DEBUG>>>>","handleFetchResult Error")
                 handleError(result.error)
             }
         }
@@ -261,8 +267,8 @@ class HomeViewModel @Inject constructor(
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-                uiEvents.post(Event.OnResultFailed)
-                Log.d("Home Screen", "Failed")
+                //uiEvents.post(Event.OnResultFailed)
+                Log.d("DEBUG>>>>","handleOfflineFetchResult Error")
                 handleError(result.error)
             }
         }
@@ -272,11 +278,13 @@ class HomeViewModel @Inject constructor(
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
+                Log.d("DEBUG>>>>","handleError NoNetworkError ")
                 activeInternetConnection.set(false)
                 errorString.set(error.message)
                 uiEvents.post(Event.NoInternet)
             }
             else -> {
+                Log.d("DEBUG>>>>","handleError else ")
                 errorString.set(error.message)
                 uiEvents.post(Event.OnResultFailed)
             }

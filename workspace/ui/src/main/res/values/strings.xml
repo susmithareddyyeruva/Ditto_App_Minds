@@ -87,7 +87,7 @@
     <string name="pattern_instructions">Pattern Instructions</string>
     <string name="download_failed">Download Failed</string>
     <string name="download_failed_message">Downloading pattern pieces is not completed.</string>
-    <string name="guest_user_ws_exit_message">Guest User do not have save functionality.</string>
+    <string name="guest_user_ws_exit_message">Guest User does not have save functionality.</string>
     <string name="guest_user_ws_enter_message">All pattern pieces are not downloaded.</string>
     <string name="tutorial_for_workspace">Tutorial for workspace</string>
     <string name="turn_on_permissions">App will not work properly without this permission. Please turn on the permission from settings</string>
