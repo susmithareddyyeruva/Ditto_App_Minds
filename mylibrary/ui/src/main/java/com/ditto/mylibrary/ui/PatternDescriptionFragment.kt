@@ -310,14 +310,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUpUiForGuestUser() {
         setData()
-        setVisibilityForViews("WORKSPACE", true, false, false, false, false, false, true)
+        setVisibilityForViews("WORKSPACE", false, false, false, false, false, true)
         setPatternImage()
 
     }
 
     private fun setVisibilityForViews(
         buttonText: String,
-        showStatusLayout: Boolean,
         isSubscriptionExpired: Boolean,
         showActiveText: Boolean,
         showPurchasedText: Boolean,
@@ -326,7 +325,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         showWorkspaceOrRenewSubscriptionButton: Boolean
     ) {
         viewModel.resumeOrSubscription.set(buttonText)
-        viewModel.isStatusLayoutVisible.set(showStatusLayout)
         viewModel.isSubscriptionExpired.set(isSubscriptionExpired)
         viewModel.showActive.set(showActiveText)
         viewModel.showPurchased.set(showPurchasedText)
@@ -349,7 +347,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             //todo need to check for type
             setVisibilityForViews(
                 "WORKSPACE",
-                true,
                 false,
                 false,
                 false,
@@ -364,7 +361,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
                     true,
-                    true,
                     false,
                     false,
                     false,
@@ -374,7 +370,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (viewModel.clickedProduct?.status.equals("New", true)) {
                 setVisibilityForViews(
                     "WORKSPACE",
-                    true,
                     false,
                     false,
                     false,
@@ -384,7 +379,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             } else {
-                setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+                setVisibilityForViews("RESUME",  false, true, false, false, true, false)
             }
 
         }
