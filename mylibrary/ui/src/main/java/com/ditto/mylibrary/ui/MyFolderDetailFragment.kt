@@ -75,7 +75,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         super.onActivityCreated(savedInstanceState)
         setUIEvents()
         val args = arguments
-        logger.d("***********OnActivityCreated********")
         viewModel.folderTitle = args?.getString("TITTLE", "")
         logger.d("***********${viewModel.folderTitle}")
         (parentFragment as MyLibraryFragment?)?.showFilterComponents()

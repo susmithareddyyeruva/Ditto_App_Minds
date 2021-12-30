@@ -13,6 +13,7 @@ import com.ditto.storage.domain.StorageManager
 import core.*
 import core.appstate.AppState
 import core.event.UiEvents
+import core.lib.BuildConfig
 import core.ui.BaseViewModel
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -2,7 +2,6 @@ package com.ditto.mylibrary.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
@@ -78,7 +77,7 @@ class AllPatternsFragment(
         super.onActivityCreated(savedInstanceState)
         AndroidInjection.inject(requireActivity())
 
-        Log.d("Testing", ">>>>>>   All Patterns onActivityCreated")
+        logger.d("All Patterns onActivityCreated")
         initializeAdapter()
 
         binding.imageClearFilter.setOnClickListener {
@@ -122,6 +121,9 @@ class AllPatternsFragment(
             viewModel.patternList.value = ArrayList()
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
+            /**
+             * Getting  the patterns based on filter applied....
+             */
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
 
@@ -154,10 +156,9 @@ class AllPatternsFragment(
 
     override fun onResume() {
         super.onResume()
-        Log.d("Testing", ">>>>>>   All Patterns  onResume ")
+        logger.d("All Patterns  onResume")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
-        Log.d("EVENT===","onResume")
        // fetchPatternLibrary()
 
     }
@@ -171,7 +172,7 @@ class AllPatternsFragment(
         if (AppState.getIsLogged()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
                 if (viewModel.patternList.value.isNullOrEmpty()) {
-                    Log.d("Testing", ">>>>>>   All Patterns fetchOnPatternData")
+                    logger.d("All Patterns fetchOnPatternData")
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.isLoading.set(true)
                     viewModel.fetchOnPatternData(
@@ -202,18 +203,21 @@ class AllPatternsFragment(
 
     override fun onPause() {
         super.onPause()
-        Log.d("Testing", ">>>>>>   All Patterns  onPause ")
+        logger.d("All Patterns  onPause")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("Testing", ">>>>>>   All Patterns  onDestroyView ")
+        logger.d("All Patterns  onDestroyView")
     }
 
 
     private fun initializeAdapter() {
+        /**
+         * Paging mechanism for getting patterns using current_pageId
+         */
         gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.recyclerViewPatterns.layoutManager = gridLayoutManager
         binding.recyclerViewPatterns.adapter = allPatternAdapter
@@ -279,9 +283,12 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
+            /**
+             * Refreshing data based on network condition
+             */
             if (AppState.getIsLogged()) {
                 if (NetworkUtility.isNetworkAvailable(context)) {
-                    Log.d("APICALL=====","OnAllPatternSyncClick")
+                    logger.d("OnAllPatternSyncClick")
                     cleaFilterData()
                 } else {
                     viewModel.errorString.set(getString(R.string.no_internet_available))
@@ -332,6 +339,9 @@ class AllPatternsFragment(
         }
 
         is AllPatternsViewModel.Event.OnCreateFolder -> {
+            /**
+             * Displaying popup for create Folder while clicking NewFolder
+             */
             val layout =
                 activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
             layout?.let {
@@ -357,7 +367,7 @@ class AllPatternsFragment(
 
         }
         is AllPatternsViewModel.Event.OnPopupClick -> {
-            Log.d("Testing", ">>>>>>  OnPopupClick ")
+            logger.d(" OnPopupClick")
             bottomNavViewModel.showProgress.set(false)
             viewModel.isLoading.set(false)
             /**
@@ -451,7 +461,7 @@ class AllPatternsFragment(
     private fun isFolderPresent(newFolderName: String): Boolean {
         viewModel.folderMainList.forEach {
             if (it.folderName.equals(newFolderName, true)) {
-                Log.d("FOLDER", "ALready exist")
+                logger.d("isFolderPresent")
                 return true
             }
         }

@@ -1,7 +1,6 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,14 +54,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("Testing", ">>>>>>   Myfolder onActivityCreated ")
+        logger.d("Myfolder onActivityCreated")
 
     }
 
     override fun onResume() {
         super.onResume()
         if (AppState.getIsLogged()) {
-            Log.d("Testing", ">>>>>>   Myfolder  onResume ")
+            logger.d("Myfolder  onResume")
             viewModel.disposable = CompositeDisposable()
             setUIEvents()
             if (AppState.getIsLogged()) {
@@ -93,14 +92,14 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
 
     override fun onPause() {
         super.onPause()
-        Log.d("Testing", ">>>>>>   Myfolder  onPause")
+        logger.d("Myfolder  onPause")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("Testing", ">>>>>>   Myfolder onDestroyView ")
+        logger.d("Myfolder onDestroyView")
     }
 
     fun onSyncClick() {
@@ -153,7 +152,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
     private fun handleEvent(event: MyFolderViewModel.Event) =
         when (event) {
             is MyFolderViewModel.Event.OnMyFolderCreateFolderClicked -> {
-                Log.d("Testing", ">>>>>>2  Myfolder createFolderEvent ")
+                logger.d("Myfolder createFolderEvent")
                 val layout =
                     activity?.layoutInflater?.inflate(R.layout.create_folder, createFolderRoot)
                 layout?.let {
@@ -172,7 +171,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
             }
             is MyFolderViewModel.Event.OnNavigtaionToFolderDetail -> {
                 (parentFragment as MyLibraryFragment).isFolderDetailsClicked = true
-                Log.d("Testing", ">>>>>>2  Myfolder OnNavigtaionToFolderDetail ")
+                logger.d("Myfolder OnNavigtaionToFolderDetail")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
                 myFolderDetailFragment?.arguments = args

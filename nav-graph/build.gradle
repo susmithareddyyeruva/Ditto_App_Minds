@@ -7,4 +7,19 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
     }
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        staging {
+            debuggable true
+            minifyEnabled false
+        }
+    }
 }

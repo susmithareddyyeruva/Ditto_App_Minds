@@ -42,6 +42,10 @@ android {
             minifyEnabled false
             buildConfigField "String", "SUBSCRIPTION_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
         }
+        staging {
+            debuggable true
+            minifyEnabled false
+        }
     }
     buildFeatures {
         dataBinding = true // for data binding

@@ -19,7 +19,7 @@ import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.UserDao
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import core.CLIENT_ID
+import core.lib.BuildConfig
 import core.network.NetworkUtility
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -73,7 +73,7 @@ class LoginRepositoryImpl @Inject constructor(
         val basic =
             Credentials.basic(username = user.Username ?: "", password = user.Password ?: "")
         return loginService.loginWithCredential(
-            CLIENT_ID,
+            BuildConfig.CLIENT_ID,
             loginRequest,
             basic
         )
@@ -124,7 +124,7 @@ class LoginRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }else{
-            return  loginService.getLandingContentDetails(CLIENT_ID)
+            return  loginService.getLandingContentDetails(  BuildConfig.CLIENT_ID)
                 .doOnSuccess {
                     Log.d("Landing Content", "***** Success**")
                 }

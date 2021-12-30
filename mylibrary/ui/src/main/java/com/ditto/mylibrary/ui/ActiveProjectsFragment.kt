@@ -1,15 +1,10 @@
 package com.ditto.mylibrary.ui
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.PopupMenu
@@ -91,7 +86,8 @@ class ActiveProjectsFragment : BaseFragment() {
 
             is AllPatternsViewModel.Event.OnItemClick -> {
                 if (findNavController().currentDestination?.id == R.id.myLibraryFragment) {
-                    val bundle = bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get())
+                    val bundle =
+                        bundleOf("clickedTailornovaID" to viewModel.clickedTailornovaID.get())
                     findNavController().navigate(
                         R.id.action_allPatternsFragment_to_patternDescriptionFragment,
                         bundle
@@ -109,8 +105,12 @@ class ActiveProjectsFragment : BaseFragment() {
 
             is AllPatternsViewModel.Event.OnOptionsClicked ->
                 showPopupMenu(event.view, event.patternId)
-            is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {TODO()}
-            is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {TODO()}
+            is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {
+                TODO()
+            }
+            is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {
+                TODO()
+            }
             else -> {
 
             }
@@ -124,39 +124,5 @@ class ActiveProjectsFragment : BaseFragment() {
         popup.show()
     }
 
-    private fun getAlertDialogSaveAndExit(
-        context: Context,
-        title: String,
-        hintName: String,
-        view: View,
-        negativeButton: String,
-        positiveButton: String
-    ) {
-        val edittext = view.findViewById(R.id.project_name) as EditText
-        edittext.setText(hintName)
-        val dpi: Float = context.resources.displayMetrics.density
-        val dialogBuilder = AlertDialog.Builder(context)
-        dialogBuilder
-            .setCancelable(false)
-            .setPositiveButton(positiveButton, DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-               Log.d("Alert","positive button click")
-            })
-            .setNegativeButton(negativeButton, DialogInterface.OnClickListener { dialog, id ->
-                dialog.dismiss()
-                Log.d("Alert","Negative button click")
-            })
-
-        val alert = dialogBuilder.create()
-        alert.setTitle(title)
-        alert.setView(
-            view,
-            ((19 * dpi).toInt()),
-            ((0 * dpi).toInt()),
-            ((14 * dpi).toInt()),
-            ((0 * dpi).toInt())
-        );
-        alert.show()
-    }
 
 }

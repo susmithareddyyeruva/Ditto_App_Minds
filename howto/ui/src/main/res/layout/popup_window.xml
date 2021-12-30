@@ -53,7 +53,6 @@
         app:layout_constraintBottom_toTopOf="@+id/guide_bottom">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/popup_window_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
@@ -66,7 +65,6 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/popup_window_background_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -78,7 +76,6 @@
                     app:layout_constraintGuide_percent=".12"/>
 
                 <LinearLayout
-                    android:id="@+id/closelay"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintTop_toTopOf="parent"
