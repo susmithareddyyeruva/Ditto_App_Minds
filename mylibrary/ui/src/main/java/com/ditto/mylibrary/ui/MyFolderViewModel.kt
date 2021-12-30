@@ -330,15 +330,15 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             )
         } else if (myFolderDetailHeader == "Favorites") {
             /**
-             * If is owned folder Purchase pattern will be true and folder name will be empty
+             * If is Fav folder Allquery true
              */
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
-                    false,
+                    true,
                     AppState.getEmail(),
-                    purchasedPattern = true,
+                    purchasedPattern = false,
                     subscriptionList = false,
-                    trialPattern = true,
+                    trialPattern = false,
                     FolderName = "Favorite"
                 ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
             )
