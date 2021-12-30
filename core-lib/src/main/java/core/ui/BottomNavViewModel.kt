@@ -67,6 +67,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             //menuDescription.set(context?.getString(R.string.sign_in_to_explore_more))
 
         } else {
+            subscriptionEndDateBase.set(AppState.getSubDate())
             menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             // menuDescription.set(userEmailBase.get())
             if (subscriptionEndDateBase.get().toString()
