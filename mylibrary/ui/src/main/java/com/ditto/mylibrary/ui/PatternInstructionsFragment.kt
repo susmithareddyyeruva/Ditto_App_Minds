@@ -83,6 +83,11 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.disposable.clear()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadPdf() {
         if (allPermissionsGranted()) {

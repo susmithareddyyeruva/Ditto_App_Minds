@@ -90,4 +90,6 @@
     <string name="guest_user_ws_exit_message">Guest User does not have save functionality.</string>
     <string name="guest_user_ws_enter_message">All pattern pieces are not downloaded.</string>
     <string name="tutorial_for_workspace">Tutorial for workspace</string>
+    <string name="turn_on_permissions">App will not work properly without this permission. Please turn on the permission from settings</string>
+    <string name="provide_location_permission_message">Please provide precise location permission to get bluetooth scan results from settings</string>
 </resources>

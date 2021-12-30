@@ -17,6 +17,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -76,7 +77,8 @@ class Utility @Inject constructor(
         DOWNLOADFAILED,
         RUNTIMEPERMISSION,
         SOFTWARE_UPDATE,
-        GUEST_MYFOLDER
+        GUEST_MYFOLDER,
+        PERMISSION_DENIED
     }
 
     enum class Iconype {
@@ -93,6 +95,17 @@ class Utility @Inject constructor(
         val unityTransParmsString =
             "{\"projDist\":15.0,\"projMag\":1.0,\"projPos\":[0.0,0.0,45.0],\"projRot\":0,\"projxyAng\":0,\"projzAng\":$PI,\"unitVec\":[0,0,-1]}"
 
+        fun navigateToAppSettings(context: Context) {
+            val intent = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:${context.packageName}")
+            ).apply {
+                addCategory(Intent.CATEGORY_DEFAULT)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        }
+
         fun getAlertDialogue(
             context: Context?,
             title: String,
@@ -103,7 +116,7 @@ class Utility @Inject constructor(
             alertType: AlertType
         ) {
             if (context != null) {
-                val dialogBuilder = AlertDialog.Builder(context)
+                val dialogBuilder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
                 dialogBuilder.setMessage(message)
                     .setCancelable(false)
                     .setPositiveButton(
@@ -186,8 +199,8 @@ class Utility @Inject constructor(
                alert.setTitle(title)
                alert.show()
            }*/
-        fun showSnackBar(message: String, view: View) {
-            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
+        fun showSnackBar(message: String, view: View, duration: Int = Snackbar.LENGTH_SHORT) {
+            Snackbar.make(view, message, duration).show()
         }
 
         fun getBluetoothstatus(): Boolean {
