@@ -1,6 +1,8 @@
 package com.ditto.workspace.ui
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -28,6 +30,8 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -49,6 +53,7 @@ import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
+import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
@@ -67,6 +72,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
+import kotlinx.android.synthetic.main.workspace_tab_item.*
 import kotlinx.coroutines.*
 import java.io.*
 import java.net.Socket
@@ -1219,7 +1225,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun showWorkspaceCoachMark() {
         viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
         if (!viewModel.isWorkspaceShownCoachMark.get()) {
-
+            (parentFragment as WorkspaceFragment).maskCoachMark(true)
             val transition: Transition = Slide(Gravity.BOTTOM)
             transition.setDuration(600)
             transition.addListener(object : Transition.TransitionListener {
@@ -1272,6 +1278,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
         animatorSet.playTogether(bounceX, bounceY)
         animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
+        animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                (parentFragment as WorkspaceFragment).maskCoachMark(false)
+            }
+        })
         animatorSet.start()
     }
 
@@ -1627,7 +1638,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
             }
-            Utility.AlertType.PATTERN_RENAME -> {
+            /*Utility.AlertType.PATTERN_RENAME -> {
                 if (baseViewModel.activeSocketConnection.get()) {
                     GlobalScope.launch {
                         Utility.sendDittoImage(
@@ -1637,10 +1648,21 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                 }
                 viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
-            }
+            }*/
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
+            }
+            Utility.AlertType.PERMISSION_DENIED -> {
+                //go to app settings
+                val intent = Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:${requireContext().packageName}")
+                ).apply {
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
             }
             else -> {
                 Log.d("WorkspaceTabFragment", "onPositiveButtonClicked")
@@ -1682,9 +1704,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.cutType = Utility.AlertType.CUT_BIN
 
             }
-            Utility.AlertType.PATTERN_RENAME -> {
+            /*Utility.AlertType.PATTERN_RENAME -> {
                 showSaveAndExitPopup()
-            }
+            }*/
             Utility.AlertType.CUT_COMPLETE -> {
                 viewModel.isCompleteButtonClickable = true
             }
@@ -2203,34 +2225,58 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
     ) {
-        if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
-            val map = getPatternPieceListTailornova()
+        if (requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
+            if (dowloadPermissonGranted()) {
+                Log.d("onReqPermissionsResult", "permission granted")
+                val map = getPatternPieceListTailornova()
 
-            if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
-                bottomNavViewModel.showProgress.set(true)
-                viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.prepareDowloadList(viewModel.imageFilesToDownload(map))
+                } else {
+                    Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        "",
+                        getString(R.string.no_internet_available),
+                        "",
+                        getString(R.string.str_ok),
+                        this,
+                        Utility.AlertType.NETWORK,
+                        Utility.Iconype.FAILED
+                    )
+                }
             } else {
-                Utility.getCommonAlertDialogue(
+                Utility.getAlertDialogue(
                     requireContext(),
-                    "",
-                    getString(R.string.no_internet_available),
-                    "",
-                    getString(R.string.str_ok),
+                    getString(R.string.permissions_required),
+                    getString(R.string.storage_permissions_denied),
+                    getString(R.string.cancel),
+                    getString(R.string.go_to_settings),
                     this,
-                    Utility.AlertType.NETWORK,
-                    Utility.Iconype.FAILED
+                    Utility.AlertType.PERMISSION_DENIED
                 )
             }
-        } else if (allPermissionsGranted() && requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (!Utility.getBluetoothstatus()) {
-                Log.d("onReqPermissionsResult", Utility.getBluetoothstatus().toString())
-                showBluetoothDialogue()
-                Log.d("onReqPermissionsResult", "shownBluetoothDialogue" )
-            } else if (!Utility.getWifistatus(requireContext())) {
-                showWifiDialogue()
+        } else if (requestCode == REQUEST_CODE_PERMISSIONS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (allPermissionsGranted()) {
+                if (!Utility.getBluetoothstatus()) {
+                    Log.d("onReqPermissionsResult", Utility.getBluetoothstatus().toString())
+                    showBluetoothDialogue()
+                    Log.d("onReqPermissionsResult", "shownBluetoothDialogue")
+                } else if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
             } else {
-                showConnectivityPopup()
+                Utility.getAlertDialogue(
+                    requireContext(),
+                    getString(R.string.permissions_required),
+                    getString(R.string.bluetooth_pemissions_denied),
+                    getString(R.string.cancel),
+                    getString(R.string.go_to_settings),
+                    this,
+                    Utility.AlertType.PERMISSION_DENIED
+                )
             }
         } else {
             showSaveAndExitPopup()
@@ -2507,7 +2553,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isSingleDelete = false
                 viewModel.cutAllPiecesConfirmed(mWorkspaceEditor?.views)
             }
-            Utility.AlertType.PATTERN_RENAME -> {
+            /*Utility.AlertType.PATTERN_RENAME -> {
                 if (baseViewModel.activeSocketConnection.get()) {
                     GlobalScope.launch {
                         Utility.sendDittoImage(
@@ -2517,7 +2563,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                 }
                 viewModel.overridePattern(matchedPattern!!, viewModel.data.value!!, isCompleted)
-            }
+            }*/
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)

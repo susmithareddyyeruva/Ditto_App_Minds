@@ -34,6 +34,7 @@ fun Prod.toDomain(): ProdDomain {
         patternType = this.patternType ?: "",
         prodSize = this.prodSize ?: "",
         tailornovaDesignId = this.tailornovaDesignId ?: "",
+        tailornovaDesignName = this.tailornovaDesignName ?: "",
         creationDate = this.creationDate ?: "",
         image = this.image ?: "",
         customization = this.customization ?: "",
@@ -55,6 +56,7 @@ internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData> {
     return this.map {
         OfflinePatternData(
             tailornaovaDesignId = it.tailornaovaDesignId,
+            tailornovaDesignName = it.tailornovaDesignName,
             selectedTab = it.selectedTab,
             status = it.status,
             numberOfCompletedPieces = it.numberOfCompletedPieces?.toDomainOfflinePicecs(),
@@ -94,6 +96,7 @@ internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData> {
 fun OfflinePatterns.toDomainn(): OfflinePatternData {
     return OfflinePatternData(
         tailornaovaDesignId = this.tailornaovaDesignId,
+        tailornovaDesignName = this.tailornovaDesignName,
         selectedTab = this.selectedTab,
         status = this.status,
         numberOfCompletedPieces = this.numberOfCompletedPieces?.toDomainOfflinePicecs(),
@@ -236,6 +239,7 @@ internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             //custId = AppState.getCustID(),
             designId = it.designId,
             tailornaovaDesignId = it.designId,
+            tailornovaDesignName = it.tailornovaDesignName,
             patternName = it.patternName,
             description = it.description,
             patternType = it.patternType,

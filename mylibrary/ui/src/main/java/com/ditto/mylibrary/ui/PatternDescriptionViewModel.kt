@@ -54,6 +54,8 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
+    val tailornovaDesignpatternName: ObservableField<String> = ObservableField("")
+    val prodSize: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("NA")
@@ -108,8 +110,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 mannequinName.set(result.data.selectedMannequinName)
                 clickedProduct?.mannequin =
                     result.data.mannequin?.map { it.toDomain12() }  //Saving arraylist of mannequin
-                uiEvents.post(Event.OnDataUpdated)
                 uiEvents.post(Event.OnShowMannequinData)
+                uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -141,7 +143,10 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnDataUpdated)
                 insertTailornovaDetailsToDB(
                     data.value!!,
-                   clickedOrderNumber.get(),
+                    clickedOrderNumber.get(),
+                    tailornovaDesignpatternName.get(),
+                    prodSize.get(),
+                    clickedProduct?.status,
                     mannequinId.get(),
                     mannequinName.get(),
                     clickedProduct?.mannequin ?: emptyList()
@@ -158,6 +163,9 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun insertTailornovaDetailsToDB(
         patternIdData: PatternIdData,
         orderNo: String?,
+        tailornovaDesignpatternName: String?,
+        prodSize: String?,
+        status: String?,
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?
@@ -165,6 +173,9 @@ class PatternDescriptionViewModel @Inject constructor(
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
             orderNo,
+            tailornovaDesignpatternName,
+            prodSize,
+            status,
             mannequinId,
             mannequinName,
             mannequin

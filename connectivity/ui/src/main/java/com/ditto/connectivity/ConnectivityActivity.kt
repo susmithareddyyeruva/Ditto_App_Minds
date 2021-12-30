@@ -21,6 +21,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -55,7 +56,8 @@ import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
 
-class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomCallbackDialogListener {
+class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomCallbackDialogListener,
+    Utility.CallbackDialogListener {
     private var currentApiVersion = 0
     private var mLeDeviceListAdapter: LeDeviceListAdapter? = null
     private var mServiceListAdapter: ServiceListAdapter? = null
@@ -627,6 +629,17 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             )
         }
 
+        val BLUETOOTH_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN
+            )
+        }
+
         private fun makeGattUpdateIntentFilter(): IntentFilter {
             val intentFilter = IntentFilter()
             intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED)
@@ -923,7 +936,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         }
                     }
                 })
-            } else {
+            }
+            //show alert dialog if precise location permissions denied
+            else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -944,24 +959,77 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         )
                         isPreciseLocationRequested = true
                     } else {
-                        Toast.makeText(
+                        Utility.getAlertDialogue(
                             this,
-                            "Please provide precise location permission to get bluetooth scan results from settings.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+                            getString(R.string.permissions_required),
+                            getString(R.string.precise_location_permissions_denied),
+                            getString(R.string.cancel),
+                            getString(R.string.go_to_settings),
+                            this,
+                            Utility.AlertType.PERMISSION_DENIED
+                        )
                     }
-                } else {
-                    Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
-                    Toast.makeText(
+                }
+                //show alert dialog if bluetooth permissions denied
+                else if(!checkBluetoothPermissionsProvided())  {
+                    Utility.getAlertDialogue(
                         this,
-                        "App will not work properly without this permission. Please turn on the permission from settings",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    finish()
+                        getString(R.string.permissions_required),
+                        getString(R.string.bluetooth_pemissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
+                }
+                //show alert dialog if location permissions denied
+                else if(ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED)  {
+                    Utility.getAlertDialogue(
+                        this,
+                        getString(R.string.permissions_required),
+                        getString(R.string.location_permissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
+                }
+                else {
+                    Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
+                    Utility.getAlertDialogue(
+                        this,
+                        getString(R.string.permissions_required),
+                        getString(R.string.permissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
                 }
             }
         }
+    }
+
+    private fun checkBluetoothPermissionsProvided() = BLUETOOTH_PERMISSIONS.all {
+        this?.let { it1 ->
+            ContextCompat.checkSelfPermission(
+                it1, it
+            )
+        } == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun sendResult(key: String) {
+        val intent = Intent()
+        intent.putExtra(key, true)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     fun turnGPSOn(onGpsListener: OnGPSListener?) {
@@ -1129,6 +1197,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         val type = WindowInsetsCompat.Type.systemBars()
         insetsController.systemBarsBehavior = behavior
         insetsController.hide(type)
+    }
+
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        //navigate to app settings
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(this)
+            finish()
+        }
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+        finish()
+    }
+
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
+
     }
 
 }

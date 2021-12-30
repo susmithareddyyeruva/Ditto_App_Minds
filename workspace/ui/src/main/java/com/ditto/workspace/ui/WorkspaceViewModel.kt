@@ -53,6 +53,7 @@ class WorkspaceViewModel @Inject constructor(
     var patternId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")
     var patternName: ObservableField<String> = ObservableField("")
+    var tailornovaDesignName: ObservableField<String> = ObservableField("")
     var mannequinId: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
@@ -127,6 +128,7 @@ class WorkspaceViewModel @Inject constructor(
 
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
+        workspaceDataAPI.time=Calendar.getInstance().timeInMillis.toString()
         disposable += getWorkspaceData.updateWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}",
             workspaceDataAPI
@@ -139,7 +141,6 @@ class WorkspaceViewModel @Inject constructor(
     fun updateWorkspaceDB(
         tailornaovaDesignId: String?,
         selectedTab: String?,
-        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
@@ -150,7 +151,6 @@ class WorkspaceViewModel @Inject constructor(
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
             selectedTab,
-            status,
             numberOfCompletedPiece,
             patternPieces,
             garmetWorkspaceItems,
@@ -173,13 +173,13 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleWSCreateResult(it) }
     }
 
-    fun insertData(value: PatternsData, closeScreen: Boolean) {
+    /*fun insertData(value: PatternsData, closeScreen: Boolean) {
         disposable += getWorkspaceData.insert(value)
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleInsertDataResult(it, closeScreen) }
-    }
+    }*/
 
 
     private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
@@ -533,9 +533,9 @@ class WorkspaceViewModel @Inject constructor(
         data.value?.completedPieces = Utility.progressCount.get()
         data.value?.selectedTab = Utility.fragmentTabs.get().toString()
 
-        if (data.value?.completedPieces == data.value?.totalPieces) {
+       /* if (data.value?.completedPieces == data.value?.totalPieces) {
             data.value?.status = "Completed"
-        }
+        }*/
         loop1@ for (patternPiecesId in data.value?.patternPieces!!) {
             loop2@ for (mPatternPieceListID in Utility.mPatternPieceList) {
                 if (patternPiecesId.id == mPatternPieceListID) {
@@ -552,7 +552,6 @@ class WorkspaceViewModel @Inject constructor(
 //            "30644ba1e7aa41cfa9b17b857739968a",
             cTraceWorkSpacePatternInputData.tailornaovaDesignId,
             cTraceWorkSpacePatternInputData.selectedTab,
-            cTraceWorkSpacePatternInputData.status,
             cTraceWorkSpacePatternInputData.numberOfCompletedPiece,
             cTraceWorkSpacePatternInputData.patternPieces,
             cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
@@ -609,6 +608,7 @@ class WorkspaceViewModel @Inject constructor(
         return workspaceItems
     }
 
+/*
     fun overridePattern(
         oldPatternsData: PatternsData,
         patternsData: PatternsData,
@@ -630,6 +630,7 @@ class WorkspaceViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleInsertDataResult(it, true) }
     }
+*/
 
     fun checkMirroring() {
         if (workspacedata?.mirrorOption == true) {

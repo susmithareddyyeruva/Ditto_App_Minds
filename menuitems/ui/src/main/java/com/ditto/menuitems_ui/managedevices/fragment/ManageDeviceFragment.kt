@@ -37,7 +37,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
+class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
+    Utility.CallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -70,8 +71,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
         setUIEvents()
-        //viewModel.mode.set(MODE_SERVICE)
-        //checkBluetoothWifiPermission()
+        viewModel.mode.set(MODE_SERVICE)
+        checkBluetoothWifiPermission()
     }
 
     private fun setAdapter() {
@@ -106,7 +107,11 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 resetAdapter(false)
             }
             ManageDeviceViewModel.Event.OnConnectClick -> showConnectPopup()
-            ManageDeviceViewModel.Event.OnBleConnectClick -> showConnectivityPopup()
+            ManageDeviceViewModel.Event.OnBleConnectClick -> {
+                //showConnectivityPopup()
+                viewModel.mode.set(MODE_SERVICE)
+                checkBluetoothWifiPermission()
+            }
             ManageDeviceViewModel.Event.OnConnectedImageSent -> sendConnectImage()
             ManageDeviceViewModel.Event.OnWaitingImageSent -> sendWaitingImage()
         }
@@ -401,7 +406,48 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         }
     }
 
-    /**
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                if (!Utility.getBluetoothstatus()) {
+                    showBluetoothDialogue()
+                } else if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            } else {
+                logger.d("Permission Denied by the user")
+                //Bluetooth permission dialog is shown only in api 31 and above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Utility.getAlertDialogue(
+                        requireContext(),
+                        getString(R.string.permissions_required),
+                        getString(R.string.bluetooth_pemissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
+                } else {
+                    Utility.getAlertDialogue(
+                        requireContext(),
+                        getString(R.string.permissions_required),
+                        getString(R.string.permissions_denied),
+                        getString(R.string.cancel),
+                        getString(R.string.go_to_settings),
+                        this,
+                        Utility.AlertType.PERMISSION_DENIED
+                    )
+                }
+            }
+        }
+    }
+
+        /**
      * [Function] Popup to show Bluetooth Connection
      */
     private fun showBluetoothDialogue() {
@@ -494,10 +540,11 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
     override fun onResume() {
         super.onResume()
-        if (viewModel.isFromBackground) {
+        //commented this code as it was going in loop
+      /*  if (viewModel.isFromBackground) {
             viewModel.mode.set(MODE_SERVICE)
             checkBluetoothWifiPermission()
-        }
+        }*/
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,
@@ -512,6 +559,20 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         viewModel.isFromBackground = true
         viewModel.numberOfProjectors.set("")
         viewModel.isServiceNotFound.set(false)
+    }
+
+    override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(requireContext())
+        }
+    }
+
+    override fun onNegativeButtonClicked(alertType: Utility.AlertType) {
+
+    }
+
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {
+
     }
 
 }

@@ -62,7 +62,6 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override fun updateOfflineStorageData(
         tailornaovaDesignId: String?,
         selectedTab: String?,
-        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
@@ -73,7 +72,6 @@ class WorkspaceRepositoryImpl @Inject constructor(
             offlinePatternDataDao.updateOfflinePatternData(AppState.getCustID(),
                 tailornaovaDesignId,
                 selectedTab,
-                status,
                 numberOfCompletedPiece?.toDomain(),
                 patternPieces?.map { it.toDomain() },
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,

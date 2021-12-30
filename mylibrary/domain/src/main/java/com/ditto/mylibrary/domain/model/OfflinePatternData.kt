@@ -2,8 +2,9 @@ package com.ditto.mylibrary.domain.model
 
 data class OfflinePatternData(
     var tailornaovaDesignId: String,
+    var tailornovaDesignName: String?,
     var selectedTab: String?,
-    var status: String,
+    var status: String?,
     var numberOfCompletedPieces: OfflineNumberOfCompletedPiece?,
     var patternPiecesFromApi: List<OfflinePatternPieces> = emptyList(),
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),

@@ -45,8 +45,8 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
     override fun onBindViewHolder(holder: PatternHolder, position: Int) {
         holder.patternsItemBinding.product = patterns[position]
         holder.patternsItemBinding.viewModel = viewModel
-        val data=patterns[position]
-       // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
+        val data = patterns[position]
+        // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
         setImageFromSvgPngDrawable(
             patterns.get(position).prodName,
             patterns.get(position).image,
@@ -54,6 +54,11 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
             holder.patternsItemBinding.imagePattern
         )
 
+        if(patterns.get(position).tailornovaDesignName.isNullOrEmpty()){
+            holder.patternsItemBinding.textPatternName.text = patterns.get(position).prodName
+        }else{
+            holder.patternsItemBinding.textPatternName.text = patterns.get(position).tailornovaDesignName
+        }
 //        val res: Resources = viewGroup!!.resources
 //        Glide.with(holder.patternsItemBinding.imagePattern.context)
 //            .load(patterns.get(position).image)
@@ -61,22 +66,37 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 //            .into(holder.patternsItemBinding.imagePattern)
 
         if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(holder.patternsItemBinding.likeImage.context)) {
+            holder.patternsItemBinding.likeImage.visibility = View.VISIBLE
+            holder.patternsItemBinding.imageAdd.visibility = View.VISIBLE
             if (data.isFavourite == true) {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_like)
             } else {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_fav_bgred)
             }
+
+        } else { //Guest User or offline users
+            holder.patternsItemBinding.likeImage.visibility = View.GONE
+            holder.patternsItemBinding.imageAdd.visibility = View.GONE
+        }
+        holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+            (ContextCompat.getColor(
+                holder.patternsItemBinding.textviewPatternType.context,
+                R.color.text_new
+            ))
+        )
+        if (patterns[position].patternType?.toUpperCase().equals("TRIAL") == true) {
+            holder.patternsItemBinding.textviewPatternType.text =
+                patterns[position].patternType?.toUpperCase()
+
+        } else {
+            //Pattern type which is not trial pattern
             holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
             if (patterns[position].status?.toUpperCase()
                     .equals("NEW") || patterns[position].status?.toUpperCase().equals("OWNED")
+                || patterns[position].status?.toUpperCase()
+                    .equals("TRIAL") || patterns[position].status?.toUpperCase()
+                    .equals("SUBSCRIBED")
             ) {
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
-
                 holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
                 holder.patternsItemBinding.textviewPatternType.text =
                     patterns[position].status?.toUpperCase()
@@ -94,11 +114,6 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
                 holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
 
             }
-
-
-        } else { //Guest User or offline users
-            holder.patternsItemBinding.likeImage.visibility = View.GONE
-            holder.patternsItemBinding.imageAdd.visibility = View.GONE
         }
     }
 
@@ -118,9 +133,9 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(context))){
-            availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}",context)
-            Log.d("imageUri123", " $foldername availableUri: $availableUri")
-       // }
+        availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}", context)
+        Log.d("imageUri123", " $foldername availableUri: $availableUri")
+        // }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide
                 .with(context)
