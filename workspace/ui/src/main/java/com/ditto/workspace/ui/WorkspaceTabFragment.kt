@@ -474,8 +474,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }?.size ?: 0 > 0 &&
             viewModel.tabCategory == getString(R.string.garments)
         ) {
-            binding.txtSize45.text=getString(R.string._45)
-            binding.txtSize60.text=getString(R.string._60)
+            binding.txtSize45.text = getString(R.string._45)
+            binding.txtSize60.text = getString(R.string._60)
             val garments =
                 viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
@@ -484,7 +484,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         ), true
                     ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
-            if (garments?.size ?: 0 >= 2) {
+            if (garments?.filter { it.fabricLength == "45" }?.size ?: 0 > 0 &&
+                garments?.filter { it.fabricLength == "60" }?.size ?: 0 > 0) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -496,7 +497,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (viewModel.clickedSize45.get()) {
                     val selvage = garments?.filter { it.fabricLength == "45" }?.getOrNull(0)
                     logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
-                    if (selvage!=null) {
+                    if (selvage != null) {
                         selvage?.imagePath.let {
                             getBitmapFromSvgPngDrawable(
                                 selvage?.imageName,
@@ -554,8 +555,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.lining)
         ) {
-            binding.txtSize45.text=getString(R.string._45)
-            binding.txtSize60.text=getString(R.string._60)
+            binding.txtSize45.text = getString(R.string._45)
+            binding.txtSize60.text = getString(R.string._60)
             val lining =
                 viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
@@ -583,7 +584,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //            }
 //            viewModel.referenceImage.set(lining?.get(0)?.imageName)
 
-            if (lining?.size ?: 0 >= 2) {
+            if (lining?.filter { it.fabricLength == "45" }?.size ?: 0 > 0 &&
+                lining?.filter { it.fabricLength == "60" }?.size ?: 0 > 0) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -651,8 +653,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 ?.isNotEmpty() == true &&
             viewModel.tabCategory == getString(R.string.interfacing)
         ) {
-            binding.txtSize45.text=getString(R.string._20)
-            binding.txtSize60.text=getString(R.string._45text)
+            binding.txtSize45.text = getString(R.string._20)
+            binding.txtSize60.text = getString(R.string._45text)
             val interfacing =
                 viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
@@ -661,32 +663,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         ), true
                     ) && (it.fabricLength.equals("20") || it.fabricLength.equals("45")) //changed to 20, 45
                 }
-//            interfacing?.get(0)?.imagePath?.let {
-//                /*binding.imageSelvageHorizontal.setImageDrawable(
-//                    getDrawableFromString(context, it)
-//                )*/
-//
-//                getBitmapFromSvgPngDrawable(
-//                    interfacing?.get(0)?.imageName,
-//                    binding.imageSelvageHorizontal.context,
-//                    binding.imageSelvageHorizontal
-//                )
-//
-//            }
-//            binding.txtSize45.isEnabled = interfacing?.get(0)?.fabricLength == "45"
-//            binding.txtSize60.isEnabled = interfacing?.get(0)?.fabricLength == "60"
-//            viewModel.enableSize45.set(interfacing?.get(0)?.fabricLength == "45")
-//            viewModel.enableSize60.set(interfacing?.get(0)?.fabricLength == "60")
-//
-//            if (interfacing?.get(0)?.fabricLength == "45") {
-//                viewModel.clickedSize45.set(true)
-//            } else {
-//                viewModel.clickedSize60.set(true)
-//            }
-//
-//            viewModel.referenceImage.set(interfacing?.get(0)?.imageName)
 
-            if (interfacing?.size ?: 0 >= 2) {
+            if (interfacing?.filter { it.fabricLength == "20" }?.size ?: 0 > 0 &&
+                interfacing?.filter { it.fabricLength == "45" }?.size ?: 0 > 0) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -2382,7 +2361,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         logger.d("TRACE_ Projection :TransformErrorCode.Success " + Calendar.getInstance().timeInMillis)
         GlobalScope.launch {
             projectWorkspaceImage(
-               bitmap,
+                bitmap,
                 viewModel.isFromQuickCheck.get(),
                 true
             )
@@ -2650,7 +2629,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun getBitmapFromSvgPngDrawable(imageName: String): Bitmap? {
         var availableUri: Uri? = null
-        availableUri = Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}",requireContext())
+        availableUri = Utility.isImageFileAvailable(
+            imageName,
+            "${viewModel.patternName.get()}",
+            requireContext()
+        )
         Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri")
         return if (imageName.endsWith(".svg", true)) {
             Glide
@@ -2688,7 +2671,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
-        availableUri = Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}",context)
+        availableUri =
+            Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}", context)
         Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri >>>> ")
         //}
 

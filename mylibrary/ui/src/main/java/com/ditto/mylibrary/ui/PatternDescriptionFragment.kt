@@ -424,7 +424,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setData() {
         viewModel.patternName.set(viewModel.clickedProduct?.prodName)
-        viewModel.prodSize.set(viewModel.clickedProduct?.prodSize)
+        if (viewModel.clickedProduct?.patternType.equals("Trial")) {
+            viewModel.prodSize.set(viewModel.data?.value?.size ?: "") // todo milli second null CHANGE LOGIC
+        } else {
+            viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
+        }
 
         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
             viewModel.tailornovaDesignpatternName.set(viewModel.clickedProduct?.prodName)
