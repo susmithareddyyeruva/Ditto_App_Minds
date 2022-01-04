@@ -15,8 +15,6 @@ import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
-import core.PDF_PASSWORD
-import core.PDF_USERNAME
 import core.event.UiEvents
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
@@ -272,8 +270,6 @@ class PatternDescriptionViewModel @Inject constructor(
     suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
         try {
             withContext(Dispatchers.IO) {
-
-                val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(url)

@@ -61,17 +61,28 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
             } else {
                 holder.patternsItemBinding.likeImage.setImageResource(R.drawable.ic_fav_bgred)
             }
+        } else { //Guest User
+
+        }
+        holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+            (ContextCompat.getColor(
+                holder.patternsItemBinding.textviewPatternType.context,
+                R.color.text_new
+            ))
+        )
+        if (patterns[position].patternType?.toUpperCase().equals("TRIAL") == true) {
+            holder.patternsItemBinding.textviewPatternType.text =
+                patterns[position].patternType?.toUpperCase()
+
+        } else {
+            //Pattern type which is not trial pattern
             holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
             if (patterns[position].status?.toUpperCase()
                     .equals("NEW") || patterns[position].status?.toUpperCase().equals("OWNED")
+                || patterns[position].status?.toUpperCase()
+                    .equals("TRIAL") || patterns[position].status?.toUpperCase()
+                    .equals("SUBSCRIBED")
             ) {
-                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
-                    (ContextCompat.getColor(
-                        holder.patternsItemBinding.textviewPatternType.context,
-                        R.color.text_new
-                    ))
-                )
-
                 holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
                 holder.patternsItemBinding.textviewPatternType.text =
                     patterns[position].status?.toUpperCase()
@@ -89,10 +100,6 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
                 holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
 
             }
-
-
-        } else { //Guest User
-
         }
     }
 

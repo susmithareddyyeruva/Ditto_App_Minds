@@ -83,6 +83,9 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(true)
+        toolbarViewModel.isShowActionMenu.set(false)
         val pinfo: PackageInfo = requireActivity().getPackageManager()
             .getPackageInfo(requireActivity().getPackageName(), 0)
         viewModel.versionName.set("Version " + pinfo.versionName)

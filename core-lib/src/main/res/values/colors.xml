@@ -3,13 +3,10 @@
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#000000</color>
-    <color name="tool_bar_title">#000000</color>
-    <color name="colorSplashBackground">#E5E5E5</color>
     <color name="nav_item_grey">#EEEEEE</color>
     <color name="headerbar">#F4F4F4</color>
     <color name="disable">#C0C0C0</color>
     <color name="search_bg">#F5F5F5</color>
-    <color name="disable1">#7C7272</color>
     <color name="subscription_yellow">#FAC20C</color>
     <color name="app_red">#AD201A</color>
     <color name="sign_in_blue">#053EF1</color>

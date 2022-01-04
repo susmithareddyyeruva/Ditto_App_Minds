@@ -310,14 +310,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUpUiForGuestUser() {
         setData()
-        setVisibilityForViews("WORKSPACE", true, false, false, false, false, false, true)
+        setVisibilityForViews("WORKSPACE", false, false, false, false, false, true)
         setPatternImage()
 
     }
 
     private fun setVisibilityForViews(
         buttonText: String,
-        showStatusLayout: Boolean,
         isSubscriptionExpired: Boolean,
         showActiveText: Boolean,
         showPurchasedText: Boolean,
@@ -326,7 +325,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         showWorkspaceOrRenewSubscriptionButton: Boolean
     ) {
         viewModel.resumeOrSubscription.set(buttonText)
-        viewModel.isStatusLayoutVisible.set(showStatusLayout)
         viewModel.isSubscriptionExpired.set(isSubscriptionExpired)
         viewModel.showActive.set(showActiveText)
         viewModel.showPurchased.set(showPurchasedText)
@@ -349,7 +347,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             //todo need to check for type
             setVisibilityForViews(
                 "WORKSPACE",
-                true,
                 false,
                 false,
                 false,
@@ -364,7 +361,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
                     true,
-                    true,
                     false,
                     false,
                     false,
@@ -374,7 +370,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (viewModel.clickedProduct?.status.equals("New", true)) {
                 setVisibilityForViews(
                     "WORKSPACE",
-                    true,
                     false,
                     false,
                     false,
@@ -384,7 +379,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             } else {
-                setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
+                setVisibilityForViews("RESUME",  false, true, false, false, true, false)
             }
 
         }
@@ -429,7 +424,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setData() {
         viewModel.patternName.set(viewModel.clickedProduct?.prodName)
-        viewModel.prodSize.set(viewModel.clickedProduct?.prodSize)
+        if (viewModel.clickedProduct?.patternType.equals("Trial")) {
+            viewModel.prodSize.set(viewModel.data?.value?.size ?: "") // todo milli second null CHANGE LOGIC
+        } else {
+            viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
+        }
 
         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
             viewModel.tailornovaDesignpatternName.set(viewModel.clickedProduct?.prodName)
@@ -1002,6 +1001,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
+        Log.d("PatternSCreen", "onResume-PatternDescription")
+        if(viewModel.disposable.size() == 0) {
+            setUIEvents()
+        }
         listenVersionEvents()
     }
 
@@ -1048,6 +1051,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onPause()
         versionDisposable?.clear()
         versionDisposable?.dispose()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("PatternSCreen", "onStop-PatternDescription")
+        viewModel.disposable.clear()
     }
 
     private fun showVersionPopup() {
@@ -1174,6 +1183,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             Utility.AlertType.DEFAULT -> {
                 Log.d("alertType", "DEFAULT")
+            }
+            Utility.AlertType.PERMISSION_DENIED -> {
+                Utility.navigateToAppSettings(requireContext())
             }
         }
     }
@@ -1475,15 +1487,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         } else {
             //checkSocketConnectionBeforeWorkspace()
             // todo need dialog to ask for permission
-            Utility.getCommonAlertDialogue(
+            Utility.getAlertDialogue(
                 requireContext(),
-                "",
-                "Without this permission you will not able to use this feature",
-                "",
-                getString(com.ditto.menuitems_ui.R.string.str_ok),
+                getString(R.string.permissions_required),
+                getString(R.string.storage_permissions),
+                getString(R.string.cancel),
+                getString(R.string.go_to_settings),
                 this,
-                Utility.AlertType.RUNTIMEPERMISSION,
-                Utility.Iconype.NONE
+                Utility.AlertType.PERMISSION_DENIED
             )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
             Log.d("onReqPermissionsResult", "permission denied")

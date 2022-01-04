@@ -20,8 +20,6 @@ import com.ditto.workspace.data.mapper.*
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.util.Utility
-import core.PDF_PASSWORD
-import core.PDF_USERNAME
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -130,6 +128,7 @@ class WorkspaceViewModel @Inject constructor(
 
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
+        workspaceDataAPI.time=Calendar.getInstance().timeInMillis.toString()
         disposable += getWorkspaceData.updateWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}",
             workspaceDataAPI
@@ -781,8 +780,6 @@ class WorkspaceViewModel @Inject constructor(
     suspend fun performtask(url: String, filename: String, patternFolderName: String?) {
         try {
             withContext(Dispatchers.IO) {
-
-                val userCredentials: String = "$PDF_USERNAME:$PDF_PASSWORD"
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(url)

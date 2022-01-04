@@ -21,4 +21,5 @@
     <string name="processing">Processing….</string>
     <string name="calibration_success">Calibration success!</string>
     <string name="calibration_failure">Calibration failed. Error:  %1$s</string>
+    <string name="turn_on_permission">App will not work properly without this permission. Please turn on the permission from settings</string>
 </resources>

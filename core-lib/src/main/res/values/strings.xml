@@ -41,4 +41,14 @@
         <item>@drawable/coachmark_description_workspace</item>
     </integer-array>
     <string name="customer_not_match">Customer doesn\'t match !</string>
+    <string name="cancel">Cancel</string>
+    <string name="permissions_required">Permissions required</string>
+    <string name="precise_location_permissions_denied">Please provide Precise location permission to get bluetooth scan results from settings.</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="bluetooth_pemissions_denied">Please provide Bluetooth(Nearby devices) permission to get bluetooth scan results from settings.</string>
+    <string name="location_permissions_denied">Please provide Location permission to get bluetooth scan results from settings.</string>
+    <string name="storage_permissions_denied">Please provide Storage permission from settings to use this feature.</string>
+    <string name="permissions_denied">App will not work properly without this permission. Please turn on the permission from settings.</string>
+    <string name="storage_permissions">Without this permission you will not able to use this feature</string>
+    <string name="camera_permissions_denied">Please provide Camera permission from settings to use this feature.</string>
 </resources>

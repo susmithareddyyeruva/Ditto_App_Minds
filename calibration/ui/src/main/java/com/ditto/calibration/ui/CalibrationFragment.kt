@@ -36,6 +36,7 @@ import com.ditto.calibration.R
 import com.ditto.calibration.databinding.CalibrationFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.calibrate.performCalibration
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -571,11 +572,15 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 startCamera()
             } else {
                 logger.d("Permission Denied by the user")
-                Toast.makeText(
+                Utility.getAlertDialogue(
                     requireContext(),
-                    "App will not work properly without this permission. Please turn on the permission from settings",
-                    Toast.LENGTH_LONG
-                ).show()
+                    getString(R.string.permissions_required),
+                    getString(R.string.camera_permissions_denied),
+                    getString(R.string.cancel),
+                    getString(R.string.go_to_settings),
+                    this,
+                    Utility.AlertType.PERMISSION_DENIED
+                )
             }
         }
     }
@@ -604,6 +609,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
+        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+            Utility.navigateToAppSettings(requireContext())
+        }
         baseViewModel.isSetUpError.set(false)
         if (!baseViewModel.isCalibrated.get()) {
             baseViewModel.isCalibrated.set(true)

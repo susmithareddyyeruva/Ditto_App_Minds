@@ -133,6 +133,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
     override fun fetchTailornovaTrialPatterns(): Single<Result<List<PatternIdData>>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
         return tailornovaApiService.getTrialPatterns(BuildConfig.TAILORNOVA_ENDURL + "Android/trial")
             .doOnSuccess {
                 logger.d(" Trial api  Success")
@@ -143,8 +146,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
             }.map {
                 it.trial?.let { it1 -> Result.withValue(it1) }
             }.onErrorReturn {
-                var errorMessage = "Error fetching data"
-
+                var errorMessage = ERROR_FETCH
+/*
                 try {
                     logger.d("try block")
                     val error = it as HttpException
@@ -155,6 +158,46 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     //logger.d("Catch",e.message.toString())
                     errorMessage = e.message.toString()
                 }
+                Result.withError(
+                    CommonApiFetchError(errorMessage, it)
+                )*/
+                logger.d(it.localizedMessage)
+                if (it is HttpException) {
+                    when (it.code()) {
+                        400 -> {
+                            logger.d("onError: BAD REQUEST")
+
+                        }
+                        401 -> {
+                            logger.d("onError: NOT AUTHORIZED")
+                        }
+                        403 -> {
+                            logger.d("onError: FORBIDDEN")
+                        }
+                        404 -> {
+                            logger.d("onError: NOT FOUND")
+                        }
+                        500 -> {
+                            logger.d("onError: INTERNAL SERVER ERROR")
+                        }
+                        502 -> {
+                            logger.d("onError: BAD GATEWAY")
+                        }
+                    }
+                } else {
+                    errorMessage = when (it) {
+                        is UnknownHostException -> {
+                            UNKNOWN_HOST_EXCEPTION
+                        }
+                        is ConnectException -> {
+                            CONNECTION_EXCEPTION
+                        }
+                        else -> {
+                            ERROR_FETCH
+                        }
+                    }
+                }
+
                 Result.withError(
                     CommonApiFetchError(errorMessage, it)
                 )
