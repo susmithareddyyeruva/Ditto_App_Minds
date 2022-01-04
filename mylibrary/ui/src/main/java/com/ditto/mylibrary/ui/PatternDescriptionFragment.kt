@@ -928,20 +928,47 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun setPatternImage() {
-        if ((NetworkUtility.isNetworkAvailable(context))) {
+        /*if ((NetworkUtility.isNetworkAvailable(context))) {
             if (activity != null && context != null) {
                 Glide.with(requireContext())
                     .load(viewModel.clickedProduct?.image)
                     .placeholder(R.drawable.ic_placeholder)
                     .into(binding.imagePatternDesc)
             }
+            downloadImage(viewModel.clickedProduct?.image,viewModel.patternName.get())
         } else {
             setImageFromSvgPngDrawable(
                 viewModel.patternName.get(),
-                viewModel.clickedProduct?.image,
+                viewModel.patternName.get(),
                 binding.imagePatternDesc.context,
                 binding.imagePatternDesc
             )
+        }*/
+        if(NetworkUtility.isNetworkAvailable(context)) {
+            downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
+        }
+        setImageFromSvgPngDrawable(
+            viewModel.patternName.get(),
+            if(NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase().equals("TRIAL")) viewModel.clickedProduct?.image else viewModel.patternName.get(),
+            binding.imagePatternDesc.context,
+            binding.imagePatternDesc
+        )
+
+//        if(NetworkUtility.isNetworkAvailable(holder.patternsItemBinding.imagePattern.context) || patterns[position].patternType?.toUpperCase().equals("TRIAL")) patterns.get(position).image else patterns.get(position).prodName,
+
+    }
+
+    private fun downloadImage(imageUrl: String?, patternName: String?) {
+        runBlocking {
+            imageUrl?.let {
+                patternName?.let { fileName ->
+                    viewModel.downloadEachPatternPiece(
+                        imageUrl = it,
+                        filename = fileName,
+                        patternFolderName = patternName
+                    )
+                }
+            }
         }
     }
 
