@@ -1,34 +1,36 @@
 package com.ditto.menuitems_ui.faq.ui
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager.widget.ViewPager
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FaqGlossaryMainfragmentBinding
 import com.ditto.menuitems_ui.faq.ui.adapters.TabFaqAdapter
-import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import javax.inject.Inject
 
 
 class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogListener  {
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
 
-    private val faqGlossaryfragmentViewModel: FAQGlossaryfragmentViewModel by ViewModelDelegate()
+    val logger: Logger by lazy {
+        loggerFactory.create(FaqGlossaryMainFragment::class.java.simpleName)
+    }
+    private val faqGlossaryfragmentViewModel: FAQGlossaryFragmentViewModel by ViewModelDelegate()
     lateinit var binding: FaqGlossaryMainfragmentBinding
 
 
@@ -86,26 +88,26 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
         toolbarViewModel?.isShowActionMenu.set(false)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-    private fun handleEvent(event: FAQGlossaryfragmentViewModel.Event) =
+    private fun handleEvent(event: FAQGlossaryFragmentViewModel.Event) =
         when (event) {
-            is FAQGlossaryfragmentViewModel.Event.OnResultSuccess -> {
+            is FAQGlossaryFragmentViewModel.Event.OnResultSuccess -> {
                 if (faqGlossaryfragmentViewModel.data.value != null)
                     setTabsAdapter(faqGlossaryfragmentViewModel.data.value)
 
                 Unit
             }
-            FAQGlossaryfragmentViewModel.Event.OnShowProgress -> {
+            FAQGlossaryFragmentViewModel.Event.OnShowProgress -> {
                 bottomNavViewModel.showProgress.set(true)
 
             }
-            FAQGlossaryfragmentViewModel.Event.OnHideProgress -> {
+            FAQGlossaryFragmentViewModel.Event.OnHideProgress -> {
                 bottomNavViewModel.showProgress.set(false)
 
             }
-            FAQGlossaryfragmentViewModel.Event.OnResultFailed -> {
+            FAQGlossaryFragmentViewModel.Event.OnResultFailed -> {
               showAlert()
             }
-            FAQGlossaryfragmentViewModel.Event.NoInternet ->{
+            FAQGlossaryFragmentViewModel.Event.NoInternet ->{
              showAlert()
             }
         }
@@ -125,7 +127,7 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
         binding.tabLayoutFaq.setupWithViewPager(binding.viewPager)
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                Log.d("onPageScroll", "onPageScrollStateChanged")
+
             }
 
             override fun onPageScrolled(
@@ -133,11 +135,11 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScroll", "onPageScrolled")
+
             }
 
             override fun onPageSelected(position: Int) {
-                Log.d("onPageScroll", "onPageSelected")
+                logger.d("onPageScroll, onPageSelected")
             }
         })
 

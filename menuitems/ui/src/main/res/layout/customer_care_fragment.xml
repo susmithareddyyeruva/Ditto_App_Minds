@@ -189,7 +189,7 @@
                 android:textColor="#000"
                 android:textSize="@dimen/str_email__phone_text"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
-                android:onClick="@{() -> viewModel.EmailClicked()}"
+                android:onClick="@{() -> viewModel.emailClicked()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/email_icon"
                 app:layout_constraintTop_toBottomOf="@+id/guide_mail_time"
@@ -305,7 +305,7 @@
                 android:textSize="@dimen/str_phone_call"
                 android:textStyle="bold"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:onClick="@{() -> viewModel.PhoneClicked()}"
+                android:onClick="@{() -> viewModel.phoneClicked()}"
                 app:layout_constraintStart_toStartOf="@+id/phn_icon"
                 app:layout_constraintTop_toBottomOf="@+id/toll"
                 />

@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -148,7 +147,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
-        Log.d("Testing", ">>>>>>   All Patterns handleFetchResult")
+        logger.d("Testing, >>>>>>   All Patterns handleFetchResult")
         when (result) {
             is Result.OnSuccess -> {
                 var temp: ArrayList<ProdDomain> =
@@ -339,7 +338,7 @@ class AllPatternsViewModel @Inject constructor(
         val hashMap = HashMap<String, ArrayList<String>>()
         hashMap[folderName] = arrayListOf(product?.tailornovaDesignId ?: "")
         var methodName: String? = ""
-        Log.d("DESIGN ID==", product?.tailornovaDesignId ?: "")
+        logger.d("DESIGN ID==, product?.tailornovaDesignId ?: ")
         val favReq = FolderRequest(
             OrderFilter(
                 true,
@@ -412,7 +411,7 @@ class AllPatternsViewModel @Inject constructor(
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
         val json1 = Gson().toJson(menuList)
-        Log.d("JSON===", json1)
+        logger.d("JSON=== json1")
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         menuList.forEach { (key, value) ->
             val filtered = value.filter { prod -> prod.isSelected }
@@ -449,9 +448,9 @@ class AllPatternsViewModel @Inject constructor(
         }
         filterCriteria.ProductFilter = resultMap
         val resultJson = Gson().toJson(resultMap)
-        Log.d("JSON===", resultJson)
+        logger.d("JSON=== resultJson")
         val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
-        Log.d("RESULT STRING===", resultString)
+        logger.d("RESULT STRING===, resultString")
         return filterCriteria
     }
 

@@ -84,7 +84,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
                 R.color.text_new
             ))
         )
-        if (patterns[position].patternType?.toUpperCase().equals("TRIAL") == true) {
+        if (patterns[position].patternType?.toUpperCase().equals("TRIAL")) {
             holder.patternsItemBinding.textviewPatternType.text =
                 patterns[position].patternType?.toUpperCase()
 

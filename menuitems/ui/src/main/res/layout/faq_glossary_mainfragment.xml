@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.ditto.menuitems_ui.faq.ui.FAQGlossaryfragmentViewModel" />
+            type="com.ditto.menuitems_ui.faq.ui.FAQGlossaryFragmentViewModel" />
 
     </data>
 

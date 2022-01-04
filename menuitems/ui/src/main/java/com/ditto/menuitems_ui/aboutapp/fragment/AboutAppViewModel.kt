@@ -1,6 +1,7 @@
 package com.ditto.menuitems_ui.aboutapp.fragment
 
-import android.util.Log
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.domain.AboutAppUseCase
 import com.ditto.menuitems.domain.model.AboutAppDomain
 import core.event.UiEvents
@@ -18,7 +19,12 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
     var txt:String=""
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
 
+    val logger: Logger by lazy {
+        loggerFactory.create(AboutAppViewModel::class.java.simpleName)
+    }
     fun fetchUserData() {
         disposable += aboutAppUseCase.getAboutAppAndPrivacyData()
             .subscribeOn(Schedulers.io())
@@ -31,13 +37,13 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
         when(result)
         {
             is Result.OnSuccess<AboutAppDomain> ->{
-                Log.d("AboutAppViewModel", "Success"+result.data)
+               logger.d("AboutAppViewMode Success"+result.data)
                 setResponseText(result.data.c_body)
                 uiEvents.post(Event.updateResponseinText)
 
             }
             is Result.OnError -> {
-                Log.d("WSProSettingViewModel", "Failed")
+                logger.d("WSProSettingViewModel Failed")
             }
         }
     }

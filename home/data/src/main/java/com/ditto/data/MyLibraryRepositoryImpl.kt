@@ -1,7 +1,6 @@
 package com.ditto.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.offlinetoDomain
@@ -142,7 +141,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 offlinePatternDataDao.upsertList(it.trial.toDomainn(),AppState.getCustID())
                 //PatternIdData>>OfflinePatterns
 
-                Log.d("Tailornova", "insertofflinePatternsData complete: $it")
+                logger.d("Tailornova, insertofflinePatternsData complete: $it")
             }.map {
                 it.trial?.let { it1 -> Result.withValue(it1) }
             }.onErrorReturn {

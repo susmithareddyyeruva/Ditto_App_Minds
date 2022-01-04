@@ -5,7 +5,6 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -73,7 +72,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt("UserId")?.let { viewModel.userId = (it) }
-        Log.d("Testing", ">>>>>>   MyLibraryFragment onActivityCreated")
         setUpToolbar()
         setUpNavigationDrawer()
         toolbarViewModel.visibility.set(false)
@@ -113,7 +111,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.clearFilter.performClick()
         }
         binding.toolbar.setNavigationOnClickListener {
-            Log.d(" NavigationListener==", "SIZE: " + childFragmentManager.fragments.size)
             requireActivity().onBackPressed()
         }
         binding.editSearch.setOnClickListener {
@@ -186,7 +183,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                             viewModel.myLibraryTitle.set(getString(R.string.my_folders))
                         } else {
                             //Preventing click for MyFolder for Guest User
-                            SwicthToAllPattern()
+                            switchToAllPattern()
                         }
                     } else
                         setTabsAdapter("TABLISTENER")
@@ -271,7 +268,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
         ft.commit()
         childFragmentManager.popBackStack()
-        Log.d("FRAGMENT REMOVE ALL===", "SIZE: " + childFragmentManager.fragments.size)
+
     }
 
     fun setToolbarTittle(tittle: String) {
@@ -359,10 +356,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
      }*/
 
     fun setTabsAdapter(event: String) {
-        Log.d(
-            "Testing",
-            ">>>>>>   MyLibraryFragment setTabsAdapter count  :" + binding.viewPager.adapter?.count
-        )
         if (NetworkUtility.isNetworkAvailable(context)) {
             binding.tabLayout.getTabAt(0)?.text = getString(R.string.all_patterns)
             showFilterComponents()
@@ -371,7 +364,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             val tabPosition = binding.tabLayout.selectedTabPosition
             if (event != "SYNC") {
-                Log.d("EVENT===", "ONLINE")
                 viewModel.passEventForAllPattern()
             }
 
@@ -381,7 +373,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             (binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.GONE
             binding.tabLayout.isSelected = true
             if (event != "SYNC") {
-                Log.d("EVENT===", "OFFLINE")
                 viewModel.passEventForAllPattern()
             }
             binding.tabLayout.getTabAt(0)?.text = getString(R.string.offline_patterns)
@@ -391,7 +382,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     }
 
-    private fun SwicthToAllPattern() {
+    private fun switchToAllPattern() {
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
@@ -460,14 +451,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                     if (tabPosition == 0) {
                         setFilterMenuAdapter(0)
                         binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
-                        Log.d("pattern", "onFilterClick : AllPatternsFragment")
                     } else {
                         setFilterMenuAdapter(0)
                         binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
-                        Log.d("pattern", "onFilterClick : MyFolder Detail")
                     }
                 } else {
-                    Log.d("pattern", "onFilterClick : MyFolder Detail guest ")
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         "",
@@ -515,7 +503,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
                     }
                 } else {
-                    Log.d("pattern", "OnSearchClick : MyFolder Detail guest ")
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         "",
@@ -546,7 +533,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             MyLibraryViewModel.Event.OnNetworkCheck -> {
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
-                    Log.d("APICALL=====", "MY LIBRARY")
                     allPatternsFragment.resetListValues()
                     allPatternsFragment.fetchPatternLibrary()
                 } else {
@@ -583,7 +569,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             binding.rvCategory.adapter =
                 FilterRvAdapter(result, position, object : FilterRvAdapter.MenuClickListener {
                     override fun onMenuSelected(menu: String) {
-                        Log.d("CLICKED===", menu)
                         (binding.rvActions.adapter as FilterDetailsAdapter).updateList(menu)
 
                     }
@@ -627,7 +612,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     override fun onResume() {
         super.onResume()
-        Log.d("Testing", ">>>>>>   All Patterns  onResume ")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
         setTabsAdapter("ONRESUME")
@@ -636,7 +620,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     override fun onPause() {
         super.onPause()
-        Log.d("Testing", ">>>>>>   My LibraryFragment  onPause ")
         viewModel.disposable.clear()
         viewModel.disposable.dispose()
     }

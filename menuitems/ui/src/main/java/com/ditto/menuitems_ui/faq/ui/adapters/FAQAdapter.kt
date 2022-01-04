@@ -1,8 +1,6 @@
 package com.ditto.menuitems_ui.faq.ui.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater
@@ -13,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.FAQDomain
@@ -53,7 +52,7 @@ class FAQAdapter(
         }*/
         holder.linheader.setOnClickListener { onItemClicked(item, position) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
             if (item?.SubAnsw?.size!! > 0) {
@@ -88,7 +87,7 @@ class FAQAdapter(
                 watchVideoClickListener.onVideoClick(item?.video_url ?: "")
             }
         } else {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.rvsubques.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)

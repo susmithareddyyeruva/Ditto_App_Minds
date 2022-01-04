@@ -1,9 +1,10 @@
 package com.ditto.menuitems_ui.faq.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.domain.FAQGlossaryUseCase
 import com.ditto.menuitems.domain.model.faq.FAQGlossaryResultDomain
 import com.ditto.menuitems.domain.model.faq.FaqGlossaryResponseDomain
@@ -18,8 +19,16 @@ import non_core.lib.error.Error
 import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
-class FAQGlossaryfragmentViewModel @Inject constructor(val context: Context,
-val useCase: FAQGlossaryUseCase) : BaseViewModel() {
+class FAQGlossaryFragmentViewModel @Inject constructor(
+    val context: Context,
+    private val useCase: FAQGlossaryUseCase
+) : BaseViewModel() {
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+
+    val logger: Logger by lazy {
+        loggerFactory.create(FAQGlossaryFragmentViewModel::class.java.simpleName)
+    }
     private val uiEvents = UiEvents<Event>()
     var data: MutableLiveData<FaqGlossaryResponseDomain> = MutableLiveData()
     val events = uiEvents.stream()
@@ -40,18 +49,19 @@ val useCase: FAQGlossaryUseCase) : BaseViewModel() {
     private fun handleFetchResult(result: Result<FAQGlossaryResultDomain>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
-            is Result.OnSuccess-> {
+            is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
                 uiEvents.post(Event.OnResultSuccess)
-                data.value =result.data.c_body
+                data.value = result.data.c_body
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-                Log.d("faq_glossary", "Failed")
+                logger.d("faq_glossary, Failed")
                 handleError(result.error)
             }
         }
     }
+
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
@@ -66,6 +76,7 @@ val useCase: FAQGlossaryUseCase) : BaseViewModel() {
 
         }
     }
+
     sealed class Event {
         object OnResultSuccess : Event()
         object OnShowProgress : Event()

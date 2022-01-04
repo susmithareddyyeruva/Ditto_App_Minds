@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -61,17 +60,14 @@ class MyLibraryViewModel @Inject constructor(
     }
 
     fun onFilterClick() {
-        Log.d("pattern", "onFilterClick : viewModel")
         uiEvents.post(Event.OnFilterClick)
     }
 
     fun onSyncClick() {
-        Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.MyLibrarySync)
     }
 
     fun onSearchClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnSearchClick)
     }
 

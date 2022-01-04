@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,7 +85,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME", "onActivityCreated")
+        logger.d("HOME, onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
 
@@ -204,7 +203,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME", "onResume")
+        logger.d("HOME, onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()
@@ -351,7 +350,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                 showAlert()
             }
             HomeViewModel.Event.OnTrialPatternSuccess -> {
-                Log.d("Download", "OnTrialPatternSuccess")
+                logger.d("Download, OnTrialPatternSuccess")
                 if (dowloadPermissonGranted()) {
                     if (!::job.isInitialized || !job.isActive) {
                         job = downloadTrialPattenImages()
@@ -377,7 +376,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     private fun downloadTrialPattenImages() = GlobalScope.launch {
         homeViewModel.trialPatternData.forEach {
             val map = getPatternPieceListTailornova(it)
-            Log.d("Download", "OnTrialPatternSuccess forEach >> ${it.patternName}")
+            logger.d("Download, OnTrialPatternSuccess forEach >> ${it.patternName}")
             runBlocking {
                 try {
                     homeViewModel.prepareDowloadList(
@@ -387,7 +386,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                         ), it.patternName
                     )
                 } catch (e: Throwable) {
-                    Log.d("Download", "Erro! ${e.message}")
+                    logger.d("Download, Erro! ${e.message}")
                 }
             }
         }
@@ -514,7 +513,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         IntArray
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
+            logger.d("onReqPermissionsResult, permission granted")
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 if (!::job.isInitialized || !job.isActive) {
                     job = downloadTrialPattenImages()
@@ -546,7 +545,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                 Utility.AlertType.PERMISSION_DENIED
             )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
-            Log.d("onReqPermissionsResult", "permission denied")
+            logger.d("onReqPermissionsResult, permission denied")
         }
 
     }

@@ -2,7 +2,6 @@ package com.ditto.login.ui
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +31,7 @@ class LoginViewModel @Inject constructor(
     val loggerFactory: LoggerFactory,
     val useCase: GetLoginDbUseCase,
     val storageManager: StorageManager,
-     val utility: Utility
+    val utility: Utility
 ) : BaseViewModel() {
 
     var userName: ObservableField<String> = ObservableField<String>("")
@@ -52,6 +51,7 @@ class LoginViewModel @Inject constructor(
     val logger: Logger by lazy {
         loggerFactory.create(LoginViewModel::class.java.simpleName)
     }
+
     fun validateCredentials() {
         isEmailValidated.set(true)
         isPasswordValidated.set(true)
@@ -103,14 +103,14 @@ class LoginViewModel @Inject constructor(
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
 
-                    AppState.setCustID(result.data.customer_id?: "")
-                    AppState.setCustNumber(result.data.customer_no?: "")
-                    AppState.setEmail(result.data.email?: "")
-                    AppState.setFirstName(result.data.first_name?: "")
-                    AppState.setLastName(result.data.last_name?: "")
-                    AppState.setSubscriptionDate(result.data.cSubscriptionPlanEndDate?: "")
-                    AppState.setMobile(result.data.phone_home?: "")
-                    AppState.saveKey(result.data.c_encryptionKey?:"")
+                    AppState.setCustID(result.data.customer_id ?: "")
+                    AppState.setCustNumber(result.data.customer_no ?: "")
+                    AppState.setEmail(result.data.email ?: "")
+                    AppState.setFirstName(result.data.first_name ?: "")
+                    AppState.setLastName(result.data.last_name ?: "")
+                    AppState.setSubscriptionDate(result.data.cSubscriptionPlanEndDate ?: "")
+                    AppState.setMobile(result.data.phone_home ?: "")
+                    AppState.saveKey(result.data.c_encryptionKey ?: "")
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
                         result.data.cSpliceCutCompleteReminder
@@ -124,7 +124,7 @@ class LoginViewModel @Inject constructor(
                     userPhone = result.data.phone_home ?: ""
                     userFirstName = result.data.first_name ?: ""
                     userLastName = result.data.last_name ?: ""
-                    subscriptionEndDate=result.data.cSubscriptionPlanEndDate?:""
+                    subscriptionEndDate = result.data.cSubscriptionPlanEndDate ?: ""
                     AppState.setIsLogged(true)
                     /**
                      * Storing the subscription information into DB
@@ -191,7 +191,6 @@ class LoginViewModel @Inject constructor(
     }
 
 
-
     fun forgotPasswordRedirection() {
         Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
 
@@ -209,9 +208,8 @@ class LoginViewModel @Inject constructor(
                 errorString.set(error.message)
                 uiEvents.post(Event.OnLoginFailed)
             }
-            is RemoteConfigError -> Log.d(
-                "LoginViewModel",
-                "Remote Config fetch error : ${error.message}"
+            is RemoteConfigError -> logger.d(
+                "LoginViewModel, Remote Config fetch error : ${error.message}"
             )
             else -> {
                 errorString.set(error.message)

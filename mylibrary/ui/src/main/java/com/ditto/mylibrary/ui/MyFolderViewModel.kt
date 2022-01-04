@@ -1,9 +1,10 @@
 package com.ditto.mylibrary.ui
 
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.*
@@ -24,6 +25,12 @@ import javax.inject.Inject
 
 class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibraryUseCase) :
     BaseViewModel() {
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+
+    val logger: Logger by lazy {
+        loggerFactory.create(MyFolderViewModel::class.java.simpleName)
+    }
     private val uiEvents = UiEvents<MyFolderViewModel.Event>()
     val events = uiEvents.stream()
     var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
@@ -102,7 +109,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     private fun isFolderPresent(newFolderName: String): Boolean {
         folderList.forEach {
             if (it.title.equals(newFolderName, true)) {
-                Log.d("FOLDER", "ALready exist")
+                logger.d("FOLDER, ALready exist")
                 return true
             }
         }
@@ -113,7 +120,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         uiEvents.post(Event.OnMyFolderShowProgress)
         val hashMap = HashMap<String, ArrayList<String>>()
         var methodName: String = ""
-        Log.d("DESIGN ID==", product.tailornovaDesignId ?: "")
+        logger.d("DESIGN ID==, product.tailornovaDesignId ?: ")
         if (action == addFolder) {
             methodName = "update"
             hashMap[newFolderName] = arrayListOf(product.tailornovaDesignId ?: "")
@@ -211,7 +218,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
                 //AppState.setPatternCount(result.data.totalPatternCount)
                 totalPatternCount = result.data.totalPatternCount ?: 0
-                Log.d("PATTERN  COUNT== ", totalPatternCount.toString())
+                logger.d("PATTERN  COUNT== , totalPatternCount.toString()")
                 totalPageCount = result.data.totalPageCount ?: 0
                 currentPageId = result.data.currentPageId ?: 0
                 myfolderMap = result.data.menuItem ?: hashMapOf() //hashmap
@@ -241,7 +248,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             myfolderMenu[key] = menuValues
         }
 
-        Log.d("MAP  RESULT== ", myfolderMenu.size.toString())
+        logger.d("MAP  RESULT== , myfolderMenu.size.toString()")
 
 
     }
@@ -302,12 +309,12 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     }
 
     fun createFolderEvent() {
-        Log.d("Testing", ">>>>>>   Myfolder createFolderEvent ")
+        logger.d("Testing, >>>>>>   Myfolder createFolderEvent ")
         uiEvents.post(Event.OnMyFolderCreateFolderClicked)
     }
 
     fun navigateToFolderDetails(title: String) {
-        Log.d("Testing", ">>>>>>   Myfolder navigateToFolderDetails ")
+        logger.d("Testing, >>>>>>   Myfolder navigateToFolderDetails ")
         clickedFolderName = title
         uiEvents.post(Event.OnNavigtaionToFolderDetail)
     }
@@ -361,7 +368,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         }
 
         val json1 = Gson().toJson(myfolderMenu)
-        Log.d("JSON===", json1)
+        logger.d("JSON===, json1")
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         myfolderMenu.forEach { (key, value) ->
             val filtered = value.filter { prod -> prod.isSelected }
@@ -397,22 +404,22 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         }
         filterCriteria.ProductFilter = resultmapFolder
         val resultJson = Gson().toJson(resultmapFolder)
-        Log.d("JSON===", resultJson)
+        logger.d("JSON===, resultJson")
 
         val jsonString: String = resultJson
 
         val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
-        Log.d("RESULT STRING===", resultString)
+        logger.d("RESULT STRING===, resultString")
         return filterCriteria
     }
 
     fun onSyncClick() {
-        Log.d("pattern", "onSyncClick : viewModel")
+        logger.d("pattern, onSyncClick : viewModel")
         uiEvents.post(Event.MyFolderSyncClick)
     }
 
     fun onSearchClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
+        logger.d("pattern, onSearchClick : viewModel")
         uiEvents.post(Event.OnMyFolderSearchClick)
     }
 
