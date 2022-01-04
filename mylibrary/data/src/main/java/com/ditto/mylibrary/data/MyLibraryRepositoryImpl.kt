@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.data
 
 import android.content.Context
+import android.util.Log
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
@@ -8,6 +9,7 @@ import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.api.TailornovaApiService
 import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.error.PatternDBError
+import com.ditto.mylibrary.data.error.TailornovaInsertError
 import com.ditto.mylibrary.data.error.TrialPatternError
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
@@ -529,7 +531,15 @@ class MyLibraryRepositoryImpl @Inject constructor(
         mannequin: List<MannequinDataDomain>?
     ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin))}
+            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin))
+
+            Log.d("offlinePatternDataDao", "upsert >> $i")
+
+            if (i != -1)
+                Result.withValue(i)
+            else
+                Result.withError(TailornovaInsertError(""))
+        }
     }
 
 }

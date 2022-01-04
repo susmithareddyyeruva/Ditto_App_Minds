@@ -718,85 +718,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         when (event) {
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
 
-                if (viewModel.clickedProduct?.patternType.toString().equals("Trial", true)) {
-                    binding.textWatchvideo2.isEnabled = false
-                    if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                        || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                    ) {
-                        //checkBluetoothWifiPermission()
-                        //forwardtoWorkspace()
-                        // delete folder and PDF flow starting here
-                        viewModel.fetchDemoPatternList()
-                        val map = getPatternPieceListTailornova()
-                        //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                        if (dowloadPermissonGranted()) {
-                            Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
-                            bottomNavViewModel.showProgress.set(true)
-                            if (!::job.isInitialized || !job.isActive) {
-                                job = GlobalScope.launch {
-                                    setPrepareDownloadList(map)
-                                }
-                            } else {
-
-                            }
-                        } else {
-                            requestPermissions(
-                                REQUIRED_PERMISSIONS_DOWNLOAD,
-                                REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                            )
-                        }
-
-                    } else {
-                        logger.d("OnClick Workspace failed")
-                    }
-                } else {//Pattern TYPE not  Trial and Network Connected
-                    /**
-                     * Allowing user to enter into workspace  which is not  trial Pattern if Network is Connected
-                     */
-
-                    if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
-                        binding.textWatchvideo2.isEnabled = false
-                        if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
-                            || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
-                        ) {
-                            //checkBluetoothWifiPermission()
-                            //forwardtoWorkspace()
-                            viewModel.fetchDemoPatternList()
-                            val map = getPatternPieceListTailornova()
-                            //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
-                            if (dowloadPermissonGranted()) {
-                                Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
-                                bottomNavViewModel.showProgress.set(true)
-                                if (!::job.isInitialized || !job.isActive) {
-                                    job = GlobalScope.launch {
-                                        setPrepareDownloadList(map)
-                                    }
-                                } else {
-
-                                }
-
-                            } else {
-                                requestPermissions(
-                                    REQUIRED_PERMISSIONS_DOWNLOAD,
-                                    REQUEST_CODE_PERMISSIONS_DOWNLOAD
-                                )
-                            }
-
-                        } else {
-                            logger.d("OnClick Workspace failed")
-                        }
-                    } else {
-                        /**
-                         * Restricting user to enter into workspace without selecting any customization if Network is Connected
-                         */
-                        showAlert(
-                            getString(R.string.please_selecte_mannequinid),
-                            Utility.AlertType.DEFAULT
-                        )
-
-                    }
-
-                }
+                WSButtonClick()
 
             }
             is PatternDescriptionViewModel.Event.OnDataUpdated -> {
@@ -912,11 +834,99 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnDeletePatternFolder -> {
                 if (AppState.getIsLogged()) {
                     deleteFolder(viewModel.patternsInDB)
-                    deletePDF(viewModel.patternsInDB)
                 } else {
                 }
             }
+
+            PatternDescriptionViewModel.Event.OnMannequinNameEmpty -> {
+                showAlert(
+                    getString(R.string.please_selecte_mannequinid),
+                    Utility.AlertType.DEFAULT
+                )
+            }
         }
+
+    private fun WSButtonClick() {
+        if (viewModel.clickedProduct?.patternType.toString().equals("Trial", true)) {
+            binding.textWatchvideo2.isEnabled = false
+            if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                //checkBluetoothWifiPermission()
+                //forwardtoWorkspace()
+                /* // delete folder and PDF flow starting here
+                        viewModel.fetchDemoPatternList()*/
+                val map = getPatternPieceListTailornova()
+                //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                if (dowloadPermissonGranted()) {
+                    Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
+                    bottomNavViewModel.showProgress.set(true)
+                    if (!::job.isInitialized || !job.isActive) {
+                        job = GlobalScope.launch {
+                            setPrepareDownloadList(map)
+                        }
+                    } else {
+
+                    }
+                } else {
+                    requestPermissions(
+                        REQUIRED_PERMISSIONS_DOWNLOAD,
+                        REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                    )
+                }
+
+            } else {
+                logger.d("OnClick Workspace failed")
+            }
+        } else {//Pattern TYPE not  Trial and Network Connected
+            /**
+             * Allowing user to enter into workspace  which is not  trial Pattern if Network is Connected
+             */
+
+            if (viewModel.mannequinId?.get()?.isNotEmpty() == true) {
+                binding.textWatchvideo2.isEnabled = false
+                if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                    || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                ) {
+                    //checkBluetoothWifiPermission()
+                    //forwardtoWorkspace()
+                    /*viewModel.fetchDemoPatternList()*/
+                    val map = getPatternPieceListTailornova()
+                    //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
+                    if (dowloadPermissonGranted()) {
+                        Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
+                        bottomNavViewModel.showProgress.set(true)
+                        if (!::job.isInitialized || !job.isActive) {
+                            job = GlobalScope.launch {
+                                setPrepareDownloadList(map)
+                            }
+                        } else {
+
+                        }
+
+                    } else {
+                        requestPermissions(
+                            REQUIRED_PERMISSIONS_DOWNLOAD,
+                            REQUEST_CODE_PERMISSIONS_DOWNLOAD
+                        )
+                    }
+
+                } else {
+                    logger.d("OnClick Workspace failed")
+                }
+            } else {
+                /**
+                 * Restricting user to enter into workspace without selecting any customization if Network is Connected
+                 */
+                showAlert(
+                    getString(R.string.please_selecte_mannequinid),
+                    Utility.AlertType.DEFAULT
+                )
+
+            }
+
+        }
+    }
 
     private fun showConnectivityPopup() {
         val intent = Intent(requireContext(), ConnectivityActivity::class.java)
@@ -1557,6 +1567,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
             }
         }
+        deletePDF(patterns)
     }
 
 
@@ -1603,6 +1614,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
             }
         }
+        WSButtonClick()
     }
 
     fun deleteDirectory(path: File): Boolean {
@@ -1623,7 +1635,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     fun getNameWithoutExtension(fileName: String): String {
-        var dotIndex = fileName.lastIndexOf('.')
+        val dotIndex = fileName.lastIndexOf('.')
         return if (dotIndex == -1) fileName else fileName.substring(0, dotIndex)
     }
 

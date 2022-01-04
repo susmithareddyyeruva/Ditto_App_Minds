@@ -47,11 +47,13 @@ abstract class OfflinePatternDataDao {
     @Query("DELETE from offline_pattern_data where custId != :custId  and custId != 0")
     abstract fun deleteOtherUserRecord(custId: String?)
 
+    // new pattern >>insert 1 update -1
+    // already there pattern >>insert -1 update 1
     @Transaction
-    open fun upsert(obj: OfflinePatterns) {
+    open fun upsert(obj: OfflinePatterns):Int {
         val id: Long = insertOfflinePatternData(obj)
-        Log.d("offlinePatternDataDao", "insert $id")
-        if (id == -1L) {
+        Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB insert  >>>>> $id")
+        if (id == (-1).toLong()) {
             val i = updateTailornovaOfflineData(
                 obj.custId,
                 obj.designId,
@@ -80,7 +82,10 @@ abstract class OfflinePatternDataDao {
                 obj.selectedMannequinName,
                 obj.mannequin
             )
-            Log.d("offlinePatternDataDao", "update $i")
+            Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB update >>>>>>> $i")
+            return i
+        }else{
+            return id.toInt()
         }
     }
 
@@ -165,7 +170,7 @@ abstract class OfflinePatternDataDao {
             val id: Long = insertOfflinePatternData(obj)
             val objInDB = getTailernovaDataByIDTrial(obj.designId) // obj2 cust id inside db
             Log.d("offlinePatternDataDao", "upsertList insert $id")
-            if (id == -1L) {
+            if (id == (-1).toLong()) {
                 //todo need to updaate the other like garment and all
                 if (obj.custId != objInDB.custId) {
                     //1. if logged in custId is != Db custID we will insert garment lining
