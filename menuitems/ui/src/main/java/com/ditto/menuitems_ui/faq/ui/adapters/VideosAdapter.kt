@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.VideosDomain
 import com.ditto.menuitems_ui.R
@@ -35,7 +36,7 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
         holder.tvAnsw.text = htmlAsSpanned
         holder.linheader.setOnClickListener { onItemClicked(item,position) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
@@ -60,7 +61,7 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
                 watchVideoClickListener.onVideoClick(item?.Ques,item?.video_url ?: "")
             }
         } else {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)
             holder.watch.visibility = View.GONE

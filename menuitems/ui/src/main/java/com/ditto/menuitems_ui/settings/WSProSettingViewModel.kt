@@ -1,7 +1,6 @@
 package com.ditto.menuitems_ui.settings
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -29,7 +28,6 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                                                 private val getWorkspaceProData: GetWorkspaceProData,
                                                 val loggerFactory: LoggerFactory
 ) : BaseViewModel() {
-    // TODO: Implement the ViewModel
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
 
@@ -64,7 +62,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                 resetData()
             }
             is Result.OnError -> {
-                Log.d("WSProSettingViewModel", "Failed")
+                logger.d("WSProSettingViewModel, Failed")
             }
         }
     }

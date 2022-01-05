@@ -2,7 +2,6 @@ package com.ditto.videoplayer
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.ditto.videoplayer.databinding.FragmentExoplayerBinding
 import com.ditto.videoplayer.utility.PlaybackStateListener
 import com.google.android.exoplayer2.SimpleExoPlayer
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -51,7 +49,6 @@ class VideoPlayerFragment : BaseFragment(), PlaybackStateListener.ExoPlayerState
                 arguments?.getString("videoPath")?.let { viewModel?.videoUrl = it }
                 arguments?.getString("title")?.let { viewModel?.title = it }
                 arguments?.getString("from")?.let { viewModel?.from = it }
-                Log.d("VideoPlayerFragment123", " title: ${viewModel?.title}")
                 //Toast.makeText(activity, " value + ${viewModel?.title}", Toast.LENGTH_SHORT).show()
             } else {
 
