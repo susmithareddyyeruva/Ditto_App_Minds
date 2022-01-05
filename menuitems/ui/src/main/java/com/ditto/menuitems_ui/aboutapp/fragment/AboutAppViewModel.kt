@@ -39,7 +39,7 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
             is Result.OnSuccess<AboutAppDomain> ->{
                logger.d("AboutAppViewMode Success"+result.data)
                 setResponseText(result.data.c_body)
-                uiEvents.post(Event.updateResponseinText)
+                uiEvents.post(Event.UpdateResponseText)
 
             }
             is Result.OnError -> {
@@ -59,7 +59,7 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
 
 
     sealed class Event {
-        object updateResponseinText : Event()
+        object UpdateResponseText : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
     }

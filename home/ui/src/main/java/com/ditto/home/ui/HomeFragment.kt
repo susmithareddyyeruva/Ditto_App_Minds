@@ -219,7 +219,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     private fun listenVersionEvents() {
         versionDisposable = CompositeDisposable()
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.checkVersion::class.java)
+            RxBus.listen(RxBusEvent.CheckVersion::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it.isCheckVersion) {
@@ -228,7 +228,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                         homeViewModel.versionCheck()
                     }
                 })
-        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionReceived::class.java)
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.VersionReceived::class.java)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
 
@@ -244,7 +244,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
             })
 
-        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.VersionErrorReceived::class.java)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 bottomNavViewModel.showProgress.set(false)

@@ -77,16 +77,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 }
             }
         } else {
-          /*  core.ui.common.Utility.getCommonAlertDialogue(
-                requireContext(),
-                "",
-                getString(R.string.guest_my_folder_message),
-                "",
-                getString(R.string.str_ok),
-                this,
-                core.ui.common.Utility.AlertType.GUEST_MYFOLDER,
-                core.ui.common.Utility.Iconype.NONE
-            )*/
+
         }
     }
 

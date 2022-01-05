@@ -14,7 +14,6 @@ import com.ditto.mylibrary.ui.R
 
 
 class CustomSpinnerAdapter(val context: Context, var dataSource: List<MannequinDataDomain>) : BaseAdapter() {
-    private val ITEM_HEIGHT = ViewGroup.LayoutParams.WRAP_CONTENT
     override fun equals(other: Any?): Boolean {
         return super.equals(other)
     }

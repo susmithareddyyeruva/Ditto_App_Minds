@@ -10,65 +10,65 @@ class Util {
             when (calibrationResponse) {
                 CalibrationErrorCode.Success -> {
                     Log.d("Calibration", "Success")
-                    callback.OnCalibrationReponse(CalibrationType.Success)
+                    callback.onCalibrationReponse(CalibrationType.Success)
                 }
                 CalibrationErrorCode.InvalidImageFormat -> {
                     //imageArray.clear()
                     // show alert?
                     Log.d("Calibration", "InvalidImageFormat")
-                    callback.OnCalibrationReponse(CalibrationType.InvalidImageFormat)
+                    callback.onCalibrationReponse(CalibrationType.InvalidImageFormat)
                 }
                 CalibrationErrorCode.FailCalibration -> {
                     // show alert?
                     Log.d("Calibration", "FailCalibration")
-                    callback.OnCalibrationReponse(CalibrationType.FailCalibration)
+                    callback.onCalibrationReponse(CalibrationType.FailCalibration)
                 }
                 CalibrationErrorCode.TooManyImages -> {
                     Log.d("Calibration", "TooManyImages")
-                    callback.OnCalibrationReponse(CalibrationType.TooManyImages)
+                    callback.onCalibrationReponse(CalibrationType.TooManyImages)
                     // what to do?
                 }
                 CalibrationErrorCode.FailExtractingFeaturePoints -> {
                     Log.d("Calibration", "FailExtractingFeaturePoints")
-                    callback.OnCalibrationReponse(CalibrationType.FailExtractingFeaturePoints)
+                    callback.onCalibrationReponse(CalibrationType.FailExtractingFeaturePoints)
                     // what to do?
                 }
                 CalibrationErrorCode.FailSavingCalibrationResult -> {
                     Log.d("Calibration", "FailSavingCalibrationResult")
-                    callback.OnCalibrationReponse(CalibrationType.FailSavingCalibrationResult)
+                    callback.onCalibrationReponse(CalibrationType.FailSavingCalibrationResult)
                     // what to do?
                 }
 
                 CalibrationErrorCode.CameraPixelsTooLow -> {
                     Log.d("Calibration", "CameraPixelsTooLow")
-                    callback.OnCalibrationReponse(CalibrationType.CameraPixelsTooLow)
+                    callback.onCalibrationReponse(CalibrationType.CameraPixelsTooLow)
                 }
 
                 CalibrationErrorCode.IncorrectImageOrientation -> {
                     Log.d("Calibration", "IncorrectImageOrientation")
-                    callback.OnCalibrationReponse(CalibrationType.IncorrectImageOrientation)
+                    callback.onCalibrationReponse(CalibrationType.IncorrectImageOrientation)
                 }
 
                 CalibrationErrorCode.PatternImageIsCropped -> {
                     Log.d("Calibration", "PatternImageIsCropped")
-                    callback.OnCalibrationReponse(CalibrationType.PatternImageIsCropped)
+                    callback.onCalibrationReponse(CalibrationType.PatternImageIsCropped)
                 }
 
                 CalibrationErrorCode.ImageTakenFromProjectorSide -> {
                     Log.d("Calibration", "ImageTakenFromProjectorSide")
-                    callback.OnCalibrationReponse(CalibrationType.ImageTakenFromProjectorSide)
+                    callback.onCalibrationReponse(CalibrationType.ImageTakenFromProjectorSide)
                 }
 
                 else->{
                     Log.d("Calibration", "CalibrationErrorCode Else - $calibrationResponse")
-                    callback.OnCalibrationReponse(CalibrationType.Else)
+                    callback.onCalibrationReponse(CalibrationType.Else)
                 }
             }
         }
     }
 
     internal interface Callback {
-        fun OnCalibrationReponse(calibrationResponse: CalibrationType)
+        fun onCalibrationReponse(calibrationResponse: CalibrationType)
     }
 
     enum class CalibrationType {

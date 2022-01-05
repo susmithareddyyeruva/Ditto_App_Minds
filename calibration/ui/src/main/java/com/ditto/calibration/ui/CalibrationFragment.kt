@@ -36,7 +36,6 @@ import com.ditto.calibration.R
 import com.ditto.calibration.databinding.CalibrationFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.calibrate.performCalibration
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -181,11 +180,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
      */
     private fun handleEvent(event: CalibrationViewModel.Event) =
         when (event) {
-            is CalibrationViewModel.Event.onTakePhotoClicked -> {
+            is CalibrationViewModel.Event.OnTakePhotoClicked -> {
                 takePhoto()
                 count = 1
             }
-            is CalibrationViewModel.Event.onInstructionClicked -> {
+            is CalibrationViewModel.Event.OnInstructionClicked -> {
                 onClickInstruction()
             }
 
@@ -713,7 +712,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
 
-    override fun OnCalibrationReponse(calibrationResponse: Util.CalibrationType) {
+    override fun onCalibrationReponse(calibrationResponse: Util.CalibrationType) {
         baseViewModel.isSetUpError.set(false)
         logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar.getInstance().timeInMillis)
         showProgress(false)

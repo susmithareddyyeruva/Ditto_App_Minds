@@ -15,23 +15,23 @@ class TutorialViewModel @Inject constructor() : BaseViewModel() {
 
     fun onClickBeamsetup() {
         clickID.set(1)
-        uiEvents.post(Event.onItemClick)
+        uiEvents.post(Event.OnItemClick)
     }
 
     fun onClickCalibration() {
         clickID.set(2)
-        uiEvents.post(Event.onItemClick)
+        uiEvents.post(Event.OnItemClick)
     }
 
     fun onClickHowto() {
         clickID.set(3)
-        uiEvents.post(Event.onHowToClick)
+        uiEvents.post(Event.OnHowToClick)
     }
 
 
     sealed class Event {
-        object onItemClick : Event()
+        object OnItemClick : Event()
 
-        object onHowToClick : Event()
+        object OnHowToClick : Event()
     }
 }

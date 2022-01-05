@@ -207,7 +207,7 @@ class InstructionFragment constructor(
                 viewpagerpreviousbuttonclick()
             }
             is InstructionViewModel.Event.OnCalibrationStepsButtonClicked -> {
-                Calibrationstepsbuttonclick()
+                calibrationstepsbuttonclick()
             }
 
             is InstructionViewModel.Event.OnHowToButtonClicked -> {
@@ -261,7 +261,7 @@ class InstructionFragment constructor(
     /**
      * [Function] Navigating to same fragment to show calibration screen
      */
-    private fun Calibrationstepsbuttonclick() {
+    private fun calibrationstepsbuttonclick() {
         if (findNavController().currentDestination?.id == R.id.destination_instruction) {
             findNavController().navigate(
                 R.id.action_destination_instruction_self,

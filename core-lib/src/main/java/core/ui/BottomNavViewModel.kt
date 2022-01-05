@@ -193,14 +193,14 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
     sealed class Event {
         object NavigateToLogin : Event()
-        object onClickSignIn : Event()
+        object OnClickSignIn : Event()
     }
 
 
     fun onClickSignin() {
         Log.d("viewmodel", "button click  ")
         if (isGuestBase?.get() != false) {
-            uiEvents.post(Event.onClickSignIn)
+            uiEvents.post(Event.OnClickSignIn)
         }
     }
 }

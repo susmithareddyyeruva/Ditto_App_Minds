@@ -71,7 +71,7 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
 
     private fun handleEvent(event: PrivacyAndSettingsViewModel.Event) {
         when (event) {
-            PrivacyAndSettingsViewModel.Event.onResultSuccess -> {
+            PrivacyAndSettingsViewModel.Event.OnResultSuccess -> {
                 binding.webPrivacy.loadDataWithBaseURL(
                     null,
                     viewModel.data,

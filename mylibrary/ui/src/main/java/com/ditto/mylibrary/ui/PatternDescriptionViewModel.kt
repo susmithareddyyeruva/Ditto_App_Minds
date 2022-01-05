@@ -234,7 +234,7 @@ class PatternDescriptionViewModel @Inject constructor(
      */
     fun onClickWorkSpace() {
         if (resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION") {
-            uiEvents.post(Event.onSubscriptionClicked)
+            uiEvents.post(Event.OnSubscriptionClicked)
         } else if (resumeOrSubscription.get().toString() == "WORKSPACE") {
             uiEvents.post(Event.OnWorkspaceButtonClicked)
         } else {
@@ -257,7 +257,7 @@ class PatternDescriptionViewModel @Inject constructor(
     sealed class Event {
 
         object OnWorkspaceButtonClicked : Event()
-        object onSubscriptionClicked : Event()
+        object OnSubscriptionClicked : Event()
         object OnInstructionsButtonClicked : Event()
         object OnDataUpdated : Event()
         object OnShowMannequinData : Event()

@@ -109,7 +109,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         versionDisposable = CompositeDisposable()
 
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     lifecycleScope.launchWhenResumed {
@@ -128,7 +128,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
                 })
 
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionErrorReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     lifecycleScope.launchWhenResumed {

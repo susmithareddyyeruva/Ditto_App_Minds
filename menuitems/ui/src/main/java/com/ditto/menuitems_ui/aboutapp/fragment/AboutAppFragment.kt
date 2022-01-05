@@ -90,7 +90,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
 
     private fun handleEvent(event: AboutAppViewModel.Event) {
         when(event){
-            AboutAppViewModel.Event.updateResponseinText->{
+            AboutAppViewModel.Event.UpdateResponseText->{
                 binding.aboutwebview.loadDataWithBaseURL(null,viewModel.getResponseText(),"text/html", "UTF-8",null)
                 binding.aboutwebview.requestFocus()
                 binding.aboutwebview.settings.javaScriptEnabled=true

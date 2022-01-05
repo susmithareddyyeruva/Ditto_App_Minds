@@ -33,7 +33,7 @@ class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCas
             is Result.OnSuccess<AboutAppDomain> ->{
                 Log.d("PrivacyPolicy", "Success"+result.data)
                data=result.data.c_body
-                uiEvents.post(Event.onResultSuccess)
+                uiEvents.post(Event.OnResultSuccess)
 
             }
             is NoNetworkError -> {
@@ -49,7 +49,7 @@ class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCas
 
 
     sealed class Event {
-        object onResultSuccess : Event()
+        object OnResultSuccess : Event()
         object OnShowProgress : Event()
         object OnHideProgress : Event()
         object NoNetworkError : Event()

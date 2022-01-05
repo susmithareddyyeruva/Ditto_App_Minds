@@ -237,7 +237,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
-            is BottomNavViewModel.Event.onClickSignIn -> {
+            is BottomNavViewModel.Event.OnClickSignIn -> {
                 Log.d("EVENT", "SIGNIN CLICKED")
                 binding.bottomNavViewModel?.visibility?.set(false)
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
@@ -365,7 +365,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     )?.get(childPosition)
                         ?.menuName.equals(this.getString(R.string.str_menu_softwareupdate))
                 ) {
-                    RxBus.publish(RxBusEvent.checkVersion(true))
+                    RxBus.publish(RxBusEvent.CheckVersion(true))
 
                 }
 

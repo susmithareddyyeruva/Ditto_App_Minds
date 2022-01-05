@@ -811,7 +811,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setUpUiBasedOnLoggedIn()
             }
 
-            is PatternDescriptionViewModel.Event.onSubscriptionClicked -> {
+            is PatternDescriptionViewModel.Event.OnSubscriptionClicked -> {
                 logger.d("onSubscriptionClicked")
                 Utility.redirectToExternalBrowser(
                     requireContext(), BuildConfig.SUBSCRIPTION_URL
@@ -1011,7 +1011,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun listenVersionEvents() {
         versionDisposable = CompositeDisposable()
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.checkVersion::class.java)
+            RxBus.listen(RxBusEvent.CheckVersion::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it.isCheckVersion) {
@@ -1021,7 +1021,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 })
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     bottomNavViewModel.showProgress.set(false)
@@ -1038,7 +1038,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 })
 
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionErrorReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     bottomNavViewModel.showProgress.set(false)
