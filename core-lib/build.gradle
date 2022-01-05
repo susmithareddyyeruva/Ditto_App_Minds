@@ -39,6 +39,7 @@ android {
             buildConfigField "String", "CLIENT_ID", "\"59eb4dd9-026d-4bac-adb5-2e5848d91263\""
             buildConfigField "String", "SIGN_UP_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
             buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
         }
         debug {
             debuggable true
@@ -74,9 +75,9 @@ android {
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
             buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://ditto-splicing.tailornova.com/api/v1/patterns/\""
             buildConfigField "String", "CLIENT_ID", "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
-            buildConfigField "String", "SIGN_UP_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
-            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
+            buildConfigField "String", "SIGN_UP_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- STAGING
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- STAGING
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- STAGING
         }
     }
 
