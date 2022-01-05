@@ -42,6 +42,7 @@ import core.ERROR_FETCH
 import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
+import core.lib.BuildConfig
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
