@@ -1,7 +1,6 @@
 package com.ditto.videoplayer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -31,12 +30,6 @@ class YouTubePLayerActivity: YouTubeBaseActivity(), YouTubePlayer.OnInitializedL
          youTubePlayer?.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
         /*youTubePlayer?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
         youTubePlayer?.setFullscreen(true);*/
-        Log.d(TAG, "onInitializationSuccess: provider is ${provider?.javaClass}")
-        Log.d(TAG, "onInitializationSuccess: youTubePlayer is ${youTubePlayer?.javaClass}")
-        Toast.makeText(this, "Initialized Youtube Player successfully", Toast.LENGTH_SHORT).show()
-
-
-
 
         youTubePlayer?.setPlayerStateChangeListener(playerStateChangeListener)
         youTubePlayer?.setPlaybackEventListener(playbackEventListener)

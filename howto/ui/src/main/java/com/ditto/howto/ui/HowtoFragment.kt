@@ -24,7 +24,6 @@ import com.ditto.workspace.ui.PinchAndZoom
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -140,7 +139,7 @@ class HowtoFragment : BaseFragment() {
                 }
             }
             else -> {
-                Log.d("button event", "Button clicked except onSkip")
+                logger.d("button event, Button clicked except onSkip")
             }
         }
 

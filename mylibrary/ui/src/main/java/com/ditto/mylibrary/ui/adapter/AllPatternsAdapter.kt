@@ -2,7 +2,6 @@ package com.ditto.mylibrary.ui.adapter
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -134,7 +133,6 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(context))){
         availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}", context)
-        Log.d("imageUri123", " $foldername availableUri: $availableUri")
         // }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide

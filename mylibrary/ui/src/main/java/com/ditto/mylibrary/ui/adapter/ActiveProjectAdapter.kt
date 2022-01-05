@@ -5,11 +5,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import com.ditto.mylibrary.ui.AllPatternsViewModel
-import core.binding.BindableAdapter
 import com.ditto.mylibrary.ui.databinding.ActiveProjectsItemBinding
+import core.binding.BindableAdapter
 
 class ActiveProjectAdapter : RecyclerView.Adapter<ActiveProjectAdapter.ActivePatternHolder>(),
     BindableAdapter<List<MyLibraryData>> {
@@ -41,7 +42,7 @@ class ActiveProjectAdapter : RecyclerView.Adapter<ActiveProjectAdapter.ActivePat
         holder.patternsItemBinding.seekbarStatus.isEnabled = false
         if (!patterns.get(position).thumbnailImagePath.equals("")){
             val resID: Int = res.getIdentifier(patterns.get(position).thumbnailImagePath, "drawable", viewGroup!!.context.getPackageName())
-            val drawable: Drawable = res.getDrawable(resID)
+            val drawable: Drawable? = ContextCompat.getDrawable(holder.patternsItemBinding.imagePattern.context,resID)
             val bitmap = (drawable as BitmapDrawable).bitmap
             holder.patternsItemBinding.imagePattern.setImageBitmap(bitmap)
         }

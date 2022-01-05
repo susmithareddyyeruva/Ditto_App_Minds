@@ -1,11 +1,9 @@
 package com.ditto.storage.data.database
 
-import android.provider.SyncStateContract.Helpers.update
-import android.util.Log
 import androidx.room.*
-import io.reactivex.Single
 import com.ditto.storage.data.model.OnBoarding
 import com.ditto.storage.data.model.Patterns
+import io.reactivex.Single
 
 
 /**
@@ -63,10 +61,8 @@ abstract class PatternsDao {
     @Transaction
     open fun upsert(obj: Patterns) {
         val id: Long = insertNewPattern(obj)
-        Log.d("patternsDao", "insert $id")
         if (id == -1L) {
             val i = updatePattern(obj)
-            Log.d("patternsDao", "update $i")
         }
     }
 }

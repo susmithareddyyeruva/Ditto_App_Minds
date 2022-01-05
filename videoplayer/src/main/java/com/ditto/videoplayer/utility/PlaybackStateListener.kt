@@ -1,6 +1,5 @@
 package com.ditto.videoplayer.utility
 
-import android.util.Log
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
@@ -17,7 +16,7 @@ class PlaybackStateListener : Player.EventListener {
             ExoPlayer.STATE_ENDED -> "ExoPlayer.STATE_ENDED     -"
             else -> "UNKNOWN_STATE             -"
         }
-        Log.d("EXOPLAYER", "changed state to $stateString")
+
     }
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {

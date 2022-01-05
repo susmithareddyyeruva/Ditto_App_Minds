@@ -5,7 +5,6 @@ import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -198,7 +197,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun handleInsertTailornovaResult(result: Any) {
         when (result) {
             is Result.OnSuccess<*> -> {
-                Log.d("handlInsertTailornovRes", "OnSuccess")
+                logger.d("handlInsertTailornovRes, OnSuccess")
             }
             is Result.OnError<*> -> {
                 logger.d("handlInsertTailornovRes, onFailed")
@@ -452,7 +451,7 @@ class PatternDescriptionViewModel @Inject constructor(
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             } else {
-                Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
+                logger.d("Ditto Folder, ${patternFolderName}PRESENT IN DIRECTORY")
             }
         }
 
