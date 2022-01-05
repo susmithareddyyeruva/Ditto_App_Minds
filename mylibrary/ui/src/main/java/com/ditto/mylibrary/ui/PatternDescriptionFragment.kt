@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -144,7 +143,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
-                Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
+                logger.d("12345, received is ${viewModel.clickedProduct.toString()}")
             } else {
                 setPatternImage()
             }
@@ -203,8 +202,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.mannequinName.set(name)
                 bottomNavViewModel.showProgress.set(true)
                 fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
-                Log.d("ITEM SELECTED********", "MANNEQUIN ID: " + viewModel.mannequinId.get())
-                Log.d("ITEM SELECTED********", "MANNEQUIN NAME: " + viewModel.mannequinName.get())
+                logger.d("ITEM SELECTED********, MANNEQUIN ID:  + ${viewModel.mannequinId.get()}")
+                logger.d("ITEM SELECTED********, MANNEQUIN NAME: + ${viewModel.mannequinName.get()}")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -379,7 +378,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             } else {
-                setVisibilityForViews("RESUME",  false, true, false, false, true, false)
+                setVisibilityForViews("RESUME", false, true, false, false, true, false)
             }
 
         }
@@ -425,7 +424,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun setData() {
         viewModel.patternName.set(viewModel.clickedProduct?.prodName)
         if (viewModel.clickedProduct?.patternType.equals("Trial")) {
-            viewModel.prodSize.set(viewModel.data?.value?.size ?: "") // todo milli second null CHANGE LOGIC
+            viewModel.prodSize.set(
+                viewModel.data?.value?.size ?: ""
+            ) // todo milli second null CHANGE LOGIC
         } else {
             viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
         }
@@ -508,7 +509,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 isConnected = soc.isConnected
             } catch (e: Exception) {
                 isConnected = false
-                Log.d(ConnectivityUtils.TAG, "Exception")
+                logger.d("${ConnectivityUtils.TAG}, Exception")
             } finally {
                 soc?.close()
             }
@@ -729,7 +730,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         val map = getPatternPieceListTailornova()
                         //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                         if (dowloadPermissonGranted()) {
-                            Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
+                            logger.d("prepare>>>>>, OnWorkspaceButtonClicked if")
                             bottomNavViewModel.showProgress.set(true)
                             if (!::job.isInitialized || !job.isActive) {
                                 job = GlobalScope.launch {
@@ -764,7 +765,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             val map = getPatternPieceListTailornova()
                             //if (context?.let { core.network.NetworkUtility.isNetworkAvailable(it) }!!) {
                             if (dowloadPermissonGranted()) {
-                                Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
+                                logger.d("prepare>>>>>, OnWorkspaceButtonClicked else")
                                 bottomNavViewModel.showProgress.set(true)
                                 if (!::job.isInitialized || !job.isActive) {
                                     job = GlobalScope.launch {
@@ -868,11 +869,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
                     //Log.d("Download", "ENDED >>>>>>>>>>> ")
-                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in if ")
+                    logger.d("Download123,  ENDED > > > > > > > > > > > OnImageDownloadComplete in if ")
                     checkSocketConnectionBeforeWorkspace()
 
                 } else {
-                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
+                    logger.d("Download123, ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     bottomNavViewModel.showProgress.set(false)
                     Utility.getCommonAlertDialogue(
                         requireContext(),
@@ -1000,8 +1001,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
-        Log.d("PatternSCreen", "onResume-PatternDescription")
-        if(viewModel.disposable.size() == 0) {
+        logger.d("PatternSCreen, onResume-PatternDescription")
+        if (viewModel.disposable.size() == 0) {
             setUIEvents()
         }
         listenVersionEvents()
@@ -1054,7 +1055,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     override fun onStop() {
         super.onStop()
-        Log.d("PatternSCreen", "onStop-PatternDescription")
         viewModel.disposable.clear()
     }
 
@@ -1080,9 +1080,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
-        Log.d(
-            "Download123",
-            "ENDED >>>>>>>>>>> enterWorkspace in if ${viewModel.clickedProduct?.prodName}"
+        logger.d(
+            "Download123, ENDED >>>>>>>>>>> enterWorkspace in if ${viewModel.clickedProduct?.prodName}"
         )
 
         if (baseViewModel.activeSocketConnection.get()) {
@@ -1181,7 +1180,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 enterWorkspace()
             }
             Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType,  DEFAULT ")
             }
             Utility.AlertType.PERMISSION_DENIED -> {
                 Utility.navigateToAppSettings(requireContext())
@@ -1292,7 +1291,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 GlobalScope.launch { projectBorderImage() }
             }
             alertType == Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType, DEFAULT")
             }
         }
     }
@@ -1362,7 +1361,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 enterWorkspace()
             }
             Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType, DEFAULT")
             }
 
             /*Utility.AlertType.DOWNLOADFAILED -> {
@@ -1414,7 +1413,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 GlobalScope.launch { projectBorderImage() }
             }
             alertType == Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType, DEFAULT")
             }
             alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.force_update == true) {
@@ -1458,12 +1457,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         IntArray
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
+            logger.d("onReqPermissionsResult, permission granted")
             val map = getPatternPieceListTailornova()
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
-                Log.d("prepare>>>>>", "onRequestPermissionsResult")
+                logger.d("prepare>>>>>, onRequestPermissionsResult")
                 if (!::job.isInitialized || !job.isActive) {
                     job = GlobalScope.launch {
                         setPrepareDownloadList(viewModel.imageFilesToDownload(map))
@@ -1496,7 +1495,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Utility.AlertType.PERMISSION_DENIED
             )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
-            Log.d("onReqPermissionsResult", "permission denied")
+            logger.d("onReqPermissionsResult, permission denied")
         }
 
     }
@@ -1550,10 +1549,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete.size}")
             for (file in filesToDelete) {
                 val d = deleteDirectory(file)
-                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
+                logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
             }
         }
     }
@@ -1596,10 +1595,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete.size}")
             for (file in filesToDelete) {
                 val d = deleteDirectory(file)
-                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
+                logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
             }
         }
     }
@@ -1635,7 +1634,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         var availableUri: Uri? = null
         availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}", context)
-        Log.d("imageUri123", " $foldername availableUri: $availableUri")
+        logger.d("imageUri123, $foldername availableUri: $availableUri")
 
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide

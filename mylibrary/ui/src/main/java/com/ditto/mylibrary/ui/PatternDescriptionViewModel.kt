@@ -10,6 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
@@ -43,6 +45,11 @@ class PatternDescriptionViewModel @Inject constructor(
     private val getPattern: MyLibraryUseCase
 ) :
     BaseViewModel() {
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+    val logger: Logger by lazy {
+        loggerFactory.create(PatternDescriptionViewModel::class.java.simpleName)
+    }
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
@@ -194,7 +201,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 Log.d("handlInsertTailornovRes", "OnSuccess")
             }
             is Result.OnError<*> -> {
-                Log.d("handlInsertTailornovRes", "onFailed")
+                logger.d("handlInsertTailornovRes, onFailed")
                 handleError(result.error)
             }
         }
@@ -212,7 +219,7 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternsInDB = result.data.toMutableList()
-                Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
+                logger.d("deleteFolderFun, before : ${patternsInDB.toString()}")
                 uiEvents.post(Event.OnDeletePatternFolder)
             }
 
@@ -294,7 +301,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 onFinished()
             }
         } catch (e: Exception) {
-            Log.d("PatternDescriptionViMol", "${e.message}")
+            logger.d("PatternDescriptionViMol, ${e.message}")
         }
     }
 
@@ -349,20 +356,20 @@ class PatternDescriptionViewModel @Inject constructor(
                 inputStream.copyTo(fileOut)
             }
         } catch (e: Exception) {
-            Log.d("Error", "", e)
+            logger.d("Error, $e")
         }
     }
 
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("Download", ">>>>>>>>>>>>>>>>>>>> STARTED")
-        Log.d("Download", "Hashmap size: ${hashMap?.size}")
+        logger.d("Download, >>>>>>>>>>>>>>>>>>>> STARTED")
+        logger.d("Download, Hashmap size: ${hashMap?.size}")
         temp.clear()
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
 //                GlobalScope.launch {
                     runBlocking {
                         hashMap.forEach { (key, value) ->
-                            Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                            logger.d("DOWNLOAD, file not present KEY: $key \t VALUE : $value")
                             if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())&&(value!="null")) {
                                 downloadEachPatternPiece(
                                     imageUrl = value,
@@ -410,16 +417,10 @@ class PatternDescriptionViewModel @Inject constructor(
                         )
                 val path = Uri.fromFile(result)
                 patternUri.set(path.toString())
-                Log.d("PATTERN", patternUri.get() ?: "")
-                Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
                 temp.add(path.toString())
-                Log.d(
-                    "DOWNLOAD",
-                    "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} "
-                )
             }
         } catch (e: Exception) {
-            Log.d("PatternDescriptionViMol", "${e.message}")
+            logger.d("PatternDescriptionViMol, ${e.message}")
         }
     }
 
