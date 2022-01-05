@@ -928,22 +928,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun setPatternImage() {
-        /*if ((NetworkUtility.isNetworkAvailable(context))) {
-            if (activity != null && context != null) {
-                Glide.with(requireContext())
-                    .load(viewModel.clickedProduct?.image)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .into(binding.imagePatternDesc)
-            }
-            downloadImage(viewModel.clickedProduct?.image,viewModel.patternName.get())
-        } else {
-            setImageFromSvgPngDrawable(
-                viewModel.patternName.get(),
-                viewModel.patternName.get(),
-                binding.imagePatternDesc.context,
-                binding.imagePatternDesc
-            )
-        }*/
         if(NetworkUtility.isNetworkAvailable(context)) {
             downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
@@ -953,9 +937,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             binding.imagePatternDesc.context,
             binding.imagePatternDesc
         )
-
-//        if(NetworkUtility.isNetworkAvailable(holder.patternsItemBinding.imagePattern.context) || patterns[position].patternType?.toUpperCase().equals("TRIAL")) patterns.get(position).image else patterns.get(position).prodName,
-
     }
 
     private fun downloadImage(imageUrl: String?, patternName: String?) {
@@ -1120,13 +1101,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
             }
         }
-        //val bundle = bundleOf("PatternId" to viewModel.clickedID.get())
-        /* var  bundle = bundleOf(
-             "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
-             "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
-             "mannequinId" to viewModel.mannequinId.get(),
-             "PatternName" to viewModel.clickedProduct?.prodName
-         )*/
 
         var bundle = bundleOf()
 
@@ -1159,7 +1133,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     //download the pattern pieces
-
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =

@@ -118,7 +118,6 @@ class PatternDescriptionViewModel @Inject constructor(
     }
 
     fun fetchPattern() {
-        //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
         disposable += getPattern.getPattern(
             clickedTailornovaID.get() ?: "",
             mannequinId.get() ?: ""
