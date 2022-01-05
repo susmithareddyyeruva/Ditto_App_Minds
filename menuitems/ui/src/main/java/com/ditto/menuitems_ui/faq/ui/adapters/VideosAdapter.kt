@@ -2,7 +2,6 @@ package com.ditto.menuitems_ui.faq.ui.adapters
 
 import android.content.Context
 import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.VideosDomain
 import com.ditto.menuitems_ui.R
@@ -32,9 +32,9 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
     fun onBindViewHolder(holder: VideosViewHolder, position: Int) {
         val item = items?.get(position)
         holder.tvques.text = item?.Ques
-        val htmlAsSpanned = Html.fromHtml(item?.Answ)
+        val htmlAsSpanned = HtmlCompat.fromHtml(item?.Answ?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
         holder.tvAnsw.text = htmlAsSpanned
-        holder.linheader.setOnClickListener { onItemClicked(item,position) }
+        holder.linheader.setOnClickListener { onItemClicked(item) }
         if (item?.isExpanded!!) {
             holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
@@ -69,7 +69,7 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
         }
 
     }
-    private fun onItemClicked(faqModel: VideosDomain?, pos : Int) {
+    private fun onItemClicked(faqModel: VideosDomain?) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()
