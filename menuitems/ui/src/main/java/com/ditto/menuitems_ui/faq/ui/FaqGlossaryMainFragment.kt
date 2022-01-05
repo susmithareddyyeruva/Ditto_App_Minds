@@ -127,6 +127,7 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
         binding.tabLayoutFaq.setupWithViewPager(binding.viewPager)
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
+                logger.d("onPageScrollStateChanged")
 
             }
 
@@ -135,7 +136,7 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-
+                logger.d("onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -183,13 +184,13 @@ class FaqGlossaryMainFragment : BaseFragment(), Utility.CustomCallbackDialogList
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+       logger.d("onCustomPositiveButtonClicked")
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+        logger.d("onCustomNegativeButtonClicked")
     }
 }

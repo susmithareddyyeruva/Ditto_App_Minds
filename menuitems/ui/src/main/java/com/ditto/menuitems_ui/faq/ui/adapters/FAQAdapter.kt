@@ -2,7 +2,6 @@ package com.ditto.menuitems_ui.faq.ui.adapters
 
 import android.content.Context
 import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.FAQDomain
@@ -37,7 +37,7 @@ class FAQAdapter(
     fun onBindViewHolder(holder: FAQViewHolder, position: Int) {
         val item = items?.get(position)
         holder.tvques.text = item?.Ques
-        val htmlAsSpanned = Html.fromHtml(item?.Answ)
+        val htmlAsSpanned = HtmlCompat.fromHtml(item?.Answ?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
         holder.tvAnsw.text = htmlAsSpanned
 
        /* if (item?.SubAnsw?.size!! > 0) {

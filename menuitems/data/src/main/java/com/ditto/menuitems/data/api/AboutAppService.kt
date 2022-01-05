@@ -10,5 +10,5 @@ import retrofit2.http.Query
 interface AboutAppService {
     @Headers("Content-Type: application/json")
     @GET(BuildConfig.COMMON_ENDURL+"content/privacy-policy")
-    fun getAboutAndPrivacyPolicy(@Query("client_id") client_id: String? ) : Single<AboutAppResponseData>
+    fun getAboutAndPrivacyPolicy(@Query("client_id") clientId: String? ) : Single<AboutAppResponseData>
 }

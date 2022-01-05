@@ -41,8 +41,8 @@ class AllPatternsViewModel @Inject constructor(
 
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
-    var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
-    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    var clickedTailornovaID: ObservableField<String> = ObservableField("")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -410,7 +410,6 @@ class AllPatternsViewModel @Inject constructor(
                 trialPattern = false
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
-        val json1 = Gson().toJson(menuList)
         logger.d("JSON=== json1")
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         menuList.forEach { (key, value) ->
