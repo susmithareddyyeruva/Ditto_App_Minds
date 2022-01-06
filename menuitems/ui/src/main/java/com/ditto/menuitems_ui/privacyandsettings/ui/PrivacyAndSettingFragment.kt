@@ -134,13 +134,13 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+        logger.d("onCustomPositiveButtonClicked")
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-      //  TODO("Not yet implemented")
+        logger.d("onCustomNegativeButtonClicked")
     }
 }

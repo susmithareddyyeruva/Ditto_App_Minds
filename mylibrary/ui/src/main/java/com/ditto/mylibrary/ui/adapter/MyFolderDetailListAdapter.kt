@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui.adapter
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,6 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
         holder.patternsItemBinding.viewModel = viewModel
         val data=patterns[position]
 
-        val res: Resources = viewGroup!!.resources
         Glide.with(holder.patternsItemBinding?.imagePattern.context)
             .load(patterns.get(position).image)
             .asBitmap()

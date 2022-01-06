@@ -38,11 +38,11 @@ fun FAQ.toDomain():FAQDomain{
 }
 fun Videos.toDomain():VideosDomain{
     return  VideosDomain(
-        Answ= this.answ,
-        Ques = this.ques,
-        video_url = this.videoUrl,
-        web_url = this.webUrl,
-        SubAnsw = this.subAnsw.map { it.toDomain() }
+        answ= this.answ,
+        ques = this.ques,
+        videoUrl = this.videoUrl,
+        webUrl = this.webUrl,
+        subAnsw = this.subAnsw.map { it.toDomain() }
 
 
     )

@@ -11,6 +11,6 @@ interface WsSettingsService {
     @POST(BuildConfig.COMMON_ENDURL+"customers/{Customer_ID}?method=PATCH")
     fun postSettingRequest(
         @Path("Customer_ID") custid : String?,
-        @Query("client_id") client_id: String?,
+        @Query("client_id") clientId: String?,
         @Body settingsData: WSSettingsInputData, @Header("Authorization") header:String): Single<WSProUpdateResult>
 }

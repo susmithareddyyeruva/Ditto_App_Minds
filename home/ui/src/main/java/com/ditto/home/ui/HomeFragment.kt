@@ -264,7 +264,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
         var status = Utility.Iconype.WARNING
-        if (versionResult?.response?.version_update == false) {
+        if (versionResult?.response?.versionUpdate == false) {
             negativeText = ""
             positiveText = "OK"
             status = Utility.Iconype.SUCCESS
@@ -419,7 +419,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        if (versionResult?.response?.version_update == true) {
+        if (versionResult?.response?.versionUpdate == true) {
             val packageName = context?.packageName
             try {
                 startActivity(
@@ -444,7 +444,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         alertType: Utility.AlertType
     ) {
 
-        if (versionResult?.response?.force_update == true) {
+        if (versionResult?.response?.forceUpdate == true) {
             requireActivity().finishAffinity()
         }
 

@@ -362,7 +362,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
             (binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
             (binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.VISIBLE
 
-            val tabPosition = binding.tabLayout.selectedTabPosition
             if (event != "SYNC") {
                 viewModel.passEventForAllPattern()
             }

@@ -31,8 +31,8 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
     override
     fun onBindViewHolder(holder: VideosViewHolder, position: Int) {
         val item = items?.get(position)
-        holder.tvques.text = item?.Ques
-        val htmlAsSpanned = HtmlCompat.fromHtml(item?.Answ?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
+        holder.tvques.text = item?.ques
+        val htmlAsSpanned = HtmlCompat.fromHtml(item?.answ?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
         holder.tvAnsw.text = htmlAsSpanned
         holder.linheader.setOnClickListener { onItemClicked(item) }
         if (item?.isExpanded!!) {
@@ -40,25 +40,25 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
-            if (!item?.web_url.isNullOrEmpty()) {
+            if (!item?.webUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (!item?.video_url.isNullOrEmpty()) {
+            if (!item?.videoUrl.isNullOrEmpty()) {
                 holder.watch.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
+            if (item?.webUrl.isNullOrEmpty() && item?.videoUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.GONE
                 holder.visit.visibility = View.GONE
             }
             holder.visit.setOnClickListener {
-                visitSiteListener.onVisitClick(item?.web_url ?: "")
+                visitSiteListener.onVisitClick(item?.webUrl ?: "")
             }
             holder.watch.setOnClickListener {
-                watchVideoClickListener.onVideoClick(item?.Ques,item?.video_url ?: "")
+                watchVideoClickListener.onVideoClick(item?.ques,item?.videoUrl ?: "")
             }
         } else {
             holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)

@@ -165,7 +165,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             viewModel.myfolderList.value = ArrayList()
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
-            val menu = viewModel.myfolderMenu
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
 

@@ -18,8 +18,6 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
-import non_core.lib.error.Error
-import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 
@@ -129,15 +127,6 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         uiEvents.post(Event.OnFetchComplete)
     }
 
-    private fun handleError(error: Error) {
-        when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
-            else -> {
-                dbLoadError.set(true)
-                errorString.set(error.message)
-            }
-        }
-    }
 
     /**
      * Events for this view model

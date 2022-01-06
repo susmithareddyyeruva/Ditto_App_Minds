@@ -114,11 +114,11 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
                 .subscribe {
                     lifecycleScope.launchWhenResumed {
                         versionResult = it.versionReceived
-                        if (versionResult?.response?.critical_update == true ||
-                            versionResult?.response?.force_update == true
+                        if (versionResult?.response?.criticalUpdate == true ||
+                            versionResult?.response?.forceUpdate == true
                         ) {
                             showVersionPopup()
-                        } else if (versionResult?.response?.version_update == true) {
+                        } else if (versionResult?.response?.versionUpdate == true) {
                             viewModel.continueToApp()
                         } else {
 //                    Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
@@ -185,7 +185,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        if (versionResult?.response?.force_update == true) {
+        if (versionResult?.response?.forceUpdate == true) {
             requireActivity().finishAffinity()
         } else {
             viewModel.continueToApp()

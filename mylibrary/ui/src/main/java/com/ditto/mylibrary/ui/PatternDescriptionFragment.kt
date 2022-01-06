@@ -1063,7 +1063,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
         var status = Utility.Iconype.WARNING
-        if (versionResult?.response?.version_update == false) {
+        if (versionResult?.response?.versionUpdate == false) {
             negativeText = ""
             positiveText = "OK"
             status = Utility.Iconype.SUCCESS
@@ -1372,7 +1372,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.version_update == true) {
+                if (versionResult?.response?.versionUpdate == true) {
                     val packageName = "com.joann.ditto"
                     try {
                         startActivity(
@@ -1417,7 +1417,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 logger.d("alertType, DEFAULT")
             }
             alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.force_update == true) {
+                if (versionResult?.response?.forceUpdate == true) {
                     requireActivity().finishAffinity()
                 }
             }

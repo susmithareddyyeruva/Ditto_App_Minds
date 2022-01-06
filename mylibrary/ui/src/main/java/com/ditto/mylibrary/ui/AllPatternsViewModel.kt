@@ -445,7 +445,7 @@ class AllPatternsViewModel @Inject constructor(
 
 
         }
-        filterCriteria.ProductFilter = resultMap
+        filterCriteria.productFilter = resultMap
         val resultJson = Gson().toJson(resultMap)
         logger.d("JSON=== resultJson")
         logger.d("RESULT STRING===, resultString")

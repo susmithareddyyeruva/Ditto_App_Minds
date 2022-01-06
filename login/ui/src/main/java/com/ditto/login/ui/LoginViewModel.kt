@@ -96,21 +96,21 @@ class LoginViewModel @Inject constructor(
 
                     //User login successfull
                     storageManager.savePrefs(USER_EMAIL, result.data.email ?: "")
-                    storageManager.savePrefs(USER_PHONE, result.data.phone_home ?: "")
-                    storageManager.savePrefs(USER_FIRST_NAME, result.data.first_name ?: "")
-                    storageManager.savePrefs(USER_LAST_NAME, result.data.last_name ?: "")
+                    storageManager.savePrefs(USER_PHONE, result.data.phoneHome ?: "")
+                    storageManager.savePrefs(USER_FIRST_NAME, result.data.firstName ?: "")
+                    storageManager.savePrefs(USER_LAST_NAME, result.data.lastName ?: "")
                     storageManager.savePrefs(SPLICE_REMINDER, result.data.cSpliceReminder)
                     storageManager.savePrefs(MIRROR_REMINDER, result.data.cMirrorReminder)
                     storageManager.savePrefs(RECIEVER_EMAIL, result.data.cReceiveEmail)
 
-                    AppState.setCustID(result.data.customer_id ?: "")
-                    AppState.setCustNumber(result.data.customer_no ?: "")
+                    AppState.setCustID(result.data.customerId ?: "")
+                    AppState.setCustNumber(result.data.customerNo ?: "")
                     AppState.setEmail(result.data.email ?: "")
-                    AppState.setFirstName(result.data.first_name ?: "")
-                    AppState.setLastName(result.data.last_name ?: "")
+                    AppState.setFirstName(result.data.firstName ?: "")
+                    AppState.setLastName(result.data.lastName ?: "")
                     AppState.setSubscriptionDate(result.data.cSubscriptionPlanEndDate ?: "")
-                    AppState.setMobile(result.data.phone_home ?: "")
-                    AppState.saveKey(result.data.c_encryptionKey ?: "")
+                    AppState.setMobile(result.data.phoneHome ?: "")
+                    AppState.saveKey(result.data.cEncryptionkey ?: "")
                     storageManager.savePrefs(
                         SPLICE_CUT_COMPLETE_REMINDER,
                         result.data.cSpliceCutCompleteReminder
@@ -121,9 +121,9 @@ class LoginViewModel @Inject constructor(
                     )
 
                     userEmail = result.data.email ?: ""
-                    userPhone = result.data.phone_home ?: ""
-                    userFirstName = result.data.first_name ?: ""
-                    userLastName = result.data.last_name ?: ""
+                    userPhone = result.data.phoneHome ?: ""
+                    userFirstName = result.data.firstName ?: ""
+                    userLastName = result.data.lastName ?: ""
                     subscriptionEndDate = result.data.cSubscriptionPlanEndDate ?: ""
                     AppState.setIsLogged(true)
                     /**
@@ -133,20 +133,20 @@ class LoginViewModel @Inject constructor(
                         LoginUser(
                             userName = userName.get(),
                             _type = result.data._type,
-                            auth_type = result.data.auth_type,
-                            customer_id = result.data.customer_id,
-                            customer_no = result.data.customer_no,
+                            auth_type = result.data.authType,
+                            customer_id = result.data.customerId,
+                            customer_no = result.data.customerNo,
                             email = result.data.email,
-                            first_name = result.data.first_name,
-                            last_name = result.data.last_name,
-                            last_visit_time = result.data.last_visit_time,
-                            last_modified = result.data.last_modified,
-                            last_login_time = result.data.last_login_time,
+                            first_name = result.data.firstName,
+                            last_name = result.data.lastName,
+                            last_visit_time = result.data.lastVisitTime,
+                            last_modified = result.data.lastModified,
+                            last_login_time = result.data.lastLoginTime,
                             gender = result.data.gender,
-                            phone_home = result.data.phone_home,
-                            login = result.data.phone_home,
-                            previous_login_time = result.data.previous_login_time,
-                            previous_visit_time = result.data.previous_visit_time,
+                            phone_home = result.data.phoneHome,
+                            login = result.data.phoneHome,
+                            previous_login_time = result.data.previousLoginTime,
+                            previous_visit_time = result.data.previousVisitTime,
                             salutation = result.data.salutation,
                             isLoggedIn = true,
                             cMirrorReminder = result.data.cMirrorReminder,

@@ -367,8 +367,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             )
         }
 
-        val json1 = Gson().toJson(myfolderMenu)
-        logger.d("JSON===, json1")
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         myfolderMenu.forEach { (key, value) ->
             val filtered = value.filter { prod -> prod.isSelected }
@@ -402,14 +400,10 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
 
         }
-        filterCriteria.ProductFilter = resultmapFolder
+        filterCriteria.productFilter = resultmapFolder
         val resultJson = Gson().toJson(resultmapFolder)
         logger.d("JSON===, resultJson")
 
-        val jsonString: String = resultJson
-
-        val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
-        logger.d("RESULT STRING===, resultString")
         return filterCriteria
     }
 
