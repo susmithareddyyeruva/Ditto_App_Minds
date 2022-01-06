@@ -13,7 +13,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,7 +114,7 @@ class InstructionFragment constructor(
         binding.instructionViewPager?.addOnPageChangeListener(object :
             ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                Log.d("onPageScroll", "state changed")
+                logger.d("onPageScroll, state changed")
             }
 
             override fun onPageScrolled(
@@ -123,7 +122,7 @@ class InstructionFragment constructor(
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScrolled", "state scrolled")
+                logger.d("onPageScrolled, state scrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -401,7 +400,6 @@ class InstructionFragment constructor(
      * [Function] Calibration Button Click
      */
     private fun showcalibrationbuttonclicked() {
-        Log.d("Transform", "showcalibrationbuttonclicked")
         val layout =
             activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
@@ -499,7 +497,7 @@ class InstructionFragment constructor(
             }
 
             else -> {
-                Log.d("alert type", "except bluetooth and wifi")
+                logger.d("alert type, except bluetooth and wifi")
             }
         }
     }
@@ -730,7 +728,7 @@ class InstructionFragment constructor(
                 isConnected = soc.isConnected
             } catch (e: Exception) {
                 isConnected = false
-                Log.d(ConnectivityUtils.TAG, "Exception")
+                logger.d("${ConnectivityUtils.TAG}, Exception")
             } finally {
                 soc?.close()
             }

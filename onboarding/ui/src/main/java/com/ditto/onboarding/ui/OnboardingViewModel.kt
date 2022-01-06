@@ -36,7 +36,7 @@ class OnboardingViewModel @Inject constructor(
     var dataFromApi: MutableLiveData<List<OnboardingDomain>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
     val dontShowThisScreen: ObservableBoolean = ObservableBoolean(false)
-    val isFromHome_Observable: ObservableBoolean = ObservableBoolean(false)
+    val isFromHomeObservable: ObservableBoolean = ObservableBoolean(false)
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isBluetoothOn: ObservableBoolean = ObservableBoolean(false)

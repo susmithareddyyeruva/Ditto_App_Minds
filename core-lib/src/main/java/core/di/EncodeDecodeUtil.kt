@@ -21,15 +21,15 @@ object EncodeDecodeUtil {
         var hash = ""
         var hash1 = ""
         try {
-            val sha256_HMAC = Mac.getInstance("HmacSHA256")
-            val secret_key = SecretKeySpec(secret?.toByteArray(), "HmacSHA256")
-            sha256_HMAC.init(secret_key)
-            hash = Base64.encodeToString(sha256_HMAC.doFinal(message.toByteArray()), Base64.DEFAULT)
+            val sha256Hmac = Mac.getInstance("HmacSHA256")
+            val secretKey = SecretKeySpec(secret?.toByteArray(), "HmacSHA256")
+            sha256Hmac.init(secretKey)
+            hash = Base64.encodeToString(sha256Hmac.doFinal(message.toByteArray()), Base64.DEFAULT)
             Log.d("=========", "BASE 64 :" + hash)
             Log.d(
                 "=========", java.lang.String.format(
                     "Hex: %032x", BigInteger(
-                        1, sha256_HMAC.doFinal(
+                        1, sha256Hmac.doFinal(
                             message.toByteArray()
                         )
                     )

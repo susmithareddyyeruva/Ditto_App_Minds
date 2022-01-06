@@ -1,7 +1,6 @@
 package core.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -198,7 +197,6 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
 
     fun onClickSignin() {
-        Log.d("viewmodel", "button click  ")
         if (isGuestBase?.get() != false) {
             uiEvents.post(Event.OnClickSignIn)
         }

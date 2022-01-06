@@ -220,7 +220,7 @@ class HowtoFragment : BaseFragment() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScroll", "onPageScrolled")
+                logger.d("onPageScroll, onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -246,11 +246,11 @@ class HowtoFragment : BaseFragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                Log.d("onTabUnselected", "tab selected")
+                logger.d("onTabUnselected, tab selected")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-                Log.d("onTabReselected", "re-selected")
+                logger.d("onTabReselected, re-selected")
             }
         })
     }

@@ -115,9 +115,9 @@ class RetrofitModule {
     ): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
-        val head_auth = AuthInterceptor(TAILORNOVA_API_KEY, TAILORNOVA_API_KEY_VALUE)
+        val headAuth = AuthInterceptor(TAILORNOVA_API_KEY, TAILORNOVA_API_KEY_VALUE)
         val httpClient = OkHttpClient.Builder()
-            .addInterceptor(head_auth)
+            .addInterceptor(headAuth)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -286,21 +286,21 @@ class HmacSignatureInterceptor : Interceptor {
             """.trimIndent()
         //Log.d("generateSignature", stringToHash);
         val trackingId: String = TRACKING_ID
-        var sha256_HMAC: Mac? = null
+        var sha256Hmac: Mac? = null
         try {
-            sha256_HMAC = Mac.getInstance("HmacSHA256")
+            sha256Hmac = Mac.getInstance("HmacSHA256")
         } catch (e: NoSuchAlgorithmException) {
             e.printStackTrace()
         }
         val secretKey =
             SecretKeySpec(trackingId.toByteArray(), "HmacSHA256")
         try {
-            sha256_HMAC?.init(secretKey)
+            sha256Hmac?.init(secretKey)
         } catch (e: InvalidKeyException) {
             e.printStackTrace()
         }
         return Hex.encodeHex(
-            if (sha256_HMAC != null) sha256_HMAC.doFinal(stringToHash.toByteArray()) else ByteArray(
+            if (sha256Hmac != null) sha256Hmac.doFinal(stringToHash.toByteArray()) else ByteArray(
                 0
             )
         ).toLowerCase()

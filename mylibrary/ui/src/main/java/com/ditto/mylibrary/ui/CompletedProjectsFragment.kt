@@ -1,7 +1,6 @@
 package com.ditto.mylibrary.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +103,7 @@ class CompletedProjectsFragment : BaseFragment() {
             }
 
             is AllPatternsViewModel.Event.OnOptionsClicked -> {
-                Log.d("error","instruction error")
+                logger.d("error,instruction error")
             }
             is AllPatternsViewModel.Event.OnAllPatternSyncClick -> {}
             is AllPatternsViewModel.Event.OnAllPatternSearchClick -> {}

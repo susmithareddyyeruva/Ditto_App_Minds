@@ -1,12 +1,10 @@
 package com.ditto.splash.ui
 
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.splash.domain.GetDbDataUseCase
 import com.ditto.splash.domain.UpdateDbUseCase
-import com.ditto.storage.data.database.TraceDataDatabase
 import com.ditto.storage.domain.StorageManager
 import core.*
 import core.appstate.AppState
@@ -92,7 +90,6 @@ class SplashViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess<LoginUser> -> {
                 dbLoadError.set(false)
-                Log.d(TraceDataDatabase.TAG, "- Success- ViewModel")
                 if (result.data.userName?.isEmpty()!!) {
                     uiEvents.post(Event.NavigateToLogin)
                 } else if (result.data.userName?.isNotEmpty()!! &&

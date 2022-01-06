@@ -359,7 +359,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun projectWorkspace() {
-        uiEvents.post(Event.onProject)
+        uiEvents.post(Event.OnProject)
     }
 
     fun clickSize(isSize20: Boolean) {
@@ -417,7 +417,7 @@ class WorkspaceViewModel @Inject constructor(
     fun setCompletedCount(progress: Int) {
         completedPieces.set(completedPieces.get().plus(progress))
         setCompletePieceCount()
-        uiEvents.post(Event.updateProgressCount)
+        uiEvents.post(Event.UpdateProgressCount)
     }
 
     fun setCompletePieceCount() {
@@ -484,7 +484,7 @@ class WorkspaceViewModel @Inject constructor(
                 ?.isCompleted = true
         }
         uiEvents.post(Event.RemoveAllPatternPieces)
-        uiEvents.post(Event.updateProgressCount)
+        uiEvents.post(Event.UpdateProgressCount)
     }
 
     fun cutAllPiecesConfirmed(workspaceItems: List<WorkspaceItems>?) {
@@ -501,7 +501,7 @@ class WorkspaceViewModel @Inject constructor(
             workspacedata = workspaceItem
         }
         uiEvents.post(Event.RemoveAllPatternPieces)
-        uiEvents.post(Event.updateProgressCount)
+        uiEvents.post(Event.UpdateProgressCount)
     }
 
 
@@ -701,11 +701,11 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun coachMarkClose() {
-        uiEvents.post(Event.OnCoachmarkClose)
+        uiEvents.post(Event.OnCoachMarkClose)
     }
 
     fun coachMarkPlay() {
-        uiEvents.post(Event.OnCoachmarkPlay)
+        uiEvents.post(Event.OnCoachMarkPlay)
     }
 
     fun onFinished() {
@@ -759,13 +759,13 @@ class WorkspaceViewModel @Inject constructor(
         object ShowMirrorDialog : Event()
         object CloseScreen : Event()
         object PopulateWorkspace : Event()
-        object onProject : Event()
+        object OnProject : Event()
         object ShowCutBinDialog : Event()
         object RemoveAllPatternPieces : Event()
-        object updateProgressCount : Event()
+        object UpdateProgressCount : Event()
         object OnDownloadComplete : Event()
-        object OnCoachmarkPlay : Event()
-        object OnCoachmarkClose : Event()
+        object OnCoachMarkPlay : Event()
+        object OnCoachMarkClose : Event()
         object HideProgressLoader : Event()
         object ShowProgressLoader : Event()
         object ApiFailed : Event()

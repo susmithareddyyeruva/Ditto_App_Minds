@@ -243,7 +243,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                             removeAll()
                         } else {
                             isEnabled = false
-                            childFragmentManager.fragments.forEach {
+                            childFragmentManager.fragments.forEach { _ ->
                                 childFragmentManager.popBackStack()
                             }
                             requireActivity().onBackPressed()

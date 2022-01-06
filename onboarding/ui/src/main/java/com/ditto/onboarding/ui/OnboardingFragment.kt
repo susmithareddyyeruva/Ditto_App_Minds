@@ -62,7 +62,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
-        viewModel.isFromHome_Observable.set(isFromHomeScreen)
+        viewModel.isFromHomeObservable.set(isFromHomeScreen)
         if(viewModel.dataFromApi.value == null){
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
@@ -350,7 +350,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        if (viewModel.isFromHome_Observable.get()) {
+        if (viewModel.isFromHomeObservable.get()) {
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }

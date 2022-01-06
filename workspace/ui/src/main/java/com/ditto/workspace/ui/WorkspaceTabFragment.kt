@@ -30,8 +30,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.core.animation.addListener
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -53,7 +51,6 @@ import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
-import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
@@ -1058,7 +1055,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     logger.d("workspace item is null")
                 }
             }
-            is WorkspaceViewModel.Event.onProject -> {
+            is WorkspaceViewModel.Event.OnProject -> {
                 viewModel.isProjectionRequest.set(true)
                 if (baseViewModel.activeSocketConnection.get()) {
                     startProjecting()
@@ -1085,7 +1082,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 adapter?.notifyDataSetChanged()
                 onDragCompleted()
             }
-            is WorkspaceViewModel.Event.updateProgressCount -> {
+            is WorkspaceViewModel.Event.UpdateProgressCount -> {
                 onUpdateProgressCount()
             }
             is WorkspaceViewModel.Event.OnClickClear -> {
@@ -1171,7 +1168,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Utility.Iconype.NONE
                 )
             }
-            WorkspaceViewModel.Event.OnCoachmarkClose -> {
+            WorkspaceViewModel.Event.OnCoachMarkClose -> {
                 binding.coachMarkPopup.animate()
                     .scaleX(0.2f)
                     .scaleY(0.2f)
@@ -1188,7 +1185,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         showCoachmarkEndPopup()
                     }
             }
-            WorkspaceViewModel.Event.OnCoachmarkPlay -> {
+            WorkspaceViewModel.Event.OnCoachMarkPlay -> {
                 val videoPath = "https://www.youtube.com/watch?v=IH1ZNEE_bwc"
                 val bundle = bundleOf(
                     "videoPath" to videoPath,
