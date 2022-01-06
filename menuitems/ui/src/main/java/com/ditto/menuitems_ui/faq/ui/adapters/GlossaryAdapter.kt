@@ -2,7 +2,6 @@ package com.ditto.menuitems_ui.faq.ui.adapters
 
 import android.content.Context
 import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.GlossaryDomain
@@ -32,43 +32,43 @@ class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
     override
     fun onBindViewHolder(holder: GlossaryViewHolder, position: Int) {
         val item = items?.get(position)
-        holder.tvques.text = item?.Ques
-        val htmlAsSpanned = Html.fromHtml(item?.Answ)
+        holder.tvques.text = item?.question
+        val htmlAsSpanned = HtmlCompat.fromHtml(item?.answer?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
         holder.tvAnsw.text = htmlAsSpanned
-        if (item?.SubAnsw?.size!! > 0){
+        if (item?.sunAnswer?.size!! > 0){
             holder.rvsubques.visibility = View.VISIBLE
-            subquesAdapter = SubquesAdapter(mContext,item?.SubAnsw)
+            subquesAdapter = SubquesAdapter(mContext,item?.sunAnswer)
             holder.rvsubques.adapter = subquesAdapter
             holder.rvsubques.layoutManager = LinearLayoutManager(mContext)
         } else {
             holder.rvsubques.visibility = View.GONE
         }
-        holder.linheader.setOnClickListener { onItemClicked(item,position) }
+        holder.linheader.setOnClickListener { onItemClicked(item) }
         if (item?.isExpanded!!) {
             holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
             holder.rvsubques.visibility = View.VISIBLE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
-            if (!item?.web_url.isNullOrEmpty()) {
+            if (!item?.webUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (!item?.video_url.isNullOrEmpty()) {
+            if (!item?.videoUrl.isNullOrEmpty()) {
                 holder.watch.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
+            if (item?.webUrl.isNullOrEmpty() && item?.videoUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.GONE
                 holder.visit.visibility = View.GONE
             }
             holder.visit.setOnClickListener {
-                visitSiteListener.onVisitClick(item?.web_url ?: "")
+                visitSiteListener.onVisitClick(item?.webUrl ?: "")
             }
             holder.watch.setOnClickListener {
-                watchVideoClickListener.onVideoClick(item?.video_url ?: "")
+                watchVideoClickListener.onVideoClick(item?.videoUrl ?: "")
             }
         } else {
             holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
@@ -88,7 +88,7 @@ class GlossaryAdapter (context: Context, data: List<GlossaryDomain>?,
 //        }
 
     }
-    private fun onItemClicked(faqModel: GlossaryDomain?, pos : Int) {
+    private fun onItemClicked(faqModel: GlossaryDomain) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()

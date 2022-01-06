@@ -12,8 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.adapter.ActiveProjectAdapter
 import com.ditto.mylibrary.ui.databinding.ActiveProjectsFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
@@ -63,23 +61,6 @@ class ActiveProjectsFragment : BaseFragment() {
             }
     }
 
-    private fun setPatternAdapter() {
-        val adapter = ActiveProjectAdapter()
-        binding.activeProjectsList.adapter = adapter
-        adapter.viewModel = viewModel
-        val patternData: List<MyLibraryData>? =
-            viewModel.data.value?.filter { it.status == "Active" }
-        if (patternData?.isNotEmpty() == true) {
-            binding.emptyLayout.visibility = View.GONE
-            binding.activeProjectsList.visibility = View.VISIBLE
-        }
-
-        //for sorting
-        /*Collections.sort(patternData,
-            Comparator<MyLibraryData?> { lhs, rhs -> lhs!!.id.compareTo(rhs!!.id) })*/
-
-        patternData?.let { adapter.setListData(it) }
-    }
 
     private fun handleEvent(event: AllPatternsViewModel.Event) =
         when (event) {
@@ -112,7 +93,7 @@ class ActiveProjectsFragment : BaseFragment() {
                 TODO()
             }
             else -> {
-
+                logger.d("else")
             }
         }
 

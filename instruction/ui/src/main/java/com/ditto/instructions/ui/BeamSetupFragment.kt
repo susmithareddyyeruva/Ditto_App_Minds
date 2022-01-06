@@ -35,11 +35,13 @@ class BeamSetupFragment : BaseFragment() {
     private val viewModel: InstructionViewModel by ViewModelDelegate()
 
     lateinit var binding: FragmentBeamSetupBinding
+
     @Inject
     lateinit var loggerFactory: LoggerFactory
     val logger: Logger by lazy {
         loggerFactory.create(BeamSetupFragment::class.java.simpleName)
     }
+
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
      */
@@ -121,7 +123,7 @@ class BeamSetupFragment : BaseFragment() {
             }
 
             else -> {
-               logger.d("instruction,event ")
+                logger.d("instruction,event ")
             }
         }
 
@@ -154,7 +156,7 @@ class BeamSetupFragment : BaseFragment() {
         viewModel.isShowindicator.set(false)
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-
+                logger.d("onPageScrollStateChanged")
             }
 
             override fun onPageScrolled(
@@ -179,6 +181,7 @@ class BeamSetupFragment : BaseFragment() {
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 logger.d("onTabSelection,onTabUnselected")
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
                 logger.d("onTabSelection,onTabReselected")
             }

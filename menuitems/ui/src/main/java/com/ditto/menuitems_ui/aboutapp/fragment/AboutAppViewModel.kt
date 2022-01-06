@@ -38,7 +38,7 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
         {
             is Result.OnSuccess<AboutAppDomain> ->{
                logger.d("AboutAppViewMode Success"+result.data)
-                setResponseText(result.data.c_body)
+                setResponseText(result.data.cBody)
                 uiEvents.post(Event.UpdateResponseText)
 
             }

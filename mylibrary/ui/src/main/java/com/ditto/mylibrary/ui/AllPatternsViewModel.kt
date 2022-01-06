@@ -347,7 +347,7 @@ class AllPatternsViewModel @Inject constructor(
                 subscriptionList = true,
                 trialPattern = false
             ),
-            FoldersConfig = hashMap
+            foldersConfig = hashMap
         )
         uiEvents.post(Event.OnAllPatternShowProgress)
         if (folderName == favorite) {
@@ -448,7 +448,6 @@ class AllPatternsViewModel @Inject constructor(
         filterCriteria.ProductFilter = resultMap
         val resultJson = Gson().toJson(resultMap)
         logger.d("JSON=== resultJson")
-        val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
         logger.d("RESULT STRING===, resultString")
         return filterCriteria
     }

@@ -5,7 +5,7 @@ plugins {
     id('kotlin-kapt')
     id('com.google.gms.google-services')
     id('com.google.firebase.crashlytics')
-  //  id "org.sonarqube" version "3.1.1"
+   // id "org.sonarqube" version "3.1.1"
 }
 
 apply from: '../test_dependencies.gradle'
@@ -13,7 +13,6 @@ apply from: '../test_dependencies.gradle'
 android {
     compileSdkVersion 31
     buildToolsVersion '31.0.0'
-
     signingConfigs {
         release {
             //Ideally these details are maintained outside source - build server and picked up by CI/CD pipeline
@@ -224,4 +223,19 @@ dependencies {
 
     implementation project(path: ':home-data')
     implementation project(path: ':home-domain')
+    sonarqube {
+        properties {
+            property "sonar.projectName", "ditto"
+            property "sonar.projectKey", "6c502bbd6d0d685fdb381a23c8055a11af0cc0a9"
+            property "sonar.tests", ["src/test/java"]
+            property "sonar.test.inclusions", "**/*Test*/**"
+            property "sonar.sourceEncoding", "UTF-8"
+            property "sonar.sources", "src/main/java"
+            property "sonar.exclusions", '**/*Test*/**,' +
+                    '*.json,' +
+                    '**/*test*/**,' +
+                    '**/.gradle/**,' +
+                    '**/R.class'
+        }
+    }
 }

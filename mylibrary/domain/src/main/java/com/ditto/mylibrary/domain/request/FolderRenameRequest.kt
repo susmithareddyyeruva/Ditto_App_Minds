@@ -1,3 +1,3 @@
 package com.ditto.mylibrary.domain.request
 
-data class FolderRenameRequest( var OrderFilter: OrderFilterRename)
+data class FolderRenameRequest( var orderFilterRename: OrderFilterRename)

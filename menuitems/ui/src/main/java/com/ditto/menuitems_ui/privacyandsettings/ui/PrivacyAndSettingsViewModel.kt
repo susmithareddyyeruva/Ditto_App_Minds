@@ -39,7 +39,7 @@ class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCas
         when (result) {
             is Result.OnSuccess<AboutAppDomain> -> {
                 logger.d("PrivacyPolicy, Success" + result.data)
-                data = result.data.c_body
+                data = result.data.cBody
                 uiEvents.post(Event.OnResultSuccess)
 
             }

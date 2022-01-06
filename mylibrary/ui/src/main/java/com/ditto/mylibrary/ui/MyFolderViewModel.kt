@@ -146,7 +146,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                     subscriptionList = true,
                     trialPattern = false
                 ),
-                FoldersConfig = hashMap
+                foldersConfig = hashMap
             )
             if (methodName != "rename") {
                 disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)

@@ -52,7 +52,7 @@ class FAQGlossaryFragmentViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
                 uiEvents.post(Event.OnResultSuccess)
-                data.value = result.data.c_body
+                data.value = result.data.cBody
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)

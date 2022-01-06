@@ -23,13 +23,13 @@ class TabFaqAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                FAQFragment(data?.FAQ?: emptyList())
+                FAQFragment(data?.fAQ?: emptyList())
             }
             1 -> {
-                GlossaryFragment(data?.Glossary?: emptyList())
+                GlossaryFragment(data?.glossary?: emptyList())
             }
             2 -> {
-                VideosFragment(data?.Videos?: emptyList())
+                VideosFragment(data?.videos?: emptyList())
             }
             else -> getItem(position)
         }

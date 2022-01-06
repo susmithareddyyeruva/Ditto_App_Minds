@@ -10,7 +10,7 @@ import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemFilterdetailsBinding
 
 class FilterDetailsAdapter(
-    private var ItemsListener: SelectedItemsListener,
+    private var itemsListener: SelectedItemsListener,
     private var menuList: HashMap<String, ArrayList<FilterItems>>,
     private var keys: String
 ) :
