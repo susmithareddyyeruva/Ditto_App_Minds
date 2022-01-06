@@ -28,6 +28,14 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getPatternData(get,mannequinId)
     }
 
+    override fun deletePattern(
+        trial: String,
+        custID: String,
+        tailornovaDesignID: String
+    ): Single<Result<Boolean>> {
+        return myLibraryRepository.deletePattern(trial,custID,tailornovaDesignID)
+    }
+
     override fun removeProject(patternId: String): Single<Any> {
         return myLibraryRepository.removePattern(patternId)
     }

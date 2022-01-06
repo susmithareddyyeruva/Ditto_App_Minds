@@ -158,6 +158,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         } else {  //Online Scenario
                             if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
+                                if(viewModel.clickedProduct!!.purchasedSizeId.isNullOrEmpty()){
+                                    viewModel.mannequinId.set(viewModel.clickedProduct!!.selectedMannequinId) //setting selectedMannequin Id as mannequin id
+                                }
                                 if (viewModel.mannequinId.get()
                                         ?.isNotEmpty() == true
                                 ) {//API cal  will happen only mannequin id is not empty
@@ -790,11 +793,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
-                    //Log.d("Download", "ENDED >>>>>>>>>>> ")
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in if ")
-                    checkSocketConnectionBeforeWorkspace()
 
-                } else {
+                    if (NetworkUtility.isNetworkAvailable(context)) {
+                        viewModel.deletePattern()
+                    }else {
+                        checkSocketConnectionBeforeWorkspace()
+                    }
+               } else {
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     bottomNavViewModel.showProgress.set(false)
                     Utility.getCommonAlertDialogue(
@@ -1614,7 +1620,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
             }
         }
-        WSButtonClick()
+        checkSocketConnectionBeforeWorkspace()
     }
 
     fun deleteDirectory(path: File): Boolean {

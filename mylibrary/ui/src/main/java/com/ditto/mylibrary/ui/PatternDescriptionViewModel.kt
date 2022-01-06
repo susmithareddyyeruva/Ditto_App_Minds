@@ -15,6 +15,7 @@ import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
+import core.appstate.AppState
 import core.event.UiEvents
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
@@ -128,6 +129,44 @@ class PatternDescriptionViewModel @Inject constructor(
             .subscribeBy { handleFetchResult(it) }
     }
 
+    fun deletePattern() {
+        disposable += getPattern.deletePattern(
+            "Trial",
+            AppState.getCustID() ?: "",
+            clickedTailornovaID.get() ?: ""
+        )
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleDeletePattenResult(it) }
+    }
+
+    private fun handleDeletePattenResult(result: Result<Boolean>?) {
+
+        when (result) {
+            is Result.OnSuccess -> {
+                Log.d("PattenDescViewModel", ">>>>>>>>>handleDeletePattenResult OnSuccess ")
+                // insert to DB
+                if ((NetworkUtility.isNetworkAvailable(context))) {
+                    insertTailornovaDetailsToDB(
+                        data.value!!,
+                        clickedOrderNumber.get(),
+                        tailornovaDesignpatternName.get(),
+                        prodSize.get(),
+                        clickedProduct?.status,
+                        mannequinId.get(),
+                        mannequinName.get(),
+                        clickedProduct?.mannequin ?: emptyList()
+                    )
+                } else {
+                    //offline if all images are downloaded
+                    uiEvents.post(Event.OnWorkspaceButtonClicked)
+                }
+            }
+            is Result.OnError -> handleError(result.error)
+        }
+    }
+
     private fun handleFetchResult(result: Result<PatternIdData>) {
         when (result) {
             is Result.OnSuccess -> {
@@ -192,8 +231,8 @@ class PatternDescriptionViewModel @Inject constructor(
             is Result.OnSuccess<*> -> {
                 Log.d("offlinePatternDataDao", "inviewModel OnSuccess>>>>>>>>>>")
 
-                 // delete folder and PDF flow starting here
-                        fetchDemoPatternList()
+                // delete folder and PDF flow starting here
+                fetchDemoPatternList()
             }
             is Result.OnError<*> -> {
                 Log.d("offlinePatternDataDao", "inviewModel  onFailed>>>>>>>>>>>>")
@@ -243,21 +282,22 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnMannequinNameEmpty)
             } else {
 
-                if ((NetworkUtility.isNetworkAvailable(context))) {
+                uiEvents.post(Event.OnWorkspaceButtonClicked)
+               /* if ((NetworkUtility.isNetworkAvailable(context))) {
 
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedOrderNumber.get(),
-                        tailornovaDesignpatternName.get(),
-                        prodSize.get(),
-                        clickedProduct?.status,
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        clickedProduct?.mannequin ?: emptyList()
-                    )
+                     insertTailornovaDetailsToDB(
+                         data.value!!,
+                         clickedOrderNumber.get(),
+                         tailornovaDesignpatternName.get(),
+                         prodSize.get(),
+                         clickedProduct?.status,
+                         mannequinId.get(),
+                         mannequinName.get(),
+                         clickedProduct?.mannequin ?: emptyList()
+                     )
                 } else {
                     uiEvents.post(Event.OnWorkspaceButtonClicked)
-                }
+                }*/
             }
         } else {
             if (mannequinId?.get()
@@ -270,8 +310,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnMannequinNameEmpty)
             } else {
 
-
-                if ((NetworkUtility.isNetworkAvailable(context))) {
+                uiEvents.post(Event.OnWorkspaceButtonClicked)
+                /*if ((NetworkUtility.isNetworkAvailable(context))) {
 
                     insertTailornovaDetailsToDB(
                         data.value!!,
@@ -285,7 +325,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     )
                 } else {
                     uiEvents.post(Event.OnWorkspaceButtonClicked)
-                }
+                }*/
             }
         }
     }

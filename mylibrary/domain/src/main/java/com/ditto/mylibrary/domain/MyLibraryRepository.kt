@@ -16,6 +16,7 @@ interface MyLibraryRepository {
     fun getMyLibraryData(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>
     fun getUserData(): Single<Result<LoginUser>>
     fun getPatternData(get:String,mannequinId:String): Single<Result<PatternIdData>>
+    fun deletePattern(trial: String,custID: String,tailornovaDesignID: String): Single<Result<Boolean>>
     fun completeProject(patternId:String): Single<Any>
     fun removePattern(patternId: String): Single<Any>
     fun getFilteredPatterns(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>>

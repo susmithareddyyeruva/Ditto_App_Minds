@@ -41,7 +41,7 @@ abstract class OfflinePatternDataDao {
 
     //if patternType!= trial >> delete it (keeping trial patterns only)
     @Query("DELETE from offline_pattern_data where patternType  != :patternType and custId == :custId  and designId != :designId")// for specific user
-    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?, designId: String)
+    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?, designId: String) : Int
 
     //    Delete pattern in offline pttern where custId != nivedh.custID and custId != 0
     @Query("DELETE from offline_pattern_data where custId != :custId  and custId != 0")

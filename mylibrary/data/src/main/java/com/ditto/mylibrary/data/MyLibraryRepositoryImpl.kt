@@ -7,10 +7,7 @@ import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.api.TailornovaApiService
-import com.ditto.mylibrary.data.error.FilterError
-import com.ditto.mylibrary.data.error.PatternDBError
-import com.ditto.mylibrary.data.error.TailornovaInsertError
-import com.ditto.mylibrary.data.error.TrialPatternError
+import com.ditto.mylibrary.data.error.*
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
@@ -156,12 +153,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
         )
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
-                // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial(
-                    "Trial",
-                    AppState.getCustID(),
-                    designeID
-                )
             }.map {
                 Result.withValue(it)
             }
@@ -213,6 +204,26 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getPatternData(get: Int): Single<Result<MyLibraryData>> {
         TODO("Not yet implemented")
+    }
+
+    override fun deletePattern(
+        trial: String,
+        custID: String,
+        tailornovaDesignID: String
+    ): Single<Result<Boolean>> {
+        // patternType!= trial >> delete it
+        return Single.fromCallable {
+            val i = offlinePatternDataDao.deletePatternsExceptTrial(
+                "Trial",
+                AppState.getCustID(),
+                tailornovaDesignID
+            )
+
+            if (i != -1)
+                Result.withValue(true)
+            else
+                Result.withError(DeletePatternError())
+        }
     }
 
     override fun completeProject(patternId: String): Single<Any> {
