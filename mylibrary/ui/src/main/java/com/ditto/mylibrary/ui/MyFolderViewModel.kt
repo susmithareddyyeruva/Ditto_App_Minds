@@ -146,7 +146,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                     subscriptionList = true,
                     trialPattern = false
                 ),
-                foldersConfig = hashMap
+                FoldersConfig = hashMap
             )
             if (methodName != "rename") {
                 disposable += myLibraryUseCase.addFolder(favReq, methodName = methodName)
@@ -400,7 +400,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
 
         }
-        filterCriteria.productFilter = resultmapFolder
+        filterCriteria.ProductFilter = resultmapFolder
         val resultJson = Gson().toJson(resultmapFolder)
         logger.d("JSON===, resultJson")
 

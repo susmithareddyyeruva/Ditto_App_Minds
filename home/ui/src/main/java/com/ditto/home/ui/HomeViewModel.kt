@@ -154,7 +154,7 @@ class HomeViewModel @Inject constructor(
                     AppState.getEmail(),
                     true,
                     true
-                ), productFilter = resultMap, patternsPerPage = 12, pageId = 1
+                ), ProductFilter = resultMap, patternsPerPage = 12, pageId = 1
             )
         )
             .subscribeOn(Schedulers.io())
