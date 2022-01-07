@@ -158,7 +158,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         } else {  //Online Scenario
                             if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
-                                if(viewModel.clickedProduct!!.purchasedSizeId.isNullOrEmpty()){
+                                if (viewModel.clickedProduct!!.purchasedSizeId.isNullOrEmpty()) {
                                     viewModel.mannequinId.set(viewModel.clickedProduct!!.selectedMannequinId) //setting selectedMannequin Id as mannequin id
                                 }
                                 if (viewModel.mannequinId.get()
@@ -382,7 +382,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             } else {
-                setVisibilityForViews("RESUME",  false, true, false, false, true, false)
+                setVisibilityForViews("RESUME", false, true, false, false, true, false)
             }
 
         }
@@ -428,7 +428,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun setData() {
         viewModel.patternName.set(viewModel.clickedProduct?.prodName)
         if (viewModel.clickedProduct?.patternType.equals("Trial")) {
-            viewModel.prodSize.set(viewModel.data?.value?.size ?: "") // todo milli second null CHANGE LOGIC
+            viewModel.prodSize.set(
+                viewModel.data?.value?.size ?: ""
+            ) // todo milli second null CHANGE LOGIC
         } else {
             viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
         }
@@ -797,10 +799,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                     if (NetworkUtility.isNetworkAvailable(context)) {
                         viewModel.deletePattern()
-                    }else {
+                    } else {
                         checkSocketConnectionBeforeWorkspace()
                     }
-               } else {
+                } else {
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     bottomNavViewModel.showProgress.set(false)
                     Utility.getCommonAlertDialogue(
@@ -849,6 +851,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     getString(R.string.please_selecte_mannequinid),
                     Utility.AlertType.DEFAULT
                 )
+            }
+
+            PatternDescriptionViewModel.Event.OnGuestUSerWSClick -> {
+                checkSocketConnectionBeforeWorkspace()
             }
         }
 
@@ -945,12 +951,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
     private fun setPatternImage() {
-        if(NetworkUtility.isNetworkAvailable(context)) {
+        if (NetworkUtility.isNetworkAvailable(context)) {
             downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
         setImageFromSvgPngDrawable(
             viewModel.patternName.get(),
-            if(NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase().equals("TRIAL")) viewModel.clickedProduct?.image else viewModel.patternName.get(),
+            if (NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase()
+                    .equals("TRIAL")
+            ) viewModel.clickedProduct?.image else viewModel.patternName.get(),
             binding.imagePatternDesc.context,
             binding.imagePatternDesc
         )
@@ -1026,7 +1034,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
         Log.d("PatternSCreen", "onResume-PatternDescription")
-        if(viewModel.disposable.size() == 0) {
+        if (viewModel.disposable.size() == 0) {
             setUIEvents()
         }
         listenVersionEvents()

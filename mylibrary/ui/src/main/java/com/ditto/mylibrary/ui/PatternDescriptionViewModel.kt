@@ -232,7 +232,11 @@ class PatternDescriptionViewModel @Inject constructor(
                 Log.d("offlinePatternDataDao", "inviewModel OnSuccess>>>>>>>>>>")
 
                 // delete folder and PDF flow starting here
-                fetchDemoPatternList()
+                if (AppState.getIsLogged()) {
+                    fetchDemoPatternList()
+                } else {
+                    uiEvents.post(Event.OnGuestUSerWSClick)
+                }
             }
             is Result.OnError<*> -> {
                 Log.d("offlinePatternDataDao", "inviewModel  onFailed>>>>>>>>>>>>")
@@ -355,6 +359,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnNoNetworkToDownloadImage : Event()
         object OnDeletePatternFolder : Event()
         object OnMannequinNameEmpty : Event()
+        object OnGuestUSerWSClick : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

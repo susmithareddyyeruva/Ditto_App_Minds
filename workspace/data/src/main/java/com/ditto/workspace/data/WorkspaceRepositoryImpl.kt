@@ -193,7 +193,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 logger.d("try block updateWorkspaceDataFromApi")
                 val error = it as HttpException
                 if (error != null) {
-                    logger.d("Error update WorkspaceData")
+                    val errorBody = error.response()!!.errorBody()!!.string()
+                    Log.d("GetWorkspace Error", errorBody)
+                    val gson = Gson()
+                    val type = object : TypeToken<GetWorkspaceApiResponseFetchError>() {}.type
+                    val errorResponse: GetWorkspaceApiResponseFetchError =
+                        gson.fromJson(errorBody, type)
+                    errorMessage = errorResponse?.fault.message
+                    logger.d("Error get WorkspaceData >>>>>>> $errorMessage")
                 }
             } catch (e: Exception) {
                 Log.d("Catch", e.localizedMessage)
