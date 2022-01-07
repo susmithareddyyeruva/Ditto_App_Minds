@@ -225,8 +225,8 @@ dependencies {
     implementation project(path: ':home-domain')
     sonarqube {
         properties {
-            property "sonar.projectName", "ditto"
-            property "sonar.projectKey", "6c502bbd6d0d685fdb381a23c8055a11af0cc0a9"
+            property "sonar.projectName", "ditto-android"
+            property "sonar.projectKey", "ditto-android"
             property "sonar.sourceEncoding", "UTF-8"
             property "sonar.sources", "src/main/java"
             property "sonar.junit.reportsPath", "build/test-results/debug"
