@@ -231,8 +231,6 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 R.id.action_loginFragment_to_HomeFragment,
                 bundle
             )
-        } else {
-
         }
     }
 
