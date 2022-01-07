@@ -25,7 +25,6 @@ import core.*
 import core.appstate.AppState
 import core.di.EncodeDecodeUtil
 import core.lib.BuildConfig
-import core.models.CommonApiFetchError
 import core.network.NetworkUtility
 import core.ui.errors.CommonError
 import io.reactivex.Single
@@ -146,7 +145,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(designeID: String, mannequinId: String): Single<Result<PatternIdData>> {
+    override fun getPatternData(
+        designeID: String,
+        mannequinId: String
+    ): Single<Result<PatternIdData>> {
         return tailornovaApiService.getPatternDetailsByDesignId(
             BuildConfig.TAILORNOVA_ENDURL + designeID,
             OS, mannequinId
@@ -162,9 +164,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()?.errorBody()?.string()
-                            logger.d("Tailornova  API: $errorBody")
-
+                            val error = it as HttpException
+                            if (error != null) {
+                                val errorBody = it.response()?.errorBody()?.string()
+                                logger.d("Tailornova  API: $errorBody")
+                                errorMessage = errorBody.toString()
+                            }
                         }
                         401 -> {
                             logger.d("onError: NOT AUTHORIZED")
@@ -197,7 +202,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 }
 
                 Result.withError(
-                    CommonApiFetchError(errorMessage, it)
+                    TailornovaAPIError(errorMessage, it)
                 )
             }
     }
@@ -498,7 +503,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype, AppState.getCustID())
+            val trialPatterns =
+                offlinePatternDataDao.getListOfTrialPattern(patterntype, AppState.getCustID())
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
@@ -542,7 +548,17 @@ class MyLibraryRepositoryImpl @Inject constructor(
         mannequin: List<MannequinDataDomain>?
     ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin))
+            val i = offlinePatternDataDao.upsert(
+                patternIdData.toDomain(
+                    orderNumber,
+                    tailornovaDesignName,
+                    prodSize,
+                    status,
+                    mannequinId,
+                    mannequinName,
+                    mannequin
+                )
+            )
 
             Log.d("offlinePatternDataDao", "upsert >> $i")
 

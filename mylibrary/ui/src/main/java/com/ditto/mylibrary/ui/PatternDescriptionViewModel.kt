@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
@@ -80,13 +81,17 @@ class PatternDescriptionViewModel @Inject constructor(
     var mannequinList: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
     var clickedProduct: ProdDomain? = null
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
-
+    var tailornovaApiError: String? = null
     var patternsInDB: MutableList<ProdDomain>? = null
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
+            is TailornovaAPIError -> {
+                tailornovaApiError = error.message
+                uiEvents.post(Event.OnDataloadFailed)
+            }
             else -> {
                 uiEvents.post(Event.OnDataloadFailed)
             }

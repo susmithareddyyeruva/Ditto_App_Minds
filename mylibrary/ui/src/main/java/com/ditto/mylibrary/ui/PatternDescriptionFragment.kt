@@ -795,6 +795,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
+                    bottomNavViewModel.showWSProgress.set(false)
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in if ")
 
                     if (NetworkUtility.isNetworkAvailable(context)) {
@@ -805,6 +806,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 } else {
                     Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     bottomNavViewModel.showProgress.set(false)
+                    bottomNavViewModel.showWSProgress.set(false)
                     Utility.getCommonAlertDialogue(
                         requireContext(),
                         resources.getString(com.ditto.workspace.ui.R.string.download_failed),
@@ -819,6 +821,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             PatternDescriptionViewModel.Event.OnNoNetworkToDownloadImage -> {
                 bottomNavViewModel.showProgress.set(false)
+                bottomNavViewModel.showWSProgress.set(false)
                 Utility.getCommonAlertDialogue(
                     requireContext(),
                     resources.getString(com.ditto.workspace.ui.R.string.download_failed),
@@ -873,6 +876,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if (dowloadPermissonGranted()) {
                     Log.d("prepare>>>>>", "OnWorkspaceButtonClicked if")
                     bottomNavViewModel.showProgress.set(true)
+                    bottomNavViewModel.showWSProgress.set(true)
                     if (!::job.isInitialized || !job.isActive) {
                         job = GlobalScope.launch {
                             setPrepareDownloadList(map)
@@ -908,6 +912,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if (dowloadPermissonGranted()) {
                         Log.d("prepare>>>>>", "OnWorkspaceButtonClicked else")
                         bottomNavViewModel.showProgress.set(true)
+                        bottomNavViewModel.showWSProgress.set(true)
                         if (!::job.isInitialized || !job.isActive) {
                             job = GlobalScope.launch {
                                 setPrepareDownloadList(map)
@@ -1089,6 +1094,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onStop()
         Log.d("PatternSCreen", "onStop-PatternDescription")
         viewModel.disposable.clear()
+    }
+
+    override fun onDestroy() {
+        Log.d("PatternSCreen", "onDestroy-PatternDescription")
+        bottomNavViewModel.showWSProgress.set(false)
+        super.onDestroy()
     }
 
     private fun showVersionPopup() {
@@ -1459,12 +1470,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun showDataFailedAlert() {
+        var errorMsg: String? = null
+        if (viewModel.tailornovaApiError?.contains("processing", true) == true) {
+            errorMsg = getString(R.string.str_processing_error)
+        } else {
+            errorMsg ="\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+        }
         bottomNavViewModel.showProgress.set(false)
+        bottomNavViewModel.showWSProgress.set(false)
         if (activity != null && context != null) {
             Utility.getCommonAlertDialogue(
                 requireContext(),
                 "",
-                getString(R.string.str_fetch_error),
+                errorMsg ?: "",
                 "",
                 getString(R.string.str_ok),
                 this,
@@ -1488,6 +1506,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
+                bottomNavViewModel.showWSProgress.set(true)
                 Log.d("prepare>>>>>", "onRequestPermissionsResult")
                 if (!::job.isInitialized || !job.isActive) {
                     job = GlobalScope.launch {
