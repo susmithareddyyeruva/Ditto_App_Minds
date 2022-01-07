@@ -67,7 +67,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
-            "Basic " + encryptedKey
+            AUTH + encryptedKey
         )
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
@@ -97,21 +97,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD REQUEST")
 
                         }
-                        401 -> {
-                            logger.d("onError: NOT AUTHORIZED")
-                        }
-                        403 -> {
-                            logger.d("onError: FORBIDDEN")
-                        }
-                        404 -> {
-                            logger.d("onError: NOT FOUND")
-                        }
-                        500 -> {
-                            logger.d("onError: INTERNAL SERVER ERROR")
-                        }
-                        502 -> {
-                            logger.d("onError: BAD GATEWAY")
-                        }
+
                     }
                 } else {
                     errorMessage = when (it) {
@@ -173,21 +159,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("Tailornova  API: $errorBody")
 
                         }
-                        401 -> {
-                            logger.d("onError: NOT AUTHORIZED")
-                        }
-                        403 -> {
-                            logger.d("onError: FORBIDDEN")
-                        }
-                        404 -> {
-                            logger.d("onError: NOT FOUND")
-                        }
-                        500 -> {
-                            logger.d("onError: INTERNAL SERVER ERROR")
-                        }
-                        502 -> {
-                            logger.d("onError: BAD GATEWAY")
-                        }
                     }
                 } else {
                     errorMessage = when (it) {
@@ -240,7 +211,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getFoldersList(
-            requestdata, "Basic " + encryptedKey,
+            requestdata, AUTH + encryptedKey,
             method = methodName
         )
             .doOnSuccess {
@@ -270,21 +241,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD REQUEST")
 
                         }
-                        401 -> {
-                            logger.d("onError: NOT AUTHORIZED")
-                        }
-                        403 -> {
-                            logger.d("onError: FORBIDDEN")
-                        }
-                        404 -> {
-                            logger.d("onError: NOT FOUND")
-                        }
-                        500 -> {
-                            logger.d("onError: INTERNAL SERVER ERROR")
-                        }
-                        502 -> {
-                            logger.d("onError: BAD GATEWAY")
-                        }
+
                     }
                 } else {
                     errorMessage = when (it) {
@@ -318,7 +275,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.addFolder(
-            requestdata, "Basic " + encryptedKey,
+            requestdata, AUTH + encryptedKey,
             method = methodName
         )
             .doOnSuccess {
@@ -351,21 +308,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             logger.d("onError: BAD REQUEST")
 
                         }
-                        401 -> {
-                            logger.d("onError: NOT AUTHORIZED")
-                        }
-                        403 -> {
-                            logger.d("onError: FORBIDDEN")
-                        }
-                        404 -> {
-                            logger.d("onError: NOT FOUND")
-                        }
-                        500 -> {
-                            logger.d("onError: INTERNAL SERVER ERROR")
-                        }
-                        502 -> {
-                            logger.d("onError: BAD GATEWAY")
-                        }
+
                     }
                 } else {
                     errorMessage = when (it) {
@@ -401,7 +344,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.renameFolder(
-            renameRequest, "Basic " + encryptedKey,
+            renameRequest, AUTH + encryptedKey,
             method = methodName
         )
             .doOnSuccess {
