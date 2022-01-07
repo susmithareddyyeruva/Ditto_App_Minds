@@ -97,7 +97,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
             AboutAppViewModel.Event.UpdateResponseText->{
                 binding.aboutwebview.loadDataWithBaseURL(null,viewModel.getResponseText(),"text/html", "UTF-8",null)
                 binding.aboutwebview.requestFocus()
-                binding.aboutwebview.settings.javaScriptEnabled=true
+               // binding.aboutwebview.settings.javaScriptEnabled=true
                 binding.aboutwebview.webViewClient=object :WebViewClient(){
                     @RequiresApi(Build.VERSION_CODES.M)
                     override fun onReceivedError(

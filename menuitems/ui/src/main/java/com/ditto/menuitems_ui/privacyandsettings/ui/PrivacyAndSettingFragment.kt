@@ -86,7 +86,7 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
                     null
                 )
                 binding.webPrivacy.requestFocus()
-                binding.webPrivacy.settings.javaScriptEnabled = true
+                //binding.webPrivacy.settings.javaScriptEnabled = true
                 binding.webPrivacy.webViewClient = object : WebViewClient() {
                     @RequiresApi(Build.VERSION_CODES.M)
                     override fun onReceivedError(
