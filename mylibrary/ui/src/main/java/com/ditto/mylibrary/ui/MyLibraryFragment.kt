@@ -446,14 +446,8 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             MyLibraryViewModel.Event.OnFilterClick -> {
                 if (AppState.getIsLogged()) {
-                    val tabPosition = binding.tabLayout.selectedTabPosition
-                    if (tabPosition == 0) {
-                        setFilterMenuAdapter(0)
-                        binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
-                    } else {
-                        setFilterMenuAdapter(0)
-                        binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
-                    }
+                    setFilterMenuAdapter(0)
+                    binding.drawerLayoutMylib.openDrawer(Gravity.RIGHT)
                 } else {
                     Utility.getCommonAlertDialogue(
                         requireContext(),
