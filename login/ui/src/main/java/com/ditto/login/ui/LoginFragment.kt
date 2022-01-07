@@ -257,10 +257,6 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         bottomNavViewModel.subscriptionEndDateBase.set(viewModel.subscriptionEndDate)
     }
 
-    private fun onKeyboardShow() {
-        binding.root.scrollToBottomWithoutFocusChange()
-    }
-
     fun NestedScrollView.scrollToBottomWithoutFocusChange() { // Kotlin extension to scrollView
         val lastChild = getChildAt(childCount - 1)
         val bottom = lastChild.bottom + paddingBottom
