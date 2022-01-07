@@ -180,7 +180,7 @@ class WbSocketCertificateModule {
         if (trustManagerFactory != null) {
 
             // Create an SSLContext that uses our TrustManager
-            val sslContext: SSLContext = SSLContext.getInstance("TLS").apply {
+            val sslContext: SSLContext = SSLContext.getInstance("TLSv1.3").apply {
                 init(null, trustManagerFactory.trustManagers, null)
             }
 
