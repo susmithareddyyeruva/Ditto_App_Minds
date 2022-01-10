@@ -148,11 +148,13 @@ class WorkspaceViewModel @Inject constructor(
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        workspaceDataAPI: WorkspaceDataAPI
+        workspaceDataAPI: WorkspaceDataAPI,
+        status:String?
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
             selectedTab,
+            status,
             numberOfCompletedPiece,
             patternPieces,
             garmetWorkspaceItems,
@@ -572,6 +574,15 @@ class WorkspaceViewModel @Inject constructor(
 
         var cTraceWorkSpacePatternInputData =
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
+        var status= ""
+        if(data.value?.patternType.equals("TRIAL",true)){
+            status="TRIAL"
+        }else if(data.value?.patternType.equals("Purchased",true)){
+            status="OWNED"
+        }else{
+            status="SUBSCRIBED"
+        }
+        Log.d("status123","?>>>>>>>>>>>>>>>>>>>> $status")
 
         updateWorkspaceDB(
 //            "30644ba1e7aa41cfa9b17b857739968a",
@@ -581,7 +592,9 @@ class WorkspaceViewModel @Inject constructor(
             cTraceWorkSpacePatternInputData.patternPieces,
             cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
             cTraceWorkSpacePatternInputData.liningWorkspaceItems,
-            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems, cTraceWorkSpacePatternInputData
+            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
+            cTraceWorkSpacePatternInputData,
+            status
         )
 
     }

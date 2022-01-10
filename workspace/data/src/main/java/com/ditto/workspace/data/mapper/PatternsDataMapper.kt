@@ -5,38 +5,12 @@ import com.ditto.workspace.domain.model.NumberOfPieces
 import com.ditto.workspace.domain.model.PatternsData
 import com.ditto.workspace.domain.model.Selvages
 
-internal fun List<Patterns>.toDomain(): List<PatternsData> {
-    return this.map {
-        PatternsData(
-            id = it.id,
-            patternName = it.patternName,
-            description = it.description,
-            totalPieces = it.totalPieces,
-            completedPieces = it.completedPieces,
-            selectedTab = it.selectedTab,
-            status = it.status,
-            thumbnailImagePath = it.thumbnailImagePath,
-            thumbnailImageName = it.thumbnailImageName,
-            instructionUrl = "instructionUrl",
-            numberOfCompletedPiece = it.numberOfCompletedPieces?.toDomainn(),
-            totalNumberOfPieces = it.numberOfPieces?.toDomainn(),
-            descriptionImages = it.descriptionImages.map { it.toDomain() },
-            selvages = it.selvages?.map { it.toDomain() },
-            patternPieces = it.patternPieces?.map { it.toDomain() },
-            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines?.map { it.toDomain() }
-                ?.toMutableList(),
-            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines?.map { it.toDomain() }
-                ?.toMutableList(),
-            interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
-                ?.toMutableList()
-        )
-    }
-}
 
 internal fun Patterns.toDomain(): PatternsData {
     return PatternsData(
         id = this.id,
         patternName = this.patternName,
+        patternType = "Demo",//todo pattern type
         description = this.description,
         totalPieces = this.totalPieces,
         completedPieces = this.completedPieces,

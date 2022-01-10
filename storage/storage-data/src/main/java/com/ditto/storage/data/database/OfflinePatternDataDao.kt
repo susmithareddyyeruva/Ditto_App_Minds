@@ -27,11 +27,12 @@ abstract class OfflinePatternDataDao {
     @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type or custId = :custId")
     abstract fun getListOfTrialPattern(type: String, custId: String?): List<OfflinePatterns>
 
-    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
+    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab ,status = :status ,numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
     abstract fun updateOfflinePatternData(
         custId: String?,
         tailornaovaDesignId: String?,
         selectedTab: String?,
+        status: String?,
         numberOfCompletedPiece: NumberOfCompletedPiecesOffline?,
         patternPieces: List<PatternPiecesOffline>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
