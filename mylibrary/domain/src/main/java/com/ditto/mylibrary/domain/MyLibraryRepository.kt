@@ -33,7 +33,8 @@ interface MyLibraryRepository {
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
+        mannequin: List<MannequinDataDomain>?,
+        patternType:String?
     ): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>

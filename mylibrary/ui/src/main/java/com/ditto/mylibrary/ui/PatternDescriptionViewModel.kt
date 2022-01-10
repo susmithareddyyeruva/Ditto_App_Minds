@@ -161,7 +161,8 @@ class PatternDescriptionViewModel @Inject constructor(
                         clickedProduct?.status,
                         mannequinId.get(),
                         mannequinName.get(),
-                        clickedProduct?.mannequin ?: emptyList()
+                        clickedProduct?.mannequin ?: emptyList(),
+                        clickedProduct?.patternType
                     )
                 } else {
                     //offline if all images are downloaded
@@ -211,8 +212,9 @@ class PatternDescriptionViewModel @Inject constructor(
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
-    ) {
+        mannequin: List<MannequinDataDomain>?,
+        patternType: String?,
+        ) {
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
             orderNo,
@@ -221,7 +223,8 @@ class PatternDescriptionViewModel @Inject constructor(
             status,
             mannequinId,
             mannequinName,
-            mannequin
+            mannequin,
+            patternType
         )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())

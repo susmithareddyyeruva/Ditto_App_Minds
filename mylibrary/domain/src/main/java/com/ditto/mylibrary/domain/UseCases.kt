@@ -35,7 +35,8 @@ interface MyLibraryUseCase {
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
+        mannequin: List<MannequinDataDomain>?,
+        patternType:String?
     ): Single<Any>
 
 }

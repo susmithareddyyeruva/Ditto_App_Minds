@@ -545,7 +545,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
+        mannequin: List<MannequinDataDomain>?,
+        patternType:String?
     ): Single<Any> {
         return Single.fromCallable {
             val i = offlinePatternDataDao.upsert(
@@ -556,7 +557,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     status,
                     mannequinId,
                     mannequinName,
-                    mannequin
+                    mannequin,
+                    patternType
                 )
             )
 
