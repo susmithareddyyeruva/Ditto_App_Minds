@@ -21,7 +21,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
-import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -122,7 +121,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     }
     private fun handleClicks(){
 
-        deviceList!!.setOnItemClickListener { parent, view, position, id ->
+        deviceList!!.setOnItemClickListener { _, _, position, _ ->
             if (mScanning) {
                 mBluetoothAdapter!!.stopLeScan(mLeScanCallback)
                 mScanning = false
@@ -138,7 +137,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             startBleWaiting()
             showLayouts(false,false,false,false,true,"")
         }
-        deviceList_proj!!.setOnItemClickListener { parent, view, position, id ->
+        deviceList_proj!!.setOnItemClickListener { _, _, position, _ ->
 
             showLayouts(false,false,false,false,true,"")
             viewModel.isServiceFoundAfterWifi.set(false)
@@ -368,10 +367,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 }
             } catch (e: ConnectException) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Projector Connection failed")
+                showLayouts(false, false, false, true, false, PROJ_CONNECTION_FAILED)
             } catch (e: Exception) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Projector Connection failed")
+                showLayouts(false, false, false, true, false,PROJ_CONNECTION_FAILED)
             } finally {
                 soc?.close()
             }
@@ -481,7 +480,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             )
         }
     }    // Device scan callback.
-    private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, rssi, scanRecord ->
+    private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, _, _ ->
         runOnUiThread {
             mLeDeviceListAdapter!!.addDevice(device)
             mLeDeviceListAdapter!!.notifyDataSetChanged()
@@ -651,6 +650,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             intentFilter.addAction(BluetoothLeService.ACTION_GATT_WIFI_FAILURE)
             return intentFilter
         }
+        const val PROJ_CONNECTION_FAILED="Projector Connection failed"
     }
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     override fun onResume() {

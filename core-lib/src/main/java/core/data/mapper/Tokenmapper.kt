@@ -14,8 +14,8 @@ fun TokenResult.toTokenDomain(): TokenResultDomain {
 
 fun TokenDetails.toDomain(): TokenDetails {
     return TokenDetails(
-        access_token = this.access_token ?: "",
-        expires_in = this.expires_in ?: 0,
+        accessToken = this.accessToken ?: "",
+        expiresIn = this.expiresIn ?: 0,
         sk = this.sk ?: 0
     )
 }

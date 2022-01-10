@@ -26,7 +26,7 @@ class TokenRepositoryImpl @Inject constructor(
         val currentTimestamp = System.currentTimeMillis()
         return apiService.refreshToken()
             .doOnSuccess {
-                Log.d("TOKEN", it.response.access_token?:"")
+                Log.d("TOKEN", it.response.accessToken?:"")
             }
             .map {
 

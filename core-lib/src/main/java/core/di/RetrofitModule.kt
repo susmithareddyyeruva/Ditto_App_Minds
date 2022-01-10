@@ -315,9 +315,9 @@ class TokenAuthenticator : Authenticator {
             // 1. Refresh your access_token using a synchronous api request
             val responseMain = getUpdatedToken()
             val expCal = Calendar.getInstance()
-            expCal.add(Calendar.MINUTE, responseMain.response?.expires_in ?: 0)
+            expCal.add(Calendar.MINUTE, responseMain.response?.expiresIn ?: 0)
             val expirytime = expCal.time.time
-            val token = responseMain?.response?.access_token ?: ""
+            val token = responseMain?.response?.accessToken ?: ""
             Log.d("TOKEN==", token)
             Log.d("TOKEN==>>>>> ", "inside Auth")
             token.let {
@@ -327,7 +327,7 @@ class TokenAuthenticator : Authenticator {
                 )
             }
             response.request.newBuilder()
-                .header("Authorization", "Bearer ${responseMain.response?.access_token}")
+                .header("Authorization", "Bearer ${responseMain.response?.accessToken}")
                 .build()
         }
     }

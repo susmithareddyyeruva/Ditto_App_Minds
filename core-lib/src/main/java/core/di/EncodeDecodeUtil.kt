@@ -19,7 +19,6 @@ object EncodeDecodeUtil {
      */
     fun HMAC_SHA256(secret: String?, message: String): String? {
         var hash = ""
-        var hash1 = ""
         try {
             val sha256Hmac = Mac.getInstance("HmacSHA256")
             val secretKey = SecretKeySpec(secret?.toByteArray(), "HmacSHA256")
