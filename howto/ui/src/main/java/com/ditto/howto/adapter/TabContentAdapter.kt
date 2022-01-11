@@ -1,13 +1,11 @@
 package com.ditto.howto.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Resources
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
@@ -15,7 +13,6 @@ import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
-import com.ditto.workspace.ui.PinchAndZoom
 import core.binding.BindableAdapter
 import core.ui.common.DoubleClickListener
 
@@ -95,16 +92,6 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
 
     override fun destroyItem(parent: ViewGroup, position: Int, `object`: Any) {
         parent.removeView(`object` as View)
-    }
-
-    fun showPinchZoomPopup(context: Context, imagePath: String?) {
-        val intent = Intent(context, PinchAndZoom::class.java)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-        intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        intent.putExtra("ImageURL", imagePath)
-        ContextCompat.startActivity(context, intent, null)
     }
 
 }
