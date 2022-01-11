@@ -70,7 +70,8 @@ internal fun PatternIdData.toDomain(
     status: String?,
     selectedMnnequinId: String?,
     selectedMannequinName: String?,
-    mannequin: List<MannequinDataDomain>?
+    mannequin: List<MannequinDataDomain>?,
+    patternType:String?
 ): OfflinePatterns {
     return OfflinePatterns(
         custId = AppState.getCustID(),
@@ -78,7 +79,7 @@ internal fun PatternIdData.toDomain(
         tailornaovaDesignId = this.designId,
         patternName = this.patternName,
         description = this.description,
-        patternType = this.patternType,
+        patternType = patternType,
         numberOfCompletedPieces = null,
         numberOfPieces = this.numberOfPieces?.toDomain(),
         orderModificationDate = this.orderModificationDate,

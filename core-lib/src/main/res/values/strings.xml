@@ -24,6 +24,9 @@
     <string name="pattern_library_count1">Pattern Library\u0020(%1$d)</string>
     <string name="about_app_policies">About the app &amp; policies</string>
     <string name="str_fetch_error">Error Fetching Data!!</string>
+    <string name="str_internal_server_error">There is an internal server issue. Please contact customer support with below message.</string>
+    <string name="str_processing_error">Your pattern is getting processed. Please try after sometime.</string>
+    <string name="str_pre">preparing workspace, please wait</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="coach_mark_skip">Skip</string>

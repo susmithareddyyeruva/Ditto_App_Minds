@@ -109,7 +109,6 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             ManageDeviceViewModel.Event.OnConnectClick -> showConnectPopup()
             ManageDeviceViewModel.Event.OnBleConnectClick -> {
                 //showConnectivityPopup()
-                viewModel.mode.set(MODE_SERVICE)
                 checkBluetoothWifiPermission()
             }
             ManageDeviceViewModel.Event.OnConnectedImageSent -> sendConnectImage()

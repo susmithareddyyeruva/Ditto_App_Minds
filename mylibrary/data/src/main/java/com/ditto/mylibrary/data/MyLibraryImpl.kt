@@ -28,6 +28,14 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getPatternData(get,mannequinId)
     }
 
+    override fun deletePattern(
+        trial: String,
+        custID: String,
+        tailornovaDesignID: String
+    ): Single<Result<Boolean>> {
+        return myLibraryRepository.deletePattern(trial,custID,tailornovaDesignID)
+    }
+
     override fun removeProject(patternId: String): Single<Any> {
         return myLibraryRepository.removePattern(patternId)
     }
@@ -73,9 +81,10 @@ class MyLibraryImpl @Inject constructor(
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
+        mannequin: List<MannequinDataDomain>?,
+        patternType:String?
     ): Single<Any> {
-        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin)
+        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin,patternType)
     }
 
     override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {

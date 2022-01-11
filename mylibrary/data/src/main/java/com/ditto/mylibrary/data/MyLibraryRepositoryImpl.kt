@@ -1,14 +1,13 @@
 package com.ditto.mylibrary.data
 
 import android.content.Context
+import android.util.Log
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.data.api.MyLibraryFilterService
 import com.ditto.mylibrary.data.api.TailornovaApiService
-import com.ditto.mylibrary.data.error.FilterError
-import com.ditto.mylibrary.data.error.PatternDBError
-import com.ditto.mylibrary.data.error.TrialPatternError
+import com.ditto.mylibrary.data.error.*
 import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
@@ -26,7 +25,6 @@ import core.*
 import core.appstate.AppState
 import core.di.EncodeDecodeUtil
 import core.lib.BuildConfig
-import core.models.CommonApiFetchError
 import core.network.NetworkUtility
 import core.ui.errors.CommonError
 import io.reactivex.Single
@@ -147,19 +145,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPatternData(designeID: String, mannequinId: String): Single<Result<PatternIdData>> {
+    override fun getPatternData(
+        designeID: String,
+        mannequinId: String
+    ): Single<Result<PatternIdData>> {
         return tailornovaApiService.getPatternDetailsByDesignId(
             BuildConfig.TAILORNOVA_ENDURL + designeID,
             OS, mannequinId
         )
             .doOnSuccess {
                 logger.d("*****Tailornova Success**")
-                // patternType!= trial >> delete it
-                offlinePatternDataDao.deletePatternsExceptTrial(
-                    "Trial",
-                    AppState.getCustID(),
-                    designeID
-                )
             }.map {
                 Result.withValue(it)
             }
@@ -169,24 +164,32 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 if (it is HttpException) {
                     when (it.code()) {
                         400 -> {
-                            val errorBody = it.response()?.errorBody()?.string()
-                            logger.d("Tailornova  API: $errorBody")
-
+                            val error = it as HttpException
+                            if (error != null) {
+                                val errorBody = it.response()?.errorBody()?.string()
+                                logger.d("Tailornova  API: $errorBody")
+                                errorMessage = errorBody.toString()
+                            }
                         }
                         401 -> {
                             logger.d("onError: NOT AUTHORIZED")
+                            errorMessage="NOT AUTHORIZED"
                         }
                         403 -> {
                             logger.d("onError: FORBIDDEN")
+                            errorMessage="FORBIDDEN"
                         }
                         404 -> {
                             logger.d("onError: NOT FOUND")
+                            errorMessage="NOT FOUND"
                         }
                         500 -> {
                             logger.d("onError: INTERNAL SERVER ERROR")
+                            errorMessage="INTERNAL SERVER ERROR"
                         }
                         502 -> {
                             logger.d("onError: BAD GATEWAY")
+                            errorMessage="BAD GATEWAY"
                         }
                     }
                 } else {
@@ -204,13 +207,33 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 }
 
                 Result.withError(
-                    CommonApiFetchError(errorMessage, it)
+                    TailornovaAPIError(errorMessage, it)
                 )
             }
     }
 
     override fun getPatternData(get: Int): Single<Result<MyLibraryData>> {
         TODO("Not yet implemented")
+    }
+
+    override fun deletePattern(
+        trial: String,
+        custID: String,
+        tailornovaDesignID: String
+    ): Single<Result<Boolean>> {
+        // patternType!= trial >> delete it
+        return Single.fromCallable {
+            val i = offlinePatternDataDao.deletePatternsExceptTrial(
+                "Trial",
+                AppState.getCustID(),
+                tailornovaDesignID
+            )
+
+            if (i != -1)
+                Result.withValue(true)
+            else
+                Result.withError(DeletePatternError())
+        }
     }
 
     override fun completeProject(patternId: String): Single<Any> {
@@ -485,7 +508,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
     override fun getTrialPatterns(patterntype: String): Single<Result<List<ProdDomain>>> {
         return Single.fromCallable {
-            val trialPatterns = offlinePatternDataDao.getListOfTrialPattern(patterntype, AppState.getCustID())
+            val trialPatterns =
+                offlinePatternDataDao.getListOfTrialPattern(patterntype, AppState.getCustID())
             if (trialPatterns != null)
                 Result.withValue(trialPatterns.toDomain())
             else
@@ -526,10 +550,30 @@ class MyLibraryRepositoryImpl @Inject constructor(
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
+        mannequin: List<MannequinDataDomain>?,
+        patternType:String?
     ): Single<Any> {
         return Single.fromCallable {
-            val i = offlinePatternDataDao.upsert(patternIdData.toDomain(orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin))}
+            val i = offlinePatternDataDao.upsert(
+                patternIdData.toDomain(
+                    orderNumber,
+                    tailornovaDesignName,
+                    prodSize,
+                    status,
+                    mannequinId,
+                    mannequinName,
+                    mannequin,
+                    patternType
+                )
+            )
+
+            Log.d("offlinePatternDataDao", "upsert >> $i")
+
+            if (i != -1)
+                Result.withValue(i)
+            else
+                Result.withError(TailornovaInsertError(""))
+        }
     }
 
 }

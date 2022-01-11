@@ -62,6 +62,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override fun updateOfflineStorageData(
         tailornaovaDesignId: String?,
         selectedTab: String?,
+        status: String?,
         numberOfCompletedPiece: NumberOfPieces?,
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
@@ -72,6 +73,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             offlinePatternDataDao.updateOfflinePatternData(AppState.getCustID(),
                 tailornaovaDesignId,
                 selectedTab,
+                status,
                 numberOfCompletedPiece?.toDomain(),
                 patternPieces?.map { it.toDomain() },
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
@@ -193,7 +195,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 logger.d("try block updateWorkspaceDataFromApi")
                 val error = it as HttpException
                 if (error != null) {
-                    logger.d("Error update WorkspaceData")
+                    val errorBody = error.response()!!.errorBody()!!.string()
+                    Log.d("GetWorkspace Error", errorBody)
+                    val gson = Gson()
+                    val type = object : TypeToken<GetWorkspaceApiResponseFetchError>() {}.type
+                    val errorResponse: GetWorkspaceApiResponseFetchError =
+                        gson.fromJson(errorBody, type)
+                    errorMessage = errorResponse?.fault.message
+                    logger.d("Error get WorkspaceData >>>>>>> $errorMessage")
                 }
             } catch (e: Exception) {
                 Log.d("Catch", e.localizedMessage)

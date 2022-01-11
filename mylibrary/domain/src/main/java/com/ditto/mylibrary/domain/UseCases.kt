@@ -13,6 +13,7 @@ interface MyLibraryUseCase {
     fun getPatterns(filterRequestData: MyLibraryFilterRequestData) :  Single<Result<AllPatternsDomain>>
     fun getUser(): Single<Result<LoginUser>>
     fun getPattern(get: String,mannequinId:String): Single<Result<PatternIdData>>
+    fun deletePattern(trial: String,custID: String,tailornovaDesignID: String): Single<Result<Boolean>>
     //fun addProject( id : Int): Single<Any>
     fun removeProject(patternId: String): Single<Any>
     fun completeProject(patternId: String): Single<Any>
@@ -34,7 +35,8 @@ interface MyLibraryUseCase {
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
+        mannequin: List<MannequinDataDomain>?,
+        patternType:String?
     ): Single<Any>
 
 }
