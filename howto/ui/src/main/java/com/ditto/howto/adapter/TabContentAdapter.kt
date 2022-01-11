@@ -13,7 +13,6 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
-import com.ditto.howto.ui.PopUpWindow
 import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
@@ -108,16 +107,5 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
         ContextCompat.startActivity(context, intent, null)
     }
 
-    /**
-     * [Function] Watch video click
-     */
-    private fun showVideoPopup(
-        context: Context,
-        videoPath: String?
-    ) {
-        val intent = Intent(context, PopUpWindow::class.java)
-        intent.putExtra("filename", videoPath)
-        context.startActivity(intent)
-    }
 
 }
