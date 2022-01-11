@@ -32,7 +32,6 @@ import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.CustomPlayerControlActivity
-import com.joann.fabrictracetransform.transform.TransformErrorCode
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -640,28 +639,6 @@ class InstructionFragment constructor(
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribeBy { handleResult(it) }*/
-    }
-
-    private fun handleResult(result: Pair<TransformErrorCode, Bitmap>) {
-        logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
-        logger.d("TRACE_ Projection : sendCalibrationPattern Success" + Calendar.getInstance().timeInMillis)
-        // alert?.dismiss()
-        when (result.first) {
-            TransformErrorCode.Success -> GlobalScope.launch {
-                sendSampleImage(
-                    Utility.addBlackBackgroundToBitmap(result.second), true
-                )
-            }
-            TransformErrorCode.InvalidImageFormat, TransformErrorCode.RetakeImage -> {
-                // show alert?
-            }
-            TransformErrorCode.AdditionalImageNeeded -> {
-                // show alert?
-            }
-            TransformErrorCode.FailToSetTransformParms, TransformErrorCode.MissingTransformParmsFile -> {
-                // what to do?
-            }
-        }
     }
 
     private suspend fun sendSampleImage(
