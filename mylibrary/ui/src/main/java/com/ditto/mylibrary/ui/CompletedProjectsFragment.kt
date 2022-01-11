@@ -10,17 +10,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.mylibrary.domain.model.MyLibraryData
-import com.ditto.mylibrary.ui.adapter.PatternAdapter
 import com.ditto.mylibrary.ui.databinding.CompletedProjectsFragmentBinding
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
-import java.util.*
 import javax.inject.Inject
-import kotlin.Comparator
 
 class CompletedProjectsFragment : BaseFragment() {
 
@@ -60,27 +56,7 @@ class CompletedProjectsFragment : BaseFragment() {
                 handleEvent(it)
             }
     }
-
-    private fun setPatternAdapter() {
-        val adapter = PatternAdapter()
-        binding.completedProjectsList.adapter = adapter
-        adapter.viewModel = viewModel
-        val patternData: List<MyLibraryData>? =
-            viewModel.data.value?.filter { it.status == "Completed" }
-        if (patternData?.isNotEmpty() == true) {
-            binding.emptyText.visibility = View.GONE
-        }
-
-        //for sorting
-        Collections.sort(patternData,
-            Comparator<MyLibraryData?> { lhs, rhs -> rhs?.patternName?.let {
-                lhs!!.patternName?.compareTo(
-                    it
-                )
-            }!! })
-
-        patternData?.let { adapter.setListData(it) }
-    }
+    
     @Suppress("IMPLICIT_CAST_TO_ANY")
     private fun handleEvent(event: AllPatternsViewModel.Event) =
         when (event) {

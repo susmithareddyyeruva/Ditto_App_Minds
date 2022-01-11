@@ -1024,14 +1024,6 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             )
         } == PackageManager.PERMISSION_GRANTED
     }
-
-    private fun sendResult(key: String) {
-        val intent = Intent()
-        intent.putExtra(key, true)
-        setResult(RESULT_OK, intent)
-        finish()
-    }
-
     fun turnGPSOn(onGpsListener: OnGPSListener?) {
 
         var locationManager: LocationManager? = null
