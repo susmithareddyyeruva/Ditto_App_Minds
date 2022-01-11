@@ -173,18 +173,23 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         }
                         401 -> {
                             logger.d("onError: NOT AUTHORIZED")
+                            errorMessage="NOT AUTHORIZED"
                         }
                         403 -> {
                             logger.d("onError: FORBIDDEN")
+                            errorMessage="FORBIDDEN"
                         }
                         404 -> {
                             logger.d("onError: NOT FOUND")
+                            errorMessage="NOT FOUND"
                         }
                         500 -> {
                             logger.d("onError: INTERNAL SERVER ERROR")
+                            errorMessage="INTERNAL SERVER ERROR"
                         }
                         502 -> {
                             logger.d("onError: BAD GATEWAY")
+                            errorMessage="BAD GATEWAY"
                         }
                     }
                 } else {
