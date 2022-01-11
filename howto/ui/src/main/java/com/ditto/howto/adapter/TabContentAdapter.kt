@@ -13,7 +13,6 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.ditto.howto.model.HowToData
 import com.ditto.howto.ui.HowtoViewModel
-import com.ditto.howto.ui.PopUpWindow
 import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import com.ditto.workspace.ui.PinchAndZoom
@@ -53,45 +52,45 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
 
     override fun instantiateItem(parent: ViewGroup, position: Int): Any {
 
-            val inflater1 = LayoutInflater.from(parent.context)
-            val bindingWS = WorkSpaceFragmentBinding.inflate(inflater1, parent, false)
-            bindingWS.viewModel = viewModel
-            bindingWS.instructionvalues = tabdata.get(position)
-            bindingWS.position = pos
-            val res: Resources = parent.resources
-            if (!tabdata.get(position).imagePath1.equals("")) {
-                val resID: Int = res.getIdentifier(
-                    tabdata.get(position).imagePath1,
-                    "drawable",
-                    parent.context.getPackageName()
-                )
-                /*val drawable: Drawable = res.getDrawable(resID)
-                val bitmap = (drawable as BitmapDrawable).bitmap
-                bindingWS.imageStep.setImageBitmap(bitmap)
-                bindingWS.imageStep.setImageDrawable(drawable)*/
-                Glide.with(parent.context)
-                    .load(tabdata.get(position).imagePath1)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .into(bindingWS.imageStep)
-                if(pos==0) {
-                    bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
-                        override fun onDoubleClick(v: View) { 
-                            viewModel.onDoubleClick(tabdata[position].imagePath1)
-                        }
-                    })
-                } else {
-                    bindingWS.imageStep.setOnClickListener {
-                        viewModel.onItemClick(tabdata[position].videopath1)
+        val inflater1 = LayoutInflater.from(parent.context)
+        val bindingWS = WorkSpaceFragmentBinding.inflate(inflater1, parent, false)
+        bindingWS.viewModel = viewModel
+        bindingWS.instructionvalues = tabdata.get(position)
+        bindingWS.position = pos
+        val res: Resources = parent.resources
+        if (!tabdata.get(position).imagePath1.equals("")) {
+            val resID: Int = res.getIdentifier(
+                tabdata.get(position).imagePath1,
+                "drawable",
+                parent.context.getPackageName()
+            )
+            /*val drawable: Drawable = res.getDrawable(resID)
+            val bitmap = (drawable as BitmapDrawable).bitmap
+            bindingWS.imageStep.setImageBitmap(bitmap)
+            bindingWS.imageStep.setImageDrawable(drawable)*/
+            Glide.with(parent.context)
+                .load(tabdata.get(position).imagePath1)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(bindingWS.imageStep)
+            if (pos == 0) {
+                bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
+                    override fun onDoubleClick(v: View) {
+                        viewModel.onDoubleClick(tabdata[position].imagePath1)
                     }
+                })
+            } else {
+                bindingWS.imageStep.setOnClickListener {
+                    viewModel.onItemClick(tabdata[position].videopath1)
                 }
             }
+        }
         bindingWS.textContent.text = HtmlCompat.fromHtml(
             tabdata.get(position).description1,
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
-            bindingWS.textContent.setMovementMethod(ScrollingMovementMethod())
-            parent.addView(bindingWS.root)
-            return bindingWS.root
+        bindingWS.textContent.setMovementMethod(ScrollingMovementMethod())
+        parent.addView(bindingWS.root)
+        return bindingWS.root
     }
 
     override fun destroyItem(parent: ViewGroup, position: Int, `object`: Any) {
@@ -106,18 +105,6 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtra("ImageURL", imagePath)
         ContextCompat.startActivity(context, intent, null)
-    }
-
-    /**
-     * [Function] Watch video click
-     */
-    private fun showVideoPopup(
-        context: Context,
-        videoPath: String?
-    ) {
-        val intent = Intent(context, PopUpWindow::class.java)
-        intent.putExtra("filename", videoPath)
-        context.startActivity(intent)
     }
 
 }
