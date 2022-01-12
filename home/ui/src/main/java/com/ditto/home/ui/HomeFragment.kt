@@ -113,7 +113,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     }
 
     private fun loadHomeFragment() {
-        if(homeViewModel.disposable.size() == 0) {
+        if (homeViewModel.disposable.size() == 0) {
             homeViewModel.disposable += homeViewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -146,7 +146,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
             when (it) {
                 "HOME" -> {
-
+                    logger.d("Deeplink argument : Home")
                 }
                 "LIBRARY" -> {
                     logger.d("HOMESCREEN  :LIBRARY")
@@ -184,7 +184,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
     override fun onResume() {
         super.onResume()
-        if(homeViewModel.disposable.size() == 0 && !isUiEventsDisposableSet){
+        if (homeViewModel.disposable.size() == 0 && !isUiEventsDisposableSet) {
             homeViewModel.disposable = CompositeDisposable()
             homeViewModel.disposable += homeViewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -340,14 +340,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
 
             }
-            HomeViewModel.Event.OnResultFailed -> {
+            HomeViewModel.Event.OnResultFailed,HomeViewModel.Event.NoInternet -> {
                 bottomNavViewModel.showProgress.set(false)
                 showAlert()
 
-            }
-            HomeViewModel.Event.NoInternet -> {
-                bottomNavViewModel.showProgress.set(false)
-                showAlert()
             }
             HomeViewModel.Event.OnTrialPatternSuccess -> {
                 logger.d("Download, OnTrialPatternSuccess")
@@ -551,12 +547,12 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+        if (alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
             Utility.navigateToAppSettings(requireContext())
         }
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {}
 
-    override fun onNeutralButtonClicked(alertType: Utility.AlertType) { }
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {}
 }

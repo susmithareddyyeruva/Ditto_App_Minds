@@ -40,6 +40,7 @@ object EncodeDecodeUtil {
             println(hash1)        // Kotlin
             println(hash3)        // Kotlin*/
         } catch (e: java.lang.Exception) {
+            Log.d("Exception",e.localizedMessage)
         }
         return hash.trim { it <= ' ' }
     }
@@ -49,6 +50,7 @@ object EncodeDecodeUtil {
         try {
             valueDecoded = Base64.decode(coded?.toByteArray(charset("UTF-8")), Base64.DEFAULT)
         } catch (e: UnsupportedEncodingException) {
+            Log.d("Exception",e.localizedMessage)
         }
         return String(valueDecoded!!)
     }
