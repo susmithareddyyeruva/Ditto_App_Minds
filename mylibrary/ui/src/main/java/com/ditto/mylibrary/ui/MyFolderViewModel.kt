@@ -153,7 +153,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                     .subscribeOn(Schedulers.io())
                     .whileSubscribed { isLoading.set(it) }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy { handleFolderApiResult(it, product) }
+                    .subscribeBy { handleFolderApiResult(it) }
             } else {
                 val renameReq = FolderRenameRequest(
                     OrderFilterRename(
@@ -170,7 +170,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                     .subscribeOn(Schedulers.io())
                     .whileSubscribed { isLoading.set(it) }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy { handleFolderApiResult(it, product) }
+                    .subscribeBy { handleFolderApiResult(it) }
             }
         }
 
@@ -179,8 +179,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
 
     private fun handleFolderApiResult(
-        result: Result<AddFavouriteResultDomain>,
-        product: ProdDomain
+        result: Result<AddFavouriteResultDomain>
     ) {
         when (result) {
             is Result.OnSuccess -> {

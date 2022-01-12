@@ -76,8 +76,6 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     (binding.rvMyFolder.adapter as MyFolderAdapter).notifyDataSetChanged()
                 }
             }
-        } else {
-
         }
     }
 
