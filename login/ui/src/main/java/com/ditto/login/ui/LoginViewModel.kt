@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(
     var errorString: ObservableField<String> = ObservableField("")
     var videoUrl: String = ""
     var imageUrl: ObservableField<String> = ObservableField("")
-    private val uiEvents = UiEvents<Event>()
+    val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
     var viewPagerData: MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
@@ -202,7 +202,7 @@ class LoginViewModel @Inject constructor(
         uiEvents.post(Event.OnLoginClicked)
     }
 
-    private fun handleError(error: Error) {
+    internal fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
                 activeInternetConnection.set(false)
@@ -257,14 +257,14 @@ class LoginViewModel @Inject constructor(
     }
 
     fun getLandingScreenDetails() {
-        uiEvents.post(Event.OnShowProgress)
+        //uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getLandingContentDetails().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribeBy {
                 handleLandingScreenFetchDetails(it)
             }
     }
 
-    private fun handleLandingScreenFetchDetails(it: Result<LandingContentDomain>?) {
+    internal fun handleLandingScreenFetchDetails(it: Result<LandingContentDomain>?) {
         logger.d("LandingDetails  : ${it.toString()}")
         when (it) {
             is Result.OnSuccess -> {

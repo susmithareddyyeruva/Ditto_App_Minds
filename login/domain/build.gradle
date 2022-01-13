@@ -87,5 +87,11 @@ dependencies {
 
     implementation project(':non-core-lib')
 
+    // Required -- JUnit 4 framework
+    testImplementation 'junit:junit:4.13.2'
+    // Mockito framework
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation "org.mockito:mockito-inline:2.28.2"
 
+    testImplementation "org.robolectric:robolectric:4.4"
 }

@@ -224,4 +224,10 @@ dependencies {
 
     implementation project(path: ':home-data')
     implementation project(path: ':home-domain')
+
+    // Required -- JUnit 4 framework
+    testImplementation 'junit:junit:4.13.2'
+    // Mockito framework
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation "org.robolectric:robolectric:4.4"
 }
