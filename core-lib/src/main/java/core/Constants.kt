@@ -53,7 +53,7 @@ const val HTTP_INTERNAL_ERROR="Internal Server Error"
 const val HTTP_BAD_REQUEST="Bad Request"
 const val HTTP_FORBIDDEN="Forbidden Request"
 const val EN_USERNAME="storefront"
-const val EN_CPWD="Testing4$"
+const val EN_CPCODE="Testing4$"
 const val AUTH="Basic "
 
 

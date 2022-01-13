@@ -62,7 +62,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input = "$EN_USERNAME:$EN_CPWD"
+        val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getAllPatternsPatterns(
@@ -207,7 +207,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input = "$EN_USERNAME:$EN_CPWD"
+        val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.getFoldersList(
@@ -271,7 +271,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input = "$EN_USERNAME:$EN_CPWD"
+        val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.addFolder(
@@ -340,7 +340,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input = "$EN_USERNAME:$EN_CPWD"
+        val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
         val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
         return myLibraryService.renameFolder(
