@@ -340,13 +340,12 @@ class InstructionFragment constructor(
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
             }
-            displayFullScreenVideo(filePath, title, "tutorial")
+            displayFullScreenVideo(filePath,"tutorial")
         }
     }
 
     private fun displayFullScreenVideo(
         filePath: String?,
-        title: String?,
         from: String
     ) {
         if (findNavController().currentDestination?.id == R.id.destination_instruction
