@@ -454,22 +454,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
     }
 
-    private fun checkBluetoothWifiPermission() {
-        if (allPermissionsGranted()) {
-            if (!Utility.getBluetoothstatus()) {
-                showBluetoothDialogue()
-            } else if (!Utility.getWifistatus(requireContext())) {
-                showWifiDialogue()
-            } else {
-                checkSocketConnection()
-            }
-        } else {
-            requestPermissions(
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
-    }
+
 
 
     private fun checkSocketConnection() {

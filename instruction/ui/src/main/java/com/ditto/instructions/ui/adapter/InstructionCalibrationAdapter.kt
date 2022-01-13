@@ -53,11 +53,6 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
         binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
         val res: Resources = parent.resources
         if (!instructiondata.get(position).imagePath.equals("")) {
-            val resID: Int? = res.getIdentifier(
-                instructiondata.get(position).imagePath,
-                "drawable",
-                parent.context.packageName
-            )
             /*val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
             binding.imageStep.setImageBitmap(bitmap)*/

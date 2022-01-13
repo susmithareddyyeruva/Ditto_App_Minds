@@ -64,7 +64,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
+        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
             AUTH + encryptedKey
@@ -209,7 +209,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
+        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
         return myLibraryService.getFoldersList(
             requestdata, AUTH + encryptedKey,
             method = methodName
@@ -273,7 +273,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
+        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
         return myLibraryService.addFolder(
             requestdata, AUTH + encryptedKey,
             method = methodName
@@ -342,7 +342,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
+        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
         return myLibraryService.renameFolder(
             renameRequest, AUTH + encryptedKey,
             method = methodName

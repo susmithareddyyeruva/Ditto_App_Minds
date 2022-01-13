@@ -17,7 +17,7 @@ object EncodeDecodeUtil {
      * @return the encoded string
      * @throws SignatureException
      */
-    fun HMAC_SHA256(secret: String?, message: String): String? {
+    fun hmacSha256(secret: String?, message: String): String? {
         var hash = ""
         try {
             val sha256Hmac = Mac.getInstance("HmacSHA256")

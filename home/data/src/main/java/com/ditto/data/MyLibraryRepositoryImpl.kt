@@ -54,7 +54,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
+        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
         return homeService.getHomeScreenDetails(requestData, AUTH + encryptedKey)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
