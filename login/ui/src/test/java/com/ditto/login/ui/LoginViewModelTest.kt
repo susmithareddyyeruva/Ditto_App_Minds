@@ -12,13 +12,14 @@ import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import non_core.lib.error.UnknownError
+import org.hamcrest.CoreMatchers.`is`
+import org.junit.Assert.*
 import org.junit.Before
+import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
@@ -38,7 +39,6 @@ class LoginViewModelTest {
 
     @Mock
     lateinit var view: LoginFragment
-
     private lateinit var viewModel: LoginViewModel
     private lateinit var loggerFactory: LoggerFactory
 
@@ -49,15 +49,20 @@ class LoginViewModelTest {
     private val fakeData = LandingContentDomain(
         "",
         "",
-        CBodyDomain("", "", "", "", "hello::Aparna"),
+        CBodyDomain("", "", "", "fakeImageUrl", "hello::Aparna"),
         "",
         ""
     )
 
+    companion object {
+        @ClassRule
+        @JvmField
+        val schedulers = RxImmediateSchedulerRule()
+    }
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        testScheduler = TestScheduler()
         loggerFactory = spy(LoggerFactory::class.java)
         val utility = mock(Utility::class.java)
         uiEvents = spy(UiEvents<LoginViewModel.Event>()::class.java)
@@ -66,31 +71,46 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `test handle landing screen fetch details`() {
-
+    fun `when landing details call returned valid response, then update view model`() {
         viewModel.handleLandingScreenFetchDetails(
             Result.withValue(fakeData)
         )
-        Mockito.ignoreStubs(loggerFactory)
+        ignoreStubs(loggerFactory)
         // verify(uiEvents).post(LoginViewModel.Event.OnHideProgress)
-        assertEquals("hello::Aparna", viewModel.videoUrl)
+        assertThat(viewModel.videoUrl, `is`("hello::Aparna"))
     }
 
     @Test
-    fun `test error when no internet connection`() {
+    fun `when landing details call returned no network error, then update view model`() {
         viewModel.handleError(
             NoNetworkError()
         )
-        assertTrue(viewModel.activeInternetConnection.get())
+        assertFalse(viewModel.activeInternetConnection.get())
     }
 
     @Test
-    fun `test landing screen details call`() {
-        val response = Single.just(Result.withValue(fakeData))
-        Mockito.`when`(getLoginDbUseCase.getLandingContentDetails()).thenReturn(response)
+    fun `when landing details requested then return valid response`() {
+        val response = Single.just(Result.withValue<LandingContentDomain>(fakeData))
+        `when`(getLoginDbUseCase.getLandingContentDetails()).thenReturn(response)
         viewModel.getLandingScreenDetails()
-        testScheduler.triggerActions()
-        Mockito.ignoreStubs(loggerFactory)
+        ignoreStubs(loggerFactory)
         assertEquals("hello::Aparna", viewModel.videoUrl)
+    }
+
+    @Test
+    fun `when landing details requested with no internet connection, return no network error`() {
+        val errorResponse = Single.just(Result.withError<LandingContentDomain>(NoNetworkError()))
+        `when`(getLoginDbUseCase.getLandingContentDetails()).thenReturn(errorResponse)
+        viewModel.getLandingScreenDetails()
+        assertFalse(viewModel.activeInternetConnection.get())
+    }
+
+    @Test
+    fun `when landing details requested with unknown error, then return unknown error message`() {
+        val errorResponse = Single.just(Result.withError<LandingContentDomain>(UnknownError()))
+        `when`(getLoginDbUseCase.getLandingContentDetails()).thenReturn(errorResponse)
+        viewModel.getLandingScreenDetails()
+        assertEquals("Unknown Error", viewModel.errorString.get())
+
     }
 }
