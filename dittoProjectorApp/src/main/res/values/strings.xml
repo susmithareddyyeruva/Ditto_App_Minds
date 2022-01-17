@@ -14,7 +14,7 @@
     <string name="discovery_failed">Discovery Failed!!</string>
     <string name="cred_received">Credentials Received!!</string>
     <string name="successmessage">SERVICESUCCESS</string>
-    <string name="successregister">Registered Succesfully!!</string>
+    <string name="successregister">Registered Successfully!!</string>
     <string name="waiting">Waiting for the client!!</string>
     <string name="failedrequest">TRACEFailed</string>
     <string name="teardown">Socket Disconnected</string>

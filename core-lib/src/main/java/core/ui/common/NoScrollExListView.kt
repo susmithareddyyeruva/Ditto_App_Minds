@@ -16,10 +16,10 @@ class NoScrollExListView : ExpandableListView {
     }
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val heightMeasureSpec_custom = MeasureSpec.makeMeasureSpec(
+        val heightmeasurespecCustom = MeasureSpec.makeMeasureSpec(
             Int.MAX_VALUE shr 2, MeasureSpec.AT_MOST
         )
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec_custom)
+        super.onMeasure(widthMeasureSpec, heightmeasurespecCustom)
         val params = layoutParams
         params.height = measuredHeight
     }
