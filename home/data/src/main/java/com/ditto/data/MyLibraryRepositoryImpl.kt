@@ -81,7 +81,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
-                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            errorMessage = errorResponse?.errorMsg ?: ERROR_FETCH
                             logger.d("onError: BAD REQUEST")
 
                         }
