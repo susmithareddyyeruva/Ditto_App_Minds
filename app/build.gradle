@@ -9,6 +9,25 @@ plugins {
 }
 
 apply from: '../test_dependencies.gradle'
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "dittoAndroid"
+        property "sonar.projectKey", "dittoAndroid"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.language", "kotlin"
+        property "sonar.scm.disabled",false
+        property "sonar.sources", "src/main/"
+        property "sonar.junit.reportsPath", "build/test-results/debug"
+        property "sonar.android.lint.report", "build/outputs/lint-results"
+        property "sonar.exclusions", '**/*Test*/**,' +
+                '*.json,' +
+                '**/*test*/**,' +
+                '**/.gradle/**,' +
+                '**/R.class'
+    }
+}
 
 android {
     compileSdkVersion 31
@@ -223,21 +242,5 @@ dependencies {
 
     implementation project(path: ':home-data')
     implementation project(path: ':home-domain')
-    sonarqube {
-        properties {
-            property "sonar.projectName", "ditto-android"
-            property "sonar.projectKey", "ditto-android"
-            property "sonar.sourceEncoding", "UTF-8"
-            property "sonar.scm.disabled",false
-            property "sonar.sources", "src/main/java"
-            property "sonar.coverage.exclusions", "src/main/java"
-            property "sonar.junit.reportsPath", "build/test-results/debug"
-            property "sonar.android.lint.report", "build/outputs/lint-results"
-            property "sonar.exclusions", '**/*Test*/**,' +
-                    '*.json,' +
-                    '**/*test*/**,' +
-                    '**/.gradle/**,' +
-                    '**/R.class'
-        }
-    }
+
 }
