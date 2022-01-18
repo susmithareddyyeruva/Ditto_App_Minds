@@ -3,6 +3,7 @@ package com.ditto.workspace.domain.model
 data class PatternsData(
     var id: String,
     var patternName: String?,
+    var patternType: String?,
     var description: String?,
     var totalPieces: Int,
     var numberOfCompletedPiece:NumberOfPieces?,

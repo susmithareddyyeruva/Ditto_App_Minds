@@ -27,11 +27,12 @@ abstract class OfflinePatternDataDao {
     @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type or custId = :custId")
     abstract fun getListOfTrialPattern(type: String, custId: String?): List<OfflinePatterns>
 
-    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab , numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
+    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab ,status = :status ,numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
     abstract fun updateOfflinePatternData(
         custId: String?,
         tailornaovaDesignId: String?,
         selectedTab: String?,
+        status: String?,
         numberOfCompletedPiece: NumberOfCompletedPiecesOffline?,
         patternPieces: List<PatternPiecesOffline>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
@@ -41,17 +42,19 @@ abstract class OfflinePatternDataDao {
 
     //if patternType!= trial >> delete it (keeping trial patterns only)
     @Query("DELETE from offline_pattern_data where patternType  != :patternType and custId == :custId  and designId != :designId")// for specific user
-    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?, designId: String)
+    abstract fun deletePatternsExceptTrial(patternType: String, custId: String?, designId: String) : Int
 
     //    Delete pattern in offline pttern where custId != nivedh.custID and custId != 0
     @Query("DELETE from offline_pattern_data where custId != :custId  and custId != 0")
     abstract fun deleteOtherUserRecord(custId: String?)
 
+    // new pattern >>insert 1 update -1
+    // already there pattern >>insert -1 update 1
     @Transaction
-    open fun upsert(obj: OfflinePatterns) {
+    open fun upsert(obj: OfflinePatterns):Int {
         val id: Long = insertOfflinePatternData(obj)
-        Log.d("offlinePatternDataDao", "insert $id")
-        if (id == -1L) {
+        Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB insert  >>>>> $id")
+        if (id == (-1).toLong()) {
             val i = updateTailornovaOfflineData(
                 obj.custId,
                 obj.designId,
@@ -78,13 +81,17 @@ abstract class OfflinePatternDataDao {
                 obj.selvages,
                 obj.selectedMannequinId,
                 obj.selectedMannequinName,
+                obj.status,
                 obj.mannequin
             )
-            Log.d("offlinePatternDataDao", "update $i")
+            Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB update >>>>>>> $i")
+            return i
+        }else{
+            return id.toInt()
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin WHERE designId= :designId")
     abstract fun updateTailornovaOfflineData(
         custId: String?,
         designId: String,
@@ -111,9 +118,9 @@ abstract class OfflinePatternDataDao {
         selvages: List<SelvageData>?,
         selectedMannequinId: String?,
         selectedMannequinName: String?,
+        status: String?,
         mannequin: List<MannequinData>?/*,
         selectedTab: String?,
-        status: String,
         numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
         patternPiecesFromApi: List<PatternPiecesOffline>,
         garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
@@ -122,7 +129,9 @@ abstract class OfflinePatternDataDao {
 
     ): Int
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedTab=:selectedTab,status=:status, numberOfCompletedPiece=:numberOfCompletedPieces, patternPieces= :patternPiecesFromApi,garmetWorkspaceItems=:garmetWorkspaceItemOfflines,liningWorkspaceItems=:liningWorkspaceItemOfflines,interfaceWorkspaceItems= :interfaceWorkspaceItemOfflines,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId ")
+    @Query(
+        "UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedTab=:selectedTab,status=:status, numberOfCompletedPiece=:numberOfCompletedPieces, patternPieces= :patternPiecesFromApi,garmetWorkspaceItems=:garmetWorkspaceItemOfflines,liningWorkspaceItems=:liningWorkspaceItemOfflines,interfaceWorkspaceItems= :interfaceWorkspaceItemOfflines,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId "
+    )
     abstract fun updateTailornovaTrailForPatternDifferentUser(
         custId: String?,
         designId: String,
@@ -165,7 +174,7 @@ abstract class OfflinePatternDataDao {
             val id: Long = insertOfflinePatternData(obj)
             val objInDB = getTailernovaDataByIDTrial(obj.designId) // obj2 cust id inside db
             Log.d("offlinePatternDataDao", "upsertList insert $id")
-            if (id == -1L) {
+            if (id == (-1).toLong()) {
                 //todo need to updaate the other like garment and all
                 if (obj.custId != objInDB.custId) {
                     //1. if logged in custId is != Db custID we will insert garment lining
@@ -234,6 +243,7 @@ abstract class OfflinePatternDataDao {
                         obj.selvages,
                         obj.selectedMannequinId,
                         obj.selectedMannequinName,
+                        obj.status,
                         obj.mannequin
                         /*obj.selectedTab,
                 obj.garmetWorkspaceItemOfflines,

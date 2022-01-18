@@ -16,6 +16,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.workspace.data.error.GetWorkspaceApiFetchError
+import com.ditto.workspace.data.error.UpdateWorkspaceApiFetchError
 import com.ditto.workspace.data.mapper.*
 import com.ditto.workspace.domain.GetWorkspaceData
 import com.ditto.workspace.domain.model.*
@@ -107,6 +108,7 @@ class WorkspaceViewModel @Inject constructor(
     var isSingleDelete: Boolean = false
     var isCompleteButtonClickable: Boolean = true
     var cutType: core.ui.common.Utility.AlertType = core.ui.common.Utility.AlertType.CUT_BIN
+    lateinit var workspaceDataAPI: WorkspaceDataAPI
 
     //Fetching tailornova details from offline_pattern_data table
     fun fetchTailernovaDetails(id: String) {
@@ -128,14 +130,14 @@ class WorkspaceViewModel @Inject constructor(
 
 
     fun updateWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
-        workspaceDataAPI.time=Calendar.getInstance().timeInMillis.toString()
+        workspaceDataAPI.time = Calendar.getInstance().timeInMillis.toString()
         disposable += getWorkspaceData.updateWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${patternId.get()}_${mannequinId.get()}",
             workspaceDataAPI
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSUpdateResult(it) }
+            .subscribeBy { handleWSUpdateResult(it, workspaceDataAPI) }
     }
 
     fun updateWorkspaceDB(
@@ -146,11 +148,13 @@ class WorkspaceViewModel @Inject constructor(
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        workspaceDataAPI: WorkspaceDataAPI
+        workspaceDataAPI: WorkspaceDataAPI,
+        status:String?
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
             selectedTab,
+            status,
             numberOfCompletedPiece,
             patternPieces,
             garmetWorkspaceItems,
@@ -162,7 +166,7 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleWSPatternDataStorage(it, workspaceDataAPI) }
     }
 
-    fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI) {
+    fun createWSAPI(workspaceDataAPI: WorkspaceDataAPI, isFromExit: Boolean) {
         disposable += getWorkspaceData.createWorkspaceData(
             "${AppState.getCustID()}_${clickedOrderNumber.get()}_${
                 patternId.get()
@@ -170,7 +174,7 @@ class WorkspaceViewModel @Inject constructor(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleWSCreateResult(it) }
+            .subscribeBy { handleWSCreateResult(it, isFromExit) }
     }
 
     /*fun insertData(value: PatternsData, closeScreen: Boolean) {
@@ -182,7 +186,10 @@ class WorkspaceViewModel @Inject constructor(
     }*/
 
 
-    private fun handleWSUpdateResult(result: Result<WSUpdateResultDomain>) {
+    private fun handleWSUpdateResult(
+        result: Result<WSUpdateResultDomain>,
+        workspaceDataAPI: WorkspaceDataAPI
+    ) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
         when (result) {
             is Result.OnSuccess -> {
@@ -191,17 +198,23 @@ class WorkspaceViewModel @Inject constructor(
             }
 
             is Result.OnError -> {
-                uiEvents.post(Event.ApiFailed)
+                // uiEvents.post(Event.ApiFailed)
+                this.workspaceDataAPI = workspaceDataAPI
+                handleError(result.error)
                 Log.d("WorkspaceViewModel", "update api Failed")
             }
         }
     }
 
-    private fun handleWSCreateResult(result: Result<WSUpdateResultDomain>) {
+    private fun handleWSCreateResult(result: Result<WSUpdateResultDomain>, isFromExit: Boolean) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
         when (result) {
             is Result.OnSuccess -> {
                 Log.d("WorkspaceViewModel456", "Success>>>>>>>>>>>>>>>>>>> $result")
+                Log.d("handleWSCreateResult", "create api Success>>>>>>>>>>>>>>>>>>> $result")
+                if (isFromExit) {
+                    uiEvents.post(Event.CloseScreen)
+                }
             }
 
             is Result.OnError -> {
@@ -341,10 +354,24 @@ class WorkspaceViewModel @Inject constructor(
             is GetWorkspaceApiFetchError -> {
                 if (error.message.contains("key", true)) {
                     Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
-                    createWSAPI(getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)))
+                    createWSAPI(
+                        getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)),
+                        false
+                    )
+                }
+            }
+
+            is UpdateWorkspaceApiFetchError -> {
+                if (error.message.contains("key", true)) {
+                    Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
+                    if (::workspaceDataAPI.isInitialized) {
+                        createWSAPI(workspaceDataAPI, true)
+                    }
+
                 }
             }
             else -> {
+                uiEvents.post(Event.ApiFailed)
                 Log.d("handleError", "WorkspaceViewModel else")
             }
         }
@@ -533,9 +560,9 @@ class WorkspaceViewModel @Inject constructor(
         data.value?.completedPieces = Utility.progressCount.get()
         data.value?.selectedTab = Utility.fragmentTabs.get().toString()
 
-       /* if (data.value?.completedPieces == data.value?.totalPieces) {
-            data.value?.status = "Completed"
-        }*/
+        /* if (data.value?.completedPieces == data.value?.totalPieces) {
+             data.value?.status = "Completed"
+         }*/
         loop1@ for (patternPiecesId in data.value?.patternPieces!!) {
             loop2@ for (mPatternPieceListID in Utility.mPatternPieceList) {
                 if (patternPiecesId.id == mPatternPieceListID) {
@@ -547,6 +574,15 @@ class WorkspaceViewModel @Inject constructor(
 
         var cTraceWorkSpacePatternInputData =
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
+        var status= ""
+        if(data.value?.patternType.equals("TRIAL",true)){
+            status="TRIAL"
+        }else if(data.value?.patternType.equals("Purchased",true)){
+            status="OWNED"
+        }else{
+            status="SUBSCRIBED"
+        }
+        Log.d("status123","?>>>>>>>>>>>>>>>>>>>> $status")
 
         updateWorkspaceDB(
 //            "30644ba1e7aa41cfa9b17b857739968a",
@@ -556,7 +592,9 @@ class WorkspaceViewModel @Inject constructor(
             cTraceWorkSpacePatternInputData.patternPieces,
             cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
             cTraceWorkSpacePatternInputData.liningWorkspaceItems,
-            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems, cTraceWorkSpacePatternInputData
+            cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
+            cTraceWorkSpacePatternInputData,
+            status
         )
 
     }
@@ -966,7 +1004,7 @@ class WorkspaceViewModel @Inject constructor(
 
                 temp.add(path.toString())
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("WorkspaceViewModel", "${e.message}")
         }
     }

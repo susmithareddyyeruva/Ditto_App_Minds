@@ -130,8 +130,20 @@
                         app:lottie_autoPlay="true"
                         app:lottie_colorFilter="@color/sign_in_blue"
                         app:lottie_loop="true"
+                        android:layout_centerInParent="true"
                         app:lottie_rawRes="@raw/ditto_loader" />
 
+                    <TextView
+                        android:id="@+id/tv_preparing_ws"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_pre"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="@{bottomNavViewModel.showWSProgress}"
+                        android:layout_below="@id/animationView"
+                        android:textColor="@color/sign_in_blue"
+                        android:textSize="@dimen/process_text"
+                        />
                 </RelativeLayout>
 
                 <ImageView

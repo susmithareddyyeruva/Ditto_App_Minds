@@ -5,10 +5,12 @@ import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.mapper.toDomain12
@@ -16,6 +18,7 @@ import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
+import core.appstate.AppState
 import core.event.UiEvents
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
@@ -85,13 +88,17 @@ class PatternDescriptionViewModel @Inject constructor(
     var mannequinList: ArrayList<MannequinDataDomain>? = ArrayList(emptyList())
     var clickedProduct: ProdDomain? = null
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
-
+    var tailornovaApiError: String? = null
     var patternsInDB: MutableList<ProdDomain>? = null
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
+            is TailornovaAPIError -> {
+                tailornovaApiError = error.message
+                uiEvents.post(Event.OnDataloadFailed)
+            }
             else -> {
                 uiEvents.post(Event.OnDataloadFailed)
             }
@@ -124,7 +131,6 @@ class PatternDescriptionViewModel @Inject constructor(
     }
 
     fun fetchPattern() {
-        //disposable += getPattern.getPattern("30644ba1e7aa41cfa9b17b857739968a")
         disposable += getPattern.getPattern(
             clickedTailornovaID.get() ?: "",
             mannequinId.get() ?: ""
@@ -133,6 +139,45 @@ class PatternDescriptionViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { handleFetchResult(it) }
+    }
+
+    fun deletePattern() {
+        disposable += getPattern.deletePattern(
+            "Trial",
+            AppState.getCustID() ?: "",
+            clickedTailornovaID.get() ?: ""
+        )
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleDeletePattenResult(it) }
+    }
+
+    private fun handleDeletePattenResult(result: Result<Boolean>?) {
+
+        when (result) {
+            is Result.OnSuccess -> {
+                Log.d("PattenDescViewModel", ">>>>>>>>>handleDeletePattenResult OnSuccess ")
+                // insert to DB
+                if ((NetworkUtility.isNetworkAvailable(context))) {
+                    insertTailornovaDetailsToDB(
+                        data.value!!,
+                        clickedOrderNumber.get(),
+                        tailornovaDesignpatternName.get(),
+                        prodSize.get(),
+                        clickedProduct?.status,
+                        mannequinId.get(),
+                        mannequinName.get(),
+                        clickedProduct?.mannequin ?: emptyList(),
+                        clickedProduct?.patternType
+                    )
+                } else {
+                    //offline if all images are downloaded
+                    uiEvents.post(Event.OnWorkspaceButtonClicked)
+                }
+            }
+            is Result.OnError -> handleError(result.error)
+        }
     }
 
     private fun handleFetchResult(result: Result<PatternIdData>) {
@@ -147,7 +192,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     data.value?.description = clickedProduct?.description
                 }
                 uiEvents.post(Event.OnDataUpdated)
-                insertTailornovaDetailsToDB(
+                /*insertTailornovaDetailsToDB(
                     data.value!!,
                     clickedOrderNumber.get(),
                     tailornovaDesignpatternName.get(),
@@ -156,7 +201,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     mannequinId.get(),
                     mannequinName.get(),
                     clickedProduct?.mannequin ?: emptyList()
-                )// todo uncomment this line
+                )*/// todo uncomment this line
                 //data.value?.thumbnailImageName=clickedProduct?.image //todo need from SFCC
                 //data.value?.thumbnailImageUrl=clickedProduct?.image //todo need from SFCC
 
@@ -174,8 +219,9 @@ class PatternDescriptionViewModel @Inject constructor(
         status: String?,
         mannequinId: String?,
         mannequinName: String?,
-        mannequin: List<MannequinDataDomain>?
-    ) {
+        mannequin: List<MannequinDataDomain>?,
+        patternType: String?,
+        ) {
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
             orderNo,
@@ -184,7 +230,8 @@ class PatternDescriptionViewModel @Inject constructor(
             status,
             mannequinId,
             mannequinName,
-            mannequin
+            mannequin,
+            patternType
         )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -198,6 +245,12 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess<*> -> {
                 logger.d("handlInsertTailornovRes, OnSuccess")
+                // delete folder and PDF flow starting here
+                if (AppState.getIsLogged()) {
+                    fetchDemoPatternList()
+                } else {
+                    uiEvents.post(Event.OnGuestUSerWSClick)
+                }
             }
             is Result.OnError<*> -> {
                 logger.d("handlInsertTailornovRes, onFailed")
@@ -235,9 +288,61 @@ class PatternDescriptionViewModel @Inject constructor(
         if (resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION") {
             uiEvents.post(Event.OnSubscriptionClicked)
         } else if (resumeOrSubscription.get().toString() == "WORKSPACE") {
-            uiEvents.post(Event.OnWorkspaceButtonClicked)
+            if (mannequinId?.get()
+                    ?.isEmpty() == true && !(clickedProduct?.patternType.toString()
+                    .equals("Trial", true))
+            ) {
+                /**
+                 * Restricting user to enter into workspace without selecting any customization if Network is Connected
+                 */
+                uiEvents.post(Event.OnMannequinNameEmpty)
+            } else {
+
+                uiEvents.post(Event.OnWorkspaceButtonClicked)
+               /* if ((NetworkUtility.isNetworkAvailable(context))) {
+
+                     insertTailornovaDetailsToDB(
+                         data.value!!,
+                         clickedOrderNumber.get(),
+                         tailornovaDesignpatternName.get(),
+                         prodSize.get(),
+                         clickedProduct?.status,
+                         mannequinId.get(),
+                         mannequinName.get(),
+                         clickedProduct?.mannequin ?: emptyList()
+                     )
+                } else {
+                    uiEvents.post(Event.OnWorkspaceButtonClicked)
+                }*/
+            }
         } else {
-            uiEvents.post(Event.OnWorkspaceButtonClicked)
+            if (mannequinId?.get()
+                    ?.isEmpty() == true && !(clickedProduct?.patternType.toString()
+                    .equals("Trial", true))
+            ) {
+                /**
+                 * Restricting user to enter into workspace without selecting any customization if Network is Connected
+                 */
+                uiEvents.post(Event.OnMannequinNameEmpty)
+            } else {
+
+                uiEvents.post(Event.OnWorkspaceButtonClicked)
+                /*if ((NetworkUtility.isNetworkAvailable(context))) {
+
+                    insertTailornovaDetailsToDB(
+                        data.value!!,
+                        clickedOrderNumber.get(),
+                        tailornovaDesignpatternName.get(),
+                        prodSize.get(),
+                        clickedProduct?.status,
+                        mannequinId.get(),
+                        mannequinName.get(),
+                        clickedProduct?.mannequin ?: emptyList()
+                    )
+                } else {
+                    uiEvents.post(Event.OnWorkspaceButtonClicked)
+                }*/
+            }
         }
     }
 
@@ -265,6 +370,8 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnImageDownloadComplete : Event()
         object OnNoNetworkToDownloadImage : Event()
         object OnDeletePatternFolder : Event()
+        object OnMannequinNameEmpty : Event()
+        object OnGuestUSerWSClick : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -366,16 +473,16 @@ class PatternDescriptionViewModel @Inject constructor(
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
 //                GlobalScope.launch {
-                    runBlocking {
-                        hashMap.forEach { (key, value) ->
-                            logger.d("DOWNLOAD, file not present KEY: $key \t VALUE : $value")
-                            if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())&&(value!="null")) {
-                                downloadEachPatternPiece(
-                                    imageUrl = value,
-                                    filename = key,
-                                    patternFolderName = patternName.get() ?: "Pattern Piece"
-                                )
-                            }
+                runBlocking {
+                    hashMap.forEach { (key, value) ->
+                        logger.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty()) && (value != "null")) {
+                            downloadEachPatternPiece(
+                                imageUrl = value,
+                                filename = key,
+                                patternFolderName = patternName.get() ?: "Pattern Piece"
+                            )
+                        }
 
                     }
                 }
