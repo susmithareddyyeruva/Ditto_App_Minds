@@ -10,9 +10,9 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
@@ -475,7 +475,7 @@ class PatternDescriptionViewModel @Inject constructor(
 //                GlobalScope.launch {
                 runBlocking {
                     hashMap.forEach { (key, value) ->
-                        logger.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        logger.d("DOWNLOAD, file not present KEY: $key \t VALUE : $value")
                         if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty()) && (value != "null")) {
                             downloadEachPatternPiece(
                                 imageUrl = value,
