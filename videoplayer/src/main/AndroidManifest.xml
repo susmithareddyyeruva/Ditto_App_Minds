@@ -4,9 +4,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <application>
         <activity
-            android:usesCleartextTraffic="true"
-            android:name="com.ditto.videoplayer.YouTubePLayerActivity" />
-        <activity
             android:name="com.ditto.videoplayer.CustomPlayerControlActivity"
             android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask"/>

@@ -21,7 +21,7 @@ import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
 import core.network.NetworkUtility
 import core.ui.common.Utility
-import kotlinx.android.synthetic.main.activity_player.*
+import kotlinx.android.synthetic.main.custom_layout.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
