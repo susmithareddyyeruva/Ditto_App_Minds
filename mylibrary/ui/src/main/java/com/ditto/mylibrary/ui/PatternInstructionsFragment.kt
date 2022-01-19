@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
@@ -168,19 +167,6 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         }
     }
 
-    private fun showPdfFromAssets(pdfName: String) {
-        if (context == null) return
-        binding.pdfView.fromAsset(pdfName)
-            .defaultPage(0) // set the default page to open
-            .scrollHandle(DefaultScrollHandle(requireContext()))
-            .onPageError { page, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading pdf", Toast.LENGTH_LONG
-                ).show()
-            }
-            .load()
-    }
 
     private fun showPdfFromUri(pdfName: Uri) {
         bottomNavViewModel.showProgress.set(false)

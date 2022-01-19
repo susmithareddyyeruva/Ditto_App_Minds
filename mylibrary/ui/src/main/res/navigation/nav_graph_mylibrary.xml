@@ -38,10 +38,6 @@
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
-        <!--  <action
-              android:id="@+id/action_fragments_to_search"
-              app:popUpTo="@id/allPatternsFragment"
-              app:destination="@id/searchFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/patternDescriptionFragment"

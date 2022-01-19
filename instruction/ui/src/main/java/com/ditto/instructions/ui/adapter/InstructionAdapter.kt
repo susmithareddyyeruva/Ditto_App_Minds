@@ -6,7 +6,6 @@ package com.ditto.instructions.ui.adapter
  */
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +51,6 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
         binding.viewModel = viewModel
         binding.textContentHeader.text = instructiondata[position].title
         binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-        val res: Resources = parent.resources
         if (!instructiondata.get(position).imagePath.equals("")) {
            /* val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
