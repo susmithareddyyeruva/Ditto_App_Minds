@@ -56,11 +56,6 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
         bindingWS.position = pos
         val res: Resources = parent.resources
         if (!tabdata.get(position).imagePath1.equals("")) {
-            val resID: Int = res.getIdentifier(
-                tabdata.get(position).imagePath1,
-                "drawable",
-                parent.context.getPackageName()
-            )
             /*val drawable: Drawable = res.getDrawable(resID)
             val bitmap = (drawable as BitmapDrawable).bitmap
             bindingWS.imageStep.setImageBitmap(bitmap)
