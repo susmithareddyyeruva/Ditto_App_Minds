@@ -8,7 +8,6 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.menuitems.domain.GetWorkspaceProData
-import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -114,11 +113,11 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultSecond(it) }
+            .subscribeBy { handleFetchResultSecond() }
     }
 
 
-    private fun handleFetchResultSecond(result: Result<WSProSettingDomain>) {
+    private fun handleFetchResultSecond() {
         uiEvents.post(Event.OnHideProgress)
         //updateWSProSetting()
     }

@@ -458,38 +458,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
     }
 
-
-
-
-    private fun checkSocketConnection() {
-        GlobalScope.launch {
-            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
-                showConnectivityPopup()
-            } else {
-                withContext(Dispatchers.Main) { showProgress(true) }
-                if (startSocketConnection(
-                        core.network.NetworkUtility.nsdSericeHostName,
-                        core.network.NetworkUtility.nsdSericePortName
-                    )
-                ) {
-                    //baseViewModel.activeSocketConnection.set(true)
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Connected to Ditto Projector!!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        showProgress(false)
-                        showCalibrationDialog()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) { showProgress(false) }
-                    showConnectivityPopup()
-                }
-            }
-        }
-    }
-
     private suspend fun startSocketConnection(ipAddress: String, nsdPort: Int): Boolean {
         var isConnected: Boolean = false
         withContext(Dispatchers.IO) {
@@ -505,19 +473,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
         }
         return withContext(Dispatchers.Main) { isConnected }
-    }
-
-    private fun showBluetoothDialogue() {
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.ditto_connect),
-            resources.getString(R.string.ble_connectivity),
-            resources.getString(R.string.skips),
-            resources.getString(R.string.turnon),
-            this,
-            Utility.AlertType.BLE,
-            Utility.Iconype.NONE
-        )
     }
 
     private fun showWifiDialogue() {
@@ -1459,7 +1414,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.tailornovaApiError?.contains("processing", true) == true) {
             errorMsg = getString(R.string.str_processing_error)
         } else {
-            errorMsg ="\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            errorMsg =
+                "\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
         }
         bottomNavViewModel.showProgress.set(false)
         bottomNavViewModel.showWSProgress.set(false)

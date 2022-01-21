@@ -9,7 +9,6 @@ interface PreferenceStorage {
     fun saveLong(key:String,value:Long)
     fun getLong(key:String):Long?
     fun saveInt(key:String,value:Int)
-    fun clear()
     fun clearAllPreferenceExceptCoachMark(
         key1: String,
         key2: String

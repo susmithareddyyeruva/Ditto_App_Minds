@@ -416,11 +416,7 @@ class PatternDescriptionViewModel @Inject constructor(
         filename: String, patternFolderName: String?
     ): File? {
         var result: File? = null
-        val outputFile: File? = null
         var dittofolder: File? = null
-
-        val contextWrapper = ContextWrapper(context)
-
         dittofolder = if (Build.VERSION.SDK_INT >= 30) {
             File(
                 context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)

@@ -1,7 +1,6 @@
 package com.ditto.howto.adapter
 
 import android.content.Context
-import android.content.res.Resources
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -54,7 +53,6 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
         bindingWS.viewModel = viewModel
         bindingWS.instructionvalues = tabdata.get(position)
         bindingWS.position = pos
-        val res: Resources = parent.resources
         if (!tabdata.get(position).imagePath1.equals("")) {
             /*val drawable: Drawable = res.getDrawable(resID)
             val bitmap = (drawable as BitmapDrawable).bitmap

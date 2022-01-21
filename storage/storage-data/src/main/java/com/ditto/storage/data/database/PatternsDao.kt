@@ -62,7 +62,7 @@ abstract class PatternsDao {
     open fun upsert(obj: Patterns) {
         val id: Long = insertNewPattern(obj)
         if (id == -1L) {
-            val i = updatePattern(obj)
+            updatePattern(obj)
         }
     }
 }
