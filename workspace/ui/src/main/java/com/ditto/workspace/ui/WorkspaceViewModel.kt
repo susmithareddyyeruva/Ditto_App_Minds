@@ -276,34 +276,6 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    private fun handleInsertDataResult(result: Any, closeScreen: Boolean) {
-        when (result) {
-            is Result.OnSuccess<*> -> {
-                Log.d("handleInsertDataResult", "OnSuccess")
-            }
-            is Result.OnError<*> -> handleError(result.error)
-        }
-        if (closeScreen) {
-            uiEvents.post(Event.CloseScreen)
-        }
-    }
-
-    private fun handleFetchResult(result: Result<List<PatternsData>>) {
-        when (result) {
-            is Result.OnSuccess -> {
-                allPatterns.value = result.data
-                data.value = result.data.find { it.id == patternId.get().toString() }
-                Log.d("WorkspaceViewModel098", "Combine patternsData: data.value >>${data.value} ")
-                activeInternetConnection.set(true)
-                uiEvents.post(Event.CalculateScrollButtonVisibility)
-                uiEvents.post(Event.OnDataUpdated)
-                setWorkspaceView()
-            }
-            is Result.OnError -> handleError(result.error)
-        }
-    }
-
-
     private fun handleFetchResultFromAPI(
         fetchWorkspaceResult: Result<WorkspaceDataAPI>,
         tailornovaResult: Result.OnSuccess<OfflinePatternData>
@@ -849,10 +821,7 @@ class WorkspaceViewModel @Inject constructor(
         filename: String, patternFolderName: String?
     ): File? {
         var result: File? = null
-        val outputFile: File? = null
         var dittofolder: File? = null
-
-        val contextWrapper = ContextWrapper(context)
 
         dittofolder = if (Build.VERSION.SDK_INT >= 30) {
             File(
