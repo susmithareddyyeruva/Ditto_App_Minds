@@ -2,7 +2,6 @@ package com.ditto.login.ui
 
 import android.content.Context
 import com.ditto.logger.LoggerFactory
-import com.ditto.login.data.mapper.mapResponseToModel
 import com.ditto.login.domain.model.CBodyDomain
 import com.ditto.login.domain.model.GetLoginDbUseCase
 import com.ditto.login.domain.model.LandingContentDomain
