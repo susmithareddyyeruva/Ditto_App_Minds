@@ -348,7 +348,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .load(viewModel.data.value?.patternDescriptionImageUrl)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(binding.imagePatternDesc)
-            //todo need to check for type
+            // need to check for type
             setVisibilityForViews(
                 "WORKSPACE",
                 false,
@@ -387,42 +387,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
         }
-        /* setVisibilityForViews(
-             "WORKSPACE",
-             false,
-             false,
-             false,
-             false,
-             false,
-             false,
-             true
-         )*/
-        /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
-            1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
-            4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
-            8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
-            9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
-            10 -> setVisibilityForViews(
-                "RENEW SUBSCRIPTION",
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
-            else -> setVisibilityForViews(
-                "WORKSPACE",
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
-        }*/
+
         setPatternImage()
     }
 
@@ -431,7 +396,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.clickedProduct?.patternType.equals("Trial")) {
             viewModel.prodSize.set(
                 viewModel.data?.value?.size ?: ""
-            ) // todo milli second null CHANGE LOGIC
+            ) //  milli second null CHANGE LOGIC
         } else {
             viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
         }

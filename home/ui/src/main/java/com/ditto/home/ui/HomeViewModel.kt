@@ -170,7 +170,7 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleOfflineFetchResult(it) }
     }
 
-    // todo if no trial patterns available in DB then call this api (how to)
+    //  if no trial patterns available in DB then call this api (how to)
     fun fetchTailornovaTrialPattern() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.fetchTailornovaTrialPatterns()

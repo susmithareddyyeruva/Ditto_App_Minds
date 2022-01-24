@@ -32,8 +32,8 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     }
     private val uiEvents = UiEvents<MyFolderViewModel.Event>()
     val events = uiEvents.stream()
-    var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
-    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    var clickedTailornovaID: ObservableField<String> = ObservableField("")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")
     var clickedProduct: ProdDomain? = null
     var mutableLiveData: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
     var errorString: ObservableField<String> = ObservableField("")
