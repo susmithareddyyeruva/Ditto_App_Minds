@@ -722,7 +722,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    // todo
     fun fetchWorkspaceData(selectedTab: Int): MutableList<WorkspaceItems>? {
 
         if (selectedTab == 0) {
@@ -821,18 +820,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    private fun showSplicingForgetDialogue(alertType: Utility.AlertType) {
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.complete_cutbin),
-            resources.getString(R.string.click_spliced_second_pieces),
-            resources.getString(R.string.empty_string),
-            resources.getString(R.string.ok),
-            this,
-            alertType,
-            Utility.Iconype.NONE
-        )
-    }
 
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()

@@ -10,7 +10,7 @@ internal fun Patterns.toDomain(): PatternsData {
     return PatternsData(
         id = this.id,
         patternName = this.patternName,
-        patternType = "Demo",//todo pattern type
+        patternType = "Demo",
         description = this.description,
         totalPieces = this.totalPieces,
         completedPieces = this.completedPieces,
@@ -121,7 +121,6 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
     )
 }
 
-//todo check below
 internal fun PatternsData.toDomain(): Patterns {
     return Patterns(
         id = this.id,

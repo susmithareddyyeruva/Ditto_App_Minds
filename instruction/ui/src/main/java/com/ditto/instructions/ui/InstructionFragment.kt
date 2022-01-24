@@ -335,7 +335,7 @@ class InstructionFragment constructor(
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.videoPath
             }
 
-            val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
+            if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
                 viewModel.data.value?.instructions?.get(position)?.instructions?.get(binding.instructionViewPager.currentItem)?.title
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
