@@ -12,6 +12,7 @@ import com.ditto.login.domain.model.LandingContentDomain
 import com.ditto.login.domain.model.LoginResultDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.model.User
+import com.google.gson.Gson
 
 fun User.toUserDomain(): LoginUser {
     return LoginUser(
@@ -176,3 +177,4 @@ fun CBody.toDomain():CBodyDomain{
     videoUrl = this.videoUrl,
     imageUrl = this.imageUrl)
 }
+

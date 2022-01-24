@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
     var errorString: ObservableField<String> = ObservableField("")
     var videoUrl: String = ""
     var imageUrl: ObservableField<String> = ObservableField("")
-    private val uiEvents = UiEvents<Event>()
+    val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
     var viewPagerData: MutableLiveData<List<LoginViewPagerData>> = MutableLiveData()
@@ -55,10 +55,10 @@ class LoginViewModel @Inject constructor(
     fun validateCredentials() {
         isEmailValidated.set(true)
         isPasswordValidated.set(true)
-        if (TextUtils.isEmpty(userName.get()) || !isEmailValid()) {
+        if (userName.get().isNullOrEmpty() || !isEmailValid()) {
             isEmailValidated.set(false)
             logger.d("username invalid")
-        } else if (TextUtils.isEmpty(password.get())) {
+        } else if (password.get().isNullOrEmpty()) {
             isPasswordValidated.set(false)
             logger.d("password invalid")
         } else {
@@ -67,20 +67,23 @@ class LoginViewModel @Inject constructor(
 
             //Making api call for Login
             uiEvents.post(Event.OnShowProgress)
-            disposable += useCase.loginUserWithCredential(
-                LoginInputData(
-                    userName.get(),
-                    password.get()
-                )
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy { handleFetchResult(it) }
+            makeUserLoginApiCall()
             isLoginButtonFocusable.set(false)
 
         }
     }
 
+    internal fun makeUserLoginApiCall() {
+        disposable += useCase.loginUserWithCredential(
+            LoginInputData(
+                userName.get(),
+                password.get()
+            )
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }
+    }
 
     fun signUpRedirection() {
         Utility.redirectToExternalBrowser(context, BuildConfig.SIGN_UP_URL)
@@ -129,51 +132,7 @@ class LoginViewModel @Inject constructor(
                     /**
                      * Storing the subscription information into DB
                      */
-                    disposable += useCase.createUser(
-                        LoginUser(
-                            userName = userName.get(),
-                            _type = result.data._type,
-                            auth_type = result.data.authType,
-                            customer_id = result.data.customerId,
-                            customer_no = result.data.customerNo,
-                            email = result.data.email,
-                            first_name = result.data.firstName,
-                            last_name = result.data.lastName,
-                            last_visit_time = result.data.lastVisitTime,
-                            last_modified = result.data.lastModified,
-                            last_login_time = result.data.lastLoginTime,
-                            gender = result.data.gender,
-                            phone_home = result.data.phoneHome,
-                            login = result.data.phoneHome,
-                            previous_login_time = result.data.previousLoginTime,
-                            previous_visit_time = result.data.previousVisitTime,
-                            salutation = result.data.salutation,
-                            isLoggedIn = true,
-                            cMirrorReminder = result.data.cMirrorReminder,
-                            cReceiveEmail = result.data.cReceiveEmail,
-                            cSpliceCutCompleteReminder = result.data.cSpliceCutCompleteReminder,
-                            cSpliceMultiplePieceReminder = result.data.cSpliceMultiplePieceReminder,
-                            cSpliceReminder = result.data.cSpliceReminder,
-                            cCuttingReminder = result.data.cCuttingReminder,
-                            cInitialisationVector = result.data.cInitialisationVector,
-                            cVectorKey = result.data.cVectorKey,
-                            cSubscriptionValid = result.data.cSubscriptionValid,
-                            cSubscriptionPlanEndDate = result.data.cSubscriptionPlanEndDate,
-                            cSubscriptionPlanStartDate = result.data.cSubscriptionPlanStartDate,
-                            cSubscriptionPlanPrice = result.data.cSubscriptionPlanPrice,
-                            cSubscriptionPlanId = result.data.cSubscriptionPlanId,
-                            cSubscriptionPlanName = result.data.cSubscriptionPlanName,
-                            cSubscriptionID = result.data.cSubscriptionID,
-                            cSubscriptionPlanCurrency = result.data.cSubscriptionPlanCurrency,
-                            cSubscriptionType = result.data.cVectorKey,
-                            cSubscriptionPlanBillingEndDate = result.data.cSubscriptionPlanBillingEndDate,
-                            cSubscriptionPlanBillingStartDate = result.data.cSubscriptionPlanBillingStartDate
-
-                        )
-                    )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeBy { handleFetchResult(it) }
+                    makeCreateUserCall(result)
 
                 } else { //http status code is 200  also have error
                     isLoginButtonFocusable.set(true)
@@ -190,6 +149,53 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+     fun makeCreateUserCall(result: Result.OnSuccess<LoginResultDomain>) {
+        disposable += useCase.createUser(
+            LoginUser(
+                userName = userName.get(),
+                _type = result.data._type,
+                auth_type = result.data.auth_type,
+                customer_id = result.data.customer_id,
+                customer_no = result.data.customer_no,
+                email = result.data.email,
+                first_name = result.data.first_name,
+                last_name = result.data.last_name,
+                last_visit_time = result.data.last_visit_time,
+                last_modified = result.data.last_modified,
+                last_login_time = result.data.last_login_time,
+                gender = result.data.gender,
+                phone_home = result.data.phone_home,
+                login = result.data.phone_home,
+                previous_login_time = result.data.previous_login_time,
+                previous_visit_time = result.data.previous_visit_time,
+                salutation = result.data.salutation,
+                isLoggedIn = true,
+                cMirrorReminder = result.data.cMirrorReminder,
+                cReceiveEmail = result.data.cReceiveEmail,
+                cSpliceCutCompleteReminder = result.data.cSpliceCutCompleteReminder,
+                cSpliceMultiplePieceReminder = result.data.cSpliceMultiplePieceReminder,
+                cSpliceReminder = result.data.cSpliceReminder,
+                cCuttingReminder = result.data.cCuttingReminder,
+                cInitialisationVector = result.data.cInitialisationVector,
+                cVectorKey = result.data.cVectorKey,
+                cSubscriptionValid = result.data.cSubscriptionValid,
+                cSubscriptionPlanEndDate = result.data.cSubscriptionPlanEndDate,
+                cSubscriptionPlanStartDate = result.data.cSubscriptionPlanStartDate,
+                cSubscriptionPlanPrice = result.data.cSubscriptionPlanPrice,
+                cSubscriptionPlanId = result.data.cSubscriptionPlanId,
+                cSubscriptionPlanName = result.data.cSubscriptionPlanName,
+                cSubscriptionID = result.data.cSubscriptionID,
+                cSubscriptionPlanCurrency = result.data.cSubscriptionPlanCurrency,
+                cSubscriptionType = result.data.cVectorKey,
+                cSubscriptionPlanBillingEndDate = result.data.cSubscriptionPlanBillingEndDate,
+                cSubscriptionPlanBillingStartDate = result.data.cSubscriptionPlanBillingStartDate
+
+            )
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }
+    }
 
     fun forgotPasswordRedirection() {
         Utility.redirectToExternalBrowser(context, BuildConfig.FORGOT_PASSWORD_URL)
@@ -201,7 +207,7 @@ class LoginViewModel @Inject constructor(
         uiEvents.post(Event.OnLoginClicked)
     }
 
-    private fun handleError(error: Error) {
+    internal fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
                 activeInternetConnection.set(false)
@@ -219,8 +225,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun isEmailValid(): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(userName.get()).matches()
+    internal fun isEmailValid(): Boolean {
+        return PatternsCompat.EMAIL_ADDRESS.matcher(userName.get()).matches()
     }
 
     fun guestLogin() {
@@ -262,7 +268,7 @@ class LoginViewModel @Inject constructor(
             }
     }
 
-    private fun handleLandingScreenFetchDetails(it: Result<LandingContentDomain>?) {
+    internal fun handleLandingScreenFetchDetails(it: Result<LandingContentDomain>?) {
         logger.d("LandingDetails  : ${it.toString()}")
         when (it) {
             is Result.OnSuccess -> {
