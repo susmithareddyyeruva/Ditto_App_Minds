@@ -8,7 +8,6 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.mylibrary.domain.request.*
-import com.google.gson.Gson
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -400,7 +399,6 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
 
         }
         filterCriteria.ProductFilter = resultmapFolder
-        val resultJson = Gson().toJson(resultmapFolder)
         logger.d("JSON===, resultJson")
 
         return filterCriteria

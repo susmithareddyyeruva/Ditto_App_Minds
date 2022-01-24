@@ -1494,37 +1494,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         return true
     }
 
-    private fun cutPieces(count: Int?) {
-        if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
-            //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
-        } else if (count != null && count > 1 && !viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }?.isCompleted!!) {
-            mWorkspaceEditor?.clearAllSelection()
-            enableMirror(false)
-            showCutBinDialog(count, Utility.AlertType.CUT_BIN)
-            cutCount = count
-        } else {
-            mWorkspaceEditor?.clearAllSelection()
-            enableMirror(false)
-            if (!viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }?.isCompleted!!) {
-                viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
-                    ?.isCompleted = true
-                com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
-                adapter?.notifyDataSetChanged()
-                viewModel.setCompletedCount(1)
-            }
-            mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
-            if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-                viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
-            } else {
-                viewModel.workspacedata = null
-                clearWorkspace()
-            }
-            onDragCompleted()
-        }
-    }
 
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
-//        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableSelectAll(true)
         enableClear(true)

@@ -12,7 +12,6 @@ import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
-import com.google.gson.Gson
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -446,7 +445,6 @@ class AllPatternsViewModel @Inject constructor(
 
         }
         filterCriteria.ProductFilter = resultMap
-        val resultJson = Gson().toJson(resultMap)
         logger.d("JSON=== resultJson")
         logger.d("RESULT STRING===, resultString")
         return filterCriteria
