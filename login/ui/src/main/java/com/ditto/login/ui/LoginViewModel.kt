@@ -1,7 +1,7 @@
 package com.ditto.login.ui
 
 import android.content.Context
-import android.text.TextUtils
+import androidx.core.util.PatternsCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -154,20 +154,20 @@ class LoginViewModel @Inject constructor(
             LoginUser(
                 userName = userName.get(),
                 _type = result.data._type,
-                auth_type = result.data.auth_type,
-                customer_id = result.data.customer_id,
-                customer_no = result.data.customer_no,
+                auth_type = result.data.authType,
+                customer_id = result.data.customerId,
+                customer_no = result.data.customerNo,
                 email = result.data.email,
-                first_name = result.data.first_name,
-                last_name = result.data.last_name,
-                last_visit_time = result.data.last_visit_time,
-                last_modified = result.data.last_modified,
-                last_login_time = result.data.last_login_time,
+                first_name = result.data.firstName,
+                last_name = result.data.lastName,
+                last_visit_time = result.data.lastVisitTime,
+                last_modified = result.data.lastModified,
+                last_login_time = result.data.lastLoginTime,
                 gender = result.data.gender,
-                phone_home = result.data.phone_home,
-                login = result.data.phone_home,
-                previous_login_time = result.data.previous_login_time,
-                previous_visit_time = result.data.previous_visit_time,
+                phone_home = result.data.phoneHome,
+                login = result.data.phoneHome,
+                previous_login_time = result.data.previousLoginTime,
+                previous_visit_time = result.data.previousVisitTime,
                 salutation = result.data.salutation,
                 isLoggedIn = true,
                 cMirrorReminder = result.data.cMirrorReminder,
