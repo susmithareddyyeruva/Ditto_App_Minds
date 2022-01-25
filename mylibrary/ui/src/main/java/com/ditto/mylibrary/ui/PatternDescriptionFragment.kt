@@ -766,6 +766,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnGuestUSerWSClick -> {
                 checkSocketConnectionBeforeWorkspace()
             }
+            else -> {}
         }
 
     private fun WSButtonClick() {
@@ -1376,7 +1377,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun showDataFailedAlert() {
         var errorMsg: String? = null
-        if (viewModel.tailornovaApiError?.contains("processing", true) == true) {
+        if (viewModel.tailornovaApiError?.contains("In progress", true) == true) {
             errorMsg = getString(R.string.str_processing_error)
         } else {
             errorMsg =
