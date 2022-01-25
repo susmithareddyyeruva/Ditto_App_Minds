@@ -135,7 +135,7 @@ class HomeViewModel @Inject constructor(
 
         }
     }
-
+// todo started
     fun fetchData() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getHomePatternsData(
@@ -274,8 +274,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
-    private fun handleError(error: Error) {
+//unit testing done
+    internal fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
                 Log.d("DEBUG>>>>","handleError NoNetworkError ")
@@ -323,7 +323,7 @@ class HomeViewModel @Inject constructor(
         patternFolderName: String?
     ) {
         try {
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO,) {
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(imageUrl)
