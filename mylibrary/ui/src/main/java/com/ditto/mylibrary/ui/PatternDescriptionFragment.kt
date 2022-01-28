@@ -385,10 +385,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else {
                 setVisibilityForViews("RESUME", false, true, false, false, true, false)
             }
-
+            setPatternImage()
         }
 
-        setPatternImage()
+
     }
 
     private fun setData() {
@@ -1591,7 +1591,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}", context)
         logger.d("imageUri123, $foldername availableUri: $availableUri")
 
-        if (imagePath?.endsWith(".svg", true)!!) {
+        if (imagePath?.endsWith(".svg", true) == true) {
             Glide
                 .with(context)
                 .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else */availableUri)
@@ -1601,7 +1601,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .imageDecoder(SvgBitmapDecoder(context))
                 .into(imageView)
 
-        } else if (imagePath.endsWith(".png", true)) {
+        } else if (imagePath?.endsWith(".png", true) == true) {
             Glide
                 .with(context)
                 .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else*/ availableUri)
