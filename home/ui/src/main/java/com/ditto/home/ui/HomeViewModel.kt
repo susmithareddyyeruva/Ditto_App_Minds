@@ -170,7 +170,7 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleTrialPatternResult(it) }
     }
 
-    fun fetchListOfTrialPatternFromInternalStorage() {
+    internal fun fetchListOfTrialPatternFromInternalStorage() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getTrialPatterns()
             .subscribeOn(Schedulers.io())
@@ -225,7 +225,7 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling fetch result here.....
      */
-    private fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
+    internal fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
@@ -253,7 +253,7 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling offline fetch result here.....
      */
-    private fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
+     fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
