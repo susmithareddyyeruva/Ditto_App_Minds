@@ -199,7 +199,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
+    internal fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
         when (result) {
             is Result.OnSuccess -> {
                 Log.d("DEBUG>>>>","handleTrialPatternResult Success")
