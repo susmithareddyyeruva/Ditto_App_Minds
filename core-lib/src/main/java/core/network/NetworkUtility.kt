@@ -12,7 +12,7 @@ class NetworkUtility {
 
     companion object {
 
-        var isServiceConnected : Boolean = false  // todo to remove if not needed
+        var isServiceConnected : Boolean = false
         var nsdSericeHostName: String = ""
         var nsdSericePortName: Int = 0
 

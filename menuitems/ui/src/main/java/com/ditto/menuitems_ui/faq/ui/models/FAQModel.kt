@@ -6,17 +6,17 @@ import java.io.Serializable
 
 class FAQModel(
     @SerializedName("Ques")
-    var Ques: String? = null,
+    var question: String? = null,
     @SerializedName("Answ")
-    var Answ: String? = null,
+    var answer: String? = null,
     @SerializedName("SubAnsw")
-    var SubAnsw: List<SubAnswModel>? = null,
+    var subAnswer: List<SubAnswModel>? = null,
     @SerializedName("is_expanded")
     var isExpanded: Boolean? = false,
     @SerializedName("web_url")
-    var web_url: String? = null,
+    var webUrl: String? = null,
     @SerializedName("video_url")
-    var video_url: String? = null
+    var videoUrl: String? = null
 ) : Serializable {
     override
     fun toString(): String {

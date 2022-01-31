@@ -24,7 +24,6 @@ import com.ditto.workspace.ui.PinchAndZoom
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -116,7 +115,7 @@ class HowtoFragment : BaseFragment() {
             }
             is HowtoViewModel.Event.OnItemClick -> {
 
-                if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && !(Common.currentSelectedTab.get() == 0)) {
+                if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && Common.currentSelectedTab.get() != 0) {
 
                     var title =
                         viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
@@ -140,7 +139,7 @@ class HowtoFragment : BaseFragment() {
                 }
             }
             else -> {
-                Log.d("button event", "Button clicked except onSkip")
+                logger.d("button event, Button clicked except onSkip")
             }
         }
 
@@ -221,7 +220,7 @@ class HowtoFragment : BaseFragment() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScroll", "onPageScrolled")
+                logger.d("onPageScroll, onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -247,11 +246,11 @@ class HowtoFragment : BaseFragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                Log.d("onTabUnselected", "tab selected")
+                logger.d("onTabUnselected, tab selected")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-                Log.d("onTabReselected", "re-selected")
+                logger.d("onTabReselected, re-selected")
             }
         })
     }

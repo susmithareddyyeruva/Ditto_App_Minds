@@ -112,18 +112,4 @@
             app:layout_constraintEnd_toEndOf="@id/image_pattern"
             app:layout_constraintTop_toTopOf="@id/image_pattern" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--<ImageButton
-        android:id="@+id/optionItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:visibility="visible"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:contentDescription="Popup menu"
-        android:focusable="true"
-        android:onClick="@{(view) -> viewModel.onOptionsClicked(view, patternValue.id)}"
-        android:src="@drawable/ic_overflow_holo_dark" />
--->
 </layout>

@@ -1,7 +1,6 @@
 package com.ditto.onboarding.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.api.LoginRepositoryImpl
@@ -81,7 +80,6 @@ class OnBoardingRepositoryImpl @Inject constructor(
                         logger.d("Error Onboarding")
                     }
                 } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
                     errorMessage = e.message.toString()
 
 

@@ -754,11 +754,8 @@ class Utility @Inject constructor(
             val daysInMilli = hoursInMilli * 24
             val elapsedDays = different / daysInMilli
             different %= daysInMilli
-            val elapsedHours = different / hoursInMilli
             different %= hoursInMilli
-            val elapsedMinutes = different / minutesInMilli
             different %= minutesInMilli
-            val elapsedSeconds = different / secondsInMilli
             println("different : $elapsedDays")
             return elapsedDays
         }

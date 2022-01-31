@@ -41,15 +41,11 @@ class PreferenceStorageImpl(private val context: Context) : PreferenceStorage {
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return pref.getLong(key, 0)
     }
+
     override fun saveInt(key: String, value: Int) {
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         pref.edit().putInt(key, value).commit()
 
-    }
-
-    override fun clear() {
-        val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val clear = pref.edit().clear().apply()
     }
 
     override fun clearAllPreferenceExceptCoachMark(key1: String, key2: String) {

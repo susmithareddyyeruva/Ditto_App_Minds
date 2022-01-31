@@ -55,7 +55,6 @@ class CustomerCareFragment : BaseFragment() {
                 handleEvent(it)   //Observing UI event
             }
 
-        // TODO: Use the ViewModel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

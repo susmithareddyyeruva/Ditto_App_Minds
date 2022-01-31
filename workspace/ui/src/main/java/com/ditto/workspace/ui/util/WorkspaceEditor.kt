@@ -534,7 +534,6 @@ class WorkspaceEditor private constructor(builder: Builder) {
         (imageView?.parent as View).y = newY
 
         // Check if it overlaps on mirroring
-        // TODO : PUT isOverlappingEnabled true IF OVERLAPPING NEEDED
         if (Utility.isOverlappingEnabled.get() && checkOverlappingCondition(
                 CollisionUtil.getViewBitmap((imageView?.parent as View))
                     .get(),

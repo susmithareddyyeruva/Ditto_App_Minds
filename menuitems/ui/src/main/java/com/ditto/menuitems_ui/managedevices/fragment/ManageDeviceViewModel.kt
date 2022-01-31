@@ -1,6 +1,5 @@
 package com.ditto.menuitems_ui.managedevices.fragment
 
-import android.net.nsd.NsdManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -8,7 +7,6 @@ import core.MODE_BLE
 import core.MODE_SERVICE
 import core.appstate.AppState
 import core.event.UiEvents
-import core.models.Nsdservicedata
 import core.network.NetworkUtility
 import core.ui.BaseViewModel
 import core.ui.common.Utility
@@ -50,7 +48,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
         }
     }
 
-    fun Connect(){
+    fun connect(){
         uiEvents.post(Event.OnConnectClick)
     }
 
@@ -116,7 +114,7 @@ class ManageDeviceViewModel  @Inject constructor(): BaseViewModel() {
         uiEvents.post(Event.OnConnectionFailed)
     }
 
-     fun OnBluetoothClicked(){
+     fun onBluetoothClicked(){
         mode.set(MODE_BLE)
         uiEvents.post(Event.OnBleConnectClick)
     }

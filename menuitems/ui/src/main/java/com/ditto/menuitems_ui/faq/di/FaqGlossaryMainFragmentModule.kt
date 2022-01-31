@@ -1,7 +1,7 @@
 package com.ditto.menuitems_ui.faq.di
 
 import androidx.lifecycle.ViewModel
-import com.ditto.menuitems_ui.faq.ui.FAQGlossaryfragmentViewModel
+import com.ditto.menuitems_ui.faq.ui.FAQGlossaryFragmentViewModel
 import com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment
 import core.ui.ViewModelKey
 import dagger.Binds
@@ -13,8 +13,8 @@ import dagger.multibindings.IntoMap
 interface FAQGlossaryFragmentViewModelModule {
     @Binds
     @IntoMap
-    @ViewModelKey(FAQGlossaryfragmentViewModel::class)
-    fun bindFAQGlossaryfragmentViewModel(viewModel: FAQGlossaryfragmentViewModel): ViewModel
+    @ViewModelKey(FAQGlossaryFragmentViewModel::class)
+    fun bindFAQGlossaryfragmentViewModel(viewModel: FAQGlossaryFragmentViewModel): ViewModel
 
 }
 

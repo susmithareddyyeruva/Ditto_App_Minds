@@ -8,14 +8,6 @@
         <variable
             name="viewModel"
             type="com.ditto.mylibrary.ui.MyLibraryViewModel" />
-
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="trace.mylibrary.domain.model.MyLibraryData" />-->
-
-<!--        <import type="android.view.View" />-->
-
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,9 +44,9 @@
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
             android:layout_gravity="center_vertical"
+            android:background="@color/white"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:background="@color/white"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

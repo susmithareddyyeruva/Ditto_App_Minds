@@ -1,7 +1,6 @@
 package com.ditto.menuitems.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.data.api.AboutAppService
@@ -35,7 +34,7 @@ class AboutAppRepositoryImpl @Inject constructor(private val aboutAppService: @J
         }
             return aboutAppService.getAboutAndPrivacyPolicy(  BuildConfig.CLIENT_ID)
                 .doOnSuccess{
-                    Log.d("result_success","doOnSuccess >>> ${it.toString()}")
+                   logger.d("result_success doOnSuccess >>> ${it.toString()}")
 
                 }
                 .map {
@@ -47,7 +46,7 @@ class AboutAppRepositoryImpl @Inject constructor(private val aboutAppService: @J
                         logger.d("try block")
                         logger.d("${it.localizedMessage}")
                     } catch (e: Exception) {
-                        Log.d("Catch", e.localizedMessage)
+                       logger.d("Catch ${e.localizedMessage}")
                         errorMessage = when (e) {
                             is UnknownHostException -> {
                                 "Unknown host!"

@@ -10,6 +10,6 @@ import retrofit2.http.Query
 interface FAQGlossaryService {
     @Headers("Content-Type: application/json")
     @GET(BuildConfig.COMMON_ENDURL+"content/hamburgerAsset?")
-    fun getFAQGlossaryData(@Query("client_id") client_id: String?): Single<FAqGlossaryResultClass>
+    fun getFAQGlossaryData(@Query("client_id") clientId: String?): Single<FAqGlossaryResultClass>
 
 }

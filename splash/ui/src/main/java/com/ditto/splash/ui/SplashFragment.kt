@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
@@ -55,6 +54,9 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         super.onActivityCreated(savedInstanceState)
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.visibility.set(false)
+        toolbarViewModel.isShowTransparentActionBar.set(false)
+        toolbarViewModel.isShowActionBar.set(true)
+        toolbarViewModel.isShowActionMenu.set(false)
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -107,16 +109,16 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         versionDisposable = CompositeDisposable()
 
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     lifecycleScope.launchWhenResumed {
                         versionResult = it.versionReceived
-                        if (versionResult?.response?.critical_update == true ||
-                            versionResult?.response?.force_update == true
+                        if (versionResult?.response?.criticalUpdate == true ||
+                            versionResult?.response?.forceUpdate == true
                         ) {
                             showVersionPopup()
-                        } else if (versionResult?.response?.version_update == true) {
+                        } else if (versionResult?.response?.versionUpdate == true) {
                             viewModel.continueToApp()
                         } else {
 //                    Toast.makeText(context,"Your app is upto date!!",Toast.LENGTH_SHORT).show()
@@ -126,7 +128,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
                 })
 
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionErrorReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     lifecycleScope.launchWhenResumed {
@@ -183,7 +185,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        if (versionResult?.response?.force_update == true) {
+        if (versionResult?.response?.forceUpdate == true) {
             requireActivity().finishAffinity()
         } else {
             viewModel.continueToApp()

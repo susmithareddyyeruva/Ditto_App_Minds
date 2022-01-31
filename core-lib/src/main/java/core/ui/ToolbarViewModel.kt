@@ -2,7 +2,6 @@ package core.ui
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
 import core.event.UiEvents
 import javax.inject.Inject
 
@@ -23,7 +22,7 @@ class ToolbarViewModel @Inject constructor(): BaseViewModel() {
     }
 
     fun onMenu() {
-        uiEvents.post(Event.onMenu)
+        uiEvents.post(Event.OnMenu)
     }
 
 
@@ -37,7 +36,7 @@ class ToolbarViewModel @Inject constructor(): BaseViewModel() {
          */
         object OnSkipTutorial : Event()
 
-        object onMenu : Event()
+        object OnMenu : Event()
 
 
     }

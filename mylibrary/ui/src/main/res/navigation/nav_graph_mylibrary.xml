@@ -5,8 +5,6 @@
     android:id="@+id/nav_graph_mylibrary"
     app:startDestination="@id/myLibraryFragment"
     tools:ignore="UnusedNavigation">
-
-    <!--    <include app:graph="@navigation/instruction_navigation" />-->
     <include app:graph="@navigation/calibration_nav_graph" />
     <include app:graph="@navigation/nav_graph_workspace" />
     <fragment
@@ -40,10 +38,6 @@
         <action
             android:id="@+id/action_fragments_to_customerCareFragment"
             app:destination="@id/customerCareFragment" />
-        <!--  <action
-              android:id="@+id/action_fragments_to_search"
-              app:popUpTo="@id/allPatternsFragment"
-              app:destination="@id/searchFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/patternDescriptionFragment"

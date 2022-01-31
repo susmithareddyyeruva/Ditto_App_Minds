@@ -9,5 +9,5 @@ data class AboutAppResponseData (
     @SerializedName("id")
     val id: String,
     @SerializedName("c_body")
-    val c_body: String
+    val cBody: String
 )

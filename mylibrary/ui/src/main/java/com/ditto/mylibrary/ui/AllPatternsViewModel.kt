@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -13,7 +12,6 @@ import com.ditto.mylibrary.domain.request.FolderRequest
 import com.ditto.mylibrary.domain.request.GetFolderRequest
 import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
 import com.ditto.mylibrary.domain.request.OrderFilter
-import com.google.gson.Gson
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -42,8 +40,8 @@ class AllPatternsViewModel @Inject constructor(
 
 
     var data: MutableLiveData<List<MyLibraryData>> = MutableLiveData()
-    var clickedTailornovaID: ObservableField<String> = ObservableField("")//todo
-    var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
+    var clickedTailornovaID: ObservableField<String> = ObservableField("")
+    var clickedOrderNumber: ObservableField<String> = ObservableField("")
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -148,7 +146,7 @@ class AllPatternsViewModel @Inject constructor(
     }
 
     private fun handleFetchResult(result: Result<AllPatternsDomain>) {
-        Log.d("Testing", ">>>>>>   All Patterns handleFetchResult")
+        logger.d("Testing, >>>>>>   All Patterns handleFetchResult")
         when (result) {
             is Result.OnSuccess -> {
                 var temp: ArrayList<ProdDomain> =
@@ -339,7 +337,7 @@ class AllPatternsViewModel @Inject constructor(
         val hashMap = HashMap<String, ArrayList<String>>()
         hashMap[folderName] = arrayListOf(product?.tailornovaDesignId ?: "")
         var methodName: String? = ""
-        Log.d("DESIGN ID==", product?.tailornovaDesignId ?: "")
+        logger.d("DESIGN ID==, product?.tailornovaDesignId ?: ")
         val favReq = FolderRequest(
             OrderFilter(
                 true,
@@ -411,8 +409,7 @@ class AllPatternsViewModel @Inject constructor(
                 trialPattern = false
             ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
         )
-        val json1 = Gson().toJson(menuList)
-        Log.d("JSON===", json1)
+        logger.d("JSON=== json1")
         val filteredMap: HashMap<String, Array<FilterItems>> = HashMap()
         menuList.forEach { (key, value) ->
             val filtered = value.filter { prod -> prod.isSelected }
@@ -448,10 +445,8 @@ class AllPatternsViewModel @Inject constructor(
 
         }
         filterCriteria.ProductFilter = resultMap
-        val resultJson = Gson().toJson(resultMap)
-        Log.d("JSON===", resultJson)
-        val resultString: String = resultJson.substring(1, resultJson.toString().length - 1)
-        Log.d("RESULT STRING===", resultString)
+        logger.d("JSON=== resultJson")
+        logger.d("RESULT STRING===, resultString")
         return filterCriteria
     }
 

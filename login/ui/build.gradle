@@ -97,6 +97,7 @@ dependencies {
     implementation project(path: ':non-core-lib')
 
     implementation project(path: ':login-domain')
+    implementation project(path: ':login-data')
     implementation project(path: ':onboarding-ui')
 
     implementation project(path: ':logger')
@@ -108,9 +109,12 @@ dependencies {
     implementation project(path: ':storage-data')
     implementation project(path: ':storage-domain')
 
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
     //Glide Module
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 //    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
-
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation 'org.mockito:mockito-inline:2.28.2'
 
 }

@@ -56,19 +56,19 @@ class WSProSettingsFragment : BaseFragment() {
         }
 
     private fun handleSwitchListener(){
-        switch_mirroringreminder.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_mirroringreminder.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setMirrorReminderData(isChecked)
             //viewModel.postBooleanDataForSettings()
         }
-        switch_splicing.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_splicing.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setSplicingNotification(isChecked)
             //viewModel.postBooleanDataForSettings()
         }
-        switch_multiple_piece.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_multiple_piece.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setSplicingWithMultiple(isChecked)
             //viewModel.postBooleanDataForSettings()
         }
-        switch_cutnumber.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_cutnumber.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setCutNumberSplicing(isChecked)
             //viewModel.postBooleanDataForSettings()
         }

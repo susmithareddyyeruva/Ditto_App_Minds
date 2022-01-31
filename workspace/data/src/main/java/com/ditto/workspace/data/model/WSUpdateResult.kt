@@ -8,13 +8,13 @@ data class WSUpdateResult(
     @SerializedName("_type")
     val type: String?,
     @SerializedName("key_property")
-    val key_property: String?,
+    val keyProperty: String?,
     @SerializedName("_resource_state")
-    val resource_state: String?,
+    val resourceState: String?,
     @SerializedName("key_value_string")
-    val key_value_string: String?,
+    val keyValueString: String?,
     @SerializedName("object_type")
-    val object_type: String?,
+    val objectType: String?,
     @SerializedName("c_traceWorkSpacePattern")
-    val c_traceWorkSpacePattern: String
+    val cTraceworkspacepattern: String
 )

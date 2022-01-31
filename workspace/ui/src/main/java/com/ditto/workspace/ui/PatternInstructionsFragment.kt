@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.workspace.ui.databinding.FragmentWsPatternInstructionsBinding
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import core.PDF_DOWNLOAD_URL
@@ -28,6 +29,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_ws_pattern_instructions.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
 
@@ -35,6 +37,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     lateinit var binding: FragmentWsPatternInstructionsBinding
     var downloadFileName: String? = null
     var patternFolderName : String? = null
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+    val logger: Logger by lazy {
+        loggerFactory.create(PatternInstructionsFragment::class.java.simpleName)
+    }
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -146,7 +153,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
             is WorkspaceViewModel.Event.OnDownloadComplete -> {
                 showPdfFromUri(Uri.parse(viewModel.patternpdfuri.get()))
             }
-            else -> Log.d("Error", "Invaid Event")
+            else -> logger.d("Error, Invaid Event")
         }
 
     private fun showPdfFromUri(pdfName: Uri) {

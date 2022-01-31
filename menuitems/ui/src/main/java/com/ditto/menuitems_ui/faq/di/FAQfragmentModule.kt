@@ -22,5 +22,5 @@ interface FAQfragmentViewModelModule {
 @Module
 interface FAQfragmentModule {
     @ContributesAndroidInjector(modules = [FAQfragmentViewModelModule::class])
-    fun FQAfragment(): FAQFragment
+    fun faqFragment(): FAQFragment
 }

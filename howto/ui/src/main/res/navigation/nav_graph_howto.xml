@@ -5,9 +5,6 @@
     android:id="@+id/howto_navigation"
     app:startDestination="@id/destination_howto"
     tools:ignore="UnusedNavigation">
-
-    <include app:graph="@navigation/nav_graph_video" />
-
     <fragment
         android:id="@+id/destination_howto"
         android:name="com.ditto.howto.ui.HowtoFragment"

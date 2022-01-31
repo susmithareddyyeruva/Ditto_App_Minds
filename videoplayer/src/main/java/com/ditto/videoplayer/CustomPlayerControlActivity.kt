@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -22,7 +21,7 @@ import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
 import core.network.NetworkUtility
 import core.ui.common.Utility
-import kotlinx.android.synthetic.main.activity_player.*
+import kotlinx.android.synthetic.main.custom_layout.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -94,9 +93,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             bundle?.getString("videoPath")?.let { videoUrl = it }
             bundle?.getString("title")?.let { title = it }
             bundle?.getString("from")?.let { from = it }
-            Log.d("VideoPlayer", " title: $title")
             VIDEO_ID = getYoutubeVideoId(videoUrl) ?: ""
-            Log.d("VideoPlayer ID==", " $videoUrl")
             if (from == "tutorial") {
                 findViewById<TextView>(R.id.skipButton).visibility = View.GONE
                 findViewById<ImageView>(R.id.close).visibility = View.VISIBLE
@@ -115,7 +112,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         provider: YouTubePlayer.Provider,
         result: YouTubeInitializationResult
     ) {
-        Log.d("Youtube", "Failed to initialize.")
+
     }
 
     override fun onInitializationSuccess(
@@ -180,7 +177,6 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     var mPlayerStateChangeListener: PlayerStateChangeListener = object : PlayerStateChangeListener {
         override fun onAdStarted() {}
         override fun onError(arg0: YouTubePlayer.ErrorReason) {
-            Log.d("YOUTUBE ERROR", "$arg0")
             if (arg0 == YouTubePlayer.ErrorReason.NETWORK_ERROR) {
                 showAlert("No Internet Connection available !")
             }

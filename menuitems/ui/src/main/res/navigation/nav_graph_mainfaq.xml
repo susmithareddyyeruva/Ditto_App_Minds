@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph_mainfaq"
     app:startDestination="@id/destination_faq_glossary"
     tools:ignore="UnusedNavigation">
-    <include app:graph="@navigation/nav_graph_video" />
     <fragment
         android:id="@+id/destination_faq_glossary"
         android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
