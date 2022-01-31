@@ -1,22 +1,24 @@
 package com.ditto.home.ui
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
 import com.ditto.home.domain.model.ProdDomain
 import com.ditto.mylibrary.domain.model.*
 import com.ditto.storage.domain.StorageManager
+import com.nhaarman.mockitokotlin2.verify
 import core.appstate.AppState
 import core.ui.common.Utility
 import io.mockk.mockk
 import non_core.lib.Result
 import non_core.lib.error.NoNetworkError
+import org.junit.*
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.ClassRule
-import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
@@ -26,6 +28,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 
 @RunWith(MockitoJUnitRunner::class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class HomeViewModelTest {
     @Mock
     lateinit var context: Context
@@ -35,8 +38,7 @@ class HomeViewModelTest {
 
     @Mock
     lateinit var homeUsecase: HomeUsecase
-    lateinit var viewModel: HomeViewModel
-    val appstate = mockk<AppState>()
+    private lateinit var viewModel: HomeViewModel
 
     private val fakeDataPatternIdData = ArrayList<PatternIdData>()
 
@@ -164,19 +166,19 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when fectData API call returned the valid response then update the viewModel`() {
+    fun `when fetchData API call returned the valid response then update the viewModel`() {
         viewModel.handleFetchResult(Result.withValue(fakeDataMyLibraryDetailsDomain))
         assertEquals(2, viewModel.productCount)
     }
 
     @Test
-    fun `when fectData API call returned the empty response then update the viewModel`() {
+    fun `when fetchData API call returned the empty response then update the viewModel`() {
         viewModel.handleFetchResult(Result.withValue(fakeDataMyLibraryDetailsDomain))
         assertNotEquals(0, viewModel.productCount)
     }
 
     @Test
-    fun `when Trial pattern Api returned the empty response then update viewModel`() {
+    fun `when trial pattern Api returned the empty response then update viewModel`() {
         Mockito.doNothing().`when`(viewModel).fetchListOfTrialPatternFromInternalStorage()
         viewModel.handleTrialPatternResult(Result.withValue(fakeDataPatternIdData))
         assertEquals(0, viewModel.trialPatternData.size)
@@ -184,7 +186,7 @@ class HomeViewModelTest {
 
 
     @Test
-    fun `when Trial pattern Api returned the valid response then update viewModel`() {
+    fun `when trial pattern Api returned the valid response then update viewModel`() {
         Mockito.doNothing().`when`(viewModel).fetchListOfTrialPatternFromInternalStorage()
         viewModel.handleTrialPatternResult(Result.withValue(fakeDataPatternIdDataValidResponse))
         assertNotEquals(0, viewModel.trialPatternData.size)
@@ -203,22 +205,43 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when Trial pattern Api returned the valid response when user logged in update viewModel`() {
-        /*  //every { appstate.setIsLogged(true) } returns ArgumentMatchers.eq()
-          `when`(mock.myFunction(anyString())).thenAnswer(
-              Answer { invocation: InvocationOnMock ->
-                  val args = invocation.arguments
-                  args[0]
-              })ay
-
-          `when`(appstate.setIsLogged(true)).then(true)*/
+    fun `when trial pattern Api returned the valid response when user is not logged in update viewModel`() {
+        val appstate: AppState = spy(AppState::class.java)
+        val sharedPrefs: SharedPreferences = mock(SharedPreferences::class.java)
+        Mockito.`when`(context.getSharedPreferences(
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyInt()
+        )).thenReturn(sharedPrefs)
+        appstate.init(context)
+        Mockito.`when`(sharedPrefs.getBoolean(
+            ArgumentMatchers.eq("logged"),
+            ArgumentMatchers.anyBoolean()
+        )).thenReturn(false)
         Mockito.doNothing().`when`(viewModel).fetchListOfTrialPatternFromInternalStorage()
         viewModel.handleTrialPatternResult(Result.withValue(fakeDataPatternIdDataValidResponse))
         assertNotEquals(0, viewModel.trialPatternData.size)
-        // verify(viewModel).fetchData()
+        verify(viewModel).fetchListOfTrialPatternFromInternalStorage()
 
 
     }
 
+    @Test
+    fun `when trial pattern Api returned the valid response when user logged in update viewModel`() {
+        val appstate: AppState = spy(AppState::class.java)
+        val sharedPrefs: SharedPreferences = mock(SharedPreferences::class.java)
+        Mockito.`when`(context.getSharedPreferences(
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyInt()
+        )).thenReturn(sharedPrefs)
+        appstate.init(context)
+        Mockito.doNothing().`when`(viewModel).fetchData()
+        Mockito.`when`(sharedPrefs.getBoolean(
+            ArgumentMatchers.eq("logged"),
+            ArgumentMatchers.anyBoolean()
+        )).thenReturn(true)
+        viewModel.handleTrialPatternResult(Result.withValue(fakeDataPatternIdDataValidResponse))
+        assertNotEquals(0, viewModel.trialPatternData.size)
+        verify(viewModel).fetchData()
+    }
 
 }
