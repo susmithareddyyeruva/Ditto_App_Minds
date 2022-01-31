@@ -134,14 +134,12 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.23" />
 
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/image_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="@fraction/image_desc_guideline" />
-
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/middle_guideline"
@@ -171,7 +169,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent=".75" />
 
-
             <ImageView
                 android:id="@+id/image_pattern_desc"
                 android:layout_width="@dimen/dimen_0"
@@ -183,7 +180,6 @@
                 app:layout_constraintEnd_toStartOf="@id/image_vertical"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription" />
-
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/manniquen_barrier"
@@ -223,12 +219,14 @@
 
             <TextView
                 android:id="@+id/textMannequinName"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/spinner_width"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_mannequinbg"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:gravity="center"
-                android:paddingStart="@dimen/spinner_padding_start"
+                android:lines="1"
+                android:ellipsize="marquee"
+                android:paddingStart="@dimen/padding_15"
                 android:paddingEnd="25dp"
                 android:text="@{viewModel.mannequinName}"
                 android:textColor="@color/black"
