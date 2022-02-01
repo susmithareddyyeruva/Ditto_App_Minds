@@ -16,6 +16,7 @@
     <item name="instruction_navigation" type="id" />
     <item name="nav_graph_workspace" type="id" />
     <item name="destination_customercare" type="id" />
+    <item name="destination_account_info" type="id" />
     <item name="nav_graph_customercare" type="id" />
     <item name="nav_graph_faq" type="id" />
     <item name="nav_graph_mainfaq" type="id" />
@@ -68,6 +69,7 @@
     <item name="action_homeFragment_to_wssettings_fragment" type="id" />
     <item name="action_homeFragment_to_nav_graph_manage" type="id" />
     <item name="action_homeFragment_to_nav_graph_softwareUpdate" type="id" />
+    <item name="action_homeFragment_to_accountInfoFragment" type="id" />
     <item name="action_homeFragment_to_privacyAndSettingFragment" type="id" />
 
     <item name="action_pattern_description_to_customerCareFragment" type="id" />
@@ -77,6 +79,7 @@
     <item name="action_pattern_description_to_nav_graph_manage" type="id" />
     <item name="action_pattern_description_to_nav_graph_sotwareUpdate" type="id" />
     <item name="action_pattern_description_to_privacyAndSettingFragment" type="id" />
+    <item name="action_pattern_description_to_accountIndoFragment" type="id" />
     <item name="nav_graph_id_folderdetail" type="id" />
     <item name="myfolderFragment" type="id" />
 

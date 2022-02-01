@@ -20,8 +20,8 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     val showProgress = ObservableBoolean(false)
     val showWSProgress = ObservableBoolean(false)
     val isShownCoachMark = ObservableBoolean(true)// initially true not to show in splash
-    val showCoachImage : ObservableInt = ObservableInt(R.drawable.coachmark_home_menu)
-    val coachImageCount : ObservableInt = ObservableInt(0)
+    val showCoachImage: ObservableInt = ObservableInt(R.drawable.coachmark_home_menu)
+    val coachImageCount: ObservableInt = ObservableInt(0)
     val coachMarkImages = intArrayOf(
         R.drawable.coachmark_home_menu,
         R.drawable.coachmark_home_library,
@@ -108,16 +108,18 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         )
         childModelsList.add(childModel)
 
-//        childModel = MenuModel(
-//            "Privacy policy",
-//            "ic_menu_privacy",
-//            null
-//        )
-//        childModelsList.add(childModel)
-
         childModel = MenuModel(
             "Workspace Settings",
             "ic_ws_settings_icon",
+            null
+        )
+        if (AppState.getIsLogged()) {
+            childModelsList.add(childModel)
+        }
+
+        childModel = MenuModel(
+            "Account Info",
+            "ic_menu_privacy",
             null
         )
         if (AppState.getIsLogged()) {
@@ -182,10 +184,10 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun coachMarkNext() {
-        if(coachImageCount.get() < coachMarkImages.size-1){
-            coachImageCount.set(coachImageCount.get()+1)
+        if (coachImageCount.get() < coachMarkImages.size - 1) {
+            coachImageCount.set(coachImageCount.get() + 1)
             showCoachImage.set(coachMarkImages[coachImageCount.get()])
-        }else{
+        } else {
             coachMarkSkip()
         }
     }

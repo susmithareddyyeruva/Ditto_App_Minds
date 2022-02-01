@@ -374,11 +374,12 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                             groupPosition
                         )
                     )?.get(childPosition)
-                        ?.menuName.equals(this.getString(R.string.privacy_policy))
+                        ?.menuName.equals(this.getString(R.string.account_info))
                 ) {
-                    if (navController.currentDestination?.label?.equals("Home")!!) {
-                        navController.navigate(R.id.action_homeFragment_to_privacyAndSettingFragment)
-                    }
+                    if (navController.currentDestination?.label?.equals("Home")!!)
+                        R.id.action_homeFragment_to_accountInfoFragment
+                    else
+                        R.id.action_pattern_description_to_accountIndoFragment
                 }
 
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)

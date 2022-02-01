@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.menuitems_ui.accountinfo.fragment.AccountInfoViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cc_container"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".14"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".06"
+            android:orientation="vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_head"
+            android:textColor="#000"
+            android:textSize="@dimen/header_text"
+            android:textStyle="bold"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            app:layout_constraintStart_toStartOf="@+id/guide_start_text"
+            app:layout_constraintTop_toBottomOf="@+id/guide_top_text"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".027"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end_first_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".48"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start_second_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".510"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end_second_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".97"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".24"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@+id/guide_start_tile"
+            app:layout_constraintTop_toBottomOf="@+id/guide_top_tile"
+            app:layout_constraintEnd_toEndOf="@+id/guide_end_first_tile"
+            app:layout_constraintHeight_default="percent"
+            android:background="@drawable/tilebackground"
+            app:layout_constraintHeight_percent=".58">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imagestart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".064"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imagetop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".10"/>
+
+            <ImageView
+                android:id="@+id/email_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/icon_email"
+                app:layout_constraintStart_toStartOf="@+id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/imagetop" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str_email"
+                android:textColor="#000"
+                android:textSize="@dimen/str_email_phone"
+                android:fontFamily="@font/avenir_next_it_pro_bold"
+                app:layout_constraintStart_toEndOf="@+id/email_icon"
+                app:layout_constraintTop_toTopOf="@+id/email_icon"
+                android:layout_marginLeft="20dp"
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_view_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".42"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_wait_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".39"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str_waittime"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                app:layout_constraintStart_toStartOf="@+id/email_icon"
+                app:layout_constraintBottom_toTopOf="@+id/guide_wait_time"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#2A000000"
+                app:layout_constraintTop_toBottomOf="@+id/guide_view_top"/>
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_quest_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".48"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str_quest"
+                android:textColor="#000"
+                android:textSize="@dimen/str_quest"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                app:layout_constraintStart_toStartOf="@+id/email_icon"
+                app:layout_constraintTop_toBottomOf="@+id/guide_quest_time"
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_mail_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".60"/>
+
+            <TextView
+                android:id="@+id/emailtext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="@dimen/str_email__phone_text"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:onClick="@{() -> viewModel.emailClicked()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/email_icon"
+                app:layout_constraintTop_toBottomOf="@+id/guide_mail_time"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+
+            android:background="@drawable/tilebackground"
+            app:layout_constraintStart_toStartOf="@+id/guide_start_second_tile"
+            app:layout_constraintTop_toBottomOf="@+id/guide_top_tile"
+            app:layout_constraintEnd_toEndOf="@+id/guide_end_second_tile"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".58">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/phn_imagestart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".064"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/phn_imagetop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".08"/>
+
+            <ImageView
+                android:id="@+id/phn_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/icon_phone"
+                app:layout_constraintStart_toStartOf="@+id/phn_imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/phn_imagetop" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str_phone"
+                android:textColor="#000"
+                android:textSize="@dimen/str_email_phone"
+                android:fontFamily="@font/avenir_next_it_pro_bold"
+                app:layout_constraintStart_toEndOf="@+id/phn_icon"
+                app:layout_constraintTop_toTopOf="@+id/phn_icon"
+                android:layout_marginLeft="20dp"
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/phn_guide_view_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".42"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/phn_guide_wait_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".39"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str_phn_waittime"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                app:layout_constraintStart_toStartOf="@+id/phn_icon"
+                app:layout_constraintBottom_toTopOf="@+id/phn_guide_wait_time"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#2A000000"
+                app:layout_constraintTop_toBottomOf="@+id/phn_guide_view_top"/>
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/phn_guide_toll_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".48"/>
+
+            <TextView
+                android:id="@+id/toll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str_ustoll"
+                android:textColor="#000"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:textSize="@dimen/size_14sp"
+                app:layout_constraintStart_toStartOf="@+id/phn_icon"
+                app:layout_constraintTop_toBottomOf="@+id/phn_guide_toll_time"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.mobileNumberValue}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_phone_call"
+                android:textStyle="bold"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:onClick="@{() -> viewModel.phoneClicked()}"
+                app:layout_constraintStart_toStartOf="@+id/phn_icon"
+                app:layout_constraintTop_toBottomOf="@+id/toll"
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/phn_guide_last_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".77"/>
+
+
+            <TextView
+                android:id="@+id/lasttext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.supportTimingsValue}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                app:layout_constraintStart_toStartOf="@+id/phn_icon"
+                app:layout_constraintTop_toBottomOf="@+id/phn_guide_last_text"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
