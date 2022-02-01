@@ -1,11 +1,8 @@
 package com.ditto.connectivity
 
 
-import android.content.Context
-import android.net.nsd.NsdManager
 import android.os.StrictMode
 import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger

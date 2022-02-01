@@ -1,7 +1,6 @@
 package com.ditto.instructions.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.ditto.instructions.ui.adapter.TabsAdapter
 import com.ditto.instructions.ui.databinding.FragmentBeamSetupBinding
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.google.android.material.tabs.TabLayout
 import core.ui.BaseFragment
-import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_beam_setup.*
+import javax.inject.Inject
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -34,6 +35,12 @@ class BeamSetupFragment : BaseFragment() {
     private val viewModel: InstructionViewModel by ViewModelDelegate()
 
     lateinit var binding: FragmentBeamSetupBinding
+
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+    val logger: Logger by lazy {
+        loggerFactory.create(BeamSetupFragment::class.java.simpleName)
+    }
 
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
@@ -108,7 +115,7 @@ class BeamSetupFragment : BaseFragment() {
             }
 
             is InstructionViewModel.Event.OnShowError -> {
-                Log.d("error","instruction error")
+                logger.d("error,instruction error")
 
             }
             is InstructionViewModel.Event.OnSkipTutorial -> {
@@ -116,7 +123,7 @@ class BeamSetupFragment : BaseFragment() {
             }
 
             else -> {
-                Log.d("instruction","event ")
+                logger.d("instruction,event ")
             }
         }
 
@@ -149,7 +156,7 @@ class BeamSetupFragment : BaseFragment() {
         viewModel.isShowindicator.set(false)
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                Log.d("onPageScroll","onPageScrollStateChanged")
+                logger.d("onPageScrollStateChanged")
             }
 
             override fun onPageScrolled(
@@ -157,25 +164,26 @@ class BeamSetupFragment : BaseFragment() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScroll","onPageScrolled")
+                logger.d("onPageScroll,onPageScrolled")
             }
 
             override fun onPageSelected(position: Int) {
-                Log.d("onPageScroll","onPageSelected")
+                logger.d("onPageScroll,onPageSelected")
             }
         })
 
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                Log.d("onTabSelection","onTabSelected")
+                logger.d("onTabSelection,onTabSelected")
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                Log.d("onTabSelection","onTabUnselected")
+                logger.d("onTabSelection,onTabUnselected")
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
-                Log.d("onTabSelection","onTabReselected")
+                logger.d("onTabSelection,onTabReselected")
             }
         })
     }

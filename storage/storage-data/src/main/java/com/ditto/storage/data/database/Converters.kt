@@ -123,7 +123,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun NumberOfPiecesToString(numberOfCompletedPieces: NumberOfCompletedPiecesOffline?): String {
+    fun numberOfPiecesToString(numberOfCompletedPieces: NumberOfCompletedPiecesOffline?): String {
         return Gson().toJson(numberOfCompletedPieces)
     }
 
@@ -166,12 +166,12 @@ class Converters {
 
 
     @TypeConverter
-    fun SelvageDataListToString(someObjects: List<SelvageData>): String {
+    fun selvageDataListToString(someObjects: List<SelvageData>): String {
         return Gson().toJson(someObjects)
     }
 
     @TypeConverter
-    fun MannequinDataListToString(someObjects: List<MannequinData>): String {
+    fun mannequinDataListToString(someObjects: List<MannequinData>): String {
         return Gson().toJson(someObjects)
     }
 

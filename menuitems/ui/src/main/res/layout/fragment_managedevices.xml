@@ -83,7 +83,7 @@
             android:ellipsize="none"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:gravity="center"
-            android:onClick="@{() -> viewmodel.OnBluetoothClicked()}"
+            android:onClick="@{() -> viewmodel.onBluetoothClicked()}"
             android:singleLine="true"
             android:text="@string/scan"
             android:textAllCaps="false"

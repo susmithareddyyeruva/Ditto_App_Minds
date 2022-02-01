@@ -5,7 +5,6 @@ import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -101,7 +100,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
         }
 
-        Log.d("list123", "${viewModel.viewPagerData.value?.size}")
+        logger.d("list123, ${viewModel.viewPagerData.value?.size}")
         setUIEvents()
         requireActivity().window.navigationBarColor =
             resources.getColor(core.lib.R.color.nav_item_grey2);
@@ -126,19 +125,19 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 }
 
                 override fun onDestroyActionMode(mode: ActionMode?) {
-                    Log.d("actionMode", "onDestroy")
+                    logger.d("actionMode, onDestroy")
                 }
             }
 
         //for samsung keyboard
         binding.edittextPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                Log.d("onTextChange", "After")
+                logger.d("onTextChange, After")
 
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.d("onTextChange", "Before")
+                logger.d("onTextChange, Before")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -232,8 +231,6 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 R.id.action_loginFragment_to_HomeFragment,
                 bundle
             )
-        } else {
-
         }
     }
 
@@ -256,10 +253,6 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         bottomNavViewModel.userFirstNameBase.set(viewModel.userFirstName)
         bottomNavViewModel.userLastNameBase.set(viewModel.userLastName)
         bottomNavViewModel.subscriptionEndDateBase.set(viewModel.subscriptionEndDate)
-    }
-
-    private fun onKeyboardShow() {
-        binding.root.scrollToBottomWithoutFocusChange()
     }
 
     fun NestedScrollView.scrollToBottomWithoutFocusChange() { // Kotlin extension to scrollView

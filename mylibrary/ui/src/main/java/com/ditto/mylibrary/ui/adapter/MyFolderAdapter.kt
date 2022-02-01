@@ -24,7 +24,6 @@ private val deleteClicked: OnDeleteClicked) :
         parent: ViewGroup,
         viewType: Int
     ): MyFolderHolder {
-        val viewGroup = parent
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemSingleMyfolderBinding.inflate(inflater, parent, false)
         return MyFolderHolder(binding, viewType)

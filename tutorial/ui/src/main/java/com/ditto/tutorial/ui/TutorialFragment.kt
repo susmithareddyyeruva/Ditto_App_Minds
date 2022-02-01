@@ -56,7 +56,7 @@ class TutorialFragment : BaseFragment() {
 
     private fun handleResponse(event: TutorialViewModel.Event) =
         when (event) {
-            is TutorialViewModel.Event.onItemClick -> {
+            is TutorialViewModel.Event.OnItemClick -> {
                 val bundle = bundleOf(
                     "InstructionId" to viewModel.clickID.get(),
                     "isFromHome" to true
@@ -66,7 +66,7 @@ class TutorialFragment : BaseFragment() {
                 }
                 Unit
             }
-            is TutorialViewModel.Event.onHowToClick -> {//Navigate to How to screen
+            is TutorialViewModel.Event.OnHowToClick -> {//Navigate to How to screen
 
                 if (findNavController().currentDestination?.id == R.id.destination_tutorial) {
                     findNavController().navigate(

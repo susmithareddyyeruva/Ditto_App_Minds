@@ -11,6 +11,8 @@
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:gravity="start"
+        android:lines="1"
+        android:ellipsize="end"
         android:hint="Summer Cloth"
         android:paddingHorizontal="@dimen/spinner_padding_content"
         android:paddingVertical="@dimen/padding_smallx"

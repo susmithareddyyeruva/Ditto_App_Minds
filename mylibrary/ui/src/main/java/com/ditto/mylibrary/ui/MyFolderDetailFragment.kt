@@ -2,7 +2,6 @@ package com.ditto.mylibrary.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -166,7 +165,6 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
             viewModel.myfolderList.value = ArrayList()
             bottomNavViewModel.showProgress.set(true)
             viewModel.isLoading.set(true)
-            val menu = viewModel.myfolderMenu
             viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
         }
 
@@ -258,12 +256,12 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
         is MyFolderViewModel.Event.OnMyFolderSearchClick -> {
 
-            Log.d("pattern", " MyFolderDetailSearchClick")
+            logger.d("pattern,  MyFolderDetailSearchClick")
 
         }
         is MyFolderViewModel.Event.MyFolderSyncClick -> {
             cleaFilterDataWithApi()
-            Log.d("pattern", "OnSyncClick : MyFolderDetail")
+            logger.d("pattern, OnSyncClick : MyFolderDetail")
 
         }
         is MyFolderViewModel.Event.OnMyFolderResultSuccess -> {
@@ -344,7 +342,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     fun onSyncClick() {
         if (viewModel != null) {
-            Log.d("pattern", "onSyncClick : viewModel")
+            logger.d("pattern, onSyncClick : viewModel")
             if (AppState.getIsLogged() && NetworkUtility.isNetworkAvailable(context)) {
                 bottomNavViewModel.showProgress.set(true)
                 viewModel.onSyncClick()
@@ -354,7 +352,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
 
     fun onSearchClick() {
         if (viewModel != null) {
-            Log.d("pattern", "onSearchClick : viewModel")
+            logger.d("pattern, onSearchClick : viewModel")
             viewModel.onSearchClick()
         }
     }

@@ -161,8 +161,8 @@ object AppState {
         val key = pref?.getString(EN_KEY)
         return key
     }
-    fun saveKey(c_encryptionKey: String) {
-        pref?.saveString(EN_KEY, c_encryptionKey)
+    fun saveKey(cEncryptionkey: String) {
+        pref?.saveString(EN_KEY, cEncryptionkey)
     }
     fun saveAppVersion(version: String) {
         pref?.saveString(APP_VERSION, version)

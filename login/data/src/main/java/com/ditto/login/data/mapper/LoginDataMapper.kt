@@ -12,6 +12,7 @@ import com.ditto.login.domain.model.LandingContentDomain
 import com.ditto.login.domain.model.LoginResultDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.model.User
+import com.google.gson.Gson
 
 fun User.toUserDomain(): LoginUser {
     return LoginUser(
@@ -80,22 +81,22 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
     return LoginResultDomain(
         _type = this.type,
         _v = this.v,
-        auth_type = this.authType,
-        creation_date = this.authType,
-        customer_id = this.customerId,
-        customer_no = this.customerNo,
+        authType = this.authType,
+        creationDate = this.authType,
+        customerId = this.customerId,
+        customerNo = this.customerNo,
         email = this.email,
         enabled = this.enabled,
-        first_name = this.firstName,
+        firstName = this.firstName,
         gender = this.gender,
-        phone_home = this.phoneHome,
-        last_login_time = this.lastLoginTime,
-        last_modified = this.lastModified,
-        last_name = this.lastName,
-        last_visit_time = this.lastVisitTime,
+        phoneHome = this.phoneHome,
+        lastLoginTime = this.lastLoginTime,
+        lastModified = this.lastModified,
+        lastName = this.lastName,
+        lastVisitTime = this.lastVisitTime,
         login = this.login,
-        previous_login_time = this.previousLoginTime,
-        previous_visit_time = this.previousVisitTime,
+        previousLoginTime = this.previousLoginTime,
+        previousVisitTime = this.previousVisitTime,
         salutation = this.salutation,
         faultDomain = this.fault?.toDomain(),
         cMirrorReminder = this.cMirrorReminder,
@@ -145,7 +146,7 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cSubscriptionType = this.cSubscriptionType,
         cSubscriptionPlanBillingEndDate = this.cSubscriptionPlanBillingEndDate,
         cSubscriptionPlanBillingStartDate = this.cSubscriptionPlanBillingStartDate,
-        c_encryptionKey = this.c_encryptionKey
+        cEncryptionkey = this.c_encryptionKey
 
 
     )
@@ -176,3 +177,4 @@ fun CBody.toDomain():CBodyDomain{
     videoUrl = this.videoUrl,
     imageUrl = this.imageUrl)
 }
+

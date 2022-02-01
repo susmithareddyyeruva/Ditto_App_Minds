@@ -5,17 +5,17 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
@@ -29,6 +29,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_pattern_instructions.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
@@ -36,6 +37,11 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
     lateinit var binding: FragmentPatternInstructionsBinding
     var downloadFileName: String? = null
     var patternFolderName: String? = null
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+    val logger: Logger by lazy {
+        loggerFactory.create(PatternInstructionsFragment::class.java.simpleName)
+    }
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
@@ -78,7 +84,6 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         toolbarViewModel.isShowActionMenu.set(false)
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
-        Log.d("instruction123", "prev pattern name: ${arguments?.getString("PatternName")}")
         loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }
@@ -115,7 +120,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
                     viewModel.patternpdfuri.get()
                 )
             )
-            else -> Log.d("Error", "Invaid Event")
+            else -> logger.d("Error, Invaid Event")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -137,7 +142,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
                     pdfdownload()
                 }
             } catch (e: Exception) {
-                Log.d("EXCEPTION",e.localizedMessage)
+                logger.d("EXCEPTION,${e.localizedMessage}")
             }
         }
 
@@ -162,19 +167,6 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         }
     }
 
-    private fun showPdfFromAssets(pdfName: String) {
-        if (context == null) return
-        binding.pdfView.fromAsset(pdfName)
-            .defaultPage(0) // set the default page to open
-            .scrollHandle(DefaultScrollHandle(requireContext()))
-            .onPageError { page, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading pdf", Toast.LENGTH_LONG
-                ).show()
-            }
-            .load()
-    }
 
     private fun showPdfFromUri(pdfName: Uri) {
         bottomNavViewModel.showProgress.set(false)

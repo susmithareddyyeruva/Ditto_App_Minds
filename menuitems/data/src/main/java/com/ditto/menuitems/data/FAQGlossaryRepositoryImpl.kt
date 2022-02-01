@@ -1,7 +1,6 @@
 package com.ditto.menuitems.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.data.api.FAQGlossaryService
@@ -51,7 +50,6 @@ class FAQGlossaryRepositoryImpl @Inject constructor(
                 try {
                     logger.d("try block")
                 } catch (e: Exception) {
-                    Log.d("Catch", e.localizedMessage)
                     errorMessage = when (e) {
                         is UnknownHostException -> {
                             "Unknown host!"

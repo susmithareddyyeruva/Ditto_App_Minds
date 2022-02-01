@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.VectorDrawable
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -186,7 +185,6 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
         var availableUri:Uri? = null
         if(!(NetworkUtility.isNetworkAvailable(context))){
             availableUri = Utility.isImageFileAvailable(imagePath,"${viewModel.patternName.get()}",context)
-            Log.d("imageUri123", " \${viewModel.patternName.get()} availableUri: $availableUri")
         }
         if (imagePath?.endsWith(".svg", true)!!) {
             Glide

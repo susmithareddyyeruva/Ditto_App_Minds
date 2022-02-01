@@ -1,7 +1,5 @@
 package core.di;
 
-import java.io.ByteArrayOutputStream;
-
 public class Hex {
     private static final char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
@@ -24,14 +22,7 @@ public class Hex {
         return new String(out);
     }
 
-    public static byte[] decodeHex(String hexString) {
-        ByteArrayOutputStream bas = new ByteArrayOutputStream();
-        for (int i = 0; i < hexString.length(); i += 2) {
-            int b = Integer.parseInt(hexString.substring(i, i + 2), 16);
-            bas.write(b);
-        }
-        return bas.toByteArray();
-    }
+
 }
 
 

@@ -18,7 +18,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ import com.ditto.calibration.R
 import com.ditto.calibration.databinding.CalibrationFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.calibrate.performCalibration
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
@@ -181,11 +179,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
      */
     private fun handleEvent(event: CalibrationViewModel.Event) =
         when (event) {
-            is CalibrationViewModel.Event.onTakePhotoClicked -> {
+            is CalibrationViewModel.Event.OnTakePhotoClicked -> {
                 takePhoto()
                 count = 1
             }
-            is CalibrationViewModel.Event.onInstructionClicked -> {
+            is CalibrationViewModel.Event.OnInstructionClicked -> {
                 onClickInstruction()
             }
 
@@ -538,11 +536,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         }
 
         override fun onDisplayAdded(displayId: Int) {
-            Log.d("displayListener", "onDisplayAdded")
+            logger.d("displayListener, onDisplayAdded")
         }
 
         override fun onDisplayRemoved(displayId: Int) {
-            Log.d("displayListener", "onDisplayRemoved")
+            logger.d("displayListener, onDisplayRemoved")
         }
     }
 
@@ -655,7 +653,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             }
             Utility.AlertType.DEFAULT -> restartCamera()
             else -> {
-                Log.d("event", "undefined")
+                logger.d("event, undefined")
             }
         }
     }
@@ -713,7 +711,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
 
-    override fun OnCalibrationReponse(calibrationResponse: Util.CalibrationType) {
+    override fun onCalibrationReponse(calibrationResponse: Util.CalibrationType) {
         baseViewModel.isSetUpError.set(false)
         logger.d("TRACE_ Projection : OnCalibrationReponse  Finish" + Calendar.getInstance().timeInMillis)
         showProgress(false)

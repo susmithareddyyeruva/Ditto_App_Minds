@@ -12,17 +12,6 @@
         <item name="colorAccent">#FFFFFF</item>
     </style>
 
-
-
- <!--   <style name="ToolBarStyle"  parent="AppTheme">
-        <item name="android:textColorSecondary">#FFFFFF</item>
-        <item name="titleEnabled">false</item>
-        <item name="android:translationZ">0.1dp</item>
-        <item name="elevation">0.1dp</item>
-        <item name="background">#00FFFFFF</item>
-
-    </style>-->
-
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
         <item name="android:homeAsUpIndicator">@drawable/backarrow_white</item>
      </style>

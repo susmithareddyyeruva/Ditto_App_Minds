@@ -10,7 +10,6 @@
     <include app:graph="@navigation/calibration_nav_graph"/>
     <include app:graph="@navigation/nav_graph_howto" />
     <include app:graph="@navigation/instruction_calibration_nav" />
-    <include app:graph="@navigation/nav_graph_video" />
 
     <fragment
         android:id="@+id/destination_instruction"

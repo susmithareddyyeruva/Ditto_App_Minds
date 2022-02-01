@@ -22,14 +22,14 @@ class CalibrationViewModel @Inject constructor()  : BaseViewModel() {
      * [Function] Camera button click
      */
     fun onTakePhoto() {
-        uiEvents.post(Event.onTakePhotoClicked)
+        uiEvents.post(Event.OnTakePhotoClicked)
     }
 
     /**
      * [Function] Instruction text Clicked
      */
     fun onInstructionTextClicked() {
-        uiEvents.post(Event.onInstructionClicked)
+        uiEvents.post(Event.OnInstructionClicked)
     }
 
     /**
@@ -40,11 +40,11 @@ class CalibrationViewModel @Inject constructor()  : BaseViewModel() {
         /**
          * Event emitted by [events] on Camera button click
          */
-        object onTakePhotoClicked : Event()
+        object OnTakePhotoClicked : Event()
         /**
          * Event emitted by [events] on Instruction text click
          */
-        object onInstructionClicked : Event()
+        object OnInstructionClicked : Event()
 
     }
 }

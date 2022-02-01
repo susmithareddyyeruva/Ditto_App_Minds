@@ -276,34 +276,6 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    private fun handleInsertDataResult(result: Any, closeScreen: Boolean) {
-        when (result) {
-            is Result.OnSuccess<*> -> {
-                Log.d("handleInsertDataResult", "OnSuccess")
-            }
-            is Result.OnError<*> -> handleError(result.error)
-        }
-        if (closeScreen) {
-            uiEvents.post(Event.CloseScreen)
-        }
-    }
-
-    private fun handleFetchResult(result: Result<List<PatternsData>>) {
-        when (result) {
-            is Result.OnSuccess -> {
-                allPatterns.value = result.data
-                data.value = result.data.find { it.id == patternId.get().toString() }
-                Log.d("WorkspaceViewModel098", "Combine patternsData: data.value >>${data.value} ")
-                activeInternetConnection.set(true)
-                uiEvents.post(Event.CalculateScrollButtonVisibility)
-                uiEvents.post(Event.OnDataUpdated)
-                setWorkspaceView()
-            }
-            is Result.OnError -> handleError(result.error)
-        }
-    }
-
-
     private fun handleFetchResultFromAPI(
         fetchWorkspaceResult: Result<WorkspaceDataAPI>,
         tailornovaResult: Result.OnSuccess<OfflinePatternData>
@@ -386,7 +358,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun projectWorkspace() {
-        uiEvents.post(Event.onProject)
+        uiEvents.post(Event.OnProject)
     }
 
     fun clickSize(isSize20: Boolean) {
@@ -444,7 +416,7 @@ class WorkspaceViewModel @Inject constructor(
     fun setCompletedCount(progress: Int) {
         completedPieces.set(completedPieces.get().plus(progress))
         setCompletePieceCount()
-        uiEvents.post(Event.updateProgressCount)
+        uiEvents.post(Event.UpdateProgressCount)
     }
 
     fun setCompletePieceCount() {
@@ -511,7 +483,7 @@ class WorkspaceViewModel @Inject constructor(
                 ?.isCompleted = true
         }
         uiEvents.post(Event.RemoveAllPatternPieces)
-        uiEvents.post(Event.updateProgressCount)
+        uiEvents.post(Event.UpdateProgressCount)
     }
 
     fun cutAllPiecesConfirmed(workspaceItems: List<WorkspaceItems>?) {
@@ -528,7 +500,7 @@ class WorkspaceViewModel @Inject constructor(
             workspacedata = workspaceItem
         }
         uiEvents.post(Event.RemoveAllPatternPieces)
-        uiEvents.post(Event.updateProgressCount)
+        uiEvents.post(Event.UpdateProgressCount)
     }
 
 
@@ -739,11 +711,11 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun coachMarkClose() {
-        uiEvents.post(Event.OnCoachmarkClose)
+        uiEvents.post(Event.OnCoachMarkClose)
     }
 
     fun coachMarkPlay() {
-        uiEvents.post(Event.OnCoachmarkPlay)
+        uiEvents.post(Event.OnCoachMarkPlay)
     }
 
     fun onFinished() {
@@ -797,13 +769,13 @@ class WorkspaceViewModel @Inject constructor(
         object ShowMirrorDialog : Event()
         object CloseScreen : Event()
         object PopulateWorkspace : Event()
-        object onProject : Event()
+        object OnProject : Event()
         object ShowCutBinDialog : Event()
         object RemoveAllPatternPieces : Event()
-        object updateProgressCount : Event()
+        object UpdateProgressCount : Event()
         object OnDownloadComplete : Event()
-        object OnCoachmarkPlay : Event()
-        object OnCoachmarkClose : Event()
+        object OnCoachMarkPlay : Event()
+        object OnCoachMarkClose : Event()
         object HideProgressLoader : Event()
         object ShowProgressLoader : Event()
         object ApiFailed : Event()
@@ -849,10 +821,7 @@ class WorkspaceViewModel @Inject constructor(
         filename: String, patternFolderName: String?
     ): File? {
         var result: File? = null
-        val outputFile: File? = null
         var dittofolder: File? = null
-
-        val contextWrapper = ContextWrapper(context)
 
         dittofolder = if (Build.VERSION.SDK_INT >= 30) {
             File(

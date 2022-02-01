@@ -1,16 +1,7 @@
 package com.ditto.menuitems_ui.customercare.fragment
 
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.Color
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.style.ClickableSpan
-import android.text.style.UnderlineSpan
-import android.view.View
 import androidx.databinding.ObservableField
-import com.ditto.menuitems_ui.R
 import com.ditto.storage.domain.StorageManager
 import core.CUSTOMERCARE_EMAIL
 import core.CUSTOMERCARE_PHONE
@@ -35,18 +26,18 @@ class CustomerCareViewModel @Inject constructor(val context : Context,val storag
 
     }
 
-    fun setTimings(){
+    private fun setTimings(){
         supportTimingsValue.set(storageManager.getStringValue(CUSTOMERCARE_TIMING))
     }
 
-    fun setMobileNumber(){
+    private fun setMobileNumber(){
         mobileNumberValue.set(storageManager.getStringValue(CUSTOMERCARE_PHONE))
     }
 
-    fun PhoneClicked() {
+    fun phoneClicked() {
         uiEvents.post(Event.OnPhoneClicked)
     }
-    fun EmailClicked() {
+    fun emailClicked() {
         uiEvents.post(Event.OnEmailClicked)
     }
 

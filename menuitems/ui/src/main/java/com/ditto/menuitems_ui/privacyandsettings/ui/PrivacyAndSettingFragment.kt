@@ -3,7 +3,6 @@ package com.ditto.menuitems_ui.privacyandsettings.ui
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentPrivacyAndSettingBinding
 import core.network.NetworkUtility
@@ -21,13 +22,18 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import javax.inject.Inject
 
 
 class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogListener{
 
     private val viewModel: PrivacyAndSettingsViewModel by ViewModelDelegate()
     lateinit var binding: FragmentPrivacyAndSettingBinding
-
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+    val logger: Logger by lazy {
+        loggerFactory.create(PrivacyAndSettingFragment::class.java.simpleName)
+    }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +77,7 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
 
     private fun handleEvent(event: PrivacyAndSettingsViewModel.Event) {
         when (event) {
-            PrivacyAndSettingsViewModel.Event.onResultSuccess -> {
+            PrivacyAndSettingsViewModel.Event.OnResultSuccess -> {
                 binding.webPrivacy.loadDataWithBaseURL(
                     null,
                     viewModel.data,
@@ -80,7 +86,7 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
                     null
                 )
                 binding.webPrivacy.requestFocus()
-                binding.webPrivacy.settings.javaScriptEnabled = true
+                //binding.webPrivacy.settings.javaScriptEnabled = true
                 binding.webPrivacy.webViewClient = object : WebViewClient() {
                     @RequiresApi(Build.VERSION_CODES.M)
                     override fun onReceivedError(
@@ -89,7 +95,7 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
                         error: WebResourceError?
                     ) {
                         super.onReceivedError(view, request, error)
-                        Log.d("Error", "$error.description")
+                        logger.d("Error, ${error?.description}")
                     }
 
                     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -128,13 +134,13 @@ class PrivacyAndSettingFragment : BaseFragment() ,Utility.CustomCallbackDialogLi
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        //TODO("Not yet implemented")
+        logger.d("onCustomPositiveButtonClicked")
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-      //  TODO("Not yet implemented")
+        logger.d("onCustomNegativeButtonClicked")
     }
 }

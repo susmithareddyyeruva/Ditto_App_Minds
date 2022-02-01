@@ -47,7 +47,8 @@ class PatternAdapter : RecyclerView.Adapter<PatternAdapter.PatternHolder>(),
         val res: Resources = viewGroup!!.resources
         if (!patterns.get(position).thumbnailImagePath.equals("")){
             val resID: Int = res.getIdentifier(patterns.get(position).thumbnailImagePath, "drawable", viewGroup!!.context.getPackageName())
-            val drawable: Drawable = res.getDrawable(resID)
+           // val drawable: Drawable = res.getDrawable(resID)
+            val drawable: Drawable? = ContextCompat.getDrawable(holder.patternsItemBinding.imagePattern.context,resID)
             val bitmap = (drawable as BitmapDrawable).bitmap
             holder.patternsItemBinding.imagePattern.setImageBitmap(bitmap)
         }

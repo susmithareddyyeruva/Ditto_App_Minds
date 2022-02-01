@@ -13,7 +13,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ import com.ditto.instructions.ui.databinding.InstructionFragmentBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.CustomPlayerControlActivity
-import com.joann.fabrictracetransform.transform.TransformErrorCode
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -115,7 +113,7 @@ class InstructionFragment constructor(
         binding.instructionViewPager?.addOnPageChangeListener(object :
             ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                Log.d("onPageScroll", "state changed")
+                logger.d("onPageScroll, state changed")
             }
 
             override fun onPageScrolled(
@@ -123,7 +121,7 @@ class InstructionFragment constructor(
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Log.d("onPageScrolled", "state scrolled")
+                logger.d("onPageScrolled, state scrolled")
             }
 
             override fun onPageSelected(position: Int) {
@@ -207,7 +205,7 @@ class InstructionFragment constructor(
                 viewpagerpreviousbuttonclick()
             }
             is InstructionViewModel.Event.OnCalibrationStepsButtonClicked -> {
-                Calibrationstepsbuttonclick()
+                calibrationstepsbuttonclick()
             }
 
             is InstructionViewModel.Event.OnHowToButtonClicked -> {
@@ -261,7 +259,7 @@ class InstructionFragment constructor(
     /**
      * [Function] Navigating to same fragment to show calibration screen
      */
-    private fun Calibrationstepsbuttonclick() {
+    private fun calibrationstepsbuttonclick() {
         if (findNavController().currentDestination?.id == R.id.destination_instruction) {
             findNavController().navigate(
                 R.id.action_destination_instruction_self,
@@ -337,18 +335,17 @@ class InstructionFragment constructor(
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.videoPath
             }
 
-            val title = if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
+            if (viewModel.instructionID.get() == 1) { // beamsetup and takedown
                 viewModel.data.value?.instructions?.get(position)?.instructions?.get(binding.instructionViewPager.currentItem)?.title
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
             }
-            displayFullScreenVideo(filePath, title, "tutorial")
+            displayFullScreenVideo(filePath,"tutorial")
         }
     }
 
     private fun displayFullScreenVideo(
         filePath: String?,
-        title: String?,
         from: String
     ) {
         if (findNavController().currentDestination?.id == R.id.destination_instruction
@@ -401,7 +398,6 @@ class InstructionFragment constructor(
      * [Function] Calibration Button Click
      */
     private fun showcalibrationbuttonclicked() {
-        Log.d("Transform", "showcalibrationbuttonclicked")
         val layout =
             activity?.layoutInflater?.inflate(R.layout.calibration_camera_alert_ws, null)
 
@@ -499,7 +495,7 @@ class InstructionFragment constructor(
             }
 
             else -> {
-                Log.d("alert type", "except bluetooth and wifi")
+                logger.d("alert type, except bluetooth and wifi")
             }
         }
     }
@@ -644,28 +640,6 @@ class InstructionFragment constructor(
                .subscribeBy { handleResult(it) }*/
     }
 
-    private fun handleResult(result: Pair<TransformErrorCode, Bitmap>) {
-        logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
-        logger.d("TRACE_ Projection : sendCalibrationPattern Success" + Calendar.getInstance().timeInMillis)
-        // alert?.dismiss()
-        when (result.first) {
-            TransformErrorCode.Success -> GlobalScope.launch {
-                sendSampleImage(
-                    Utility.addBlackBackgroundToBitmap(result.second), true
-                )
-            }
-            TransformErrorCode.InvalidImageFormat, TransformErrorCode.RetakeImage -> {
-                // show alert?
-            }
-            TransformErrorCode.AdditionalImageNeeded -> {
-                // show alert?
-            }
-            TransformErrorCode.FailToSetTransformParms, TransformErrorCode.MissingTransformParmsFile -> {
-                // what to do?
-            }
-        }
-    }
-
     private suspend fun sendSampleImage(
         transformedBitmap: Bitmap,
         isNavigateToCalibration: Boolean
@@ -730,7 +704,7 @@ class InstructionFragment constructor(
                 isConnected = soc.isConnected
             } catch (e: Exception) {
                 isConnected = false
-                Log.d(ConnectivityUtils.TAG, "Exception")
+                logger.d("${ConnectivityUtils.TAG}, Exception")
             } finally {
                 soc?.close()
             }

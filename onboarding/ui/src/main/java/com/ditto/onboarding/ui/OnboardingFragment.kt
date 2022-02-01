@@ -62,7 +62,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         super.onActivityCreated(savedInstanceState)
         arguments?.getInt(USERID)?.let { viewModel.userId = (it) }
         arguments?.getBoolean(ISFROMHOME)?.let { isFromHomeScreen = (it) }
-        viewModel.isFromHome_Observable.set(isFromHomeScreen)
+        viewModel.isFromHomeObservable.set(isFromHomeScreen)
         if(viewModel.dataFromApi.value == null){
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
@@ -96,26 +96,6 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         private const val USERID = "UserId"
         private const val INSTRUCTIONID = "InstructionId"
         private const val ISDNDCHECKED = "ISDNDCHECKED"
-    }
-
-    private fun checkBluetoothWifiPermission() {
-
-        if (allPermissionsGranted()) {
-
-            if (!Utility.getBluetoothstatus()) {
-                isWifiAlert = false
-                showBluetoothDialogue()
-            } else if (!Utility.getWifistatus(requireContext())) {
-                isWifiAlert = true
-                showWifiDialogue()
-                logger.d("wifiefi222" + viewModel.isWifiLaterClicked.get().toString())
-            }
-        } else {
-            requestPermissions(
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -307,20 +287,6 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         }
     }
 
-    private fun showBluetoothDialogue() {  //Displaying Dialog for Bluetooth
-        if (!viewModel.isBleLaterClicked.get() && !isFromHomeScreen) {
-            Utility.getCommonAlertDialogue(
-                requireContext(),
-                resources.getString(R.string.connectivity),
-                resources.getString(R.string.ble_connectivity_onboarding),
-                resources.getString(R.string.later),
-                resources.getString(R.string.turnon),
-                this,
-                Utility.AlertType.BLE,
-                Utility.Iconype.NONE
-            )
-        }
-    }
 
     private fun showWifiDialogue() {  //Displaying Dialog for Wifi
         //for retrict to open again
@@ -350,7 +316,7 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        if (viewModel.isFromHome_Observable.get()) {
+        if (viewModel.isFromHomeObservable.get()) {
             (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
