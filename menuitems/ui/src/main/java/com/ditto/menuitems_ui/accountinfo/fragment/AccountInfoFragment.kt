@@ -59,6 +59,9 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
         when (event) {
             AccountInfoViewModel.Event.onDeleteAccountClick ->
                 deleteAccount()
+            AccountInfoViewModel.Event.onLogout -> {
+                logoutUser()
+            }
         }
 
     fun deleteAccount() {
@@ -103,7 +106,6 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
     ) {
 
         viewModel.deleteAccount()
-        //logoutUser()
     }
 
     override fun onCustomNegativeButtonClicked(

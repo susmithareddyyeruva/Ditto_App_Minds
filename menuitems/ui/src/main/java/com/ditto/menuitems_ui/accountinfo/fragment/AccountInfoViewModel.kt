@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.menuitems.data.error.AccountInfoFetchError
 import com.ditto.menuitems.domain.AccountInfoUsecase
 import com.ditto.menuitems.domain.model.AccountInfoDomain
 import core.appstate.AppState
@@ -41,7 +42,7 @@ class AccountInfoViewModel @Inject constructor(
 
 
     init {
-        //setSubscriptionEndDateBase()
+        setSubscriptionEndDateBase()
         setEmail()
         setName()
         setPhoneNumber()
@@ -72,7 +73,12 @@ class AccountInfoViewModel @Inject constructor(
     fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> activeInternetConnection.set(false)
-            //is AccountInfoFetchError -> {}
+            is AccountInfoFetchError -> {
+                if (error.message.contentEquals("No such element exception")) {
+                    uiEvents.post(Event.onLogout)
+                }
+                Log.d("handleError", "AccountInfoViewmodel : \t ${error.message}")
+            }
             else -> {
                 Log.d("handleError", "AccountInfoViewmodel else")
             }
@@ -80,20 +86,26 @@ class AccountInfoViewModel @Inject constructor(
     }
 
     private fun setEmail() {
-        email.set("Email: " + AppState.getCustID())
+        email.set(": " + AppState.getEmail())
     }
 
     private fun setPhoneNumber() {
-        phone.set("Phone Number: " + AppState.getCustNO())
+        phone.set(": " + AppState.getMobile())
     }
 
     private fun setName() {
-        name.set("Name: " + AppState.getFirstName() + " " + AppState.getLastName())
+        name.set(": " + AppState.getFirstName() + " " + AppState.getLastName())
     }
 
     private fun setSubscriptionEndDateBase() {
-        val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-        subscriptionEndDateBase.set("Remaining Days: $days")
+        if (AppState.getSubDate()
+                .isEmpty() || AppState.getSubDate() == null
+        ) {
+            subscriptionEndDateBase.set(": 0 days")
+        } else {
+            val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
+            subscriptionEndDateBase.set(": "+"$days days")
+        }
     }
 
     fun onDeleteAccountClick() {
@@ -102,5 +114,6 @@ class AccountInfoViewModel @Inject constructor(
 
     sealed class Event {
         object onDeleteAccountClick : Event()
+        object onLogout : Event()
     }
 }

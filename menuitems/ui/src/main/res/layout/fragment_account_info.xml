@@ -71,6 +71,13 @@
                 app:layout_constraintGuide_percent=".064" />
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_centre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".40" />
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/imagetop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,10 +111,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:text="@{viewModel.name}"
+                android:text="@string/str_name"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintLeft_toLeftOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/imagetop" />
+            <TextView
+                android:id="@+id/tv_name_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:text="@{viewModel.name}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintLeft_toLeftOf="@id/guide_centre"
                 app:layout_constraintTop_toBottomOf="@+id/imagetop" />
 
             <TextView
@@ -115,10 +132,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:text="@{viewModel.email}"
+                android:text="@string/str_email_small"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintLeft_toLeftOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+            <TextView
+                android:id="@+id/tv_email_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:text="@{viewModel.email}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintLeft_toLeftOf="@id/guide_centre"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <TextView
@@ -126,17 +155,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:text="@{viewModel.phone}"
+                android:text="@string/str_phone_small"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintLeft_toLeftOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+            <TextView
+                android:id="@+id/tv_phone_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:text="@{viewModel.phone}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintLeft_toLeftOf="@id/guide_centre"
                 app:layout_constraintTop_toBottomOf="@+id/tv_email" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:text="@{viewModel.subscriptionEndDateBase}"
+                android:text="@string/str_rem_sub_days"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintLeft_toLeftOf="@id/imagestart"
@@ -146,7 +185,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:text="Delete DESC"
+                android:text="@{viewModel.subscriptionEndDateBase}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintLeft_toLeftOf="@id/guide_centre"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:text="@string/str_dele_account_info"
                 android:textColor="#000"
                 android:textSize="@dimen/str_quest"
                 app:layout_constraintBottom_toTopOf="@+id/guide_delete_desc"
