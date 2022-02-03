@@ -78,6 +78,7 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
     }
 
     private fun logoutUser() {
+        bottomNavViewModel.showProgress.set(true)
         AppState.logout()
         AppState.setIsLogged(false)
         bottomNavViewModel?.isGuestBase?.set(true)
@@ -104,7 +105,7 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-
+        bottomNavViewModel.showProgress.set(true)
         viewModel.deleteAccount()
     }
 
