@@ -21,6 +21,7 @@
     <item name="nav_graph_faq" type="id" />
     <item name="nav_graph_mainfaq" type="id" />
     <item name="nav_graph_manage" type="id" />
+    <item name="nav_graph_account_info" type="id" />
 
     <!--action items-->
     <item name="action_splashActivity_to_LoginFragment" type="id" />
@@ -79,9 +80,10 @@
     <item name="action_pattern_description_to_nav_graph_manage" type="id" />
     <item name="action_pattern_description_to_nav_graph_sotwareUpdate" type="id" />
     <item name="action_pattern_description_to_privacyAndSettingFragment" type="id" />
-    <item name="action_pattern_description_to_accountIndoFragment" type="id" />
+    <item name="action_pattern_description_to_accountInfoFragment" type="id" />
     <item name="nav_graph_id_folderdetail" type="id" />
     <item name="myfolderFragment" type="id" />
+    <item name="action_account_info_to_login" type="id" />
 
 
 </resources>

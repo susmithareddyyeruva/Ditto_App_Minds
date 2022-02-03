@@ -18,6 +18,7 @@
     <string name="visit">Visit website</string>
     <string name="available">Available projectors in the Wi-Fi network</string>
     <string name="scan">Search for projectors</string>
+    <string name="delete_account">Delete Account</string>
     <string name="disconnect">Disconnect</string>
     <string name="str_projectorsfound">%1$s projectors found</string>
     <string name="str_connection_failed">Projector Connection failed!</string>
@@ -36,4 +37,5 @@
     <string name="splicing_notification">Splicing Notification</string>
     <string name="multidirectional_splicing_notification">Multidirectional Splicing Notification</string>
     <string name="guest_my_folder_message">Guest User does not have this functionality.</string>
+    <string name="delete_msg">Are you sure you want to delete the account.</string>
 </resources>

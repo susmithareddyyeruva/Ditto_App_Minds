@@ -64,7 +64,7 @@ import javax.inject.Singleton
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
         GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
         PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class,
-        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class]
+        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class,AccountInfoAPIModule::class,AccountInfoDataModule::class]
 
 )
 @Singleton

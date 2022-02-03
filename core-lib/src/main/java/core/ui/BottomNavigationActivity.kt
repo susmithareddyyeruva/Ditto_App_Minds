@@ -376,10 +376,16 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     )?.get(childPosition)
                         ?.menuName.equals(this.getString(R.string.account_info))
                 ) {
-                    if (navController.currentDestination?.label?.equals("Home")!!)
-                        R.id.action_homeFragment_to_accountInfoFragment
-                    else
-                        R.id.action_pattern_description_to_accountIndoFragment
+
+                    if (navController.currentDestination?.label?.equals("Home")!! ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        navController.navigate(
+                            if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_accountInfoFragment
+                            else R.id.action_pattern_description_to_accountInfoFragment
+                        )
+                    }
                 }
 
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)

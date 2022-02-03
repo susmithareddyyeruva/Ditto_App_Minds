@@ -1,33 +1,27 @@
 package com.ditto.menuitems_ui.accountinfo.fragment
 
-import android.content.Intent
-import android.content.res.Resources
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.fragment.findNavController
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentAccountInfoBinding
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 
 
-class AccountInfoFragment : BaseFragment() {
+class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     private val viewModel: AccountInfoViewModel by ViewModelDelegate()
-    lateinit var binding : FragmentAccountInfoBinding
-    lateinit var dynamicEmailData:String
+    lateinit var binding: FragmentAccountInfoBinding
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +37,11 @@ class AccountInfoFragment : BaseFragment() {
 
         return binding.ccContainer
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
-        setemailteststyle()
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -60,67 +54,62 @@ class AccountInfoFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         (activity as BottomNavigationActivity).hideDrawerLayout()
     }
+
     private fun handleEvent(event: AccountInfoViewModel.Event) =
         when (event) {
-            AccountInfoViewModel.Event.OnPhoneClicked ->
-                makecall()
-            AccountInfoViewModel.Event.OnEmailClicked ->
-                sendmail()
-
+            AccountInfoViewModel.Event.onDeleteAccountClick ->
+                deleteAccount()
         }
 
-    fun makecall(){
-        val dialIntent = Intent(Intent.ACTION_DIAL)
-        dialIntent.data = Uri.parse("tel:${viewModel.mobileNumberValue.get().toString()}")
-        startActivity(dialIntent)
-    }
-    fun sendmail(){
-        val mailto = viewModel.getEmailId()
-        val emailIntent = Intent(
-            Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", mailto, null
-            )
+    fun deleteAccount() {
+        Utility.getCommonAlertDialogue(
+            requireContext(),
+            "",
+            getString(R.string.delete_msg),
+            getString(R.string.str_later),
+            getString(R.string.str_yes),
+            this,
+            Utility.AlertType.SOFTWARE_UPDATE,
+            Utility.Iconype.WARNING
         )
-        startActivity(Intent.createChooser(emailIntent, context?.getString(R.string.str_support)))
-
     }
-    private fun setuptoolbar(){
+
+    private fun logoutUser() {
+        AppState.logout()
+        AppState.setIsLogged(false)
+        bottomNavViewModel?.isGuestBase?.set(true)
+        bottomNavViewModel?.userEmailBase?.set("")
+        bottomNavViewModel?.userFirstNameBase?.set("")
+        bottomNavViewModel?.userLastNameBase?.set("")
+        bottomNavViewModel?.userPhoneBase?.set("")
+        val id = findNavController().currentDestination?.id
+        findNavController().navigate(
+            R.id.action_account_info_to_login
+        )
+    }
+
+    private fun setuptoolbar() {
         bottomNavViewModel.visibility.set(false)
         toolbarViewModel.isShowTransparentActionBar.set(false)
         toolbarViewModel.isShowActionBar.set(true)
         toolbarViewModel.isShowActionMenu.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
-        (activity as BottomNavigationActivity).setToolbarTitle("Customer Support")
+        (activity as BottomNavigationActivity).setToolbarTitle("Account Info")
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun setemailteststyle(){
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
 
-        val res: Resources = getResources()
-        val text: String = String.format(
-            res.getString(
-                R.string.str_email_text,
-                viewModel.getEmailId()
-            )
-        )
+        viewModel.deleteAccount()
+        //logoutUser()
+    }
 
-        val spannable = SpannableString(text)
-        spannable.setSpan(
-            ForegroundColorSpan(requireContext().getColor(R.color.sign_in_blue)),
-            6, 28,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType
+    ) {
 
-        spannable.setSpan(
-            UnderlineSpan(),
-            6, 28,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        // TDP-35 : added font family for email id
-        val font = context?.let { ResourcesCompat.getFont(it, R.font.avenir_next_lt_pro_demi) }
-        spannable.setSpan(font?.getStyle()?.let { StyleSpan(it) }, 6, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        binding.emailtext.text = spannable
     }
 }
