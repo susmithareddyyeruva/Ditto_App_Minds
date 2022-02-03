@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Project/ditto-android-new2/connectivity/ui/src/main/res/layout/connectivity_activity.xml" value="0.15833333333333333" />
+        <entry key="..\:/Android Project/ditto-android-new2/core-lib/src/main/res/layout/nav_drawer_header.xml" value="0.1648148148148148" />
+        <entry key="..\:/Android Project/ditto-android-new2/menuitems/ui/src/main/res/layout/customer_care_fragment.xml" value="0.1734375" />
+        <entry key="..\:/Android Project/ditto-android-new2/menuitems/ui/src/main/res/layout/fragment_account_info.xml" value="0.25" />
+        <entry key="..\:/Android Project/ditto-android-new2/menuitems/ui/src/main/res/layout/fragment_managedevices.xml" value="0.1734375" />
+        <entry key="..\:/Android Project/ditto-android-new2/workspace/ui/src/main/res/layout/calibration_camera_alert_ws.xml" value="0.15833333333333333" />
         <entry key="..\:/Android Project/ditto-android/core-lib/src/main/res/menu/bottom_nav_menu.xml" value="0.11875" />
         <entry key="..\:/Android Project/ditto-android/login/ui/src/main/res/layout/login_fragment.xml" value="0.18" />
         <entry key="..\:/Android Project/ditto-android/menuitems/ui/src/main/res/layout/faq_glossary_mainfragment.xml" value="0.11875" />

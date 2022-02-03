@@ -51,7 +51,7 @@ class AccountInfoRepositoryImpl @Inject constructor(
         }.map {
             logger.d("**Delete: on map ${it.toString()}")
             Result.withValue(it.toDomain())
-        }.doOnError {
+        }.onErrorReturn {
             logger.d("**Delete: on Error ${it.toString()}")
 
             it.localizedMessage?.let {
