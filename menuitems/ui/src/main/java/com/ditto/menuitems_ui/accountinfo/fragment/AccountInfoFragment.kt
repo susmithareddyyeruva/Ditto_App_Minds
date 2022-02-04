@@ -69,8 +69,8 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
             requireContext(),
             "",
             getString(R.string.delete_msg),
-            getString(R.string.str_later),
-            getString(R.string.str_yes),
+            getString(R.string.str_yes_caps),
+            getString(R.string.str_no_caps),
             this,
             Utility.AlertType.SOFTWARE_UPDATE,
             Utility.Iconype.WARNING
@@ -105,14 +105,14 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        bottomNavViewModel.showProgress.set(true)
-        viewModel.deleteAccount()
+
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-
+        bottomNavViewModel.showProgress.set(true)
+        viewModel.deleteAccount()
     }
 }
