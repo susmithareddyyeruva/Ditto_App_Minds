@@ -43,10 +43,11 @@ class HomeViewModel @Inject constructor(
     private val context: Context,
     val storageManager: StorageManager,
     val useCase: HomeUsecase,
+    val loggerFactory: LoggerFactory,
     private val utility: Utility
 ) : BaseViewModel() {
-    @Inject
-    lateinit var loggerFactory: LoggerFactory
+   /* @Inject
+    lateinit var loggerFactory: LoggerFactory*/
     var versionResult: SoftwareUpdateResult? = null
 
     val logger: Logger by lazy {
@@ -145,7 +146,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 // todo started
-    fun fetchData() {
+    fun  fetchData() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getHomePatternsData(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(

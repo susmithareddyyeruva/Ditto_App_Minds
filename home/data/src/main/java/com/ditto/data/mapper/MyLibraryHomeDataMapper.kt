@@ -232,7 +232,7 @@ fun PatternPiecesOffline.toDomain1(): OfflinePatternPieces {
 
 //PatternIdData>>OfflinePatterns
 
-internal fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
+public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
     return this.map {
         OfflinePatterns(
             custId= if(AppState.getIsLogged()){AppState.getCustID()}else{"0"},

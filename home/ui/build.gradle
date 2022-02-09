@@ -90,6 +90,7 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
@@ -104,6 +105,7 @@ dependencies {
 
     implementation project(path: ':nav-graph')
     implementation project(path: ':home-domain')
+    implementation project(path: ':home-data')
 
     // Storage modules
     implementation project(path: ':storage-data')
