@@ -160,17 +160,31 @@ class PatternDescriptionViewModel @Inject constructor(
                 Log.d("PattenDescViewModel", ">>>>>>>>>handleDeletePattenResult OnSuccess ")
                 // insert to DB
                 if ((NetworkUtility.isNetworkAvailable(context))) {
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedOrderNumber.get(),
-                        tailornovaDesignpatternName.get(),
-                        prodSize.get(),
-                        clickedProduct?.status,
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        clickedProduct?.mannequin ?: emptyList(),
-                        clickedProduct?.patternType
-                    )
+                    if(isFromDeepLinking.get()){
+                        insertTailornovaDetailsToDB(
+                            data.value!!,
+                            clickedOrderNumber.get(),
+                            tailornovaDesignpatternName.get(),
+                            prodSize.get(),
+                            clickedProduct?.status,
+                            mannequinId.get(),
+                            mannequinName.get(),
+                            clickedProduct?.mannequin ?: emptyList(),
+                            "Purchased"
+                        )
+                    }else {
+                        insertTailornovaDetailsToDB(
+                            data.value!!,
+                            clickedOrderNumber.get(),
+                            tailornovaDesignpatternName.get(),
+                            prodSize.get(),
+                            clickedProduct?.status,
+                            mannequinId.get(),
+                            mannequinName.get(),
+                            clickedProduct?.mannequin ?: emptyList(),
+                            clickedProduct?.patternType
+                        )
+                    }
                 } else {
                     //offline if all images are downloaded
                     uiEvents.post(Event.OnWorkspaceButtonClicked)

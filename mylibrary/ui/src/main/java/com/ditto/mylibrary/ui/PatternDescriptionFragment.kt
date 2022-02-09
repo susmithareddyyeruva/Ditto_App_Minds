@@ -1048,11 +1048,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
             bundle =
                 bundleOf(
-                    "PatternName" to viewModel.clickedProduct?.prodName,
+                    "PatternName" to viewModel.patternName.get(),
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
-                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName
+                    "tailornovaDesignName" to viewModel.patternName.get()
                 )
         } else {
             bundle =
