@@ -15,6 +15,7 @@ import com.ditto.login.data.di.LoginDbModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.menuitems.data.di.*
 import com.ditto.menuitems_ui.aboutapp.di.AboutAppFragmentModule
+import com.ditto.menuitems_ui.accountinfo.di.AccountInfoFragmentModule
 import com.ditto.menuitems_ui.customercare.di.CustomerCareFragmentModule
 import com.ditto.menuitems_ui.faq.di.FAQfragmentModule
 import com.ditto.menuitems_ui.faq.di.FaqGlossaryMainFragmentModule
@@ -59,11 +60,11 @@ import javax.inject.Singleton
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
         WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class, LoginApiModule::class,
         TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, OnboardingApiModule::class,
-        CustomerCareFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
+        CustomerCareFragmentModule::class,AccountInfoFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
         GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
         PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class,
-        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class]
+        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class,AccountInfoAPIModule::class,AccountInfoDataModule::class]
 
 )
 @Singleton

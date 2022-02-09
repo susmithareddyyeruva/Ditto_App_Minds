@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ditto.menuitems_ui.accountinfo.fragment.AccountInfoViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cc_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".14" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".06" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".027" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end_second_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".97" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".24" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/guide_end_second_tile"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".58"
+            app:layout_constraintStart_toStartOf="@+id/guide_start_tile"
+            app:layout_constraintTop_toBottomOf="@+id/guide_top_tile">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imagestart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".064" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".96" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_centre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".40" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imagetop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".10" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_view_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".42" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_delete_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".58" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_wait_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".60" />
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="start"
+                android:text="@string/str_name"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_centre"
+                app:layout_constraintStart_toEndOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/imagetop" />
+
+            <TextView
+                android:id="@+id/tv_name_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="start"
+                android:text="@{viewModel.name}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/guide_centre"
+                app:layout_constraintTop_toBottomOf="@+id/imagetop" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="start"
+                android:text="@string/str_email_small"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_centre"
+                app:layout_constraintStart_toEndOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+            <TextView
+                android:id="@+id/tv_email_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="start"
+                android:text="@{viewModel.email}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/guide_centre"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="start"
+                android:text="@string/str_phone_small"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_centre"
+                app:layout_constraintStart_toEndOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+            <TextView
+                android:id="@+id/tv_phone_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="start"
+                android:text="@{viewModel.phone}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/guide_centre"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="start"
+                android:text="@string/str_rem_sub_days"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_centre"
+                app:layout_constraintStart_toEndOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="start"
+                android:text="@{viewModel.subscriptionEndDateBase}"
+                android:textColor="#000"
+                android:textSize="@dimen/str_wait"
+                app:layout_constraintEnd_toStartOf="@+id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/guide_centre"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="start"
+                android:text="@string/str_dele_account_info"
+                android:textColor="#000"
+                android:textSize="@dimen/str_quest"
+                app:layout_constraintBottom_toTopOf="@+id/guide_delete_desc"
+                app:layout_constraintEnd_toStartOf="@+id/guide_end"
+                app:layout_constraintStart_toStartOf="@+id/imagestart" />
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/margin_top_devider"
+                android:background="@drawable/bg_scandevice"
+                android:drawablePadding="5dp"
+                android:ellipsize="none"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.onDeleteAccountClick()}"
+                android:paddingHorizontal="@dimen/margin_top_devider"
+                android:singleLine="true"
+                android:text="@string/delete_account"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/button_text_size"
+                app:layout_constraintLeft_toLeftOf="@id/imagestart"
+                app:layout_constraintTop_toBottomOf="@id/guide_wait_time">
+
+            </Button>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

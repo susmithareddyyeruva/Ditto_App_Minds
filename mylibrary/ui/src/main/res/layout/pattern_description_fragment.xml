@@ -290,6 +290,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="50"
                     android:drawablePadding="8dp"
+                    android:visibility="@{viewModel.isFromDeepLinking() ? View.GONE : View.VISIBLE}"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="start"
                     android:paddingLeft="12dp"

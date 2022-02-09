@@ -360,7 +360,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         } else {
             setData()
-
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",

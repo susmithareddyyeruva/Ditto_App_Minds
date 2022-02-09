@@ -297,23 +297,7 @@ class PatternDescriptionViewModel @Inject constructor(
                  */
                 uiEvents.post(Event.OnMannequinNameEmpty)
             } else {
-
                 uiEvents.post(Event.OnWorkspaceButtonClicked)
-               /* if ((NetworkUtility.isNetworkAvailable(context))) {
-
-                     insertTailornovaDetailsToDB(
-                         data.value!!,
-                         clickedOrderNumber.get(),
-                         tailornovaDesignpatternName.get(),
-                         prodSize.get(),
-                         clickedProduct?.status,
-                         mannequinId.get(),
-                         mannequinName.get(),
-                         clickedProduct?.mannequin ?: emptyList()
-                     )
-                } else {
-                    uiEvents.post(Event.OnWorkspaceButtonClicked)
-                }*/
             }
         } else {
             if (mannequinId?.get()
@@ -327,21 +311,6 @@ class PatternDescriptionViewModel @Inject constructor(
             } else {
 
                 uiEvents.post(Event.OnWorkspaceButtonClicked)
-                /*if ((NetworkUtility.isNetworkAvailable(context))) {
-
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedOrderNumber.get(),
-                        tailornovaDesignpatternName.get(),
-                        prodSize.get(),
-                        clickedProduct?.status,
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        clickedProduct?.mannequin ?: emptyList()
-                    )
-                } else {
-                    uiEvents.post(Event.OnWorkspaceButtonClicked)
-                }*/
             }
         }
     }

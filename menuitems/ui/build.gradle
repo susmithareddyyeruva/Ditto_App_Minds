@@ -84,6 +84,7 @@ dependencies {
     implementation project(':logger')
     implementation project(path: ':videoplayer')
     implementation project(':menuitems-domain')
+    implementation project(path: ':menuitems-data')
     implementation project(':login-domain')
     implementation project(path: ':connectivity-ui')
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
