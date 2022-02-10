@@ -159,6 +159,13 @@ class AllPatternsFragment(
         logger.d("All Patterns  onResume")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
+        // to resolve the pattern count at top while swiching the tab, it was showing wrong pattern count
+        setPatternCount.onSetCount(
+            getString(
+                R.string.pattern_library_count,
+                viewModel.totalPatternCount
+            )
+        )
        // fetchPatternLibrary()
 
     }
