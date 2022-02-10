@@ -112,5 +112,6 @@ dependencies {
     implementation project(path: ':storage-domain')
 
     implementation project(path: ':menuitems-ui')
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
 }

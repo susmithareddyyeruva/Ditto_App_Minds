@@ -48,6 +48,7 @@ class HomeViewModelTest {
     lateinit var homeUsecase: HomeUsecase
 
     private lateinit var viewModel: HomeViewModel
+    private lateinit var loggerFactory: LoggerFactory
 
     @Rule
     @JvmField
@@ -171,9 +172,9 @@ class HomeViewModelTest {
         /*
         viewModel = spy(HomeViewModel(context, storageManager, homeUsecase, utility))*/
         val utility = mock(Utility::class.java)
-        val logger = spy(LoggerFactory::class.java)
-        viewModel = spy(HomeViewModel(context, storageManager, homeUsecase, logger, utility))
-        ignoreStubs(logger)
+        loggerFactory = spy(LoggerFactory::class.java)
+        viewModel = spy(HomeViewModel(context, storageManager, homeUsecase, loggerFactory, utility))
+        ignoreStubs(loggerFactory)
     }
 
     @Test
@@ -278,10 +279,25 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when trial fetch pattern api return valid response for logged in user`() {
+    fun `when trial pattern fetch api return valid response for logged in user`() {
+        val resultMap = hashMapOf<String, ArrayList<String>>()
         //app state logged in user for logged in
-        val appState: AppState = spy(AppState::class.java)
+        val appState: AppState = mock(AppState::class.java)
         val sharedPref: SharedPreferences = mock(SharedPreferences::class.java)
+
+        Mockito.`when`(
+            context.getSharedPreferences(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyInt()
+            )
+        ).thenReturn(sharedPref)
+        Mockito.`when`(
+            sharedPref.getString(
+                ArgumentMatchers.eq("USER_EMAIL"),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn("test123@test.com")
+        appState.init(context)
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
                 true,
@@ -290,18 +306,12 @@ class HomeViewModelTest {
                 true,
             ), pageId = 1, patternsPerPage = 12
         )
-        Mockito.`when`(
-            context.getSharedPreferences(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyInt()
-            )
-        ).thenReturn(sharedPref)
-        appState.init(context)
         val fakeResponse = mapResponseToModelFilterApi()
         val response = Single.just(Result.withValue(fakeResponse))
-        Mockito.`when`(homeUsecase.getHomePatternsData(filterCriteria)).thenReturn(response)
+        Mockito.`when`(homeUsecase.getHomePatternsData(com.nhaarman.mockitokotlin2.any()))
+            .thenReturn(response)
         viewModel.fetchData()
-        assertNotEquals(0, viewModel.productCount)
-        verify(viewModel.setHomeItems())
+        assertEquals(1, viewModel.productCount)
+        verify(viewModel).setHomeItems()
     }
 }
