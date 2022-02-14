@@ -1076,6 +1076,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     //download the pattern pieces
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap[if(viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString() else viewModel.data.value?.thumbnailImageName.toString()] =
+            viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
