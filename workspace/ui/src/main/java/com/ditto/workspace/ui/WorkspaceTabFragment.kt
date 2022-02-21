@@ -125,7 +125,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
         arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
-
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }
@@ -1387,7 +1386,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                        enableClear(true)
                         if (!(dragData?.patternPieces?.splice ?: true)) {
                             if (viewModel.workspacedata?.splice ?: false) {
-                                if (viewModel.userData.value?.cSpliceMultiplePieceReminder
+                                if (viewModel.userData.value?.cSpliceReminder
                                         ?: true
                                 ) {
                                     Utility.getCommonAlertDialogue(
@@ -1415,7 +1414,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true, viewModel.workspacedata, false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                if (viewModel.userData.value?.cSpliceMultiplePieceReminder
+                                if (viewModel.userData.value?.cSpliceReminder
                                         ?: true
                                 ) {
                                     Utility.getCommonAlertDialogue(
@@ -1431,7 +1430,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 }
                                 return true
                             } else {
-                                if (viewModel.userData.value?.cSpliceReminder ?: true) {
+                                if (viewModel.userData.value?.cSpliceMultiplePieceReminder ?: true) {
                                     if ((dragData?.patternPieces?.splicedImages?.size)!! > 2) {
                                         Utility.getCommonAlertDialogue(
                                             requireActivity(),
