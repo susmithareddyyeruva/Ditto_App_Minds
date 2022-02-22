@@ -178,6 +178,10 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val jsonobj = Gson().toJson(workspaceDataAPI)
+        Log.d(
+            "WorkspaceRepositoryImpl",
+            "updateWorkspaceDataFromApi ${jsonobj}"
+        )
         val jsonString = jsonobj.toString()
         val wsInputData = WSInputData(jsonString)
 
