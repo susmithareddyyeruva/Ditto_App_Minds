@@ -101,10 +101,10 @@ class AccountInfoViewModel @Inject constructor(
         if (AppState.getSubDate()
                 .isEmpty() || AppState.getSubDate() == null
         ) {
-            subscriptionEndDateBase.set(": 0 days")
+            subscriptionEndDateBase.set(": 0 days left")
         } else {
             val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-            subscriptionEndDateBase.set(": "+"$days days")
+            subscriptionEndDateBase.set(": "+"$days days left")
         }
     }
 

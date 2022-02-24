@@ -413,10 +413,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null
             ) {
-                navViewHeaderBinding.subscriptionDays.text ="0 days"
+                navViewHeaderBinding.subscriptionDays.text ="0 day left"
             } else {
                 val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-                navViewHeaderBinding.subscriptionDays.text ="$days days"
+                navViewHeaderBinding.subscriptionDays.text ="$days days left"
             }
             navViewHeaderBinding.textPhone.text =AppState.getMobile()
         } else {
