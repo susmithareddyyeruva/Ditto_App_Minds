@@ -360,7 +360,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         } else {
             setData()
-
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
@@ -1049,11 +1048,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
             bundle =
                 bundleOf(
-                    "PatternName" to viewModel.clickedProduct?.prodName,
+                    "PatternName" to viewModel.patternName.get(),
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
-                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName
+                    "tailornovaDesignName" to viewModel.patternName.get()
                 )
         } else {
             bundle =
@@ -1077,6 +1076,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     //download the pattern pieces
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap[if(viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString() else viewModel.data.value?.thumbnailImageName.toString()] =
+            viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {

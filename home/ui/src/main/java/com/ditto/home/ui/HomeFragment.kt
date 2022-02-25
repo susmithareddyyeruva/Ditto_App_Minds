@@ -248,6 +248,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     }
 
     override fun onStop() {
+        bottomNavViewModel.visibility.set(false)
         versionDisposable?.clear()
         versionDisposable?.dispose()
         homeViewModel.disposable.clear()

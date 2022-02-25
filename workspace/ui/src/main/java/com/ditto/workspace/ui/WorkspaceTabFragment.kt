@@ -125,7 +125,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
         arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
-
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }
