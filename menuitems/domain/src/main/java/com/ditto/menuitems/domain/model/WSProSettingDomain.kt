@@ -1,7 +1,5 @@
 package com.ditto.menuitems.domain.model
 
-import com.google.gson.annotations.SerializedName
-
 class WSProSettingDomain (
     val v: String,
     val type: String,

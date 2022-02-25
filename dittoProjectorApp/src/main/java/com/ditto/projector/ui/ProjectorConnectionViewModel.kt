@@ -66,20 +66,20 @@ class ProjectorConnectionViewModel : ViewModel() {
      *   [Function] Start Conenctions
      */
     fun startConnection() {
-        uiEvents.post(Event.onstartConnection)
+        uiEvents.post(Event.OnStartConnection)
     }
 
     /**
      *   [Function] Register Wifi Listener
      */
     fun registerWifiListener() {
-        uiEvents.post(Event.onRegisterlistner)
+        uiEvents.post(Event.OnRegisterListener)
     }
     /**
      *   [Function]  TEST PURPOSE : ONLY FOR SHOWING TOAST
      */
     fun startNSD() {
-        uiEvents.post(Event.onstartNSD)
+        uiEvents.post(Event.OnStartNSD)
     }
 
 
@@ -87,10 +87,10 @@ class ProjectorConnectionViewModel : ViewModel() {
      * Events for this view model
      */
     sealed class Event {
-        object onRegisterlistner : Event()
-        object onstartConnection : Event()
-        object onstartNSD : Event()
-        object onWaitForConnection : Event()
+        object OnRegisterListener : Event()
+        object OnStartConnection : Event()
+        object OnStartNSD : Event()
+        object OnWaitForConnection : Event()
 
     }
 
@@ -151,7 +151,7 @@ class ProjectorConnectionViewModel : ViewModel() {
                 splitwificredentials?.get(1)!!, context!!
             )
         }*/
-        uiEvents.post(Event.onWaitForConnection)
+        uiEvents.post(Event.OnWaitForConnection)
     }
 
 

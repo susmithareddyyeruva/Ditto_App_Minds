@@ -21,8 +21,8 @@ fun WorkspaceItems.toWorkspaceItemDomain(): WorkspaceItemDomain {
         ycoordinate = this.ycoordinate,
         pivotX = this.pivotX,
         pivotY = this.pivotY,
-        transformA = "transformA", // todo check need IOS stuff
-        transformD = "transformD", // todo check need IOS stuff
+        transformA = "transformA",
+        transformD = "transformD",
         rotationAngle = this.rotationAngle,
         mirrorOption=this.mirrorOption,
         isMirrorH = this.isMirrorH,
@@ -30,7 +30,7 @@ fun WorkspaceItems.toWorkspaceItemDomain(): WorkspaceItemDomain {
         showMirrorDialog = this.showMirrorDialog,
         currentSplicedPieceColumn=this.currentSplicedPieceColumn,
         currentSplicedPieceRow=this.currentSplicedPieceRow,
-        currentSplicedPieceNo = "currentSplicedPieceNo" //todo check >> add row and column
+        currentSplicedPieceNo = "currentSplicedPieceNo"
     )
 }
 
@@ -64,7 +64,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>?)
 
     return PatternPieces(
         id = this.id,
-        parentPattern = "parentPattern", // todo
+        parentPattern = "parentPattern",
         imagePath = this.imageUrl,
         imageName=this.imageName,
         thumbnailImageUrl = this.thumbnailImageUrl,
@@ -83,7 +83,7 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>?)
             it.toOldModel()
         },
         cutOnFold = this.cutOnFold.toString(),
-        isMirrorOption = this.isMirrorOption,//Todo mirror
+        isMirrorOption = this.isMirrorOption,
         isCompleted = patternPiece?.isCompleted ?: false
     )
 }
@@ -109,7 +109,7 @@ fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>?)
 
     return WorkspaceItems(
         id = this.id,
-        parentPattern = "parentPattern",// todo check
+        parentPattern = "parentPattern",
         imagePath = patternPiece?.imageUrl,
         imageName = patternPiece?.imageName,
         size = patternPiece?.size,
@@ -159,7 +159,7 @@ fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPiec
     val patternPiece= getPatternPiece(this.patternPiecesId,patternPieces)
     return WorkspaceItems(
         id = this.id,
-        parentPattern = "parentPattern",// todo check
+        parentPattern = "parentPattern",
         imagePath = patternPiece?.imageUrl,
         imageName = patternPiece?.imageName,
         size = patternPiece?.size,
@@ -258,7 +258,7 @@ fun combineTailornovaAndSFCCDetails(
         thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
         instructionUrl = resultTailernova.data.instructionUrl,
-        //descriptionImages TODO will come from tailernova in next sprints
+        //descriptionImages //will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
         patternPieces = resultTailernova.data.patternPiecesTailornova?.map { it.toOldModel(fetchWorkspaceResult.data.patternPieces) },
         garmetWorkspaceItemOfflines = fetchWorkspaceResult.data.garmetWorkspaceItems?.map {
@@ -304,7 +304,7 @@ fun combineTailornovaAndSFCCDetails(
         thumbnailImagePath = resultTailernova.data.thumbnailImageUrl,
         thumbnailImageName = resultTailernova.data.thumbnailImageName,
         instructionUrl = resultTailernova.data.instructionUrl,
-        //descriptionImages TODO will come from tailernova in next sprints
+        //descriptionImages // will come from tailernova in next sprints
         selvages = resultTailernova.data.selvages?.map { it.toOldModel() },
         patternPieces = resultTailernova.data.patternPiecesTailornova?.map {
             it.toOldModelOffline(

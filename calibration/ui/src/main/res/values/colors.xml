@@ -3,7 +3,6 @@
     <color name="White">#fff</color>
     <color name="black">#000000</color>
     <color name="gray">#808080</color>
-    <!--<color name="green">#73BD00</color>-->
     <color name="instruction_content_text">#4A4A4A</color>
     <color name="headerbar">#FFFFFF</color>
     <color name="texthint">#63666B</color>

@@ -7,7 +7,6 @@
     tools:ignore="UnusedNavigation">
 
     <include app:graph="@navigation/nav_graph_home" />
-    <include app:graph="@navigation/nav_graph_video" />
     <fragment
         android:id="@+id/destination_login"
         android:name="com.ditto.login.ui.LoginFragment"

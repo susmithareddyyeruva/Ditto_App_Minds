@@ -1,7 +1,6 @@
 package com.ditto.onboarding.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -37,7 +36,7 @@ class OnboardingViewModel @Inject constructor(
     var dataFromApi: MutableLiveData<List<OnboardingDomain>> = MutableLiveData()
     val clickedId: ObservableInt = ObservableInt(-1)
     val dontShowThisScreen: ObservableBoolean = ObservableBoolean(false)
-    val isFromHome_Observable: ObservableBoolean = ObservableBoolean(false)
+    val isFromHomeObservable: ObservableBoolean = ObservableBoolean(false)
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isBluetoothOn: ObservableBoolean = ObservableBoolean(false)
@@ -65,7 +64,6 @@ class OnboardingViewModel @Inject constructor(
 
     fun getDemoVideoUrl(): String {
          videoUrl = storageManager.getStringValue(VIDEO_URL)?:""
-        Log.d("videoooo","is: $videoUrl")
         return videoUrl
     }
     //fetch data from repo (via usecase)
@@ -127,7 +125,6 @@ class OnboardingViewModel @Inject constructor(
                 isBleLaterClicked.set(result.data.bleDialogVisible ?: false)
                 isWifiLaterClicked.set(result.data.wifiDialogVisible ?: false)
                 uiEvents.post(Event.OnShowBleDialogue)
-                Log.d("SDFasdf", result.data.wifiDialogVisible.toString())
             }
             is Result.OnError -> handleError(result.error)
         }
@@ -145,7 +142,6 @@ class OnboardingViewModel @Inject constructor(
             else -> {
                 errorString.set(error.message)
                 uiEvents.post(Event.DatFetchError)
-                Log.d("OnboardingViewModel", "handleError")
             }
         }
     }

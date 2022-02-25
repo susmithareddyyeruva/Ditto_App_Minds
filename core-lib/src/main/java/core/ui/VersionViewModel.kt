@@ -1,7 +1,5 @@
 package core.ui
 
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import core.data.model.SoftwareUpdateResult
 import core.domain.SoftwareupdateUseCase
 import core.ui.rxbus.RxBus
@@ -30,7 +28,7 @@ class VersionViewModel @Inject constructor (
     private fun handleVersionResult(result: Result<SoftwareUpdateResult>) {
         when (result) {
             is Result.OnSuccess -> {
-               RxBus.publish(RxBusEvent.versionReceived(result.data))
+               RxBus.publish(RxBusEvent.VersionReceived(result.data))
             }
             is Result.OnError -> {
                 handleError(result.error)
@@ -43,10 +41,10 @@ class VersionViewModel @Inject constructor (
         when (error) {
             is NoNetworkError -> {
                 activeInternetConnection.set(false)
-                RxBus.publish(RxBusEvent.versionErrorReceived("No Internet connection available !"))
+                RxBus.publish(RxBusEvent.VersionErrorReceived("No Internet connection available !"))
             }
             else -> {
-                RxBus.publish(RxBusEvent.versionErrorReceived("Something Went Worng!!"))
+                RxBus.publish(RxBusEvent.VersionErrorReceived("Something Went Wrong!!"))
             }
 
         }

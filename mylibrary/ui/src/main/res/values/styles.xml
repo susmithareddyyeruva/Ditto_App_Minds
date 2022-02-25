@@ -84,6 +84,5 @@
         <item name="android:verticalScrollbarPosition">left</item>
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
         <item name="android:scrollbarSize">3dp</item>
-       <!-- <item name="android:scrollbarFadeDuration">10000000</item>-->
     </style>
 </resources>

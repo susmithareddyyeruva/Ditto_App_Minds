@@ -17,19 +17,18 @@ object EncodeDecodeUtil {
      * @return the encoded string
      * @throws SignatureException
      */
-    fun HMAC_SHA256(secret: String?, message: String): String? {
+    fun hmacSha256(secret: String?, message: String): String? {
         var hash = ""
-        var hash1 = ""
         try {
-            val sha256_HMAC = Mac.getInstance("HmacSHA256")
-            val secret_key = SecretKeySpec(secret?.toByteArray(), "HmacSHA256")
-            sha256_HMAC.init(secret_key)
-            hash = Base64.encodeToString(sha256_HMAC.doFinal(message.toByteArray()), Base64.DEFAULT)
+            val sha256Hmac = Mac.getInstance("HmacSHA256")
+            val secretKey = SecretKeySpec(secret?.toByteArray(), "HmacSHA256")
+            sha256Hmac.init(secretKey)
+            hash = Base64.encodeToString(sha256Hmac.doFinal(message.toByteArray()), Base64.DEFAULT)
             Log.d("=========", "BASE 64 :" + hash)
             Log.d(
                 "=========", java.lang.String.format(
                     "Hex: %032x", BigInteger(
-                        1, sha256_HMAC.doFinal(
+                        1, sha256Hmac.doFinal(
                             message.toByteArray()
                         )
                     )
@@ -41,6 +40,7 @@ object EncodeDecodeUtil {
             println(hash1)        // Kotlin
             println(hash3)        // Kotlin*/
         } catch (e: java.lang.Exception) {
+            Log.d("Exception",e.localizedMessage)
         }
         return hash.trim { it <= ' ' }
     }
@@ -50,6 +50,7 @@ object EncodeDecodeUtil {
         try {
             valueDecoded = Base64.decode(coded?.toByteArray(charset("UTF-8")), Base64.DEFAULT)
         } catch (e: UnsupportedEncodingException) {
+            Log.d("Exception",e.localizedMessage)
         }
         return String(valueDecoded!!)
     }

@@ -1,7 +1,6 @@
 package com.ditto.data
 
 import android.content.Context
-import android.util.Log
 import com.ditto.data.api.HomeApiService
 import com.ditto.data.error.HomeDataFetchError
 import com.ditto.data.mapper.offlinetoDomain
@@ -53,10 +52,10 @@ class MyLibraryRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val input = "$EN_USERNAME:$EN_PASSWORD"
+        val input = "$EN_USERNAME:$EN_CPCODE"
         val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.HMAC_SHA256(key, input)
-        return homeService.getHomeScreenDetails(requestData, "Basic " + encryptedKey)
+        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
+        return homeService.getHomeScreenDetails(requestData, AUTH + encryptedKey)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
                     logger.d("*****FETCH HOME SUCCESS 200 with Error **")
@@ -82,25 +81,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
                             val gson = Gson()
                             val type = object : TypeToken<CommonError>() {}.type
                             val errorResponse: CommonError? = gson.fromJson(errorBody, type)
-                            errorMessage = errorResponse?.errorMsg ?: "Error Fetching data"
+                            errorMessage = errorResponse?.errorMsg ?: ERROR_FETCH
                             logger.d("onError: BAD REQUEST")
 
                         }
-                        401 -> {
-                            logger.d("onError: NOT AUTHORIZED")
-                        }
-                        403 -> {
-                            logger.d("onError: FORBIDDEN")
-                        }
-                        404 -> {
-                            logger.d("onError: NOT FOUND")
-                        }
-                        500 -> {
-                            logger.d("onError: INTERNAL SERVER ERROR")
-                        }
-                        502 -> {
-                            logger.d("onError: BAD GATEWAY")
-                        }
+
                     }
                 } else {
                     errorMessage = when (it) {
@@ -142,25 +127,11 @@ class MyLibraryRepositoryImpl @Inject constructor(
                 offlinePatternDataDao.upsertList(it.trial.toDomainn(),AppState.getCustID())
                 //PatternIdData>>OfflinePatterns
 
-                Log.d("Tailornova", "insertofflinePatternsData complete: $it")
+                logger.d("Tailornova, insertofflinePatternsData complete: $it")
             }.map {
                 it.trial?.let { it1 -> Result.withValue(it1) }
             }.onErrorReturn {
                 var errorMessage = ERROR_FETCH
-/*
-                try {
-                    logger.d("try block")
-                    val error = it as HttpException
-                    if (error != null) {
-                        logger.d("Error Tailornova")
-                    }
-                } catch (e: Exception) {
-                    //logger.d("Catch",e.message.toString())
-                    errorMessage = e.message.toString()
-                }
-                Result.withError(
-                    CommonApiFetchError(errorMessage, it)
-                )*/
                 logger.d(it.localizedMessage)
                 if (it is HttpException) {
                     when (it.code()) {
@@ -216,23 +187,6 @@ class MyLibraryRepositoryImpl @Inject constructor(
     }
 
 
-    /* return tailornovaApiService.getPatternDetailsByDesignId(
 
-     .onErrorReturn {
-         var errorMessage = "Error Fetching data"
-         try {
-             logger.d("try block")
-             val error = it as HttpException
-             if (error != null) {
-                 logger.d("Error Tailornova")
-             }
-         } catch (e: Exception) {
-             Log.d("Catch", e.localizedMessage)
-             errorMessage = e.message.toString()
-         }
-         Result.withError(
-             CommonApiFetchError(errorMessage, it)
-         )
-     }*/
 }
 

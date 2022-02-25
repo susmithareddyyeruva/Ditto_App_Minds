@@ -15,7 +15,7 @@ abstract class OfflinePatternDataDao {
     @JvmSuppressWildcards
     abstract fun insertOfflinePatternDataList(offlinePatterns: List<OfflinePatterns>)
 
-    @Query("SELECT * FROM offline_pattern_data where patternType ='Trial' or custId = :custId")//todo need to fetch respective of id i.e custmoer id
+    @Query("SELECT * FROM offline_pattern_data where patternType ='Trial' or custId = :custId")
     abstract fun getAllPatterns(custId: String?): List<OfflinePatterns>
 
     @Query("SELECT * FROM offline_pattern_data WHERE designId = :id and custId = :custId")

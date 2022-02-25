@@ -2,7 +2,6 @@ package com.ditto.menuitems_ui.faq.ui.adapters
 
 import android.content.Context
 import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.VideosDomain
 import com.ditto.menuitems_ui.R
@@ -30,37 +31,37 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
     override
     fun onBindViewHolder(holder: VideosViewHolder, position: Int) {
         val item = items?.get(position)
-        holder.tvques.text = item?.Ques
-        val htmlAsSpanned = Html.fromHtml(item?.Answ)
+        holder.tvques.text = item?.ques
+        val htmlAsSpanned = HtmlCompat.fromHtml(item?.answ?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
         holder.tvAnsw.text = htmlAsSpanned
-        holder.linheader.setOnClickListener { onItemClicked(item,position) }
+        holder.linheader.setOnClickListener { onItemClicked(item) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
-            if (!item?.web_url.isNullOrEmpty()) {
+            if (!item?.webUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (!item?.video_url.isNullOrEmpty()) {
+            if (!item?.videoUrl.isNullOrEmpty()) {
                 holder.watch.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
+            if (item?.webUrl.isNullOrEmpty() && item?.videoUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.GONE
                 holder.visit.visibility = View.GONE
             }
             holder.visit.setOnClickListener {
-                visitSiteListener.onVisitClick(item?.web_url ?: "")
+                visitSiteListener.onVisitClick(item?.webUrl ?: "")
             }
             holder.watch.setOnClickListener {
-                watchVideoClickListener.onVideoClick(item?.Ques,item?.video_url ?: "")
+                watchVideoClickListener.onVideoClick(item?.ques,item?.videoUrl ?: "")
             }
         } else {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)
             holder.watch.visibility = View.GONE
@@ -68,7 +69,7 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
         }
 
     }
-    private fun onItemClicked(faqModel: VideosDomain?, pos : Int) {
+    private fun onItemClicked(faqModel: VideosDomain?) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()

@@ -14,7 +14,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
-        versionName "0.20(01)"
+        versionName "0.23(01)"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -39,11 +39,11 @@ android {
             buildConfigField "String", "CLIENT_ID", "\"59eb4dd9-026d-4bac-adb5-2e5848d91263\""
             buildConfigField "String", "SIGN_UP_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
             buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
         }
         debug {
             debuggable true
             minifyEnabled false
-            /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
             buildConfigField "String", "TOKEN_BASEURL", "\"https://staging.handmadewithjoann.com/ditto/\""
             buildConfigField "String", "TOKEN_ENDURL", "\"dw/oauth2/access_token\""
             // dev
@@ -57,6 +57,7 @@ android {
             buildConfigField "String", "CLIENT_ID", "\"59eb4dd9-026d-4bac-adb5-2e5848d91263\""
             buildConfigField "String", "SIGN_UP_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- DEV
         }
         staging {
             debuggable true
@@ -73,8 +74,9 @@ android {
             buildConfigField "String", "MYLIBRARY_ENDURL", "\"on/demandware.store/Sites-ditto-Site/default/\""
             buildConfigField "String", "TAILORNOVA_ENDURL", "\"https://ditto-splicing.tailornova.com/api/v1/patterns/\""
             buildConfigField "String", "CLIENT_ID", "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
-            buildConfigField "String", "SIGN_UP_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- DEV
-            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
+            buildConfigField "String", "SIGN_UP_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show\"" //--- STAGING
+            buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- STAGING
+            buildConfigField "String", "SUBSCRIPTION_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan\"" //--- STAGING
         }
     }
 

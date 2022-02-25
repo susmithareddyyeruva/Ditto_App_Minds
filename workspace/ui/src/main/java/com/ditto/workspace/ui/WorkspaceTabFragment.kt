@@ -30,8 +30,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.core.animation.addListener
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -53,7 +51,6 @@ import com.ditto.workspace.domain.model.*
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
-import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
@@ -128,7 +125,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
         arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
-
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }
@@ -725,7 +721,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    // todo
     fun fetchWorkspaceData(selectedTab: Int): MutableList<WorkspaceItems>? {
 
         if (selectedTab == 0) {
@@ -824,18 +819,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
     }
 
-    private fun showSplicingForgetDialogue(alertType: Utility.AlertType) {
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.complete_cutbin),
-            resources.getString(R.string.click_spliced_second_pieces),
-            resources.getString(R.string.empty_string),
-            resources.getString(R.string.ok),
-            this,
-            alertType,
-            Utility.Iconype.NONE
-        )
-    }
 
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
@@ -1058,7 +1041,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     logger.d("workspace item is null")
                 }
             }
-            is WorkspaceViewModel.Event.onProject -> {
+            is WorkspaceViewModel.Event.OnProject -> {
                 viewModel.isProjectionRequest.set(true)
                 if (baseViewModel.activeSocketConnection.get()) {
                     startProjecting()
@@ -1085,7 +1068,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 adapter?.notifyDataSetChanged()
                 onDragCompleted()
             }
-            is WorkspaceViewModel.Event.updateProgressCount -> {
+            is WorkspaceViewModel.Event.UpdateProgressCount -> {
                 onUpdateProgressCount()
             }
             is WorkspaceViewModel.Event.OnClickClear -> {
@@ -1171,7 +1154,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     Utility.Iconype.NONE
                 )
             }
-            WorkspaceViewModel.Event.OnCoachmarkClose -> {
+            WorkspaceViewModel.Event.OnCoachMarkClose -> {
                 binding.coachMarkPopup.animate()
                     .scaleX(0.2f)
                     .scaleY(0.2f)
@@ -1188,7 +1171,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         showCoachmarkEndPopup()
                     }
             }
-            WorkspaceViewModel.Event.OnCoachmarkPlay -> {
+            WorkspaceViewModel.Event.OnCoachMarkPlay -> {
                 val videoPath = "https://www.youtube.com/watch?v=IH1ZNEE_bwc"
                 val bundle = bundleOf(
                     "videoPath" to videoPath,
@@ -1497,37 +1480,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         return true
     }
 
-    private fun cutPieces(count: Int?) {
-        if (!viewModel.clicked_spliced_second_pieces.get() && viewModel.spliced_pices_visibility.get()) {
-            //showSplicingForgetDialogue(Utility.AlertType.DEFAULT)
-        } else if (count != null && count > 1 && !viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }?.isCompleted!!) {
-            mWorkspaceEditor?.clearAllSelection()
-            enableMirror(false)
-            showCutBinDialog(count, Utility.AlertType.CUT_BIN)
-            cutCount = count
-        } else {
-            mWorkspaceEditor?.clearAllSelection()
-            enableMirror(false)
-            if (!viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }?.isCompleted!!) {
-                viewModel.data.value?.patternPieces?.find { it.id == viewModel.workspacedata?.parentPatternId }
-                    ?.isCompleted = true
-                com.ditto.workspace.ui.util.Utility.mPatternPieceList.add(viewModel.workspacedata?.parentPatternId!!)
-                adapter?.notifyDataSetChanged()
-                viewModel.setCompletedCount(1)
-            }
-            mWorkspaceEditor?.removePattern(viewModel.workspacedata, true)
-            if (mWorkspaceEditor?.views?.size ?: 0 > 0) {
-                viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
-            } else {
-                viewModel.workspacedata = null
-                clearWorkspace()
-            }
-            onDragCompleted()
-        }
-    }
 
     override fun onTouch(view: View, workspaceItem: WorkspaceItems?) {
-//        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableSelectAll(true)
         enableClear(true)
@@ -2546,13 +2500,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.CUT_COMPLETE -> {
                 adapter?.updatePositionAdapter()
                 viewModel.cutCheckBoxClicked(viewModel.cutCount, true)
-            }
-            Utility.AlertType.MIRROR -> {
-                if (viewModel.isHorizontalMirror) {
-                    mWorkspaceEditor?.flipHorizontal()
-                } else {
-                    mWorkspaceEditor?.flipVertical()
-                }
             }
             Utility.AlertType.CONNECTIVITY -> {
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())

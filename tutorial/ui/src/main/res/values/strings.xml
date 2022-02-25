@@ -1,6 +1,4 @@
 <resources>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="stay_tuned_">Stay tuned to browse more patterns that inspire you to start your next journey!</string>
     <string name="welcomemessage">What would you like to do today?</string>

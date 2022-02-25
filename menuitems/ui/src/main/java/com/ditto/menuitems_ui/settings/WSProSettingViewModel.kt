@@ -1,7 +1,6 @@
 package com.ditto.menuitems_ui.settings
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +8,6 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.menuitems.domain.GetWorkspaceProData
-import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -19,8 +17,6 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
-import non_core.lib.error.Error
-import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 
@@ -29,7 +25,6 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                                                 private val getWorkspaceProData: GetWorkspaceProData,
                                                 val loggerFactory: LoggerFactory
 ) : BaseViewModel() {
-    // TODO: Implement the ViewModel
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
     private var errorString: ObservableField<String> = ObservableField("")
 
@@ -64,7 +59,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                 resetData()
             }
             is Result.OnError -> {
-                Log.d("WSProSettingViewModel", "Failed")
+                logger.d("WSProSettingViewModel, Failed")
             }
         }
     }
@@ -118,11 +113,11 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultSecond(it) }
+            .subscribeBy { handleFetchResultSecond() }
     }
 
 
-    private fun handleFetchResultSecond(result: Result<WSProSettingDomain>) {
+    private fun handleFetchResultSecond() {
         uiEvents.post(Event.OnHideProgress)
         //updateWSProSetting()
     }
@@ -131,15 +126,6 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         uiEvents.post(Event.OnFetchComplete)
     }
 
-    private fun handleError(error: Error) {
-        when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
-            else -> {
-                dbLoadError.set(true)
-                errorString.set(error.message)
-            }
-        }
-    }
 
     /**
      * Events for this view model

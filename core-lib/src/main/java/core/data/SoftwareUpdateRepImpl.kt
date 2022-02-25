@@ -1,13 +1,10 @@
 package core.data
 
 import android.content.Context
-import android.util.Log
-import core.data.mapper.toTokenDomain
 import core.data.mapper.toVersionDomain
 import core.data.model.SoftwareUpdateResult
 import core.data.model.TokenFetchError
 import core.di.ApiService
-import core.domain.GetTokenRepository
 import core.domain.SoftwareUpdateRepository
 import core.network.NetworkUtility
 import io.reactivex.Single

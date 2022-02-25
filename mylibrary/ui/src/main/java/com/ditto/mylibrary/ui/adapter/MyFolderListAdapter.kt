@@ -24,7 +24,6 @@ class MyFolderListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): MyFolderListHolder {
-        val viewGroup = parent
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemFoldersBinding.inflate(inflater, parent, false)
         return MyFolderListHolder(binding, viewType)

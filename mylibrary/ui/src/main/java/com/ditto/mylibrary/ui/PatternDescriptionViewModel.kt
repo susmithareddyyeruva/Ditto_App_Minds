@@ -10,6 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
@@ -45,6 +47,11 @@ class PatternDescriptionViewModel @Inject constructor(
     private val getPattern: MyLibraryUseCase
 ) :
     BaseViewModel() {
+    @Inject
+    lateinit var loggerFactory: LoggerFactory
+    val logger: Logger by lazy {
+        loggerFactory.create(PatternDescriptionViewModel::class.java.simpleName)
+    }
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val isShowindicator: ObservableBoolean = ObservableBoolean(true)
@@ -153,17 +160,31 @@ class PatternDescriptionViewModel @Inject constructor(
                 Log.d("PattenDescViewModel", ">>>>>>>>>handleDeletePattenResult OnSuccess ")
                 // insert to DB
                 if ((NetworkUtility.isNetworkAvailable(context))) {
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedOrderNumber.get(),
-                        tailornovaDesignpatternName.get(),
-                        prodSize.get(),
-                        clickedProduct?.status,
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        clickedProduct?.mannequin ?: emptyList(),
-                        clickedProduct?.patternType
-                    )
+                    if(isFromDeepLinking.get()){
+                        insertTailornovaDetailsToDB(
+                            data.value!!,
+                            clickedOrderNumber.get(),
+                            tailornovaDesignpatternName.get(),
+                            prodSize.get(),
+                            clickedProduct?.status,
+                            mannequinId.get(),
+                            mannequinName.get(),
+                            clickedProduct?.mannequin ?: emptyList(),
+                            "Purchased"
+                        )
+                    }else {
+                        insertTailornovaDetailsToDB(
+                            data.value!!,
+                            clickedOrderNumber.get(),
+                            tailornovaDesignpatternName.get(),
+                            prodSize.get(),
+                            clickedProduct?.status,
+                            mannequinId.get(),
+                            mannequinName.get(),
+                            clickedProduct?.mannequin ?: emptyList(),
+                            clickedProduct?.patternType
+                        )
+                    }
                 } else {
                     //offline if all images are downloaded
                     uiEvents.post(Event.OnWorkspaceButtonClicked)
@@ -237,8 +258,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun handleInsertTailornovaResult(result: Any) {
         when (result) {
             is Result.OnSuccess<*> -> {
-                Log.d("offlinePatternDataDao", "inviewModel OnSuccess>>>>>>>>>>")
-
+                logger.d("handlInsertTailornovRes, OnSuccess")
                 // delete folder and PDF flow starting here
                 if (AppState.getIsLogged()) {
                     fetchDemoPatternList()
@@ -247,7 +267,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 }
             }
             is Result.OnError<*> -> {
-                Log.d("offlinePatternDataDao", "inviewModel  onFailed>>>>>>>>>>>>")
+                logger.d("handlInsertTailornovRes, onFailed")
                 handleError(result.error)
             }
         }
@@ -265,10 +285,8 @@ class PatternDescriptionViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 patternsInDB = result.data.toMutableList()
-                Log.d("deleteFolderFun", "before : ${patternsInDB.toString()}")
-                uiEvents.post(Event.OnDeletePatternFolder) // delete code
-
-                //uiEvents.post(Event.OnWorkspaceButtonClicked)// download pattern pieces
+                logger.d("deleteFolderFun, before : ${patternsInDB.toString()}")
+                uiEvents.post(Event.OnDeletePatternFolder)
             }
 
             is Result.OnError -> {
@@ -282,7 +300,7 @@ class PatternDescriptionViewModel @Inject constructor(
      */
     fun onClickWorkSpace() {
         if (resumeOrSubscription.get().toString() == "RENEW SUBSCRIPTION") {
-            uiEvents.post(Event.onSubscriptionClicked)
+            uiEvents.post(Event.OnSubscriptionClicked)
         } else if (resumeOrSubscription.get().toString() == "WORKSPACE") {
             if (mannequinId?.get()
                     ?.isEmpty() == true && !(clickedProduct?.patternType.toString()
@@ -293,23 +311,7 @@ class PatternDescriptionViewModel @Inject constructor(
                  */
                 uiEvents.post(Event.OnMannequinNameEmpty)
             } else {
-
                 uiEvents.post(Event.OnWorkspaceButtonClicked)
-               /* if ((NetworkUtility.isNetworkAvailable(context))) {
-
-                     insertTailornovaDetailsToDB(
-                         data.value!!,
-                         clickedOrderNumber.get(),
-                         tailornovaDesignpatternName.get(),
-                         prodSize.get(),
-                         clickedProduct?.status,
-                         mannequinId.get(),
-                         mannequinName.get(),
-                         clickedProduct?.mannequin ?: emptyList()
-                     )
-                } else {
-                    uiEvents.post(Event.OnWorkspaceButtonClicked)
-                }*/
             }
         } else {
             if (mannequinId?.get()
@@ -323,21 +325,6 @@ class PatternDescriptionViewModel @Inject constructor(
             } else {
 
                 uiEvents.post(Event.OnWorkspaceButtonClicked)
-                /*if ((NetworkUtility.isNetworkAvailable(context))) {
-
-                    insertTailornovaDetailsToDB(
-                        data.value!!,
-                        clickedOrderNumber.get(),
-                        tailornovaDesignpatternName.get(),
-                        prodSize.get(),
-                        clickedProduct?.status,
-                        mannequinId.get(),
-                        mannequinName.get(),
-                        clickedProduct?.mannequin ?: emptyList()
-                    )
-                } else {
-                    uiEvents.post(Event.OnWorkspaceButtonClicked)
-                }*/
             }
         }
     }
@@ -357,7 +344,7 @@ class PatternDescriptionViewModel @Inject constructor(
     sealed class Event {
 
         object OnWorkspaceButtonClicked : Event()
-        object onSubscriptionClicked : Event()
+        object OnSubscriptionClicked : Event()
         object OnInstructionsButtonClicked : Event()
         object OnDataUpdated : Event()
         object OnShowMannequinData : Event()
@@ -403,7 +390,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 onFinished()
             }
         } catch (e: Exception) {
-            Log.d("PatternDescriptionViMol", "${e.message}")
+            logger.d("PatternDescriptionViMol, ${e.message}")
         }
     }
 
@@ -412,11 +399,7 @@ class PatternDescriptionViewModel @Inject constructor(
         filename: String, patternFolderName: String?
     ): File? {
         var result: File? = null
-        val outputFile: File? = null
         var dittofolder: File? = null
-
-        val contextWrapper = ContextWrapper(context)
-
         dittofolder = if (Build.VERSION.SDK_INT >= 30) {
             File(
                 context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
@@ -458,20 +441,20 @@ class PatternDescriptionViewModel @Inject constructor(
                 inputStream.copyTo(fileOut)
             }
         } catch (e: Exception) {
-            Log.d("Error", "", e)
+            logger.d("Error, $e")
         }
     }
 
     fun prepareDowloadList(hashMap: HashMap<String, String>) {
-        Log.d("Download", ">>>>>>>>>>>>>>>>>>>> STARTED")
-        Log.d("Download", "Hashmap size: ${hashMap?.size}")
+        logger.d("Download, >>>>>>>>>>>>>>>>>>>> STARTED")
+        logger.d("Download, Hashmap size: ${hashMap?.size}")
         temp.clear()
         if (!hashMap.isEmpty()) {
             if (NetworkUtility.isNetworkAvailable(context)) {
 //                GlobalScope.launch {
                 runBlocking {
                     hashMap.forEach { (key, value) ->
-                        Log.d("DOWNLOAD", "file not present KEY: $key \t VALUE : $value")
+                        logger.d("DOWNLOAD, file not present KEY: $key \t VALUE : $value")
                         if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty()) && (value != "null")) {
                             downloadEachPatternPiece(
                                 imageUrl = value,
@@ -519,16 +502,10 @@ class PatternDescriptionViewModel @Inject constructor(
                         )
                 val path = Uri.fromFile(result)
                 patternUri.set(path.toString())
-                Log.d("PATTERN", patternUri.get() ?: "")
-                Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
                 temp.add(path.toString())
-                Log.d(
-                    "DOWNLOAD",
-                    "1 file downloade >> key: $filename patternUri : ${patternUri.get()} Temp:${temp.size} "
-                )
             }
         } catch (e: Exception) {
-            Log.d("PatternDescriptionViMol", "${e.message}")
+            logger.d("PatternDescriptionViMol, ${e.message}")
         }
     }
 
@@ -560,7 +537,7 @@ class PatternDescriptionViewModel @Inject constructor(
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             } else {
-                Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
+                logger.d("Ditto Folder, ${patternFolderName}PRESENT IN DIRECTORY")
             }
         }
 

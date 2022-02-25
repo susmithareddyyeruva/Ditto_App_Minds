@@ -237,7 +237,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.toolbarViewModel?.isShowTransparentActionBar?.set(false)
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
-            is BottomNavViewModel.Event.onClickSignIn -> {
+            is BottomNavViewModel.Event.OnClickSignIn -> {
                 Log.d("EVENT", "SIGNIN CLICKED")
                 binding.bottomNavViewModel?.visibility?.set(false)
                 binding.toolbarViewModel?.isShowActionBar?.set(false)
@@ -365,7 +365,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     )?.get(childPosition)
                         ?.menuName.equals(this.getString(R.string.str_menu_softwareupdate))
                 ) {
-                    RxBus.publish(RxBusEvent.checkVersion(true))
+                    RxBus.publish(RxBusEvent.CheckVersion(true))
 
                 }
 
@@ -374,10 +374,17 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                             groupPosition
                         )
                     )?.get(childPosition)
-                        ?.menuName.equals(this.getString(R.string.privacy_policy))
+                        ?.menuName.equals(this.getString(R.string.account_info))
                 ) {
-                    if (navController.currentDestination?.label?.equals("Home")!!) {
-                        navController.navigate(R.id.action_homeFragment_to_privacyAndSettingFragment)
+
+                    if (navController.currentDestination?.label?.equals("Home")!! ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        navController.navigate(
+                            if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_accountInfoFragment
+                            else R.id.action_pattern_description_to_accountInfoFragment
+                        )
                     }
                 }
 
@@ -406,10 +413,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null
             ) {
-                navViewHeaderBinding.subscriptionDays.text ="0 days"
+                navViewHeaderBinding.subscriptionDays.text ="0 day left"
             } else {
                 val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-                navViewHeaderBinding.subscriptionDays.text ="$days days"
+                navViewHeaderBinding.subscriptionDays.text ="$days days left"
             }
             navViewHeaderBinding.textPhone.text =AppState.getMobile()
         } else {

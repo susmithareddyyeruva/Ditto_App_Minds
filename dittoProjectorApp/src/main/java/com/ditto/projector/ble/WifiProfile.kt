@@ -35,13 +35,6 @@ class WifiProfile {
                 BluetoothGattDescriptor.PERMISSION_READ or BluetoothGattDescriptor.PERMISSION_WRITE
             )
         credentialscharactersitics.addDescriptor(configDescriptor)
-
-        val budderservice =
-            BluetoothGattCharacteristic(
-                BUFFER_SERVICE,  //Read-only characteristic
-                BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ
-            )
         wifiservice.addCharacteristic(credentialscharactersitics)
         //wifiservice.addCharacteristic(budderservice)
         return wifiservice

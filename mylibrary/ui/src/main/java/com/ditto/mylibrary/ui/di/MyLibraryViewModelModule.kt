@@ -44,12 +44,6 @@ interface MyLibraryFragmentModule {
     fun myLibraryFolderFragment(): MyFolderFragment
 
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
-    fun activeProjeFragment(): ActiveProjectsFragment
-
-    @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
-    fun compFragment(): CompletedProjectsFragment
-
-    @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun allFragment(): AllPatternsFragment
 
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])

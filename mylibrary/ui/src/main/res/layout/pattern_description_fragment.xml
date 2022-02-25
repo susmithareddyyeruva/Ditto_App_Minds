@@ -58,8 +58,7 @@
                         android:gravity="start"
                         android:text="@string/pattern_details"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/size_21dp" />
-                    <!--//todo -->
+                        android:textSize="@dimen/size_21sp" />
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
@@ -135,14 +134,12 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.23" />
 
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/image_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="@fraction/image_desc_guideline" />
-
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/middle_guideline"
@@ -172,7 +169,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent=".75" />
 
-
             <ImageView
                 android:id="@+id/image_pattern_desc"
                 android:layout_width="@dimen/dimen_0"
@@ -185,19 +181,18 @@
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription" />
 
-
             <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/manniquen_barrier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/manniquen_barrier"
                 app:barrierDirection="start"
-                app:constraint_referenced_ids="spinner,textMannequinName"/>
+                app:constraint_referenced_ids="spinner,textMannequinName" />
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/spinner_width"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_custom_spinner"
+                android:background="@drawable/ic_mannequinbg"
                 android:dropDownVerticalOffset="@dimen/offset"
                 android:paddingStart="@dimen/spinner_padding_start"
                 android:paddingEnd="25dp"
@@ -210,14 +205,28 @@
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/content_header" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:clickable="false"
+                android:focusableInTouchMode="false"
+                android:src="@drawable/ic_dropdown_down"
+                android:layout_marginEnd="@dimen/close_image"
+                android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/spinner"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline2"
+                app:layout_constraintTop_toTopOf="@id/spinner" />
+
             <TextView
                 android:id="@+id/textMannequinName"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/spinner_width"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_mannequinbg"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:gravity="center"
-                android:paddingStart="@dimen/spinner_padding_start"
+                android:lines="1"
+                android:ellipsize="marquee"
+                android:paddingStart="@dimen/padding_15"
                 android:paddingEnd="25dp"
                 android:text="@{viewModel.mannequinName}"
                 android:textColor="@color/black"
@@ -265,12 +274,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="50"
+                    android:ellipsize="end"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="start"
-                    android:ellipsize="end"
                     android:lines="1"
-                    android:textColor="@color/black"
                     android:text="@{viewModel.tailornovaDesignpatternName}"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/size_14sp" />
 
 
@@ -281,13 +290,13 @@
                     android:layout_gravity="center"
                     android:layout_weight="50"
                     android:drawablePadding="8dp"
+                    android:visibility="@{viewModel.isFromDeepLinking() ? View.GONE : View.VISIBLE}"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="start"
                     android:paddingLeft="12dp"
-                    android:textColor="@color/black"
                     android:text="@{HtmlCompat.fromHtml(String.format(@string/size_text,viewModel.prodSize),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-                    android:textSize="@dimen/size_14sp"
-                     />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14sp" />
 
 
             </LinearLayout>

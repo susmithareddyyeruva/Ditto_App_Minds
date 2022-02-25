@@ -25,13 +25,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".09" />
 
-        <!--        <androidx.constraintlayout.widget.Guideline-->
-        <!--            android:id="@+id/guide_card_two"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_constraintGuide_percent=".38"/>-->
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_card_three"
             android:layout_width="wrap_content"
@@ -76,13 +69,6 @@
                     app:layout_constraintHeight_percent=".65"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <!--                <androidx.constraintlayout.widget.Guideline-->
-                <!--                    android:id="@+id/guide_round_image_two_top"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    app:layout_constraintGuide_percent=".55" />-->
 
                 <ImageView
                     android:id="@+id/round_image_two"
@@ -162,13 +148,6 @@
                     app:layout_constraintHeight_percent=".65"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <!--                <androidx.constraintlayout.widget.Guideline-->
-                <!--                    android:id="@+id/guide_round_image_top"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    app:layout_constraintGuide_percent=".55" />-->
 
                 <ImageView
                     android:id="@+id/round_image"
@@ -252,14 +231,6 @@
                     app:layout_constraintHeight_percent=".65"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-
-                <!--                <androidx.constraintlayout.widget.Guideline-->
-                <!--                    android:id="@+id/guide_round_image_three_top"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    app:layout_constraintGuide_percent=".55" />-->
 
                 <ImageView
                     android:id="@+id/round_image_three"

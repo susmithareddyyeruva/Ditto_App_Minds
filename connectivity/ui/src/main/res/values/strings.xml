@@ -28,7 +28,7 @@
     <string name="setup_calibration_message">Quick check or calibrate again</string>
     <string name="setup_calibration_calibrate">CALIBRATE</string>
     <string name="setup_calibration_quickcheck">QUICK CHECK</string>
-    <string name="setup_quickcheck_title">Do you see the edges lined upto projection?</string>
+    <string name="setup_quickcheck_title">Do you see the edges lined up to projection?</string>
     <string name="setup_quickcheck_message">Place a sheet of letter sized paper on the projection and check if the lines are coinciding</string>
     <string name="calibrate">NO, CALIBRATE</string>
     <string name="yes_string">YES</string>

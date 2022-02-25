@@ -177,53 +177,6 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_percent="0.58" />
 
-                <!-- <LinearLayout
-                     android:id="@+id/linear_watchvideo"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:orientation="horizontal"
-                     android:weightSum="2"
-                     android:visibility="@{!viewModel.isWatchVideoClicked()}"
-                     android:gravity="start|center"
-                     android:layout_marginTop="@dimen/instruction_margin"
-                     app:layout_constraintStart_toStartOf="parent"
-                     app:layout_constraintTop_toBottomOf="@+id/scroll_view_border">
-
-                     <LinearLayout
-                         android:layout_width="wrap_content"
-                         android:layout_height="match_parent"
-                         android:gravity="center_vertical"
-                         android:onClick="@{() -> viewModel.onClickPlayVideo()}">
-
-                         <ImageView
-                             android:id="@+id/image_watchvideo"
-                             android:layout_width="@dimen/size_24px"
-                             android:layout_height="@dimen/size_24px"
-                             android:src="@drawable/ic_watchvideo"
-                             />
-
-                     </LinearLayout>
-
-                     <androidx.legacy.widget.Space
-                         android:layout_width="@dimen/size_0dp"
-                         android:layout_height="match_parent"
-                         android:layout_weight=".1"/>
-
-                     <TextView
-                         android:id="@+id/text_watchvideo"
-                         android:layout_width="wrap_content"
-                         android:text="@string/watchvideo"
-                         android:textSize="@dimen/size_14px"
-                         android:gravity="center_vertical"
-                         android:textColor="@color/black"
-                         android:layout_height="match_parent"
-                         android:onClick="@{() -> viewModel.onClickPlayVideo()}"
-                         />
-
-
-                 </LinearLayout>-->
-
-
                 <Button
                     android:id="@+id/button_calibrate"
                     android:layout_width="@dimen/dimen_0"

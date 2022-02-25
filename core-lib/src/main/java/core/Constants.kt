@@ -47,13 +47,15 @@ const val OS = "Android"
 const val CUSTOMER_EMAIL = "subscustomerOne@gmail.com"
 const val UNKNOWN_HOST_EXCEPTION = "UnknownHostException !"
 const val CONNECTION_EXCEPTION = "No Internet connection available !"
+const val NO_SUCH_ELEMENT_EXCEPTION = "No such element exception"
 var ERROR_FETCH = "Error Fetching data!"
-const val HTTP_UNAUTHORIZED4="Unauthorized"
+const val HTTP_UNAUTHORIZED="Unauthorized"
 const val HTTP_INTERNAL_ERROR="Internal Server Error"
 const val HTTP_BAD_REQUEST="Bad Request"
 const val HTTP_FORBIDDEN="Forbidden Request"
 const val EN_USERNAME="storefront"
-const val EN_PASSWORD="Testing4$"
+const val EN_CPCODE="Testing4$"
+const val AUTH="Basic "
 
 
 

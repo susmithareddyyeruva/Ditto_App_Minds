@@ -43,6 +43,7 @@ import core.ERROR_FETCH
 import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
+import core.lib.BuildConfig
 import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
@@ -144,7 +145,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
-                Log.d("12345", "received is ${viewModel.clickedProduct.toString()}")
+                logger.d("12345, received is ${viewModel.clickedProduct.toString()}")
             } else {
                 setPatternImage()
             }
@@ -206,8 +207,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.mannequinName.set(name)
                 bottomNavViewModel.showProgress.set(true)
                 fetchPatternDetails()//Fetching pattern Details using selected mannequin ID
-                Log.d("ITEM SELECTED********", "MANNEQUIN ID: " + viewModel.mannequinId.get())
-                Log.d("ITEM SELECTED********", "MANNEQUIN NAME: " + viewModel.mannequinName.get())
+                logger.d("ITEM SELECTED********, MANNEQUIN ID:  + ${viewModel.mannequinId.get()}")
+                logger.d("ITEM SELECTED********, MANNEQUIN NAME: + ${viewModel.mannequinName.get()}")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -347,7 +348,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .load(viewModel.data.value?.patternDescriptionImageUrl)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(binding.imagePatternDesc)
-            //todo need to check for type
+            // need to check for type
             setVisibilityForViews(
                 "WORKSPACE",
                 false,
@@ -359,7 +360,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         } else {
             setData()
-
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
@@ -384,45 +384,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else {
                 setVisibilityForViews("RESUME", false, true, false, false, true, false)
             }
-
+            setPatternImage()
         }
-        /* setVisibilityForViews(
-             "WORKSPACE",
-             false,
-             false,
-             false,
-             false,
-             false,
-             false,
-             true
-         )*/
-        /*when (viewModel.clickedTailornovaID.get()?.toInt()) {
-            1 -> setVisibilityForViews("RESUME", true, false, true, false, false, true, false)
-            4 -> setVisibilityForViews("WORKSPACE", true, false, false, true, false, false, true)
-            8 -> setVisibilityForViews("WORKSPACE", false, false, false, false, false, false, true)
-            9 -> setVisibilityForViews("RESUME", true, false, true, true, true, true, false)
-            10 -> setVisibilityForViews(
-                "RENEW SUBSCRIPTION",
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
-            else -> setVisibilityForViews(
-                "WORKSPACE",
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
-        }*/
-        setPatternImage()
+
+
     }
 
     private fun setData() {
@@ -430,7 +395,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.clickedProduct?.patternType.equals("Trial")) {
             viewModel.prodSize.set(
                 viewModel.data?.value?.size ?: ""
-            ) // todo milli second null CHANGE LOGIC
+            ) //  milli second null CHANGE LOGIC
         } else {
             viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
         }
@@ -457,53 +422,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
     }
 
-    private fun checkBluetoothWifiPermission() {
-        if (allPermissionsGranted()) {
-            if (!Utility.getBluetoothstatus()) {
-                showBluetoothDialogue()
-            } else if (!Utility.getWifistatus(requireContext())) {
-                showWifiDialogue()
-            } else {
-                checkSocketConnection()
-            }
-        } else {
-            requestPermissions(
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
-    }
-
-
-    private fun checkSocketConnection() {
-        GlobalScope.launch {
-            if (core.network.NetworkUtility.nsdSericeHostName.isEmpty() && core.network.NetworkUtility.nsdSericePortName == 0) {
-                showConnectivityPopup()
-            } else {
-                withContext(Dispatchers.Main) { showProgress(true) }
-                if (startSocketConnection(
-                        core.network.NetworkUtility.nsdSericeHostName,
-                        core.network.NetworkUtility.nsdSericePortName
-                    )
-                ) {
-                    //baseViewModel.activeSocketConnection.set(true)
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Connected to Ditto Projector!!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        showProgress(false)
-                        showCalibrationDialog()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) { showProgress(false) }
-                    showConnectivityPopup()
-                }
-            }
-        }
-    }
-
     private suspend fun startSocketConnection(ipAddress: String, nsdPort: Int): Boolean {
         var isConnected: Boolean = false
         withContext(Dispatchers.IO) {
@@ -513,25 +431,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 isConnected = soc.isConnected
             } catch (e: Exception) {
                 isConnected = false
-                Log.d(ConnectivityUtils.TAG, "Exception")
+                logger.d("${ConnectivityUtils.TAG}, Exception")
             } finally {
                 soc?.close()
             }
         }
         return withContext(Dispatchers.Main) { isConnected }
-    }
-
-    private fun showBluetoothDialogue() {
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            resources.getString(R.string.ditto_connect),
-            resources.getString(R.string.ble_connectivity),
-            resources.getString(R.string.skips),
-            resources.getString(R.string.turnon),
-            this,
-            Utility.AlertType.BLE,
-            Utility.Iconype.NONE
-        )
     }
 
     private fun showWifiDialogue() {
@@ -738,7 +643,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setUpUiBasedOnLoggedIn()
             }
 
-            is PatternDescriptionViewModel.Event.onSubscriptionClicked -> {
+            is PatternDescriptionViewModel.Event.OnSubscriptionClicked -> {
                 logger.d("onSubscriptionClicked")
                 Utility.redirectToExternalBrowser(
                     requireContext(), BuildConfig.SUBSCRIPTION_URL
@@ -795,16 +700,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                 if (viewModel.temp.size == viewModel.imagesToDownload.size) {
                     bottomNavViewModel.showProgress.set(false)
+                    //Log.d("Download", "ENDED >>>>>>>>>>> ")
+                    logger.d("Download123,  ENDED > > > > > > > > > > > OnImageDownloadComplete in if ")
                     bottomNavViewModel.showWSProgress.set(false)
-                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in if ")
-
                     if (NetworkUtility.isNetworkAvailable(context)) {
                         viewModel.deletePattern()
                     } else {
                         checkSocketConnectionBeforeWorkspace()
                     }
+
                 } else {
-                    Log.d("Download123", "ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
+                    logger.d("Download123, ENDED >>>>>>>>>>> OnImageDownloadComplete in else ")
                     bottomNavViewModel.showProgress.set(false)
                     bottomNavViewModel.showWSProgress.set(false)
                     Utility.getCommonAlertDialogue(
@@ -859,6 +765,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnGuestUSerWSClick -> {
                 checkSocketConnectionBeforeWorkspace()
             }
+            else -> {}
         }
 
     private fun WSButtonClick() {
@@ -1038,7 +945,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         super.onResume()
         binding.textWatchvideo2.isEnabled = true
         toolbarViewModel.isShowTransparentActionBar.set(true)
-        Log.d("PatternSCreen", "onResume-PatternDescription")
+        logger.d("PatternSCreen, onResume-PatternDescription")
         if (viewModel.disposable.size() == 0) {
             setUIEvents()
         }
@@ -1048,7 +955,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun listenVersionEvents() {
         versionDisposable = CompositeDisposable()
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.checkVersion::class.java)
+            RxBus.listen(RxBusEvent.CheckVersion::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it.isCheckVersion) {
@@ -1058,7 +965,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 })
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     bottomNavViewModel.showProgress.set(false)
@@ -1075,7 +982,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 })
 
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+            RxBus.listen(RxBusEvent.VersionErrorReceived::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     bottomNavViewModel.showProgress.set(false)
@@ -1092,7 +999,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     override fun onStop() {
         super.onStop()
-        Log.d("PatternSCreen", "onStop-PatternDescription")
         viewModel.disposable.clear()
     }
 
@@ -1106,7 +1012,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
         var status = Utility.Iconype.WARNING
-        if (versionResult?.response?.version_update == false) {
+        if (versionResult?.response?.versionUpdate == false) {
             negativeText = ""
             positiveText = "OK"
             status = Utility.Iconype.SUCCESS
@@ -1124,9 +1030,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     private fun enterWorkspace() {
-        Log.d(
-            "Download123",
-            "ENDED >>>>>>>>>>> enterWorkspace in if ${viewModel.clickedProduct?.prodName}"
+        logger.d(
+            "Download123, ENDED >>>>>>>>>>> enterWorkspace in if ${viewModel.clickedProduct?.prodName}"
         )
 
         if (baseViewModel.activeSocketConnection.get()) {
@@ -1143,11 +1048,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
             bundle =
                 bundleOf(
-                    "PatternName" to viewModel.clickedProduct?.prodName,
+                    "PatternName" to viewModel.patternName.get(),
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
-                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName
+                    "tailornovaDesignName" to viewModel.patternName.get()
                 )
         } else {
             bundle =
@@ -1171,6 +1076,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     //download the pattern pieces
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
+        hashMap[if(viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString() else viewModel.data.value?.thumbnailImageName.toString()] =
+            viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
@@ -1217,7 +1124,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 enterWorkspace()
             }
             Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType,  DEFAULT ")
             }
             Utility.AlertType.PERMISSION_DENIED -> {
                 Utility.navigateToAppSettings(requireContext())
@@ -1328,7 +1235,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 GlobalScope.launch { projectBorderImage() }
             }
             alertType == Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType, DEFAULT")
             }
         }
     }
@@ -1398,7 +1305,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 enterWorkspace()
             }
             Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType, DEFAULT")
             }
 
             /*Utility.AlertType.DOWNLOADFAILED -> {
@@ -1408,7 +1315,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.version_update == true) {
+                if (versionResult?.response?.versionUpdate == true) {
                     val packageName = "com.joann.ditto"
                     try {
                         startActivity(
@@ -1450,10 +1357,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 GlobalScope.launch { projectBorderImage() }
             }
             alertType == Utility.AlertType.DEFAULT -> {
-                Log.d("alertType", "DEFAULT")
+                logger.d("alertType, DEFAULT")
             }
             alertType == Utility.AlertType.SOFTWARE_UPDATE -> {
-                if (versionResult?.response?.force_update == true) {
+                if (versionResult?.response?.forceUpdate == true) {
                     requireActivity().finishAffinity()
                 }
             }
@@ -1471,10 +1378,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun showDataFailedAlert() {
         var errorMsg: String? = null
-        if (viewModel.tailornovaApiError?.contains("processing", true) == true) {
+        if (viewModel.tailornovaApiError?.contains("In progress", true) == true) {
             errorMsg = getString(R.string.str_processing_error)
         } else {
-            errorMsg ="\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            errorMsg =
+                "\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
         }
         bottomNavViewModel.showProgress.set(false)
         bottomNavViewModel.showWSProgress.set(false)
@@ -1501,11 +1409,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         IntArray
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
+            logger.d("onReqPermissionsResult, permission granted")
             val map = getPatternPieceListTailornova()
 
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 bottomNavViewModel.showProgress.set(true)
+                logger.d("prepare>>>>>, onRequestPermissionsResult")
                 bottomNavViewModel.showWSProgress.set(true)
                 Log.d("prepare>>>>>", "onRequestPermissionsResult")
                 if (!::job.isInitialized || !job.isActive) {
@@ -1540,7 +1449,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 Utility.AlertType.PERMISSION_DENIED
             )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
-            Log.d("onReqPermissionsResult", "permission denied")
+            logger.d("onReqPermissionsResult, permission denied")
         }
 
     }
@@ -1594,10 +1503,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete.size}")
             for (file in filesToDelete) {
                 val d = deleteDirectory(file)
-                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
+                logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
             }
         }
         deletePDF(patterns)
@@ -1641,10 +1550,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-            Log.d("deleteFolderFun12", "File to delete  >> Name: ${filesToDelete.size}")
+            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete.size}")
             for (file in filesToDelete) {
                 val d = deleteDirectory(file)
-                Log.d("deleteFolderFun", "RESULT: ${file.name} >>> $d")
+                logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
             }
         }
         checkSocketConnectionBeforeWorkspace()
@@ -1681,9 +1590,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
         var availableUri: Uri? = null
         availableUri = Utility.isImageFileAvailable(imagePath, "${foldername}", context)
-        Log.d("imageUri123", " $foldername availableUri: $availableUri")
+        logger.d("imageUri123, $foldername availableUri: $availableUri")
 
-        if (imagePath?.endsWith(".svg", true)!!) {
+        if (imagePath?.endsWith(".svg", true) == true) {
             Glide
                 .with(context)
                 .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else */availableUri)
@@ -1693,7 +1602,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 .imageDecoder(SvgBitmapDecoder(context))
                 .into(imageView)
 
-        } else if (imagePath.endsWith(".png", true)) {
+        } else if (imagePath?.endsWith(".png", true) == true) {
             Glide
                 .with(context)
                 .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else*/ availableUri)

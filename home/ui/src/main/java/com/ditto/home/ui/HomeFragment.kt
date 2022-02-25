@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,7 +85,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d("HOME", "onActivityCreated")
+        logger.d("HOME, onActivityCreated")
         bottomNavViewModel.visibility.set(false)
         bottomNavViewModel.refreshMenu(context)
 
@@ -114,7 +113,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     }
 
     private fun loadHomeFragment() {
-        if(homeViewModel.disposable.size() == 0) {
+        if (homeViewModel.disposable.size() == 0) {
             homeViewModel.disposable += homeViewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -128,11 +127,6 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
         if (NetworkUtility.isNetworkAvailable(context)) {
             homeViewModel.fetchTailornovaTrialPattern() // fetch trial pattern api from tailornova saving to db >> showing count also
-            /*if (AppState.getIsLogged()) {
-                homeViewModel.fetchData() // todo remove fetchData and uncomment above line
-            } else {
-                homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
-            }*/
         } else {
             if (AppState.getIsLogged()) {
                 homeViewModel.fetchOfflineData() // offline >> fetching from DB >> fetch Demo pattern
@@ -147,7 +141,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
             when (it) {
                 "HOME" -> {
-
+                    logger.d("Deeplink argument : Home")
                 }
                 "LIBRARY" -> {
                     logger.d("HOMESCREEN  :LIBRARY")
@@ -185,7 +179,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
     override fun onResume() {
         super.onResume()
-        if(homeViewModel.disposable.size() == 0 && !isUiEventsDisposableSet){
+        if (homeViewModel.disposable.size() == 0 && !isUiEventsDisposableSet) {
             homeViewModel.disposable = CompositeDisposable()
             homeViewModel.disposable += homeViewModel.events
                 .observeOn(AndroidSchedulers.mainThread())
@@ -204,7 +198,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
             toolbarViewModel.isShowActionBar.set(false)
         }
         listenVersionEvents()
-        Log.d("HOME", "onResume")
+        logger.d("HOME, onResume")
         try {
             val pInfo: PackageInfo =
                 context?.getPackageName()
@@ -220,7 +214,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     private fun listenVersionEvents() {
         versionDisposable = CompositeDisposable()
         versionDisposable?.plusAssign(
-            RxBus.listen(RxBusEvent.checkVersion::class.java)
+            RxBus.listen(RxBusEvent.CheckVersion::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it.isCheckVersion) {
@@ -229,7 +223,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                         homeViewModel.versionCheck()
                     }
                 })
-        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionReceived::class.java)
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.VersionReceived::class.java)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
 
@@ -245,7 +239,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
             })
 
-        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.versionErrorReceived::class.java)
+        versionDisposable?.plusAssign(RxBus.listen(RxBusEvent.VersionErrorReceived::class.java)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 bottomNavViewModel.showProgress.set(false)
@@ -254,6 +248,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     }
 
     override fun onStop() {
+        bottomNavViewModel.visibility.set(false)
         versionDisposable?.clear()
         versionDisposable?.dispose()
         homeViewModel.disposable.clear()
@@ -265,7 +260,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         var negativeText = versionResult?.response?.cancel!!
         var positiveText = versionResult?.response?.confirm!!
         var status = Utility.Iconype.WARNING
-        if (versionResult?.response?.version_update == false) {
+        if (versionResult?.response?.versionUpdate == false) {
             negativeText = ""
             positiveText = "OK"
             status = Utility.Iconype.SUCCESS
@@ -341,17 +336,13 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
 
 
             }
-            HomeViewModel.Event.OnResultFailed -> {
+            HomeViewModel.Event.OnResultFailed,HomeViewModel.Event.NoInternet -> {
                 bottomNavViewModel.showProgress.set(false)
                 showAlert()
 
             }
-            HomeViewModel.Event.NoInternet -> {
-                bottomNavViewModel.showProgress.set(false)
-                showAlert()
-            }
             HomeViewModel.Event.OnTrialPatternSuccess -> {
-                Log.d("Download", "OnTrialPatternSuccess")
+                logger.d("Download, OnTrialPatternSuccess")
                 if (dowloadPermissonGranted()) {
                     if (!::job.isInitialized || !job.isActive) {
                         job = downloadTrialPattenImages()
@@ -377,7 +368,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
     private fun downloadTrialPattenImages() = GlobalScope.launch {
         homeViewModel.trialPatternData.forEach {
             val map = getPatternPieceListTailornova(it)
-            Log.d("Download", "OnTrialPatternSuccess forEach >> ${it.patternName}")
+            logger.d("Download, OnTrialPatternSuccess forEach >> ${it.patternName}")
             runBlocking {
                 try {
                     homeViewModel.prepareDowloadList(
@@ -387,7 +378,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                         ), it.patternName
                     )
                 } catch (e: Throwable) {
-                    Log.d("Download", "Erro! ${e.message}")
+                    logger.d("Download, Erro! ${e.message}")
                 }
             }
         }
@@ -420,7 +411,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        if (versionResult?.response?.version_update == true) {
+        if (versionResult?.response?.versionUpdate == true) {
             val packageName = context?.packageName
             try {
                 startActivity(
@@ -445,7 +436,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         alertType: Utility.AlertType
     ) {
 
-        if (versionResult?.response?.force_update == true) {
+        if (versionResult?.response?.forceUpdate == true) {
             requireActivity().finishAffinity()
         }
 
@@ -514,7 +505,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         IntArray
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
-            Log.d("onReqPermissionsResult", "permission granted")
+            logger.d("onReqPermissionsResult, permission granted")
             if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
                 if (!::job.isInitialized || !job.isActive) {
                     job = downloadTrialPattenImages()
@@ -546,18 +537,18 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                 Utility.AlertType.PERMISSION_DENIED
             )
             //Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT)
-            Log.d("onReqPermissionsResult", "permission denied")
+            logger.d("onReqPermissionsResult, permission denied")
         }
 
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+        if (alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
             Utility.navigateToAppSettings(requireContext())
         }
     }
 
     override fun onNegativeButtonClicked(alertType: Utility.AlertType) {}
 
-    override fun onNeutralButtonClicked(alertType: Utility.AlertType) { }
+    override fun onNeutralButtonClicked(alertType: Utility.AlertType) {}
 }

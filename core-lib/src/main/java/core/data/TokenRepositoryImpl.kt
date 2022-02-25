@@ -23,10 +23,9 @@ class TokenRepositoryImpl @Inject constructor(
         if (!NetworkUtility.isNetworkAvailable(context)) {
             return Single.just(Result.OnError(NoNetworkError()))
         }
-        val currentTimestamp = System.currentTimeMillis()
         return apiService.refreshToken()
             .doOnSuccess {
-                Log.d("TOKEN", it.response.access_token?:"")
+                Log.d("TOKEN", it.response.accessToken ?: "")
             }
             .map {
 

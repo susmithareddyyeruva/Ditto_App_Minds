@@ -3,12 +3,13 @@ package com.ditto.home.ui
 import android.content.Context
 import android.content.ContextWrapper
 import android.net.Uri
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.home.domain.HomeUsecase
 import com.ditto.home.domain.model.HomeData
 import com.ditto.home.domain.model.MyLibraryDetailsDomain
+import com.ditto.logger.Logger
+import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.OfflinePatternData
 import com.ditto.mylibrary.domain.model.PatternIdData
 import com.ditto.mylibrary.domain.model.ProdDomain
@@ -16,6 +17,7 @@ import com.ditto.storage.domain.StorageManager
 import com.example.home_ui.R
 import core.USER_FIRST_NAME
 import core.appstate.AppState
+import core.data.model.SoftwareUpdateResult
 import core.event.UiEvents
 import core.ui.BaseViewModel
 import core.ui.common.Utility
@@ -41,8 +43,16 @@ class HomeViewModel @Inject constructor(
     private val context: Context,
     val storageManager: StorageManager,
     val useCase: HomeUsecase,
+    val loggerFactory: LoggerFactory,
     private val utility: Utility
 ) : BaseViewModel() {
+   /* @Inject
+    lateinit var loggerFactory: LoggerFactory*/
+    var versionResult: SoftwareUpdateResult? = null
+
+    val logger: Logger by lazy {
+        loggerFactory.create(HomeViewModel::class.java.simpleName)
+    }
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val homeItem: ArrayList<HomeData> = ArrayList()
@@ -135,8 +145,8 @@ class HomeViewModel @Inject constructor(
 
         }
     }
-
-    fun fetchData() {
+// todo started
+    fun  fetchData() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getHomePatternsData(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(
@@ -161,7 +171,7 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleOfflineFetchResult(it) }
     }
 
-    // todo if no trial patterns available in DB then call this api (how to)
+    //  if no trial patterns available in DB then call this api (how to)
     fun fetchTailornovaTrialPattern() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.fetchTailornovaTrialPatterns()
@@ -170,7 +180,7 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleTrialPatternResult(it) }
     }
 
-    fun fetchListOfTrialPatternFromInternalStorage() {
+    internal fun fetchListOfTrialPatternFromInternalStorage() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getTrialPatterns()
             .subscribeOn(Schedulers.io())
@@ -184,7 +194,7 @@ class HomeViewModel @Inject constructor(
                 uiEvents.post(Event.OnTrialPatternSuccess)
                 uiEvents.post(Event.OnHideProgress)
                 var count: Int = result?.data?.size
-                Log.d("Home Screen", "$count")
+                logger.d("Home Screen, $count")
                 productCount = count
                 AppState.setPatternCount(productCount)
                 setHomeItems()  //Preparing menu items
@@ -193,21 +203,21 @@ class HomeViewModel @Inject constructor(
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
                // uiEvents.post(Event.OnResultFailed)
-                Log.d("DEBUG>>>>","handleTrialPatternResultForGuestUser error")
+                logger.d("DEBUG>>>>,handleTrialPatternResultForGuestUser error")
                 handleError(result.error)
             }
         }
     }
 
-    private fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
+    internal fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
         when (result) {
             is Result.OnSuccess -> {
-                Log.d("DEBUG>>>>","handleTrialPatternResult Success")
+                logger.d("DEBUG>>>>,handleTrialPatternResult Success")
                 trialPatternData = result.data as ArrayList<PatternIdData>
                 if (AppState.getIsLogged()) {
                     fetchData()
                 } else {
-                    Log.d("DEBUG>>>>","fetchListOfTrialPatternFromInternalStorage success")
+                    logger.d("DEBUG>>>>,fetchListOfTrialPatternFromInternalStorage success")
                     fetchListOfTrialPatternFromInternalStorage()
                 }
             }
@@ -215,8 +225,7 @@ class HomeViewModel @Inject constructor(
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
                // uiEvents.post(Event.OnResultFailed)
-                Log.d("Home Screen", "Failed")
-                Log.d("DEBUG>>>>","handleTrialPatternResultError")
+                logger.d("DEBUG>>>>,handleTrialPatternResultError")
                 handleError(result.error)
             }
         }
@@ -225,18 +234,17 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling fetch result here.....
      */
-    private fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
+    internal fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
-                Log.d("DEBUG>>>>","handleFetchResult Success")
                 uiEvents.post(Event.OnTrialPatternSuccess)
                 uiEvents.post(Event.OnHideProgress)
                 homeDataResponse.value = result.data
-                Log.d("Home Screen", "$homeDataResponse.value.prod.size")
+                logger.d("Home Screen, $homeDataResponse.value.prod.size")
                 productCount = homeDataResponse.value!!.totalPatternCount
                 AppState.setPatternCount(productCount)
-                Log.d("Home Screen", "${productCount}")
+                logger.d("Home Screen, ${productCount}")
                 setHomeItems()  //Preparing menu items
                 uiEvents.post(Event.OnResultSuccess)
                // uiEvents.post(Event.OnListenVersionEvent)
@@ -244,7 +252,6 @@ class HomeViewModel @Inject constructor(
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
                 //uiEvents.post(Event.OnResultFailed)
-                Log.d("DEBUG>>>>","handleFetchResult Error")
                 handleError(result.error)
             }
         }
@@ -253,13 +260,13 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling offline fetch result here.....
      */
-    private fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
+     fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
                 var count: Int = result?.data?.size
-                Log.d("Home Screen", "$count")
+                logger.d("Home Screen, $count")
                 productCount = count
                 AppState.setPatternCount(productCount)
                 setHomeItems()  //Preparing menu items
@@ -268,23 +275,20 @@ class HomeViewModel @Inject constructor(
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
                 //uiEvents.post(Event.OnResultFailed)
-                Log.d("DEBUG>>>>","handleOfflineFetchResult Error")
                 handleError(result.error)
             }
         }
     }
 
-
-    private fun handleError(error: Error) {
+//unit testing done
+    internal fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
-                Log.d("DEBUG>>>>","handleError NoNetworkError ")
                 activeInternetConnection.set(false)
                 errorString.set(error.message)
                 uiEvents.post(Event.NoInternet)
             }
             else -> {
-                Log.d("DEBUG>>>>","handleError else ")
                 errorString.set(error.message)
                 uiEvents.post(Event.OnResultFailed)
             }
@@ -297,11 +301,11 @@ class HomeViewModel @Inject constructor(
     }
 
     suspend fun prepareDowloadList(hashMap: HashMap<String, String>, patternName: String?) {
-        Log.d("Download", ">>>>>>>>>>>>>>>>>>>> STARTED for $patternName")
-        Log.d("Download", "Hashmap size Home: $patternName: >>  ${hashMap?.size}")
+        logger.d("Download, >>>>>>>>>>>>>>>>>>>> STARTED for $patternName")
+        logger.d("Download, Hashmap size Home: $patternName: >>  ${hashMap?.size}")
         if (!hashMap.isEmpty()) {
             hashMap.forEach { (key, value) ->
-                Log.d("Download", "file not present for $$patternName: KEY: $key \t VALUE : $value")
+                logger.d("Download, file not present for $$patternName: KEY: $key \t VALUE : $value")
                 if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty())) {
                     downloadEachPatternPiece(
                         imageUrl = value,
@@ -311,9 +315,9 @@ class HomeViewModel @Inject constructor(
                 }
 
             }
-            Log.d("Download", "download completed for  $patternName")
+            logger.d("Download, download completed for  $patternName")
         } else {
-            Log.d("Download", "download completed for  $patternName  0 images there")
+            logger.d("Download, download completed for  $patternName  0 images there")
         }
     }
 
@@ -323,7 +327,7 @@ class HomeViewModel @Inject constructor(
         patternFolderName: String?
     ) {
         try {
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO,) {
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(imageUrl)
@@ -344,11 +348,10 @@ class HomeViewModel @Inject constructor(
                         )
                 val path = Uri.fromFile(result)
                 patternUri.set(path.toString())
-                Log.d("PATTERN", patternUri.get() ?: "")
-                Log.d("DOWNLOAD", "key: $filename patternUri : ${patternUri.get()}")
+                logger.d("PATTERN, ${patternUri.get() ?:""}")
             }
         }catch (e: Exception){
-            Log.d("HomeViewModel", "${e.message}")
+            logger.d("HomeViewModel, ${e.message}")
         }
     }
 
@@ -377,7 +380,7 @@ class HomeViewModel @Inject constructor(
             if (!subFolder.exists()) {
                 subFolder.mkdirs()
             } else {
-                Log.d("Ditto Folder", "${patternFolderName}PRESENT IN DIRECTORY")
+                logger.d("Ditto Folder, ${patternFolderName}PRESENT IN DIRECTORY")
             }
         }
 
@@ -398,7 +401,6 @@ class HomeViewModel @Inject constructor(
                 inputStream.copyTo(fileOut)
             }
         } catch (e: Exception) {
-            Log.d("Error", "", e)
         }
     }
 

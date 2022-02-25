@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -8,10 +7,6 @@ import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.MyLibraryData
 import core.event.UiEvents
 import core.ui.BaseViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MyLibraryViewModel @Inject constructor(
@@ -31,14 +26,6 @@ class MyLibraryViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
-    }
-
-    private fun fetchDbUser() {
-        dbLoadError.set(false)
-        disposable += getMylibraryData.getUser()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { it }
     }
 
     fun passEventForAllPattern() {
@@ -61,17 +48,14 @@ class MyLibraryViewModel @Inject constructor(
     }
 
     fun onFilterClick() {
-        Log.d("pattern", "onFilterClick : viewModel")
         uiEvents.post(Event.OnFilterClick)
     }
 
     fun onSyncClick() {
-        Log.d("pattern", "onSyncClick : viewModel")
         uiEvents.post(Event.MyLibrarySync)
     }
 
     fun onSearchClick() {
-        Log.d("pattern", "onSearchClick : viewModel")
         uiEvents.post(Event.OnSearchClick)
     }
 

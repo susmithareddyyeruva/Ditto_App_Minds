@@ -159,6 +159,13 @@ class AllPatternsFragment(
         logger.d("All Patterns  onResume")
         viewModel.disposable = CompositeDisposable()
         setUIEvents()
+        // to resolve the pattern count at top while swiching the tab, it was showing wrong pattern count
+        setPatternCount.onSetCount(
+            getString(
+                R.string.pattern_library_count,
+                viewModel.totalPatternCount
+            )
+        )
        // fetchPatternLibrary()
 
     }
@@ -408,6 +415,7 @@ class AllPatternsFragment(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
+        logger.d("onCustomPositiveButtonClicked")
 
     }
 
@@ -415,7 +423,7 @@ class AllPatternsFragment(
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-
+        logger.d("onCustomNegativeButtonClicked")
     }
 
     fun onSyncClick() {
@@ -469,23 +477,20 @@ class AllPatternsFragment(
     }
 
     private fun addFolder(newFolderName: String, parent: String) {
-        if (AppState.getIsLogged()) {
-            if (parent.equals(viewModel.ADD)) {
+        if (AppState.getIsLogged()&& parent == viewModel.ADD) {
+            if (newFolderName.equals("favorites", true) || newFolderName.equals(
+                    "owned",
+                    true
+                ) || isFolderPresent(newFolderName)
+            ) {
+                viewModel.errorString.set("Folder already exists !")
+                showAlert()
 
-                if (newFolderName.equals("favorites", true) || newFolderName.equals(
-                        "owned",
-                        true
-                    ) || isFolderPresent(newFolderName)
-                ) {
-                    viewModel.errorString.set("Folder already exists !")
-                    showAlert()
-
-                } else {
-                    viewModel.addToFolder(
-                        product = viewModel.clickedProduct,
-                        folderName = newFolderName
-                    )
-                }
+            } else {
+                viewModel.addToFolder(
+                    product = viewModel.clickedProduct,
+                    folderName = newFolderName
+                )
             }
         }
     }

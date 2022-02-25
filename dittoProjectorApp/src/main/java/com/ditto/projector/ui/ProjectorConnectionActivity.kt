@@ -22,7 +22,6 @@ import android.os.ParcelUuid
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -36,14 +35,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_projector_connection.*
 import kotlinx.coroutines.*
-import java.io.BufferedReader
 import java.io.DataInputStream
-import java.io.InputStreamReader
-import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
-import java.nio.charset.Charset
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -365,16 +360,16 @@ class ProjectorConnectionActivity : AppCompatActivity(),
 
     private fun handleEvent(event: ProjectorConnectionViewModel.Event) =
         when (event) {
-            is ProjectorConnectionViewModel.Event.onRegisterlistner -> {
+            is ProjectorConnectionViewModel.Event.OnRegisterListener -> {
                 registerListener()
             }
-            is ProjectorConnectionViewModel.Event.onstartConnection -> {
+            is ProjectorConnectionViewModel.Event.OnStartConnection -> {
                 startConnectionServer()
             }
-            is ProjectorConnectionViewModel.Event.onstartNSD -> {
+            is ProjectorConnectionViewModel.Event.OnStartNSD -> {
                 startNSD()
             }
-            is ProjectorConnectionViewModel.Event.onWaitForConnection -> {
+            is ProjectorConnectionViewModel.Event.OnWaitForConnection -> {
                 startWaiting()
             }
         }

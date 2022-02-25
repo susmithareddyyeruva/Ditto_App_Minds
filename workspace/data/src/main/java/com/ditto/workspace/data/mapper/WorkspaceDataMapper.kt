@@ -59,11 +59,11 @@ fun WSUpdateResult.toDomain(): WSUpdateResultDomain {
     return WSUpdateResultDomain(
         version = this.version,
         type = this.type,
-        key_property = this.key_property,
-        resource_state = this.resource_state,
-        key_value_string = this.key_value_string,
-        object_type = this.object_type,
-        c_traceWorkSpacePattern = this.c_traceWorkSpacePattern
+        keyProperty = this.keyProperty,
+        resourceState = this.resourceState,
+        keyValueString = this.keyValueString,
+        objectType = this.objectType,
+        cTraceworkspacepattern = this.cTraceworkspacepattern
     )
 }
 /*

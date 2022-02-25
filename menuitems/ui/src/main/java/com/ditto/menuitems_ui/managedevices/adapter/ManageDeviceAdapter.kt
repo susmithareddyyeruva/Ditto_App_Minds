@@ -7,21 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceViewModel
-import core.appstate.AppState
 import core.models.Nsdservicedata
-import core.ui.common.Utility
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.ConnectException
-import java.net.InetAddress
-import java.net.Socket
 
 class ManageDeviceAdapter(private val context: Context,
                           private val mServiceList : ArrayList<Nsdservicedata>,
@@ -84,7 +74,7 @@ class ManageDeviceAdapter(private val context: Context,
                 mViewModel.sendWaitingImage()
                 mViewModel.disConnectToProjector(mServiceList[position].nsdSericeHostAddress,mServiceList[position].nsdServicePort,true)
             } else {
-                mViewModel.Connect()
+                mViewModel.connect()
                 //mViewModel.connectToProjector(mServiceList[position].nsdSericeHostAddress,mServiceList[position].nsdServicePort,true)
             }
 

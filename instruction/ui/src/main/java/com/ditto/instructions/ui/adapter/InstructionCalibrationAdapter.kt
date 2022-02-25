@@ -6,7 +6,6 @@ package com.ditto.instructions.ui.adapter
  */
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,13 +50,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
         binding.viewModel = viewModel
         binding.textContentHeader.text = instructiondata[position].title
         binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-        val res: Resources = parent.resources
         if (!instructiondata.get(position).imagePath.equals("")) {
-            val resID: Int? = res.getIdentifier(
-                instructiondata.get(position).imagePath,
-                "drawable",
-                parent.context.packageName
-            )
             /*val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
             binding.imageStep.setImageBitmap(bitmap)*/

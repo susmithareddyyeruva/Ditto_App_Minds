@@ -7,6 +7,6 @@ fun AboutAppResponseData.toDomain():AboutAppDomain{
     return AboutAppDomain(
         name = this.name,
         id = this.id,
-        c_body = this.c_body,
+        cBody = this.cBody,
     )
 }

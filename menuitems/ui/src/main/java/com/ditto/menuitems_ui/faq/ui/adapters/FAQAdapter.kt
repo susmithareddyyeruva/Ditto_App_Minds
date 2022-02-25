@@ -1,10 +1,7 @@
 package com.ditto.menuitems_ui.faq.ui.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +10,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ditto.menuitems.domain.model.faq.FAQDomain
@@ -37,8 +36,8 @@ class FAQAdapter(
     override
     fun onBindViewHolder(holder: FAQViewHolder, position: Int) {
         val item = items?.get(position)
-        holder.tvques.text = item?.Ques
-        val htmlAsSpanned = Html.fromHtml(item?.Answ)
+        holder.tvques.text = item?.question
+        val htmlAsSpanned = HtmlCompat.fromHtml(item?.answer?:"",HtmlCompat.FROM_HTML_MODE_LEGACY)
         holder.tvAnsw.text = htmlAsSpanned
 
        /* if (item?.SubAnsw?.size!! > 0) {
@@ -51,14 +50,14 @@ class FAQAdapter(
 
             holder.rvsubques.visibility = View.GONE
         }*/
-        holder.linheader.setOnClickListener { onItemClicked(item, position) }
+        holder.linheader.setOnClickListener { onItemClicked(item) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = mContext.getDrawable(R.drawable.drop_shadow)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
             holder.relparent.elevation = 15f
             holder.tvAnsw.visibility = View.VISIBLE
-            if (item?.SubAnsw?.size!! > 0) {
+            if (item?.subAnswer?.size!! > 0) {
                 holder.rvsubques.visibility = View.VISIBLE
-                subquesAdapter = SubquesAdapter(mContext, item?.SubAnsw)
+                subquesAdapter = SubquesAdapter(mContext, item?.subAnswer)
                 holder.rvsubques.adapter = subquesAdapter
                 holder.rvsubques.layoutManager = LinearLayoutManager(mContext)
 
@@ -67,28 +66,28 @@ class FAQAdapter(
                 holder.rvsubques.visibility = View.GONE
             }
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
-            if (!item?.web_url.isNullOrEmpty()) {
+            if (!item?.webUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (!item?.video_url.isNullOrEmpty()) {
+            if (!item?.videoUrl.isNullOrEmpty()) {
                 holder.watch.visibility = View.VISIBLE
             } else {
                 holder.visit.visibility = View.GONE
             }
-            if (item?.web_url.isNullOrEmpty() && item?.video_url.isNullOrEmpty()) {
+            if (item?.webUrl.isNullOrEmpty() && item?.videoUrl.isNullOrEmpty()) {
                 holder.visit.visibility = View.GONE
                 holder.visit.visibility = View.GONE
             }
             holder.visit.setOnClickListener {
-                visitSiteListener.onVisitClick(item?.web_url ?: "")
+                visitSiteListener.onVisitClick(item?.webUrl ?: "")
             }
             holder.watch.setOnClickListener {
-                watchVideoClickListener.onVideoClick(item?.video_url ?: "")
+                watchVideoClickListener.onVideoClick(item?.videoUrl ?: "")
             }
         } else {
-            holder.relparent.background = mContext.getDrawable(R.drawable.border_layout)
+            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
             holder.tvAnsw.visibility = View.GONE
             holder.rvsubques.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)
@@ -106,7 +105,7 @@ class FAQAdapter(
 
     }
 
-    private fun onItemClicked(faqModel: FAQDomain?, pos: Int) {
+    private fun onItemClicked(faqModel: FAQDomain?) {
         faqModel?.isExpanded = !faqModel?.isExpanded!!
 
         notifyDataSetChanged()

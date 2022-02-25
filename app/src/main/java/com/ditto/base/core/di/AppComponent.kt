@@ -14,8 +14,8 @@ import com.ditto.login.data.di.LoginApiModule
 import com.ditto.login.data.di.LoginDbModule
 import com.ditto.login.di.LoginFragmentModule
 import com.ditto.menuitems.data.di.*
-import com.ditto.menuitems_ui.softwareupdate.di.SoftwareUpdateFragmentModule
 import com.ditto.menuitems_ui.aboutapp.di.AboutAppFragmentModule
+import com.ditto.menuitems_ui.accountinfo.di.AccountInfoFragmentModule
 import com.ditto.menuitems_ui.customercare.di.CustomerCareFragmentModule
 import com.ditto.menuitems_ui.faq.di.FAQfragmentModule
 import com.ditto.menuitems_ui.faq.di.FaqGlossaryMainFragmentModule
@@ -24,6 +24,7 @@ import com.ditto.menuitems_ui.faq.di.VideosFragmentModule
 import com.ditto.menuitems_ui.managedevices.di.ManageDeviceFragmentModule
 import com.ditto.menuitems_ui.privacyandsettings.di.PrivacyAndSettingFragmentModule
 import com.ditto.menuitems_ui.settings.di.WSProSettingsFragmentModule
+import com.ditto.menuitems_ui.softwareupdate.di.SoftwareUpdateFragmentModule
 import com.ditto.mylibrary.data.api.MylibraryApiModule
 import com.ditto.mylibrary.data.di.MyLibraryDataModule
 import com.ditto.mylibrary.data.di.MyLibraryFilterModule
@@ -36,7 +37,6 @@ import com.ditto.splash.ui.SplashFragmentModule
 import com.ditto.storage.data.di.StorageModule
 import com.ditto.storage.data.di.TraceDbModule
 import com.ditto.tutorial.ui.di.TutorialFragmentModule
-import com.ditto.videoplayer.di.VideoPlayerFragmentModule
 import com.ditto.workspace.data.di.GetWorkspcaeDataApiModule
 import com.ditto.workspace.data.di.WorkspaceDataModule
 import com.ditto.workspace.ui.di.WorkspaceFragmentModule
@@ -59,12 +59,12 @@ import javax.inject.Singleton
         LoginFragmentModule::class, InstructionFragmentModule::class, InstructionModule::class, HomeFragmentModule::class,
         OnBoardingFragmentModule::class, OnboardingDataModule::class, MyLibraryFragmentModule::class, MyLibraryDataModule::class,
         WorkspaceFragmentModule::class, WorkspaceDataModule::class, CalibrationFragmentModule::class, LoginApiModule::class,
-        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, VideoPlayerFragmentModule::class, OnboardingApiModule::class,
-        CustomerCareFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
+        TutorialFragmentModule::class, HowtoFragmentModule::class, HowToModule::class, OnboardingApiModule::class,
+        CustomerCareFragmentModule::class,AccountInfoFragmentModule::class, FAQfragmentModule::class, AboutAppFragmentModule::class, TokenUsecaseModule::class, TokenApiModule::class,
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
         GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
         PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class,
-        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class]
+        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class,AccountInfoAPIModule::class,AccountInfoDataModule::class]
 
 )
 @Singleton
