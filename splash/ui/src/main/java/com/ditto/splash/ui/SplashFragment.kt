@@ -151,14 +151,9 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
         )
     }
 
-    override fun onPause() {
-        super.onPause()
-        versionDisposable?.clear()
-        versionDisposable?.dispose()
-    }
-
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
+        // Code was on on stop and on pause. Changed on 25-2-22 to fix the hang issue in splash
         versionDisposable?.clear()
         versionDisposable?.dispose()
     }
