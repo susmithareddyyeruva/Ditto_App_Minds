@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.FragmentAccountInfoBinding
+import com.ditto.menuitems_ui.faq.ui.FAQGlossaryFragmentViewModel
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
@@ -57,10 +58,19 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
     private fun handleEvent(event: AccountInfoViewModel.Event) =
         when (event) {
-            AccountInfoViewModel.Event.onDeleteAccountClick ->
+            AccountInfoViewModel.Event.onDeleteAccountClick ->{
                 deleteAccount()
+            }
             AccountInfoViewModel.Event.onLogout -> {
                 logoutUser()
+            }
+            AccountInfoViewModel.Event.NoInternet -> {
+                bottomNavViewModel.showProgress.set(false)
+                showAlert()
+            }
+            AccountInfoViewModel.Event.OnResultFailed -> {
+                bottomNavViewModel.showProgress.set(false)
+                showAlert()
             }
         }
 
@@ -75,6 +85,12 @@ class AccountInfoFragment : BaseFragment(), Utility.CustomCallbackDialogListener
             Utility.AlertType.SOFTWARE_UPDATE,
             Utility.Iconype.WARNING
         )
+    }
+
+    private fun showAlert() {
+        val errorMessage = viewModel.errorString.get() ?: ""
+        Utility.getCommonAlertDialogue(requireContext(),"",errorMessage,"",getString(R.string.str_ok),this, Utility.AlertType.NETWORK
+            ,Utility.Iconype.FAILED)
     }
 
     private fun logoutUser() {

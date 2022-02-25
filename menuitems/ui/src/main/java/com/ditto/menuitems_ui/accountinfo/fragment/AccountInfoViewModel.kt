@@ -8,6 +8,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.menuitems.data.error.AccountInfoFetchError
 import com.ditto.menuitems.domain.AccountInfoUsecase
 import com.ditto.menuitems.domain.model.AccountInfoDomain
+import core.ERROR_FETCH
 import core.appstate.AppState
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -32,6 +33,7 @@ class AccountInfoViewModel @Inject constructor(
     val name: ObservableField<String> = ObservableField()
     val email: ObservableField<String> = ObservableField()
     val phone: ObservableField<String> = ObservableField()
+    var errorString: ObservableField<String> = ObservableField("")
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -59,12 +61,10 @@ class AccountInfoViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 logger.d("Success" + result.data)
-
             }
             is Result.OnError -> {
                 logger.d("Failed")
                 handleError(result.error)
-
             }
         }
     }
@@ -72,16 +72,24 @@ class AccountInfoViewModel @Inject constructor(
     //error handler for data fetch related flow
     fun handleError(error: Error) {
         when (error) {
-            is NoNetworkError -> activeInternetConnection.set(false)
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                errorString.set(error.message)
+                uiEvents.post(Event.NoInternet)
+            }
             is AccountInfoFetchError -> {
                 if (error.message.contentEquals("No such element exception")) {
                     uiEvents.post(Event.onLogout)
+                }else{
+                    errorString.set("${error.message?: ERROR_FETCH}\n Unable to delete Account. Please contact customer care.")
+                    uiEvents.post(Event.OnResultFailed)
                 }
-                Log.d("handleError", "AccountInfoViewmodel : \t ${error.message}")
             }
             else -> {
-                Log.d("handleError", "AccountInfoViewmodel else")
+                errorString.set("${error.message?: ERROR_FETCH}\n Unable to delete Account. Please contact customer care.")
+                uiEvents.post(Event.OnResultFailed)
             }
+
         }
     }
 
@@ -101,10 +109,10 @@ class AccountInfoViewModel @Inject constructor(
         if (AppState.getSubDate()
                 .isEmpty() || AppState.getSubDate() == null
         ) {
-            subscriptionEndDateBase.set(": 0 days")
+            subscriptionEndDateBase.set(": 0 days left")
         } else {
             val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-            subscriptionEndDateBase.set(": "+"$days days")
+            subscriptionEndDateBase.set(": "+"$days days left")
         }
     }
 
@@ -115,5 +123,7 @@ class AccountInfoViewModel @Inject constructor(
     sealed class Event {
         object onDeleteAccountClick : Event()
         object onLogout : Event()
+        object NoInternet : Event()
+        object OnResultFailed : Event()
     }
 }

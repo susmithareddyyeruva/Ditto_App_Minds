@@ -73,10 +73,10 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             if (subscriptionEndDateBase.get().toString()
                     .isEmpty() || subscriptionEndDateBase.get() == null
             ) {
-                menuNumberOfDaysForSubscription.set("0 days")
+                menuNumberOfDaysForSubscription.set("0 day left")
             } else {
                 val days = Utility.getTotalNumberOfDays(subscriptionEndDateBase.get())
-                menuNumberOfDaysForSubscription.set("$days days")
+                menuNumberOfDaysForSubscription.set("$days days left")
             }
 
         }
