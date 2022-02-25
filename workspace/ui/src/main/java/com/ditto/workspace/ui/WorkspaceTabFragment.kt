@@ -1386,7 +1386,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                        enableClear(true)
                         if (!(dragData?.patternPieces?.splice ?: true)) {
                             if (viewModel.workspacedata?.splice ?: false) {
-                                if (viewModel.userData.value?.cSpliceReminder
+                                if (viewModel.userData.value?.cSpliceMultiplePieceReminder
                                         ?: true
                                 ) {
                                     Utility.getCommonAlertDialogue(
@@ -1414,7 +1414,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             showToWorkspace(true, true, viewModel.workspacedata, false)
                         } else {
                             if ((mWorkspaceEditor?.isWorkspaceNotEmpty) != false) {
-                                if (viewModel.userData.value?.cSpliceReminder
+                                if (viewModel.userData.value?.cSpliceMultiplePieceReminder
                                         ?: true
                                 ) {
                                     Utility.getCommonAlertDialogue(
@@ -1430,7 +1430,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                                 }
                                 return true
                             } else {
-                                if (viewModel.userData.value?.cSpliceMultiplePieceReminder ?: true) {
+                                if (viewModel.userData.value?.cSpliceReminder ?: true) {
                                     if ((dragData?.patternPieces?.splicedImages?.size)!! > 2) {
                                         Utility.getCommonAlertDialogue(
                                             requireActivity(),
