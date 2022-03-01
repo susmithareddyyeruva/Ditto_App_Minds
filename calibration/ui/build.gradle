@@ -35,6 +35,10 @@ android {
             debuggable true
             minifyEnabled false
         }
+        qa {
+            debuggable true
+            minifyEnabled false
+        }
     }
     buildFeatures{
         dataBinding = true // for data binding

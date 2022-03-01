@@ -47,6 +47,10 @@ android {
             //buildConfigField "String", "FORGOT_PASSWORD_URL", "\"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset\"" //--- DEV
 
         }
+        qa {
+            debuggable true
+            minifyEnabled false
+        }
     }
     buildFeatures{
         dataBinding = true // for data binding

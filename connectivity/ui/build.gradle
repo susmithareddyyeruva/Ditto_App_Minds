@@ -45,6 +45,10 @@ android {
             minifyEnabled true
           //  proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        qa {
+            debuggable false
+            minifyEnabled true
+        }
     }
     dataBinding {
         enabled = true

@@ -261,6 +261,7 @@
                             app:error="@{viewModel.isPasswordValidated ?null : `Invalid Password`}" />
 
                         <TextView
+                            android:id="@+id/text_forgot_password"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -342,6 +343,7 @@
 
 
                         <TextView
+                            android:id="@+id/text_guest_preview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

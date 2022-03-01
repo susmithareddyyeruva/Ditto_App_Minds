@@ -1,0 +1,16 @@
+{
+  "response": {
+    "version": "1.0",
+    "critical_version": "0.14(01)",
+    "force_version": "0.14(01)",
+    "title": "REQUIRED APP UPDATE",
+    "body": "This version of the app is no longer supported and requires an update to ensure the best possible DITTO experience",
+    "confirm": "UPDATE",
+    "confirm_link": "https://play.google.com/store/apps",
+    "cancel": "SKIP",
+    "version_update": true,
+    "critical_update": false,
+    "force_update": false
+  },
+  "errors": {}
+}

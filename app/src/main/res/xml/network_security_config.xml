@@ -3,6 +3,9 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">ditto-splicing.tailornova.com</domain>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
     <base-config>
         <trust-anchors>
             <certificates src="system"/>
