@@ -344,6 +344,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (viewModel.isFromDeepLinking.get()) {
             viewModel.patternName.set(viewModel.data.value?.patternName)
             viewModel.patternDescription.set(viewModel.data.value?.description)
+            viewModel.prodSize.set(viewModel.data.value?.size)
             Glide.with(requireContext())
                 .load(viewModel.data.value?.patternDescriptionImageUrl)
                 .placeholder(R.drawable.ic_placeholder)
