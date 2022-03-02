@@ -128,8 +128,16 @@ class HomeFragmentTest:BaseTest() {
             matches(isClickable()))
         onView(withId(R.id.textCount)).check(matches(withText("0 projectors found")))
 
-        onView(withId(R.id.noProjAvailable)).check(matches(withText(R.string.available)))
-        //noProjAvailable
+        onView(withId(R.id.noProjAvailable)).check(matches(withText(R.string.no_projector)))
+
+        onView(withId(R.id.btnScan)).perform(click())
+
+        SystemClock.sleep(1000)
+
+       /* onView(withText(R.string.))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))*/
+
 
     }
 
