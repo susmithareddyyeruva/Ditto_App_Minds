@@ -2,6 +2,7 @@ package com.ditto.base
 
 import android.content.Intent
 import android.os.SystemClock
+import android.provider.Settings.Global.getString
 import android.view.Gravity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -93,7 +94,7 @@ class HomeFragmentTest:BaseTest() {
         mActivityTestRule.launchActivity(intent)
 
         login("user@email.com","password")
-        SystemClock.sleep(2000)
+        SystemClock.sleep(1000)
         openDrawer(R.id.drawer_layout,Gravity.RIGHT)
 
         onView(withText(R.string.str_menu_settings)).check(matches((isDisplayed()))).perform(click())
@@ -105,4 +106,36 @@ class HomeFragmentTest:BaseTest() {
         onView(withText("SKIP")).inRoot(isDialog()).perform(click())
 
     }
+
+    @Test
+    fun verifyDrawerManageProjector(){
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
+
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
+        openDrawer(R.id.drawer_layout,Gravity.RIGHT)
+
+        onView(withText(R.string.str_menu_settings)).check(matches((isDisplayed()))).perform(click())
+        onView(withText(R.string.str_menu_manage_projector)).check(matches((isDisplayed()))).perform(click())
+
+        SystemClock.sleep(2000)
+
+        onView(withId(R.id.textAvailable)).check(matches(withText(R.string.available))).check(matches(isDisplayed()))
+
+        onView(withId(R.id.btnScan)).check(matches(withText(R.string.scan))).check(matches(isDisplayed())).check(
+            matches(isClickable()))
+        onView(withId(R.id.textCount)).check(matches(withText("0 projectors found")))
+
+        onView(withId(R.id.noProjAvailable)).check(matches(withText(R.string.available)))
+        //noProjAvailable
+
+    }
+
+    @Test
+    fun verifyDrawerWorkspaceSetting(){}
+
+    @Test
+    fun verifyDrawerAccountInfo(){}
 }
