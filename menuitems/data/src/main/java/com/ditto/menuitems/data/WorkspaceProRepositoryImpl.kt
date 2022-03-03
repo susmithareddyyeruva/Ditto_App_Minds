@@ -18,8 +18,10 @@ import core.ERROR_FETCH
 import core.UNKNOWN_HOST_EXCEPTION
 import core.appstate.AppState
 import core.lib.BuildConfig
+import core.network.NetworkUtility
 import io.reactivex.Single
 import non_core.lib.Result
+import non_core.lib.error.NoNetworkError
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
@@ -67,7 +69,9 @@ class WorkspaceProRepositoryImpl @Inject constructor(
     }
 
     override fun postSwitchData(data: WSSettingsInputData): Single<Result<WSProSettingDomain>> {
-
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(non_core.lib.Result.OnError(NoNetworkError()))
+        }
         return ws_settings.postSettingRequest(
             AppState.getCustID(),   BuildConfig.CLIENT_ID,
             data,
@@ -78,17 +82,16 @@ class WorkspaceProRepositoryImpl @Inject constructor(
                     data.c_mirrorReminder, data.c_cuttingReminder,
                     data.c_spliceReminder, data.c_spliceMultiplePieceReminder
                 )
-                Log.d("result_success", "doOnSuccess >>> ${it.toString()}")
+                Log.d("WorkspaceProRepositoryImpl", "doOnSuccess >>>> ${it.toString()}")
             }.map {
                 Result.withValue(it.toDomain())
             }.onErrorReturn {
-                var errorMessage = "Error Fetching data"
+                var errorMessage = "Internal server error, Please try after sometime."
                 if (it is HttpException) {
                     val httpException = it as HttpException
                     when (httpException.code()) {
                         400 -> {
                             logger.d("onError: BAD REQUEST")
-
                         }
                         401 -> {
                             logger.d("onError: NOT AUTHORIZED")
