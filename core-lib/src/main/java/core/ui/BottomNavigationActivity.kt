@@ -251,6 +251,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
             override fun onDrawerOpened(drawerView: View) {
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                binding.bottomNavViewModel?.showProgress?.set(false)
             }
 
             override fun onDrawerClosed(drawerView: View) {
