@@ -40,7 +40,9 @@ android {
         dataBinding = true // for data binding
         viewBinding = true // for view binding
     }
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 repositories {
@@ -77,6 +79,15 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation "org.mockito:mockito-inline:2.28.2"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "io.mockk:mockk:1.11.0"
+
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_ktx"
 
@@ -93,11 +104,13 @@ dependencies {
 
     implementation project(path: ':nav-graph')
     implementation project(path: ':home-domain')
+    implementation project(path: ':home-data')
 
     // Storage modules
     implementation project(path: ':storage-data')
     implementation project(path: ':storage-domain')
 
     implementation project(path: ':menuitems-ui')
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
 }

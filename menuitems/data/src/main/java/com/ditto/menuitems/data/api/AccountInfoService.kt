@@ -11,6 +11,5 @@ interface AccountInfoService {
     @Headers("Content-Type: application/json")
     @DELETE(core.lib.BuildConfig.WORKSPACE_ENDURL + "customer_lists/ditto/customers/{cust_no}")
     fun deleteAccountInfo(
-        @Path("cust_no") cust_no: String, @Header("Authorization") header: String
-    ): Single<DeleteAccountInfoResult>
+        @Path("cust_no") cust_no: String): Single<DeleteAccountInfoResult>
 }

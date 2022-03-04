@@ -15,7 +15,6 @@ import core.CONNECTION_EXCEPTION
 import core.ERROR_FETCH
 import core.NO_SUCH_ELEMENT_EXCEPTION
 import core.UNKNOWN_HOST_EXCEPTION
-import core.appstate.AppState
 import core.network.NetworkUtility
 import core.ui.errors.CommonError
 import io.reactivex.Single
@@ -43,21 +42,18 @@ class AccountInfoRepositoryImpl @Inject constructor(
           }
 
         return accountInfoService.deleteAccountInfo(
-            custNO ?: "",
-            "Bearer " + AppState.getToken()!!
-        ).doOnSuccess {
+            custNO ?: "").doOnSuccess {
             logger.d("**Delete Success**")
-
         }.map {
             logger.d("**Delete: on map ${it.toString()}")
             Result.withValue(it.toDomain())
         }.onErrorReturn {
             logger.d("**Delete: on Error ${it.toString()}")
-
-            it.localizedMessage?.let {
-                ERROR_FETCH = it
-            }
             var errorMessage = ERROR_FETCH
+            it.localizedMessage?.let {
+                errorMessage = it
+            }
+
             //logger.d(it.localizedMessage)
             if (it is HttpException) {
                 when (it.code()) {
@@ -67,7 +63,7 @@ class AccountInfoRepositoryImpl @Inject constructor(
                         val gson = Gson()
                         val type = object : TypeToken<CommonError>() {}.type
                         val errorResponse: CommonError? = gson.fromJson(errorBody, type)
-                        errorMessage = errorResponse?.errorMsg ?: ERROR_FETCH
+                        errorMessage = (errorResponse?.errorMsg ?: ERROR_FETCH)
                         logger.d("onError: BAD REQUEST")
 
                     }
@@ -89,7 +85,6 @@ class AccountInfoRepositoryImpl @Inject constructor(
                 }
             }
 
-            //todo deleteAccount error pending
             Result.withError(
                 AccountInfoFetchError(errorMessage, it)
             )

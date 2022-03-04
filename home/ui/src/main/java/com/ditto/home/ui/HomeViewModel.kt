@@ -43,10 +43,11 @@ class HomeViewModel @Inject constructor(
     private val context: Context,
     val storageManager: StorageManager,
     val useCase: HomeUsecase,
+    val loggerFactory: LoggerFactory,
     private val utility: Utility
 ) : BaseViewModel() {
-    @Inject
-    lateinit var loggerFactory: LoggerFactory
+   /* @Inject
+    lateinit var loggerFactory: LoggerFactory*/
     var versionResult: SoftwareUpdateResult? = null
 
     val logger: Logger by lazy {
@@ -144,8 +145,8 @@ class HomeViewModel @Inject constructor(
 
         }
     }
-
-    fun fetchData() {
+// todo started
+    fun  fetchData() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getHomePatternsData(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(
@@ -179,7 +180,7 @@ class HomeViewModel @Inject constructor(
             .subscribeBy { handleTrialPatternResult(it) }
     }
 
-    fun fetchListOfTrialPatternFromInternalStorage() {
+    internal fun fetchListOfTrialPatternFromInternalStorage() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getTrialPatterns()
             .subscribeOn(Schedulers.io())
@@ -208,7 +209,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
+    internal fun handleTrialPatternResult(result: Result<List<PatternIdData>>?) {
         when (result) {
             is Result.OnSuccess -> {
                 logger.d("DEBUG>>>>,handleTrialPatternResult Success")
@@ -233,7 +234,7 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling fetch result here.....
      */
-    private fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
+    internal fun handleFetchResult(result: Result<MyLibraryDetailsDomain>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
@@ -259,7 +260,7 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling offline fetch result here.....
      */
-    private fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
+     fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
@@ -279,8 +280,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
-    private fun handleError(error: Error) {
+//unit testing done
+    internal fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
                 activeInternetConnection.set(false)
@@ -326,7 +327,7 @@ class HomeViewModel @Inject constructor(
         patternFolderName: String?
     ) {
         try {
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO,) {
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(imageUrl)

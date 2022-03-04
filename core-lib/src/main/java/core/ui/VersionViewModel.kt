@@ -44,7 +44,7 @@ class VersionViewModel @Inject constructor (
                 RxBus.publish(RxBusEvent.VersionErrorReceived("No Internet connection available !"))
             }
             else -> {
-                RxBus.publish(RxBusEvent.VersionErrorReceived("Something Went Worng!!"))
+                RxBus.publish(RxBusEvent.VersionErrorReceived("Something Went Wrong!!"))
             }
 
         }

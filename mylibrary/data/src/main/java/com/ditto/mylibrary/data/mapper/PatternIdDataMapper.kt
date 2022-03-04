@@ -63,7 +63,7 @@ internal fun OfflinePatterns.toDomain(): ProdDomain {
     )
 }
 
-internal fun PatternIdData.toDomain(
+public fun PatternIdData.toDomain(
     orderNumber: String?,
     tailornovaDesignName: String?,
     prodSize: String?,

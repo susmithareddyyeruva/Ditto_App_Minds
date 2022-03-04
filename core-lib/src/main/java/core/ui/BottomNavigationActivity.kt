@@ -134,21 +134,6 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             appLinkData?.lastPathSegment?.also { segmentId ->
                 Log.d("DEEPLINK", segmentId)
                 when {
-
-                    segmentId.endsWith("Sites-ditto-Site") -> {
-                        // HOME
-                        if (navController.currentDestination?.id == R.id.nav_graph_id_home) {
-                            val bundle = bundleOf(
-                                "DEEPLINK" to "HOME"
-                            )
-                            navController.navigate(
-                                R.id.action_splashActivity_to_HomeFragment,
-                                bundle
-                            )
-                        }
-                        return
-
-                    }
                     segmentId.endsWith("myLibrary") -> {
                         // PATTERN LIBRARY
                         if (AppState.getIsLogged()) {
@@ -266,6 +251,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
             override fun onDrawerOpened(drawerView: View) {
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                binding.bottomNavViewModel?.showProgress?.set(false)
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -413,10 +399,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null
             ) {
-                navViewHeaderBinding.subscriptionDays.text ="0 days"
+                navViewHeaderBinding.subscriptionDays.text ="0 day left"
             } else {
                 val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-                navViewHeaderBinding.subscriptionDays.text ="$days days"
+                navViewHeaderBinding.subscriptionDays.text ="$days days left"
             }
             navViewHeaderBinding.textPhone.text =AppState.getMobile()
         } else {
