@@ -30,24 +30,20 @@
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="https"
-                    android:host="development.dittopatterns.com"
+                <data android:scheme="https"/>
+                <data android:host="development.dittopatterns.com"
                     android:pathPrefix="/myLibrary" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="https"
-                    android:host="development.dittopatterns.com"
+                <data android:scheme="https"/>
+                <data android:host="development.dittopatterns.com"
                     android:pathPrefix="/on/demandware.store/Sites-ditto-Site/default/MyPatternLibrary-PatternShow" />
             </intent-filter>
         </activity>
