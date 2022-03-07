@@ -98,6 +98,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private var mWorkspaceEditor: WorkspaceEditor? = null
     lateinit var binding: WorkspaceTabItemBinding
     private var matchedPattern: PatternsData? = null
+    private var alertCamera:AlertDialog? = null
     private var isCompleted: Boolean? = null
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
@@ -179,6 +180,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 )
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        alertCamera?.dismiss()
+        alertCamera = null
     }
 
     private fun setUIEvents() {
@@ -2278,17 +2285,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setCancelable(false)
-        val alertCamera = dialogBuilder.create()
-        alertCamera.setView(layout)
-        alertCamera.show()
+        if(alertCamera == null){
+            alertCamera = dialogBuilder.create()
+        }
+        alertCamera?.setView(layout)
+        alertCamera?.show()
         val cancel = layout?.findViewById(R.id.textCancel) as TextView
         val launch = layout.findViewById(R.id.textLaunch) as TextView
         launch.setOnClickListener {
-            alertCamera.dismiss()
+            alertCamera?.dismiss()
             sendCalibrationPattern()
         }
         cancel.setOnClickListener {
-            alertCamera.dismiss()
+            alertCamera?.dismiss()
             if (baseViewModel.activeSocketConnection.get()) {
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
@@ -2298,12 +2307,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val displayWidth: Int = displayMetrics.widthPixels
         val displayHeight: Int = displayMetrics.heightPixels
         val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertCamera.window?.attributes)
+        layoutParams.copyFrom(alertCamera?.window?.attributes)
         val dialogWindowWidth = (displayWidth * 0.8f).toInt()
         val dialogWindowHeight = (displayHeight * 0.6f).toInt()
         layoutParams.width = dialogWindowWidth
         layoutParams.height = dialogWindowHeight
-        alertCamera.window?.attributes = layoutParams
+        alertCamera?.window?.attributes = layoutParams
     }
 
     private fun sendCalibrationPattern() {

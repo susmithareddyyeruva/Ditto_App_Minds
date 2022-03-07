@@ -330,6 +330,9 @@ class WorkspaceViewModel @Inject constructor(
                         getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)),
                         false
                     )
+                }else{
+                    uiEvents.post(Event.ApiFailed)
+                    Log.d("handleError", "WorkspaceViewModel else")
                 }
             }
 
@@ -338,8 +341,14 @@ class WorkspaceViewModel @Inject constructor(
                     Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
                     if (::workspaceDataAPI.isInitialized) {
                         createWSAPI(workspaceDataAPI, true)
+                    }else{
+                        uiEvents.post(Event.ApiFailed)
+                        Log.d("handleError", "WorkspaceViewModel else")
                     }
 
+                }else{
+                    uiEvents.post(Event.ApiFailed)
+                    Log.d("handleError", "WorkspaceViewModel else")
                 }
             }
             else -> {
