@@ -1,7 +1,5 @@
 package com.ditto.storage.data.model
 
-import androidx.room.PrimaryKey
-
 data class WorkspaceItems (
     var id: Int = 0,
     var parentPattern: String = "",
@@ -29,5 +27,7 @@ data class WorkspaceItems (
     var parentPatternId: Int = 0,
     var isCompleted: Boolean = false,
     var currentSplicedPieceRow:Int = 0,
-    var currentSplicedPieceColumn:Int = 0
+    var currentSplicedPieceColumn:Int = 0,
+    var transformA: String? = "1.0",
+    var transformD: String? = "1.0"
 )

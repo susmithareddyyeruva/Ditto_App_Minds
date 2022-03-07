@@ -117,7 +117,9 @@ internal fun WorkspaceItems.toDomain(): com.ditto.workspace.domain.model.Workspa
         parentPatternId = this.parentPatternId,
         isCompleted = this.isCompleted,
         currentSplicedPieceRow = this.currentSplicedPieceRow,
-        currentSplicedPieceColumn = this.currentSplicedPieceColumn
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn,
+        transformD = this.transformD,
+        transformA = this.transformA
     )
 }
 
@@ -231,6 +233,8 @@ internal fun com.ditto.workspace.domain.model.WorkspaceItems.toDomain(): Workspa
         parentPatternId = this.parentPatternId,
         isCompleted = this.isCompleted,
         currentSplicedPieceRow = this.currentSplicedPieceRow,
-        currentSplicedPieceColumn = this.currentSplicedPieceColumn
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn,
+        transformD = this.transformD,
+        transformA = this.transformA
     )
 }

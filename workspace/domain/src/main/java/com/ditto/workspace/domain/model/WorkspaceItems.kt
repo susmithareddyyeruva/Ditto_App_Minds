@@ -29,5 +29,7 @@ data class WorkspaceItems (
     var parentPatternId: Int = 0,
     var isCompleted: Boolean = false,
     var currentSplicedPieceRow:Int = 0,
-    var currentSplicedPieceColumn:Int = 0
+    var currentSplicedPieceColumn:Int = 0,
+    var transformA: String? = "1.0",
+    var transformD: String? = "1.0",
 )
