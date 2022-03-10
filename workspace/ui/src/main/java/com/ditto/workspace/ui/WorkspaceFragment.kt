@@ -277,15 +277,15 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     private fun updateTab() {
         disableNoItemTabs()
         var position = 0
-        if (viewModel.data.value?.selectedTab.equals("0")) {
+        if (viewModel.data.value?.selectedTab.equals("Garment")) {
             position = 0
             binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
-        } else if (viewModel.data.value?.selectedTab.equals("1")) {
+        } else if (viewModel.data.value?.selectedTab.equals("Lining")) {
             position = 1
             binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
-        } else if (viewModel.data.value?.selectedTab.equals("2")) {
+        } else if (viewModel.data.value?.selectedTab.equals("Interfacing")) {
             position = 2
             binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
