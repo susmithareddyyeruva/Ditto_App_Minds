@@ -25,6 +25,12 @@ class MockServer {
                 else if(it.contains("/on/demandware.store/Sites-ditto-Site/default/TraceAppMyLibrary-Shows")){
                     return MockResponse().setResponseCode(200).setBody(MockResponseFileReader("patterns1.json").content)
                 }
+                else if(it.contains("/s/-/dw/data/v19_1/customer_lists/ditto/customers/00001001")){
+                    return MockResponse().setResponseCode(200).setBody(MockResponseFileReader("delete_account_response.json").content)
+                }
+                else if(it.contains("/s/ditto/dw/shop/v19_1/content/tutorial?&client_id=59eb4dd9-026d-4bac-adb5-2e5848d91263")){
+                    return MockResponse().setResponseCode(200).setBody(MockResponseFileReader("tutorial_response.json").content)
+                }
                 else{
                     return MockResponse().setResponseCode(400)
                 }

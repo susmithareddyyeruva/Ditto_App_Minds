@@ -1,0 +1,229 @@
+{
+  "_v": "19.1",
+  "_type": "content",
+  "id": "tutorial",
+  "name": "Tutorial",
+  "c_body": {
+    "onboarding": [
+      {
+        "id": 1,
+        "title": "Beam Setup & Take Down",
+        "description": "Arrange projector and workspace",
+        "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwc428f4ec/ContentImage/BeamSetupImages/beamSetupImage.png",
+        "instructions": [
+          {
+            "id": 1,
+            "title": "Beam Setup",
+            "description": "Arrange projector and workspace",
+            "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwc428f4ec/ContentImage/BeamSetupImages/beamSetupImage.png",
+            "instructions": [
+              {
+                "id": 1,
+                "title": "Please watch the video instruction for beam setup",
+                "description": "First, download the Ditto app at (app name)<br/><br/>You’ll need:<br/>-flat work surface (37”x 25”)<br/>-flat ceiling (75’- 10’)<br/>-Wi-Fi<br/>-nearby outlet<br/>-tablet or phone<br/><br/>Put the beam together<br/>It’s heavy, so lay the pieces on the table or floor<br/>Slide the top & bottom sections together<br/>Turn the knob until hand tight<br/><br/>Now, set it up<br/>Lean the beam against the wall<br/>Loosen the knob at the bottom<br/>Stand on the foot pad and slide the top part to where the wall meets the ceiling<br/>Adjust it so the bottom is about 1’ away from the wall<br/>Tighten the knob again<br/><br/>Move it to your work surface<br/>Carry it at an angle with the bottom side out<br/>Arrange it so there is a 1” gap between it and your work surface and the flat side is toward the table<br/>Push down on the beam to depress the spring-loaded foot, orient upright and release<br/>There’s a bubble level to make sure the beam is straight<br/><br/>Attach the projector<br/>First slide the projector carrier to a comfortable height<br/>Then to attach the projector, with the lens facing the ceiling, align the hole in the back to the carrier<br/>Rotate the projector until the lens faces down<br/><br/>Place the cutting mat on the table with the Ditto logo facing away from the beam<br/>Plug the projector cord into the outlet, then into the projector<br/>Have your room dimly lit so the projected frame is vivid red<br/>Slide the projector up or down (or move the cutting mat) to align the red frame within the white cutting mat border<br/><br/>Finish up by guiding the power cord into the slot in the front of the beam and snap on the cord covers",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwc428f4ec/ContentImage/BeamSetupImages/beamSetupImage.png",
+                "videoPath": "https://youtu.be/MMYBUcenvtM"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Beam Takedown",
+            "description": "Arrange projector and workspace",
+            "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwc428f4ec/ContentImage/BeamSetupImages/beamSetupImage.png",
+            "instructions": [
+              {
+                "id": 1,
+                "title": "Please watch the video instruction for beam take down",
+                "description": "First remove the cord covers<br/>Lower the projector to a comfortable height<br/>Unplug the projector from the device, then the wall<br/>Rotate the projector so the lens is facing the ceiling and pull it off the projector carrier<br/>Put it somewhere safe<br/>Push the beam down to depress the spring and tilt it to the side<br/>Lay it on the table or floor<br/>Make sure the projector carrier is not overlapping where the beam sections meet<br/>Loosen both knobs<br/>Slide the telescoping piece into the beam<br/>Retighten the bottom knob to secure the telescoping piece<br/>Grip and pull the two beam sections apart<br/>Store<br/>",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwc428f4ec/ContentImage/BeamSetupImages/beamSetupImage.png",
+                "videoPath": "https://youtu.be/MMYBUcenvtM"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Calibration",
+        "description": "Projector fine tuning for accurate pattern projection",
+        "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwbe7e01a7/mobileTraceImages/calibrationImage.png",
+        "instructions": [
+          {
+            "id": 1,
+            "title": "Necessary to make sure pattern pieces project in the accurate size and shape, please watch the video instruction",
+            "description": "Calibration is necessary to make sure your pattern pieces project at the accurate size and shape<br/>If you’ve just connected, you’ll be asked if you need to calibrate<br/>If you’re not prompted, choose “Calibrate” within the workspace and you’ll be asked to confirm that you’re set up & connected<br/>You should be seeing a vivid red frame projected onto your cutting mat<br/>Slide your projector up or down, or shift your mat, to align the red frame within the white cutting mat border<br/>Next you need to launch your camera within the app<br/>Take a photo of the mat. Standing opposite the projector, hold your camera up high to capture all 4 corners of the mat. It doesn’t have to be perfectly square, as long as you capture all 4 corners<br/>It will then process and tell you if it’s successful or not<br/>If not, check the error message, correct the setup and take the photo again<br/>When it’s successful, you’ll see that the projected squares will lineup with the cutting mat squares<br/>Now you can choose “ok” to go back to your workspace<br/>",
+            "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwbe7e01a7/mobileTraceImages/calibrationImage.png",
+            "videoPath": "https://youtu.be/t96PJexxcDI"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "How-To Videos",
+        "description": "Navigate your workspace and learn to cut/trace, splice & mirror",
+        "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwe3d87129/mobileTraceImages/onboard_howto.jpg",
+        "instructions": [
+          {
+            "id": 1,
+            "title": "Workspace",
+            "description": "•The Ditto workspace is the area where pattern pieces are arranged for projection<br/>•Above the workspace are 3 tabs for different materials — garment, lining & interfacing For whichever you select, the pieces will update in the Pattern Pieces scroll bar at the right<br/>•To add a pattern piece to the workspace, long press it and drag it over<br/>•You can place and project multiple non-spliced pieces into the workspace at the same time<br/>•The Reference Layout at the top right allows you to select a layout to follow when arranging pattern pieces in the workspace<br/>•Next to each pattern piece is a check box to keep track of what’s been cut<br/>•Select a layout for your fabric width (45” or 60”)<br/>•The Workspace Tools allow you to mirror, select all and clear<br/>•To zoom in on a piece, double tap it in the workspace<br/>•To rotate, select a pattern piece within the workspace, keep one finger stationary and drag the other finger around (pattern pieces snap to the nearest 45º increment)(If a rotated piece exceeds the projection workspace, it will snap back to its original position)<br/>•The Select All tool selects all the pieces in the workspace<br/>•The Clear tool clears all the selected pieces in the workspace<br/>•The Send to Projector button will send the items in the workspace to the projector<br/>•At any time, you can leave the workspace by pressing the Exit button and your work will automatically be saved",
+            "imagePath": "ic_frame",
+            "instructions": [
+              {
+                "id": 1,
+                "title": "Recalibrate Button",
+                "description": "Click Recalibrate to confirm or reset precise projection size.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2600e3c5/HowTo/Recallibrate.png",
+                "videoPath": "https://youtu.be/IH1ZNEE_bwc"
+              },
+              {
+                "id": 2,
+                "title": "Select All Button",
+                "description": "Select All pieces within projection frame at the same time. Then drag all pieces into the cut bin or back into the scroll bar.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwf19806ca/HowTo/Select all button.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 3,
+                "title": "Mirror Piece Vertical",
+                "description": "Mirror V will flip the selected pattern piece around the center vertical axes as defined by the mid-pixel point in a rectangular bounding box. Mirrored pieces will not increase the complete number when dragged into the bin. Only the original format piece (not mirrored) increases the complete count when dragged into the bin.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw12685bb6/HowTo/Mirror v.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 4,
+                "title": "Mirror Piece Horizontal",
+                "description": "Mirror H will flip the selected pattern piece around the center horizontal axes as defined by the mid-pixel point in a rectangular bounding box. Mirrored pieces will not increase the complete number when dragged into the bin. Only the original format piece (not mirrored) increases the complete count when dragged into the bin.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwf1be89a3/HowTo/Mirror H.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 5,
+                "title": "Move Pattern Piece into Workspace",
+                "description": "Tap pattern piece from scroll bar, then press, hold and drag into the projection frame. Pattern pieces can be moved within the projection frame in the same way.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwdda17944/HowTo/Move pattern pieces into workspace.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 6,
+                "title": "Double Tap to Zoom",
+                "description": "Double tap to open zoomed pattern piece and easily read pattern details. Click x to close zoom pop up window",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw8cc5d938/HowTo/Double tap to zoom.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 6,
+                "title": "Rotate Pattern Piece",
+                "description": "Tap to select a pattern piece within the projection frame.\n\nPlace two fingers on or near a selected pattern piece in the projection frame. Press and drag both fingers clockwise or counterclockwise to rotate piece. Piece will snap to 45 degree positions.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2525d672/HowTo/Rotate.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 7,
+                "title": "Move Pieces to Complete Bin",
+                "description": "Drag a pattern piece from the projection area to the bin to indicate that the piece(s) has been cut or traced. One a piece has been released into the cut bin and confirmed, the piece will disappear from the projection space and the complete number will increase accordingly.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw58d399a2/HowTo/Complete bin.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 8,
+                "title": "Reference Layouts",
+                "description": "Reference layout illustrates the most space efficient way to position pattern pieces onto fabric. Select layout based on project fabric size. Layouts are either 45 inches with or without nap or 60 inches with or without nap.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwa925f2a6/HowTo/Reference layout.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 9,
+                "title": "Material Specific Tabs",
+                "description": "Select tab to view pattern pieces as well as layout specific to one material.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwbac96954/HowTo/Material tab.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 10,
+                "title": "Scrolling Through All Pattern Pieces",
+                "description": "Use the right and left arrows to scroll through all pattern pieces within each tab.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw095d836e/HowTo/Scrolling.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 11,
+                "title": "Pattern Instructions",
+                "description": "Select instructions to view pattern sewing guide. No change will occur to workspace when this option is selected.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw69e50d2c/HowTo/Pattern instructions.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 12,
+                "title": "Pattern Piece Layout",
+                "description": "The reference layout for the pattern pieces within the current tab selection.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwe81e9bc5/HowTo/Pattern piece layout.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 13,
+                "title": "Progress Completion Tally",
+                "description": "Progress completion bin indicates how many pieces have been completed and how many total pieces are needed for the complete pattern.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw71085c38/HowTo/Completion tally.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              },
+              {
+                "id": 14,
+                "title": "Save and Exit",
+                "description": "Save and exit the project at any point of time. The project will be saved in Active Projects.",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb8bfa470/HowTo/Save.png",
+                "videoPath": "https://www.youtube.com/watch?v=Jli6Sqm-2DU"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Cutting / Tracing",
+            "description": "Project Patterns with the correct size",
+            "imagePath": "ic_frame",
+            "instructions": [
+              {
+                "id": 1,
+                "title": "Step 1",
+                "description": "•Lay fabric out on your cutting mat with the grain parallel to the projection<br/>•Smooth out fabric using the weights to hold it flat<br/>•On your app workspace, choose a pattern piece(s) to cut<br/>•Long press and drag to the workspace<br/>•Then choose “Send to Projector”<br/>•Move your pattern weights as needed<br/>•Transfer any markings using a temporary fabric marker<br/>(If you’re having trouble seeing all the markings, you can zoom in on the pattern piece in the app workspace by double tapping that piece) (Use a chair or stool to support extra fabric draping over the side of your table and prevent fabric slippage)<br/>•Cut on the projected pattern line (or just outside the line) using a rotary cutter (a 5/8” seam allowance is already accounted for in the projection)<br/>•If using scissors, keep fabric flat on the mat while cutting or trace the entire pattern piece prior to cutting",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw10f80890/HowTo/cuttingthumbnail.png",
+                "videoPath": "https://youtu.be/wzeRgEHGlZE"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "title": "Splicing",
+            "description": "Project Patterns with the correct size",
+            "imagePath": "ic_frame",
+            "instructions": [
+              {
+                "id": 1,
+                "title": "Step 1",
+                "description": "•If you have a pattern piece that is too big for the projected area, the piece will need to be projected as multiple frames, called \"Splicing\"<br/>•Red directional arrows appear on spliced pattern pieces in the scroll bar that indicate if a piece will splice vertically, horizontally or in multiple directions<br/>•Long press and drag the spliced pattern piece into the projection workspace, just like any other piece (make sure there is enough fabric beyond the projection space to account for the entire piece)<br/>•Mark the splicing alignment markers with the provided red sticker targets<br/>•Transfer any markings using a temporary fabric marker<br/>•Cut on the projected pattern line using a rotary cutter or trace the entire pattern piece to cut with scissors (if you’re doing a multi-directional spliced piece, we recommend that you trace the entire piece before cutting your fabric)<br/>•In your app workspace, click the arrow to move the pattern<br/>•A splicing map appears to the right of the workspace that indicates which splice frame is being projected<br/>•Follow the arrow directions to reposition the fabric and align the splicing targets<br/>•Finish cutting or tracing the pattern piece<br/>•For multi-directional spliced pieces, trace the entire piece before cutting your fabric<br/>•Don’t remove the target stickers until the entire piece has been traced",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw06f1f715/HowTo/splicethumbnail.png",
+                "videoPath": "https://youtu.be/YY495uvZsrE"
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "title": "Mirroring",
+            "description": "Project Patterns with the correct size",
+            "imagePath": "mirrorthumbnail",
+            "instructions": [
+              {
+                "id": 1,
+                "title": "Step 1",
+                "description": "•Mirroring is the same as flipping the pattern, and used in lieu of cutting-on-fold<br/>•Select the piece on your workspace that you want to mirror by tapping it until it is highlighted<br/>•Mirror horizontal or vertical by selecting the icons at the left<br/>•To cut a cut-on-the-fold piece, open on one layer of fabric<br/>•Drag the pattern piece into the workspace twice<br/>•Mirror one piece across the fold line<br/>•Bring the two pieces together along the fold line<br/>•Do not cut the center fold line when cutting",
+                "imagePath": "https://development.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwbd0b0030/HowTo/mirrorthumbnail.jpg",
+                "videoPath": "https://youtu.be/KPNQjtok5Sk"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
