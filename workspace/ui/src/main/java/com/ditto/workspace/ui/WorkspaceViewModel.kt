@@ -58,6 +58,7 @@ class WorkspaceViewModel @Inject constructor(
     var mannequinId: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
+    var workspaceItemId : ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
     var tabCategory: String = ""
     var selectedTab: ObservableInt = ObservableInt(0)
