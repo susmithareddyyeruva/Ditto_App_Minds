@@ -17,10 +17,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.ditto.R
 import com.ditto.base.server.MockServer
-import com.google.android.material.navigation.NavigationView
 import core.ui.BottomNavigationActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.not
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -205,7 +205,6 @@ class HomeFragmentTest:BaseTest() {
         onView(withId(R.id.btnDelete)).perform(click())
 
         onView(withText("YES")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
-
     }
 
     @Test
@@ -290,23 +289,153 @@ class HomeFragmentTest:BaseTest() {
 
     }
 
-    fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
-        return object : TypeSafeMatcher<View?>() {
-            var currentIndex = 0
-            var viewObjHash = 0
+    @Test
+    fun homeJoann(){
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
 
-            @SuppressLint("DefaultLocale")
-            override fun describeTo(description: Description) {
-                description.appendText(String.format("with index: %d ", index))
-                matcher.describeTo(description)
-            }
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
 
-            override fun matchesSafely(view: View?): Boolean {
-                if (matcher.matches(view) && currentIndex++ == index) {
-                    viewObjHash = view.hashCode()
-                }
-                return view.hashCode() === viewObjHash
-            }
-        }
+        onView(withId(R.id.recycler_view)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
+    }
+
+    @Test
+    fun homeMorePattern(){
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
+
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
+
+        onView(withId(R.id.recycler_view)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+    }
+
+    @Test
+    fun homePattern(){
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
+
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
+
+        onView(withId(R.id.recycler_view)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        SystemClock.sleep(500)
+        onView(withIndex(withId(R.id.header_view_title),1)).check(matches(withText(mActivityTestRule.activity.getString(R.string.pattern_library_count1,18))))
+        onView(withId(R.id.tv_sync)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvSearch)).check(matches(isDisplayed()))
+        onView(withId(R.id.view_dot)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_filter)).check(matches(isDisplayed())).perform(click())
+        onView(withId(R.id.closeFilter)).check(matches(isDisplayed())).perform(click())
+       // onView(withId(R.id.tvSearch)).check(matches(isDisplayed())).perform(click())
+    }
+
+    @Test
+    fun homeTabLayout(){
+
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
+
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
+
+        onView(withId(R.id.recycler_view)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        SystemClock.sleep(500)
+        onView(withText(R.string.my_folders))
+            .perform(click())
+
+        SystemClock.sleep(500)
+        onView(withText(R.string.all_patterns))
+            .perform(click())
+
+
+        SystemClock.sleep(500)
+        onView(withText(R.string.my_folders))
+            .perform(click())
+
+        SystemClock.sleep(500)
+        onView(withIndex(withId(R.id.header_view_title),1)).check(matches(withText(R.string.myfolder)))
+
+        onView(withId(R.id.rvMyFolder))
+            .perform(swipeUp())
+
+        SystemClock.sleep(500)
+
+        onView(withText("client001")).perform(click())
+    }
+
+    @Test
+    fun homeMyFolder(){
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
+
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
+
+        onView(withId(R.id.recycler_view)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        SystemClock.sleep(500)
+        onView(withText(R.string.my_folders))
+            .perform(click())
+
+        SystemClock.sleep(500)
+        onView(withText("Favorites")).perform(click())
+
+        SystemClock.sleep(500)
+        onView(withIndex(withId(R.id.header_view_title),1)).check(matches(withText("Favorites (1)")))
+    }
+
+    @Test
+    fun homePatternFilter(){
+        mockServer.dispatcher = MockServer.ResponseLoginSuccessDispatcher()
+        val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, BottomNavigationActivity::class.java)
+        mActivityTestRule.launchActivity(intent)
+
+        login("user@email.com","password")
+        SystemClock.sleep(1000)
+
+        onView(withId(R.id.recycler_view)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        onView(withId(R.id.tv_filter)).check(matches(isDisplayed())).perform(click())
+
+        onView(withText("Seasons")).check(matches(isDisplayed())).perform(click())
+        onView(withText("Gender")).check(matches(isDisplayed())).perform(click())
+        onView(withText("Size")).check(matches(isDisplayed())).perform(click())
+        onView(withText("Product Types")).check(matches(isDisplayed())).perform(click())
+        onView(withText("Brand")).check(matches(isDisplayed())).perform(click())
+
+        onView(withText("Seasons")).check(matches(isDisplayed())).perform(click())
+
+        onView(withId(R.id.rvActions)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.rvActions)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        onView(withId(R.id.rvActions)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+
+        onView(withId(R.id.apply)).perform(click())
+
+        onView(withText("Showing filtered results (18)")).check(matches(isDisplayed()))
+
+        onView(withText("clear filters")).check(matches(isDisplayed()))
+
+        onView(withId(R.id.tv_filter)).check(matches(isDisplayed())).perform(click())
+        onView(withId(R.id.clearFilter)).check(matches(isDisplayed())).perform(click())
+        onView(withText("Showing filtered results (18)")).check(matches(not(isDisplayed())))
     }
 }

@@ -1,5 +1,6 @@
 package com.ditto.base
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.EditText
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -83,6 +84,26 @@ open class BaseTest {
                 description.appendText("Not found error message$expected, find it!")
             }
 
+        }
+    }
+
+    fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
+        return object : TypeSafeMatcher<View?>() {
+            var currentIndex = 0
+            var viewObjHash = 0
+
+            @SuppressLint("DefaultLocale")
+            override fun describeTo(description: Description) {
+                description.appendText(String.format("with index: %d ", index))
+                matcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: View?): Boolean {
+                if (matcher.matches(view) && currentIndex++ == index) {
+                    viewObjHash = view.hashCode()
+                }
+                return view.hashCode() === viewObjHash
+            }
         }
     }
 }

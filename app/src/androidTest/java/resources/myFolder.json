@@ -1,0 +1,16 @@
+{
+  "action": "TraceAppLibraryFolder-Modify",
+  "queryString": "method=getFolders",
+  "locale": "default",
+  "responseVal": [
+    "shibi",
+    "QA",
+    "client001",
+    "client002",
+    "client003",
+    "client004",
+    "client123",
+    "My Patterns ",
+    "LivinTest"
+  ]
+}

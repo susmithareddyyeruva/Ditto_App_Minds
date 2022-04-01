@@ -1,0 +1,107 @@
+{
+  "action": "TraceAppMyLibrary-Shows",
+  "queryString": "",
+  "locale": "default",
+  "prod": [
+    {
+      "isOwned": true,
+      "ID": "product1109",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw8dba968f/hi-res/product11/product11.jpg?sw=350&sh=350&sm=fit",
+      "name": "Charmeuse Blouse",
+      "description": "Loose above high hip woven top, décolleté neck and back round jewel shoulder darts, short length puff sleeve sleeves Details: This top is perfect for wearing to work or dinner",
+      "customization": true,
+      "type": [
+        "Tops"
+      ],
+      "seasons": [
+        "Spring"
+      ],
+      "orderNo": "00005101",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "16",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "129af80f88a241bf9293d2da23b08853",
+      "purchasedSizeId": "eb708703abfa4eeea157918473e3a26b",
+      "creationDate": "2022-01-11T12:55:28.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "mannequin": [],
+      "dateOfModification": "2022-02-14T08:44:19.000Z",
+      "isFavourite": true,
+      "status": "OWNED"
+    }
+  ],
+  "totalPatternCount": 1,
+  "totalPageCount": 1,
+  "currentPageId": 1,
+  "filter": {
+    "brand": [
+      "Ditto",
+      "McCall's"
+    ],
+    "gender": [
+      "Women"
+    ],
+    "size": [
+      "6",
+      "22",
+      "24",
+      "16",
+      "14",
+      "8",
+      "4",
+      "28",
+      "26",
+      "Women",
+      "One size"
+    ],
+    "seasons": [
+      "Fall",
+      "Fall",
+      "Spring",
+      "Spring",
+      "Fall",
+      "Summer",
+      "Spring",
+      "Summer",
+      "Spring",
+      "Spring",
+      "Fall",
+      "Summer",
+      "Fall",
+      "Fall",
+      "Summer",
+      "28",
+      "Summer",
+      "One size"
+    ],
+    "productTypes": [
+      "Special Occasion",
+      "Coat",
+      "Top",
+      "Pants",
+      "Tops",
+      "Dresses",
+      "Tops",
+      "Sleepwear",
+      "Skirts",
+      "Tops",
+      "Special Occasion",
+      "Women's Pattern",
+      "Skirt Pattern",
+      "Women's Pattern",
+      "Top Pattern",
+      "Shirt Pattern",
+      "Women's Pattern",
+      "Top Pattern",
+      "Shirt Pattern",
+      "Tops",
+      "Fall",
+      "Dresses",
+      "Summer"
+    ]
+  }
+}
