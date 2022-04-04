@@ -67,7 +67,7 @@ open class BaseTest {
             AppState.logout()
             AppState.setIsLogged(false)
         }
-        if(!AppState.isShownCoachMark()){
+        if (!AppState.isShownCoachMark()) {
             AppState.setShowCoachMark(true)
         }
     }
