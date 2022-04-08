@@ -2309,7 +2309,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
         layoutParams.copyFrom(alertCamera?.window?.attributes)
         val dialogWindowWidth = (displayWidth * 0.8f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.6f).toInt()
+        val dialogWindowHeight = (displayHeight * 0.8f).toInt()
         layoutParams.width = dialogWindowWidth
         layoutParams.height = dialogWindowHeight
         alertCamera?.window?.attributes = layoutParams

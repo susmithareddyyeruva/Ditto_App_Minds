@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/alert_bg"
     android:layout_height="wrap_content"
+    android:background="@drawable/alert_bg"
     android:paddingStart="@dimen/large_padding"
-    android:paddingTop="@dimen/medium_padding"
+    android:paddingTop="@dimen/large_padding"
     android:paddingEnd="@dimen/large_padding">
 
     <androidx.constraintlayout.widget.Guideline
@@ -13,77 +13,71 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.62" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".95" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".7" />
+        app:layout_constraintGuide_percent=".45" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/alertImage"
+        android:id="@+id/alertImageconfirmation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/large_padding"
-        android:layout_marginBottom="@dimen/x_large_padding"
-        android:contentDescription="@string/camera_alert"
-        android:src="@drawable/camera_popup"
-        app:layout_constraintBottom_toTopOf="@+id/guide_image_view"
-        app:layout_constraintEnd_toEndOf="@+id/guide_button"
-        app:layout_constraintStart_toStartOf="@+id/guideline_center"
+        android:layout_marginBottom="@dimen/medium_padding"
+        android:contentDescription="@string/image_confirmation_alert"
+        android:src="@drawable/calibration_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="370:220"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_center"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--app:layout_constraintDimensionRatio="195:130"-->
+    <!--app:layout_constraintDimensionRatio="201:135"-->
 
     <TextView
         android:id="@+id/alertText"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/large_padding"
+        android:layout_marginTop="@dimen/large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_regular"
         android:lineSpacingExtra="@dimen/small_padding"
-        android:text="@string/camera_alert_calibration"
+        android:text="@string/image_confirmation_alert"
         android:textColor="@android:color/black"
         android:textSize="@dimen/camera_alert"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guide_image_view"
+        app:layout_constraintStart_toEndOf="@+id/guideline_center"
+        app:layout_constraintTop_toTopOf="@+id/alertImageconfirmation"
         app:layout_constraintVertical_bias=".3" />
 
     <TextView
-        android:id="@+id/textCancel"
+        android:id="@+id/textRetake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_demi"
-        android:padding="@dimen/large_padding"
-        android:text="@string/cancel_smallcase"
+        android:paddingBottom="@dimen/large_padding"
+        android:paddingTop="@dimen/large_padding"
+        android:paddingRight="@dimen/large_padding"
+        android:text="@string/retake"
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
-        app:layout_constraintTop_toBottomOf="@+id/alertText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="@+id/guideline_center" />
 
 
     <TextView
-        android:id="@+id/textLaunch"
+        android:id="@+id/textSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/x_large_padding"
+        android:layout_marginBottom="@dimen/large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:padding="@dimen/large_padding"
-        android:text="@string/launch_camera_small_case"
+        android:text="@string/submit"
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
-        app:layout_constraintTop_toBottomOf="@+id/alertText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
