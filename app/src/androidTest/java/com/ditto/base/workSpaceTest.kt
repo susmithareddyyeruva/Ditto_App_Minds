@@ -8,6 +8,10 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.GeneralLocation
+import androidx.test.espresso.action.GeneralSwipeAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -52,7 +56,7 @@ class workSpaceTest : BaseTest() {
 
         onView(withId(R.id.recycler_view_patterns)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                1,
+                2,
                 click()
             )
         )
@@ -69,10 +73,9 @@ class workSpaceTest : BaseTest() {
         onView(withIndex(withId(R.id.header_view_title), 1))
             .check(matches(withText("Pattern Instructions")))
 
-        onView(withText("CANCEL")).inRoot(RootMatchers.isDialog()).perform(click())
+       // onView(withText("CANCEL")).inRoot(RootMatchers.isDialog()).perform(click())
 
-        //pattern instruction not loading
-        //  onView(withIndex(withContentDescription("Navigate up"),1)).perform(click())
+        onView(withIndex(withContentDescription("Navigate up"),1)).perform(click())
 
         SystemClock.sleep(1000)
         onView(withId(R.id.text_watchvideo2)).check(matches(isDisplayed())).perform(click())
@@ -101,13 +104,13 @@ class workSpaceTest : BaseTest() {
         SystemClock.sleep(4000)
         onView(withId(R.id.recycler_view_patterns)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                1,
+                2,
                 click()
             )
         )
         onView(withId(R.id.text_watchvideo2)).check(matches(isDisplayed())).perform(click())
 
-        SystemClock.sleep(6000)
+        SystemClock.sleep(15000)
 
         // onView(withId(R.id.coach_mark_popup)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.txt_select_all), 0)).check(matches(isDisplayed()))
@@ -185,7 +188,7 @@ class workSpaceTest : BaseTest() {
         SystemClock.sleep(4000)
         onView(withId(R.id.recycler_view_patterns)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                1,
+                2,
                 click()
             )
         )
@@ -228,7 +231,7 @@ class workSpaceTest : BaseTest() {
         SystemClock.sleep(4000)
         onView(withId(R.id.recycler_view_patterns)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                1,
+                2,
                 click()
             )
         )
@@ -266,7 +269,7 @@ class workSpaceTest : BaseTest() {
         SystemClock.sleep(4000)
         onView(withId(R.id.recycler_view_patterns)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                1,
+                2,
                 click()
             )
         )
@@ -309,7 +312,7 @@ class workSpaceTest : BaseTest() {
         SystemClock.sleep(4000)
         onView(withId(R.id.recycler_view_patterns)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                1,
+                2,
                 click()
             )
         )

@@ -5,33 +5,58 @@
   "prod": [
     {
       "isOwned": true,
-      "ID": "product1004",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw46856773/hi-res/product10/product10.jpg?sw=350&sh=350&sm=fit",
-      "name": "Cable Knit Jumpsuit",
-      "description": "Fitted bodice floor length knit jumpsuit with bust darts bodice with straps, sweetheart neck and straight neck bodice, sleeveless",
+      "ID": "product804",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw0df5d141/images/large/IMAGES/e03fb48caece4ea380620bcb11ab9eea_Night Lounge Slip.jpg?sw=350&sh=350&sm=fit",
+      "name": "Night Lounge Slip",
+      "description": "Tent micro mini woven dress with bust and waist darts sarafan, sweetheart neck and straight neck bodice, 3/4 length cut out shoulders flared sleeves",
       "customization": true,
       "type": [
-        "Special Occasion"
+        "Sleepwear"
       ],
       "seasons": [
-        "Fall"
+        "Summer"
       ],
-      "orderNo": "00006901",
+      "orderNo": "00005012",
       "occasion": "",
       "suitableFor": "",
       "size": "6",
       "gender": "Women",
       "brand": "Ditto",
-      "tailornovaDesignId": "9d3bcc4dc9a6486eacbf2c05681be04c",
-      "purchasedSizeId": "58a26161354f44ce86e467cd8a40ced3",
-      "creationDate": "2022-02-21T06:05:11.000Z",
+      "tailornovaDesignId": "56fb60bbd4634f8fa3f98654f5083f63",
+      "purchasedSizeId": "47c62db7f2cb4698835fbbdccc4caf93",
+      "creationDate": "2022-01-10T12:01:21.000Z",
       "patternType": "Purchased",
-      "tailornovaDesignName": "",
+      "tailornovaDesignName": "FA 2021_Night Lounge Slip S:6",
       "subscriptionExpiryDate": "",
       "mannequin": [],
-      "dateOfModification": "2022-02-22T09:51:56.000Z",
+      "dateOfModification": "2022-04-08T12:08:45.000Z",
       "isFavourite": false,
       "status": "OWNED"
+    },
+    {
+      "isOwned": false,
+      "ID": "trial_1002",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw3bf3a4c0/images/medium/M7611.JPG?sw=350&sh=350&sm=fit",
+      "name": "M7611",
+      "description": "Lined Tote Bag with Handle",
+      "customization": true,
+      "type": [],
+      "seasons": [],
+      "orderNo": "111",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "One size",
+      "gender": "Women",
+      "brand": "McCall's",
+      "tailornovaDesignId": "trial_1002",
+      "purchasedSizeId": "",
+      "patternType": "Trial",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "creationDate": "2022-02-16T11:54:20.000Z",
+      "dateOfModification": "2022-04-07T08:08:37.000Z",
+      "isFavourite": false,
+      "status": "TRIAL"
     },
     {
       "isOwned": true,
@@ -59,7 +84,205 @@
       "tailornovaDesignName": "",
       "subscriptionExpiryDate": "",
       "mannequin": [],
-      "dateOfModification": "2022-02-21T05:20:36.000Z",
+      "dateOfModification": "2022-04-01T10:10:51.000Z",
+      "isFavourite": false,
+      "status": "OWNED"
+    },
+    {
+      "isOwned": true,
+      "ID": "d106412",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw3a8e99d0/hi-res/d1064/d1064.jpg?sw=350&sh=350&sm=fit",
+      "name": "Full Dress Coat",
+      "description": "Tent below knees woven dress with shoulder princess seams with center front, straight cutaway round collar stand round neck and back round jewel neck, full length fitted sleeves",
+      "customization": true,
+      "type": [
+        "Coat"
+      ],
+      "seasons": [
+        "Fall"
+      ],
+      "orderNo": "00008212",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "22",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "4b9c41d835834874bb91a2128c127a92",
+      "purchasedSizeId": "c45c1e4c15cf42f2a24b3e2f496bcf14",
+      "creationDate": "2022-03-21T14:32:45.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "Full Dress Coat S:22",
+      "subscriptionExpiryDate": "",
+      "mannequin": [
+        {
+          "mannequinId": "5c56d66649494c229f7cb79b6ef85240",
+          "mannequinName": "Size 24"
+        },
+        {
+          "mannequinId": "a82e1a81443845088543460457add866",
+          "mannequinName": "Size 26"
+        }
+      ],
+      "dateOfModification": "2022-04-01T10:09:01.000Z",
+      "isFavourite": false,
+      "status": "OWNED"
+    },
+    {
+      "isOwned": true,
+      "ID": "product1109",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw8dba968f/hi-res/product11/product11.jpg?sw=350&sh=350&sm=fit",
+      "name": "Charmeuse Blouse",
+      "description": "Loose above high hip woven top, décolleté neck and back round jewel shoulder darts, short length puff sleeve sleeves Details: This top is perfect for wearing to work or dinner",
+      "customization": true,
+      "type": [
+        "Tops"
+      ],
+      "seasons": [
+        "Spring"
+      ],
+      "orderNo": "00005101",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "16",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "129af80f88a241bf9293d2da23b08853",
+      "purchasedSizeId": "eb708703abfa4eeea157918473e3a26b",
+      "creationDate": "2022-01-11T12:55:28.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "mannequin": [],
+      "dateOfModification": "2022-03-18T07:06:54.000Z",
+      "isFavourite": true,
+      "status": "OWNED"
+    },
+    {
+      "isOwned": true,
+      "ID": "product1314",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dwee24e678/hi-res/product13/product13.jpg?sw=350&sh=350&sm=fit",
+      "name": "Lounge Set, Tank",
+      "description": "Fitted midriff knit top, boat neck and back deep scoop neck, sleeveless",
+      "customization": true,
+      "type": [
+        "Tops"
+      ],
+      "seasons": [
+        "Summer"
+      ],
+      "orderNo": "00004706",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "26",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "3c6968d9bf91486ca009eb774fa5300d",
+      "purchasedSizeId": "2e6e5db19dbf42308613339bd945ecd7",
+      "creationDate": "2022-01-05T12:23:44.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "mannequin": [
+        {
+          "mannequinId": "059afd2152bd478db2634f3fa82b225c",
+          "mannequinName": "XL"
+        },
+        {
+          "mannequinId": "1df7ff8a1e6b4c799b8a2b519b33a106",
+          "mannequinName": "XXL"
+        }
+      ],
+      "dateOfModification": "2022-02-23T10:21:24.000Z",
+      "isFavourite": false,
+      "status": "OWNED"
+    },
+    {
+      "isOwned": true,
+      "ID": "d1026b09",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw8babd0ab/hi-res/d1026B/d1026B.jpg?sw=350&sh=350&sm=fit",
+      "name": "Wide Leg Lounge Pant",
+      "description": "Wide leg floor length knit pants with natural waist, with elastic waistband 5cm (2\")",
+      "customization": true,
+      "type": [
+        "Pants"
+      ],
+      "seasons": [
+        "Spring"
+      ],
+      "orderNo": "00006817",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "16",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "a2600bf72bc646eea4baee25305b6cb4",
+      "purchasedSizeId": "0ceff50885544238be10f0e8d347bf74",
+      "creationDate": "2022-02-18T10:48:11.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "mannequin": [],
+      "dateOfModification": "2022-02-23T10:12:20.000Z",
+      "isFavourite": false,
+      "status": "OWNED"
+    },
+    {
+      "isOwned": true,
+      "ID": "product1004",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw46856773/hi-res/product10/product10.jpg?sw=350&sh=350&sm=fit",
+      "name": "Cable Knit Jumpsuit",
+      "description": "Fitted bodice floor length knit jumpsuit with bust darts bodice with straps, sweetheart neck and straight neck bodice, sleeveless",
+      "customization": true,
+      "type": [
+        "Special Occasion"
+      ],
+      "seasons": [
+        "Fall"
+      ],
+      "orderNo": "00006901",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "6",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "9d3bcc4dc9a6486eacbf2c05681be04c",
+      "purchasedSizeId": "58a26161354f44ce86e467cd8a40ced3",
+      "creationDate": "2022-02-21T06:05:11.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "mannequin": [],
+      "dateOfModification": "2022-02-23T10:07:14.000Z",
+      "isFavourite": false,
+      "status": "OWNED"
+    },
+    {
+      "isOwned": true,
+      "ID": "d101213",
+      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw01d573c1/hi-res/d1012/d1012.jpg?sw=350&sh=350&sm=fit",
+      "name": "Party Lace Top",
+      "description": "Fitted high hip knit top, back fastening standup collar round jewel neck and back round jewel neck, full length puff sleeve sleeves",
+      "customization": true,
+      "type": [
+        "Top"
+      ],
+      "seasons": [
+        "Spring"
+      ],
+      "orderNo": "00006817",
+      "occasion": "",
+      "suitableFor": "",
+      "size": "24",
+      "gender": "Women",
+      "brand": "Ditto",
+      "tailornovaDesignId": "6c62beb3abf24f99b7aac8ee80f3c0ec",
+      "purchasedSizeId": "fa1e79e7be8246f7ade68c5edfb8ab1c",
+      "creationDate": "2022-02-18T10:48:11.000Z",
+      "patternType": "Purchased",
+      "tailornovaDesignName": "",
+      "subscriptionExpiryDate": "",
+      "mannequin": [],
+      "dateOfModification": "2022-02-23T09:59:54.000Z",
       "isFavourite": false,
       "status": "OWNED"
     },
@@ -91,37 +314,7 @@
       "tailornovaDesignName": "",
       "dateOfModification": "2022-02-21T04:42:33.000Z",
       "isFavourite": false,
-      "status": "SUBSCRIBED"
-    },
-    {
-      "isOwned": true,
-      "ID": "d1026b09",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw8babd0ab/hi-res/d1026B/d1026B.jpg?sw=350&sh=350&sm=fit",
-      "name": "Wide Leg Lounge Pant",
-      "description": "Wide leg floor length knit pants with natural waist, with elastic waistband 5cm (2\")",
-      "customization": true,
-      "type": [
-        "Pants"
-      ],
-      "seasons": [
-        "Spring"
-      ],
-      "orderNo": "00006817",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "16",
-      "gender": "Women",
-      "brand": "Ditto",
-      "tailornovaDesignId": "a2600bf72bc646eea4baee25305b6cb4",
-      "purchasedSizeId": "0ceff50885544238be10f0e8d347bf74",
-      "creationDate": "2022-02-18T10:48:11.000Z",
-      "patternType": "Purchased",
-      "tailornovaDesignName": "",
-      "subscriptionExpiryDate": "",
-      "mannequin": [],
-      "dateOfModification": "2022-02-21T04:33:29.000Z",
-      "isFavourite": false,
-      "status": "OWNED"
+      "status": "EXPIRED"
     },
     {
       "isOwned": true,
@@ -157,61 +350,6 @@
     },
     {
       "isOwned": true,
-      "ID": "d101213",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw01d573c1/hi-res/d1012/d1012.jpg?sw=350&sh=350&sm=fit",
-      "name": "Party Lace Top",
-      "description": "Fitted high hip knit top, back fastening standup collar round jewel neck and back round jewel neck, full length puff sleeve sleeves",
-      "customization": true,
-      "type": [
-        "Top"
-      ],
-      "seasons": [
-        "Spring"
-      ],
-      "orderNo": "00006817",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "24",
-      "gender": "Women",
-      "brand": "Ditto",
-      "tailornovaDesignId": "6c62beb3abf24f99b7aac8ee80f3c0ec",
-      "purchasedSizeId": "fa1e79e7be8246f7ade68c5edfb8ab1c",
-      "creationDate": "2022-02-18T10:48:11.000Z",
-      "patternType": "Purchased",
-      "tailornovaDesignName": "",
-      "subscriptionExpiryDate": "",
-      "mannequin": [],
-      "dateOfModification": null,
-      "isFavourite": false,
-      "status": "New"
-    },
-    {
-      "isOwned": false,
-      "ID": "trial_1002",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw3bf3a4c0/images/medium/M7611.JPG?sw=350&sh=350&sm=fit",
-      "name": "M7611",
-      "description": "Lined Tote Bag with Handle",
-      "customization": true,
-      "type": [],
-      "seasons": [],
-      "orderNo": "111",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "One size",
-      "gender": "Women",
-      "brand": "McCall's",
-      "tailornovaDesignId": "trial_1002",
-      "purchasedSizeId": "",
-      "patternType": "Trial",
-      "tailornovaDesignName": "",
-      "subscriptionExpiryDate": "",
-      "creationDate": "2022-02-16T11:49:50.000Z",
-      "dateOfModification": "2022-02-18T10:32:42.000Z",
-      "isFavourite": false,
-      "status": "TRIAL"
-    },
-    {
-      "isOwned": true,
       "ID": "product713",
       "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw923106b2/images/large/IMAGES/a2f34930dafc4276a0526db5aa8ff45d_Micro-Mini Skirt.jpg?sw=350&sh=350&sm=fit",
       "name": "Micro-Mini Skirt",
@@ -240,129 +378,9 @@
       "dateOfModification": "2022-02-18T10:31:46.000Z",
       "isFavourite": false,
       "status": "OWNED"
-    },
-    {
-      "isOwned": true,
-      "ID": "product905",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw00515874/images/large/IMAGES/6b52b58b14be406cbab59a3da0ec5580_T-Shirt Dress.jpg?sw=350&sh=350&sm=fit",
-      "name": "Tee Shirt Dress",
-      "description": "Straight knee length woven dress with bust and waist darts with front center, round jewel neck and back round jewel shoulder darts, sleeveless, with double ruffle",
-      "customization": true,
-      "type": [
-        "Dresses"
-      ],
-      "seasons": [
-        "Summer"
-      ],
-      "orderNo": "00005102",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "8",
-      "gender": "Women",
-      "brand": "Ditto",
-      "tailornovaDesignId": "6bdfededcf764bbebc1fffcfb2e90c3e",
-      "purchasedSizeId": "e7a296c8f220455d87533bd489a9b603",
-      "creationDate": "2022-01-11T12:59:22.000Z",
-      "patternType": "Purchased",
-      "tailornovaDesignName": "FA 2021 - Tee shirt Dress S:0 ",
-      "subscriptionExpiryDate": "",
-      "mannequin": [],
-      "dateOfModification": "2022-02-14T10:54:32.000Z",
-      "isFavourite": false,
-      "status": "OWNED"
-    },
-    {
-      "isOwned": true,
-      "ID": "product1109",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw8dba968f/hi-res/product11/product11.jpg?sw=350&sh=350&sm=fit",
-      "name": "Charmeuse Blouse",
-      "description": "Loose above high hip woven top, décolleté neck and back round jewel shoulder darts, short length puff sleeve sleeves Details: This top is perfect for wearing to work or dinner",
-      "customization": true,
-      "type": [
-        "Tops"
-      ],
-      "seasons": [
-        "Spring"
-      ],
-      "orderNo": "00005101",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "16",
-      "gender": "Women",
-      "brand": "Ditto",
-      "tailornovaDesignId": "129af80f88a241bf9293d2da23b08853",
-      "purchasedSizeId": "eb708703abfa4eeea157918473e3a26b",
-      "creationDate": "2022-01-11T12:55:28.000Z",
-      "patternType": "Purchased",
-      "tailornovaDesignName": "",
-      "subscriptionExpiryDate": "",
-      "mannequin": [],
-      "dateOfModification": "2022-02-14T08:44:19.000Z",
-      "isFavourite": true,
-      "status": "OWNED"
-    },
-    {
-      "isOwned": true,
-      "ID": "product508",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dwdd0407d1/images/large/IMAGES/c4753e4960304e49a6c20c6f54443b86_ Knit Lounge Set_Top.jpg?sw=350&sh=350&sm=fit",
-      "name": "Long Sleeve Knit Top",
-      "description": "Fitted midriff woven top, round jewel neck and back round jewel shoulder darts, sleeveless",
-      "customization": true,
-      "type": [
-        "Tops"
-      ],
-      "seasons": [
-        "Fall"
-      ],
-      "orderNo": "00005402",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "14",
-      "gender": "Women",
-      "brand": "Ditto",
-      "tailornovaDesignId": "30659be34479441a8cfb767aa7f70257",
-      "purchasedSizeId": "b9cb3e9aa2af474fb7132cbf08fdd687",
-      "creationDate": "2022-01-21T04:09:46.000Z",
-      "patternType": "Purchased",
-      "tailornovaDesignName": "Cust 22 nit long sleeve_sz28",
-      "subscriptionExpiryDate": "",
-      "mannequin": [],
-      "dateOfModification": "2022-02-02T10:04:13.000Z",
-      "isFavourite": false,
-      "status": "OWNED"
-    },
-    {
-      "isOwned": true,
-      "ID": "product1103",
-      "image": "https://development.dittopatterns.com/dw/image/v2/BFKQ_DEV/on/demandware.static/-/Sites-ditto-navigation-catalog-en/default/dw8dba968f/hi-res/product11/product11.jpg?sw=350&sh=350&sm=fit",
-      "name": "Charmeuse Blouse",
-      "description": "Loose above high hip woven top, décolleté neck and back round jewel shoulder darts, short length puff sleeve sleeves Details: This top is perfect for wearing to work or dinner",
-      "customization": true,
-      "type": [
-        "Tops"
-      ],
-      "seasons": [
-        "Spring"
-      ],
-      "orderNo": "00005005",
-      "occasion": "",
-      "suitableFor": "",
-      "size": "4",
-      "gender": "Women",
-      "brand": "Ditto",
-      "tailornovaDesignId": "feb8015b69914890a7d4449126860dda",
-      "purchasedSizeId": "3022ea8e70864ada946d5326358900d4",
-      "creationDate": "2022-01-10T06:16:14.000Z",
-      "patternType": "Purchased",
-      "tailornovaDesignName": "",
-      "subscriptionExpiryDate": "",
-      "mannequin": [],
-      "dateOfModification": "2022-01-12T06:12:26.000Z",
-      "isFavourite": false,
-      "status": "OWNED"
     }
   ],
-  "totalPatternCount": 18,
+  "totalPatternCount": 19,
   "totalPageCount": 2,
   "currentPageId": 1,
   "filter": {
@@ -374,8 +392,8 @@
       "Women"
     ],
     "size": [
-      "6",
       "22",
+      "6",
       "24",
       "16",
       "14",
@@ -407,6 +425,7 @@
       "One size"
     ],
     "productTypes": [
+      "Coat",
       "Special Occasion",
       "Coat",
       "Top",
