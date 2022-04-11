@@ -8,6 +8,7 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.menuitems.domain.GetWorkspaceProData
+import com.ditto.menuitems.domain.model.WSProSettingDomain
 import com.ditto.menuitems.domain.model.WSSettingsInputData
 import core.event.UiEvents
 import core.ui.BaseViewModel
@@ -17,6 +18,8 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import non_core.lib.Result
+import non_core.lib.error.Error
+import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 
@@ -26,13 +29,14 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                                                 val loggerFactory: LoggerFactory
 ) : BaseViewModel() {
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-    private var errorString: ObservableField<String> = ObservableField("")
+     var errorString: ObservableField<String> = ObservableField("")
 
      val isMirroringReminderChecked: ObservableBoolean = ObservableBoolean(false)
      val isCutNumberChecked: ObservableBoolean = ObservableBoolean(false)
      val isSplicingNotificationChecked: ObservableBoolean = ObservableBoolean(false)
      val isSplicingWithMultiplePieceChecked: ObservableBoolean = ObservableBoolean(false)
      val isClickToZoomNotification: ObservableBoolean = ObservableBoolean(false)
+     val isFromErrorPopUp: ObservableBoolean = ObservableBoolean(false)// used for handling error scenario
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
@@ -113,13 +117,38 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { handleFetchResultSecond() }
+            .subscribeBy { handleFetchResultSecond(it) }
     }
 
 
-    private fun handleFetchResultSecond() {
+    private fun handleFetchResultSecond(result: Result<WSProSettingDomain>) {
         uiEvents.post(Event.OnHideProgress)
         //updateWSProSetting()
+        when (result) {
+            is Result.OnSuccess -> {
+                logger.d("handleFetchResultSecond >>>Success>>>> " + result.data)
+            }
+            is Result.OnError -> {
+                logger.d("Failed")
+                handleError(result.error)
+            }
+        }
+    }
+
+    private fun handleError(error: Error) {
+        when (error) {
+            is NoNetworkError -> {
+                activeInternetConnection.set(false)
+                errorString.set(error.message)
+                uiEvents.post(Event.NoInternet)
+            }
+
+            else -> {
+                errorString.set(error.message)
+                uiEvents.post(Event.OnResultFailed)
+            }
+
+        }
     }
 
     private fun onFetchComplete(){
@@ -140,15 +169,21 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         object OnShowProgress : Event()
         object OnHideProgress : Event()
         object OnFetchComplete : Event()
+        object NoInternet : Event()
+        object OnResultFailed: Event()
 
 
     }
 
     private fun resetData(){
+        setToggleButtonValue()
+        onFetchComplete()
+    }
+
+    fun setToggleButtonValue() {
         isMirroringReminderChecked.set(userData.value?.cMirrorReminder!!)
         isCutNumberChecked.set(userData.value?.cCuttingReminder!!)
-         isSplicingNotificationChecked.set(userData.value?.cSpliceReminder!!)
-         isSplicingWithMultiplePieceChecked.set(userData.value?.cSpliceMultiplePieceReminder!!)
-        onFetchComplete()
+        isSplicingNotificationChecked.set(userData.value?.cSpliceReminder!!)
+        isSplicingWithMultiplePieceChecked.set(userData.value?.cSpliceMultiplePieceReminder!!)
     }
 }
