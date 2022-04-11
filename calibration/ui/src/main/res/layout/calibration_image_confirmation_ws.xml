@@ -41,13 +41,14 @@
         android:layout_width="@dimen/size_0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/large_padding"
+        android:layout_marginLeft="@dimen/large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_regular"
         android:lineSpacingExtra="@dimen/small_padding"
         android:text="@string/image_confirmation_alert"
         android:textColor="@android:color/black"
         android:textSize="@dimen/camera_alert"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/guideline_center"
+        app:layout_constraintStart_toEndOf="@+id/alertImageconfirmation"
         app:layout_constraintTop_toTopOf="@+id/alertImageconfirmation"
         app:layout_constraintVertical_bias=".3" />
 

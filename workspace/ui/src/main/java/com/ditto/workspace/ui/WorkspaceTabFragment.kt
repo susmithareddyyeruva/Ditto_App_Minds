@@ -17,7 +17,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.animation.*
@@ -2302,17 +2301,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
         }
-        val displayMetrics = DisplayMetrics()
+        /*val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
         val displayWidth: Int = displayMetrics.widthPixels
         val displayHeight: Int = displayMetrics.heightPixels
         val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
         layoutParams.copyFrom(alertCamera?.window?.attributes)
         val dialogWindowWidth = (displayWidth * 0.8f).toInt()
-        val dialogWindowHeight = (displayHeight * 0.8f).toInt()
+        val dialogWindowHeight = (displayHeight * 0.6f).toInt()
         layoutParams.width = dialogWindowWidth
         layoutParams.height = dialogWindowHeight
-        alertCamera?.window?.attributes = layoutParams
+        alertCamera?.window?.attributes = layoutParams*/
     }
 
     private fun sendCalibrationPattern() {

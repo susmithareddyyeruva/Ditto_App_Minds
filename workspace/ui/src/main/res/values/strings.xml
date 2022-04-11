@@ -69,7 +69,7 @@
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
     <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
-    <string name="camera_alert_calibration">Confirm setup and make sure the red lighted rectangle shines ON the white border of the cutting mat (NOT inside or outside)</string>
+    <string name="camera_alert_calibration">Confirm setup and make sure the red lighted rectangle shines <u>ON</u> the white border of the cutting mat (NOT inside or outside)</string>
     <string name="socketfailed">Projector Connection failed. Try again!!</string>
     <string name="renameproject">Rename Project</string>
     <string name="rename">RENAME</string>
