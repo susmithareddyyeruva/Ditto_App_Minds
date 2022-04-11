@@ -87,7 +87,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     @Inject
     lateinit var loggerFactory: LoggerFactory
     lateinit var backpressCall: OnBackPressedCallback
-    private var cutCount = 0
     private var adapter: PatternPiecesAdapter? = null
 
     val logger: Logger by lazy {
@@ -488,7 +487,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     ) && (it.fabricLength.equals("45") || it.fabricLength.equals("60"))
                 }
             if (garments?.filter { it.fabricLength == "45" }?.size ?: 0 > 0 &&
-                garments?.filter { it.fabricLength == "60" }?.size ?: 0 > 0) {
+                garments?.filter { it.fabricLength == "60" }?.size ?: 0 > 0
+            ) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -588,7 +588,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //            viewModel.referenceImage.set(lining?.get(0)?.imageName)
 
             if (lining?.filter { it.fabricLength == "45" }?.size ?: 0 > 0 &&
-                lining?.filter { it.fabricLength == "60" }?.size ?: 0 > 0) {
+                lining?.filter { it.fabricLength == "60" }?.size ?: 0 > 0
+            ) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -668,7 +669,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
 
             if (interfacing?.filter { it.fabricLength == "20" }?.size ?: 0 > 0 &&
-                interfacing?.filter { it.fabricLength == "45" }?.size ?: 0 > 0) {
+                interfacing?.filter { it.fabricLength == "45" }?.size ?: 0 > 0
+            ) {
                 binding.txtSize45.isEnabled = true
                 binding.txtSize60.isEnabled = true
                 viewModel.enableSize45.set(true)
@@ -1034,8 +1036,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
                 }
                 // set id of workspace item to the oldest large value
-                com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
+                viewModel.workspaceItemId.set(
                     workspaceItems?.maxBy { it.id }?.id ?: 0
+                )
+                logger.d(
+                    "workspace id : " + viewModel.workspaceItemId.get()
+                        .toString()
                 )
                 var i = 0
                 if (workspaceItems != null) {
@@ -1386,7 +1392,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (view?.id == R.id.layout_workspace) {
                     // set id of initial item to be 0
                     if (mWorkspaceEditor?.views?.size == 0) {
-                        com.ditto.workspace.ui.util.Utility.workspaceItemId.set(0)
+                        viewModel.workspaceItemId.set(0)
                     }
                     if (dragData?.type == Draggable.SELECT_TO_WORKSPACE) {
                         enableSelectAll(true)
@@ -1411,12 +1417,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             }
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
-                            com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
-                                com.ditto.workspace.ui.util.Utility.workspaceItemId.get() + 1
+                            viewModel.workspaceItemId.set(
+                                viewModel.workspaceItemId.get() + 1
                             )
                             viewModel.setImageModel(
                                 view, dragEvent, dragData,
-                                com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
+                                viewModel.workspaceItemId.get()
                             )
                             showToWorkspace(true, true, viewModel.workspacedata, false)
                         } else {
@@ -1468,12 +1474,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             enableMirror(false)
                             enableClear(false)
                             viewModel.clickPatternReference(false)
-                            com.ditto.workspace.ui.util.Utility.workspaceItemId.set(
-                                com.ditto.workspace.ui.util.Utility.workspaceItemId.get() + 1
+                            viewModel.workspaceItemId.set(
+                                viewModel.workspaceItemId.get() + 1
                             )
                             viewModel.setImageModel(
                                 view, dragEvent, dragData,
-                                com.ditto.workspace.ui.util.Utility.workspaceItemId.get()
+                                viewModel.workspaceItemId.get()
                             )
                             showToWorkspace(true, true, viewModel.workspacedata, false)
                         }

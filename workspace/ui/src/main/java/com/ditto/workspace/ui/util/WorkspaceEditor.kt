@@ -127,13 +127,13 @@ class WorkspaceEditor private constructor(builder: Builder) {
                 override fun onPositionChanged(view: View, workspaceItem: WorkspaceItems?) {
                     workspaceItem?.xcoordinate = view.x
                     workspaceItem?.ycoordinate = view.y
-                    workspaceItem?.pivotX = view.pivotX
-                    workspaceItem?.pivotY = view.pivotY
                     workspaceItem?.rotationAngle = view.rotation
                     addedViewsModel.find { it.id == workspaceItem?.id } to (workspaceItem)
                     clearAllSelection()
                     imageView = view.findViewById(R.id.imgPhotoEditorImage) as ImageView
                     imageView?.tag = workspaceItem?.id
+                    workspaceItem?.pivotX = imageView?.pivotX ?: view.pivotX
+                    workspaceItem?.pivotY = imageView?.pivotY ?: view.pivotY
                     imageView?.setColorFilter(
                         ContextCompat.getColor(
                             context,

@@ -21,7 +21,6 @@ class Utility {
     companion object {
 
         val fragmentTabs: ObservableInt = ObservableInt(0)
-        val workspaceItemId: ObservableInt = ObservableInt(0)
         val onDrag: ObservableBoolean = ObservableBoolean(false)
         val isOverlappingEnabled: ObservableBoolean = ObservableBoolean(false)
         val isPopupShowing: ObservableBoolean =
