@@ -10,6 +10,8 @@
         <entry key="..\:/Android Project/ditto-android/menuitems/ui/src/main/res/layout/faq_glossary_mainfragment.xml" value="0.11875" />
         <entry key="..\:/Android Project/ditto-android/menuitems/ui/src/main/res/layout/fragment_account_info.xml" value="0.30177514792899407" />
         <entry key="..\:/Android Project/ditto-android/mylibrary/ui/src/main/res/layout/pattern_description_fragment.xml" value="0.11875" />
+        <entry key="..\:/Android Project/ditto-android/workspace/ui/src/main/res/layout/workspace_layout.xml" value="0.1" />
+        <entry key="..\:/Android Project/ditto-android/workspace/ui/src/main/res/layout/workspace_tab_item.xml" value="0.1" />
         <entry key="..\:/Workspace/projects/ditto-android/menuitems/ui/src/main/res/layout/faq_glossary_mainfragment.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/menuitems/ui/src/main/res/drawable/ic_dropdown_up.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/menuitems/ui/src/main/res/drawable/tilebackground.xml" value="0.13055555555555556" />
@@ -24,6 +26,7 @@
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/drawable/ic_dropdown_down.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/drawable/ic_mannequinbg.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/custom_spinner.xml" value="0.12318840579710146" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/item_singlecategory.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/pattern_description_fragment.xml" value="0.220873786407767" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/alert_calibration_confirmation.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/calibration_camera_alert_ws.xml" value="0.1" />

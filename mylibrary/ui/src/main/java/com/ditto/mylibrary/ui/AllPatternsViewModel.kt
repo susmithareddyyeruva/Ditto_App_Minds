@@ -430,7 +430,7 @@ class AllPatternsViewModel @Inject constructor(
         } else if (filteredMap.isEmpty() && value.isNotEmpty()) {
             isFilter = false
         }
-
+        resultMap.clear()
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             val arrayList = ArrayList<String>()

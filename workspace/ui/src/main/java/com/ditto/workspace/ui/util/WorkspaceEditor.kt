@@ -508,6 +508,8 @@ class WorkspaceEditor private constructor(builder: Builder) {
         addedViewsModel.find { it.id == imageView?.tag }?.rotationAngle =
             (imageView?.parent as View).rotation ?: 0F
 
+        addedViewsModel.find { it.id == imageView?.tag }?.transformA= if(addedViewsModel.find { it.id == imageView?.tag }?.isMirrorH == true) "-1.0" else "1.0"
+
         imageView?.let { mOnWorkspaceImageDragListener?.onDragCompleted() }
 
     }
@@ -558,6 +560,8 @@ class WorkspaceEditor private constructor(builder: Builder) {
             (imageView?.parent as View).y ?: 0F
         addedViewsModel.find { it.id == imageView?.tag }?.rotationAngle =
             (imageView?.parent as View).rotation ?: 0F
+
+        addedViewsModel.find { it.id == imageView?.tag }?.transformD= if(addedViewsModel.find { it.id == imageView?.tag }?.isMirrorV == true) "-1.0" else "1.0"
 
         imageView?.let { mOnWorkspaceImageDragListener?.onDragCompleted() }
     }

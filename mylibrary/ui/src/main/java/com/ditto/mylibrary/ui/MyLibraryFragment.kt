@@ -358,7 +358,11 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     fun setTabsAdapter(event: String) {
         if (NetworkUtility.isNetworkAvailable(context)) {
             binding.tabLayout.getTabAt(0)?.text = getString(R.string.all_patterns)
-            showFilterComponents()
+            // to hide the serach and filter icon on My folder
+            val tabPosition = binding.tabLayout.selectedTabPosition
+            if(tabPosition==0){
+                showFilterComponents()
+            }
             (binding.tabLayout.getTabAt(0)?.view as LinearLayout).visibility = View.VISIBLE
             (binding.tabLayout.getTabAt(1)?.view as LinearLayout).visibility = View.VISIBLE
 

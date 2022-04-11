@@ -539,7 +539,16 @@ class WorkspaceViewModel @Inject constructor(
 
     fun saveProject() {
         data.value?.completedPieces = Utility.progressCount.get()
-        data.value?.selectedTab = Utility.fragmentTabs.get().toString()
+        data.value?.selectedTab =
+        if (Utility.fragmentTabs.get().toString().equals("0")) {
+            "Garment"
+        }else if(Utility.fragmentTabs.get().toString().equals("1")){
+            "Lining"
+        }else if(Utility.fragmentTabs.get().toString().equals("2")){
+            "Interfacing"
+        }else{
+            "Garment"
+        }
 
         /* if (data.value?.completedPieces == data.value?.totalPieces) {
              data.value?.status = "Completed"

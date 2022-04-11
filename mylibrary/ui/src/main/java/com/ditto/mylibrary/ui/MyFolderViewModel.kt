@@ -384,7 +384,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         } else if (filteredMap.isEmpty() && value.isNotEmpty()) {
             isFilter = false
         }
-
+        resultmapFolder.clear()
         val jsonProduct = JSONObject()
         for ((key, value) in filteredMap) {
             var arraYlist = ArrayList<String>()

@@ -21,8 +21,8 @@ fun WorkspaceItems.toWorkspaceItemDomain(): WorkspaceItemDomain {
         ycoordinate = this.ycoordinate,
         pivotX = this.pivotX,
         pivotY = this.pivotY,
-        transformA = "transformA",
-        transformD = "transformD",
+        transformA = this.transformA,
+        transformD = this.transformD,
         rotationAngle = this.rotationAngle,
         mirrorOption=this.mirrorOption,
         isMirrorH = this.isMirrorH,
@@ -136,7 +136,9 @@ fun WorkspaceItemDomain.toOldModel(patternPieces: List<PatternPieceDataDomain>?)
         parentPatternId = this.patternPiecesId,
         isCompleted = this.isCompleted,
         currentSplicedPieceRow = this.currentSplicedPieceRow,
-        currentSplicedPieceColumn = this.currentSplicedPieceColumn
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn,
+        transformA = this.transformA,
+        transformD = this.transformD
     )
 }
 
@@ -186,7 +188,9 @@ fun WorkspaceItemOfflineDomain.toOldModelOffline(patternPieces: List<PatternPiec
         parentPatternId = this.patternPiecesId,
         isCompleted = this.isCompleted,
         currentSplicedPieceRow = this.currentSplicedPieceRow,
-        currentSplicedPieceColumn = this.currentSplicedPieceColumn
+        currentSplicedPieceColumn = this.currentSplicedPieceColumn,
+        transformD = this.transformD,
+        transformA = this.transformA
     )
 }
 
