@@ -37,7 +37,7 @@
         android:layout_marginTop="@dimen/large_padding"
         android:layout_marginBottom="@dimen/x_large_padding"
         android:contentDescription="@string/camera_alert"
-        android:src="@drawable/camera_popup"
+        android:src="@drawable/calibration_image_pop_up"
         app:layout_constraintBottom_toTopOf="@+id/guide_image_view"
         app:layout_constraintEnd_toEndOf="@+id/guide_button"
         app:layout_constraintStart_toStartOf="@+id/guideline_center"
