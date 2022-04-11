@@ -84,6 +84,8 @@ class WorkspaceViewModel @Inject constructor(
     val isFromQuickCheck: ObservableBoolean = ObservableBoolean(false)
 
     val showDoubleTouchToZoom: ObservableBoolean = ObservableBoolean(false)
+    val showLongPressText: ObservableBoolean = ObservableBoolean(false)
+
     var referenceImage: ObservableField<String> = ObservableField("")
     var calibrationText: ObservableField<String> = ObservableField("")
     var selectAllText: ObservableField<String> = ObservableField("Select All")
@@ -326,6 +328,7 @@ class WorkspaceViewModel @Inject constructor(
             is GetWorkspaceApiFetchError -> {
                 if (error.message.contains("key", true)) {
                     Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
+                    uiEvents.post(Event.ShowLongPressText)
                     createWSAPI(
                         getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)),
                         false
@@ -777,6 +780,7 @@ class WorkspaceViewModel @Inject constructor(
         object ClearWorkspace : Event()
         object ShowMirrorDialog : Event()
         object CloseScreen : Event()
+        object ShowLongPressText : Event()
         object PopulateWorkspace : Event()
         object OnProject : Event()
         object ShowCutBinDialog : Event()

@@ -1011,7 +1011,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.ClearWorkspace -> {
                 clearWorkspace()
             }
+            is WorkspaceViewModel.Event.ShowLongPressText -> {
+                hideShowLongPressText(true)
+                //Show long press drag text after showing
+            }
             is WorkspaceViewModel.Event.CloseScreen -> {
+                hideShowLongPressText(false)
                 showProgress(false)
 //                baseViewModel.isSaveExitButtonClicked.set(true)
 //                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
@@ -1383,7 +1388,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                    onDragCompleted()
 //                } else
                 if (view?.id == R.id.layout_workspace) {
-                    viewModel.showLongPressText.set(false)
                     // set id of initial item to be 0
                     if (mWorkspaceEditor?.views?.size == 0) {
                         com.ditto.workspace.ui.util.Utility.workspaceItemId.set(0)
@@ -1797,6 +1801,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     /*
+    Hide/Show LongPress drag Text in Workspace
+     */
+    fun hideShowLongPressText(toShow: Boolean) {
+        com.ditto.workspace.ui.util.Utility.isLongPressTextVisible.set(toShow)
+        viewModel.showLongPressText.set(toShow)
+    }
+
+    /*
     Displaying pieces in Workspace
      */
     private fun showToWorkspace(
@@ -1805,6 +1817,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         workspaceItem: WorkspaceItems?,
         isSpliceArrowClicked: Boolean
     ) {
+        hideShowLongPressText(false)
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {

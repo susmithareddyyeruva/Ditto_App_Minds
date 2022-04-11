@@ -28,12 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".7" />
+        app:layout_constraintGuide_percent=".6" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/alertImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="733:242"
         android:layout_marginTop="@dimen/large_padding"
         android:layout_marginBottom="@dimen/x_large_padding"
         android:contentDescription="@string/camera_alert"
