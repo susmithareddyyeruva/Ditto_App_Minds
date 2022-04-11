@@ -26,6 +26,7 @@ class Utility {
         val isPopupShowing: ObservableBoolean =
             ObservableBoolean(false) // stop GC clear and app going to background on multiple click
         val isDoubleTapTextVisible: ObservableBoolean = ObservableBoolean(true)
+        val isLongPressTextVisible: ObservableBoolean = ObservableBoolean(false)
 
         @JvmStatic
         val progressCount: ObservableInt = ObservableInt(0)

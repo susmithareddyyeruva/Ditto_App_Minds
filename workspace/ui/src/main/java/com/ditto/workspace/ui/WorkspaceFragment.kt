@@ -204,6 +204,11 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         fragmentGarment.updateTabData(viewModel.data.value)
         fragmentLining.updateTabData(viewModel.data.value)
         fragmentInterface.updateTabData(viewModel.data.value)
+
+        // Hide/Show long press drag text after showing
+        fragmentGarment.hideShowLongPressText(Utility.isLongPressTextVisible.get())
+        fragmentLining.hideShowLongPressText(Utility.isLongPressTextVisible.get())
+        fragmentInterface.hideShowLongPressText(Utility.isLongPressTextVisible.get())
     }
 
     //  To reset connect buttton and pattern piece adapter
@@ -312,6 +317,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             }
             is WorkspaceViewModel.Event.HideProgressLoader -> {
                 showProgress(false)
+            }
+            is WorkspaceViewModel.Event.ShowLongPressText -> {
+                // Hide/Show long press drag text after showing
+                fragmentGarment.hideShowLongPressText(true)
+                fragmentLining.hideShowLongPressText(true)
+                fragmentInterface.hideShowLongPressText(true)
             }
             else -> logger.d("Invalid Event")
         }

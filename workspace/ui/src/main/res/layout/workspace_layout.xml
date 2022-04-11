@@ -187,6 +187,22 @@
             app:layout_constraintEnd_toEndOf="@+id/layout_workspace" />
 
         <TextView
+            android:id="@+id/txt_long_press"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2"
+            android:gravity="center"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:text="@string/long_press_to_pattern_piece"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/text_double_tap_zoom"
+            android:visibility="@{viewModel.showLongPressText}"
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_workspace"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"/>
+
+        <TextView
             android:id="@+id/txt_select_all"
             android:layout_width="0dp"
             android:layout_height="0dp"

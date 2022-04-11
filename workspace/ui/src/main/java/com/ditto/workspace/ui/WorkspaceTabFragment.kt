@@ -17,7 +17,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.animation.*
@@ -1014,7 +1013,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             is WorkspaceViewModel.Event.ClearWorkspace -> {
                 clearWorkspace()
             }
+            is WorkspaceViewModel.Event.ShowLongPressText -> {
+                hideShowLongPressText(true)
+                //Show long press drag text after showing
+            }
             is WorkspaceViewModel.Event.CloseScreen -> {
+                hideShowLongPressText(false)
                 showProgress(false)
 //                baseViewModel.isSaveExitButtonClicked.set(true)
 //                findNavController().popBackStack(R.id.patternDescriptionFragment, false)
@@ -1803,6 +1807,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     /*
+    Hide/Show LongPress drag Text in Workspace
+     */
+    fun hideShowLongPressText(toShow: Boolean) {
+        com.ditto.workspace.ui.util.Utility.isLongPressTextVisible.set(toShow)
+        viewModel.showLongPressText.set(toShow)
+    }
+
+    /*
     Displaying pieces in Workspace
      */
     private fun showToWorkspace(
@@ -1811,6 +1823,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         workspaceItem: WorkspaceItems?,
         isSpliceArrowClicked: Boolean
     ) {
+        hideShowLongPressText(false)
         viewModel.spliced_pices_visibility.set(false)
         viewModel.clicked_spliced_second_pieces.set(false)
         if (com.ditto.workspace.ui.util.Utility.isDoubleTapTextVisible.get()) {
@@ -2308,7 +2321,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
             }
         }
-        val displayMetrics = DisplayMetrics()
+        /*val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
         val displayWidth: Int = displayMetrics.widthPixels
         val displayHeight: Int = displayMetrics.heightPixels
@@ -2318,7 +2331,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val dialogWindowHeight = (displayHeight * 0.6f).toInt()
         layoutParams.width = dialogWindowWidth
         layoutParams.height = dialogWindowHeight
-        alertCamera?.window?.attributes = layoutParams
+        alertCamera?.window?.attributes = layoutParams*/
     }
 
     private fun sendCalibrationPattern() {

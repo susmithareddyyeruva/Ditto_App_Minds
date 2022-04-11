@@ -21,6 +21,9 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -88,6 +91,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     var isFromHome: Boolean = false
     lateinit var backpressCall: OnBackPressedCallback
     private var isBackPressed: Boolean = true
+    private var alertImageConfirmation:AlertDialog? = null
 
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
@@ -288,7 +292,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                     Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
                     if (count == 1) {
                         imageArray.add(bitmap)
-                        calibrateImage()
+                        showImageConfirmationclicked(finalbitmap)
                     }
                 }
             })
@@ -803,6 +807,47 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         )
     }
 
+    private fun showImageConfirmationclicked(bitmap: Bitmap) {
+        val layout =
+            activity?.layoutInflater?.inflate(R.layout.calibration_image_confirmation_ws, null)
+
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setCancelable(false)
+        //if(alertImageConfirmation == null){
+            alertImageConfirmation = dialogBuilder.create()
+        //}
+        alertImageConfirmation?.setView(layout)
+        alertImageConfirmation?.show()
+        val retake = layout?.findViewById(R.id.textRetake) as TextView
+        val submit = layout.findViewById(R.id.textSubmit) as TextView
+        val confirmedImage = layout.findViewById(R.id.alertImageconfirmation) as ImageView
+        confirmedImage.setImageBitmap(bitmap)
+        submit.setOnClickListener {
+            alertImageConfirmation?.dismiss()
+            /*viewModel.isShowCameraView.set(false)
+            viewModel.isShowFinalImage.set(true)*/
+            calibrateImage()
+        }
+        retake.setOnClickListener {
+            alertImageConfirmation?.dismiss()
+            restartCamera()
+            // todo where to redirect
+          /*  if (baseViewModel.activeSocketConnection.get()) {
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+            }*/
+        }
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
+        val displayWidth: Int = displayMetrics.widthPixels
+        val displayHeight: Int = displayMetrics.heightPixels
+        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(alertImageConfirmation?.window?.attributes)
+        val dialogWindowWidth = (displayWidth * 0.8f).toInt()
+        val dialogWindowHeight = (displayHeight * 0.6f).toInt()
+        layoutParams.width = dialogWindowWidth
+        layoutParams.height = dialogWindowHeight
+        alertImageConfirmation?.window?.attributes = layoutParams
+    }
 }
 
 
