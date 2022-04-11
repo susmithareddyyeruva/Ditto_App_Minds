@@ -1383,6 +1383,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //                    onDragCompleted()
 //                } else
                 if (view?.id == R.id.layout_workspace) {
+                    viewModel.showLongPressText.set(false)
                     // set id of initial item to be 0
                     if (mWorkspaceEditor?.views?.size == 0) {
                         com.ditto.workspace.ui.util.Utility.workspaceItemId.set(0)
