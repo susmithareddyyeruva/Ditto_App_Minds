@@ -57,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/large_padding"
+        android:layout_marginLeft="@dimen/large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:paddingBottom="@dimen/large_padding"
         android:paddingTop="@dimen/large_padding"
@@ -65,14 +66,15 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/alert_options_Text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_center" />
+        app:layout_constraintStart_toEndOf="@+id/alertImageconfirmation"/>
 
 
     <TextView
         android:id="@+id/textSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x_large_padding"
+        android:layout_marginLeft="@dimen/large_padding"
+        android:layout_marginEnd="@dimen/large_padding"
         android:layout_marginBottom="@dimen/large_padding"
         android:fontFamily="@font/avenir_next_lt_pro_demi"
         android:padding="@dimen/large_padding"

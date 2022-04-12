@@ -126,6 +126,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
+        }else{
+            // for displaying long press text in WS for guest user
+            hideShowLongPressText(true)
         }
         if (viewModel.data.value == null) {
             //viewModel.fetchWorkspaceData()
