@@ -127,8 +127,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }else{
-            // for displaying long press text in WS for guest user
-            hideShowLongPressText(true)
+            // for displaying long press text in WS for guest user first time
+            hideShowLongPressText(com.ditto.workspace.ui.util.Utility.isLongPressTextVisible.get())
         }
         if (viewModel.data.value == null) {
             //viewModel.fetchWorkspaceData()

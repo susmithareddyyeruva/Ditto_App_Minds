@@ -18,6 +18,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.workspace.ui.adapter.WorkspaceAdapter
 import com.ditto.workspace.ui.databinding.FragmentWorkspaceBinding
 import com.ditto.workspace.ui.util.Utility
+import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -73,6 +74,12 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (viewModel.data.value == null) {
+
+            if (!AppState.getIsLogged()) {
+                // for displaying long press text in WS for guest user only first time
+                Utility.isLongPressTextVisible.set(true)
+            }
+
             Utility.fragmentTabs.set(0)
             logger.d("TRACE: Setting progress")
             Utility.progressCount.set(0)
