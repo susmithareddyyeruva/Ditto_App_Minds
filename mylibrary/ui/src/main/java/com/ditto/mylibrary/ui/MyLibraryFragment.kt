@@ -321,6 +321,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         binding.tvFilter.visibility = View.INVISIBLE
         binding.tvSearch.visibility = View.INVISIBLE
         binding.viewDot.visibility = View.INVISIBLE
+        hideSearchComponent()
+    }
+
+    fun hideSearchComponent() {
+        viewModel.isSearchEnabled.set(false)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        binding.editSearch.text?.clear()
     }
 
     fun showFilterComponents() {
