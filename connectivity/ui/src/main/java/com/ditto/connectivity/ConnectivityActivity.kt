@@ -216,9 +216,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         serviceFoundList.add(service)
                     }
                 } else {
-                    //if (service.serviceName.startsWith("DITTO")){ //todo
+                    if (service.serviceName.startsWith("DITTO")){ //todo
                         serviceFoundList.add(service)
-                    //}
+                    }
                 }
 
             }
