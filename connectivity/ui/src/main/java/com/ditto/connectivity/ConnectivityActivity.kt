@@ -498,7 +498,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         fun addDevice(device: BluetoothDevice) {
             if (!mLeDevices.contains(device)) {
                 val deviceName = device.name
-                if (deviceName != null && deviceName.length > 0) {
+                if (deviceName != null && deviceName.length > 0 && deviceName.startsWith("DITTO")) {
                     mLeDevices.add(device)
                 }
             }
