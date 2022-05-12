@@ -273,7 +273,11 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
                         .toFloat() * 100).toInt()
                 println("get youtube displayTime 2 : $playPercent")
                 // update live progress
-                mSeekBar!!.setProgress(playPercent, true)
+                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.M){
+                    mSeekBar!!.setProgress(playPercent, true)
+                } else{
+                    mSeekBar!!.progress = playPercent
+                }
                 mHandler!!.postDelayed(this, 100)
             }
 
