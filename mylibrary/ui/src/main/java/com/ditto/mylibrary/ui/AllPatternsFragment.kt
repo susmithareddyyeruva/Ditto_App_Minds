@@ -166,6 +166,8 @@ class AllPatternsFragment(
                 viewModel.totalPatternCount
             )
         )
+        // To fix the all pattern tab switch (showing empty)
+        updatePatterns()
        // fetchPatternLibrary()
 
     }
