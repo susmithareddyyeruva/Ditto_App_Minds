@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Ditto Patterns</string>
+    <string name="asset_statements" translatable="false">[{ \"include\": \"https://development.dittopatterns.com/.well-known/assetlinks.json\" }]</string>
 </resources>
