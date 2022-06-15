@@ -62,7 +62,11 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                 .load(tabdata.get(position).imagePath1)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(bindingWS.imageStep)
-            if (pos == 0) {
+
+            bindingWS.imageStep.setOnClickListener {
+                viewModel.onItemClick(tabdata[position].videopath1)
+            }
+            /*if (pos == 0) {
                 bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
                     override fun onDoubleClick(v: View) {
                         viewModel.onDoubleClick(tabdata[position].imagePath1)
@@ -72,7 +76,7 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                 bindingWS.imageStep.setOnClickListener {
                     viewModel.onItemClick(tabdata[position].videopath1)
                 }
-            }
+            }*/
         }
         bindingWS.textContent.text = HtmlCompat.fromHtml(
             tabdata.get(position).description1,

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Project/ditto-android-new2/howto/ui/src/main/res/layout/howto_fragment.xml" value="0.1" />
+        <entry key="..\:/Android Project/ditto-android-new2/howto/ui/src/main/res/layout/work_space_fragment.xml" value="0.11018518518518519" />
         <entry key="..\:/Android Project/ditto-android-new2/menuitems/ui/src/main/res/layout/fragment_account_info.xml" value="0.15833333333333333" />
         <entry key="..\:/Android Project/ditto-android/core-lib/src/main/res/menu/bottom_nav_menu.xml" value="0.11875" />
         <entry key="..\:/Android Project/ditto-android/login/ui/src/main/res/layout/login_fragment.xml" value="0.18" />
