@@ -39,6 +39,8 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private var videoUrl = ""
     private var tittle = ""
     private var from = ""
+    lateinit var youTubePlayerView:YouTubePlayerView
+
     override fun onBackPressed() {
         super.onBackPressed()
         if (from == "LOGIN") {
@@ -71,7 +73,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         hideSystemUI()
 
         // Initializing YouTube player view
-        val youTubePlayerView =
+         youTubePlayerView =
             findViewById<View>(R.id.video_view) as YouTubePlayerView
         youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
         //Add play button to explicitly play video in YouTubePlayerView
@@ -234,14 +236,28 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
     private fun pauseVideo() {
         play_video.setImageResource(R.drawable.exo_icon_play)
         if (mPlayer != null) {
-            mPlayer!!.pause()
+            try {
+                mPlayer?.pause()
+            } catch (e: IllegalStateException) {
+                //mPlayer// check how to initialize
+                if(!::youTubePlayerView.isInitialized) {
+                    youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
+                }
+            }
         }
     }
 
     private fun playVideo() {
         play_video.setImageResource(R.drawable.exo_icon_pause)
         if (mPlayer != null) {
-            mPlayer!!.play()
+            try {
+                mPlayer?.play()
+            } catch (e: IllegalStateException) {
+                //mPlayer// check how to initialize
+                if(!::youTubePlayerView.isInitialized) {
+                    youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
+                }
+            }
         }
     }
 
