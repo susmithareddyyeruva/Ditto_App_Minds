@@ -557,7 +557,7 @@ class WorkspaceViewModel @Inject constructor(
         /* if (data.value?.completedPieces == data.value?.totalPieces) {
              data.value?.status = "Completed"
          }*/
-        loop1@ for (patternPiecesId in data.value?.patternPieces!!) {
+        loop1@ for (patternPiecesId in data.value?.patternPieces?: emptyList()) {
             loop2@ for (mPatternPieceListID in Utility.mPatternPieceList) {
                 if (patternPiecesId.id == mPatternPieceListID) {
                     patternPiecesId.isCompleted = true

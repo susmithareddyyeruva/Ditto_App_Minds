@@ -162,7 +162,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
 
                     }
-                    segmentId.endsWith("MyPatternLibrary-PatternShow") -> {
+                    segmentId.endsWith("mobile-pattern-details") -> {
                         // PATTERN MySubscriptionLibrary
                         if (AppState.getIsLogged()) {
                             if (NetworkUtility.isNetworkAvailable(this)) {
