@@ -19,6 +19,7 @@
     <string name="str_no_internet">No Network Available. Please check your internet connection.</string>
     <string name="str_ok">OK</string>
     <string name="account_info">Account Info</string>
+    <string name="subscription_info">Subscription Info</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="pattern_library">Pattern Library</string>
     <string name="pattern_library_count">Pattern Library\u0020(0)</string>

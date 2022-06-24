@@ -374,6 +374,25 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     }
                 }
 
+                if (binding.bottomNavViewModel!!.childList.get(
+                        binding.bottomNavViewModel!!.headerList.get(
+                            groupPosition
+                        )
+                    )?.get(childPosition)
+                        ?.menuName.equals(this.getString(R.string.subscription_info))
+                ) {
+
+                    if (navController.currentDestination?.label?.equals("Home")!! ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                        (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        navController.navigate(
+                            if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_subscriptionInfoFragment
+                            else R.id.action_patternDescriptionFragment_to_subscriptionInfoFragment
+                        )
+                    }
+                }
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
             false

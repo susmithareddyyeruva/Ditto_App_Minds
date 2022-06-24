@@ -108,6 +108,9 @@
         <action
             android:id="@+id/action_pattern_description_to_nav_graph_sotwareUpdate"
             app:destination="@id/softwareupdate" />
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_subscriptionInfoFragment"
+            app:destination="@id/subscriptionInfoFragment" />
 
     </fragment>
 
@@ -177,5 +180,9 @@
         android:id="@+id/softwareupdate"
         android:name="com.ditto.menuitems_ui.softwareupdate.SoftwareUpdateFragment"
         android:label="SoftwareUpdateFragment" />
+    <fragment
+        android:id="@+id/subscriptionInfoFragment"
+        android:name="com.ditto.menuitems_ui.subscription_info.fragment.SubscriptionInfoFragment"
+        android:label="SubscriptionInfoFragment" />
 
 </navigation>

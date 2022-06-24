@@ -1044,7 +1044,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
                 // set id of workspace item to the oldest large value
                 viewModel.workspaceItemId.set(
-                    workspaceItems?.maxBy { it.id }?.id ?: 0
+                    workspaceItems?.maxByOrNull { it.id }?.id ?: 0
                 )
                 logger.d(
                     "workspace id : " + viewModel.workspaceItemId.get()
