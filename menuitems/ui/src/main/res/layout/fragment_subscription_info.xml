@@ -174,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="start"
-                android:text="@string/str_phone_small"
+                android:text="@string/str_phone_number_small"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintEnd_toStartOf="@+id/guide_centre"

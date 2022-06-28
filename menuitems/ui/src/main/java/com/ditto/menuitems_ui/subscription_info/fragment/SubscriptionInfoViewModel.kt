@@ -44,7 +44,7 @@ class SubscriptionInfoViewModel @Inject constructor(
 
     private fun setSubscriptionEndDateBase() {
         if (AppState.getSubDate()
-                .isEmpty() || AppState.getSubDate() == null
+                .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
         ) {
             subscriptionEndDateBase.set(": 0 days left")
         } else {
@@ -55,7 +55,7 @@ class SubscriptionInfoViewModel @Inject constructor(
 
     private fun setsubscriptionEndDateDesc() {
         if (AppState.getSubDate()
-                .isEmpty() || AppState.getSubDate() == null
+                .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
         ) {
             subscriptionEndDateDesc.set("Your subscription will get expired in 0 days. Please renew the subscription to continue working on it.")
 

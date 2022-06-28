@@ -110,6 +110,15 @@ object AppState {
         pref?.saveString(SUBSCRIPTION_END_DATE, date)
     }
 
+
+    fun isSubscriptionValid(): Boolean? {
+        return pref?.getBoolean(SUBSCRIPTION_VALID)
+
+    }
+    fun setSubscriptionValidity(isvalid: Boolean) {
+        pref?.saveBoolean(SUBSCRIPTION_VALID, isvalid)
+    }
+
     fun setEmail(email: String) {
         pref?.saveString(USER_EMAIL, email)
     }

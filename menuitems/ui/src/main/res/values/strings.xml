@@ -10,6 +10,7 @@
     <string name="str_email_text">Email <u>%1$s</u> to our customer care representatives and we will get back soon.</string>
     <string name="str_phone">PHONE</string>
     <string name="str_phone_small">Phone</string>
+    <string name="str_phone_number_small">Phone Number</string>
     <string name="str_phn_waittime">Wait Time: Less than 30 sec</string>
     <string name="str_ustoll">US Toll Free:</string>
     <string name="str_mob_no">1800 000 2345</string>

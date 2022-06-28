@@ -1,7 +1,6 @@
 package com.ditto.menuitems_ui.accountinfo.fragment
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -107,7 +106,7 @@ class AccountInfoViewModel @Inject constructor(
 
     private fun setSubscriptionEndDateBase() {
         if (AppState.getSubDate()
-                .isEmpty() || AppState.getSubDate() == null
+                .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
         ) {
             subscriptionEndDateBase.set(": 0 days left")
         } else {
