@@ -414,7 +414,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
         if (AppState.getIsLogged()) {
             val email = AppState.getEmail()
             navViewHeaderBinding.textEmail.text = "$email"
-            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
+            navViewHeaderBinding.textName.text =AppState.getFirstName()
+//            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null
             ) {

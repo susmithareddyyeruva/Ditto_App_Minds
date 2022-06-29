@@ -68,7 +68,8 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         } else {
             subscriptionEndDateBase.set(AppState.getSubDate())
-            menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
+            menuTitle.set(userFirstNameBase.get())
+//            menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             // menuDescription.set(userEmailBase.get())
             if (subscriptionEndDateBase.get().toString()
                     .isEmpty() || subscriptionEndDateBase.get() == null
