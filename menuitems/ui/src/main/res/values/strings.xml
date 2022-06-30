@@ -4,6 +4,8 @@
     <string name="str_email">EMAIL</string>
     <string name="str_email_small">Email</string>
     <string name="str_name">Name</string>
+    <string name="str_first_name">First Name</string>
+    <string name="str_last_name">Last Name</string>
     <string name="str_rem_sub_days">Remaining Subscription Days</string>
     <string name="str_waittime">Wait Time : 24 hours</string>
     <string name="str_quest">Questions or Comments?</string>

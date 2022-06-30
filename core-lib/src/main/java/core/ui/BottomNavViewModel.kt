@@ -72,7 +72,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 //            menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             // menuDescription.set(userEmailBase.get())
             if (subscriptionEndDateBase.get().toString()
-                    .isEmpty() || subscriptionEndDateBase.get() == null
+                    .isEmpty() || subscriptionEndDateBase.get() == null || AppState.isSubscriptionValid() == false
             ) {
                 menuNumberOfDaysForSubscription.set("0 day left")
             } else {

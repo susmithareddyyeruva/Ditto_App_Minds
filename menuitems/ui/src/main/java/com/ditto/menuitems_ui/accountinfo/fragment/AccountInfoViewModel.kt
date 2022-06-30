@@ -29,7 +29,8 @@ class AccountInfoViewModel @Inject constructor(
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val subscriptionEndDateBase: ObservableField<String> = ObservableField()
-    val name: ObservableField<String> = ObservableField()
+    val firstName: ObservableField<String> = ObservableField()
+    val lastName: ObservableField<String> = ObservableField()
     val email: ObservableField<String> = ObservableField()
     val phone: ObservableField<String> = ObservableField()
     var errorString: ObservableField<String> = ObservableField("")
@@ -101,7 +102,8 @@ class AccountInfoViewModel @Inject constructor(
     }
 
     private fun setName() {
-        name.set(": " + AppState.getFirstName() + " " + AppState.getLastName())
+        firstName.set(": " + AppState.getFirstName() )
+        lastName.set(": " + AppState.getLastName())
     }
 
     private fun setSubscriptionEndDateBase() {
