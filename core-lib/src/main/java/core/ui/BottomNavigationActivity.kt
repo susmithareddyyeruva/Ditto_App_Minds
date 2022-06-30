@@ -417,7 +417,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             navViewHeaderBinding.textName.text =AppState.getFirstName()
 //            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
             if (AppState.getSubDate()
-                    .isEmpty() || AppState.getSubDate() == null
+                    .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
             ) {
                 navViewHeaderBinding.subscriptionDays.text ="0 day left"
             } else {
