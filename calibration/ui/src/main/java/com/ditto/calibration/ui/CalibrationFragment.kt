@@ -150,7 +150,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                             GlobalScope.launch {
                                 Utility.sendDittoImage(
                                     requireContext(),
-                                    "solid_black"
+                                    "ditto_project"
                                 )
                             }
                         } else {
@@ -625,7 +625,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                     activity?.onBackPressed()
                 } else {
                     // to clear out workspace projection
-                    GlobalScope.launch { Utility.sendDittoImage(requireContext(), "solid_black") }
+                    GlobalScope.launch { Utility.sendDittoImage(requireContext(), "ditto_project") }
                     findNavController().navigate(
                         R.id.action_destination_calibrationFragment_to_workspace_navigation,
                         bundleOf("PatternId" to arguments?.getInt("PatternId"))
@@ -668,7 +668,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             GlobalScope.launch {
                 Utility.sendDittoImage(
                     requireContext(),
-                    "solid_black"
+                    "ditto_project"
                 )
             }
             baseViewModel.isSetUpError.set(false)
@@ -833,7 +833,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             restartCamera()
             // todo where to redirect
           /*  if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "ditto_project") }
             }*/
         }
         val displayMetrics = DisplayMetrics()
