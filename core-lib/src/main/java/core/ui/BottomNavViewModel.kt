@@ -68,10 +68,11 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         } else {
             subscriptionEndDateBase.set(AppState.getSubDate())
-            menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
+            menuTitle.set(userFirstNameBase.get())
+//            menuTitle.set(userFirstNameBase.get() + userLastNameBase.get())
             // menuDescription.set(userEmailBase.get())
             if (subscriptionEndDateBase.get().toString()
-                    .isEmpty() || subscriptionEndDateBase.get() == null
+                    .isEmpty() || subscriptionEndDateBase.get() == null || AppState.isSubscriptionValid() == false
             ) {
                 menuNumberOfDaysForSubscription.set("0 day left")
             } else {
@@ -126,6 +127,10 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             childModelsList.add(childModel)
         }
 
+        childModel = MenuModel("Subscription Info", "ic_menu_privacy", null)
+        if (AppState.getIsLogged()) {
+            childModelsList.add(childModel)
+        }
 
         menuModel = MenuModel(
             "Settings",

@@ -1,7 +1,6 @@
 package com.ditto.menuitems_ui.accountinfo.fragment
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableField
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
@@ -30,7 +29,8 @@ class AccountInfoViewModel @Inject constructor(
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
     val subscriptionEndDateBase: ObservableField<String> = ObservableField()
-    val name: ObservableField<String> = ObservableField()
+    val firstName: ObservableField<String> = ObservableField()
+    val lastName: ObservableField<String> = ObservableField()
     val email: ObservableField<String> = ObservableField()
     val phone: ObservableField<String> = ObservableField()
     var errorString: ObservableField<String> = ObservableField("")
@@ -102,12 +102,13 @@ class AccountInfoViewModel @Inject constructor(
     }
 
     private fun setName() {
-        name.set(": " + AppState.getFirstName() + " " + AppState.getLastName())
+        firstName.set(": " + AppState.getFirstName() )
+        lastName.set(": " + AppState.getLastName())
     }
 
     private fun setSubscriptionEndDateBase() {
         if (AppState.getSubDate()
-                .isEmpty() || AppState.getSubDate() == null
+                .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
         ) {
             subscriptionEndDateBase.set(": 0 days left")
         } else {

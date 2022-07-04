@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.ditto.menuitems_ui.accountinfo.fragment.AccountInfoViewModel" />
+            type="com.ditto.menuitems_ui.subscription_info.fragment.SubscriptionInfoViewModel" />
 
     </data>
 
@@ -14,7 +16,8 @@
         android:id="@+id/cc_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff">
+        android:background="#fff"
+        tools:context=".subscription_info.fragment.SubscriptionInfoFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_top_text"
@@ -102,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".62" />
+                app:layout_constraintGuide_percent=".60" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_wait_time"
@@ -113,7 +116,7 @@
 
 
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_first_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -126,7 +129,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imagetop" />
 
             <TextView
-                android:id="@+id/tv_name_value"
+                android:id="@+id/tv_first_name_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
@@ -137,6 +140,7 @@
                 app:layout_constraintEnd_toStartOf="@id/guide_end"
                 app:layout_constraintStart_toEndOf="@id/guide_centre"
                 app:layout_constraintTop_toBottomOf="@+id/imagetop" />
+
 
             <TextView
                 android:id="@+id/tv_last_name"
@@ -149,7 +153,7 @@
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintEnd_toStartOf="@+id/guide_centre"
                 app:layout_constraintStart_toEndOf="@id/imagestart"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_name" />
 
             <TextView
                 android:id="@+id/tv_last_name_value"
@@ -162,7 +166,7 @@
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintEnd_toStartOf="@id/guide_end"
                 app:layout_constraintStart_toEndOf="@id/guide_centre"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_name" />
 
             <TextView
                 android:id="@+id/tv_email"
@@ -197,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="start"
-                android:text="@string/str_phone_small"
+                android:text="@string/str_phone_number_small"
                 android:textColor="#000"
                 android:textSize="@dimen/str_wait"
                 app:layout_constraintEnd_toStartOf="@+id/guide_centre"
@@ -244,11 +248,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
 
             <TextView
+                android:id="@+id/sub_desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:gravity="start"
-                android:text="@string/str_dele_account_info"
+                android:text="@{viewModel.subscriptionEndDateDesc}"
                 android:textColor="#000"
                 android:textSize="@dimen/str_quest"
                 app:layout_constraintBottom_toTopOf="@+id/guide_delete_desc"
@@ -259,26 +264,25 @@
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/margin_top_devider"
+                android:layout_marginTop="@dimen/padding_x"
                 android:background="@drawable/bg_scandevice"
                 android:drawablePadding="5dp"
                 android:ellipsize="none"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.onDeleteAccountClick()}"
+                android:onClick="@{() -> viewModel.onRenewSubClick()}"
                 android:paddingHorizontal="@dimen/margin_top_devider"
                 android:singleLine="true"
-                android:text="@string/delete_account"
+                android:text="@string/renew_subscription"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/button_text_size"
                 app:layout_constraintLeft_toLeftOf="@id/imagestart"
-                app:layout_constraintTop_toBottomOf="@id/guide_wait_time">
+                app:layout_constraintTop_toBottomOf="@id/sub_desc">
 
             </Button>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

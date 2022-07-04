@@ -4,12 +4,15 @@
     <string name="str_email">EMAIL</string>
     <string name="str_email_small">Email</string>
     <string name="str_name">Name</string>
+    <string name="str_first_name">First Name</string>
+    <string name="str_last_name">Last Name</string>
     <string name="str_rem_sub_days">Remaining Subscription Days</string>
     <string name="str_waittime">Wait Time : 24 hours</string>
     <string name="str_quest">Questions or Comments?</string>
     <string name="str_email_text">Email <u>%1$s</u> to our customer care representatives and we will get back soon.</string>
     <string name="str_phone">PHONE</string>
     <string name="str_phone_small">Phone</string>
+    <string name="str_phone_number_small">Phone Number</string>
     <string name="str_phn_waittime">Wait Time: Less than 30 sec</string>
     <string name="str_ustoll">US Toll Free:</string>
     <string name="str_mob_no">1800 000 2345</string>
@@ -32,6 +35,7 @@
     <string name="str_no">No</string>
     <string name="str_yes">Yes</string>
     <string name="str_yes_caps">YES</string>
+    <string name="renew_subscription">Renew Subscription</string>
     <string name="str_no_caps">NO</string>
     <string name="str_connecitivity_title">Connectivity</string>
     <string name="str_ble_message">This app needs Bluetooth connectivity</string>
@@ -45,4 +49,5 @@
     <string name="guest_my_folder_message">Guest User does not have this functionality.</string>
     <string name="delete_msg">Are you sure you want to delete the account ?</string>
     <string name="str_dele_account_info">Deleting your account permanently disables access to the Ditto Patterns website and mobile app. Are you sure you want to delete?</string>
+    <string name="subscription_desc">Your subscription will get expired in 200 days. Please renew the subscription to continue working on it.</string>
 </resources>

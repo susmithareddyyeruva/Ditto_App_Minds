@@ -25,6 +25,7 @@ import com.ditto.menuitems_ui.managedevices.di.ManageDeviceFragmentModule
 import com.ditto.menuitems_ui.privacyandsettings.di.PrivacyAndSettingFragmentModule
 import com.ditto.menuitems_ui.settings.di.WSProSettingsFragmentModule
 import com.ditto.menuitems_ui.softwareupdate.di.SoftwareUpdateFragmentModule
+import com.ditto.menuitems_ui.subscription_info.di.SubscriptionInfoFragmentModule
 import com.ditto.mylibrary.data.api.MylibraryApiModule
 import com.ditto.mylibrary.data.di.MyLibraryDataModule
 import com.ditto.mylibrary.data.di.MyLibraryFilterModule
@@ -64,7 +65,7 @@ import javax.inject.Singleton
         WSProSettingsFragmentModule::class, WsSettingsAPIModule::class, WSSettingsDataModule::class, ManageDeviceFragmentModule::class, FaqGlossaryMainFragmentModule::class,
         GlossaryFragmentModule::class, FAQGlossaryApiModule::class, FAQGlosaaryDataModule::class, AboutAppAPIModule::class, AboutAppDataModule::class,
         PrivacyAndSettingFragmentModule::class, GetWorkspcaeDataApiModule::class, HomeApiModule::class,MylibraryApiModule::class, MyLibraryDetailsDataModule::class, MyLibraryFilterModule::class, VideosFragmentModule::class,
-        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class,AccountInfoAPIModule::class,AccountInfoDataModule::class]
+        SoftwareUpdateUseCaseModule::class, SoftwareUpdateFragmentModule::class,AccountInfoAPIModule::class,AccountInfoDataModule::class,SubscriptionInfoFragmentModule::class,SubscriptionInfoAPIModule::class,SubscriptionInfoDataModule::class]
 
 )
 @Singleton

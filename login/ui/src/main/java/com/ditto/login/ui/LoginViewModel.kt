@@ -112,6 +112,7 @@ class LoginViewModel @Inject constructor(
                     AppState.setFirstName(result.data.firstName ?: "")
                     AppState.setLastName(result.data.lastName ?: "")
                     AppState.setSubscriptionDate(result.data.cSubscriptionPlanEndDate ?: "")
+                    AppState.setSubscriptionValidity(result.data.cSubscriptionValid ?: false)
                     AppState.setMobile(result.data.phoneHome ?: "")
                     AppState.saveKey(result.data.cEncryptionkey ?: "")
                     storageManager.savePrefs(
