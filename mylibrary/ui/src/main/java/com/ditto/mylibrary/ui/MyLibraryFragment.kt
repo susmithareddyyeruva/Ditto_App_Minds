@@ -185,8 +185,9 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
                             //Preventing click for MyFolder for Guest User
                             switchToAllPattern()
                         }
-                    } else
+                    } else{
                         setTabsAdapter("TABLISTENER")
+                    }
                 }
             }
 

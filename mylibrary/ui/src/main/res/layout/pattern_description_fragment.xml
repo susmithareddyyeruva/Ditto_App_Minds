@@ -396,9 +396,7 @@
                 app:layout_constraintHeight_default="percent"
                 app:layout_constraintHeight_percent="0.082"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/text_instructions"
-
-                />
+                app:layout_constraintStart_toEndOf="@id/text_instructions" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
