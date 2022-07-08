@@ -383,7 +383,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             } else {
-                setVisibilityForViews("RESUME", false, true, false, false, true, false)
+//                setVisibilityForViews("RESUME", false, true, false, false, true, false)  removed resume workspace
+                setVisibilityForViews("WORKSPACE", false, true, false, false, true, false)
             }
             setPatternImage()
         }
