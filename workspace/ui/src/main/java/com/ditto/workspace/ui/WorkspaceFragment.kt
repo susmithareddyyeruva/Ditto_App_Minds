@@ -366,7 +366,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             GlobalScope.launch {
                 core.ui.common.Utility.sendDittoImage(
                     requireActivity(),
-                    "solid_black"
+                    "ditto_project"
                 )
             }
         }
