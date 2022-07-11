@@ -183,9 +183,9 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
             is LoginViewModel.Event.OnGuestPreviewClicked -> {
 
-                redirectToHomeScreen()
+                //redirectToHomeScreen()
 
-                /*// if (NetworkUtility.isNetworkAvailable(requireContext())){
+                // if (NetworkUtility.isNetworkAvailable(requireContext())){
                      if (findNavController().currentDestination?.id == R.id.destination_login) {
                          getUserDetails(true)
                          val bundle = bundleOf(
@@ -203,7 +203,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                          // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                      } else {
 
-                     }*/
+                     }
                 /*} else {
                     bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))
