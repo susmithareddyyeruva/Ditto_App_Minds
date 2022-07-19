@@ -69,15 +69,13 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
                 adapter?.setListData(it)
             }
         }
-        howto_viewpager.visibility=View.INVISIBLE
-
-        /*if(pos==0){
-            howto_viewpager.visibility=View.INVISIBLE
+        if(pos==0){
+            howto_viewpager.visibility=View.VISIBLE
 
         }else{
             howto_viewpager.visibility=View.INVISIBLE
 
-        }*/
+        }
         binding.tablay.setupWithViewPager(binding.instructionViewPager)
         binding.instructionViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

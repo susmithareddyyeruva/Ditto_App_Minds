@@ -115,8 +115,7 @@ class HowtoFragment : BaseFragment() {
             }
             is HowtoViewModel.Event.OnItemClick -> {
 
-                //if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && Common.currentSelectedTab.get() != 0) {
-                if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto ) {
+                if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && Common.currentSelectedTab.get() != 0) {
 
                     var title =
                         viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
