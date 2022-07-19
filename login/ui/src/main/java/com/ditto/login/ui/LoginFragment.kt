@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.ui.databinding.LoginFragmentBinding
+import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.appstate.AppState
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
@@ -153,9 +154,12 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
         when (event) {
 
             is LoginViewModel.Event.OnLoginClicked -> {
-                redirectToHomeScreen()
-                /*getUserDetails(false)
+                //redirectToHomeScreen()
+                getUserDetails(false)
                 //Re directing to Video Screen
+
+                logger.d("LandingDetails  videoUrl : ${viewModel.videoUrl}")
+
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
                     val bundle = bundleOf(
                         "UserId" to 0,
@@ -175,13 +179,13 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 } else {
                     logger.d("condition false")
 
-                }*/
+                }
             }
             is LoginViewModel.Event.OnGuestPreviewClicked -> {
 
-                redirectToHomeScreen()
+                //redirectToHomeScreen()
 
-                /*// if (NetworkUtility.isNetworkAvailable(requireContext())){
+                // if (NetworkUtility.isNetworkAvailable(requireContext())){
                      if (findNavController().currentDestination?.id == R.id.destination_login) {
                          getUserDetails(true)
                          val bundle = bundleOf(
@@ -199,7 +203,7 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                          // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                      } else {
 
-                     }*/
+                     }
                 /*} else {
                     bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))
