@@ -21,7 +21,7 @@
         <activity
             android:name="core.ui.BottomNavigationActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             tools:ignore="LockedOrientationActivity"
