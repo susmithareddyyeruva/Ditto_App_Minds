@@ -383,7 +383,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             } else {
-                setVisibilityForViews("RESUME", false, true, false, false, true, false)
+//                setVisibilityForViews("RESUME", false, true, false, false, true, false)  removed resume workspace
+                setVisibilityForViews("WORKSPACE", false, true, false, false, true, false)
             }
             setPatternImage()
         }
@@ -1039,7 +1040,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             GlobalScope.launch {
                 Utility.sendDittoImage(
                     requireContext(),
-                    "solid_black"
+                    "ditto_project"
                 )
             }
         }
@@ -1120,7 +1121,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.QUICK_CHECK -> {
                 // to clear out workspace projection
                 if (baseViewModel.activeSocketConnection.get()) {
-                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "ditto_project") }
                 }
                 enterWorkspace()
             }
@@ -1249,7 +1250,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             GlobalScope.launch {
                 Utility.sendDittoImage(
                     requireActivity(),
-                    "solid_black"
+                    "ditto_project"
                 )
             }
         }
@@ -1299,7 +1300,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     GlobalScope.launch {
                         Utility.sendDittoImage(
                             requireActivity(),
-                            "solid_black"
+                            "ditto_project"
                         )
                     }
                 }

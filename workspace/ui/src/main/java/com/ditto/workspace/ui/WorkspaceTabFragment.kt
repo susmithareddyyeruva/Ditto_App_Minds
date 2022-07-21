@@ -230,7 +230,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             GlobalScope.launch {
                 Utility.sendDittoImage(
                     requireContext(),
-                    "solid_black"
+                    "ditto_project"
                 )
             }
         } else {
@@ -1575,7 +1575,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 GlobalScope.launch {
                     Utility.sendDittoImage(
                         requireContext(),
-                        "solid_black"
+                        "ditto_project"
                     )
                 }
             }
@@ -2321,7 +2321,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         cancel.setOnClickListener {
             alertCamera?.dismiss()
             if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "solid_black") }
+                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "ditto_project") }
             }
         }
         /*val displayMetrics = DisplayMetrics()
@@ -2446,7 +2446,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 GlobalScope.launch {
                     Utility.sendDittoImage(
                         requireContext(),
-                        "solid_black"
+                        "ditto_project"
                     )
                 }
 
@@ -2501,7 +2501,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 GlobalScope.launch {
                     Utility.sendDittoImage(
                         requireContext(),
-                        "solid_black"
+                        "ditto_project"
                     )
                 }
             }

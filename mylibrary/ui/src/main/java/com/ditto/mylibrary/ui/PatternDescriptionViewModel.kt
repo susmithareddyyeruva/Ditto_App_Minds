@@ -73,7 +73,8 @@ class PatternDescriptionViewModel @Inject constructor(
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
-    val resumeOrSubscription: ObservableField<String> = ObservableField("RESUME")
+//    val resumeOrSubscription: ObservableField<String> = ObservableField("RESUME")  to remove resume text chage in PD
+    val resumeOrSubscription: ObservableField<String> = ObservableField("WORKSPACE")
     val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
     val isStatusLayoutVisible: ObservableBoolean = ObservableBoolean(false)
     val showActive: ObservableBoolean = ObservableBoolean(false)
