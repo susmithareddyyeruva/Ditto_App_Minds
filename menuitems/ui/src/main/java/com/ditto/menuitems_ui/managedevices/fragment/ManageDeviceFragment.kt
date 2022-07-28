@@ -295,30 +295,34 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
      * [Function] After successfull connection
      */
     private fun showSuccessPopup() {
-        GlobalScope.launch {
-            delay(200)
-            Utility.sendDittoImage(requireContext(), "setup_pattern_connected")
+        if (isAdded() && activity != null) {
+            GlobalScope.launch {
+                delay(200)
+                Utility.sendDittoImage(requireContext(), "setup_pattern_connected")
+            }
+            baseViewModel.activeSocketConnection.set(true)
+            viewModel.resetAppstate()
+            resetAdapter(true)
         }
-        baseViewModel.activeSocketConnection.set(true)
-        viewModel.resetAppstate()
-        resetAdapter(true)
     }
 
     /**
      * [Function] After Connection Failed
      */
     private fun showFailedPopup() {
-        baseViewModel.activeSocketConnection.set(false)
-        Utility.getCommonAlertDialogue(
-            requireContext(),
-            "",
-            getString(R.string.str_connection_failed),
-            "",
-            getString(R.string.str_ok),
-            this,
-            Utility.AlertType.CONNECTIVITY,
-            Utility.Iconype.FAILED
-        )
+        if (isAdded() && activity != null) {
+            baseViewModel.activeSocketConnection.set(false)
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                getString(R.string.str_connection_failed),
+                "",
+                getString(R.string.str_ok),
+                this,
+                Utility.AlertType.CONNECTIVITY,
+                Utility.Iconype.FAILED
+            )
+        }
     }
 
     /**
