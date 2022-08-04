@@ -339,7 +339,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.isStartedProjection.set(true)
         viewModel.isProjectionRequest.set(false)
         baseViewModel.isProjecting.set(true)
-        saveBitmap(bitmap)
+        //saveBitmap(bitmap)
         viewModel.disposable += Observable.fromCallable {
             performTransform(bitmap, context?.applicationContext, null, true)
         }
@@ -362,7 +362,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         when (result.first) {
             TransformErrorCode.Success -> {
                 logger.d("TRACE_ Projection :TransformErrorCode.Success " + Calendar.getInstance().timeInMillis)
-                saveBitmap(result.second)
+                //saveBitmap(result.second)
                 logger.d("TRACE_ Transformed bitmap width " + result.second.width)
                 logger.d("TRACE_ Transformed bitmap height " + result.second.height)
                 GlobalScope.launch {

@@ -14,9 +14,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.hardware.display.DisplayManager
 import android.media.Image
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +56,6 @@ import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.File
 import java.net.Socket
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -243,14 +240,14 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         viewModel.isShowCameraButton.set(false)
         val imageCapture = imageCapture ?: return
         imageCapture!!.targetRotation = binding.cameraviewFinder.display.rotation
-        val photoFile = File(
+        /*val photoFile = File(
             outputDirectory, "TRACE_IMAGE_" +
                     SimpleDateFormat(
                         FILENAME_FORMAT, Locale.US
                     ).format(System.currentTimeMillis()) + ".jpg"
         )
         //Utility.setSharedPref(requireContext(), photoFile.absolutePath)
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()*/
 
         imageCapture.takePicture(
             ContextCompat.getMainExecutor(activity),
@@ -263,6 +260,23 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                         finalbitmap = it.toBitmap(rotationDegrees)
                         captured_image.setImageBitmap(finalbitmap)
 
+
+                        //--------------------------------------------------------
+
+                       // val savedUri = Uri.fromFile(photoFile)
+                        //val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, savedUri)
+                        viewModel.isShowCameraView.set(false)
+                        viewModel.isShowFinalImage.set(true)
+                        viewModel.isShowDialog.set(false) //Lottie dismissed
+                        hidetoolbar()
+                       // Utility.galleryAddPic(requireContext(), photoFile.absolutePath) // todo discuss with nivedh/Vishnu
+                        if (count == 1) {
+                            imageArray.add(finalbitmap)// can we pass finalbitmap insted of bitmap
+                            showImageConfirmationclicked(finalbitmap)
+                        }
+
+                        //--------------------------------------------------------
+
                         super.onCaptureSuccess(imageProxy)
                     }
 
@@ -273,7 +287,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 }
             })
 
-        imageCapture.takePicture(
+        /*imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(activity),
             object : ImageCapture.OnImageSavedCallback {
@@ -291,11 +305,11 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                     hidetoolbar()
                     Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
                     if (count == 1) {
-                        imageArray.add(bitmap)
+                        imageArray.add(bitmap)// can we pass finalbitmap insted of bitmap
                         showImageConfirmationclicked(finalbitmap)
                     }
                 }
-            })
+            })*/
 
     }
 
