@@ -259,24 +259,15 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                         val rotationDegrees = imageProxy.imageInfo.rotationDegrees
                         finalbitmap = it.toBitmap(rotationDegrees)
                         captured_image.setImageBitmap(finalbitmap)
-
-
-                        //--------------------------------------------------------
-
-                       // val savedUri = Uri.fromFile(photoFile)
-                        //val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, savedUri)
+                        //Saving capture image functionality is removed so showing confirmation dialog here
                         viewModel.isShowCameraView.set(false)
                         viewModel.isShowFinalImage.set(true)
                         viewModel.isShowDialog.set(false) //Lottie dismissed
                         hidetoolbar()
-                       // Utility.galleryAddPic(requireContext(), photoFile.absolutePath) // todo discuss with nivedh/Vishnu
                         if (count == 1) {
-                            imageArray.add(finalbitmap)// can we pass finalbitmap insted of bitmap
+                            imageArray.add(finalbitmap)
                             showImageConfirmationclicked(finalbitmap)
                         }
-
-                        //--------------------------------------------------------
-
                         super.onCaptureSuccess(imageProxy)
                     }
 
@@ -286,6 +277,8 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                     logger.d("Image Capture Failed " + exception.message)
                 }
             })
+
+        //To Remove photo saving capability into personal device following code is commented
 
         /*imageCapture.takePicture(
             outputOptions,
