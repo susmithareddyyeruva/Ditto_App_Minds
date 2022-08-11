@@ -4,8 +4,6 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android Project/ditto-android-new2/menuitems/ui/src/main/res/layout/fragment_account_info.xml" value="0.15833333333333333" />
-        <entry key="..\:/Android Project/ditto-android/calibration/ui/src/main/res/layout/calibration_fragment.xml" value="0.11875" />
-        <entry key="..\:/Android Project/ditto-android/calibration/ui/src/main/res/layout/calibration_image_confirmation_ws.xml" value="0.11875" />
         <entry key="..\:/Android Project/ditto-android/core-lib/src/main/res/menu/bottom_nav_menu.xml" value="0.11875" />
         <entry key="..\:/Android Project/ditto-android/login/ui/src/main/res/layout/login_fragment.xml" value="0.18" />
         <entry key="..\:/Android Project/ditto-android/menuitems/ui/src/main/res/layout/customer_care_fragment.xml" value="0.4396551724137931" />
@@ -29,6 +27,7 @@
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/drawable/ic_dropdown_down.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/drawable/ic_mannequinbg.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout-sw600dp/my_library_fragment.xml" value="0.120703125" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/all_pattern_singlelayout.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/custom_spinner.xml" value="0.12318840579710146" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/item_singlecategory.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/my_library_fragment.xml" value="0.1" />

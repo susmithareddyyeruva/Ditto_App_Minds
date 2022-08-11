@@ -139,7 +139,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         } else {
             val favReq = FolderRequest(
                 OrderFilter(
-                    true,
+                    false,
                     AppState.getEmail(),
                     purchasedPattern = true,
                     subscriptionList = true,
@@ -156,7 +156,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
             } else {
                 val renameReq = FolderRenameRequest(
                     OrderFilterRename(
-                        true,
+                        false,
                         AppState.getEmail(),
                         purchasedPattern = true,
                         subscriptionList = true,
@@ -254,11 +254,11 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     fun getFoldersList() {
         val folderRequest = GetFolderRequest(
             OrderFilter(
-                true,
+                false,
                 AppState.getEmail(),
-                purchasedPattern = false,
-                subscriptionList = false,
-                trialPattern = true
+                purchasedPattern = true,
+                subscriptionList = true,
+                trialPattern = false
             )
         )
         disposable += myLibraryUseCase.invokeFolderList(folderRequest, GETFOLDER)
@@ -339,10 +339,10 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
              */
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
-                    true,
+                    false,
                     AppState.getEmail(),
-                    purchasedPattern = false,
-                    subscriptionList = false,
+                    purchasedPattern = true,
+                    subscriptionList = true,
                     trialPattern = false,
                     FolderName = "Favorite"
                 ), pageId = currentPage, patternsPerPage = 12, searchTerm = value
@@ -353,10 +353,10 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
              */
             filterCriteria = MyLibraryFilterRequestData(
                 OrderFilter(
-                    true,
+                    false,
                     AppState.getEmail(),
-                    purchasedPattern = false,
-                    subscriptionList = false,
+                    purchasedPattern = true,
+                    subscriptionList = true,
                     trialPattern = false,
                     FolderName = myFolderDetailHeader
                 ), pageId = currentPage,
