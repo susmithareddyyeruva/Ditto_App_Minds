@@ -260,23 +260,15 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                         finalbitmap = it.toBitmap(rotationDegrees)
                         captured_image.setImageBitmap(finalbitmap)
 
-
-                        //--------------------------------------------------------
-
-                       // val savedUri = Uri.fromFile(photoFile)
-                        //val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, savedUri)
                         viewModel.isShowCameraView.set(false)
                         viewModel.isShowFinalImage.set(true)
                         viewModel.isShowDialog.set(false) //Lottie dismissed
                         hidetoolbar()
-                       // Utility.galleryAddPic(requireContext(), photoFile.absolutePath) // todo discuss with nivedh/Vishnu
+                       // Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
                         if (count == 1) {
-                            imageArray.add(finalbitmap)// can we pass finalbitmap insted of bitmap
+                            imageArray.add(finalbitmap)
                             showImageConfirmationclicked(finalbitmap)
                         }
-
-                        //--------------------------------------------------------
-
                         super.onCaptureSuccess(imageProxy)
                     }
 
@@ -287,6 +279,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 }
             })
 
+        //commented below code to Remove photo saving capability into personal device.
         /*imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(activity),
