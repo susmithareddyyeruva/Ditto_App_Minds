@@ -281,7 +281,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
             is HomeViewModel.Event.OnClickDitto -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
 //                    findNavController().navigate(R.id.action_home_to_buy_pattern)
-                    Utility.redirectToExternalBrowser(context, BuildConfig.BASEURL)
+                    Utility.redirectToExternalBrowser(context, BuildConfig.DITTO_URL)
                 } else {
                     logger.d("OnClickBuyPattern failed")
                 }
