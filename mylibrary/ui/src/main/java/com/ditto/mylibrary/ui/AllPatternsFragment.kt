@@ -302,9 +302,7 @@ class AllPatternsFragment(
                     logger.d("OnAllPatternSyncClick")
                     cleaFilterData()
                 } else {
-                    viewModel.errorString.set(getString(R.string.no_internet_available))
-                    showAlert()
-                    viewModel.fetchOfflinePatterns()
+                    showOfflineDetails()
                 }
             } else {
                 bottomNavViewModel.showProgress.set(true)
@@ -312,7 +310,6 @@ class AllPatternsFragment(
                 viewModel.fetchTrialPatterns()
             }
             logger.d("OnSyncClick : AllPatternsFragment")
-
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
             baseViewModel.totalCount = viewModel.totalPatternCount
@@ -392,6 +389,12 @@ class AllPatternsFragment(
         }
     }
 
+
+    fun showOfflineDetails() {
+        viewModel?.errorString?.set(getString(R.string.no_internet_available))
+        showAlert()
+        viewModel?.fetchOfflinePatterns()
+    }
 
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""

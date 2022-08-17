@@ -393,6 +393,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         override fun onServiceDisconnected(componentName: ComponentName) {
             Log.d(ConnectivityUtils.TAG, "BluetoothLeService-onServiceDisconnected")
             mBluetoothLeService = null
+            isBinded = false
         }
     }
     private fun returnFromActivity(result: String) {
