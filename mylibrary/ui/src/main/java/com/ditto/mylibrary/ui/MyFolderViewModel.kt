@@ -237,13 +237,14 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     fun setList() {
 
         for ((key, value) in myfolderMap) {
-            var menuValues: ArrayList<FilterItems> = ArrayList()
+            val menuValues: ArrayList<FilterItems> = ArrayList()
             for (aString in value) {
                 menuValues?.add(FilterItems(aString))
 
             }
             //  Filter.menuItemListFilter[key] = menuValues
-            myfolderMenu[key] = menuValues
+            val sortedMenuValues = ArrayList(menuValues.sortedWith(compareBy { it.title }))
+            myfolderMenu[key] = sortedMenuValues
         }
 
         logger.d("MAP  RESULT== , myfolderMenu.size.toString()")

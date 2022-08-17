@@ -30,7 +30,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.create_folder.*
 import kotlinx.android.synthetic.main.dialog_addfolder.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class AllPatternsFragment(
@@ -451,8 +453,9 @@ class AllPatternsFragment(
     }
 
 
-    fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
-        return viewModel.menuList
+    fun getMenuListItems(): TreeMap<String, ArrayList<FilterItems>> {
+        val sortedMenuList = TreeMap(viewModel.menuList)
+        return sortedMenuList
     }
 
     override fun onCreateClicked(newFolderName: String, parent: String) {

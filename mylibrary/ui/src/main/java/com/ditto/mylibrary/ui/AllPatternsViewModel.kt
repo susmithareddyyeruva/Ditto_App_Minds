@@ -219,7 +219,8 @@ class AllPatternsViewModel @Inject constructor(
 
             }
             //  Filter.menuItemListFilter[key] = menuValues
-            menuList[key] = menuValues
+            val sortedMenuValues = ArrayList(menuValues.sortedWith(compareBy { it.title }))
+            menuList[key] = sortedMenuValues
         }
 
         logger.d("MAP  RESULT==${menuList.size} ")
