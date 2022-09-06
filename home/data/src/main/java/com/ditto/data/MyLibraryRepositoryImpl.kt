@@ -53,9 +53,14 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
-        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
-        return homeService.getHomeScreenDetails(requestData, AUTH + encryptedKey)
+        var authorizationToken: String? = ""
+        if (BuildConfig.DEBUG) {
+            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+        }else {
+            val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+            authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
+        }
+        return homeService.getHomeScreenDetails(requestData, AUTH + authorizationToken)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
                     logger.d("*****FETCH HOME SUCCESS 200 with Error **")
