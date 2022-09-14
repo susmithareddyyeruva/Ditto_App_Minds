@@ -54,5 +54,16 @@ object EncodeDecodeUtil {
         }
         return String(valueDecoded!!)
     }
+    // encode data from base 64
+    fun encodeBase64(password: String?): String? {
+        var valueEncoded: String? = null
+        try {
+            valueEncoded= Base64.encodeToString(password?.toByteArray(), Base64.NO_WRAP)
+
+        } catch (e: UnsupportedEncodingException) {
+            Log.d("Exception",e.localizedMessage)
+        }
+        return valueEncoded
+    }
 
 }

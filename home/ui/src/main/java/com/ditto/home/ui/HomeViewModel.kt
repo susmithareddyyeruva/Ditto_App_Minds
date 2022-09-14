@@ -46,8 +46,8 @@ class HomeViewModel @Inject constructor(
     val loggerFactory: LoggerFactory,
     private val utility: Utility
 ) : BaseViewModel() {
-   /* @Inject
-    lateinit var loggerFactory: LoggerFactory*/
+    /* @Inject
+     lateinit var loggerFactory: LoggerFactory*/
     var versionResult: SoftwareUpdateResult? = null
 
     val logger: Logger by lazy {
@@ -75,7 +75,8 @@ class HomeViewModel @Inject constructor(
         object OnHideProgress : HomeViewModel.Event()
         object OnResultFailed : HomeViewModel.Event()
         object NoInternet : HomeViewModel.Event()
-       // object OnListenVersionEvent : HomeViewModel.Event()
+
+        // object OnListenVersionEvent : HomeViewModel.Event()
         object OnTrialPatternSuccess : HomeViewModel.Event()
         object OnImageDownloadComplete : HomeViewModel.Event()
     }
@@ -145,13 +146,14 @@ class HomeViewModel @Inject constructor(
 
         }
     }
-// todo started
-    fun  fetchData() {
+
+    // todo started
+    fun fetchData() {
         uiEvents.post(Event.OnShowProgress)
         disposable += useCase.getHomePatternsData(
             com.ditto.home.domain.request.MyLibraryFilterRequestData(
                 com.ditto.home.domain.request.OrderFilter(
-                    true,
+                    false,
                     AppState.getEmail(),
                     true,
                     true
@@ -202,10 +204,27 @@ class HomeViewModel @Inject constructor(
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-               // uiEvents.post(Event.OnResultFailed)
+                // uiEvents.post(Event.OnResultFailed)
                 logger.d("DEBUG>>>>,handleTrialPatternResultForGuestUser error")
                 handleError(result.error)
             }
+        }
+    }
+
+    fun fetchHomePagePatternOnline() {
+        if (AppState.getIsLogged()) {
+            fetchData()
+        } else {
+            logger.d("DEBUG>>>>,fetchListOfTrialPatternFromInternalStorage success")
+            fetchListOfTrialPatternFromInternalStorage()
+        }
+    }
+
+    fun fetchHomePagePatternOffline() {
+        if (AppState.getIsLogged()) {
+            fetchOfflineData() // offline >> fetching from DB >> fetch Demo pattern
+        } else {
+            fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
         }
     }
 
@@ -214,17 +233,12 @@ class HomeViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 logger.d("DEBUG>>>>,handleTrialPatternResult Success")
                 trialPatternData = result.data as ArrayList<PatternIdData>
-                if (AppState.getIsLogged()) {
-                    fetchData()
-                } else {
-                    logger.d("DEBUG>>>>,fetchListOfTrialPatternFromInternalStorage success")
-                    fetchListOfTrialPatternFromInternalStorage()
-                }
+                fetchHomePagePatternOnline()
             }
 
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
-               // uiEvents.post(Event.OnResultFailed)
+                // uiEvents.post(Event.OnResultFailed)
                 logger.d("DEBUG>>>>,handleTrialPatternResultError")
                 handleError(result.error)
             }
@@ -247,7 +261,7 @@ class HomeViewModel @Inject constructor(
                 logger.d("Home Screen, ${productCount}")
                 setHomeItems()  //Preparing menu items
                 uiEvents.post(Event.OnResultSuccess)
-               // uiEvents.post(Event.OnListenVersionEvent)
+                // uiEvents.post(Event.OnListenVersionEvent)
             }
             is Result.OnError -> {
                 uiEvents.post(Event.OnHideProgress)
@@ -260,7 +274,7 @@ class HomeViewModel @Inject constructor(
     /**
      * Handling offline fetch result here.....
      */
-     fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
+    fun handleOfflineFetchResult(result: Result<List<OfflinePatternData>>?) {
         uiEvents.post(Event.OnHideProgress)
         when (result) {
             is Result.OnSuccess -> {
@@ -280,7 +294,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//unit testing done
+    //unit testing done
     internal fun handleError(error: Error) {
         when (error) {
             is NoNetworkError -> {
@@ -327,7 +341,7 @@ class HomeViewModel @Inject constructor(
         patternFolderName: String?
     ) {
         try {
-            withContext(Dispatchers.IO,) {
+            withContext(Dispatchers.IO) {
                 val inputStream: InputStream
                 var result: File? = null
                 val url: URL = URL(imageUrl)
@@ -348,9 +362,9 @@ class HomeViewModel @Inject constructor(
                         )
                 val path = Uri.fromFile(result)
                 patternUri.set(path.toString())
-                logger.d("PATTERN, ${patternUri.get() ?:""}")
+                logger.d("PATTERN, ${patternUri.get() ?: ""}")
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             logger.d("HomeViewModel, ${e.message}")
         }
     }
@@ -363,13 +377,16 @@ class HomeViewModel @Inject constructor(
         var result: File? = null
         var dittofolder: File? = null
         var subFolder: File? = null
-       /* dittofolder = File(
-            Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
-        )*/
+        /* dittofolder = File(
+             Environment.getExternalStorageDirectory().toString() + "/" + "Ditto"
+         )*/
         val contextWrapper = ContextWrapper(context)
         dittofolder = contextWrapper.getDir("Ditto", Context.MODE_PRIVATE)
 
-        subFolder = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}")
+        subFolder = File(
+            dittofolder,
+            "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")}"
+        )
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()

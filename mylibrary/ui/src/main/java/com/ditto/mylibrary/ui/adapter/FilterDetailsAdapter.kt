@@ -8,10 +8,12 @@ import com.ditto.mylibrary.domain.model.FilterItems
 import com.ditto.mylibrary.ui.MyLibraryViewModel
 import com.ditto.mylibrary.ui.R
 import com.ditto.mylibrary.ui.databinding.ItemFilterdetailsBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FilterDetailsAdapter(
     private var itemsListener: SelectedItemsListener,
-    private var menuList: HashMap<String, ArrayList<FilterItems>>,
+    private var menuList: TreeMap<String, ArrayList<FilterItems>>,
     private var keys: String
 ) :
     RecyclerView.Adapter<FilterDetailsAdapter.FilterCategoriesHolder>() {

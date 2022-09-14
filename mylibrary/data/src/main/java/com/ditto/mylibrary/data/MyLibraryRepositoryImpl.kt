@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.data
 
 import android.content.Context
+import android.util.Log
 import com.ditto.logger.LoggerFactory
 import com.ditto.login.data.mapper.toUserDomain
 import com.ditto.login.domain.model.LoginUser
@@ -60,11 +61,17 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
-        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
+        var authorizationToken: String? = ""
+
+        if (BuildConfig.DEBUG) {
+            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+        } else {
+            val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+            authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
+        }
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
-            AUTH + encryptedKey
+            AUTH + authorizationToken
         )
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
@@ -164,23 +171,23 @@ class MyLibraryRepositoryImpl @Inject constructor(
                         }
                         401 -> {
                             logger.d("onError: NOT AUTHORIZED")
-                            errorMessage="NOT AUTHORIZED"
+                            errorMessage = "NOT AUTHORIZED"
                         }
                         403 -> {
                             logger.d("onError: FORBIDDEN")
-                            errorMessage="FORBIDDEN"
+                            errorMessage = "FORBIDDEN"
                         }
                         404 -> {
                             logger.d("onError: NOT FOUND")
-                            errorMessage="NOT FOUND"
+                            errorMessage = "NOT FOUND"
                         }
                         500 -> {
                             logger.d("onError: INTERNAL SERVER ERROR")
-                            errorMessage="INTERNAL SERVER ERROR"
+                            errorMessage = "INTERNAL SERVER ERROR"
                         }
                         502 -> {
                             logger.d("onError: BAD GATEWAY")
-                            errorMessage="BAD GATEWAY"
+                            errorMessage = "BAD GATEWAY"
                         }
                     }
                 } else {
@@ -251,10 +258,17 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
-        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
+        var authorizationKey = AppState.getKey()
+
+        if (BuildConfig.DEBUG) {
+            authorizationKey = EncodeDecodeUtil.encodeBase64(input)
+            Log.d("base64", "encoded: $authorizationKey ")
+        } else {
+            val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+            authorizationKey = EncodeDecodeUtil.hmacSha256(key, input)
+        }
         return myLibraryService.getFoldersList(
-            requestdata, AUTH + encryptedKey,
+            requestdata, AUTH + authorizationKey,
             method = methodName
         )
             .doOnSuccess {
@@ -315,10 +329,18 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
-        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
+        var authorizationKey = AppState.getKey()
+
+        if (BuildConfig.DEBUG) {
+            authorizationKey = EncodeDecodeUtil.encodeBase64(input)
+            Log.d("base64", "encoded: $authorizationKey ")
+        } else {
+            val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+            authorizationKey = EncodeDecodeUtil.hmacSha256(key, input)
+        }
+
         return myLibraryService.addFolder(
-            requestdata, AUTH + encryptedKey,
+            requestdata, AUTH + authorizationKey,
             method = methodName
         )
             .doOnSuccess {
@@ -384,10 +406,16 @@ class MyLibraryRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
-        val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
-        val encryptedKey = EncodeDecodeUtil.hmacSha256(key, input)
+        var authorizationToken: String? = ""
+        if (BuildConfig.DEBUG) {
+            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+
+        } else {
+            val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+            authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
+        }
         return myLibraryService.renameFolder(
-            renameRequest, AUTH + encryptedKey,
+            renameRequest, AUTH + authorizationToken,
             method = methodName
         )
             .doOnSuccess {
@@ -514,7 +542,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
-        patternType:String?
+        patternType: String?
     ): Single<Any> {
         return Single.fromCallable {
             val i = offlinePatternDataDao.upsert(

@@ -24,7 +24,9 @@ import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     @Inject
@@ -357,8 +359,8 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         }
     }
 
-    fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
-        val item = viewModel.myfolderMenu
+    fun getMenuListItems(): TreeMap<String, ArrayList<FilterItems>> {
+        val item = TreeMap(viewModel.myfolderMenu)
         return item
     }
 

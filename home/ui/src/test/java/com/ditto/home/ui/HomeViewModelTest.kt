@@ -288,7 +288,7 @@ class HomeViewModelTest {
         appState.init(context)
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
-                true,
+                false,
                 "test123@test.com",
                 true,
                 true,

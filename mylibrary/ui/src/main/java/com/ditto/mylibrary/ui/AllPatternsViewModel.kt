@@ -219,7 +219,8 @@ class AllPatternsViewModel @Inject constructor(
 
             }
             //  Filter.menuItemListFilter[key] = menuValues
-            menuList[key] = menuValues
+            val sortedMenuValues = ArrayList(menuValues.sortedWith(compareBy { it.title }))
+            menuList[key] = sortedMenuValues
         }
 
         logger.d("MAP  RESULT==${menuList.size} ")
@@ -242,11 +243,11 @@ class AllPatternsViewModel @Inject constructor(
         uiEvents.post(Event.OnAllPatternShowProgress)
         val folderRequest = GetFolderRequest(
             OrderFilter(
-                true,
+                false,
                 AppState.getEmail(),
-                purchasedPattern = false,
-                subscriptionList = false,
-                trialPattern = true
+                purchasedPattern = true,
+                subscriptionList = true,
+                trialPattern = false
             )
         )
         /**
@@ -340,7 +341,7 @@ class AllPatternsViewModel @Inject constructor(
         logger.d("DESIGN ID==, product?.tailornovaDesignId ?: ")
         val favReq = FolderRequest(
             OrderFilter(
-                true,
+                false,
                 AppState.getEmail(),
                 purchasedPattern = true,
                 subscriptionList = true,
@@ -402,7 +403,7 @@ class AllPatternsViewModel @Inject constructor(
     fun createJson(currentPage: Int, value: String): MyLibraryFilterRequestData {
         val filterCriteria = MyLibraryFilterRequestData(
             OrderFilter(
-                true,
+                false,
                 AppState.getEmail(),
                 true,
                 true,

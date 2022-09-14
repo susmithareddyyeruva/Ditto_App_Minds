@@ -126,13 +126,10 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         }
 
         if (NetworkUtility.isNetworkAvailable(context)) {
-            homeViewModel.fetchTailornovaTrialPattern() // fetch trial pattern api from tailornova saving to db >> showing count also
+//            homeViewModel.fetchTailornovaTrialPattern() // fetch trial pattern api from tailornova saving to db >> showing count also
+            homeViewModel.fetchHomePagePatternOnline()
         } else {
-            if (AppState.getIsLogged()) {
-                homeViewModel.fetchOfflineData() // offline >> fetching from DB >> fetch Demo pattern
-            } else {
-                homeViewModel.fetchListOfTrialPatternFromInternalStorage()// fetching trial pattern from internal db >> setting count also
-            }
+            homeViewModel.fetchHomePagePatternOffline()
         }
     }
 
@@ -284,7 +281,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
             is HomeViewModel.Event.OnClickDitto -> {
                 if (findNavController().currentDestination?.id == R.id.homeFragment) {
 //                    findNavController().navigate(R.id.action_home_to_buy_pattern)
-                    Utility.redirectToExternalBrowser(context, BuildConfig.BASEURL)
+                    Utility.redirectToExternalBrowser(context, BuildConfig.DITTO_URL)
                 } else {
                     logger.d("OnClickBuyPattern failed")
                 }

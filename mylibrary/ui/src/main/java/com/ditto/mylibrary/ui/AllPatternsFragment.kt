@@ -30,7 +30,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.create_folder.*
 import kotlinx.android.synthetic.main.dialog_addfolder.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class AllPatternsFragment(
@@ -300,9 +302,7 @@ class AllPatternsFragment(
                     logger.d("OnAllPatternSyncClick")
                     cleaFilterData()
                 } else {
-                    viewModel.errorString.set(getString(R.string.no_internet_available))
-                    showAlert()
-                    viewModel.fetchOfflinePatterns()
+                    showOfflineDetails()
                 }
             } else {
                 bottomNavViewModel.showProgress.set(true)
@@ -310,7 +310,6 @@ class AllPatternsFragment(
                 viewModel.fetchTrialPatterns()
             }
             logger.d("OnSyncClick : AllPatternsFragment")
-
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
             baseViewModel.totalCount = viewModel.totalPatternCount
@@ -391,6 +390,12 @@ class AllPatternsFragment(
     }
 
 
+    fun showOfflineDetails() {
+        viewModel?.errorString?.set(getString(R.string.no_internet_available))
+        showAlert()
+        viewModel?.fetchOfflinePatterns()
+    }
+
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
         Utility.getCommonAlertDialogue(
@@ -451,8 +456,9 @@ class AllPatternsFragment(
     }
 
 
-    fun getMenuListItems(): HashMap<String, ArrayList<FilterItems>> {
-        return viewModel.menuList
+    fun getMenuListItems(): TreeMap<String, ArrayList<FilterItems>> {
+        val sortedMenuList = TreeMap(viewModel.menuList)
+        return sortedMenuList
     }
 
     override fun onCreateClicked(newFolderName: String, parent: String) {

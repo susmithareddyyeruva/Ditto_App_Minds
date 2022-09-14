@@ -35,7 +35,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.my_library_fragment.*
 import kotlinx.android.synthetic.main.my_library_fragment.view.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
@@ -584,7 +586,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
     }
 
     private fun setFilterActionAdapter(keys: String) {
-        val menuList: HashMap<String, ArrayList<FilterItems>>
+        val menuList: TreeMap<String, ArrayList<FilterItems>>
         val tabPosition = binding.tabLayout.selectedTabPosition
         menuList = if (tabPosition == 0) {
             allPatternsFragment.getMenuListItems()

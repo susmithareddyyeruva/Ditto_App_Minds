@@ -144,15 +144,15 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
                 .imageDecoder(SvgBitmapDecoder(context))
                 .into(imageView)
 
-        } else if (imagePath.endsWith(".png", true)) {
+        } /*else if (imagePath.endsWith(".png", true)) {
             Glide
                 .with(context)
-                .load(/*if(NetworkUtility.isNetworkAvailable(context)) imagePath else*/ availableUri)
+                .load(*//*if(NetworkUtility.isNetworkAvailable(context)) imagePath else*//* availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)
                 .into(imageView)
-        } else {
+        }*/ else {
             Glide
                 .with(context)
                 .load(if (NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
