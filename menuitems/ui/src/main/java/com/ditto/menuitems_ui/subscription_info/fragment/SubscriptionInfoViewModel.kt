@@ -1,6 +1,7 @@
 package com.ditto.menuitems_ui.subscription_info.fragment
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableField
 import com.ditto.menuitems.domain.SubscriptionInfoUsecase
 import core.appstate.AppState
@@ -56,6 +57,7 @@ class SubscriptionInfoViewModel @Inject constructor(
     }
 
     private fun setsubscriptionEndDateDesc() {
+        Log.d("getSubscriptionStatus","getSubscriptionStatus: ${AppState.getSubscriptionStatus()}")
         if (AppState.getSubDate()
                 .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
         ) {

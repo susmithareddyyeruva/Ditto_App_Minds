@@ -416,6 +416,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             navViewHeaderBinding.textEmail.text = "$email"
             navViewHeaderBinding.textName.text =AppState.getFirstName()
 //            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
+            Log.d("getSubscriptionStatus","getSubscriptionStatus: ${AppState.getSubscriptionStatus()}")
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
             ) {

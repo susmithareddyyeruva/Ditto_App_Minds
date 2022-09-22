@@ -61,6 +61,7 @@ data class LoginResultDomain(
 
     val cSubscriptionValid: Boolean,
     val cSubscriptionPlanEndDate: String?,
+    val cSubscriptionStatus: String?,
     val cSubscriptionPlanStartDate: String?,
     val cSubscriptionPlanPrice: String?,
     val cSubscriptionPlanId: String?,

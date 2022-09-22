@@ -20,6 +20,7 @@ abstract class BaseViewModel : ViewModel() {
     var userFirstName: String? = ""
     var userLastName: String? = ""
     var subscriptionEndDate: String? = ""
+    var c_subscriptionStatus: String? = ""
     var totalCount: Int = 0
 
 }

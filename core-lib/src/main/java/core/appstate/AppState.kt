@@ -110,6 +110,14 @@ object AppState {
         pref?.saveString(SUBSCRIPTION_END_DATE, date)
     }
 
+    fun getSubscriptionStatus(): String {
+        val dateEnd = pref?.getString(SUBSCRIPTION_STATUS)
+        return dateEnd ?: ""
+    }
+    fun setSubscriptionStatus(date: String) {
+        pref?.saveString(SUBSCRIPTION_STATUS, date)
+    }
+
 
     fun isSubscriptionValid(): Boolean? {
         return pref?.getBoolean(SUBSCRIPTION_VALID)

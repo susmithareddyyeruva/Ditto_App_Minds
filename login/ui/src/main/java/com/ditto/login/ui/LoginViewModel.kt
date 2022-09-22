@@ -112,6 +112,7 @@ class LoginViewModel @Inject constructor(
                     AppState.setFirstName(result.data.firstName ?: "")
                     AppState.setLastName(result.data.lastName ?: "")
                     AppState.setSubscriptionDate(result.data.cSubscriptionPlanEndDate ?: "")
+                    AppState.setSubscriptionStatus(result.data.cSubscriptionStatus ?: "")
                     AppState.setSubscriptionValidity(result.data.cSubscriptionValid ?: false)
                     AppState.setMobile(result.data.phoneHome ?: "")
                     AppState.saveKey(result.data.cEncryptionkey ?: "")
@@ -129,6 +130,7 @@ class LoginViewModel @Inject constructor(
                     userFirstName = result.data.firstName ?: ""
                     userLastName = result.data.lastName ?: ""
                     subscriptionEndDate = result.data.cSubscriptionPlanEndDate ?: ""
+                    c_subscriptionStatus = result.data.cSubscriptionStatus ?: ""
                     AppState.setIsLogged(true)
                     /**
                      * Storing the subscription information into DB
