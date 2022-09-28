@@ -48,7 +48,7 @@ ext {
     rxjava2_version = '2.2.7'
     rxjava2_android_version = '2.1.1'
     rxkotlin_version = '2.3.0'
-    retrofitVersion = "2.6.0"
+    retrofitVersion = "2.9.0"
     okhttp_version = "4.4.0"
     junit_version = '4.12'
     core_testing_version = '2.0.0'
