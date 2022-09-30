@@ -495,6 +495,8 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
         when (alertType) {
             Utility.AlertType.SOC_CONNECT -> {
+                //viewModel.disConnectToProjector(NetworkUtility.nsdSericeHostName,NetworkUtility.nsdSericePortName,false)
+                viewModel.isCalibrated.set(false)
                 viewModel.sendWaitingImage()
                 viewModel.connectToProjector(
                     receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
