@@ -55,7 +55,8 @@ android {
             keyPassword 'Demo@123'
         }
     }
-
+//Ditto
+//Ditto@123
     testBuildType "qa"
 
     sourceSets {
@@ -74,8 +75,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
-        versionName "0.34(04)"
-        //versionName "1.0.12"
+//        versionName "0.34(04)"
+        versionName "1.0.14"
 
         multiDexEnabled true
 
