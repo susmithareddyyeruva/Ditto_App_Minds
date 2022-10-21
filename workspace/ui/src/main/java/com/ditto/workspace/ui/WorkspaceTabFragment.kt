@@ -1261,7 +1261,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         animatorSet.playTogether(bounceX, bounceY)
         animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
         animatorSet.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 (parentFragment as WorkspaceFragment).maskCoachMark(false)
             }
         })
@@ -2110,11 +2110,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else {
             arrayOf(Manifest.permission.BLUETOOTH)
         }
-        private val REQUIRED_PERMISSIONS_DOWNLOAD =
-            arrayOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+        private val REQUIRED_PERMISSIONS_DOWNLOAD = emptyArray<String>()
+//            arrayOf(
+////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
 
 
     }

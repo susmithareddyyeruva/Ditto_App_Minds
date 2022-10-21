@@ -557,7 +557,7 @@ private class MyGestureListener(context: Context, imageName: String?, patternNam
     var imageName = imageName
     var patternName = patternName
 
-    override fun onDoubleTap(e: MotionEvent?): Boolean {
+    override fun onDoubleTap(e: MotionEvent): Boolean {
         Log.d("TAG", "DoubleTap: ")
         Utility.onDrag.set(false)
         if (!Utility.isPopupShowing.get()) {
@@ -573,19 +573,19 @@ private class MyGestureListener(context: Context, imageName: String?, patternNam
         return super.onDoubleTap(e)
     }
 
-    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+    override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
         Log.d("TAG", "onSingleTapConfirmed: ")
         Utility.onDrag.set(false)
         return super.onSingleTapConfirmed(e)
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+    override fun onSingleTapUp(e: MotionEvent): Boolean {
         Log.d("TAG", "onSingleTapUp: ")
         Utility.onDrag.set(false)
         return super.onSingleTapUp(e)
     }
 
-    override fun onLongPress(e: MotionEvent?) {
+    override fun onLongPress(e: MotionEvent) {
         Log.d("TAG", "OnLongPress: ")
         super.onLongPress(e)
     }
