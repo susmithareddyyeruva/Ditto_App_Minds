@@ -468,8 +468,10 @@ class Utility @Inject constructor(
         fun redirectToExternalBrowser(context: Context?, url: String) {
             if (context == null) return
 //            val intent = Intent(Intent.ACTION_VIEW)
-            val intent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
-            intent.data = Uri.parse(url)
+////          val intent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
+//            intent.data = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }

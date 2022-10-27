@@ -74,11 +74,11 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 20
-        private val REQUIRED_PERMISSIONS =
-            arrayOf(
+        private val REQUIRED_PERMISSIONS = emptyArray<String>()
+//            arrayOf(
 //                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
 
     }
 
