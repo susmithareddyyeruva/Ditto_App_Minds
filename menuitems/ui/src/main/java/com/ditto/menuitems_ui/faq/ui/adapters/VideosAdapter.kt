@@ -58,7 +58,7 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
                 visitSiteListener.onVisitClick(item?.webUrl ?: "")
             }
             holder.watch.setOnClickListener {
-                watchVideoClickListener.onVideoClick(item?.ques,item?.videoUrl ?: "")
+                watchVideoClickListener.onVideoClick(item?.ques ?: "",item?.videoUrl ?: "")
             }
         } else {
             holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)

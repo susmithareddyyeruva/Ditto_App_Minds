@@ -37,10 +37,10 @@ class TabsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm,
     }
 
     override fun getCount(): Int {
-        return tabdata?.size
+        return tabdata?.size ?:0
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return tabdata?.get(position).title
+        return tabdata?.get(position)?.title ?:""
     }
 }

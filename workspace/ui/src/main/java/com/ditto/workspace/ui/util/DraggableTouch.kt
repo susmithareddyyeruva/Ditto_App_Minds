@@ -518,11 +518,11 @@ private class MultiTouchGestureDetectorListener(draggableListener: DraggableList
     private fun move(view: View?, isScaleEnd: Boolean, rotateAngle: Float) {
         if (isScaleEnd) {
             view?.pivotX = (view?.width?.toFloat()?.div(2))!!
-            view.pivotY = (view.height?.toFloat().div(2))
+            view?.pivotY = (view?.height?.toFloat()?.div(2))!!
             view?.rotation = view?.rotation?.let { round(it, 45).toFloat() }!!
         } else {
             view?.pivotX = (view?.width?.toFloat()?.div(2))!!
-            view.pivotY = (view.height?.toFloat().div(2))
+            view?.pivotY = (view?.height?.toFloat()?.div(2))!!
             val rotation =
                 rotateAngle.let { view.rotation.plus(it).let { adjustAngle(it) } }
             view.rotation = rotation

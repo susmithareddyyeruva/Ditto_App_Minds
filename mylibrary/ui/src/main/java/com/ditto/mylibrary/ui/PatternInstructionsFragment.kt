@@ -244,6 +244,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
             Utility.AlertType.NETWORK, Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment, true)
             }
+            else -> {}
         }
     }
 
@@ -263,6 +264,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
                     )
                 }
             }
+            else -> {}
         }
     }
 

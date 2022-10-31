@@ -113,6 +113,7 @@ class AllPatternsViewModel @Inject constructor(
                 uiEvents.post(Event.OnAllPatternResultSuccess)
             }
             is Result.OnError -> handleError(result.error)
+            else -> {}
         }
     }
 
@@ -285,6 +286,7 @@ class AllPatternsViewModel @Inject constructor(
                 handleError(folderResult.error)
             }
 
+            else -> {}
         }
     }
 

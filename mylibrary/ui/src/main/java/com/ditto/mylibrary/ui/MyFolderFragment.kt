@@ -166,7 +166,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 myFolderDetailFragment?.arguments = args
                 parentFragmentManager
                     ?.beginTransaction()
-                    .addToBackStack(null)
+                    ?.addToBackStack(null)
                     ?.replace(R.id.detail_nav_fragment, myFolderDetailFragment, "DETAIL")
                     ?.commit()
 
@@ -219,6 +219,7 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                     )
                 }
             core.ui.common.Utility.AlertType.GUEST_MYFOLDER -> (parentFragment as MyLibraryFragment?)?.setTabsAdapter("GUEST")
+            else -> {}
         }
     }
 

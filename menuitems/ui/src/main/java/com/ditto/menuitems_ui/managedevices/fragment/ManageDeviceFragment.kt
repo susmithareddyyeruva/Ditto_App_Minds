@@ -520,6 +520,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 startActivity(Intent(Settings.ACTION_SETTINGS))
                 activity?.onBackPressed()
             }
+            else -> {}
         }
     }
 
@@ -541,6 +542,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 activity?.onBackPressed()
 
             }
+            else -> {}
         }
     }
 

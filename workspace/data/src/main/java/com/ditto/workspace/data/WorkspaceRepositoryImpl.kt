@@ -136,14 +136,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
             return Single.just(Result.OnError(NoNetworkError()))
         }
 
-        return getWorkspaceService.getWorkspceDataFromApi(id,   BuildConfig.CLIENT_ID).doOnSuccess {
+        return getWorkspaceService.getWorkspceDataFromApi(id,BuildConfig.CLIENT_ID).doOnSuccess {
             logger.d("*****GetWorkspace Success**")
         }.map {
             Log.d(
                 "WorkspaceRepositoryImpl",
                 "getWorkspaceDataFromApi ${it.c_traceWorkSpacePattern.toString()}"
             )
-            Result.withValue(it.c_traceWorkSpacePattern?.toDomain())
+            Result.withValue(it.c_traceWorkSpacePattern.toDomain())
         }.onErrorReturn {
             var errorMessage = "Error Fetching data"
             try {
@@ -156,7 +156,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
                     val type = object : TypeToken<GetWorkspaceApiResponseFetchError>() {}.type
                     val errorResponse: GetWorkspaceApiResponseFetchError =
                         gson.fromJson(errorBody, type)
-                    errorMessage = errorResponse?.fault.message
+                    errorMessage = errorResponse.fault.message
                     logger.d("Error get WorkspaceData >>>>>>> $errorMessage")
                 }
             } catch (e: Exception) {
@@ -205,7 +205,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
                     val type = object : TypeToken<GetWorkspaceApiResponseFetchError>() {}.type
                     val errorResponse: GetWorkspaceApiResponseFetchError =
                         gson.fromJson(errorBody, type)
-                    errorMessage = errorResponse?.fault.message
+                    errorMessage = errorResponse.fault.message
                     logger.d("Error get WorkspaceData >>>>>>> $errorMessage")
                 }
             } catch (e: Exception) {

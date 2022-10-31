@@ -230,13 +230,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     }
 
     private fun setTabTouchListener() {
-        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(0).tag = 0
+        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(0)?.tag = 0
         (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(0)
             .setOnTouchListener(this)
-        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(1).tag = 1
+        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(1)?.tag = 1
         (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(1)
             .setOnTouchListener(this)
-        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(2).tag = 2
+        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(2)?.tag = 2
         (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(2)
             .setOnTouchListener(this)
     }

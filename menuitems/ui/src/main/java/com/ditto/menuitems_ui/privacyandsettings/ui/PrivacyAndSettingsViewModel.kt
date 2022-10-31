@@ -51,6 +51,7 @@ class PrivacyAndSettingsViewModel @Inject constructor(private val aboutAppUseCas
                 uiEvents.post(Event.OnHideProgress)
                 logger.d("PrivacyPolicy, Failed")
             }
+            else -> {}
         }
     }
 

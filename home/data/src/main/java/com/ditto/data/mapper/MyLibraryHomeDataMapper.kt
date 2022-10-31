@@ -61,12 +61,12 @@ internal fun List<OfflinePatterns>.toDomain(): List<OfflinePatternData> {
             status = it.status,
             numberOfCompletedPieces = it.numberOfCompletedPieces?.toDomainOfflinePicecs(),
             patternPiecesFromApi = it.patternPiecesFromApi.map { it.toDomain1() },
-            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines?.map { it.toDomain1() }
+            garmetWorkspaceItemOfflines = it.garmetWorkspaceItemOfflines.map { it.toDomain1() }
                 .toMutableList(),
-            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines?.map { it.toDomain1() }
+            liningWorkspaceItemOfflines = it.liningWorkspaceItemOfflines.map { it.toDomain1() }
                 .toMutableList(),
-            interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
-                ?.toMutableList(),
+            interfaceWorkspaceItemOfflines = it.interfaceWorkspaceItemOfflines.map { it.toDomain1() }
+                .toMutableList(),
             id = it.designId,
             patternName = it.patternName,
             description = it.description,
@@ -101,12 +101,12 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         status = this.status,
         numberOfCompletedPieces = this.numberOfCompletedPieces?.toDomainOfflinePicecs(),
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain1() },
-        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain1() }
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
-        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain1() }
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
-        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
-            ?.toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines.map { it.toDomain1() }
+            .toMutableList(),
         id = this.designId,
         patternName = this.patternName,
         description = this.description,

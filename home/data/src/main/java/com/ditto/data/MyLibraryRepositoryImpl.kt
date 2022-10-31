@@ -134,7 +134,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
                 logger.d("Tailornova, insertofflinePatternsData complete: $it")
             }.map {
-                it.trial?.let { it1 -> Result.withValue(it1) }
+                it.trial.let { it1 -> Result.withValue(it1) }
             }.onErrorReturn {
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)

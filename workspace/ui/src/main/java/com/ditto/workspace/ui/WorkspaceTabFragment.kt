@@ -288,7 +288,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showWaitingMessage(message: String) {
         try {
-            Utility.showSnackBar(message, binding?.workspaceRoot)
+            Utility.showSnackBar(message, binding?.workspaceRoot as View)
         } catch (e: java.lang.Exception) {
             logger.d("Error : " + e.message)
         }
@@ -1533,7 +1533,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             if (showToast) {
                 Utility.showSnackBar(
                     getString(R.string.overlaping_piece_alert),
-                    binding?.workspaceRoot
+                    binding?.workspaceRoot as View
                 )
             }
         } catch (e: java.lang.Exception) {
@@ -2546,6 +2546,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.DOWNLOADFAILED -> {
                 showSaveAndExitPopup()
             }
+            else -> {}
         }
 
     }
@@ -2589,6 +2590,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isCompleteButtonClickable = true
             }
 
+            else -> {}
         }
     }
 

@@ -304,6 +304,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                 handleError(folderResult.error)
             }
 
+            else -> {}
         }
     }
 

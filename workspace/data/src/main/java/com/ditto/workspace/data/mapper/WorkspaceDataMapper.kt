@@ -11,10 +11,10 @@ fun CTraceWorkSpacePattern.toDomain(): WorkspaceDataAPI {
         selectedTab = this.selectedTab,
         status = this.status,
         numberOfCompletedPiece = this.numberOfCompletedPiece?.toDomain(),
-        patternPieces = this.patternPieces?.map { it.toDomain() },
-        garmetWorkspaceItems = this.garmetWorkspaceItems?.map { it.toDomain() }.toMutableList(),
-        liningWorkspaceItems = this.liningWorkspaceItems?.map { it.toDomain() }.toMutableList(),
-        interfaceWorkspaceItems = this.interfaceWorkspaceItems?.map { it.toDomain() }.toMutableList(),
+        patternPieces = this.patternPieces.map { it.toDomain() },
+        garmetWorkspaceItems = this.garmetWorkspaceItems.map { it.toDomain() }.toMutableList(),
+        liningWorkspaceItems = this.liningWorkspaceItems.map { it.toDomain() }.toMutableList(),
+        interfaceWorkspaceItems = this.interfaceWorkspaceItems.map { it.toDomain() }.toMutableList(),
     )
 
 }
@@ -177,12 +177,12 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         status = this.status,
         numberOfCompletedPieces = this.numberOfCompletedPieces?.toDomainOfflinePicecs(),
         patternPiecesFromApi = this.patternPiecesFromApi.map { it.toDomain() },
-        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines?.map { it.toDomain1() }
+        garmetWorkspaceItemOfflines = this.garmetWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
-        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain1() }
+        liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
-        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain1() }
-            ?.toMutableList(),
+        interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines.map { it.toDomain1() }
+            .toMutableList(),
         id = this.designId,
         patternName = this.patternName,
         description = this.description,

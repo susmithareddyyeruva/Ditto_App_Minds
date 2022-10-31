@@ -1131,6 +1131,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.PERMISSION_DENIED -> {
                 Utility.navigateToAppSettings(requireContext())
             }
+            else -> {}
         }
     }
 
@@ -1336,6 +1337,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 }
             }
+            else -> {}
         }
     }
 
