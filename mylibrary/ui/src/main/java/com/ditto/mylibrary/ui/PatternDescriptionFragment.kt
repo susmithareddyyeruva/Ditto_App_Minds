@@ -288,11 +288,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             arrayOf(Manifest.permission.BLUETOOTH)
         }
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 131
-        private val REQUIRED_PERMISSIONS_DOWNLOAD =
-            arrayOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+        private val REQUIRED_PERMISSIONS_DOWNLOAD = emptyArray<String>()
+//            arrayOf(
+////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
     }
 
     private fun dowloadPermissonGranted() = REQUIRED_PERMISSIONS_DOWNLOAD.all {
@@ -1131,6 +1131,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.PERMISSION_DENIED -> {
                 Utility.navigateToAppSettings(requireContext())
             }
+            else -> {}
         }
     }
 
@@ -1336,6 +1337,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 }
             }
+            else -> {}
         }
     }
 

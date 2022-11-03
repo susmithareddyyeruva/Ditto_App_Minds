@@ -135,8 +135,8 @@ object CollisionUtil {
     ): WeakReference<Bitmap> {
         var bigBitmap = WeakReference(
             Bitmap.createBitmap(
-                ((view1.parent as View).parent as View)?.measuredWidth,
-                ((view1.parent as View).parent as View)?.measuredHeight,
+                ((view1.parent as View).parent as View)?.measuredWidth ?:0,
+                ((view1.parent as View).parent as View)?.measuredHeight ?:0,
                 Bitmap.Config.ARGB_8888
             )
         )

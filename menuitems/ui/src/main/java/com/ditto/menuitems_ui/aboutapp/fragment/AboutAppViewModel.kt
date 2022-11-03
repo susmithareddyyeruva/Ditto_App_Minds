@@ -45,6 +45,7 @@ class AboutAppViewModel @Inject constructor(private val aboutAppUseCase: AboutAp
             is Result.OnError -> {
                 logger.d("WSProSettingViewModel Failed")
             }
+            else -> {}
         }
     }
 

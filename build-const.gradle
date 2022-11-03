@@ -1,15 +1,15 @@
 ext {
     // Sub projects should use these
     minSdk = 23
-    targetSdk = 30
-    compileSdkVersion = 30
+    targetSdk = 33
+    compileSdkVersion = 33
     buildToolsVersion = '30.0.2'
 
     java_version = '1.6'
     gradle_version = '3.4.2'
 
     // Sub projects should consider using these but can use their own.
-    kotlin_version = '1.4.20'
+    kotlin_version = '1.7.20'
 
     androidx_activity = '1.2.0'
     androidx_fragment = '1.1.0'
@@ -47,7 +47,7 @@ ext {
     javax_inject_version = "1"
     rxjava2_version = '2.2.7'
     rxjava2_android_version = '2.1.1'
-    rxkotlin_version = '2.3.0'
+    rxkotlin_version = '2.4.0'
     retrofitVersion = "2.9.0"
     okhttp_version = "4.4.0"
     junit_version = '4.12'

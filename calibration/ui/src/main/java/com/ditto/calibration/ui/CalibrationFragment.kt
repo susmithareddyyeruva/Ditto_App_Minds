@@ -217,7 +217,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
-            arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            arrayOf(Manifest.permission.CAMERA,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
@@ -729,47 +731,6 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         when (calibrationResponse) {
             Util.CalibrationType.Success -> {
                 transform()  //On calibration response
-
-            }
-
-            Util.CalibrationType.InvalidImageFormat -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_invalid_image))
-            }
-
-            Util.CalibrationType.FailExtractingFeaturePoints -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_fail_extracting))
-            }
-
-            Util.CalibrationType.FailCalibration -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_fail_calibration))
-            }
-
-            Util.CalibrationType.TooManyImages -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_toomany_images))
-            }
-
-            Util.CalibrationType.FailSavingCalibrationResult -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_fail_save))
-            }
-
-            Util.CalibrationType.CameraPixelsTooLow -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_camera_pixel_too_low))
-            }
-
-            Util.CalibrationType.IncorrectImageOrientation -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_incorrect_image_orientation))
-            }
-
-            Util.CalibrationType.UnableToDetectObjects -> {
-                baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_unable_to_detect_objects))
             }
 
             Util.CalibrationType.PatternImageIsCropped -> {
@@ -777,25 +738,41 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 showAlert(resources.getString(R.string.calibrationerror_pattern_image_is_cropped))
             }
 
-            Util.CalibrationType.ProjectedRegionNotProper -> {
+            Util.CalibrationType.CameraDistanceTooFarBack -> {
                 baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_projected_region_not_proper))
+                showAlert(resources.getString(R.string.calibrationerror_camera_distance_far_back))
             }
 
-            Util.CalibrationType.ImageTakenFromProjectorSide -> {
+            Util.CalibrationType.CameraHeightTooLow -> {
                 baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_image_taken_from_projector_side))
+                showAlert(resources.getString(R.string.calibrationerror_camera_height_too_low))
             }
 
-            Util.CalibrationType.MatIsRotated180Degrees -> {
+            Util.CalibrationType.CameraTooFarLeftOrRight -> {
                 baseViewModel.isSetUpError.set(true)
-                showAlert(resources.getString(R.string.calibrationerror_mat_is_rotated_180_degrees))
+                showAlert(resources.getString(R.string.calibrationerror_camera_too_far_left_right))
+            }
+
+            Util.CalibrationType.OrientationNotLandscape -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_orientation_not_landscape))
+            }
+
+            Util.CalibrationType.CameraResolutionTooLow -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_camera_resolution_too_low))
+            }
+
+            Util.CalibrationType.FailCalibration -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_failure))
             }
 
             Util.CalibrationType.Else -> {
                 baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_else))
             }
+
         }
     }
 

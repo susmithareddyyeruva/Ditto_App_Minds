@@ -61,11 +61,11 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
      */
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 20
-        private val REQUIRED_PERMISSIONS =
-            arrayOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+        private val REQUIRED_PERMISSIONS = emptyArray<String>()
+//            arrayOf(
+////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
 
     }
 
@@ -244,6 +244,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
             Utility.AlertType.NETWORK, Utility.AlertType.PDF -> {
                 findNavController().popBackStack(R.id.patternInstructionsFragment, true)
             }
+            else -> {}
         }
     }
 
@@ -263,6 +264,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
                     )
                 }
             }
+            else -> {}
         }
     }
 

@@ -59,6 +59,7 @@ class FAQGlossaryFragmentViewModel @Inject constructor(
                 logger.d("faq_glossary, Failed")
                 handleError(result.error)
             }
+            else -> {}
         }
     }
 

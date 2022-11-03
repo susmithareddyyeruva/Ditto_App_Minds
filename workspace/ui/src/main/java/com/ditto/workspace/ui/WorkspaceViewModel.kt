@@ -276,6 +276,7 @@ class WorkspaceViewModel @Inject constructor(
             is Result.OnError -> {
                 Log.d("WSProSettingViewModel", "Failed")
             }
+            else -> {}
         }
     }
 
@@ -318,6 +319,7 @@ class WorkspaceViewModel @Inject constructor(
                 Log.d("WorkspaceViewModel", "Tailernova Success $result")
             }
             is Result.OnError -> handleError(result.error)
+            else -> {}
         }
     }
 
@@ -468,17 +470,17 @@ class WorkspaceViewModel @Inject constructor(
         }
     }
 
-    fun cutIndividualPieces(workspaceItems: WorkspaceItems) {
-        cutCount = 0
-        cutType = core.ui.common.Utility.AlertType.CUT_BIN
-        cutCount = workspaceItems?.cutQuantity?.get(4)
-            ?.let { Character.getNumericValue(it) }
-        if (cutCount > 1 && data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
-            uiEvents.post(Event.ShowCutBinDialog)
-        } else {
-            cutIndividualPiecesConfirmed(workspaceItems, 1)
-        }
-    }
+//    fun cutIndividualPieces(workspaceItems: WorkspaceItems) {
+//        cutCount = 0
+//        cutType = core.ui.common.Utility.AlertType.CUT_BIN
+//        cutCount = workspaceItems?.cutQuantity?.get(4)
+//            ?.let { Character.getNumericValue(it) }
+//        if (cutCount > 1 && data.value?.patternPieces?.find { it.id == workspacedata?.parentPatternId }?.isCompleted!!) {
+//            uiEvents.post(Event.ShowCutBinDialog)
+//        } else {
+//            cutIndividualPiecesConfirmed(workspaceItems, 1)
+//        }
+//    }
 
     fun onPaternItemCheckboxClicked() {
         cutType = core.ui.common.Utility.AlertType.CUT_COMPLETE
@@ -505,7 +507,7 @@ class WorkspaceViewModel @Inject constructor(
         completedPieces.set(completedPieces.get() + cutCount)
         setCompletePieceCount()
         workspaceItems?.forEach { workspaceItem ->
-            if (!workspaceItem?.isCompleted) {
+            if (!(workspaceItem?.isCompleted ?: false)) {
                 data.value?.patternPieces?.find { it.id == workspaceItem.parentPatternId }
                     ?.isCompleted = true
                 workspaceItem.parentPatternId?.let { Utility.mPatternPieceList.add(it) }
@@ -530,7 +532,7 @@ class WorkspaceViewModel @Inject constructor(
     fun clearPatternsSelected() {
         data?.value?.patternPieces?.filter { it.tabCategory == tabCategory }?.toMutableList()
             ?.forEach { workspaceItem ->
-                if (workspaceItem?.isCompleted) {
+                if (workspaceItem?.isCompleted ?: false) {
                     workspaceItem?.isCompleted = false
                 }
             }
@@ -616,11 +618,11 @@ class WorkspaceViewModel @Inject constructor(
     fun setWorkspaceVirtualDimensions(workspaceItems: List<WorkspaceItems>): List<WorkspaceItems> {
         for (workspaceItem in workspaceItems) {
             workspaceItem.xcoordinate =
-                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat())
+                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat()) ?:0F
             workspaceItem.ycoordinate =
-                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat())
-            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat())
-            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat())
+                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat()) ?:0F
+            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat()) ?:0F
+            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat()) ?:0F
         }
         return workspaceItems
     }
@@ -630,11 +632,11 @@ class WorkspaceViewModel @Inject constructor(
         if (workspaceItems != null) {
             for (workspaceItem in workspaceItems) {
                 workspaceItem.xcoordinate =
-                    workspaceItem.xcoordinate?.div(scaleFactor.get().toFloat())
+                    workspaceItem.xcoordinate?.div(scaleFactor.get().toFloat()) ?:0F
                 workspaceItem.ycoordinate =
-                    workspaceItem.ycoordinate?.div(scaleFactor.get().toFloat())
-                workspaceItem.pivotX = workspaceItem.pivotX?.div(scaleFactor.get().toFloat())
-                workspaceItem.pivotY = workspaceItem.pivotY?.div(scaleFactor.get().toFloat())
+                    workspaceItem.ycoordinate?.div(scaleFactor.get().toFloat()) ?:0F
+                workspaceItem.pivotX = workspaceItem.pivotX?.div(scaleFactor.get().toFloat()) ?:0F
+                workspaceItem.pivotY = workspaceItem.pivotY?.div(scaleFactor.get().toFloat()) ?:0F
             }
         }
         return workspaceItems

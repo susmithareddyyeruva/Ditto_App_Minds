@@ -195,7 +195,7 @@ class HomeViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnTrialPatternSuccess)
                 uiEvents.post(Event.OnHideProgress)
-                var count: Int = result?.data?.size
+                var count: Int = result?.data?.size ?:0
                 logger.d("Home Screen, $count")
                 productCount = count
                 AppState.setPatternCount(productCount)
@@ -208,6 +208,7 @@ class HomeViewModel @Inject constructor(
                 logger.d("DEBUG>>>>,handleTrialPatternResultForGuestUser error")
                 handleError(result.error)
             }
+            else -> {}
         }
     }
 
@@ -242,6 +243,7 @@ class HomeViewModel @Inject constructor(
                 logger.d("DEBUG>>>>,handleTrialPatternResultError")
                 handleError(result.error)
             }
+            else -> {}
         }
     }
 
@@ -268,6 +270,7 @@ class HomeViewModel @Inject constructor(
                 //uiEvents.post(Event.OnResultFailed)
                 handleError(result.error)
             }
+            else -> {}
         }
     }
 
@@ -279,7 +282,7 @@ class HomeViewModel @Inject constructor(
         when (result) {
             is Result.OnSuccess -> {
                 uiEvents.post(Event.OnHideProgress)
-                var count: Int = result?.data?.size
+                var count: Int = result?.data?.size ?:0
                 logger.d("Home Screen, $count")
                 productCount = count
                 AppState.setPatternCount(productCount)
@@ -291,6 +294,7 @@ class HomeViewModel @Inject constructor(
                 //uiEvents.post(Event.OnResultFailed)
                 handleError(result.error)
             }
+            else -> {}
         }
     }
 
@@ -363,6 +367,8 @@ class HomeViewModel @Inject constructor(
                 val path = Uri.fromFile(result)
                 patternUri.set(path.toString())
                 logger.d("PATTERN, ${patternUri.get() ?: ""}")
+                logger.d("PATTERN File Name ${filename ?: ""}")
+                logger.d("PATTERN Folder Name ${patternFolderName ?: ""}")
             }
         } catch (e: Exception) {
             logger.d("HomeViewModel, ${e.message}")
