@@ -54,12 +54,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
-        if (BuildConfig.DEBUG) {
-            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
-        }else {
+//        if (BuildConfig.DEBUG) {
+//            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+//        }else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
             authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
-        }
+//        }
         return homeService.getHomeScreenDetails(requestData, AUTH + authorizationToken)
             .doOnSuccess {
                 if (!it.errorMsg.isNullOrEmpty()) {
@@ -134,7 +134,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
 
                 logger.d("Tailornova, insertofflinePatternsData complete: $it")
             }.map {
-                it.trial?.let { it1 -> Result.withValue(it1) }
+                it.trial.let { it1 -> Result.withValue(it1) }
             }.onErrorReturn {
                 var errorMessage = ERROR_FETCH
                 logger.d(it.localizedMessage)

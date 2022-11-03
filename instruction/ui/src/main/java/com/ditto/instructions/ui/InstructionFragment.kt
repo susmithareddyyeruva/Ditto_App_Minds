@@ -265,7 +265,7 @@ class InstructionFragment constructor(
                 R.id.action_destination_instruction_self,
                 bundleOf(
                     "InstructionId" to 2,
-                    "isFromHome" to viewModel?.isFromHome.get()
+                    "isFromHome" to viewModel?.isFromHome?.get()
                 )
             )
 
@@ -437,7 +437,7 @@ class InstructionFragment constructor(
      */
     private fun setupToolbar() {
         arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
-        if (viewModel?.isFromHome?.get()) {
+        if (viewModel?.isFromHome?.get() ?:false) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -481,6 +481,7 @@ class InstructionFragment constructor(
                 startActivity(Intent(Settings.ACTION_SETTINGS))
                 enableCalibrateButton(true)
             }
+            else -> {}
         }
     }
 

@@ -495,6 +495,10 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
 
         when (alertType) {
             Utility.AlertType.SOC_CONNECT -> {
+                //viewModel.disConnectToProjector(NetworkUtility.nsdSericeHostName,NetworkUtility.nsdSericePortName,false)
+                viewModel.isCalibrated.set(false)
+                baseViewModel.isCalibrated.set(false)
+                //
                 viewModel.sendWaitingImage()
                 viewModel.connectToProjector(
                     receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
@@ -516,6 +520,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 startActivity(Intent(Settings.ACTION_SETTINGS))
                 activity?.onBackPressed()
             }
+            else -> {}
         }
     }
 
@@ -537,6 +542,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 activity?.onBackPressed()
 
             }
+            else -> {}
         }
     }
 

@@ -273,8 +273,8 @@ class WorkspaceEditor private constructor(builder: Builder) {
                 DragData(
                     Draggable.SELECT_ALL,
                     it,
-                    parentView?.width,
-                    parentView?.height,
+                    parentView?.width ?:0,
+                    parentView?.height ?:0,
                     null,
                     null
                 )
@@ -384,6 +384,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
         when (viewType) {
             IMAGE -> rootView =
                 mLayoutInflater.inflate(R.layout.workspace_drag_item_image, null)
+            else -> {}
         }
         if (rootView != null) {
             rootView.tag = viewType

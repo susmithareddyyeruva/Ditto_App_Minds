@@ -65,6 +65,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
             is Result.OnError -> {
                 logger.d("WSProSettingViewModel, Failed")
             }
+            else -> {}
         }
     }
 

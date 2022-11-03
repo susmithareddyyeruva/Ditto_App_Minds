@@ -40,7 +40,7 @@ class MyFolderDetailListAdapter : RecyclerView.Adapter<MyFolderDetailListAdapter
         holder.patternsItemBinding.viewModel = viewModel
         val data=patterns[position]
 
-        Glide.with(holder.patternsItemBinding?.imagePattern.context)
+        Glide.with(holder.patternsItemBinding?.imagePattern?.context)
             .load(patterns.get(position).image)
             .asBitmap()
             .diskCacheStrategy(DiskCacheStrategy.NONE)

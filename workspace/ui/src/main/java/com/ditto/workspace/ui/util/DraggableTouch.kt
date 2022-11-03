@@ -518,11 +518,11 @@ private class MultiTouchGestureDetectorListener(draggableListener: DraggableList
     private fun move(view: View?, isScaleEnd: Boolean, rotateAngle: Float) {
         if (isScaleEnd) {
             view?.pivotX = (view?.width?.toFloat()?.div(2))!!
-            view.pivotY = (view.height?.toFloat().div(2))
+            view?.pivotY = (view?.height?.toFloat()?.div(2))!!
             view?.rotation = view?.rotation?.let { round(it, 45).toFloat() }!!
         } else {
             view?.pivotX = (view?.width?.toFloat()?.div(2))!!
-            view.pivotY = (view.height?.toFloat().div(2))
+            view?.pivotY = (view?.height?.toFloat()?.div(2))!!
             val rotation =
                 rotateAngle.let { view.rotation.plus(it).let { adjustAngle(it) } }
             view.rotation = rotation
@@ -557,7 +557,7 @@ private class MyGestureListener(context: Context, imageName: String?, patternNam
     var imageName = imageName
     var patternName = patternName
 
-    override fun onDoubleTap(e: MotionEvent?): Boolean {
+    override fun onDoubleTap(e: MotionEvent): Boolean {
         Log.d("TAG", "DoubleTap: ")
         Utility.onDrag.set(false)
         if (!Utility.isPopupShowing.get()) {
@@ -573,19 +573,19 @@ private class MyGestureListener(context: Context, imageName: String?, patternNam
         return super.onDoubleTap(e)
     }
 
-    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+    override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
         Log.d("TAG", "onSingleTapConfirmed: ")
         Utility.onDrag.set(false)
         return super.onSingleTapConfirmed(e)
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+    override fun onSingleTapUp(e: MotionEvent): Boolean {
         Log.d("TAG", "onSingleTapUp: ")
         Utility.onDrag.set(false)
         return super.onSingleTapUp(e)
     }
 
-    override fun onLongPress(e: MotionEvent?) {
+    override fun onLongPress(e: MotionEvent) {
         Log.d("TAG", "OnLongPress: ")
         super.onLongPress(e)
     }

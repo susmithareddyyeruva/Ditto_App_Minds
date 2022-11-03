@@ -313,9 +313,14 @@ class TokenAuthenticator : Authenticator {
         return runBlocking {
 
             // 1. Refresh your access_token using a synchronous api request
-            val responseMain = getUpdatedToken()
+            var responseMain:TokenResult? = null
+            try {
+                responseMain= getUpdatedToken()
+            }catch (e: Exception){
+                Log.d("TOKEN  Exception==>>>>> ", e.toString())
+            }
             val expCal = Calendar.getInstance()
-            expCal.add(Calendar.MINUTE, responseMain.response?.expiresIn ?: 0)
+            expCal.add(Calendar.MINUTE, responseMain?.response?.expiresIn ?: 0)
             val expirytime = expCal.time.time
             val token = responseMain?.response?.accessToken ?: ""
             Log.d("TOKEN==", token)
@@ -327,29 +332,30 @@ class TokenAuthenticator : Authenticator {
                 )
             }
             response.request.newBuilder()
-                .header("Authorization", "Bearer ${responseMain.response?.accessToken}")
+                .header("Authorization", "Bearer ${responseMain?.response?.accessToken}")
                 .build()
         }
     }
 
     private suspend fun getUpdatedToken(): TokenResult {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(HmacSignatureInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-            .build()
-
+        // add logging interceptor only for DEBUG builds
+        if (BuildConfig.DEBUG){
+            httpClient.addInterceptor(logging)
+        }
         val retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.TOKEN_BASEURL)
-            .client(httpClient)
+            .client(httpClient.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-
         val service = retrofit.create(ApiService::class.java)
         return service.refreshTokenAuthentication()
-
     }
 
 }

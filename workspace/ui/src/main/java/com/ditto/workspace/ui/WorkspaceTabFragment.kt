@@ -288,7 +288,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun showWaitingMessage(message: String) {
         try {
-            Utility.showSnackBar(message, binding?.workspaceRoot)
+            Utility.showSnackBar(message, binding?.workspaceRoot as View)
         } catch (e: java.lang.Exception) {
             logger.d("Error : " + e.message)
         }
@@ -1261,7 +1261,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         animatorSet.playTogether(bounceX, bounceY)
         animatorSet.playSequentially(fadeOutCoachMarkEndPopup)
         animatorSet.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 (parentFragment as WorkspaceFragment).maskCoachMark(false)
             }
         })
@@ -1533,7 +1533,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             if (showToast) {
                 Utility.showSnackBar(
                     getString(R.string.overlaping_piece_alert),
-                    binding?.workspaceRoot
+                    binding?.workspaceRoot as View
                 )
             }
         } catch (e: java.lang.Exception) {
@@ -2110,11 +2110,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else {
             arrayOf(Manifest.permission.BLUETOOTH)
         }
-        private val REQUIRED_PERMISSIONS_DOWNLOAD =
-            arrayOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+        private val REQUIRED_PERMISSIONS_DOWNLOAD = emptyArray<String>()
+//            arrayOf(
+////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
 
 
     }
@@ -2546,6 +2546,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.DOWNLOADFAILED -> {
                 showSaveAndExitPopup()
             }
+            else -> {}
         }
 
     }
@@ -2589,6 +2590,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isCompleteButtonClickable = true
             }
 
+            else -> {}
         }
     }
 

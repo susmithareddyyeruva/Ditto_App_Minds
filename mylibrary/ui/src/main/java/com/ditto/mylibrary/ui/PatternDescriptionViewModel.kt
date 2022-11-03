@@ -192,6 +192,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 }
             }
             is Result.OnError -> handleError(result.error)
+            else -> {}
         }
     }
 
@@ -293,6 +294,7 @@ class PatternDescriptionViewModel @Inject constructor(
             is Result.OnError -> {
 
             }
+            else -> {}
         }
     }
 

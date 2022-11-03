@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Android Project/ditto-android-new2/menuitems/ui/src/main/res/layout/fragment_account_info.xml" value="0.15833333333333333" />
         <entry key="..\:/Android Project/ditto-android/core-lib/src/main/res/menu/bottom_nav_menu.xml" value="0.11875" />
         <entry key="..\:/Android Project/ditto-android/dittoProjectorApp/src/main/res/layout/activity_splash.xml" value="0.11875" />
@@ -39,6 +40,11 @@
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/fragment_workspace.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_drag_item_image.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_layout.xml" value="0.18" />
+=======
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/videoplayer/src/main/res/layout/basic_player.xml" value="0.1015625" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/videoplayer/src/main/res/layout/custom_layout.xml" value="0.1" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_layout.xml" value="0.1" />
+>>>>>>> e2394f8ca736fa3e04adabab2fc30cbc9896bd86
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_tab_item.xml" value="0.1" />
       </map>
     </option>
@@ -48,21 +54,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

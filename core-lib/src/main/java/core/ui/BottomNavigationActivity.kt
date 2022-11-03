@@ -231,6 +231,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 navController.navigate(R.id.action_splashActivity_to_LoginFragment)
             }
 
+            else -> {}
         }
 
     }
