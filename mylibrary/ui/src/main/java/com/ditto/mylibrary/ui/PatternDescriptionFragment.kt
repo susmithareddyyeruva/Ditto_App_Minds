@@ -361,7 +361,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         } else {
             setData()
-            if (viewModel.clickedProduct?.status.equals("Expired", true) || viewModel.clickedProduct?.status.equals("Pause", true)) {//new post
+            if (viewModel.clickedProduct?.status.equals("Expired", true) || viewModel.clickedProduct?.status.equals("Paused", true)) {//new post
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
                     true,
