@@ -361,7 +361,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             )
         } else {
             setData()
-            if (viewModel.clickedProduct?.status.equals("Expired", true) || viewModel.clickedProduct?.status.equals("Paused", true)) {//new post
+            if (viewModel.clickedProduct?.status.equals("Expired", true)) {//new post
+                viewModel.expiredPausedStatus.set("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription.")
+                setVisibilityForViews(
+                    "RENEW SUBSCRIPTION",
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+            } else if (viewModel.clickedProduct?.status.equals("Paused", true)) {
+                viewModel.expiredPausedStatus.set("Your subscription has been PAUSED. Please contact Customer Service to reactivate your subscription.")
                 setVisibilityForViews(
                     "RENEW SUBSCRIPTION",
                     true,

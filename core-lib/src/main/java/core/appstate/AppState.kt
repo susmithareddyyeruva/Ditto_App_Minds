@@ -111,8 +111,8 @@ object AppState {
     }
 
     fun getSubscriptionStatus(): String {
-        val dateEnd = pref?.getString(SUBSCRIPTION_STATUS)
-        return dateEnd ?: ""
+        val subscriptionStatus = pref?.getString(SUBSCRIPTION_STATUS)
+        return subscriptionStatus ?: ""
     }
     fun setSubscriptionStatus(date: String) {
         pref?.saveString(SUBSCRIPTION_STATUS, date)
