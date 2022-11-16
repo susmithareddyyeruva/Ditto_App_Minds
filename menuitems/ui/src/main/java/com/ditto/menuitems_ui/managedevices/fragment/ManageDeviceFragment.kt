@@ -260,6 +260,18 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                     bindAdapterAfterWifi()
                 }
             }
+        } else if(requestCode == REQUEST_ENABLE_BT){
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            if (mBluetoothAdapter?.isEnabled == false) {
+                activity?.onBackPressed()
+            }else{
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
         }
     }
 
@@ -278,8 +290,9 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     }
 
     companion object {
-        private const val REQUEST_ACTIVITY_RESULT_CODE = 121
         private const val REQUEST_CODE_PERMISSIONS = 111
+        private const val REQUEST_ACTIVITY_RESULT_CODE = 121
+        private const val REQUEST_ENABLE_BT = 151
         private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,
@@ -450,7 +463,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
         }
     }
 
-        /**
+    /**
      * [Function] Popup to show Bluetooth Connection
      */
     private fun showBluetoothDialogue() {
@@ -509,11 +522,16 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
-                } else {
-                    showConnectivityPopup()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+                }else{
+                    mBluetoothAdapter.enable()
+                    if (!Utility.getWifistatus(requireContext())) {
+                        showWifiDialogue()
+                    } else {
+                        showConnectivityPopup()
+                    }
                 }
             }
             Utility.AlertType.WIFI -> {
@@ -550,10 +568,10 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     override fun onResume() {
         super.onResume()
         //commented this code as it was going in loop
-      /*  if (viewModel.isFromBackground) {
-            viewModel.mode.set(MODE_SERVICE)
-            checkBluetoothWifiPermission()
-        }*/
+        /*  if (viewModel.isFromBackground) {
+              viewModel.mode.set(MODE_SERVICE)
+              checkBluetoothWifiPermission()
+          }*/
         viewModel.numberOfProjectors.set(
             getString(
                 R.string.str_projectorsfound,

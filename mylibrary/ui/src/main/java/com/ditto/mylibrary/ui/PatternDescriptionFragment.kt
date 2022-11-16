@@ -32,6 +32,7 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.ProdDomain
 import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
@@ -278,6 +279,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
+        private const val REQUEST_ENABLE_BT = 151
         private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,
@@ -921,6 +923,19 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (data?.data.toString().equals("skip")) {
                 enterWorkspace()
             }
+        }else if(requestCode == REQUEST_ENABLE_BT){
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            if (mBluetoothAdapter?.isEnabled == false) {
+                logger.d("Later clicked")
+                enterWorkspace()
+            }else{
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
         }
     }
 
@@ -1116,11 +1131,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
                 } else {
-                    showConnectivityPopup()
+                    mBluetoothAdapter.enable()
+                    if (!Utility.getWifistatus(requireContext())) {
+                        showWifiDialogue()
+                    } else {
+                        showConnectivityPopup()
+                    }
                 }
             }
             Utility.AlertType.WIFI -> {
@@ -1290,11 +1310,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
                 } else {
-                    showConnectivityPopup()
+                    mBluetoothAdapter.enable()
+                    if (!Utility.getWifistatus(requireContext())) {
+                        showWifiDialogue()
+                    } else {
+                        showConnectivityPopup()
+                    }
                 }
             }
             Utility.AlertType.WIFI -> {

@@ -421,7 +421,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
             ) {
-                navViewHeaderBinding.subscriptionDays.text ="0 day left"
+                navViewHeaderBinding.subscriptionDays.text ="0 days left"
             } else {
                 val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
                 navViewHeaderBinding.subscriptionDays.text ="$days days left"

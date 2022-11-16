@@ -470,12 +470,18 @@ class InstructionFragment constructor(
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
                 } else {
-                    showConnectivityPopup()
+                    mBluetoothAdapter.enable()
+                    if (!Utility.getWifistatus(requireContext())) {
+                        showWifiDialogue()
+                    } else {
+                        showConnectivityPopup()
+                    }
                 }
+
             }
             Utility.AlertType.WIFI -> {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
@@ -736,12 +742,26 @@ class InstructionFragment constructor(
                     howTobuttonclick()
                 }
             }
+        }else if(requestCode == REQUEST_ENABLE_BT) {
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            if (mBluetoothAdapter?.isEnabled == false) {
+                enableCalibrateButton(true)
+                skipToHowToButtonclick()
+            } else {
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
         }
     }
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
         private const val REQUEST_ACTIVITY_RESULT_CODE = 121
+        private const val REQUEST_ENABLE_BT = 151
         private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,

@@ -19,6 +19,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment
 import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
@@ -79,10 +80,30 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
        // checkBluetoothWifiPermission()
         logger.d(bottomNavViewModel.userFirstNameBase.get().toString())
     }
-
+    /**
+     * [Function] onActivityResult from connectivity module
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_ENABLE_BT) {
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            if (mBluetoothAdapter?.isEnabled == false) {
+                logger.d("Later clicked")
+                viewModel.isBleLaterClicked.set(true)
+                viewModel.onClickLater()
+            } else {
+                if (!Utility.getWifistatus(requireContext())) {
+                    viewModel.isWifiLaterClicked.set(false)
+                    showWifiDialogue()
+                }
+            }
+        }
+    }
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
+        private const val REQUEST_ENABLE_BT = 151
         private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,
@@ -162,7 +183,9 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                 )
 
                 if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
-                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),"title" to "ditto tour","from" to "tutorial")
+                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),
+                        "title" to "ditto tour",
+                        "from" to "tutorial")
                     /*findNavController().navigate(
                         R.id.action_destination_onboarding_to_nav_graph_id_video,
                         bundle
@@ -351,12 +374,18 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
         } else {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
-            mBluetoothAdapter.enable()
-            if (!Utility.getWifistatus(requireContext())) {
-                viewModel.isWifiLaterClicked.set(false)
-                showWifiDialogue()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+            } else {
+                mBluetoothAdapter.enable()
+                if (!Utility.getWifistatus(requireContext())) {
+                    viewModel.isWifiLaterClicked.set(false)
+                    showWifiDialogue()
+                }
             }
-        }    }
+        }
+    }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
