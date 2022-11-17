@@ -1554,11 +1554,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
                 } else {
-                    showConnectivityPopup()
+                    mBluetoothAdapter.enable()
+                    if (!Utility.getWifistatus(requireContext())) {
+                        showWifiDialogue()
+                    } else {
+                        showConnectivityPopup()
+                    }
                 }
             }
             Utility.AlertType.WIFI -> {
@@ -2101,6 +2106,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 121
         private const val REQUEST_ACTIVITY_RESULT_CODE = 131
         private const val REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL = 141
+        private const val REQUEST_ENABLE_BT = 151
         private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,
@@ -2455,6 +2461,20 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
                 logger.d("")
             }
+        }else if(requestCode == REQUEST_ENABLE_BT){
+            val mBluetoothAdapter =
+                BluetoothAdapter.getDefaultAdapter()
+            if (mBluetoothAdapter?.isEnabled == false) {
+                logger.d("Later clicked")
+                baseViewModel.activeSocketConnection.set(false)
+                viewModel.isBleLaterClicked.set(true)
+            }else{
+                if (!Utility.getWifistatus(requireContext())) {
+                    showWifiDialogue()
+                } else {
+                    showConnectivityPopup()
+                }
+            }
         }
     }
 
@@ -2480,11 +2500,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.BLE -> {
                 val mBluetoothAdapter =
                     BluetoothAdapter.getDefaultAdapter()
-                mBluetoothAdapter.enable()
-                if (!Utility.getWifistatus(requireContext())) {
-                    showWifiDialogue()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mBluetoothAdapter?.isEnabled == false) {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
                 } else {
-                    showConnectivityPopup()
+                    mBluetoothAdapter.enable()
+                    if (!Utility.getWifistatus(requireContext())) {
+                        showWifiDialogue()
+                    } else {
+                        showConnectivityPopup()
+                    }
                 }
             }
             Utility.AlertType.WIFI -> {

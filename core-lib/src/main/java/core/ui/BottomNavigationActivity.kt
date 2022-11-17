@@ -417,10 +417,11 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
             navViewHeaderBinding.textEmail.text = "$email"
             navViewHeaderBinding.textName.text =AppState.getFirstName()
 //            navViewHeaderBinding.textName.text =AppState.getFirstName()  + AppState.getLastName()
+            Log.d("getSubscriptionStatus","getSubscriptionStatus: ${AppState.getSubscriptionStatus()}")
             if (AppState.getSubDate()
                     .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
             ) {
-                navViewHeaderBinding.subscriptionDays.text ="0 day left"
+                navViewHeaderBinding.subscriptionDays.text ="0 days left"
             } else {
                 val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
                 navViewHeaderBinding.subscriptionDays.text ="$days days left"

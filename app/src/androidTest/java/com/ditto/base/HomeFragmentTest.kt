@@ -61,7 +61,7 @@ class HomeFragmentTest : BaseTest() {
         onView(withId(R.id.text_name)).check(matches(withText("subcust")))
         onView(withId(R.id.text_email)).check(matches(withText("subCustomer@gmail.com")))
         onView(withId(R.id.text_phone)).check(matches(withText("8653344568")))
-        onView(withId(R.id.subscription_days)).check(matches(withText("0 day left")))
+        onView(withId(R.id.subscription_days)).check(matches(withText("0 days left")))
         onView(withText(R.string.about_the_app_amp_policies)).check(matches((isDisplayed())))
         onView(withText(R.string.str_menu_settings)).check(matches((isDisplayed())))
         onView(withText(R.string.str_menu_faq)).check(matches((isDisplayed())))

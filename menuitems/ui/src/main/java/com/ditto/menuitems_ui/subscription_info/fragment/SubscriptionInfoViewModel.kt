@@ -1,6 +1,7 @@
 package com.ditto.menuitems_ui.subscription_info.fragment
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableField
 import com.ditto.menuitems.domain.SubscriptionInfoUsecase
 import core.appstate.AppState
@@ -56,15 +57,20 @@ class SubscriptionInfoViewModel @Inject constructor(
     }
 
     private fun setsubscriptionEndDateDesc() {
-        if (AppState.getSubDate()
-                .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
-        ) {
-            subscriptionEndDateDesc.set("Your subscription will get expired in 0 days. Please renew the subscription to continue working on it.")
-
-        } else {
-            val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
-            subscriptionEndDateDesc.set("Your subscription will get expired in $days days. Please renew the subscription to continue working on it.")
-
+        Log.d("getSubscriptionStatus","getSubscriptionStatus: ${AppState.getSubscriptionStatus()}")
+        if(AppState.getSubscriptionStatus().equals("Expired", true)){
+            subscriptionEndDateDesc.set("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription.")
+        }else if(AppState.getSubscriptionStatus().equals("Paused", true)){
+            subscriptionEndDateDesc.set("Your subscription has been PAUSED. Please contact Customer Service to reactivate your subscription.")
+        }else{
+            if (AppState.getSubDate()
+                    .isEmpty() || AppState.getSubDate() == null || AppState.isSubscriptionValid() == false
+            ) {
+                subscriptionEndDateDesc.set("Your subscription will get EXPIRED in 0 days. Please contact Customer Service to reactivate your subscription.")
+            } else {
+                val days = Utility.getTotalNumberOfDays(AppState.getSubDate())
+                subscriptionEndDateDesc.set("Your subscription will get EXPIRED in $days days. Please contact Customer Service to reactivate your subscription.")
+            }
         }
     }
 
