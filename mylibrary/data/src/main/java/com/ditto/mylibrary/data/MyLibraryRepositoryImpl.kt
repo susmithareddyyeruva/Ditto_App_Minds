@@ -63,12 +63,12 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
 
-//        if (BuildConfig.DEBUG) {
-//            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
-//        } else {
+        if (BuildConfig.DEBUG) {
+            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+        } else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
             authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
-//        }
+        }
         return myLibraryService.getAllPatternsPatterns(
             filterRequestData,
             AUTH + authorizationToken
@@ -260,13 +260,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationKey = AppState.getKey()
 
-//        if (BuildConfig.DEBUG) {
-//            authorizationKey = EncodeDecodeUtil.encodeBase64(input)
-//            Log.d("base64", "encoded: $authorizationKey ")
-//        } else {
+        if (BuildConfig.DEBUG) {
+            authorizationKey = EncodeDecodeUtil.encodeBase64(input)
+            Log.d("base64", "encoded: $authorizationKey ")
+        } else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
             authorizationKey = EncodeDecodeUtil.hmacSha256(key, input)
-//        }
+        }
         return myLibraryService.getFoldersList(
             requestdata, AUTH + authorizationKey,
             method = methodName
@@ -331,13 +331,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationKey = AppState.getKey()
 
-//        if (BuildConfig.DEBUG) {
-//            authorizationKey = EncodeDecodeUtil.encodeBase64(input)
-//            Log.d("base64", "encoded: $authorizationKey ")
-//        } else {
+        if (BuildConfig.DEBUG) {
+            authorizationKey = EncodeDecodeUtil.encodeBase64(input)
+            Log.d("base64", "encoded: $authorizationKey ")
+        } else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
             authorizationKey = EncodeDecodeUtil.hmacSha256(key, input)
-//        }
+        }
 
         return myLibraryService.addFolder(
             requestdata, AUTH + authorizationKey,
@@ -407,13 +407,13 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
-//        if (BuildConfig.DEBUG) {
-//            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
-//
-//        } else {
+        if (BuildConfig.DEBUG) {
+            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+
+        } else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
             authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
-//        }
+        }
         return myLibraryService.renameFolder(
             renameRequest, AUTH + authorizationToken,
             method = methodName
