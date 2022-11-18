@@ -78,7 +78,8 @@ class Utility @Inject constructor(
         RUNTIMEPERMISSION,
         SOFTWARE_UPDATE,
         GUEST_MYFOLDER,
-        PERMISSION_DENIED
+        PERMISSION_DENIED,
+        SELECT_LAYOUT
     }
 
     enum class Iconype {
@@ -567,7 +568,8 @@ class Utility @Inject constructor(
                 val lay_withoutimage =
                     mDialogView.findViewById(R.id.layout_withoutImage) as RelativeLayout
                 if (alertType == AlertType.BLE || alertType == AlertType.WIFI || alertType == AlertType.CUT_COMPLETE
-                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN || alertType == AlertType.DELETE
+                    || alertType == AlertType.SOC_CONNECT || alertType == AlertType.MIRROR || alertType == AlertType.CUT_BIN
+                    || alertType == AlertType.DELETE || alertType == AlertType.SELECT_LAYOUT
                 ) {
                     lay_withimage.visibility = View.GONE
                     lay_withoutimage.visibility = View.VISIBLE
