@@ -63,6 +63,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
+    val expiredPausedStatus: ObservableField<String> = ObservableField("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription")
     val tailornovaDesignpatternName: ObservableField<String> = ObservableField("")
     val prodSize: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)

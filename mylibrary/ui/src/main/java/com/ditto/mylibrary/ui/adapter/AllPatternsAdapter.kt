@@ -115,6 +115,16 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
                         R.color.text_expired
                     ))
                 )
+            } else if (patterns[position].status?.toUpperCase().equals("PAUSED")) {
+                holder.patternsItemBinding.textviewPatternType.visibility = View.VISIBLE
+                holder.patternsItemBinding.textviewPatternType.text =
+                    patterns[position].status?.toUpperCase()
+                holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
+                    (ContextCompat.getColor(
+                        holder.patternsItemBinding.textviewPatternType.context,
+                        R.color.text_expired
+                    ))
+                )
             } else {
                 holder.patternsItemBinding.textviewPatternType.visibility = View.GONE
 

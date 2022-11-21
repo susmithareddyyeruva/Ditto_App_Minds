@@ -12,7 +12,6 @@ import com.ditto.login.domain.model.LandingContentDomain
 import com.ditto.login.domain.model.LoginResultDomain
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.storage.data.model.User
-import com.google.gson.Gson
 
 fun User.toUserDomain(): LoginUser {
     return LoginUser(
@@ -136,6 +135,7 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cVectorKey = this.cVectorKey,
 
         cSubscriptionValid = this.cSubscriptionValid,
+        cSubscriptionStatus = this.cSubscriptionStatus,
         cSubscriptionPlanEndDate = this.cSubscriptionPlanEndDate,
         cSubscriptionPlanStartDate = this.cSubscriptionPlanStartDate,
         cSubscriptionPlanPrice = this.cSubscriptionPlanPrice,
