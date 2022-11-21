@@ -37,6 +37,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
     lateinit var binding: FragmentPatternInstructionsBinding
     var downloadFileName: String? = null
     var patternFolderName: String? = null
+    var patternDownloadFolderName: String? = null
     @Inject
     lateinit var loggerFactory: LoggerFactory
     val logger: Logger by lazy {
@@ -84,6 +85,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         toolbarViewModel.isShowActionMenu.set(false)
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
+        patternDownloadFolderName = arguments?.getString("PatternFolderName")
         loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }

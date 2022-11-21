@@ -124,6 +124,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
         arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
+        arguments?.getString(PATTERN_FOLDER)?.let { viewModel.patternDownloadFolderName = it }
+
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
         }else{
@@ -177,7 +179,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     viewModel.referenceImage.get(),
                     true,
                     isFromWS = true,
-                    viewModel.patternName.get()
+                    viewModel.patternName.get(),
+                    viewModel.patternDownloadFolderName
                 )
             }
         })
@@ -1004,7 +1007,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 if (findNavController().currentDestination?.id == R.id.workspaceFragment) {
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
-                        bundleOf("PatternName" to viewModel.patternName.get())
+                        bundleOf("PatternName" to viewModel.patternName.get(),
+                            "PatternFolderName" to viewModel.patternDownloadFolderName)
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -1889,7 +1893,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             workSpaceImageData.showProjection,
                             workSpaceImageData.isDraggedPiece,
                             viewModel.patternName.get(),
-                            this@WorkspaceTabFragment
+                            this@WorkspaceTabFragment,
+                            viewModel.patternDownloadFolderName
                         )
                         if (isSpliceArrowClicked) {
                             mWorkspaceEditor?.highlightSplicePiece()
@@ -2092,6 +2097,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PATTERN_ID = "PatternId"
         private const val ORDER_NO = "clickedOrderNumber"
         private const val MANNEQUIN_ID = "mannequinId"
+        private const val PATTERN_FOLDER = "patternDownloadFolderName"
         private const val SPLICE_NO = "NO"
         private const val SPLICE_YES = "YES"
         private const val SPLICE_LEFT_TO_RIGHT = "Splice Left-to-Right"
@@ -2611,10 +2617,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         var availableUri: Uri? = null
         availableUri = Utility.isImageFileAvailable(
             imageName,
-            "${viewModel.patternName.get()}",
+            viewModel.patternDownloadFolderName,
             requireContext()
         )
-        Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri")
+        Log.d("imageUri123", " ${viewModel.patternDownloadFolderName} availableUri: $availableUri")
         return if (imageName.endsWith(".svg", true)) {
             Glide
                 .with(context)
@@ -2652,8 +2658,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
         availableUri =
-            Utility.isImageFileAvailable(imageName, "${viewModel.patternName.get()}", context)
-        Log.d("imageUri123", " ${viewModel.patternName.get()} availableUri: $availableUri >>>> ")
+            Utility.isImageFileAvailable(imageName, viewModel.patternDownloadFolderName, context)
+        Log.d("imageUri123", " ${viewModel.patternDownloadFolderName} availableUri: $availableUri >>>> ")
         //}
 
         if (imageName?.endsWith(".svg", true)!!) {

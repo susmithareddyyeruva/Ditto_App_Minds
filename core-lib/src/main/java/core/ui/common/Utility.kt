@@ -542,6 +542,9 @@ class Utility @Inject constructor(
             return path
         }
 
+        fun getPatternDownloadFolderName(designId: String, purchaseId: String): String {
+            return "${designId}${purchaseId}"
+        }
 
         @SuppressLint("ResourceType")
         fun getCommonAlertDialogue(
