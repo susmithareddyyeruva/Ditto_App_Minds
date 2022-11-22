@@ -43,13 +43,29 @@ class Util {
                     Log.d("Calibration", "CameraResolutionTooLow")
                     callback.onCalibrationReponse(CalibrationType.CameraResolutionTooLow)
                 }
+                //----------------
+                CalibrationErrorCode.MatIsRotated180Degrees,
+                -> {
+                    Log.d("Calibration", "FailCalibration")
+                    callback.onCalibrationReponse(CalibrationType.FailCalibration)
+                }
+
+                CalibrationErrorCode.ImageTooBlurr -> {
+                    Log.d("Calibration", "FailCalibration")
+                    callback.onCalibrationReponse(CalibrationType.FailCalibration)
+                }
+
+                CalibrationErrorCode.ImageTooBright -> {
+                    Log.d("Calibration", "FailCalibration")
+                    callback.onCalibrationReponse(CalibrationType.FailCalibration)
+                }
 
                 CalibrationErrorCode.FailCalibration -> {
                     Log.d("Calibration", "FailCalibration")
                     callback.onCalibrationReponse(CalibrationType.FailCalibration)
                 }
 
-                else->{
+                else -> {
                     Log.d("Calibration", "CalibrationErrorCode Else - $calibrationResponse")
                     callback.onCalibrationReponse(CalibrationType.Else)
                 }
@@ -69,6 +85,9 @@ class Util {
         CameraTooFarLeftOrRight,
         OrientationNotLandscape,
         CameraResolutionTooLow,
+        MatIsRotated180Degrees,
+        ImageTooBlurr,
+        ImageTooBright,
         FailCalibration,
         Else
     }

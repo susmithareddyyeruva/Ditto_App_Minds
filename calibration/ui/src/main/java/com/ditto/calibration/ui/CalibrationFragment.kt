@@ -88,14 +88,14 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     var isFromHome: Boolean = false
     lateinit var backpressCall: OnBackPressedCallback
     private var isBackPressed: Boolean = true
-    private var alertImageConfirmation:AlertDialog? = null
+    private var alertImageConfirmation: AlertDialog? = null
 
     /**
      * [Function] onCreateView where setting up the viewmodel and binding to the layout
      */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = CalibrationFragmentBinding.inflate(
             inflater
@@ -217,7 +217,8 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
-            arrayOf(Manifest.permission.CAMERA,
+            arrayOf(
+                Manifest.permission.CAMERA,
 //                Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -266,7 +267,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                         viewModel.isShowFinalImage.set(true)
                         viewModel.isShowDialog.set(false) //Lottie dismissed
                         hidetoolbar()
-                       // Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
+                        // Utility.galleryAddPic(requireContext(), photoFile.absolutePath)
                         if (count == 1) {
                             imageArray.add(finalbitmap)
                             showImageConfirmationclicked(finalbitmap)
@@ -575,8 +576,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
      * [Function] Call back when user allow/deny the permission
      */
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+        requestCode: Int, permissions: Array<String>,
+        grantResults:
+        IntArray,
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
@@ -620,7 +622,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     }
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
-        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+        if (alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
             Utility.navigateToAppSettings(requireContext())
         }
         baseViewModel.isSetUpError.set(false)
@@ -763,6 +765,19 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
                 showAlert(resources.getString(R.string.calibrationerror_camera_resolution_too_low))
             }
 
+            Util.CalibrationType.MatIsRotated180Degrees -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_mat_rotated_180_deg))
+            }
+
+            Util.CalibrationType.ImageTooBlurr -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_image_too_blur))
+            }
+            Util.CalibrationType.ImageTooBright -> {
+                baseViewModel.isSetUpError.set(true)
+                showAlert(resources.getString(R.string.calibrationerror_image_too_bright))
+            }
             Util.CalibrationType.FailCalibration -> {
                 baseViewModel.isSetUpError.set(true)
                 showAlert(resources.getString(R.string.calibrationerror_failure))
@@ -798,7 +813,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setCancelable(false)
         //if(alertImageConfirmation == null){
-            alertImageConfirmation = dialogBuilder.create()
+        alertImageConfirmation = dialogBuilder.create()
         //}
         alertImageConfirmation?.setView(layout)
         alertImageConfirmation?.show()
@@ -816,9 +831,9 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
             alertImageConfirmation?.dismiss()
             restartCamera()
             // todo where to redirect
-          /*  if (baseViewModel.activeSocketConnection.get()) {
-                GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "ditto_project") }
-            }*/
+            /*  if (baseViewModel.activeSocketConnection.get()) {
+                  GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "ditto_project") }
+              }*/
         }
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
