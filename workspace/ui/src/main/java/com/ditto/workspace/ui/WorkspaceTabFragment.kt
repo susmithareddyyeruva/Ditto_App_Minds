@@ -479,6 +479,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }?.size ?: 0 > 0 &&
                 viewModel.tabCategory == getString(R.string.garments)
             ) {
+                viewModel.showReferenceLayout.set(true)
                 binding.txtSize45.text = getString(R.string._45)
                 binding.txtSize60.text = getString(R.string._60)
                 val garments =
@@ -561,6 +562,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     ?.isNotEmpty() == true &&
                 viewModel.tabCategory == getString(R.string.lining)
             ) {
+                viewModel.showReferenceLayout.set(true)
                 binding.txtSize45.text = getString(R.string._45)
                 binding.txtSize60.text = getString(R.string._60)
                 val lining =
@@ -660,6 +662,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     ?.isNotEmpty() == true &&
                 viewModel.tabCategory == getString(R.string.interfacing)
             ) {
+                viewModel.showReferenceLayout.set(true)
                 binding.txtSize45.text = getString(R.string._20)
                 binding.txtSize60.text = getString(R.string._45text)
                 val interfacing =
