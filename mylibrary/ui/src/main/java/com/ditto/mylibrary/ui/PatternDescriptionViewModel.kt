@@ -460,7 +460,7 @@ class PatternDescriptionViewModel @Inject constructor(
                     hashMap.forEach { (key, value) ->
                         logger.d("DOWNLOAD, file not present KEY: $key \t VALUE : $value")
                         if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty()) && (value != "null")) {
-                            val folderName = Utility.getPatternDownloadFolderName(clickedProduct?.tailornovaDesignId ?: "",
+                            val folderName = Utility.getPatternDownloadFolderName(clickedTailornovaID.get() ?: "",
                                    mannequinId.get() ?: "")
                             logger.d("Folder-Name $folderName")
 
@@ -567,7 +567,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
-                        Utility.getPatternDownloadFolderName(clickedProduct?.tailornovaDesignId ?: "",
+                        Utility.getPatternDownloadFolderName(clickedTailornovaID.get() ?: "",
                             mannequinId.get() ?: ""),
                         context
                     )

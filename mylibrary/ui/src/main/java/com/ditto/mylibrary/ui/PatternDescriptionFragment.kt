@@ -692,7 +692,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedProduct?.tailornovaDesignId ?: "",
+                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                                         viewModel.mannequinId.get() ?: ""),
                                     "tailornovaDesignName" to viewModel.clickedProduct?.prodName
                                 )
@@ -700,7 +700,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedProduct?.tailornovaDesignId ?: "",
+                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                                         viewModel.mannequinId.get() ?: ""),
                                     "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
                                 )
@@ -887,7 +887,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
         setImageFromSvgPngDrawable(
-            Utility.getPatternDownloadFolderName(viewModel.clickedProduct?.tailornovaDesignId ?: "",
+            Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                 viewModel.mannequinId.get() ?: ""),
             if (NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase()
                     .equals("TRIAL")
@@ -904,7 +904,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     viewModel.downloadEachPatternPiece(
                         imageUrl = it,
                         filename = fileName,
-                        patternFolderName = Utility.getPatternDownloadFolderName(viewModel.clickedProduct?.tailornovaDesignId ?: "",
+                        patternFolderName = Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                             viewModel.mannequinId.get() ?: "")
                     )
                 }
@@ -1088,7 +1088,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
                     "tailornovaDesignName" to viewModel.patternName.get(),
-                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedProduct?.tailornovaDesignId ?: "",
+                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                         viewModel.mannequinId.get() ?: "")
                 )
         } else {
@@ -1099,7 +1099,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
                     "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
-                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedProduct?.tailornovaDesignId ?: "",
+                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                         viewModel.mannequinId.get() ?: "")
                 )
         }
@@ -1543,7 +1543,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                     patterns.forEach {
                         if (Utility.getPatternDownloadFolderName(
-                                viewModel.clickedProduct?.tailornovaDesignId ?: "",
+                                viewModel.clickedTailornovaID.get()?: "",
                                 viewModel.mannequinId.get() ?: "")
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
