@@ -146,14 +146,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".50" />
+                app:layout_constraintGuide_percent=".40" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/image_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".46" />
+                app:layout_constraintGuide_percent=".37" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topGuideline"
@@ -176,10 +176,10 @@
                 android:layout_marginTop="@dimen/size_16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
-                app:layout_constraintEnd_toStartOf="@id/image_vertical"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@id/subscription" />
+                app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
+                app:layout_constraintEnd_toEndOf="@+id/image_vertical"
+                app:layout_constraintStart_toStartOf="@+id/start_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/subscription" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/manniquen_barrier"
@@ -307,8 +307,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/buttonTopGuideLine"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/status_layout">
 
                 <TextView
@@ -324,12 +324,33 @@
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum pellentesque eget sapien volutpat mollis. Odio ac sit purus tempor lacus consequat, cursus a. Mattis hendrerit nisl, eleifend vitae tempor. Faucibus pellentesque malesuada proin nulla orci enim ornare. Gravida euismod viverra potenti id." />
             </androidx.core.widget.NestedScrollView>
 
+            <TextView
+                android:id="@+id/text_yardage"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/instruction_border"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
+                android:onClick="@{() -> viewModel.onClickYardage()}"
+                android:text="YARDAGE"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_14px"
+                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.080"
+                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintEnd_toStartOf="@+id/text_instructions"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.15" />
 
             <TextView
                 android:id="@+id/text_instructions"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="@dimen/dimen_0"
                 android:layout_marginTop="48dp"
+                android:layout_marginStart="@dimen/margin_left_button"
                 android:background="@drawable/instruction_border"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:gravity="center"
@@ -341,7 +362,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/topGuideline"
                 app:layout_constraintHeight_default="percent"
                 app:layout_constraintHeight_percent="0.080"
-                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintStart_toEndOf="@+id/text_yardage"
                 app:layout_constraintWidth_default="percent"
                 app:layout_constraintWidth_percent="0.15" />
 

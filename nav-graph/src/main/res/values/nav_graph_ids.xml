@@ -48,6 +48,7 @@
     <item name="instruction_calibration_nav" type="id" />
     <item name="patternDescriptionFragment" type="id" />
     <item name="patternInstructionsFragment" type="id" />
+    <item name="yardageNotionFragment" type="id" />
     <item name="action_instructionFragment_to_homefragment" type="id" />
     <item name="action_destination_instruction_self" type="id" />
     <item name="action_pattern_description_to_calibration" type="id" />
