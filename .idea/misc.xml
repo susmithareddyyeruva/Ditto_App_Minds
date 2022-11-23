@@ -4,11 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/nivedh.suresh/DX/ditto-android/menuitems/ui/src/main/res/layout/fragment_subscription_info.xml" value="0.1" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/fragment_pattern_instructions.xml" value="0.1" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/fragment_yardage_notion.xml" value="0.10833333333333334" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/mylibrary/ui/src/main/res/layout/pattern_description_fragment.xml" value="0.12" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/videoplayer/src/main/res/layout/basic_player.xml" value="0.1015625" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/videoplayer/src/main/res/layout/custom_layout.xml" value="0.1" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout-sw600dp/fragment_workspace.xml" value="0.1" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout-sw600dp/workspace_layout.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout-sw600dp/workspace_tab_item.xml" value="0.1" />
         <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_layout.xml" value="0.1" />
-        <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_tab_item.xml" value="0.1" />
+        <entry key="..\:/nivedh.suresh/DX/ditto-android/workspace/ui/src/main/res/layout/workspace_tab_item.xml" value="0.25" />
       </map>
     </option>
   </component>

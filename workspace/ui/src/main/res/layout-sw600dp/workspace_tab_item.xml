@@ -166,6 +166,7 @@
             android:id="@+id/txt_select_layout"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/large_padding"
             android:layout_marginStart="@dimen/large_padding"
             android:layout_marginTop="@dimen/large_padding"
             android:layout_marginBottom="@dimen/large_padding"
@@ -185,6 +186,7 @@
             android:paddingStart="@dimen/medium_padding"
             android:paddingBottom="@dimen/large_padding"
             android:paddingTop="@dimen/large_padding"
+            android:visibility="gone"
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:text="?"
@@ -240,6 +242,7 @@
             android:paddingHorizontal="@dimen/elevation_small"
             android:paddingVertical="@dimen/padding_vertical_splice"
             android:text="@string/_45"
+            android:clickable="@{viewModel.enableSize45 &amp;&amp; !viewModel.clickedSize45}"
             android:textColor="@{viewModel.enableSize45 ?(viewModel.clickedSize45?@android:color/white :@android:color/black):@color/default_splice }"
             android:textSize="@dimen/text_45"
             app:layout_constraintEnd_toStartOf="@+id/txt_size_60"
@@ -251,6 +254,7 @@
             android:layout_height="@dimen/dimen_0"
             android:layout_marginTop="@dimen/margin_text"
             android:layout_marginBottom="@dimen/margin_text"
+            android:clickable="@{viewModel.enableSize60 &amp;&amp; !viewModel.clickedSize60}"
             android:background="@{viewModel.enableSize60 ? (viewModel.clickedSize60?@drawable/rounded_black_bg:@drawable/rounded_light_bg):@drawable/rounded_light_bg}"
             android:elevation="@dimen/elevation_pieces_reference"
             android:onClick="@{() -> viewModel.clickSize(false)}"
@@ -259,7 +263,7 @@
             android:text="@string/_60"
             android:textColor="@{viewModel.enableSize60 ?(viewModel.clickedSize60?@android:color/white:@android:color/black):@color/default_splice }"
             android:textSize="@dimen/text_60"
-            app:layout_constraintEnd_toEndOf="@+id/select_layout_info"
+            app:layout_constraintEnd_toEndOf="@+id/txt_select_layout"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
 
         <ImageView
@@ -280,7 +284,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{!viewModel.clickedPattenPieces}"
-            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,select_layout_info,txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
+            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_pattern_pieces"

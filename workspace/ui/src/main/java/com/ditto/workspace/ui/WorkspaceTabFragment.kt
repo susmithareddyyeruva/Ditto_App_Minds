@@ -551,6 +551,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(garments[0].imageName)
                 }
+            }else if(viewModel.tabCategory == getString(R.string.garments)){
+                viewModel.showReferenceLayout.set(false)
             }
 
             if (viewModel.data.value?.selvages?.filter {
@@ -651,6 +653,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(lining[0].imageName)
                 }
+            }else if(viewModel.tabCategory == getString(R.string.lining)){
+                viewModel.showReferenceLayout.set(false)
             }
 
             if (viewModel.data.value?.selvages?.filter {
@@ -733,6 +737,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(interfacing[0].imageName)
                 }
+            }else if(viewModel.tabCategory == getString(R.string.interfacing)){
+                viewModel.showReferenceLayout.set(false)
             }
         }else{
             viewModel.showReferenceLayout.set(false)
