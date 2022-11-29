@@ -29,7 +29,9 @@ data class PatternIdData(
     var thumbnailImageUrl: String? = "",
     var selectedMannequinId: String? = "",
     var selectedMannequinName: String? = "",
-    var mannequin:List<MannequinData>?= emptyList()
+    var mannequin:List<MannequinData>?= emptyList(),
+    var yardageDetails : List<String>? = emptyList(),
+    var notionDetails : String?=""
 )
 
 data class NumberOfPiecesData(

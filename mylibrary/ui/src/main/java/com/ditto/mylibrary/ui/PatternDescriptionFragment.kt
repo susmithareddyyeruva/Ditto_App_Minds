@@ -692,13 +692,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName
+                                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName,
+                                    "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
+                                    "notionDetails" to viewModel.clickedProduct?.notionDetails
                                 )
                         } else {
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
+                                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
+                                    "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
+                                    "notionDetails" to viewModel.clickedProduct?.notionDetails
                                 )
 
                         }

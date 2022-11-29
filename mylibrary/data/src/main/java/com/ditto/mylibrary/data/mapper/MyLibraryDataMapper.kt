@@ -88,8 +88,9 @@ fun Prod.toDomain(): ProdDomain {
       //  type = this.type ?: "",
         isFavourite = this.isFavourite ?: false,
         purchasedSizeId = this.purchasedSizeId ?: "",
-        mannequin = this.mannequin?.map { it.toDomain12() }
-
+        mannequin = this.mannequin?.map { it.toDomain12() },
+        yardageDetails = this.yardageDetails,
+        notionDetails = this.notionDetails
 
     )
 

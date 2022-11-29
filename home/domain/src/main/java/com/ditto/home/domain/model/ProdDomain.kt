@@ -20,5 +20,7 @@ data class ProdDomain(
     val tailornovaDesignName: String? = "",
     val prodSize: String = "",
     val prodGender: String = "",
-    val prodBrand: String = ""
+    val prodBrand: String = "",
+    var yardageDetails : List<String>? = emptyList(),
+    val notionDetails : String?=""
 ):Serializable

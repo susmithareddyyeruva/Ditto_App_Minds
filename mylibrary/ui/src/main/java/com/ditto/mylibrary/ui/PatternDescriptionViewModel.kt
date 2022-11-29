@@ -63,6 +63,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
+    var yardageDetails: List<String> = emptyList()
     val expiredPausedStatus: ObservableField<String> =
         ObservableField("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription")
     val tailornovaDesignpatternName: ObservableField<String> = ObservableField("")
@@ -80,9 +81,11 @@ class PatternDescriptionViewModel @Inject constructor(
     val resumeOrSubscription: ObservableField<String> = ObservableField("WORKSPACE")
     val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
     val isStatusLayoutVisible: ObservableBoolean = ObservableBoolean(false)
-    val isYardageAvailable: ObservableBoolean = ObservableBoolean(true)
-    val isNotionAvailable: ObservableBoolean = ObservableBoolean(true)
+    val isYardageAvailable: ObservableBoolean = ObservableBoolean(false)
+    val isNotionAvailable: ObservableBoolean = ObservableBoolean(false)
     val isYardagePDFAvailable: ObservableBoolean = ObservableBoolean(false)
+    val yardageDescription: ObservableField<String> = ObservableField("")
+    val notionsDescription: ObservableField<String> = ObservableField("")
     val showActive: ObservableBoolean = ObservableBoolean(false)
     val showPurchased: ObservableBoolean = ObservableBoolean(false)
     val showLine: ObservableBoolean = ObservableBoolean(false)
@@ -180,6 +183,8 @@ class PatternDescriptionViewModel @Inject constructor(
                             "Purchased"
                         )
                     } else {
+                        data.value?.notionDetails = clickedProduct?.notionDetails
+                        data.value?.yardageDetails = clickedProduct?.yardageDetails
                         insertTailornovaDetailsToDB(
                             data.value!!,
                             clickedOrderNumber.get(),
@@ -588,5 +593,31 @@ class PatternDescriptionViewModel @Inject constructor(
 
     fun versionCheck() {
         utility.checkVersion()
+    }
+
+    fun setYardageDetails(yardageDetails: java.util.ArrayList<String>) {
+        if (yardageDetails.isNullOrEmpty()) {
+            isYardageAvailable.set(false)
+        } else {
+            isYardageAvailable.set(true)
+            var temp: String = ""
+            for (i in 0 until yardageDetails.size) {
+                if (i == 0) {
+                    temp += yardageDetails[i]
+                } else {
+                    temp = temp + "\n" + yardageDetails[i]
+                }
+            }
+            yardageDescription.set(temp)
+        }
+    }
+
+    fun setNotionDetails(notionDetails: String?) {
+        if (notionDetails.isNullOrEmpty()) {
+            isNotionAvailable.set(false)
+        } else {
+            isNotionAvailable.set(true)
+            notionsDescription.set(notionDetails)
+        }
     }
 }

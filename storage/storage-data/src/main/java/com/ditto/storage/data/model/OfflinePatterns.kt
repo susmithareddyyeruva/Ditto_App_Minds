@@ -162,5 +162,13 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "mannequinArray")
     @SerializedName("mannequinArray")
-    var mannequin: List<MannequinData>? = emptyList()
+    var mannequin: List<MannequinData>? = emptyList(),
+
+    @ColumnInfo(name = "yardageDetails")
+    @SerializedName("yardageDetails")
+    var yardageDetails : List<String>? = emptyList(),
+
+    @ColumnInfo(name = "notionDetails")
+    @SerializedName("notionDetails")
+    var notionDetails : String? = ""
 )

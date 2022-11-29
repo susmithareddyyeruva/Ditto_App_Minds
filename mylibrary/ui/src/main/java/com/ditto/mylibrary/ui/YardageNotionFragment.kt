@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -85,8 +84,27 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
         toolbarViewModel.isShowActionMenu.set(false)
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
-        loadPdf()
-        //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
+        arguments?.getString("notionDetails")?.let { viewModel.setNotionDetails(it) }
+        arguments?.getStringArrayList("yardageDetails")?.let {  viewModel.setYardageDetails(it)}
+        setUI()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUI() {
+        //when nothing is available
+        if (PDF_DOWNLOAD_URL.isNullOrEmpty() && !viewModel.isNotionAvailable.get() &&
+            !viewModel.isYardageAvailable.get() && !viewModel.isYardagePDFAvailable.get()
+        ) {
+            //Show nothing available msg
+            binding.emptyView.visibility = View.VISIBLE
+        }
+        //when yardage & notion not available show pdf
+        else if (!viewModel.isNotionAvailable.get() && !viewModel.isYardageAvailable.get() && !PDF_DOWNLOAD_URL.isNullOrEmpty()) {
+            loadPdf()
+            binding.emptyView.visibility = View.GONE
+        } else {//when only yardage & notion is available
+            binding.emptyView.visibility = View.GONE
+        }
     }
 
     override fun onStop() {
@@ -170,6 +188,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
 
 
     private fun showPdfFromUri(pdfName: Uri) {
+        viewModel.isYardagePDFAvailable.set(true)
         bottomNavViewModel.showProgress.set(false)
         if (context == null) return
         binding.pdfView.fromUri(pdfName)

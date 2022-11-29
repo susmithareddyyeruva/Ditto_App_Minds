@@ -33,7 +33,9 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             isFavourite = false,
             selectedMannequinId = it.selectedMannequinId,
             selectedMannequinName = it.selectedMannequinName,
-            mannequin = it.mannequin?.map { it.toDomain() }
+            mannequin = it.mannequin?.map { it.toDomain() },
+            yardageDetails = it.yardageDetails,
+            notionDetails = it.notionDetails
         )
     }
 }
@@ -105,8 +107,9 @@ public fun PatternIdData.toDomain(
         status = status,
         selectedMannequinId = selectedMnnequinId,
         selectedMannequinName = selectedMannequinName,
-        mannequin = mannequin?.map { it.toDomain() }
-
+        mannequin = mannequin?.map { it.toDomain() },
+        yardageDetails = this.yardageDetails,
+        notionDetails = this.notionDetails
     )
 }
 fun MannequinDataDomain.toDomain(): MannequinData {
