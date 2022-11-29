@@ -39,7 +39,6 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class PatternDescriptionViewModel @Inject constructor(
     private val context: Context,
@@ -622,7 +621,8 @@ class PatternDescriptionViewModel @Inject constructor(
             isNotionAvailable.set(false)
         } else {
             isNotionAvailable.set(true)
-            notionsDescription.set(notionDetails)
+            if (notionDetails.contains("�")) notionsDescription.set(notionDetails.replace("�", ""))
+            else notionsDescription.set(notionDetails)
         }
     }
 }
