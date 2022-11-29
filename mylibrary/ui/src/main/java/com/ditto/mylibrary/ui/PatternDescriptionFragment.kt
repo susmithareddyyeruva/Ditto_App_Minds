@@ -688,28 +688,35 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ) {
                         PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                         var bundle = Bundle()
-                        if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
-                            bundle =
-                                bundleOf(
-                                    "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "tailornovaDesignName" to viewModel.clickedProduct?.prodName,
-                                    "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
-                                    "notionDetails" to viewModel.clickedProduct?.notionDetails
-                                )
+                        if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()) {
+                            showAlert(
+                                getString(R.string.yardage_and_notion_not_available),
+                                Utility.AlertType.DEFAULT
+                            )
                         } else {
-                            bundle =
-                                bundleOf(
-                                    "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
-                                    "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
-                                    "notionDetails" to viewModel.clickedProduct?.notionDetails
-                                )
+                            if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+                                bundle =
+                                    bundleOf(
+                                        "PatternName" to viewModel.clickedProduct?.prodName,
+                                        "tailornovaDesignName" to viewModel.clickedProduct?.prodName,
+                                        "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
+                                        "notionDetails" to viewModel.clickedProduct?.notionDetails
+                                    )
+                            } else {
+                                bundle =
+                                    bundleOf(
+                                        "PatternName" to viewModel.clickedProduct?.prodName,
+                                        "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
+                                        "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
+                                        "notionDetails" to viewModel.clickedProduct?.notionDetails
+                                    )
 
+                            }
+                            findNavController().navigate(
+                                R.id.action_patternDescriptionFragment_to_yardage_notion_Fragment,
+                                bundle
+                            )
                         }
-                        findNavController().navigate(
-                            R.id.action_patternDescriptionFragment_to_yardage_notion_Fragment,
-                            bundle
-                        )
                     } else
                         Unit
                 }

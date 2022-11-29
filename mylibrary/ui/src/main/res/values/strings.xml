@@ -60,7 +60,7 @@
     <string name="clear_all"><u>clear all</u></string>
     <string name="launch_camera">CONTINUE</string>
     <string name="pattern_instructions">Pattern Instructions</string>
-    <string name="yardage_notion">Yardage and Notion</string>
+    <string name="yardage_notion">Yardage &amp; Notions</string>
     <string name="yardage">Yardage Details</string>
     <string name="notion">Notion Details</string>
     <string name="pattern_details">Pattern Details</string>
@@ -83,6 +83,6 @@
     <string name="prompt">null</string>
     <string name="no_cust">No Customization</string>
     <string name="please_selecte_mannequinid">Please select any customization to continue !</string>
-    <string name="yardage_and_notion_not_available">Yardage and Notion details not available.</string>
+    <string name="yardage_and_notion_not_available">No yardage or notions available to display !</string>
 
 </resources>

@@ -610,7 +610,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 if (i == 0) {
                     temp += yardageDetails[i]
                 } else {
-                    temp = temp + "\n" + yardageDetails[i]
+                    temp = temp + "<br>" + yardageDetails[i]
                 }
             }
             yardageDescription.set(temp)

@@ -29,5 +29,5 @@ data class ProdDomain(
     var selectedMannequinName:String?="",
     var mannequin:List<MannequinDataDomain>?= emptyList(),
     var yardageDetails : List<String>? = emptyList(),
-    val notionDetails : String?=""
+    var notionDetails : String?=""
 ) : Serializable
