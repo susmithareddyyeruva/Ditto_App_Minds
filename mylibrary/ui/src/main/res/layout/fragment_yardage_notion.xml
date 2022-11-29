@@ -104,7 +104,7 @@
                     android:text="@{viewModel.yardageDescription}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/size_16px"
-                    android:paddingStart="@dimen/padding_smallx"
+                    android:paddingStart="@dimen/padding_small"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
                     app:layout_constraintStart_toStartOf="@+id/start_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/yardage_title" />
@@ -119,6 +119,7 @@
                     android:text="@string/notion"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/pattern_name"
+                    android:layout_marginTop="@dimen/padding_small"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
                     app:layout_constraintStart_toStartOf="@+id/start_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/yardage_description" />
@@ -133,7 +134,7 @@
                     android:text="@{viewModel.notionsDescription}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/size_16px"
-                    android:paddingStart="@dimen/padding_smallx"
+                    android:paddingStart="@dimen/padding_small"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
                     app:layout_constraintStart_toStartOf="@+id/start_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/notion_title" />
@@ -166,7 +167,7 @@
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="start"
-                    android:text="Yardage and Notion not available."
+                    android:text="@string/yardage_and_notion_not_available"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/size_16px"
                     app:layout_constraintBottom_toBottomOf="parent"

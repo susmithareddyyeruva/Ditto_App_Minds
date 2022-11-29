@@ -61,8 +61,8 @@
     <string name="launch_camera">CONTINUE</string>
     <string name="pattern_instructions">Pattern Instructions</string>
     <string name="yardage_notion">Yardage and Notion</string>
-    <string name="yardage">Yardage</string>
-    <string name="notion">Notion</string>
+    <string name="yardage">Yardage Details</string>
+    <string name="notion">Notion Details</string>
     <string name="pattern_details">Pattern Details</string>
     <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
     <string name="myfolder_detail_count">%1$s\u0020(%2$d)</string>
@@ -83,5 +83,6 @@
     <string name="prompt">null</string>
     <string name="no_cust">No Customization</string>
     <string name="please_selecte_mannequinid">Please select any customization to continue !</string>
+    <string name="yardage_and_notion_not_available">Yardage and Notion details not available.</string>
 
 </resources>
