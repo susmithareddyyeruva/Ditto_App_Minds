@@ -86,6 +86,9 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
         patternFolderName = arguments?.getString("PatternName")
         arguments?.getString("notionDetails")?.let { viewModel.setNotionDetails(it) }
         arguments?.getStringArrayList("yardageDetails")?.let {  viewModel.setYardageDetails(it)}
+
+        PDF_DOWNLOAD_URL = null //remove this when showing pdf or Image
+
         setUI()
     }
 
