@@ -37,6 +37,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
     lateinit var binding: FragmentWsPatternInstructionsBinding
     var downloadFileName: String? = null
     var patternFolderName : String? = null
+    var patternDownloadFolderName: String? = null
     @Inject
     lateinit var loggerFactory: LoggerFactory
     val logger: Logger by lazy {
@@ -69,6 +70,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         toolbar_instrctions.setNavigationIcon(R.drawable.ic_back_button)
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
+        patternDownloadFolderName = arguments?.getString("PatternFolderName")
         loadPdf()
     }
 

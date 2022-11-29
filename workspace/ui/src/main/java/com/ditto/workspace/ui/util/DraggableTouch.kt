@@ -29,6 +29,7 @@ fun View.makeDraggable(
     addedViews: MutableList<View>,
     isSelectAll: ObservableBoolean,
     patternName: String?,
+    patternDownloadFolderName: String,
     draggableListener: DraggableListener? = null
 ) {
     var widgetDX = 0f
@@ -46,7 +47,8 @@ fun View.makeDraggable(
         MyGestureListener(
             context,
             workspaceItem?.imageName,
-            patternName
+            patternName,
+            patternDownloadFolderName
         )
     )
     var mMultiTouchGestureDetector =
@@ -459,7 +461,8 @@ fun showPinchZoomPopup(
     imageName: String?,
     isReference: Boolean,
     isFromWS: Boolean,
-    patternName: String?
+    patternName: String?,
+    patternDownloadFolderName: String
 ) {
     Utility.isPopupShowing.set(true)
     val intent = Intent(context, PinchAndZoom::class.java)
@@ -471,6 +474,7 @@ fun showPinchZoomPopup(
     intent.putExtra("isReference", isReference)
     intent.putExtra("isFromWS", isFromWS)
     intent.putExtra("patternName", patternName)
+    intent.putExtra("patternDownloadFolderName", patternDownloadFolderName)
     ContextCompat.startActivity(context, intent, null)
 }
 
@@ -550,7 +554,12 @@ private class MultiTouchGestureDetectorListener(draggableListener: DraggableList
     }
 }
 
-private class MyGestureListener(context: Context, imageName: String?, patternName: String?) :
+private class MyGestureListener(
+    context: Context,
+    imageName: String?,
+    patternName: String?,
+    var patternDownloadFolderName: String
+) :
     GestureDetector.SimpleOnGestureListener() {
 
     var popUpContext = context
@@ -567,7 +576,8 @@ private class MyGestureListener(context: Context, imageName: String?, patternNam
                 imageName,
                 false,
                 true,
-                patternName
+                patternName,
+                patternDownloadFolderName
             )
         }
         return super.onDoubleTap(e)
