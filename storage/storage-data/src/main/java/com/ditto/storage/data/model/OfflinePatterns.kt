@@ -166,9 +166,5 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "yardageDetails")
     @SerializedName("yardageDetails")
-    var yardageDetails : List<String>? = emptyList(),
-
-    @ColumnInfo(name = "notionDetails")
-    @SerializedName("notionDetails")
-    var notionDetails : String? = ""
+    var yardageDetails : YardageDetails?
 )

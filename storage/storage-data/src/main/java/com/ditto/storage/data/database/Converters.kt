@@ -218,4 +218,15 @@ class Converters {
     fun yardageDetailsListToString(someObjects: List<String>): String {
         return Gson().toJson(someObjects)
     }
+
+    @TypeConverter
+    fun stringToYardageDetails(string: String?): YardageDetails? {
+        return Gson().fromJson(string, YardageDetails::class.java)
+    }
+
+    @TypeConverter
+    fun yardageDetailsToString(yardageDetails: YardageDetails?): String {
+        return Gson().toJson(yardageDetails)
+    }
+
 }

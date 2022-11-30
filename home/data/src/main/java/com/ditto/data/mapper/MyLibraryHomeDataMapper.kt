@@ -234,6 +234,7 @@ fun PatternPiecesOffline.toDomain1(): OfflinePatternPieces {
 
 public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
     return this.map {
+        val mYardageDetails = YardageDetails(it.yardageDetails, it.notionDetails)
         OfflinePatterns(
             custId= if(AppState.getIsLogged()){AppState.getCustID()}else{"0"},
             //custId = AppState.getCustID(),
@@ -262,7 +263,8 @@ public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             dressType = it.dressType,
             suitableFor = it.suitableFor,
             occasion = it.occasion,
-            orderNumber = "111"
+            orderNumber = "111",
+            yardageDetails = mYardageDetails
         )
     }
 }
