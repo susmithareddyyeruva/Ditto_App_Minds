@@ -27,6 +27,7 @@
     <string name="mirror_v">Mirror V</string>
     <string name="mirror_h">Mirror H</string>
     <string name="clear">Clear</string>
+    <string name="select_layout_info_message">Ditto uses standard 45" with Nap and 60" with Nap fabric widths to optimize the reference layout.  If your pattern uses a different fabric width, please refer to the pattern sewing instructions for more information.</string>
     <string name="spliced_piece">Spliced Pieces</string>
     <string name="spliced_piece_message">Additional pieces cannot be in the workspace at the same time as a spliced piece.</string><!--//multiple warning-->
     <string name="splicing_required">Splicing Required</string>
