@@ -59,7 +59,7 @@ class WorkspaceViewModel @Inject constructor(
     var mannequinId: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)
     var completedPieces: ObservableInt = ObservableInt(0)
-    var workspaceItemId : ObservableInt = ObservableInt(0)
+    var workspaceItemId: ObservableInt = ObservableInt(0)
     var workspacedata: WorkspaceItems? = null
     var tabCategory: String = ""
     var selectedTab: ObservableInt = ObservableInt(0)
@@ -72,6 +72,7 @@ class WorkspaceViewModel @Inject constructor(
     val spliced_pices_visibility: ObservableBoolean = ObservableBoolean(false)
     val clicked_spliced_second_pieces: ObservableBoolean = ObservableBoolean(false)
     val clickedPattenPieces: ObservableBoolean = ObservableBoolean(true)
+    val showReferenceLayout: ObservableBoolean = ObservableBoolean(true)
     val clickedSize45: ObservableBoolean = ObservableBoolean(true)
     val enableSize45: ObservableBoolean = ObservableBoolean(false)
     val clickedSize60: ObservableBoolean = ObservableBoolean(false)
@@ -153,7 +154,7 @@ class WorkspaceViewModel @Inject constructor(
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         workspaceDataAPI: WorkspaceDataAPI,
-        status:String?
+        status: String?,
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
@@ -192,7 +193,7 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun handleWSUpdateResult(
         result: Result<WSUpdateResultDomain>,
-        workspaceDataAPI: WorkspaceDataAPI
+        workspaceDataAPI: WorkspaceDataAPI,
     ) {
         Log.d("handleUpdateFromAPI", "is:\t ${result.toString()}")
         when (result) {
@@ -229,7 +230,7 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun handleWSPatternDataStorage(
         result: Any?,
-        workspaceDataAPI: WorkspaceDataAPI
+        workspaceDataAPI: WorkspaceDataAPI,
     ) {
         Log.d("handlWSPattenDtaStorage", "${result.toString()}")
         if (result == 1) {
@@ -283,7 +284,7 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun handleFetchResultFromAPI(
         fetchWorkspaceResult: Result<WorkspaceDataAPI>,
-        tailornovaResult: Result.OnSuccess<OfflinePatternData>
+        tailornovaResult: Result.OnSuccess<OfflinePatternData>,
     ) {
         when (fetchWorkspaceResult) {
             is Result.OnSuccess -> {
@@ -337,7 +338,7 @@ class WorkspaceViewModel @Inject constructor(
                         getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value)),
                         false
                     )
-                }else{
+                } else {
                     uiEvents.post(Event.ApiFailed)
                     Log.d("handleError", "WorkspaceViewModel else")
                 }
@@ -348,12 +349,12 @@ class WorkspaceViewModel @Inject constructor(
                     Log.d("handleError", "WorkspaceViewModel >>>>>>>>>>>>>>>>>>>createWSAPI ")
                     if (::workspaceDataAPI.isInitialized) {
                         createWSAPI(workspaceDataAPI, true)
-                    }else{
+                    } else {
                         uiEvents.post(Event.ApiFailed)
                         Log.d("handleError", "WorkspaceViewModel else")
                     }
 
-                }else{
+                } else {
                     uiEvents.post(Event.ApiFailed)
                     Log.d("handleError", "WorkspaceViewModel else")
                 }
@@ -460,6 +461,11 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.OnClickScrollRight)
     }
 
+    fun selectLayoutClick()
+    {
+        uiEvents.post(Event.SelectLayoutInfo)
+    }
+
     fun clickSelectAll() {
         if (selectAllText.get().equals("Select All")) {
             uiEvents.post(Event.OnClickSelectAll)
@@ -547,20 +553,20 @@ class WorkspaceViewModel @Inject constructor(
     fun saveProject() {
         data.value?.completedPieces = Utility.progressCount.get()
         data.value?.selectedTab =
-        if (Utility.fragmentTabs.get().toString().equals("0")) {
-            "Garment"
-        }else if(Utility.fragmentTabs.get().toString().equals("1")){
-            "Lining"
-        }else if(Utility.fragmentTabs.get().toString().equals("2")){
-            "Interfacing"
-        }else{
-            "Garment"
-        }
+            if (Utility.fragmentTabs.get().toString().equals("0")) {
+                "Garment"
+            } else if (Utility.fragmentTabs.get().toString().equals("1")) {
+                "Lining"
+            } else if (Utility.fragmentTabs.get().toString().equals("2")) {
+                "Interfacing"
+            } else {
+                "Garment"
+            }
 
         /* if (data.value?.completedPieces == data.value?.totalPieces) {
              data.value?.status = "Completed"
          }*/
-        loop1@ for (patternPiecesId in data.value?.patternPieces?: emptyList()) {
+        loop1@ for (patternPiecesId in data.value?.patternPieces ?: emptyList()) {
             loop2@ for (mPatternPieceListID in Utility.mPatternPieceList) {
                 if (patternPiecesId.id == mPatternPieceListID) {
                     patternPiecesId.isCompleted = true
@@ -571,15 +577,15 @@ class WorkspaceViewModel @Inject constructor(
 
         var cTraceWorkSpacePatternInputData =
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
-        var status= ""
-        if(data.value?.patternType.equals("TRIAL",true)){
-            status="TRIAL"
-        }else if(data.value?.patternType.equals("Purchased",true)){
-            status="OWNED"
-        }else{
-            status="SUBSCRIBED"
+        var status = ""
+        if (data.value?.patternType.equals("TRIAL", true)) {
+            status = "TRIAL"
+        } else if (data.value?.patternType.equals("Purchased", true)) {
+            status = "OWNED"
+        } else {
+            status = "SUBSCRIBED"
         }
-        Log.d("status123","?>>>>>>>>>>>>>>>>>>>> $status")
+        Log.d("status123", "?>>>>>>>>>>>>>>>>>>>> $status")
 
         updateWorkspaceDB(
 //            "30644ba1e7aa41cfa9b17b857739968a",
@@ -619,11 +625,11 @@ class WorkspaceViewModel @Inject constructor(
     fun setWorkspaceVirtualDimensions(workspaceItems: List<WorkspaceItems>): List<WorkspaceItems> {
         for (workspaceItem in workspaceItems) {
             workspaceItem.xcoordinate =
-                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat()) ?:0F
+                workspaceItem.xcoordinate?.times(scaleFactor.get().toFloat()) ?: 0F
             workspaceItem.ycoordinate =
-                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat()) ?:0F
-            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat()) ?:0F
-            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat()) ?:0F
+                workspaceItem.ycoordinate?.times(scaleFactor.get().toFloat()) ?: 0F
+            workspaceItem.pivotX = workspaceItem.pivotX?.times(scaleFactor.get().toFloat()) ?: 0F
+            workspaceItem.pivotY = workspaceItem.pivotY?.times(scaleFactor.get().toFloat()) ?: 0F
         }
         return workspaceItems
     }
@@ -633,11 +639,11 @@ class WorkspaceViewModel @Inject constructor(
         if (workspaceItems != null) {
             for (workspaceItem in workspaceItems) {
                 workspaceItem.xcoordinate =
-                    workspaceItem.xcoordinate?.div(scaleFactor.get().toFloat()) ?:0F
+                    workspaceItem.xcoordinate?.div(scaleFactor.get().toFloat()) ?: 0F
                 workspaceItem.ycoordinate =
-                    workspaceItem.ycoordinate?.div(scaleFactor.get().toFloat()) ?:0F
-                workspaceItem.pivotX = workspaceItem.pivotX?.div(scaleFactor.get().toFloat()) ?:0F
-                workspaceItem.pivotY = workspaceItem.pivotY?.div(scaleFactor.get().toFloat()) ?:0F
+                    workspaceItem.ycoordinate?.div(scaleFactor.get().toFloat()) ?: 0F
+                workspaceItem.pivotX = workspaceItem.pivotX?.div(scaleFactor.get().toFloat()) ?: 0F
+                workspaceItem.pivotY = workspaceItem.pivotY?.div(scaleFactor.get().toFloat()) ?: 0F
             }
         }
         return workspaceItems
@@ -772,6 +778,7 @@ class WorkspaceViewModel @Inject constructor(
         object OnClickPatternOrReference : Event()
 
         object CalculateScrollButtonVisibility : Event()
+        object SelectLayoutInfo : Event()
         object OnDataUpdated : Event()
         object OnClickInch : Event()
         object OnClickSelectAll : Event()
@@ -844,7 +851,7 @@ class WorkspaceViewModel @Inject constructor(
 
     private fun convertInputStreamToFile(
         inputStream: InputStream,
-        filename: String, patternFolderName: String?
+        filename: String, patternFolderName: String?,
     ): File? {
         var result: File? = null
         var dittofolder: File? = null
@@ -890,7 +897,7 @@ class WorkspaceViewModel @Inject constructor(
     private fun convertInputStreamToFileForPatterns(
         inputStream: InputStream,
         filename: String,
-        patternFolderName: String?
+        patternFolderName: String?,
     ): File? {
         var result: File? = null
         var dittofolder: File? = null
@@ -971,7 +978,7 @@ class WorkspaceViewModel @Inject constructor(
     suspend fun downloadEachPatternPiece(
         imageUrl: String,
         filename: String,
-        patternFolderName: String?
+        patternFolderName: String?,
     ) {
         try {
             withContext(Dispatchers.IO) {
