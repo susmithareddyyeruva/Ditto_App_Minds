@@ -333,21 +333,19 @@
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@+id/bottom_guideline"
                 app:layout_constraintBottom_toTopOf="@+id/topGuideline"
-                app:layout_constraintWidth_default="percent"
-                app:layout_constraintWidth_percent="0.15"
                 app:layout_constraintHeight_default="percent"
                 app:layout_constraintHeight_percent="0.080">
 
                 <TextView
                     android:id="@+id/text_yardage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/instruction_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
                     android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
                     android:onClick="@{() -> viewModel.onClickYardage()}"
-                    android:text="YARDAGE/NOTIONS"
+                    android:text="@string/yardage_notions"
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="10dp"
                     android:textColor="@color/black"
@@ -364,7 +362,7 @@
                 <TextView
                     android:id="@+id/text_instructions"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_left_button"
                     android:background="@drawable/instruction_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -387,7 +385,7 @@
                 <TextView
                     android:id="@+id/text_watchvideo2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_left_button"
                     android:background="@drawable/workspace_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -413,7 +411,7 @@
                 <TextView
                     android:id="@+id/dynamic_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_left_button"
                     android:layout_marginLeft="12dp"
                     android:background="@drawable/workspace_border"
