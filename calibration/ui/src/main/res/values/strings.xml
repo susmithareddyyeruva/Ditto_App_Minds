@@ -10,6 +10,9 @@
     <string name="calibrationerror_camera_too_far_left_right">Calibration failed: \nStand closer to opposite the beam (centered) when capturing the photo.</string>
     <string name="calibrationerror_orientation_not_landscape">Calibration failed: \nCapture the photo in landscape orientation.</string>
     <string name="calibrationerror_camera_resolution_too_low">Calibration failed: \nCapture a non-blurred photo.</string>
+    <string name="calibrationerror_mat_rotated_180_deg">Calibration failed: \nConfirm accurate mat setup.</string>
+    <string name="calibrationerror_image_too_blur">Calibration failed: \nCapture a non-blurred photo.</string>
+    <string name="calibrationerror_image_too_bright">Calibration failed: \nDim the lighting in the work environment.</string>
     <string name="calibrationerror_failure">Calibration failed: \nPlease try again.</string>
     <string name="calibrationerror_else">Calibration failed: \nPlease try again.</string>
     <string name="back">Back</string>
