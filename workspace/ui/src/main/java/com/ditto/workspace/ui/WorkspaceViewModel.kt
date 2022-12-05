@@ -47,6 +47,7 @@ class WorkspaceViewModel @Inject constructor(
     private val utility: core.ui.common.Utility,
 ) : BaseViewModel() {
 
+    var patternDownloadFolderName: String = ""
     var allPatterns: MutableLiveData<List<PatternsData>> = MutableLiveData()
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
@@ -962,7 +963,7 @@ class WorkspaceViewModel @Inject constructor(
                             downloadEachPatternPiece(
                                 imageUrl = value,
                                 filename = key,
-                                patternFolderName = patternName.get() ?: "Pattern Piece"
+                                patternFolderName = patternDownloadFolderName ?: "Pattern Piece"
                             )
                         }
                     }
@@ -1016,7 +1017,7 @@ class WorkspaceViewModel @Inject constructor(
             val availableUri = key.let {
                 core.ui.common.Utility.isImageFileAvailable(
                     it,
-                    "${patternName.get()}",
+                    patternDownloadFolderName,
                     context
                 )
             }

@@ -6,6 +6,7 @@ import com.ditto.storage.data.model.OfflinePatterns
 import com.ditto.storage.data.model.PatternPieceData
 import com.ditto.storage.data.model.SelvageData
 import core.appstate.AppState
+import com.ditto.storage.data.model.YardageDetails
 
 internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
     return this.map {
@@ -33,7 +34,9 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             isFavourite = false,
             selectedMannequinId = it.selectedMannequinId,
             selectedMannequinName = it.selectedMannequinName,
-            mannequin = it.mannequin?.map { it.toDomain() }
+            mannequin = it.mannequin?.map { it.toDomain() },
+            yardageDetails = it.yardageDetails?.yardageDetails,
+            notionDetails = it.yardageDetails?.notionDetails
         )
     }
 }
@@ -73,6 +76,7 @@ public fun PatternIdData.toDomain(
     mannequin: List<MannequinDataDomain>?,
     patternType:String?
 ): OfflinePatterns {
+    val mYardageDetails = YardageDetails(this.yardageDetails, this.notionDetails)
     return OfflinePatterns(
         custId = AppState.getCustID(),
         designId = this.designId,
@@ -105,8 +109,8 @@ public fun PatternIdData.toDomain(
         status = status,
         selectedMannequinId = selectedMnnequinId,
         selectedMannequinName = selectedMannequinName,
-        mannequin = mannequin?.map { it.toDomain() }
-
+        mannequin = mannequin?.map { it.toDomain() },
+        yardageDetails = mYardageDetails,
     )
 }
 fun MannequinDataDomain.toDomain(): MannequinData {

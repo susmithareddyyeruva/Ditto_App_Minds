@@ -667,6 +667,60 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
 
             }
+            is PatternDescriptionViewModel.Event.OnYardageButtonClicked -> {
+                /**
+                 * Allowing user to enter into instruction if mannequinId is present
+                 */
+                if (viewModel.mannequinId?.get()
+                        ?.isEmpty() == true && !(viewModel.clickedProduct?.patternType.toString()
+                        .equals("Trial", true))
+                ) {
+                    /**
+                     * Restricting user to enter into Instructions without selecting any customization if Network is Connected
+                     */
+                    showAlert(
+                        getString(R.string.please_selecte_mannequinid),
+                        Utility.AlertType.DEFAULT
+                    )
+                } else {
+                    if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
+                        || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+                    ) {
+                        PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
+                        var bundle = Bundle()
+                        if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()) {
+                            showAlert(
+                                getString(R.string.yardage_and_notion_not_available),
+                                Utility.AlertType.DEFAULT
+                            )
+                        } else {
+                            if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+                                bundle =
+                                    bundleOf(
+                                        "PatternName" to viewModel.clickedProduct?.prodName,
+                                        "tailornovaDesignName" to viewModel.clickedProduct?.prodName,
+                                        "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
+                                        "notionDetails" to viewModel.clickedProduct?.notionDetails
+                                    )
+                            } else {
+                                bundle =
+                                    bundleOf(
+                                        "PatternName" to viewModel.clickedProduct?.prodName,
+                                        "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
+                                        "yardageDetails" to viewModel.clickedProduct?.yardageDetails,
+                                        "notionDetails" to viewModel.clickedProduct?.notionDetails
+                                    )
+
+                            }
+                            findNavController().navigate(
+                                R.id.action_patternDescriptionFragment_to_yardage_notion_Fragment,
+                                bundle
+                            )
+                        }
+                    } else
+                        Unit
+                }
+            }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
                 /**
                  * Allowing user to enter into instruction if mannequinId is present
@@ -692,12 +746,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
+                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                                        viewModel.mannequinId.get() ?: ""),
                                     "tailornovaDesignName" to viewModel.clickedProduct?.prodName
                                 )
                         } else {
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
+                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                                        viewModel.mannequinId.get() ?: ""),
                                     "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
                                 )
 
@@ -883,7 +941,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
         setImageFromSvgPngDrawable(
-            viewModel.patternName.get(),
+            Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                viewModel.mannequinId.get() ?: ""),
             if (NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase()
                     .equals("TRIAL")
             ) viewModel.clickedProduct?.image else viewModel.patternName.get(),
@@ -899,7 +958,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     viewModel.downloadEachPatternPiece(
                         imageUrl = it,
                         filename = fileName,
-                        patternFolderName = patternName
+                        patternFolderName = Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                            viewModel.mannequinId.get() ?: "")
                     )
                 }
             }
@@ -1081,7 +1141,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
-                    "tailornovaDesignName" to viewModel.patternName.get()
+                    "tailornovaDesignName" to viewModel.patternName.get(),
+                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                        viewModel.mannequinId.get() ?: "")
                 )
         } else {
             bundle =
@@ -1090,7 +1152,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
-                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
+                    "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
+                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                        viewModel.mannequinId.get() ?: "")
                 )
         }
 
@@ -1532,7 +1596,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         fileName = getNameWithoutExtension(fileName)
                     }
                     patterns.forEach {
-                        if (it.prodName.toString()
+                        if (Utility.getPatternDownloadFolderName(
+                                viewModel.clickedTailornovaID.get()?: "",
+                                viewModel.mannequinId.get() ?: "")
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
                         ) {

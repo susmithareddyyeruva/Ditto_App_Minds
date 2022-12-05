@@ -22,5 +22,7 @@ data class Prod(
     @SerializedName("tailornovaDesignName") val tailornovaDesignName : String?="",
     @SerializedName("size") val prodSize : String?="",
     @SerializedName("gender") val prodGender : String?="",
-    @SerializedName("brand") val prodBrand : String?=""
+    @SerializedName("brand") val prodBrand : String?="",
+    @SerializedName("yardageDetails") val yardageDetails : List<String>? = emptyList(),
+    @SerializedName("notionDetails") val notionDetails : String?=""
 ): Serializable

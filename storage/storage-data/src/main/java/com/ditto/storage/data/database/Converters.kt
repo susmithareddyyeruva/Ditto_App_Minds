@@ -202,4 +202,31 @@ class Converters {
     fun patternPieceDataListToString(someObjects: List<PatternPieceData>): String {
         return Gson().toJson(someObjects)
     }
+
+    @TypeConverter
+    fun stringToYardageDetailsList(data: String?): List<String> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<String>>() {
+        }.type
+        return Gson().fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun yardageDetailsListToString(someObjects: List<String>): String {
+        return Gson().toJson(someObjects)
+    }
+
+    @TypeConverter
+    fun stringToYardageDetails(string: String?): YardageDetails? {
+        return Gson().fromJson(string, YardageDetails::class.java)
+    }
+
+    @TypeConverter
+    fun yardageDetailsToString(yardageDetails: YardageDetails?): String {
+        return Gson().toJson(yardageDetails)
+    }
+
 }

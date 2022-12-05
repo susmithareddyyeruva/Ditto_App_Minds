@@ -146,14 +146,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".50" />
+                app:layout_constraintGuide_percent=".40" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/image_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".46" />
+                app:layout_constraintGuide_percent=".37" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/topGuideline"
@@ -176,10 +176,10 @@
                 android:layout_marginTop="@dimen/size_16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
-                app:layout_constraintEnd_toStartOf="@id/image_vertical"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@id/subscription" />
+                app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
+                app:layout_constraintEnd_toEndOf="@+id/image_vertical"
+                app:layout_constraintStart_toStartOf="@+id/start_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/subscription" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/manniquen_barrier"
@@ -307,8 +307,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/buttonTopGuideLine"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintStart_toStartOf="@id/middle_guideline"
+                app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/status_layout">
 
                 <TextView
@@ -324,82 +324,120 @@
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum pellentesque eget sapien volutpat mollis. Odio ac sit purus tempor lacus consequat, cursus a. Mattis hendrerit nisl, eleifend vitae tempor. Faucibus pellentesque malesuada proin nulla orci enim ornare. Gravida euismod viverra potenti id." />
             </androidx.core.widget.NestedScrollView>
 
-
-            <TextView
-                android:id="@+id/text_instructions"
-                android:layout_width="@dimen/dimen_0"
-                android:layout_height="@dimen/dimen_0"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/instruction_border"
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:gravity="center"
-                android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
-                android:onClick="@{() -> viewModel.onClickInstructions()}"
-                android:text="INSTRUCTIONS"
-                android:textColor="@color/black"
-                android:textSize="@dimen/size_14px"
-                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.080"
-                app:layout_constraintStart_toStartOf="@id/middle_guideline"
-                app:layout_constraintWidth_default="percent"
-                app:layout_constraintWidth_percent="0.15" />
-
-            <TextView
-                android:id="@+id/text_watchvideo2"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dimen_0"
-                android:layout_marginStart="@dimen/margin_left_button"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/workspace_border"
-                android:drawablePadding="14dp"
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:layout_height="0dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.onClickWorkSpace()}"
-                android:paddingLeft="@dimen/margin20"
-                android:paddingRight="@dimen/margin20"
-                android:text="@{viewModel.resumeOrSubscription}"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/size_14sp"
-                android:visibility="@{viewModel.showResumButton &amp;&amp; (!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.INVISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@+id/start_guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/bottom_guideline"
+                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.082"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/text_instructions"
-                tools:text="WORKSPACE" />
+                app:layout_constraintHeight_percent="0.080">
+
+                <TextView
+                    android:id="@+id/text_yardage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/instruction_border"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center"
+                    android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
+                    android:onClick="@{() -> viewModel.onClickYardage()}"
+                    android:text="@string/yardage_notions"
+                    android:paddingVertical="4dp"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14px"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_default="percent"
+                    app:layout_constraintHeight_percent="0.080"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/text_instructions"
+                    app:layout_constraintWidth_default="percent"
+                    app:layout_constraintWidth_percent="0.15" />
+
+                <TextView
+                    android:id="@+id/text_instructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_left_button"
+                    android:background="@drawable/instruction_border"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center"
+                    android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
+                    android:onClick="@{() -> viewModel.onClickInstructions()}"
+                    android:text="INSTRUCTIONS"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14px"
+                    android:paddingVertical="4dp"
+                    android:paddingHorizontal="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_default="percent"
+                    app:layout_constraintHeight_percent="0.080"
+                    app:layout_constraintStart_toEndOf="@+id/text_yardage"
+                    app:layout_constraintWidth_default="percent"
+                    app:layout_constraintWidth_percent="0.15" />
+
+                <TextView
+                    android:id="@+id/text_watchvideo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_left_button"
+                    android:background="@drawable/workspace_border"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center"
+                    android:onClick="@{() -> viewModel.onClickWorkSpace()}"
+                    android:paddingLeft="@dimen/margin20"
+                    android:paddingRight="@dimen/margin20"
+                    android:paddingVertical="4dp"
+                    android:text="@{viewModel.resumeOrSubscription}"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="@{viewModel.showResumButton &amp;&amp; (!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.INVISIBLE}"
+                    app:layout_constraintHeight_default="percent"
+                    app:layout_constraintHeight_percent="0.082"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/text_instructions"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="WORKSPACE" />
 
 
-            <TextView
-                android:id="@+id/dynamic_button"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dimen_0"
-                android:layout_marginStart="@dimen/margin_left_button"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/workspace_border"
-                android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.onClickWorkSpace()}"
-                android:paddingLeft="@dimen/margin20"
-                android:paddingTop="4dp"
-                android:paddingRight="@dimen/margin20"
-                android:paddingBottom="4dp"
-                android:text="@{viewModel.resumeOrSubscription}"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/size_14sp"
-                android:textStyle="bold"
-                android:visibility="@{viewModel.showWorkspaceOrRenewSubscriptionButton &amp;&amp; (!viewModel.isSubscriptionExpired) ?View.VISIBLE:View.INVISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/topGuideline"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.082"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/text_instructions" />
+                <TextView
+                    android:id="@+id/dynamic_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_left_button"
+                    android:layout_marginLeft="12dp"
+                    android:background="@drawable/workspace_border"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center"
+                    android:onClick="@{() -> viewModel.onClickWorkSpace()}"
+                    android:paddingLeft="@dimen/margin20"
+                    android:paddingRight="@dimen/margin20"
+                    android:paddingVertical="4dp"
+                    android:text="@{viewModel.resumeOrSubscription}"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/size_14sp"
+                    android:textStyle="bold"
+                    android:visibility="@{viewModel.showWorkspaceOrRenewSubscriptionButton &amp;&amp; (!viewModel.isSubscriptionExpired) ?View.VISIBLE:View.INVISIBLE}"
+                    app:layout_constraintHeight_default="percent"
+                    app:layout_constraintHeight_percent="0.082"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/text_instructions"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

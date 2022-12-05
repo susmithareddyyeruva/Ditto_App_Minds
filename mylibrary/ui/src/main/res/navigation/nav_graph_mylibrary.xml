@@ -62,6 +62,13 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
+            android:id="@+id/action_patternDescriptionFragment_to_yardage_notion_Fragment"
+            app:destination="@id/yardageNotionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
             android:id="@+id/action_pattern_description_to_calibration"
             app:destination="@id/calibration_nav_graph"
             app:enterAnim="@anim/slide_in_right"
@@ -118,6 +125,10 @@
         android:id="@+id/patternInstructionsFragment"
         android:name="com.ditto.mylibrary.ui.PatternInstructionsFragment"
         android:label="Pattern Instructions" />
+    <fragment
+        android:id="@+id/yardageNotionFragment"
+        android:name="com.ditto.mylibrary.ui.YardageNotionFragment"
+        android:label="Yardage and Notion" />
     <fragment
         android:id="@+id/customerCareFragment"
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"

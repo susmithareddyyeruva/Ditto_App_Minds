@@ -28,6 +28,7 @@ class PinchAndZoom : AppCompatActivity() {
         val isReference = intent.extras?.getBoolean("isReference") ?: false
         val isFromWS = intent.extras?.getBoolean("isFromWS") ?: false
         val patternName = intent.extras?.getString("patternName") ?: " "
+        val patternDownloadFolderName = intent.extras?.getString("patternDownloadFolderName")
         if (isReference) {
             binding.zoomTittle.text = getString(R.string.reference_layout)
         }
@@ -53,7 +54,7 @@ class PinchAndZoom : AppCompatActivity() {
                 if (isFromWS) {
                     var availableUri: Uri? = null
                     availableUri =
-                        core.ui.common.Utility.isImageFileAvailable(imagepath, patternName,this)
+                        core.ui.common.Utility.isImageFileAvailable(imagepath, patternDownloadFolderName,this)
                     Log.d("imageUri123", " pinch and zoom availableUri: $availableUri >>>> ")
                     Glide
                         .with(this)

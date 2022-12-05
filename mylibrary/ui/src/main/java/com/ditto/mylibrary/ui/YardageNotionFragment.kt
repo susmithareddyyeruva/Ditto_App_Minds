@@ -1,6 +1,5 @@
 package com.ditto.mylibrary.ui
 
-import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -16,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.mylibrary.ui.databinding.FragmentPatternInstructionsBinding
+import com.ditto.mylibrary.ui.databinding.FragmentYardageNotionBinding
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import core.PDF_DOWNLOAD_URL
@@ -27,28 +26,28 @@ import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_pattern_instructions.*
+import kotlinx.android.synthetic.main.fragment_yardage_notion.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
+class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private val viewModel: PatternDescriptionViewModel by ViewModelDelegate()
-    lateinit var binding: FragmentPatternInstructionsBinding
+    lateinit var binding: FragmentYardageNotionBinding
     var downloadFileName: String? = null
     var patternFolderName: String? = null
-    var patternDownloadFolderName: String? = null
     @Inject
     lateinit var loggerFactory: LoggerFactory
     val logger: Logger by lazy {
-        loggerFactory.create(PatternInstructionsFragment::class.java.simpleName)
+        loggerFactory.create(YardageNotionFragment::class.java.simpleName)
     }
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
         @Nullable savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPatternInstructionsBinding.inflate(
+        binding = FragmentYardageNotionBinding.inflate(
             inflater
         ).also {
             it.viewModel = viewModel
@@ -75,19 +74,40 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         super.onActivityCreated(savedInstanceState)
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        (activity as BottomNavigationActivity).setToolbarTitle("Pattern Instructions")
+        (activity as BottomNavigationActivity).setToolbarTitle("Yardage and Notion")
         toolbarViewModel.isShowTransparentActionBar.set(false)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarInstrctions)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarYardage)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar_instrctions.setNavigationIcon(com.ditto.mylibrary.ui.R.drawable.ic_back_button)
+        toolbar_yardage.setNavigationIcon(com.ditto.mylibrary.ui.R.drawable.ic_back_button)
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
         toolbarViewModel.isShowActionMenu.set(false)
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
-        patternDownloadFolderName = arguments?.getString("PatternFolderName")
-        loadPdf()
-        //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
+        arguments?.getString("notionDetails")?.let { viewModel.setNotionDetails(it) }
+        arguments?.getStringArrayList("yardageDetails")?.let {  viewModel.setYardageDetails(it)}
+
+        PDF_DOWNLOAD_URL = null //remove this when showing pdf or Image
+
+        setUI()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUI() {
+        //when nothing is available
+        if (PDF_DOWNLOAD_URL.isNullOrEmpty() && !viewModel.isNotionAvailable.get() &&
+            !viewModel.isYardageAvailable.get() && !viewModel.isYardagePDFAvailable.get()
+        ) {
+            //Show nothing available msg
+            binding.emptyView.visibility = View.VISIBLE
+        }
+        //when yardage & notion not available show pdf
+        else if (!viewModel.isNotionAvailable.get() && !viewModel.isYardageAvailable.get() && !PDF_DOWNLOAD_URL.isNullOrEmpty()) {
+            loadPdf()
+            binding.emptyView.visibility = View.GONE
+        } else {//when only yardage & notion is available
+            binding.emptyView.visibility = View.GONE
+        }
     }
 
     override fun onStop() {
@@ -171,6 +191,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
 
 
     private fun showPdfFromUri(pdfName: Uri) {
+        viewModel.isYardagePDFAvailable.set(true)
         bottomNavViewModel.showProgress.set(false)
         if (context == null) return
         binding.pdfView.fromUri(pdfName)

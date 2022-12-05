@@ -49,7 +49,8 @@ class WorkspaceEditor private constructor(builder: Builder) {
         showProjection: Boolean,
         isDraggedPiece: Boolean,
         patternName: String?,
-        dragListener: DraggableListener
+        dragListener: DraggableListener,
+        patternDownloadFolderName: String
     ) {
         mOnWorkspaceImageDragListener = dragListener
         val imageRootView = getLayout(IMAGE)
@@ -123,6 +124,7 @@ class WorkspaceEditor private constructor(builder: Builder) {
             addedViews,
             isSelectAll,
             patternName,
+            patternDownloadFolderName,
             object : DraggableListener {
                 override fun onPositionChanged(view: View, workspaceItem: WorkspaceItems?) {
                     workspaceItem?.xcoordinate = view.x

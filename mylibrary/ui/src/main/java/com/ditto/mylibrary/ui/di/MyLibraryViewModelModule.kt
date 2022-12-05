@@ -52,6 +52,9 @@ interface MyLibraryFragmentModule {
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun patternInstructionsFragment(): PatternInstructionsFragment
 
+   @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
+    fun YardageNotionFragment(): YardageNotionFragment
+
     @ContributesAndroidInjector(modules = [ MyLibraryViewModelModule::class])
     fun MyFolderDetailFragment(): MyFolderDetailFragment
 

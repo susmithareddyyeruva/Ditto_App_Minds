@@ -46,12 +46,18 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         holder.patternsItemBinding.viewModel = viewModel
         val data = patterns[position]
         // Utility.increaseTouch(holder.patternsItemBinding.imageAdd,10f)
-            setImageFromSvgPngDrawable(
-                patterns.get(position).prodName,
-                if(NetworkUtility.isNetworkAvailable(holder.patternsItemBinding.imagePattern.context) || patterns[position].patternType?.toUpperCase().equals("TRIAL")) patterns.get(position).image else patterns.get(position).prodName,
-                holder.patternsItemBinding.imagePattern.context,
-                holder.patternsItemBinding.imagePattern
-            )
+        setImageFromSvgPngDrawable(
+            //patterns.get(position).prodName,
+            Utility.getPatternDownloadFolderName(patterns[position].tailornovaDesignId ?: "",
+                getPurchaseOrMannequinId(patterns[position],
+                    holder.patternsItemBinding.imagePattern.context)),//folderName
+
+            if (NetworkUtility.isNetworkAvailable(holder.patternsItemBinding.imagePattern.context) ||
+                patterns[position].patternType?.toUpperCase().equals("TRIAL")
+            ) patterns.get(position).image else patterns.get(position).prodName,
+            holder.patternsItemBinding.imagePattern.context,
+            holder.patternsItemBinding.imagePattern
+        )
 
         if(patterns.get(position).tailornovaDesignName.isNullOrEmpty()){
             holder.patternsItemBinding.textPatternName.text = patterns.get(position).prodName
@@ -124,6 +130,11 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
 
             }
         }
+    }
+
+    private fun getPurchaseOrMannequinId(pattern: ProdDomain, context: Context): String {
+        return if(NetworkUtility.isNetworkAvailable(context)) pattern.purchasedSizeId ?: ""
+        else pattern.selectedMannequinId ?: ""
     }
 
     inner class PatternHolder(

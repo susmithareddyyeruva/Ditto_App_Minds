@@ -39,12 +39,11 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class PatternDescriptionViewModel @Inject constructor(
     private val context: Context,
     val utility: Utility,
-    private val getPattern: MyLibraryUseCase
+    private val getPattern: MyLibraryUseCase,
 ) :
     BaseViewModel() {
     @Inject
@@ -63,7 +62,9 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
-    val expiredPausedStatus: ObservableField<String> = ObservableField("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription")
+    var yardageDetails: List<String> = emptyList()
+    val expiredPausedStatus: ObservableField<String> =
+        ObservableField("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription")
     val tailornovaDesignpatternName: ObservableField<String> = ObservableField("")
     val prodSize: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
@@ -74,10 +75,16 @@ class PatternDescriptionViewModel @Inject constructor(
 
     val isFinalPage: ObservableBoolean = ObservableBoolean(false)
     val isStartingPage: ObservableBoolean = ObservableBoolean(true)
-//    val resumeOrSubscription: ObservableField<String> = ObservableField("RESUME")  to remove resume text chage in PD
+
+    //    val resumeOrSubscription: ObservableField<String> = ObservableField("RESUME")  to remove resume text chage in PD
     val resumeOrSubscription: ObservableField<String> = ObservableField("WORKSPACE")
     val isSubscriptionExpired: ObservableBoolean = ObservableBoolean(false)
     val isStatusLayoutVisible: ObservableBoolean = ObservableBoolean(false)
+    val isYardageAvailable: ObservableBoolean = ObservableBoolean(false)
+    val isNotionAvailable: ObservableBoolean = ObservableBoolean(false)
+    val isYardagePDFAvailable: ObservableBoolean = ObservableBoolean(false)
+    val yardageDescription: ObservableField<String> = ObservableField("")
+    val notionsDescription: ObservableField<String> = ObservableField("")
     val showActive: ObservableBoolean = ObservableBoolean(false)
     val showPurchased: ObservableBoolean = ObservableBoolean(false)
     val showLine: ObservableBoolean = ObservableBoolean(false)
@@ -162,7 +169,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 Log.d("PattenDescViewModel", ">>>>>>>>>handleDeletePattenResult OnSuccess ")
                 // insert to DB
                 if ((NetworkUtility.isNetworkAvailable(context))) {
-                    if(isFromDeepLinking.get()){
+                    if (isFromDeepLinking.get()) {
                         insertTailornovaDetailsToDB(
                             data.value!!,
                             clickedOrderNumber.get(),
@@ -174,7 +181,9 @@ class PatternDescriptionViewModel @Inject constructor(
                             clickedProduct?.mannequin ?: emptyList(),
                             "Purchased"
                         )
-                    }else {
+                    } else {
+                        data.value?.notionDetails = clickedProduct?.notionDetails
+                        data.value?.yardageDetails = clickedProduct?.yardageDetails
                         insertTailornovaDetailsToDB(
                             data.value!!,
                             clickedOrderNumber.get(),
@@ -238,7 +247,7 @@ class PatternDescriptionViewModel @Inject constructor(
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
         patternType: String?,
-        ) {
+    ) {
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
             orderNo,
@@ -338,6 +347,10 @@ class PatternDescriptionViewModel @Inject constructor(
         uiEvents.post(Event.OnInstructionsButtonClicked)
     }
 
+    fun onClickYardage() {
+        uiEvents.post(Event.OnYardageButtonClicked)
+    }
+
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
     }
@@ -350,6 +363,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnWorkspaceButtonClicked : Event()
         object OnSubscriptionClicked : Event()
         object OnInstructionsButtonClicked : Event()
+        object OnYardageButtonClicked : Event()
         object OnDataUpdated : Event()
         object OnShowMannequinData : Event()
         object OnDownloadComplete : Event()
@@ -400,7 +414,7 @@ class PatternDescriptionViewModel @Inject constructor(
 
     private fun convertInputStreamToFile(
         inputStream: InputStream,
-        filename: String, patternFolderName: String?
+        filename: String, patternFolderName: String?,
     ): File? {
         var result: File? = null
         var dittofolder: File? = null
@@ -460,10 +474,14 @@ class PatternDescriptionViewModel @Inject constructor(
                     hashMap.forEach { (key, value) ->
                         logger.d("DOWNLOAD, file not present KEY: $key \t VALUE : $value")
                         if (!(key.isNullOrEmpty()) && !(value.isNullOrEmpty()) && (value != "null")) {
+                            val folderName = Utility.getPatternDownloadFolderName(clickedTailornovaID.get() ?: "",
+                                   mannequinId.get() ?: "")
+                            logger.d("Folder-Name $folderName")
+
                             downloadEachPatternPiece(
                                 imageUrl = value,
                                 filename = key,
-                                patternFolderName = patternName.get() ?: "Pattern Piece"
+                                patternFolderName = folderName ?: "Pattern Piece"
                             )
                         }
 
@@ -482,7 +500,7 @@ class PatternDescriptionViewModel @Inject constructor(
     suspend fun downloadEachPatternPiece(
         imageUrl: String,
         filename: String,
-        patternFolderName: String?
+        patternFolderName: String?,
     ) {
         try {
             withContext(Dispatchers.IO) {
@@ -516,7 +534,7 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun convertInputStreamToFileForPatterns(
         inputStream: InputStream,
         filename: String,
-        patternFolderName: String?
+        patternFolderName: String?,
     ): File? {
         var result: File? = null
         var dittofolder: File? = null
@@ -563,7 +581,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 val availableUri = key.let {
                     core.ui.common.Utility.isImageFileAvailable(
                         it,
-                        "${patternName.get()}",
+                        Utility.getPatternDownloadFolderName(clickedTailornovaID.get() ?: "",
+                            mannequinId.get() ?: ""),
                         context
                     )
                 }
@@ -578,5 +597,32 @@ class PatternDescriptionViewModel @Inject constructor(
 
     fun versionCheck() {
         utility.checkVersion()
+    }
+
+    fun setYardageDetails(yardageDetails: java.util.ArrayList<String>) {
+        if (yardageDetails.isNullOrEmpty()) {
+            isYardageAvailable.set(false)
+        } else {
+            isYardageAvailable.set(true)
+            var temp: String = ""
+            for (i in 0 until yardageDetails.size) {
+                if (i == 0) {
+                    temp += yardageDetails[i]
+                } else {
+                    temp = temp + "<br>" + yardageDetails[i]
+                }
+            }
+            yardageDescription.set(temp)
+        }
+    }
+
+    fun setNotionDetails(notionDetails: String?) {
+        if (notionDetails.isNullOrEmpty()) {
+            isNotionAvailable.set(false)
+        } else {
+            isNotionAvailable.set(true)
+            if (notionDetails.contains("�")) notionsDescription.set(notionDetails.replace("�", ""))
+            else notionsDescription.set(notionDetails)
+        }
     }
 }
