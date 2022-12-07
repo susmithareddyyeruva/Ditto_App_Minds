@@ -725,6 +725,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
+            is PatternDescriptionViewModel.Event.OnThridPartyFetchError -> showAlert(viewModel.thirdpartyApiError ?: "Error Fetching Data", Utility.AlertType.DEFAULT)
             is PatternDescriptionViewModel.Event.OnApiCallInitiated ->  {
                 Log.d("OnApiCallInitiated","OnApiCallInitiated")
                 bottomNavViewModel.showProgress.set(true)

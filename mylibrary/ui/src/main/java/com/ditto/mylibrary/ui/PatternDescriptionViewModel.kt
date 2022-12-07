@@ -12,6 +12,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
+import com.ditto.mylibrary.data.error.FilterError
 import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
@@ -98,6 +99,7 @@ class PatternDescriptionViewModel @Inject constructor(
     var clickedProduct: ProdDomain? = null
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
     var tailornovaApiError: String? = null
+    var thirdpartyApiError: String? = null
     var patternsInDB: MutableList<ProdDomain>? = null
     val patternSizeList = arrayListOf(SizeDomain("","","Select Size")) // size list respective to view/cup
     val patternVariationList = arrayListOf<VariationDomain>(VariationDomain(emptyList(),"Select View / Cup Size","")) // view/cup size list
@@ -117,6 +119,10 @@ class PatternDescriptionViewModel @Inject constructor(
             is TailornovaAPIError -> {
                 tailornovaApiError = error.message
                 uiEvents.post(Event.OnDataloadFailed)
+            }
+            is FilterError -> {
+                thirdpartyApiError = error.message
+                uiEvents.post(Event.OnThridPartyFetchError)
             }
             else -> {
                 uiEvents.post(Event.OnDataloadFailed)
@@ -425,9 +431,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnGuestUSerWSClick : Event()
         object OnThirdPartyDataFetchSuccess : Event()
         object OnApiCallInitiated : Event()
-        object OnSetSelectedSizes : Event() {
-
-        }
+        object OnThridPartyFetchError : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
