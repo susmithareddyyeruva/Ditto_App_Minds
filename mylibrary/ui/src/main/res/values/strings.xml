@@ -86,7 +86,9 @@
     <string name="please_selecte_mannequinid">Please select any customization to continue !</string>
     <string name="yardage_and_notion_not_available">No yardage or notions available to display !</string>
     <string name="yardage_notions">YARDAGE / NOTIONS</string>
-    <string name="please_select_viewcup_size">Please select View/Cup size and Size to continue !</string>
+    <string name="please_select_viewcup_size">Please select View / Cup size and Size to continue !</string>
     <string name="please_select_size">Please select any Size to continue!</string>
+    <string name="please_select_size_popup">"Please select any View / Cup size to continue !"</string>
+
 
 </resources>

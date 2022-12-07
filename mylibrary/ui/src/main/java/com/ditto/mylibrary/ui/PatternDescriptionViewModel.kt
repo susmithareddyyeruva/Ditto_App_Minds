@@ -84,7 +84,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val isYardagePDFAvailable: ObservableBoolean = ObservableBoolean(false)
     val yardageDescription: ObservableField<String> = ObservableField("")
     val notionsDescription: ObservableField<String> = ObservableField("")
-    val selectedSize: ObservableField<String> = ObservableField("")
+    val selectedSize: ObservableField<String> = ObservableField("") ////selected size string
     val showActive: ObservableBoolean = ObservableBoolean(false)
     val showPurchased: ObservableBoolean = ObservableBoolean(false)
     val showLine: ObservableBoolean = ObservableBoolean(false)
@@ -100,12 +100,12 @@ class PatternDescriptionViewModel @Inject constructor(
     var tailornovaApiError: String? = null
     var patternsInDB: MutableList<ProdDomain>? = null
     val patternSizeList = arrayListOf(SizeDomain("","","Select Size")) // size list respective to view/cup
-    val patternVariationList = arrayListOf<VariationDomain>(VariationDomain(emptyList(),"Select View/Cup Size","")) // view/cup size list
+    val patternVariationList = arrayListOf<VariationDomain>(VariationDomain(emptyList(),"Select View / Cup Size","")) // view/cup size list
     val isDittoPattern: ObservableBoolean = ObservableBoolean(false)
     val isLastDateAvailable: ObservableBoolean = ObservableBoolean(false)
     val isSizeSpinnerVisible: ObservableBoolean = ObservableBoolean(false) // to display Online view/cup & size spinner
     val isOfflineSizeVisible: ObservableBoolean = ObservableBoolean(false) // to display offline view/cup & size textviews
-    val selectedViewOrCupStyle : ObservableField<String> = ObservableField()
+    val selectedViewOrCupStyle : ObservableField<String> = ObservableField() //selected view/cup size string
     lateinit var selectedSizeDomain: SizeDomain
     val selectedSizePosition: ObservableField<Int> = ObservableField()
     val selectedViewCupPosition: ObservableField<Int> = ObservableField()
@@ -272,7 +272,7 @@ class PatternDescriptionViewModel @Inject constructor(
             is Result.OnSuccess -> {
                 val variations = result.data.variationDomain ?: emptyList()
                 patternVariationList.clear()
-                patternVariationList.add(VariationDomain(emptyList(),"Select View/Cup Size",""))
+                patternVariationList.add(VariationDomain(emptyList(),"Select View / Cup Size",""))
                 patternVariationList.addAll(variations)
                 uiEvents.post(Event.OnThirdPartyDataFetchSuccess)
             }
@@ -715,9 +715,14 @@ class PatternDescriptionViewModel @Inject constructor(
         } else {
             isDittoPattern.set(false)
             isOfflineSizeVisible.set(false)
-            uiEvents.post(Event.OnApiCallInitiated)
-            fetchThirdPartyData()
             isSizeSpinnerVisible.set(true)
+            //call 3p api
+            if(selectedSize.get().isNullOrEmpty() &&  selectedViewOrCupStyle.get().isNullOrEmpty()) {
+                uiEvents.post(Event.OnApiCallInitiated)
+                fetchThirdPartyData()
+            } else {
+               // uiEvents.post(Event.OnThirdPartyDataFetchSuccess)
+            }
 
         }
     }

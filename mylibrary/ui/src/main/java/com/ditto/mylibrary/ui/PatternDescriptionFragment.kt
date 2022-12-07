@@ -13,6 +13,7 @@ import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -244,42 +245,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.onVariationSelection(parent?.getItemAtPosition(position) as VariationDomain, position)
                 binding.sizeSpinner.setSelection(0, true)
                 binding.sizeSpinnerLayout.visibility = View.VISIBLE
-                /*if (viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() || position == 0) {
-                    showAlert(
-                        getString(R.string.please_select_viewcup_size),
-                        Utility.AlertType.DEFAULT
-                    )
-                    Log.d("showAlert","${viewModel.selectedViewOrCupStyle.get().isNullOrEmpty()}")
-                } else {
-                    binding.sizeSpinnerLayout.visibility = View.VISIBLE
-                }*/
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
         }
 
-        // set size spinner
-        val sizeAdapter =
-            CustomSizeSpinnerAdapter(
-                requireContext(),
-                viewModel.patternSizeList
-            )
-        binding.sizeSpinner.adapter = sizeAdapter
-        binding.sizeSpinner.setSelection(0, true)
-        binding.sizeSpinnerLayout.visibility = View.GONE
-
-        /*binding.sizeSpinner.setOnTouchListener { v, event ->
-            if (viewModel.selectedViewOrCupStyle.get().isNullOrEmpty()) {
-                showAlert(
-                    getString(R.string.please_select_viewcup_size),
-                    Utility.AlertType.DEFAULT
-                )
-            } else {
-                binding.sizeSpinner.isEnabled = true
-            }
-            return@setOnTouchListener true
-        }*/
 
         binding.sizeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -288,24 +259,41 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 position: Int,
                 id: Long,
             ) {
-                /*if (viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && position == 0 && viewModel.selectedViewCupPosition.get() == 0) {
-                    showAlert(
-                        getString(R.string.please_select_viewcup_size),
-                        Utility.AlertType.DEFAULT
-                    )
-                    Log.d("showAlert","${viewModel.selectedViewOrCupStyle.get().isNullOrEmpty()}")
-                } else {*/
+
                     val selectedSize = parent?.getItemAtPosition(position) as SizeDomain
                     //fetch tailornova patterns
 
                     viewModel.onSizeSelected(selectedSize,position)
                     Log.d("NoALert","${viewModel.selectedViewOrCupStyle.get().isNullOrEmpty()}")
-                //}
 
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d("onNothingSelected", "onNothingSelected")
+            }
         }
+        // set size spinner
+        val sizeAdapter =
+            CustomSizeSpinnerAdapter(
+                requireContext(),
+                viewModel.patternSizeList
+            )
+        binding.sizeSpinner.adapter = sizeAdapter
+        binding.sizeSpinner.setSelection(0, true)
+
+        binding.sizeSpinner.setOnTouchListener { v, event ->
+
+            if (viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && event.action == MotionEvent.ACTION_UP) {
+                showAlert(
+                    getString(R.string.please_select_size_popup),
+                    Utility.AlertType.DEFAULT
+                )
+                return@setOnTouchListener true
+            }
+            return@setOnTouchListener false
+        }
+
+
     }
 
     private fun setSpinner() {
