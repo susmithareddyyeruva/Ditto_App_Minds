@@ -253,13 +253,12 @@
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
-                app:layout_constraintWidth_default="percent"
-                app:layout_constraintWidth_percent="0.25"
+                app:layout_constraintEnd_toStartOf="@+id/purchased_pattern"
                 tools:text="Tulip Skirt" />
 
             <TextView
                 android:id="@+id/purchased_pattern"
-                android:layout_width="@dimen/dimen_0"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:paddingLeft="2dp"
@@ -273,6 +272,7 @@
                 android:textSize="@dimen/size_14sp"
                 android:ellipsize="end"
                 android:paddingEnd="@dimen/padding_status_title"
+                app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toEndOf="@+id/end_guideline"
                 app:layout_constraintStart_toEndOf="@id/content_header"
