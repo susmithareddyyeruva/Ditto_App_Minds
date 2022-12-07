@@ -29,5 +29,7 @@ data class Prod(
     @SerializedName("purchasedSizeId")var purchasedSizeId:String?="",
     @SerializedName("mannequin")var mannequin:List<MannequinData>?= emptyList(),
     @SerializedName("yardageDetails") val yardageDetails : List<String>? = emptyList(),
-    @SerializedName("notionDetails") val notionDetails : String?=""
+    @SerializedName("notionDetails") val notionDetails : String?="",
+    @SerializedName("customSizeFitName") val customSizeFitName : String?="",
+    @SerializedName("lastModifiedSizeDate") val lastModifiedSizeDate : String?=""
 ):Serializable

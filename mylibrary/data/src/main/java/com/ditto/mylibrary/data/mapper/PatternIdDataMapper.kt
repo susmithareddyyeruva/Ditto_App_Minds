@@ -74,7 +74,9 @@ public fun PatternIdData.toDomain(
     selectedMnnequinId: String?,
     selectedMannequinName: String?,
     mannequin: List<MannequinDataDomain>?,
-    patternType:String?
+    patternType:String?,
+    lastDateOfModification: String?,
+    selectedViewCupStyle: String?
 ): OfflinePatterns {
     val mYardageDetails = YardageDetails(this.yardageDetails, this.notionDetails)
     return OfflinePatterns(
@@ -111,6 +113,8 @@ public fun PatternIdData.toDomain(
         selectedMannequinName = selectedMannequinName,
         mannequin = mannequin?.map { it.toDomain() },
         yardageDetails = mYardageDetails,
+        lastDateOfModification = lastDateOfModification,
+        selectedViewCupStyle = selectedViewCupStyle
     )
 }
 fun MannequinDataDomain.toDomain(): MannequinData {
@@ -273,7 +277,9 @@ internal fun OfflinePatterns.toPatternIDDomain(): PatternIdData {
         thumbnailImageUrl = this.thumbnailImageUrl,
         selectedMannequinId = this.selectedMannequinId,
         selectedMannequinName = this.selectedMannequinName,
-        mannequin = this.mannequin?.map { it.toDomains() }
+        mannequin = this.mannequin?.map { it.toDomains() },
+        lastDateOfModification = this.lastDateOfModification,
+        selectedViewCupStyle = this.selectedViewCupStyle
     )
 }
 

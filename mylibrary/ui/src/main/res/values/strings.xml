@@ -67,6 +67,7 @@
     <string name="pattern_library_count">Pattern Library\u0020(%1$d)</string>
     <string name="myfolder_detail_count">%1$s\u0020(%2$d)</string>
     <string name="size_text"> Size : %1$s </string>
+    <string name="modified_text"> Modified : %1$s </string>
     <string name="myfolder">My Folders</string>
     <string name="rename_folder">Rename Folder</string>
     <string name="delete_folder">Delete Folder</string>
@@ -85,5 +86,7 @@
     <string name="please_selecte_mannequinid">Please select any customization to continue !</string>
     <string name="yardage_and_notion_not_available">No yardage or notions available to display !</string>
     <string name="yardage_notions">YARDAGE / NOTIONS</string>
+    <string name="please_select_viewcup_size">Please select View/Cup size and Size to continue !</string>
+    <string name="please_select_size">Please select any Size to continue!</string>
 
 </resources>

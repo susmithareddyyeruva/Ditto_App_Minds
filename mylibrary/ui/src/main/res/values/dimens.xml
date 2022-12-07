@@ -158,4 +158,12 @@
     <dimen name="margin20">20dp</dimen>
     <dimen name="offset">45dp</dimen>
     <dimen name="margin_dropdown_end">25dp</dimen>
+
+    <dimen name="margin_end_variation_dropdown">12dp</dimen>
+    <dimen name="margin_end_size_dropdown">8dp</dimen>
+    <dimen name="margin_top_layout">8dp</dimen>
+    <dimen name="margin_top_button_layout">10dp</dimen>
+    <dimen name="padding_notion_title">5dp</dimen>
+    <dimen name="padding_status_title">3dp</dimen>
+
 </resources>

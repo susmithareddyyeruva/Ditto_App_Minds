@@ -15,9 +15,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
-import com.ditto.mylibrary.domain.model.MannequinDataDomain
-import com.ditto.mylibrary.domain.model.PatternIdData
-import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.model.*
 import core.appstate.AppState
 import core.event.UiEvents
 import core.network.NetworkUtility
@@ -67,6 +65,7 @@ class PatternDescriptionViewModel @Inject constructor(
         ObservableField("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription")
     val tailornovaDesignpatternName: ObservableField<String> = ObservableField("")
     val prodSize: ObservableField<String> = ObservableField("")
+    val modificationDate: ObservableField<String> = ObservableField("")
     val isFromDeepLinking: ObservableBoolean = ObservableBoolean(false)
     val patternpdfuri: ObservableField<String> = ObservableField("")
     val patternDescription: ObservableField<String> = ObservableField("NA")
@@ -85,6 +84,7 @@ class PatternDescriptionViewModel @Inject constructor(
     val isYardagePDFAvailable: ObservableBoolean = ObservableBoolean(false)
     val yardageDescription: ObservableField<String> = ObservableField("")
     val notionsDescription: ObservableField<String> = ObservableField("")
+    val selectedSize: ObservableField<String> = ObservableField("")
     val showActive: ObservableBoolean = ObservableBoolean(false)
     val showPurchased: ObservableBoolean = ObservableBoolean(false)
     val showLine: ObservableBoolean = ObservableBoolean(false)
@@ -99,6 +99,16 @@ class PatternDescriptionViewModel @Inject constructor(
     val isShowSpinner: ObservableBoolean = ObservableBoolean(false)
     var tailornovaApiError: String? = null
     var patternsInDB: MutableList<ProdDomain>? = null
+    val patternSizeList = arrayListOf(SizeDomain("","","Select Size")) // size list respective to view/cup
+    val patternVariationList = arrayListOf<VariationDomain>(VariationDomain(emptyList(),"Select View/Cup Size","")) // view/cup size list
+    val isDittoPattern: ObservableBoolean = ObservableBoolean(false)
+    val isLastDateAvailable: ObservableBoolean = ObservableBoolean(false)
+    val isSizeSpinnerVisible: ObservableBoolean = ObservableBoolean(false) // to display Online view/cup & size spinner
+    val isOfflineSizeVisible: ObservableBoolean = ObservableBoolean(false) // to display offline view/cup & size textviews
+    val selectedViewOrCupStyle : ObservableField<String> = ObservableField()
+    lateinit var selectedSizeDomain: SizeDomain
+    val selectedSizePosition: ObservableField<Int> = ObservableField()
+    val selectedViewCupPosition: ObservableField<Int> = ObservableField()
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -132,7 +142,13 @@ class PatternDescriptionViewModel @Inject constructor(
                 mannequinName.set(result.data.selectedMannequinName)
                 clickedProduct?.mannequin =
                     result.data.mannequin?.map { it.toDomain12() }  //Saving arraylist of mannequin
-                uiEvents.post(Event.OnShowMannequinData)
+               // uiEvents.post(Event.OnShowMannequinData)
+
+                //fetch selected view/cup & size from offline data
+                selectedSize.set(result.data.size ?: "")
+                selectedViewOrCupStyle.set(result.data.selectedViewCupStyle ?: "")
+                modificationDate.set(result.data.lastDateOfModification ?: "")
+                isLastDateAvailable.set(!modificationDate.get().isNullOrEmpty())
                 uiEvents.post(Event.OnDataUpdated)
             }
             is Result.OnError -> handleError(result.error)
@@ -179,7 +195,9 @@ class PatternDescriptionViewModel @Inject constructor(
                             mannequinId.get(),
                             mannequinName.get(),
                             clickedProduct?.mannequin ?: emptyList(),
-                            "Purchased"
+                            "Purchased",
+                            "",
+                            ""
                         )
                     } else {
                         data.value?.notionDetails = clickedProduct?.notionDetails
@@ -193,7 +211,9 @@ class PatternDescriptionViewModel @Inject constructor(
                             mannequinId.get(),
                             mannequinName.get(),
                             clickedProduct?.mannequin ?: emptyList(),
-                            clickedProduct?.patternType
+                            clickedProduct?.patternType,
+                            modificationDate.get(),
+                            selectedViewOrCupStyle.get()
                         )
                     }
                 } else {
@@ -237,6 +257,32 @@ class PatternDescriptionViewModel @Inject constructor(
         }
     }
 
+    fun fetchThirdPartyData() {
+        disposable += getPattern.getThirdPartyPatternData(clickedProduct?.iD ?: "")
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                handleThirdPartyFetchResult(it)
+            }
+    }
+
+    private fun handleThirdPartyFetchResult(result: Result<ThirdPartyDomain>?) {
+        when(result) {
+            is Result.OnSuccess -> {
+                val variations = result.data.variationDomain ?: emptyList()
+                patternVariationList.clear()
+                patternVariationList.add(VariationDomain(emptyList(),"Select View/Cup Size",""))
+                patternVariationList.addAll(variations)
+                uiEvents.post(Event.OnThirdPartyDataFetchSuccess)
+            }
+            is Result.OnError -> {
+                handleError(result.error)
+            }
+            else -> {}
+        }
+    }
+
     private fun insertTailornovaDetailsToDB(
         patternIdData: PatternIdData,
         orderNo: String?,
@@ -247,6 +293,8 @@ class PatternDescriptionViewModel @Inject constructor(
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
         patternType: String?,
+        lastDateOfModification: String?,
+        selectedViewCupStyle: String?
     ) {
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
@@ -257,7 +305,9 @@ class PatternDescriptionViewModel @Inject constructor(
             mannequinId,
             mannequinName,
             mannequin,
-            patternType
+            patternType,
+            lastDateOfModification,
+            selectedViewCupStyle
         )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
@@ -373,6 +423,11 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnDeletePatternFolder : Event()
         object OnMannequinNameEmpty : Event()
         object OnGuestUSerWSClick : Event()
+        object OnThirdPartyDataFetchSuccess : Event()
+        object OnApiCallInitiated : Event()
+        object OnSetSelectedSizes : Event() {
+
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -625,4 +680,95 @@ class PatternDescriptionViewModel @Inject constructor(
             else notionsDescription.set(notionDetails)
         }
     }
+
+    /**
+     * on view/cup size selection
+     */
+    fun onVariationSelection(
+        clickedvariation: VariationDomain, position: Int
+    ) {
+        selectedViewOrCupStyle.set(clickedvariation.style)
+        selectedViewCupPosition.set(position)
+        //reset size list
+        patternSizeList.clear()
+
+        //reset mannequin details
+        mannequinId.set("")
+        mannequinName.set("")
+        patternSizeList.add(SizeDomain("", "", "Select Size"))
+        patternSizeList.addAll(clickedvariation.sizeDomain ?: emptyList())
+        this.selectedSize.set(patternSizeList[0].size)
+        selectedSizePosition.set(0)
+    }
+
+    /**
+     * set Online ui for ditto & non ditto patterns
+     */
+    internal fun setPatternUiBasedOnPatternType() {
+        if (clickedProduct?.prodBrand.equals("Ditto")) {
+            isDittoPattern.set(true)
+            modificationDate.set(clickedProduct?.lastModifiedSizeDate ?: "")
+            isLastDateAvailable.set(!clickedProduct?.lastModifiedSizeDate.isNullOrEmpty())
+            //val dateText = Utility.getFormattedDateTime(clickedProduct?.dateOfModification ?: "")
+            isOfflineSizeVisible.set(false)
+            isSizeSpinnerVisible.set(false)
+        } else {
+            isDittoPattern.set(false)
+            isOfflineSizeVisible.set(false)
+            uiEvents.post(Event.OnApiCallInitiated)
+            fetchThirdPartyData()
+            isSizeSpinnerVisible.set(true)
+
+        }
+    }
+
+    /**
+     * set offline ui for ditto & non ditto patterns
+     */
+    internal fun setOfflinePatternUiBasedOnPatternType() {
+        if (clickedProduct?.prodBrand.equals("Ditto")) {
+            isDittoPattern.set(true)
+            isLastDateAvailable.set(!modificationDate.get().isNullOrEmpty())
+            isOfflineSizeVisible.set(false)
+            isSizeSpinnerVisible.set(false)
+        } else {
+            isDittoPattern.set(false)
+            isOfflineSizeVisible.set(true)
+            isSizeSpinnerVisible.set(false)
+        }
+    }
+
+    /**
+     * on size selection for respective view/cup
+     */
+    internal fun onSizeSelected(selectedSize: SizeDomain, position: Int) {
+        this.selectedSize.set(selectedSize.size)
+        this.selectedSizeDomain = selectedSize
+        selectedSizePosition.set(position)
+        if(!selectedSize.designID.isNullOrEmpty() && !selectedSize.mannequinID.isNullOrEmpty()){
+            mannequinId.set(selectedSize.mannequinID)
+            mannequinName.set(selectedSize.designID)
+            uiEvents.post(Event.OnApiCallInitiated)
+            fetch3pPattern(selectedSize.designID, selectedSize.mannequinID)
+        } else {
+            mannequinId.set("")
+            mannequinName.set("")
+            logger.d("onSizeSelected - empty size domain details")
+        }
+    }
+
+    /***
+     * fetch 3p tailornova pattern pieces
+     */
+    private fun fetch3pPattern(designID: String?, mannequinID: String?) {
+        disposable += getPattern.getPattern(
+            designID ?: "",
+            mannequinID ?: ""
+        )
+            .whileSubscribed { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { handleFetchResult(it) }
+    }
+
 }

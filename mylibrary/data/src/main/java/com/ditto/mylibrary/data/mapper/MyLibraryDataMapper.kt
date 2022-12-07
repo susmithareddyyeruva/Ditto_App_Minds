@@ -90,8 +90,9 @@ fun Prod.toDomain(): ProdDomain {
         purchasedSizeId = this.purchasedSizeId ?: "",
         mannequin = this.mannequin?.map { it.toDomain12() },
         yardageDetails = this.yardageDetails,
-        notionDetails = this.notionDetails
-
+        notionDetails = this.notionDetails,
+        customSizeFitName = this.customSizeFitName,
+        lastModifiedSizeDate = this.lastModifiedSizeDate
     )
 
 

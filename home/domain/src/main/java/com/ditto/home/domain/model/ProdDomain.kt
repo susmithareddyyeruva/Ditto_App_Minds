@@ -22,5 +22,7 @@ data class ProdDomain(
     val prodGender: String = "",
     val prodBrand: String = "",
     var yardageDetails : List<String>? = emptyList(),
-    val notionDetails : String?=""
+    val notionDetails : String?="",
+    var customSizeFitName : String? = "",
+    var lastModifiedSizeDate : String? = ""
 ):Serializable

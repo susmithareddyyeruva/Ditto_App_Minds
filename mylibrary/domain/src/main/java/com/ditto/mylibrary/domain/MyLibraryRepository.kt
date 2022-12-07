@@ -2,10 +2,7 @@ package com.ditto.mylibrary.domain
 
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.request.FolderRenameRequest
-import com.ditto.mylibrary.domain.request.FolderRequest
-import com.ditto.mylibrary.domain.request.GetFolderRequest
-import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.*
 import io.reactivex.Single
 import non_core.lib.Result
 
@@ -34,11 +31,14 @@ interface MyLibraryRepository {
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
-        patternType:String?
+        patternType:String?,
+        lastDateOfModification: String?,
+        selectedViewCupStyle: String?
     ): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>
     fun getMyLibraryFolderData(requestdata: GetFolderRequest, methodName: String): Single<Result<FoldersResultDomain>>
     fun addFolder(requestdata: FolderRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
     fun renameFolder(createJson: FolderRenameRequest, methodName: String): Single<Result<AddFavouriteResultDomain>>
+    fun getThirdPartyPatternData(requestData: ThirdPartyDataRequest) : Single<Result<ThirdPartyDomain>>
 }

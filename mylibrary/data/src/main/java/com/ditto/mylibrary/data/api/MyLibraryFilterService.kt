@@ -1,9 +1,7 @@
 package com.ditto.mylibrary.data.api
 
-import com.ditto.mylibrary.domain.request.FolderRenameRequest
-import com.ditto.mylibrary.domain.request.FolderRequest
-import com.ditto.mylibrary.domain.request.GetFolderRequest
-import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.model.ThirdPartyResponse
+import com.ditto.mylibrary.domain.request.*
 import com.ditto.mylibrary.model.FavouriteResult
 import com.ditto.mylibrary.model.FoldersResult
 import com.ditto.mylibrary.model.MyLibraryResult
@@ -42,4 +40,11 @@ interface MyLibraryFilterService {
         @Header("Authorization") header: String,
         @Query("method") method: String
     ): Single<FavouriteResult>
+
+    @Headers("Content-Type: application/json")
+    @POST(BuildConfig.MYLIBRARY_ENDURL + "TraceAppThirdParty-Shows")
+    fun getThirdPartyPatternData(
+        @Body body: ThirdPartyDataRequest?,
+        @Header("Authorization") header: String?
+    ): Single<ThirdPartyResponse>
 }

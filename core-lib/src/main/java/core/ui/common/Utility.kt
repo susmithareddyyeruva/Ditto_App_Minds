@@ -25,6 +25,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -545,6 +546,19 @@ class Utility @Inject constructor(
 
         fun getPatternDownloadFolderName(designId: String, purchaseId: String): String {
             return "${designId}${purchaseId}"
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getFormattedDateTime(text: String): String {
+            var output = ""
+            if(text.isNotEmpty()){
+                val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)
+                val result = formatter.parse(text)
+                val targetFormat = SimpleDateFormat("dd-MM-yyyy kk:mm a", Locale.US)
+                val date = targetFormat.format(result)
+                output = date.toString()
+            }
+            return output
         }
 
         @SuppressLint("ResourceType")

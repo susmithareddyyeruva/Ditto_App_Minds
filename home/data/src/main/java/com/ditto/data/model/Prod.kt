@@ -24,5 +24,7 @@ data class Prod(
     @SerializedName("gender") val prodGender : String?="",
     @SerializedName("brand") val prodBrand : String?="",
     @SerializedName("yardageDetails") val yardageDetails : List<String>? = emptyList(),
-    @SerializedName("notionDetails") val notionDetails : String?=""
+    @SerializedName("notionDetails") val notionDetails : String?="",
+    @SerializedName("customSizeFitName") val customSizeFitName : String?="",
+    @SerializedName("lastModifiedSizeDate") val lastModifiedSizeDate : String?=""
 ): Serializable

@@ -31,7 +31,9 @@ data class PatternIdData(
     var selectedMannequinName: String? = "",
     var mannequin:List<MannequinData>?= emptyList(),
     var yardageDetails : List<String>? = emptyList(),
-    var notionDetails : String?=""
+    var notionDetails : String?="",
+    var lastDateOfModification: String?,
+    var selectedViewCupStyle: String?
 )
 
 data class NumberOfPiecesData(
