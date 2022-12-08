@@ -155,6 +155,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setPatternImage()
             }
 
+            setUIEvents()
+            outputDirectory = Utility.getOutputDirectory(requireContext())
+
             if (viewModel.clickedProduct != null) {
                 if (NetworkUtility.isNetworkAvailable(context)) {
                     binding.sizeSpinnerLayout.visibility = View.GONE
@@ -196,10 +199,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             // fetchPatternDetails()   //Fetching Pattern Details using design id
 
         }
-        setUIEvents()
-        outputDirectory = Utility.getOutputDirectory(requireContext())
-
-
 
        /* binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -233,7 +232,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             viewModel.patternVariationList
         )
         binding.variationSpinner.adapter = variationAdapter
-        binding.variationSpinner.setSelection(0, true)
 
         binding.variationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -243,7 +241,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 id: Long,
             ) {
                 viewModel.onVariationSelection(parent?.getItemAtPosition(position) as VariationDomain, position)
-                binding.sizeSpinner.setSelection(0, true)
+                if (position==0){viewModel.selectedSizePosition.set(0)}
+                binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
                 binding.sizeSpinnerLayout.visibility = View.VISIBLE
             }
 
@@ -262,7 +261,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                     val selectedSize = parent?.getItemAtPosition(position) as SizeDomain
                     //fetch tailornova patterns
-
                     viewModel.onSizeSelected(selectedSize,position)
                     Log.d("NoALert","${viewModel.selectedViewOrCupStyle.get().isNullOrEmpty()}")
 
@@ -279,11 +277,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.patternSizeList
             )
         binding.sizeSpinner.adapter = sizeAdapter
-        binding.sizeSpinner.setSelection(0, true)
 
         binding.sizeSpinner.setOnTouchListener { v, event ->
-
-            if (viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && event.action == MotionEvent.ACTION_UP) {
+            Log.d("TouchListener", " : "+viewModel.selectedViewOrCupStyle.get()?:"@@@")
+            if (viewModel.selectedViewCupPosition.get() == 0 && event.action == MotionEvent.ACTION_UP) {
                 showAlert(
                     getString(R.string.please_select_size_popup),
                     Utility.AlertType.DEFAULT
@@ -292,8 +289,6 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             return@setOnTouchListener false
         }
-
-
     }
 
     private fun setSpinner() {
@@ -725,7 +720,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
-            is PatternDescriptionViewModel.Event.OnThridPartyFetchError -> showAlert(viewModel.thirdpartyApiError ?: "Error Fetching Data", Utility.AlertType.DEFAULT)
+            is PatternDescriptionViewModel.Event.OnThridPartyFetchError -> showAlert(viewModel.thirdpartyApiError ?: "Error Fetching Data", Utility.AlertType.NETWORK)
             is PatternDescriptionViewModel.Event.OnApiCallInitiated ->  {
                 Log.d("OnApiCallInitiated","OnApiCallInitiated")
                 bottomNavViewModel.showProgress.set(true)
@@ -940,6 +935,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnThirdPartyDataFetchSuccess -> {
                 Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
                 setSizeSpinnerData()
+                binding.variationSpinner.setSelection(0, true)
+                binding.sizeSpinner.setSelection(0, true)
+                bottomNavViewModel.showProgress.set(false)
+            }
+            PatternDescriptionViewModel.Event.OnThirdPartyDataFetchResume -> {
+                Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
+                setSizeSpinnerData()
+                binding.variationSpinner.setSelection(viewModel.selectedViewCupPosition.get()?:0, true)
+                binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
                 bottomNavViewModel.showProgress.set(false)
             }
             else -> {}
@@ -1048,7 +1052,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
         if (NetworkUtility.isNetworkAvailable(context)) {
-            downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
+            //downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
         setImageFromSvgPngDrawable(
             Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
@@ -1283,6 +1287,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
+        hashMap[viewModel.patternName.get()?:"Pattern Name"] = viewModel.clickedProduct?.image ?: ""
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }

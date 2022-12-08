@@ -430,6 +430,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnMannequinNameEmpty : Event()
         object OnGuestUSerWSClick : Event()
         object OnThirdPartyDataFetchSuccess : Event()
+        object OnThirdPartyDataFetchResume : Event()
         object OnApiCallInitiated : Event()
         object OnThridPartyFetchError : Event()
     }
@@ -702,7 +703,6 @@ class PatternDescriptionViewModel @Inject constructor(
         patternSizeList.add(SizeDomain("", "", "Select Size"))
         patternSizeList.addAll(clickedvariation.sizeDomain ?: emptyList())
         this.selectedSize.set(patternSizeList[0].size)
-        selectedSizePosition.set(0)
     }
 
     /**
@@ -725,7 +725,7 @@ class PatternDescriptionViewModel @Inject constructor(
                 uiEvents.post(Event.OnApiCallInitiated)
                 fetchThirdPartyData()
             } else {
-               // uiEvents.post(Event.OnThirdPartyDataFetchSuccess)
+                uiEvents.post(Event.OnThirdPartyDataFetchResume)
             }
 
         }
