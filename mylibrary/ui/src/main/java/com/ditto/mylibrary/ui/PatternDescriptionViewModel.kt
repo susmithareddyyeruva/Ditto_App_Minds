@@ -757,6 +757,7 @@ class PatternDescriptionViewModel @Inject constructor(
         if(!selectedSize.designID.isNullOrEmpty() && !selectedSize.mannequinID.isNullOrEmpty()){
             mannequinId.set(selectedSize.mannequinID)
             mannequinName.set(selectedSize.designID)
+            clickedTailornovaID.set(selectedSize.designID)
             uiEvents.post(Event.OnApiCallInitiated)
             fetch3pPattern(selectedSize.designID, selectedSize.mannequinID)
         } else {
