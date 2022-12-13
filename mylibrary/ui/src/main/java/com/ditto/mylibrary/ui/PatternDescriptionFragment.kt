@@ -1,6 +1,7 @@
 package com.ditto.mylibrary.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.content.pm.PackageManager
@@ -12,6 +13,7 @@ import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -32,10 +34,13 @@ import com.ditto.connectivity.ConnectivityActivity
 import com.ditto.connectivity.ConnectivityUtils
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.menuitems_ui.managedevices.fragment.ManageDeviceFragment
 import com.ditto.mylibrary.domain.model.MannequinDataDomain
 import com.ditto.mylibrary.domain.model.ProdDomain
+import com.ditto.mylibrary.domain.model.SizeDomain
+import com.ditto.mylibrary.domain.model.VariationDomain
+import com.ditto.mylibrary.ui.adapter.CustomSizeSpinnerAdapter
 import com.ditto.mylibrary.ui.adapter.CustomSpinnerAdapter
+import com.ditto.mylibrary.ui.adapter.CustomVariationSpinnerAdapter
 import com.ditto.mylibrary.ui.databinding.PatternDescriptionFragmentBinding
 import com.ditto.workspace.ui.util.SvgBitmapDecoder
 import com.joann.fabrictracetransform.transform.TransformErrorCode
@@ -66,8 +71,6 @@ import java.io.File
 import java.net.Socket
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListener,
@@ -92,7 +95,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
-        @Nullable savedInstanceState: Bundle?
+        @Nullable savedInstanceState: Bundle?,
     ): View? {
         binding = PatternDescriptionFragmentBinding.inflate(
             inflater
@@ -105,6 +108,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -151,35 +155,43 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setPatternImage()
             }
 
+            setUIEvents()
+            outputDirectory = Utility.getOutputDirectory(requireContext())
+
             if (viewModel.clickedProduct != null) {
                 if (NetworkUtility.isNetworkAvailable(context)) {
+                    binding.sizeSpinnerLayout.visibility = View.GONE
+                    viewModel.setPatternUiBasedOnPatternType()
                     if (AppState.getIsLogged()) {
-                        binding.textMannequinName.visibility = View.GONE
+                       // binding.textMannequinName.visibility = View.GONE
                         if (viewModel.clickedProduct?.patternType.equals("Trial", true)) {
                             viewModel.fetchOfflinePatternDetails()
                         } else {  //Online Scenario
-                            if (viewModel.clickedProduct!!.mannequin.isNullOrEmpty()) {
+                            //if it is Ditto Pattern
+                            if (viewModel.isDittoPattern.get()) {
                                 viewModel.mannequinId.set(viewModel.clickedProduct!!.purchasedSizeId)  //setting purchase ID as mannequin id
                                 if (viewModel.clickedProduct!!.purchasedSizeId.isNullOrEmpty()) {
                                     viewModel.mannequinId.set(viewModel.clickedProduct!!.selectedMannequinId) //setting selectedMannequin Id as mannequin id
                                 }
-                                if (viewModel.mannequinId.get()
-                                        ?.isNotEmpty() == true
-                                ) {//API cal  will happen only mannequin id is not empty
+                                if (viewModel.mannequinId.get()?.isNotEmpty() == true) {//API cal  will happen only mannequin id is not empty
                                     bottomNavViewModel.showProgress.set(true)
                                     viewModel.fetchPattern()// on sucess inserting tailornova details inside internal DB
                                 }
                             } else {
-                                setSpinner()// Setting Dropdown with Mannequin ID
+                                //if not a ditto pattern
+                                viewModel.mannequinId.set("")
+                                //setSpinner()// Setting Dropdown with Mannequin ID
                             }
 
 
                         }
                     } else {
+                        viewModel.setOfflinePatternUiBasedOnPatternType()
                         viewModel.fetchOfflinePatternDetails()
                     }
                 } else {
                     viewModel.fetchOfflinePatternDetails()
+                    viewModel.setOfflinePatternUiBasedOnPatternType()
                 }
 
             }
@@ -187,12 +199,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             // fetchPatternDetails()   //Fetching Pattern Details using design id
 
         }
-        setUIEvents()
-        outputDirectory = Utility.getOutputDirectory(requireContext())
 
-
-
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+       /* binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
@@ -213,6 +221,73 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }*/
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setSizeSpinnerData() {
+        // set view/cup size spinner
+        val variationAdapter = CustomVariationSpinnerAdapter(
+            requireContext(),
+            viewModel.patternVariationList
+        )
+        binding.variationSpinner.adapter = variationAdapter
+
+        binding.variationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                viewModel.onVariationSelection(parent?.getItemAtPosition(position) as VariationDomain, position)
+                if (position==0){viewModel.selectedSizePosition.set(0)}
+                binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
+                binding.sizeSpinnerLayout.visibility = View.VISIBLE
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+        }
+
+
+        binding.sizeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+
+                    val selectedSize = parent?.getItemAtPosition(position) as SizeDomain
+                    //fetch tailornova patterns
+                    viewModel.onSizeSelected(selectedSize,position)
+                    Log.d("NoALert","${viewModel.selectedViewOrCupStyle.get().isNullOrEmpty()}")
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d("onNothingSelected", "onNothingSelected")
+            }
+        }
+        // set size spinner
+        val sizeAdapter =
+            CustomSizeSpinnerAdapter(
+                requireContext(),
+                viewModel.patternSizeList
+            )
+        binding.sizeSpinner.adapter = sizeAdapter
+
+        binding.sizeSpinner.setOnTouchListener { v, event ->
+            Log.d("TouchListener", " : "+viewModel.selectedViewOrCupStyle.get()?:"@@@")
+            if (viewModel.selectedViewCupPosition.get() == 0 && event.action == MotionEvent.ACTION_UP) {
+                showAlert(
+                    getString(R.string.please_select_size_popup),
+                    Utility.AlertType.DEFAULT
+                )
+                return@setOnTouchListener true
+            }
+            return@setOnTouchListener false
         }
     }
 
@@ -238,8 +313,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     it
                 )
             }
-        binding.spinner.adapter = adapter
-        binding.spinner.setSelection(0, true)
+      //  binding.spinner.adapter = adapter
+        //binding.spinner.setSelection(0, true)
         /*     try {
                  val popup = Spinner::class.java.getDeclaredField("mPopup")
                  popup.isAccessible = true
@@ -413,7 +488,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 viewModel.data?.value?.size ?: ""
             ) //  milli second null CHANGE LOGIC
         } else {
-            viewModel.prodSize.set(viewModel.clickedProduct?.prodSize ?: "")
+            viewModel.prodSize.set(
+                if (!viewModel.clickedProduct?.customSizeFitName.isNullOrEmpty()) viewModel.clickedProduct?.customSizeFitName
+                else viewModel.clickedProduct?.prodSize ?: ""
+            )
         }
 
         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
@@ -642,6 +720,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
+            is PatternDescriptionViewModel.Event.OnThridPartyFetchError -> showAlert(viewModel.thirdpartyApiError ?: "Error Fetching Data", Utility.AlertType.NETWORK)
+            is PatternDescriptionViewModel.Event.OnApiCallInitiated ->  {
+                Log.d("OnApiCallInitiated","OnApiCallInitiated")
+                bottomNavViewModel.showProgress.set(true)
+            }
             is PatternDescriptionViewModel.Event.OnWorkspaceButtonClicked -> {
 
                 WSButtonClick()
@@ -669,20 +752,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             is PatternDescriptionViewModel.Event.OnYardageButtonClicked -> {
                 /**
-                 * Allowing user to enter into instruction if mannequinId is present
+                 * Allowing user to enter into yardage/notion if mannequinId is present
                  */
-                if (viewModel.mannequinId?.get()
-                        ?.isEmpty() == true && !(viewModel.clickedProduct?.patternType.toString()
-                        .equals("Trial", true))
-                ) {
-                    /**
-                     * Restricting user to enter into Instructions without selecting any customization if Network is Connected
-                     */
-                    showAlert(
-                        getString(R.string.please_selecte_mannequinid),
-                        Utility.AlertType.DEFAULT
-                    )
-                } else {
+
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
@@ -719,7 +791,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         }
                     } else
                         Unit
-                }
+
             }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
                 /**
@@ -732,10 +804,20 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     /**
                      * Restricting user to enter into Instructions without selecting any customization if Network is Connected
                      */
-                    showAlert(
-                        getString(R.string.please_selecte_mannequinid),
-                        Utility.AlertType.DEFAULT
-                    )
+                    if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get().isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
+                        && !viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0) {
+                        showAlert(
+                            getString(R.string.please_select_size),
+                            Utility.AlertType.DEFAULT
+                        )
+                    } else if (!viewModel.isDittoPattern.get()) {
+                        showAlert(
+                            getString(R.string.please_select_viewcup_size),
+                            Utility.AlertType.DEFAULT
+                        )
+                    } else {
+                        Unit
+                    }
                 } else {
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
@@ -815,7 +897,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             PatternDescriptionViewModel.Event.OnShowMannequinData -> {
                 if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
-                    binding.textMannequinName.visibility = View.VISIBLE
+                   // binding.textMannequinName.visibility = View.VISIBLE
                     viewModel.isShowSpinner.set(false)
                 } else {
 
@@ -830,14 +912,39 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             PatternDescriptionViewModel.Event.OnMannequinNameEmpty -> {
-                showAlert(
-                    getString(R.string.please_selecte_mannequinid),
-                    Utility.AlertType.DEFAULT
-                )
+                if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get().isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
+                    && !viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0) {
+                    showAlert(
+                        getString(R.string.please_select_size),
+                        Utility.AlertType.DEFAULT
+                    )
+                } else if (!viewModel.isDittoPattern.get()) {
+                    showAlert(
+                        getString(R.string.please_select_viewcup_size),
+                        Utility.AlertType.DEFAULT
+                    )
+                } else {
+
+                }
             }
 
             PatternDescriptionViewModel.Event.OnGuestUSerWSClick -> {
                 checkSocketConnectionBeforeWorkspace()
+            }
+
+            PatternDescriptionViewModel.Event.OnThirdPartyDataFetchSuccess -> {
+                Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
+                setSizeSpinnerData()
+                binding.variationSpinner.setSelection(0, true)
+                binding.sizeSpinner.setSelection(0, true)
+                bottomNavViewModel.showProgress.set(false)
+            }
+            PatternDescriptionViewModel.Event.OnThirdPartyDataFetchResume -> {
+                Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
+                setSizeSpinnerData()
+                binding.variationSpinner.setSelection(viewModel.selectedViewCupPosition.get()?:0, true)
+                binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
+                bottomNavViewModel.showProgress.set(false)
             }
             else -> {}
         }
@@ -916,11 +1023,18 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 /**
                  * Restricting user to enter into workspace without selecting any customization if Network is Connected
                  */
-                showAlert(
-                    getString(R.string.please_selecte_mannequinid),
-                    Utility.AlertType.DEFAULT
-                )
-
+                if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get().isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
+                    && !viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0) {
+                    showAlert(
+                        getString(R.string.please_select_size),
+                        Utility.AlertType.DEFAULT
+                    )
+                } else if (!viewModel.isDittoPattern.get()) {
+                    showAlert(
+                        getString(R.string.please_select_viewcup_size),
+                        Utility.AlertType.DEFAULT
+                    )
+                }
             }
 
         }
@@ -938,7 +1052,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setPatternImage() {
         if (NetworkUtility.isNetworkAvailable(context)) {
-            downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
+            //downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
         setImageFromSvgPngDrawable(
             Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
@@ -1173,6 +1287,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
+        hashMap[viewModel.patternName.get()?:"Pattern Name"] = viewModel.clickedProduct?.image ?: ""
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }
@@ -1692,7 +1807,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         foldername: String?,
         imagePath: String?,
         context: Context,
-        imageView: ImageView
+        imageView: ImageView,
     ) {
 
         var availableUri: Uri? = null

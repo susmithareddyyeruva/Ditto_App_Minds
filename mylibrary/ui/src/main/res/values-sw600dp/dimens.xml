@@ -114,4 +114,14 @@
     <dimen name="spinner_padding_content">14dp</dimen>
     <dimen name="offset">55dp</dimen>
     <dimen name="margin_dropdown_end">32dp</dimen>
+
+    <dimen name="margin_end_variation_dropdown">15dp</dimen>
+    <dimen name="margin_end_size_dropdown">10dp</dimen>
+    <dimen name="margin_top_layout">12dp</dimen>
+    <dimen name="padding_smallx">14dp</dimen>
+    <dimen name="margin_top_button_layout">30dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_notion_title">8dp</dimen>
+    <dimen name="padding_status_title">4dp</dimen>
+
 </resources>

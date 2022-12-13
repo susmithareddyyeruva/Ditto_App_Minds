@@ -12,10 +12,8 @@ import com.ditto.mylibrary.data.mapper.toDomain
 import com.ditto.mylibrary.data.mapper.toPatternIDDomain
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.request.FolderRenameRequest
-import com.ditto.mylibrary.domain.request.FolderRequest
-import com.ditto.mylibrary.domain.request.GetFolderRequest
-import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.*
+import com.ditto.mylibrary.model.ThirdPartyResponse
 import com.ditto.storage.data.database.OfflinePatternDataDao
 import com.ditto.storage.data.database.PatternsDao
 import com.ditto.storage.data.database.UserDao
@@ -51,6 +49,69 @@ class MyLibraryRepositoryImpl @Inject constructor(
     lateinit var context: Context
     val logger: com.ditto.logger.Logger by lazy {
         loggerFactory.create(MyLibraryRepositoryImpl::class.java.simpleName)
+    }
+
+    override fun getThirdPartyPatternData(requestData: ThirdPartyDataRequest): Single<Result<ThirdPartyDomain>> {
+        if (!NetworkUtility.isNetworkAvailable(context)) {
+            return Single.just(Result.OnError(NoNetworkError()))
+        }
+        val input = "$EN_USERNAME:$EN_CPCODE"
+        var authorizationToken: String? = ""
+
+        if (BuildConfig.DEBUG) {
+            authorizationToken = EncodeDecodeUtil.encodeBase64(input)
+        } else {
+            val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
+            authorizationToken = EncodeDecodeUtil.hmacSha256(key, input)
+        }
+
+        return myLibraryService.getThirdPartyPatternData(
+            requestData,
+            AUTH + authorizationToken
+        ).doOnSuccess {
+            if (!it.errorMsg.isNullOrEmpty()) {
+                logger.d("*****FETCH THIRD PARTY SUCCESS 200 with Error **")
+                throw java.lang.Exception(it.errorMsg)
+            } else {
+                logger.d("*****FETCH THIRD PARTY SUCCESS**")
+            }
+        }.map {
+                Result.withValue(it.toDomain())
+        }.onErrorReturn {
+            var errorMessage = ERROR_FETCH
+            logger.d(it.localizedMessage)
+            if (it is HttpException) {
+                when (it.code()) {
+                    400 -> {
+                        val errorBody = it.response()?.errorBody()?.string()
+                        logger.d("THIRD PARTY API: $errorBody")
+                        val gson = Gson()
+                        val type = object : TypeToken<CommonError>() {}.type
+                        val errorResponse: CommonError? = gson.fromJson(errorBody, type)
+                        errorMessage = errorResponse?.errorMsg ?: ERROR_FETCH
+                        logger.d("onError: BAD REQUEST")
+
+                    }
+
+                }
+            } else {
+                errorMessage = when (it) {
+                    is UnknownHostException -> {
+                        UNKNOWN_HOST_EXCEPTION
+                    }
+                    is ConnectException -> {
+                        CONNECTION_EXCEPTION
+                    }
+                    else -> {
+                        ERROR_FETCH
+                    }
+                }
+            }
+
+            Result.withError(
+                FilterError(errorMessage, it)
+            )
+        }
     }
 
     /**
@@ -542,7 +603,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
-        patternType: String?
+        patternType: String?,
+        lastDateOfModification: String?,
+        selectedViewCupStyle: String?
     ): Single<Any> {
         return Single.fromCallable {
             val i = offlinePatternDataDao.upsert(
@@ -554,7 +617,9 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     mannequinId,
                     mannequinName,
                     mannequin,
-                    patternType
+                    patternType,
+                    lastDateOfModification,
+                    selectedViewCupStyle
                 )
             )
 

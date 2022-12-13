@@ -160,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".85" />
+                app:layout_constraintGuide_percent=".89" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/buttonTopGuideLine"
@@ -186,11 +186,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="start"
-                app:constraint_referenced_ids="spinner,textMannequinName" />
+                app:constraint_referenced_ids="textMannequinName" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <!--<androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner"
-                android:layout_width="@dimen/spinner_width"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_mannequinbg"
                 android:dropDownVerticalOffset="@dimen/offset"
@@ -215,7 +215,7 @@
                 android:visibility="@{viewModel.isShowSpinner() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/spinner"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline2"
-                app:layout_constraintTop_toTopOf="@id/spinner" />
+                app:layout_constraintTop_toTopOf="@id/spinner" />-->
 
             <TextView
                 android:id="@+id/textMannequinName"
@@ -240,7 +240,7 @@
 
             <TextView
                 android:id="@+id/content_header"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dimen_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -250,62 +250,213 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/pattern_name"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
-                app:layout_constraintEnd_toStartOf="@+id/manniquen_barrier"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
                 app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"
+                app:layout_constraintEnd_toStartOf="@+id/purchased_pattern"
                 tools:text="Tulip Skirt" />
+
+            <TextView
+                android:id="@+id/purchased_pattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:paddingLeft="2dp"
+                android:visibility="@{viewModel.isDittoPattern()}"
+                tools:text="Size : Customized shacket"
+                android:paddingBottom="4dp"
+                android:gravity="end|center_vertical"
+                android:lines="1"
+                android:text="@{HtmlCompat.fromHtml(String.format(@string/size_text,viewModel.prodSize),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_14sp"
+                android:ellipsize="end"
+                android:paddingEnd="@dimen/padding_status_title"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintBottom_toTopOf="@id/status_layout"
+                app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+                app:layout_constraintStart_toEndOf="@id/content_header"
+                app:layout_constraintTop_toBottomOf="@id/subscription"
+                app:layout_constraintTop_toTopOf="@+id/image_pattern_desc"/>
 
             <LinearLayout
                 android:id="@+id/status_layout"
                 android:layout_width="@dimen/dimen_0"
-                android:layout_height="@dimen/dimen_0"
-                android:layout_marginTop="@dimen/dimen_8"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_layout"
+                android:paddingTop="@dimen/margin_top_layout"
                 android:orientation="horizontal"
                 android:weightSum="100"
+                android:gravity="start"
                 app:layout_constraintHeight_percent="0.055"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/content_header"
-                app:layout_constraintWidth_percent="0.4">
+                app:layout_constraintWidth_percent="0.55">
 
                 <TextView
                     android:id="@+id/active_pattern"
                     android:layout_width="@dimen/size_0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="50"
+                    android:layout_weight="35"
                     android:ellipsize="end"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="start"
                     android:lines="1"
+                    tools:text="Panelled Mini Skirt"
                     android:text="@{viewModel.tailornovaDesignpatternName}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_14sp" />
 
-
                 <TextView
-                    android:id="@+id/purchased_pattern"
-                    android:layout_width="@dimen/size_0dp"
+                    android:id="@+id/modificationDate"
+                    android:layout_width="@dimen/dimen_0"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="50"
-                    android:drawablePadding="8dp"
+                    android:layout_weight="63"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
-                    android:gravity="start"
-                    android:paddingLeft="12dp"
-                    android:text="@{HtmlCompat.fromHtml(String.format(@string/size_text,viewModel.prodSize),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
+                    android:gravity="end"
+                    android:visibility="@{viewModel.isLastDateAvailable()}"
+                    tools:text="Modified : Dec 07,2022 at 04:08 am"
+                    android:text="@{HtmlCompat.fromHtml(String.format(@string/modified_text,viewModel.modificationDate),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_14sp" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/variationSpinnerLayout"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:visibility="@{viewModel.isSizeSpinnerVisible()}">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/variationSpinner"
+                        android:layout_width="@dimen/dimen_0"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_mannequinbg"
+                        android:dropDownVerticalOffset="@dimen/offset"
+                        android:paddingStart="5dp"
+                        android:popupBackground="@drawable/bg_dropdown"
+                        android:spinnerMode="dropdown"
+                        android:theme="@style/AlwaysEnableScrollBar"
+                        android:visibility="@{viewModel.isSizeSpinnerVisible()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/variationSpinnerDropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_end_size_dropdown"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
+                        android:paddingRight="4dp"
+                        android:src="@drawable/ic_dropdown_down"
+                        android:visibility="@{viewModel.isSizeSpinnerVisible()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/variationText"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_mannequinbg"
+                    android:layout_weight="40"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/avenir_next_lt_pro_medium"
+                    android:gravity="start|center_vertical"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="11dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14sp"
+                    tools:text="A"
+                    android:text="@{viewModel.selectedViewOrCupStyle}"
+                    android:visibility="@{viewModel.isOfflineSizeVisible()}"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sizeSpinnerLayout"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:visibility="@{viewModel.isSizeSpinnerVisible()}">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sizeSpinner"
+                        android:layout_width="@dimen/dimen_0"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_mannequinbg"
+                        android:dropDownVerticalOffset="@dimen/offset"
+                        android:popupBackground="@drawable/bg_dropdown"
+                        android:spinnerMode="dropdown"
+                        android:theme="@style/AlwaysEnableScrollBar"
+                        android:visibility="@{viewModel.isSizeSpinnerVisible()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/sizeSpinnerDropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:paddingRight="1dp"
+                        android:focusableInTouchMode="false"
+                        android:src="@drawable/ic_dropdown_down"
+                        android:visibility="@{viewModel.isSizeSpinnerVisible()}"
+                        android:layout_marginEnd="@dimen/margin_end_size_dropdown"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/sizeText"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_mannequinbg"
+                    android:layout_weight="25"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/avenir_next_lt_pro_medium"
+                    android:gravity="start|center_vertical"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:paddingHorizontal="13dp"
+                    android:paddingVertical="11dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14sp"
+                    tools:text="XXL"
+                    android:text="@{viewModel.selectedSize}"
+                    android:visibility="@{viewModel.isOfflineSizeVisible()}"/>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/spinnerGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{!viewModel.isDittoPattern()}"
+                    app:constraint_referenced_ids="variationSpinnerLayout, sizeSpinnerLayout, sizeSpinner,sizeSpinnerDropdown, variationSpinner,variationSpinnerDropdown"/>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/spinnerOfflineGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.isOfflineSizeVisible()}"
+                    app:constraint_referenced_ids="sizeText, variationText"/>
 
             </LinearLayout>
-
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nested_scroll"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_height="0dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/margin_top_layout"
                 app:layout_constraintBottom_toTopOf="@+id/buttonTopGuideLine"
                 app:layout_constraintEnd_toEndOf="@+id/end_guideline"
                 app:layout_constraintStart_toStartOf="@+id/middle_guideline"
@@ -326,9 +477,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/dimen_0"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:layout_marginTop="30dp"
                 app:layout_constraintStart_toStartOf="@+id/start_guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@+id/bottom_guideline"
@@ -339,21 +491,19 @@
                 <TextView
                     android:id="@+id/text_yardage"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/dimen_0"
                     android:background="@drawable/instruction_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
                     android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
                     android:onClick="@{() -> viewModel.onClickYardage()}"
                     android:text="@string/yardage_notions"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"
+                    android:paddingHorizontal="12dp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_14px"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHeight_default="percent"
-                    app:layout_constraintHeight_percent="0.080"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/text_instructions"
                     app:layout_constraintWidth_default="percent"
@@ -362,7 +512,7 @@
                 <TextView
                     android:id="@+id/text_instructions"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/dimen_0"
                     android:layout_marginStart="@dimen/margin_left_button"
                     android:background="@drawable/instruction_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -372,12 +522,10 @@
                     android:text="INSTRUCTIONS"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_14px"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"
+                    android:paddingHorizontal="12dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHeight_default="percent"
-                    app:layout_constraintHeight_percent="0.080"
                     app:layout_constraintStart_toEndOf="@+id/text_yardage"
                     app:layout_constraintWidth_default="percent"
                     app:layout_constraintWidth_percent="0.15" />
@@ -385,7 +533,7 @@
                 <TextView
                     android:id="@+id/text_watchvideo2"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/dimen_0"
                     android:layout_marginStart="@dimen/margin_left_button"
                     android:background="@drawable/workspace_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
@@ -398,8 +546,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/size_14sp"
                     android:visibility="@{viewModel.showResumButton &amp;&amp; (!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.INVISIBLE}"
-                    app:layout_constraintHeight_default="percent"
-                    app:layout_constraintHeight_percent="0.082"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/text_instructions"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -411,9 +557,9 @@
                 <TextView
                     android:id="@+id/dynamic_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/dimen_0"
                     android:layout_marginStart="@dimen/margin_left_button"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="@dimen/margin_left_button"
                     android:background="@drawable/workspace_border"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center"
@@ -426,13 +572,12 @@
                     android:textSize="@dimen/size_14sp"
                     android:textStyle="bold"
                     android:visibility="@{viewModel.showWorkspaceOrRenewSubscriptionButton &amp;&amp; (!viewModel.isSubscriptionExpired) ?View.VISIBLE:View.INVISIBLE}"
-                    app:layout_constraintHeight_default="percent"
-                    app:layout_constraintHeight_percent="0.082"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/text_instructions"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="WORKSPACE"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

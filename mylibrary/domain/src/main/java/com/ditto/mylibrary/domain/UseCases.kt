@@ -2,10 +2,7 @@ package com.ditto.mylibrary.domain
 
 import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.request.FolderRenameRequest
-import com.ditto.mylibrary.domain.request.FolderRequest
-import com.ditto.mylibrary.domain.request.GetFolderRequest
-import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.*
 import io.reactivex.Single
 import non_core.lib.Result
 
@@ -36,8 +33,10 @@ interface MyLibraryUseCase {
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
-        patternType:String?
+        patternType:String?,
+        lastDateOfModification: String?,
+        selectedViewCupStyle: String?
     ): Single<Any>
-
+    fun getThirdPartyPatternData(productId: String) : Single<Result<ThirdPartyDomain>>
 }
 

@@ -29,5 +29,7 @@ data class ProdDomain(
     var selectedMannequinName:String?="",
     var mannequin:List<MannequinDataDomain>?= emptyList(),
     var yardageDetails : List<String>? = emptyList(),
-    var notionDetails : String?=""
+    var notionDetails : String? = "",
+    var customSizeFitName : String? = "",
+    var lastModifiedSizeDate : String? = ""
 ) : Serializable

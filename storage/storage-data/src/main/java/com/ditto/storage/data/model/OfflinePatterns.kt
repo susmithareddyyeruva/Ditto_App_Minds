@@ -166,5 +166,13 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "yardageDetails")
     @SerializedName("yardageDetails")
-    var yardageDetails : YardageDetails?
+    var yardageDetails : YardageDetails?,
+
+    @ColumnInfo(name = "lastDateOfModification")
+    @SerializedName("lastDateOfModification")
+    var lastDateOfModification: String? = "",
+
+    @ColumnInfo(name = "selectedViewCupStyle")
+    @SerializedName("selectedViewCupStyle")
+    var selectedViewCupStyle: String? = ""
 )

@@ -4,10 +4,7 @@ import com.ditto.login.domain.model.LoginUser
 import com.ditto.mylibrary.domain.MyLibraryRepository
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
-import com.ditto.mylibrary.domain.request.FolderRenameRequest
-import com.ditto.mylibrary.domain.request.FolderRequest
-import com.ditto.mylibrary.domain.request.GetFolderRequest
-import com.ditto.mylibrary.domain.request.MyLibraryFilterRequestData
+import com.ditto.mylibrary.domain.request.*
 import io.reactivex.Single
 import non_core.lib.Result
 import javax.inject.Inject
@@ -18,6 +15,11 @@ class MyLibraryImpl @Inject constructor(
 ) : MyLibraryUseCase {
     override fun getPatterns(filterRequestData: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {
         return myLibraryRepository.getMyLibraryData(filterRequestData)
+    }
+
+    override fun getThirdPartyPatternData(productId: String): Single<Result<ThirdPartyDomain>> {
+        val requestData = ThirdPartyDataRequest (productId)
+        return myLibraryRepository.getThirdPartyPatternData(requestData)
     }
 
     override fun getUser(): Single<Result<LoginUser>> {
@@ -82,9 +84,11 @@ class MyLibraryImpl @Inject constructor(
         mannequinId: String?,
         mannequinName: String?,
         mannequin: List<MannequinDataDomain>?,
-        patternType:String?
+        patternType:String?,
+        lastDateOfModification: String?,
+        selectedViewCupStyle: String?
     ): Single<Any> {
-        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin,patternType)
+        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin,patternType,lastDateOfModification, selectedViewCupStyle)
     }
 
     override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {

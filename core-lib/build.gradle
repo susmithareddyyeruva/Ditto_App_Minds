@@ -15,8 +15,8 @@ android {
         targetSdkVersion 33
         versionCode 1
 
-//        versionName "0.36(01)"
-        versionName "1.0.17"
+        versionName "0.37(01)"
+//        versionName "1.0.17"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
