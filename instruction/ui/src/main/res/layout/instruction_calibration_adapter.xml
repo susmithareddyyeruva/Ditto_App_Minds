@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/content_header_text_size"
-                        android:textColor="@color/black"
+                        android:textColor="@color/needle_grey"
                         android:lineSpacingMultiplier="1.25"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         />
@@ -151,7 +151,7 @@
                                 android:paddingEnd="@dimen/margin_text"
                                 android:textSize="@dimen/content_text_size"
                                 android:fontFamily="@font/avenir_next_lt_pro_regular"
-                                android:textColor="@color/instruction_content_text" />
+                                android:textColor="@color/needle_grey" />
 
                         </LinearLayout>
 
