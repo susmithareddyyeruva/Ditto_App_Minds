@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -17,6 +18,7 @@ import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
+import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.event.UiEvents
 import core.network.NetworkUtility
@@ -111,6 +113,7 @@ class PatternDescriptionViewModel @Inject constructor(
     lateinit var selectedSizeDomain: SizeDomain
     val selectedSizePosition: ObservableField<Int> = ObservableField()
     val selectedViewCupPosition: ObservableField<Int> = ObservableField()
+    val isShowYardageEmptyView: ObservableBoolean = ObservableBoolean(false)
 
     //error handler for data fetch related flow
     private fun handleError(error: Error) {
@@ -433,6 +436,7 @@ class PatternDescriptionViewModel @Inject constructor(
         object OnThirdPartyDataFetchResume : Event()
         object OnApiCallInitiated : Event()
         object OnThridPartyFetchError : Event()
+        object OnYardagePdfAvailable : Event()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -781,4 +785,21 @@ class PatternDescriptionViewModel @Inject constructor(
             .subscribeBy { handleFetchResult(it) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setUI() {
+        //when nothing is available
+        if (PDF_DOWNLOAD_URL.isNullOrEmpty() && !isNotionAvailable.get() &&
+            !isYardageAvailable.get() && !isYardagePDFAvailable.get()
+        ) {
+            //Show nothing available msg
+            isShowYardageEmptyView.set(true)
+        }
+        //when yardage & notion not available show pdf
+        else if (!isNotionAvailable.get() && !isYardageAvailable.get() && !PDF_DOWNLOAD_URL.isNullOrEmpty()) {
+            isShowYardageEmptyView.set(false)
+            uiEvents.post(Event.OnYardagePdfAvailable)
+        } else {//when only yardage & notion is available
+            isShowYardageEmptyView.set(false)
+        }
+    }
 }

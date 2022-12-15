@@ -81,7 +81,8 @@ data class PatternPieceDataDomain(
     val spliceScreenQuantity: String? = "",
     val splicedImages: List<SplicedImageDomain>?= emptyList(),
     val tabCategory: String? = "",
-    val view: String? = ""
+    val view: String? = "",
+    val contrast: String? = ""
 )
 
 data class SplicedImageDomain(

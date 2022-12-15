@@ -84,7 +84,8 @@ fun PatternPieceDataDomain.toOldModel(patternPieces: List<PatternPieceSFCCAPI>?)
         },
         cutOnFold = this.cutOnFold.toString(),
         isMirrorOption = this.isMirrorOption,
-        isCompleted = patternPiece?.isCompleted ?: false
+        isCompleted = patternPiece?.isCompleted ?: false,
+        contrast = this.contrast
     )
 }
 
@@ -218,8 +219,8 @@ fun PatternPieceDataDomain.toOldModelOffline(patternPieces: List<PatternPieceSFC
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map {
             it.toOldOffline()
-        }
-
+        },
+        contrast = this.contrast
     )
 }
 
@@ -254,7 +255,8 @@ fun combineTailornovaAndSFCCDetails(
             NumberOfPieces(
                 garment = 0,
                 lining = 0,
-                `interface` = 0
+                `interface` = 0,
+                other = 0
             ) else fetchWorkspaceResult.data.numberOfCompletedPiece,
         totalNumberOfPieces = resultTailernova.data.numberOfPieces,
         selectedTab = fetchWorkspaceResult.data.selectedTab,
@@ -300,7 +302,8 @@ fun combineTailornovaAndSFCCDetails(
             NumberOfPieces(
                 garment = 0,
                 lining = 0,
-                `interface` = 0
+                `interface` = 0,
+                other = 0
             ) else resultTailernova.data.numberOfCompletedPieces,
         totalNumberOfPieces = resultTailernova.data.numberOfPieces,
         selectedTab = resultTailernova.data.selectedTab,

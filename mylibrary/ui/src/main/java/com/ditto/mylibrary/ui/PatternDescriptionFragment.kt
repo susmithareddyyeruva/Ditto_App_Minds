@@ -758,9 +758,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
-                        PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
+                        PDF_DOWNLOAD_URL = viewModel.data.value?.yardagePdfUrl
+
                         var bundle = Bundle()
-                        if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()) {
+                        if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()
+                            && PDF_DOWNLOAD_URL.isNullOrEmpty()) {
                             showAlert(
                                 getString(R.string.yardage_and_notion_not_available),
                                 Utility.AlertType.DEFAULT
@@ -1712,8 +1714,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                     patterns.forEach {
                         if (Utility.getPatternDownloadFolderName(
-                                viewModel.clickedTailornovaID.get()?: "",
-                                viewModel.mannequinId.get() ?: "")
+                                it.tailornovaDesignId ?: "",
+                                it.selectedMannequinId ?: "")
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
                         ) {

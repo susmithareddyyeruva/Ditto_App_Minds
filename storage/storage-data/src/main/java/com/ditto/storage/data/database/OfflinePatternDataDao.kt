@@ -86,7 +86,12 @@ abstract class OfflinePatternDataDao {
                 obj.mannequin,
                 obj.yardageDetails,
                 obj.lastDateOfModification,
-                obj.selectedViewCupStyle
+                obj.selectedViewCupStyle,
+                obj.yardagePdfUrl,
+                obj.yardageImageUrl,
+                obj.mainheroImageUrl,
+                obj.sizeChartUrl,
+                obj.heroImageUrls
             )
             Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB update >>>>>>> $i")
             return i
@@ -95,7 +100,7 @@ abstract class OfflinePatternDataDao {
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin, yardageDetails= :yardageDetails, lastDateOfModification= :lastDateOfModification, selectedViewCupStyle= :selectedViewCupStyle WHERE designId= :designId")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin, yardageDetails= :yardageDetails, lastDateOfModification= :lastDateOfModification, selectedViewCupStyle= :selectedViewCupStyle, yardagePdfUrl= :yardagePdfUrl, yardageImageUrl= :yardageImageUrl, mainheroImageUrl= :mainheroImageUrl, sizeChartUrl= :sizeChartUrl, heroImageUrls= :heroImageUrls WHERE designId= :designId")
     abstract fun updateTailornovaOfflineData(
         custId: String?,
         designId: String,
@@ -126,7 +131,12 @@ abstract class OfflinePatternDataDao {
         mannequin: List<MannequinData>?,
         yardageDetails: YardageDetails?,
         lastDateOfModification: String?,
-        selectedViewCupStyle: String?
+        selectedViewCupStyle: String?,
+        yardagePdfUrl: String?,
+        yardageImageUrl: String?,
+        mainheroImageUrl: String?,
+        sizeChartUrl: String?,
+        heroImageUrls: HeroImageUrls?
         /*,
         selectedTab: String?,
         numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
@@ -255,7 +265,12 @@ abstract class OfflinePatternDataDao {
                         obj.mannequin,
                         obj.yardageDetails,
                         obj.lastDateOfModification,
-                        obj.selectedViewCupStyle
+                        obj.selectedViewCupStyle,
+                        obj.yardagePdfUrl,
+                        obj.yardageImageUrl,
+                        obj.mainheroImageUrl,
+                        obj.sizeChartUrl,
+                        obj.heroImageUrls
                         /*obj.selectedTab,
                 obj.garmetWorkspaceItemOfflines,
                 obj.liningWorkspaceItemOfflines,

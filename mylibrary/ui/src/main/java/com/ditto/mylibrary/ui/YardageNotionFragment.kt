@@ -87,27 +87,9 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
         arguments?.getString("notionDetails")?.let { viewModel.setNotionDetails(it) }
         arguments?.getStringArrayList("yardageDetails")?.let {  viewModel.setYardageDetails(it)}
 
-        PDF_DOWNLOAD_URL = null //remove this when showing pdf or Image
 
-        setUI()
-    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setUI() {
-        //when nothing is available
-        if (PDF_DOWNLOAD_URL.isNullOrEmpty() && !viewModel.isNotionAvailable.get() &&
-            !viewModel.isYardageAvailable.get() && !viewModel.isYardagePDFAvailable.get()
-        ) {
-            //Show nothing available msg
-            binding.emptyView.visibility = View.VISIBLE
-        }
-        //when yardage & notion not available show pdf
-        else if (!viewModel.isNotionAvailable.get() && !viewModel.isYardageAvailable.get() && !PDF_DOWNLOAD_URL.isNullOrEmpty()) {
-            loadPdf()
-            binding.emptyView.visibility = View.GONE
-        } else {//when only yardage & notion is available
-            binding.emptyView.visibility = View.GONE
-        }
+        viewModel.setUI()
     }
 
     override fun onStop() {
@@ -127,6 +109,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -135,6 +118,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(
@@ -142,6 +126,9 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
                     viewModel.patternpdfuri.get()
                 )
             )
+            PatternDescriptionViewModel.Event.OnYardagePdfAvailable -> {
+                loadPdf()
+            }
             else -> logger.d("Error, Invaid Event")
         }
 

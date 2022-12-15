@@ -151,7 +151,8 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomainn() },
-        tabCategory = this.tabCategory
+        tabCategory = this.tabCategory,
+        contrast = this.contrast
     )
 }
 
@@ -219,7 +220,8 @@ fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): OfflineNumberOfCompl
     return OfflineNumberOfCompletedPiece(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -235,6 +237,7 @@ fun PatternPiecesOffline.toDomain1(): OfflinePatternPieces {
 public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
     return this.map {
         val mYardageDetails = YardageDetails(it.yardageDetails, it.notionDetails)
+        val mHeroImageUrls = HeroImageUrls(it.heroImageUrls)
         OfflinePatterns(
             custId= if(AppState.getIsLogged()){AppState.getCustID()}else{"0"},
             //custId = AppState.getCustID(),
@@ -264,7 +267,12 @@ public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             suitableFor = it.suitableFor,
             occasion = it.occasion,
             orderNumber = "111",
-            yardageDetails = mYardageDetails
+            yardageDetails = mYardageDetails,
+            yardageImageUrl = it.yardageImageUrl,
+            yardagePdfUrl = it.yardagePdfUrl,
+            sizeChartUrl = it.sizeChartUrl,
+            mainheroImageUrl = it.mainheroImageUrl,
+            heroImageUrls = mHeroImageUrls
         )
     }
 }

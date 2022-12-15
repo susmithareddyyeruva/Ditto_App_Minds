@@ -23,7 +23,8 @@ fun NumberOfCompletedPiece.toDomain(): NumberOfPieces {
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -100,7 +101,8 @@ fun NumberOfPieces.toDomain(): com.ditto.storage.data.model.NumberOfCompletedPie
     return com.ditto.storage.data.model.NumberOfCompletedPiecesOffline(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -108,7 +110,8 @@ fun com.ditto.storage.data.model.NumberOfCompletedPiecesOffline.toDomain(): Numb
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -228,7 +231,8 @@ fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
-        tabCategory = this.tabCategory
+        tabCategory = this.tabCategory,
+        contrast = this.contrast
     )
 }
 
@@ -251,7 +255,8 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
-        tabCategory = this.tabCategory
+        tabCategory = this.tabCategory,
+        contrast = this.contrast
     )
 }
 
@@ -319,7 +324,8 @@ fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): NumberOfPieces {
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 

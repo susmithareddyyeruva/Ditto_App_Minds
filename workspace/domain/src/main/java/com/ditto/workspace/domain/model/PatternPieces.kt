@@ -20,5 +20,6 @@ data class PatternPieces(
     var splicedImages: List<SpliceImages>? = emptyList(),
     var cutOnFold: String?,
     var isMirrorOption: Boolean?,
-    var isCompleted: Boolean = false
+    var isCompleted: Boolean = false,
+    var contrast: String?
 )
