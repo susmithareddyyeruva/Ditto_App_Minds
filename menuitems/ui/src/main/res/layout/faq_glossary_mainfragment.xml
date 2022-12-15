@@ -36,7 +36,7 @@
                 app:menu="@null"
                 app:navigationIcon="@drawable/ic_back_button"
                 app:theme="@style/ToolBarStyle"
-                app:titleTextColor="@color/black">
+                app:titleTextColor="@color/needle_grey">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="start"
                         android:text="@string/str_menu_faq_tips"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/header_size" />
 
 
@@ -68,14 +68,15 @@
             android:layout_marginTop="@dimen/top_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/faq_appBar"
-            app:tabIndicatorColor="#A4211F"
+            app:tabIndicatorColor="@color/safety_pin_yellow"
+            app:tabIndicatorHeight="4dp"
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="bottom"
             app:tabMode="scrollable"
             app:tabMinWidth="132dp"
             app:tabPaddingEnd="@dimen/dimen_0"
             app:tabPaddingStart="@dimen/dimen_0"
-            app:tabSelectedTextColor="@color/black"
+            app:tabSelectedTextColor="@color/needle_grey"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="#A8A7A8" />
 

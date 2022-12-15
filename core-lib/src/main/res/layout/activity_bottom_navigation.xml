@@ -53,7 +53,7 @@
                         android:layout_marginStart="-10dp"
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:text="@{toolbarViewModel.toolbarTitle}"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/toolbar_title" />
 
                 </androidx.appcompat.widget.Toolbar>
