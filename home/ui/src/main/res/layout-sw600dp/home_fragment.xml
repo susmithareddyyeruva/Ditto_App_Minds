@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white">
+            android:background="@color/scissor_grey_light">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_top"
@@ -36,18 +36,28 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent=".07" />
 
+            <ImageView
+                android:id="@+id/ditto_verticle_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ditto_primary_vertical_logo_tabb"
+                app:layout_constraintStart_toStartOf="@+id/guide_left"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top"
+                app:layout_constraintBottom_toTopOf="@id/margin_spacer" />
+
             <TextView
                 android:id="@+id/text_view_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:text="@string/welcome_back"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/text_header"
                 android:visibility="@{viewModel.isGuest() ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/guide_left"
+                app:layout_constraintStart_toEndOf="@+id/ditto_verticle_logo"
                 app:layout_constraintTop_toBottomOf="@+id/guideline_top"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -57,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_it_pro_bold"
                 android:text="@{viewModel.header}"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/text_header"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -74,6 +84,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_desc"
                 android:layout_marginTop="@dimen/padding_header_desc"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
