@@ -1599,25 +1599,40 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun showDataFailedAlert() {
         var errorMsg: String? = null
         if (viewModel.tailornovaApiError?.contains("In progress", true) == true) {
-            errorMsg = getString(R.string.str_processing_error)
+            errorMsg = getString(R.string.dittofy_message)
+            bottomNavViewModel.showProgress.set(false)
+            bottomNavViewModel.showWSProgress.set(false)
+            if (activity != null && context != null) {
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    errorMsg ?: "",
+                    "",
+                    getString(R.string.go_back),
+                    this,
+                    Utility.AlertType.NETWORK,
+                    Utility.Iconype.FAILED
+                )
+            }
         } else {
             errorMsg =
                 "\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            bottomNavViewModel.showProgress.set(false)
+            bottomNavViewModel.showWSProgress.set(false)
+            if (activity != null && context != null) {
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    errorMsg ?: "",
+                    "",
+                    getString(R.string.str_ok),
+                    this,
+                    Utility.AlertType.NETWORK,
+                    Utility.Iconype.FAILED
+                )
+            }
         }
-        bottomNavViewModel.showProgress.set(false)
-        bottomNavViewModel.showWSProgress.set(false)
-        if (activity != null && context != null) {
-            Utility.getCommonAlertDialogue(
-                requireContext(),
-                "",
-                errorMsg ?: "",
-                "",
-                getString(R.string.str_ok),
-                this,
-                Utility.AlertType.NETWORK,
-                Utility.Iconype.FAILED
-            )
-        }
+
     }
 
     /**
