@@ -15,6 +15,7 @@ fun CTraceWorkSpacePattern.toDomain(): WorkspaceDataAPI {
         garmetWorkspaceItems = this.garmetWorkspaceItems.map { it.toDomain() }.toMutableList(),
         liningWorkspaceItems = this.liningWorkspaceItems.map { it.toDomain() }.toMutableList(),
         interfaceWorkspaceItems = this.interfaceWorkspaceItems.map { it.toDomain() }.toMutableList(),
+        otherWorkspaceItems = this.otherWorkspaceItems.map { it.toDomain() }.toMutableList(),
     )
 
 }
@@ -93,7 +94,9 @@ fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
         liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }
             .toMutableList(),
         interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }
-            .toMutableList())
+            .toMutableList(),
+        otherWorkspaceItems = this.otherWorkspaceItemOfflines.map { it.toDomain() }
+        .toMutableList())
 }
 
 
@@ -185,6 +188,8 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines.map { it.toDomain1() }
+            .toMutableList(),
+        otherWorkspaceItemOfflines = this.otherWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
         id = this.designId,
         patternName = this.patternName,

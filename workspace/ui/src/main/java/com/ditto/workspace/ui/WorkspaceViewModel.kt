@@ -153,6 +153,7 @@ class WorkspaceViewModel @Inject constructor(
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         workspaceDataAPI: WorkspaceDataAPI,
         status: String?,
     ) {
@@ -164,7 +165,8 @@ class WorkspaceViewModel @Inject constructor(
             patternPieces,
             garmetWorkspaceItems,
             liningWorkspaceItems,
-            interfaceWorkspaceItems
+            interfaceWorkspaceItems,
+            otherWorkspaceItems
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -369,7 +371,8 @@ class WorkspaceViewModel @Inject constructor(
     fun setWorkspaceView() {
         uiEvents.post(Event.CalculateScrollButtonVisibility)
         uiEvents.post(Event.OnDataUpdated)
-        if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.liningWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.interfaceWorkspaceItemOfflines?.size ?: 0 > 0) {
+        if (data.value?.garmetWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.liningWorkspaceItemOfflines?.size ?: 0 > 0
+            || data.value?.interfaceWorkspaceItemOfflines?.size ?: 0 > 0 || data.value?.otherWorkspaceItemOfflines?.size ?: 0 > 0) {
             uiEvents.post(Event.PopulateWorkspace)
         }
     }
@@ -443,6 +446,8 @@ class WorkspaceViewModel @Inject constructor(
             data.value?.numberOfCompletedPiece?.lining = completedPieces.get()
         } else if (tabCategory.equals("Interfacing")) {
             data.value?.numberOfCompletedPiece?.`interface` = completedPieces.get()
+        } else if(tabCategory.equals("other")) {
+            data.value?.numberOfCompletedPiece?.other = completedPieces.get()
         }
         isCompleteButtonClickable = true
     }
@@ -596,6 +601,7 @@ class WorkspaceViewModel @Inject constructor(
             cTraceWorkSpacePatternInputData.garmetWorkspaceItems,
             cTraceWorkSpacePatternInputData.liningWorkspaceItems,
             cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
+            cTraceWorkSpacePatternInputData.otherWorkspaceItems,
             cTraceWorkSpacePatternInputData,
             status
         )
@@ -615,6 +621,10 @@ class WorkspaceViewModel @Inject constructor(
         )
         setWorkspaceVirtualDimensions(
             patternsData?.interfaceWorkspaceItemOfflines
+                ?: emptyList()
+        )
+        setWorkspaceVirtualDimensions(
+            patternsData?.otherWorkspaceItemOfflines
                 ?: emptyList()
         )
         return patternsData

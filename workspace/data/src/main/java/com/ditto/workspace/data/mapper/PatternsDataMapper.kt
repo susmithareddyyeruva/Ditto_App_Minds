@@ -29,6 +29,8 @@ internal fun Patterns.toDomain(): PatternsData {
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        otherWorkspaceItemOfflines = this.otherWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList()
     )
 }
@@ -144,6 +146,8 @@ internal fun PatternsData.toDomain(): Patterns {
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        otherWorkspaceItemOfflines = this.otherWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList()
     )
 }

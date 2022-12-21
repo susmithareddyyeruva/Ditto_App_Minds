@@ -20,7 +20,8 @@ interface WorkspaceRepository {
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int>
     fun deleteAndInsert(id:String, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>

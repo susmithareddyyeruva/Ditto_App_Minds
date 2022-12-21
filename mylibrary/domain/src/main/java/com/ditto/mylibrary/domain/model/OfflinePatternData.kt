@@ -10,6 +10,7 @@ data class OfflinePatternData(
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
     var liningWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
+    var otherWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
     var id: String,
     var patternName: String?,
     var description: String?,

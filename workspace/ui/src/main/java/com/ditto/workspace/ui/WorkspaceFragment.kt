@@ -19,6 +19,7 @@ import com.ditto.workspace.ui.adapter.WorkspaceAdapter
 import com.ditto.workspace.ui.databinding.FragmentWorkspaceBinding
 import com.ditto.workspace.ui.util.Utility
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -43,6 +44,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
     lateinit var fragmentGarment: WorkspaceTabFragment
     lateinit var fragmentLining: WorkspaceTabFragment
     lateinit var fragmentInterface: WorkspaceTabFragment
+    lateinit var fragmentOther: WorkspaceTabFragment
 
 
     override fun onCreateView(
@@ -149,16 +151,25 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentInterface = WorkspaceTabFragment()
             fragmentInterface.setArguments(interfacingBundle)
 
+            val othersBundle = bundleOf(
+                PATTERN_CATEGORY to getString(R.string.other),
+                PATTERN_ID to viewModel.patternId.get(),
+                PATTERN_NAME to viewModel.patternName.get(),
+                ORDER_NO to viewModel.clickedOrderNumber.get(),
+                MANNEQUINID to viewModel.mannequinId.get(),
+                PATTERN_FOLDER to viewModel.patternDownloadFolderName
+            )
+            fragmentOther = WorkspaceTabFragment()
+            fragmentOther.setArguments(othersBundle)
+
             workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
             workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
-            workspacAdapter.addFragment(
-                fragmentInterface,
-                getString(R.string.interfacing)
-            )//Interfacing
+            workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))//Interfacing
+            workspacAdapter.addFragment(fragmentOther, getString(R.string.other))//Other
 
             binding.viewPager.adapter = workspacAdapter
             binding.viewPager.isSaveEnabled = false
-            binding.viewPager.offscreenPageLimit = 3
+            binding.viewPager.offscreenPageLimit = 4
             binding.tabLayoutWorkspace.setupWithViewPager(binding.viewPager)
             binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -195,8 +206,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentGarment.clearWorkspace()
         } else if (viewModel.selectedTab.get() == 1) {
             fragmentLining.clearWorkspace()
-        } else {
+        } else if (viewModel.selectedTab.get() == 2){
             fragmentInterface.clearWorkspace()
+        } else {
+            fragmentOther.clearWorkspace()
         }
         viewModel.spliced_pices_visibility.set(false)
     }
@@ -208,18 +221,23 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 fragmentGarment.fetchWorkspaceData(0)
         } else if (viewModel.selectedTab.get() == 1) {
             viewModel.data.value?.liningWorkspaceItemOfflines = fragmentLining.fetchWorkspaceData(1)
-        } else {
+        } else if (viewModel.selectedTab.get() == 2){
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
                 fragmentInterface.fetchWorkspaceData(2)
+        } else {
+            viewModel.data.value?.otherWorkspaceItemOfflines =
+                fragmentOther.fetchWorkspaceData(3)
         }
         fragmentGarment.updateTabData(viewModel.data.value)
         fragmentLining.updateTabData(viewModel.data.value)
         fragmentInterface.updateTabData(viewModel.data.value)
+        fragmentOther.updateTabData(viewModel.data.value)
 
         // Hide/Show long press drag text after showing
         fragmentGarment.hideShowLongPressText(Utility.isLongPressTextVisible.get())
         fragmentLining.hideShowLongPressText(Utility.isLongPressTextVisible.get())
         fragmentInterface.hideShowLongPressText(Utility.isLongPressTextVisible.get())
+        fragmentOther.hideShowLongPressText(Utility.isLongPressTextVisible.get())
     }
 
     //  To reset connect buttton and pattern piece adapter
@@ -228,8 +246,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentGarment.resetWorkspaceUI()
         } else if (viewModel.selectedTab.get() == 1) {
             fragmentLining.resetWorkspaceUI()
-        } else {
+        } else if (viewModel.selectedTab.get() == 2){
             fragmentInterface.resetWorkspaceUI()
+        } else {
+            fragmentOther.resetWorkspaceUI()
         }
     }
 
@@ -242,6 +262,9 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             .setOnTouchListener(this)
         (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(2)?.tag = 2
         (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(2)
+            .setOnTouchListener(this)
+        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup)?.getChildAt(3)?.tag = 3
+        (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(3)
             .setOnTouchListener(this)
     }
 
@@ -288,6 +311,20 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             tv.tag = 2
             tv.setOnTouchListener(this)
         }
+        if (viewModel.data.value?.patternPieces?.filter {
+                it.tabCategory == getString(
+                    R.string.other
+                )
+            }?.size == 0) {
+            (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(3).isEnabled = false
+            (binding.tabLayoutWorkspace.getChildAt(0) as ViewGroup).getChildAt(3)
+                .setBackgroundResource(R.drawable.tab_disabled)
+
+            val tv = LayoutInflater.from(requireContext()).inflate(R.layout.tab, null)
+            binding.tabLayoutWorkspace.getTabAt(3)?.customView = tv
+            tv.tag = 3
+            tv.setOnTouchListener(this)
+        }
     }
 
     private fun updateTab() {
@@ -303,6 +340,10 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             viewModel.selectedTab.set(position)
         } else if (viewModel.data.value?.selectedTab.equals("Interfacing")) {
             position = 2
+            binding.viewPager.setCurrentItem(position, false)
+            viewModel.selectedTab.set(position)
+        } else if (viewModel.data.value?.selectedTab.equals("Other")) {
+            position = 3
             binding.viewPager.setCurrentItem(position, false)
             viewModel.selectedTab.set(position)
         } else {
@@ -322,6 +363,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 fragmentGarment.updateTabDataAndShowToUI(viewModel.data.value)
                 fragmentLining.updateTabDataAndShowToUI(viewModel.data.value)
                 fragmentInterface.updateTabDataAndShowToUI(viewModel.data.value)
+                fragmentOther.updateTabDataAndShowToUI(viewModel.data.value)
             }
             is WorkspaceViewModel.Event.ShowProgressLoader -> {
                 showProgress(true)
@@ -334,6 +376,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 fragmentGarment.hideShowLongPressText(true)
                 fragmentLining.hideShowLongPressText(true)
                 fragmentInterface.hideShowLongPressText(true)
+                fragmentOther.hideShowLongPressText(true)
             }
             else -> logger.d("Invalid Event")
         }
@@ -429,11 +472,13 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         fragmentGarment?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
         fragmentInterface?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
         fragmentLining?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
+        fragmentOther?.binding?.coachMarkMaskInner?.setVisibility(if (toMask) View.VISIBLE else View.GONE)
     }
 
     fun closeVideoPopup() {
         fragmentGarment?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
         fragmentInterface?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
         fragmentLining?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
+        fragmentOther?.binding?.groupCoachMarkWs?.setVisibility(View.GONE)
     }
 }

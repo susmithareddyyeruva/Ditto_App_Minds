@@ -67,7 +67,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int> {
         return Single.fromCallable {
             offlinePatternDataDao.updateOfflinePatternData(AppState.getCustID(),
@@ -78,7 +79,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 patternPieces?.map { it.toDomain() },
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 liningWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
-                interfaceWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>)
+                interfaceWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
+                otherWorkspaceItems?.map { it.toDomain()} as MutableList<WorkspaceItemOffline>)
         }
     }
 
@@ -122,6 +124,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 offlinePatternData.garmetWorkspaceItemOfflines = emptyArray<WorkspaceItemOffline>().toMutableList()
                 offlinePatternData.liningWorkspaceItemOfflines = emptyArray<WorkspaceItemOffline>().toMutableList()
                 offlinePatternData.interfaceWorkspaceItemOfflines = emptyArray<WorkspaceItemOffline>().toMutableList()
+                offlinePatternData.otherWorkspaceItemOfflines = emptyArray<WorkspaceItemOffline>().toMutableList()
             }
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomainn())

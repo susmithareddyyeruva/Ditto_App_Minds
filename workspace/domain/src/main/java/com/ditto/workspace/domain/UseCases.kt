@@ -15,7 +15,8 @@ interface GetWorkspaceData {
         patternPieces: List<PatternPieceSFCCAPI>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?
+        interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?
     ): Single<Int>
     fun insertWorkspaceData(w: WorkspaceDataAPI): Single<Any>//follow same
     fun getPatternDataByID(id: Int):Single<Result<PatternsData>>

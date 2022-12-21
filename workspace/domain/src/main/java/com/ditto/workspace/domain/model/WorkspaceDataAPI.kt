@@ -10,5 +10,6 @@ data class WorkspaceDataAPI (
     var patternPieces: List<PatternPieceSFCCAPI>? = emptyList(),
     var garmetWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var liningWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
-    var interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList()
+    var interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
+    var otherWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList()
 )

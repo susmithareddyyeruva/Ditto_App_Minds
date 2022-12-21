@@ -282,6 +282,11 @@ fun combineTailornovaAndSFCCDetails(
             it.toOldModel(
                 resultTailernova.data.patternPiecesTailornova
             )
+        }?.toMutableList(),
+        otherWorkspaceItemOfflines = fetchWorkspaceResult.data.otherWorkspaceItems?.map {
+            it.toOldModel(
+                resultTailernova.data.patternPiecesTailornova
+            )
         }?.toMutableList()
     )
 }
@@ -333,6 +338,11 @@ fun combineTailornovaAndSFCCDetails(
             it.toOldModelOffline(
                 resultTailernova.data.patternPiecesTailornova
             )
+        }.toMutableList(),
+        otherWorkspaceItemOfflines = resultTailernova.data.otherWorkspaceItemOfflines.map {
+            it.toOldModelOffline(
+                resultTailernova.data.patternPiecesTailornova
+            )
         }.toMutableList()
     )
 }
@@ -353,8 +363,10 @@ fun getWorkspaceInputDataToAPI(patternData: PatternsData?): WorkspaceDataAPI {
         }?.toMutableList(),
         liningWorkspaceItems = patternData?.liningWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
             ?.toMutableList(),
-        interfaceWorkspaceItems = patternData?.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain() }
-            ?.toMutableList()
+        interfaceWorkspaceItems = patternData?.interfaceWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain()
+        }?.toMutableList(),
+        otherWorkspaceItems = patternData?.otherWorkspaceItemOfflines?.map { it.toWorkspaceItemDomain()
+        }?.toMutableList()
     )
     Log.d(
         "getWSInputDataToAPI",
