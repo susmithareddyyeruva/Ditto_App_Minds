@@ -1615,8 +1615,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
             }
         } else {
-            errorMsg =
-                "\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            errorMsg = getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
             bottomNavViewModel.showProgress.set(false)
             bottomNavViewModel.showWSProgress.set(false)
             if (activity != null && context != null) {
