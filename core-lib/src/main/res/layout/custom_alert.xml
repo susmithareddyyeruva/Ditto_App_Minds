@@ -20,14 +20,15 @@
             android:id="@+id/img_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/alert_image_top" />
 
         <TextView
             android:id="@+id/alert_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="3dp"
             android:paddingHorizontal="@dimen/medium_padding"
             android:layout_marginTop="@dimen/large_padding"
             android:layout_centerHorizontal="true"
