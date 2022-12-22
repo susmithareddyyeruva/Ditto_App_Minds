@@ -36,7 +36,8 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             selectedMannequinName = it.selectedMannequinName,
             mannequin = it.mannequin?.map { it.toDomain() },
             yardageDetails = it.yardageDetails?.yardageDetails,
-            notionDetails = it.yardageDetails?.notionDetails
+            notionDetails = it.yardageDetails?.notionDetails,
+            yardagePdfUrl = it.yardagePdfUrl
         )
     }
 }
@@ -76,7 +77,8 @@ public fun PatternIdData.toDomain(
     mannequin: List<MannequinDataDomain>?,
     patternType:String?,
     lastDateOfModification: String?,
-    selectedViewCupStyle: String?
+    selectedViewCupStyle: String?,
+    yardagePdfUrl: String?
 ): OfflinePatterns {
     val mYardageDetails = YardageDetails(this.yardageDetails, this.notionDetails)
     val mHeroImageUrls = HeroImageUrls(this.heroImageUrls)
@@ -117,7 +119,7 @@ public fun PatternIdData.toDomain(
         lastDateOfModification = lastDateOfModification,
         selectedViewCupStyle = selectedViewCupStyle,
         yardageImageUrl = this.yardageImageUrl,
-        yardagePdfUrl = this.yardagePdfUrl,
+        yardagePdfUrl = yardagePdfUrl,
         sizeChartUrl = this.sizeChartUrl,
         mainheroImageUrl = this.mainheroImageUrl,
         heroImageUrls = mHeroImageUrls

@@ -45,6 +45,7 @@ fun Prod.toDomain(): ProdDomain {
         subscriptionExpiryDate = this.subscriptionExpiryDate ?: "",
         suitableFor = this.suitableFor ?: "",
        // type = this.type ?: ""
+        yardagePdfUrl = this.yardagePdfUrl
     )
 }
 
@@ -273,7 +274,7 @@ public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
             orderNumber = "111",
             yardageDetails = mYardageDetails,
             yardageImageUrl = it.yardageImageUrl,
-            yardagePdfUrl = it.yardagePdfUrl,
+           // yardagePdfUrl = it.yardagePdfUrl,
             sizeChartUrl = it.sizeChartUrl,
             mainheroImageUrl = it.mainheroImageUrl,
             heroImageUrls = mHeroImageUrls

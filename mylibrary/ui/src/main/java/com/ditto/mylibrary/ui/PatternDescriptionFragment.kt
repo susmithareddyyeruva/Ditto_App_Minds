@@ -758,8 +758,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
-                        PDF_DOWNLOAD_URL = viewModel.data.value?.yardagePdfUrl
-
+                        PDF_DOWNLOAD_URL = viewModel.clickedProduct?.yardagePdfUrl
                         var bundle = Bundle()
                         if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()
                             && PDF_DOWNLOAD_URL.isNullOrEmpty()) {

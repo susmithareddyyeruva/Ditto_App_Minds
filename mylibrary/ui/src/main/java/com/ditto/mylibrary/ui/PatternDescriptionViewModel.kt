@@ -206,6 +206,7 @@ class PatternDescriptionViewModel @Inject constructor(
                             clickedProduct?.mannequin ?: emptyList(),
                             "Purchased",
                             "",
+                            "",
                             ""
                         )
                     } else {
@@ -222,7 +223,8 @@ class PatternDescriptionViewModel @Inject constructor(
                             clickedProduct?.mannequin ?: emptyList(),
                             clickedProduct?.patternType,
                             modificationDate.get(),
-                            selectedViewOrCupStyle.get()
+                            selectedViewOrCupStyle.get(),
+                            clickedProduct?.yardagePdfUrl
                         )
                     }
                 } else {
@@ -303,7 +305,8 @@ class PatternDescriptionViewModel @Inject constructor(
         mannequin: List<MannequinDataDomain>?,
         patternType: String?,
         lastDateOfModification: String?,
-        selectedViewCupStyle: String?
+        selectedViewCupStyle: String?,
+        yardagePdfUrl: String?
     ) {
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
@@ -316,7 +319,8 @@ class PatternDescriptionViewModel @Inject constructor(
             mannequin,
             patternType,
             lastDateOfModification,
-            selectedViewCupStyle
+            selectedViewCupStyle,
+            yardagePdfUrl
         )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())

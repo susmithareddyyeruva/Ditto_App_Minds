@@ -745,7 +745,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
 
             //setup others tab
-            /*if (viewModel.data.value?.selvages?.filter {
+            if (viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
                         getString(R.string.other),
                         true
@@ -827,7 +827,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
             }else if(viewModel.tabCategory == getString(R.string.other)){
                 viewModel.showReferenceLayout.set(false)
-            }*/
+            }
         }else{
             viewModel.showReferenceLayout.set(false)
         }
