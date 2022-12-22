@@ -124,7 +124,7 @@
             android:paddingStart="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
             android:text="@{bottomNavViewModel.menuNumberOfDaysForSubscription}"
-            android:textColor="@color/subscription_yellow"
+            android:textColor="@color/safety_pin_yellow"
             android:textSize="@dimen/text_desc"
             android:visibility="@{bottomNavViewModel.isGuestBase() ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"

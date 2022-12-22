@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/img_icon"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/alert_message_Text" />
 
     </RelativeLayout>
@@ -60,7 +60,7 @@
             android:gravity="right"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textSize="@dimen/alert_options_Text"
-            android:textColor="#000"/>
+            android:textColor="@color/needle_grey"/>
 
 
         <TextView
@@ -71,7 +71,7 @@
             android:gravity="center"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textSize="@dimen/alert_options_Text"
-            android:textColor="#000"/>
+            android:textColor="@color/needle_grey"/>
     </LinearLayout>
 
     </RelativeLayout>
@@ -94,7 +94,7 @@
             android:layout_marginTop="@dimen/x_large_padding"
             android:fontFamily="@font/avenir_next_lt_pro_demi"
             android:textSize="@dimen/alert_message_Text"
-            android:textColor="#000"/>
+            android:textColor="@color/needle_grey"/>
 
         <TextView
             android:id="@+id/common_message"
@@ -109,7 +109,7 @@
             android:layout_marginTop="@dimen/medium_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:textSize="@dimen/alert_message_Text"
-            android:textColor="#000"/>
+            android:textColor="@color/needle_grey"/>
 
 
         <LinearLayout
@@ -132,7 +132,7 @@
                 android:padding="@dimen/large_padding"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:textSize="@dimen/alert_options_Text"
-                android:textColor="#000"/>
+                android:textColor="@color/needle_grey"/>
 
 
             <TextView
@@ -145,7 +145,7 @@
                 android:padding="@dimen/large_padding"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:textSize="@dimen/alert_options_Text"
-                android:textColor="#000"/>
+                android:textColor="@color/needle_grey"/>
 
         </LinearLayout>
 

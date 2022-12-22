@@ -26,7 +26,7 @@
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:padding="@dimen/margin_bottom"
                 android:text="Where do I buy new patterns?"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/needle_grey" />
 
             <ImageView
                 android:id="@+id/iv_icon"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/margin_bottom"
                 android:text="The Lorem Ipsum is simply dummy text of the composition and layout before printing. Lorem Ipsum has been the standard dummy text of printing since the 1500s, when an anonymous printer assembled pieces of text together to make a specimen text font book."
-                android:textColor="@android:color/black"
+                android:textColor="@color/needle_grey"
                 android:visibility="gone" />
 
 
@@ -88,7 +88,7 @@
                 android:layout_toEndOf="@+id/watchVideo"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
                 android:text="@string/watch"
-                android:textColor="@android:color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_14px">
 
             </TextView>
