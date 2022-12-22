@@ -446,7 +446,7 @@ class WorkspaceViewModel @Inject constructor(
             data.value?.numberOfCompletedPiece?.lining = completedPieces.get()
         } else if (tabCategory.equals("Interfacing")) {
             data.value?.numberOfCompletedPiece?.`interface` = completedPieces.get()
-        } else if(tabCategory.equals("other")) {
+        } else if(tabCategory.equals("Other")) {
             data.value?.numberOfCompletedPiece?.other = completedPieces.get()
         }
         isCompleteButtonClickable = true
@@ -564,6 +564,8 @@ class WorkspaceViewModel @Inject constructor(
                 "Lining"
             } else if (Utility.fragmentTabs.get().toString().equals("2")) {
                 "Interfacing"
+            } else if (Utility.fragmentTabs.get().toString().equals("3"))  {
+                "Other"
             } else {
                 "Garment"
             }

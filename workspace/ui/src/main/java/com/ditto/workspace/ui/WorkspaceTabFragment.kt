@@ -1937,7 +1937,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.completedPieces.set(
                 viewModel.data.value?.numberOfCompletedPiece?.`interface` ?: 0
             )
-        } else if (viewModel.tabCategory.equals("other")) {
+        } else if (viewModel.tabCategory.equals("Other")) {
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.other ?: 0)
             viewModel.completedPieces.set(
                 viewModel.data.value?.numberOfCompletedPiece?.other ?: 0
