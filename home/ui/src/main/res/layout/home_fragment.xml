@@ -69,6 +69,7 @@
                 android:text="@{viewModel.header}"
                 android:textColor="@color/needle_grey"
                 android:textSize="@dimen/text_header"
+                app:layout_goneMarginStart="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@+id/text_view_header"
