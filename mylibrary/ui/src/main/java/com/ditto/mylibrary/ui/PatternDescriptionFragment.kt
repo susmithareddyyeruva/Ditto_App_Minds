@@ -47,6 +47,7 @@ import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.ERROR_FETCH
 import core.PDF_DOWNLOAD_URL
+import core.YARDAGE_PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
 import core.lib.BuildConfig
@@ -758,10 +759,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
-                        PDF_DOWNLOAD_URL = viewModel.clickedProduct?.yardagePdfUrl
+                        YARDAGE_PDF_DOWNLOAD_URL = ""
+                        YARDAGE_PDF_DOWNLOAD_URL = viewModel.clickedProduct?.yardagePdfUrl
                         var bundle = Bundle()
                         if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()
-                            && PDF_DOWNLOAD_URL.isNullOrEmpty()) {
+                            && YARDAGE_PDF_DOWNLOAD_URL.isNullOrEmpty()) {
                             showAlert(
                                 getString(R.string.yardage_and_notion_not_available),
                                 Utility.AlertType.DEFAULT
@@ -823,6 +825,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
+                        PDF_DOWNLOAD_URL = ""
                         PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                         var bundle = Bundle()
                         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
@@ -1778,6 +1781,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         if (it.prodName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
+                            || ((it.prodName.toString()+"yardage")
+                                .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
+                                .replace("[^A-Za-z0-9 ]".toRegex(), ""))
                         ) {
                             listOfCommonFiles.add(file)
                         }

@@ -19,6 +19,7 @@ import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
 import core.PDF_DOWNLOAD_URL
+import core.YARDAGE_PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.event.UiEvents
 import core.network.NetworkUtility
@@ -792,17 +793,21 @@ class PatternDescriptionViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun setUI() {
         //when nothing is available
-        if (PDF_DOWNLOAD_URL.isNullOrEmpty() && !isNotionAvailable.get() &&
+        if (YARDAGE_PDF_DOWNLOAD_URL.isNullOrEmpty() && !isNotionAvailable.get() &&
             !isYardageAvailable.get() && !isYardagePDFAvailable.get()
         ) {
             //Show nothing available msg
             isShowYardageEmptyView.set(true)
         }
         //when yardage & notion not available show pdf
-        else if (!isNotionAvailable.get() && !isYardageAvailable.get() && !PDF_DOWNLOAD_URL.isNullOrEmpty()) {
+        else if (!YARDAGE_PDF_DOWNLOAD_URL.isNullOrEmpty()) {
             isShowYardageEmptyView.set(false)
+            isNotionAvailable.set(false)
+            isYardageAvailable.set(false)
             uiEvents.post(Event.OnYardagePdfAvailable)
-        } else {//when only yardage & notion is available
+        }
+        else if (isNotionAvailable.get() && isYardageAvailable.get()) {
+            isYardagePDFAvailable.set(false)
             isShowYardageEmptyView.set(false)
         }
     }
