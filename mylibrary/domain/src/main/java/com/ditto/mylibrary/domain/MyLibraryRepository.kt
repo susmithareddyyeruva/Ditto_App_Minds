@@ -33,7 +33,8 @@ interface MyLibraryRepository {
         mannequin: List<MannequinDataDomain>?,
         patternType:String?,
         lastDateOfModification: String?,
-        selectedViewCupStyle: String?
+        selectedViewCupStyle: String?,
+        yardagePdfUrl: String?
     ): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>

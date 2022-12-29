@@ -56,4 +56,6 @@
     <string name="permissions_denied">App will not work properly without this permission. Please turn on the permission from settings.</string>
     <string name="storage_permissions">Without this permission you will not able to use this feature</string>
     <string name="camera_permissions_denied">Please provide Camera permission from settings to use this feature.</string>
+    <string name="go_back">GO BACK</string>
+    <string name="dittofy_message">Hang tight. Ditto is still working on your pattern, but it should be ready soon. Sorry for the delay, please try again in a little bit.</string>
 </resources>

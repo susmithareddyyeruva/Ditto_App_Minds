@@ -63,6 +63,9 @@ data class OfflinePatterns(
     @SerializedName("interfaceWorkspaceItems")
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
+    @ColumnInfo(name = "otherWorkspaceItems")
+    @SerializedName("otherWorkspaceItems")
+    var otherWorkspaceItemOfflines: MutableList<WorkspaceItemOffline> = ArrayList(),
 
     @ColumnInfo(name = "patternName")
     @SerializedName("patternName")
@@ -174,5 +177,25 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "selectedViewCupStyle")
     @SerializedName("selectedViewCupStyle")
-    var selectedViewCupStyle: String? = ""
+    var selectedViewCupStyle: String? = "",
+
+    @ColumnInfo(name = "yardageImageUrl")
+    @SerializedName("yardageImageUrl")
+    var yardageImageUrl: String? = "",
+
+    @ColumnInfo(name = "yardagePdfUrl")
+    @SerializedName("yardagePdfUrl")
+    var yardagePdfUrl: String? = "",
+
+    @ColumnInfo(name = "sizeChartUrl")
+    @SerializedName("sizeChartUrl")
+    var sizeChartUrl: String? = "",
+
+    @ColumnInfo(name = "mainheroImageUrl")
+    @SerializedName("mainheroImageUrl")
+    var mainheroImageUrl: String? = "",
+
+    @ColumnInfo(name = "heroImageUrls")
+    @SerializedName("heroImageUrls")
+    var heroImageUrls : HeroImageUrls?
 )

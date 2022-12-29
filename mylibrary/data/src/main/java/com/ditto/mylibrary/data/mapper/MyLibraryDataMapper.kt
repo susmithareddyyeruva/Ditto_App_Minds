@@ -92,7 +92,8 @@ fun Prod.toDomain(): ProdDomain {
         yardageDetails = this.yardageDetails,
         notionDetails = this.notionDetails,
         customSizeFitName = this.customSizeFitName,
-        lastModifiedSizeDate = this.lastModifiedSizeDate
+        lastModifiedSizeDate = this.lastModifiedSizeDate,
+        yardagePdfUrl = this.yardagePdfUrl
     )
 
 

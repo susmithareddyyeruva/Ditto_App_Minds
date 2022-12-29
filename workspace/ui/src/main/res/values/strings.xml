@@ -8,6 +8,7 @@
     <string name="garments">Garment</string>
     <string name="lining">Lining</string>
     <string name="interfacing">Interfacing</string>
+    <string name="other">Other</string>
 
     <string name="instruction"><u>Instructions</u></string>
     <string name="sewing_instructions">Sewing Instructions</string>

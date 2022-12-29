@@ -8,5 +8,7 @@ data class NumberOfCompletedPiece(
     @SerializedName("lining")
     val lining: Int? = 0,
     @SerializedName("interface")
-    val `interface`: Int? = 0
+    val `interface`: Int? = 0,
+    @SerializedName("other")
+    val other: Int? = 0
 )

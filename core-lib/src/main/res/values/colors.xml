@@ -18,4 +18,8 @@
     <color name="text_disable2">#707070</color>
     <color name="semitransparent">#30000000</color>
     <color name="nav_item_grey2">#80BAB9B9</color>
+    <color name="safety_pin_yellow">#FCE300</color>
+    <color name="svg_icon_yellow">#FCE200</color>
+    <color name="scissor_grey_light">#D7D2CB</color>
+    <color name="needle_grey">#1D1F2A</color>
 </resources>

@@ -37,7 +37,7 @@
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@null"
                 app:theme="@style/ToolBarStyle"
-                app:titleTextColor="@color/black">
+                app:titleTextColor="@color/needle_grey">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
                         android:text="@{viewModel.toolbarTitle}"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/toolbar_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -288,7 +288,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotocalib"
-                            android:textColor="@color/black"
+                            android:textColor="@color/needle_grey"
                             android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>
@@ -311,7 +311,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/gotohowto"
-                            android:textColor="@color/black"
+                            android:textColor="@color/needle_grey"
                             android:textSize="@dimen/size_14sp" />
 
                     </RelativeLayout>

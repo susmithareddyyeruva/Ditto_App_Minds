@@ -32,7 +32,7 @@
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@null"
                 app:theme="@style/ToolBarStyle"
-                app:titleTextColor="@color/black">
+                app:titleTextColor="@color/needle_grey">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
                         android:text="@{viewModel.toolbarTitle}"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/toolbar_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -121,12 +121,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topbar"
-                app:tabIndicatorColor="#A4211F"
+                app:tabIndicatorColor="@color/safety_pin_yellow"
+                app:tabIndicatorHeight="4dp"
                 app:tabIndicatorGravity="bottom"
                 app:tabMode="scrollable"
                 app:tabPaddingEnd="@dimen/size_14px"
                 app:tabRippleColor="@android:color/transparent"
-                app:tabSelectedTextColor="@color/black"
+                app:tabSelectedTextColor="@color/needle_grey"
                 app:tabTextAppearance="@style/MineCustomTabText"
                 app:tabTextColor="#A8A7A8">
 

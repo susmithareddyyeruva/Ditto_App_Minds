@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.ui.databinding.FragmentYardageNotionBinding
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import core.PDF_DOWNLOAD_URL
+import core.YARDAGE_PDF_DOWNLOAD_URL
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -87,27 +88,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
         arguments?.getString("notionDetails")?.let { viewModel.setNotionDetails(it) }
         arguments?.getStringArrayList("yardageDetails")?.let {  viewModel.setYardageDetails(it)}
 
-        PDF_DOWNLOAD_URL = null //remove this when showing pdf or Image
-
-        setUI()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setUI() {
-        //when nothing is available
-        if (PDF_DOWNLOAD_URL.isNullOrEmpty() && !viewModel.isNotionAvailable.get() &&
-            !viewModel.isYardageAvailable.get() && !viewModel.isYardagePDFAvailable.get()
-        ) {
-            //Show nothing available msg
-            binding.emptyView.visibility = View.VISIBLE
-        }
-        //when yardage & notion not available show pdf
-        else if (!viewModel.isNotionAvailable.get() && !viewModel.isYardageAvailable.get() && !PDF_DOWNLOAD_URL.isNullOrEmpty()) {
-            loadPdf()
-            binding.emptyView.visibility = View.GONE
-        } else {//when only yardage & notion is available
-            binding.emptyView.visibility = View.GONE
-        }
+        viewModel.setUI()
     }
 
     override fun onStop() {
@@ -127,6 +108,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
             .observeOn(AndroidSchedulers.mainThread())
@@ -135,6 +117,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleEvent(event: PatternDescriptionViewModel.Event) =
         when (event) {
             PatternDescriptionViewModel.Event.OnDownloadComplete -> showPdfFromUri(
@@ -142,20 +125,23 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
                     viewModel.patternpdfuri.get()
                 )
             )
+            PatternDescriptionViewModel.Event.OnYardagePdfAvailable -> {
+                loadPdf()
+            }
             else -> logger.d("Error, Invaid Event")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
-        if (!PDF_DOWNLOAD_URL.isNullOrEmpty()) {
+        if (!YARDAGE_PDF_DOWNLOAD_URL.isNullOrEmpty()) {
             try {
                 downloadFileName =
-                    PDF_DOWNLOAD_URL?.substring(PDF_DOWNLOAD_URL!!.lastIndexOf('/'), PDF_DOWNLOAD_URL!!.length)
+                    YARDAGE_PDF_DOWNLOAD_URL?.substring(YARDAGE_PDF_DOWNLOAD_URL!!.lastIndexOf('/'), YARDAGE_PDF_DOWNLOAD_URL!!.length)
                 val availableUri = downloadFileName?.let {
                     Utility.isFileAvailable(
                         it,
                         requireContext(),
-                        patternFolderName
+                        patternFolderName + "yardage"
                     )
                 }
                 if (availableUri != null) {
@@ -178,9 +164,9 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
             GlobalScope.launch {
                 downloadFileName?.let {
                     viewModel.downloadPDF(
-                        PDF_DOWNLOAD_URL!!,
+                        YARDAGE_PDF_DOWNLOAD_URL!!,
                         it,
-                        patternFolderName
+                        patternFolderName + "yardage"
                     )
                 }
             }
@@ -265,7 +251,7 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
     ) {
         when (alertType) {
             Utility.AlertType.NETWORK, Utility.AlertType.PDF -> {
-                findNavController().popBackStack(R.id.patternInstructionsFragment, true)
+                findNavController().popBackStack(R.id.yardageNotionFragment, true)
             }
             else -> {}
         }

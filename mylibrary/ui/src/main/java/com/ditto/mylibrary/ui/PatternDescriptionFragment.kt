@@ -47,6 +47,7 @@ import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.ERROR_FETCH
 import core.PDF_DOWNLOAD_URL
+import core.YARDAGE_PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
 import core.lib.BuildConfig
@@ -758,9 +759,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
-                        PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
+                        YARDAGE_PDF_DOWNLOAD_URL = ""
+                        YARDAGE_PDF_DOWNLOAD_URL = viewModel.clickedProduct?.yardagePdfUrl
                         var bundle = Bundle()
-                        if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()) {
+                        if(viewModel.clickedProduct?.yardageDetails.isNullOrEmpty() && viewModel.clickedProduct?.notionDetails.isNullOrEmpty()
+                            && YARDAGE_PDF_DOWNLOAD_URL.isNullOrEmpty()) {
                             showAlert(
                                 getString(R.string.yardage_and_notion_not_available),
                                 Utility.AlertType.DEFAULT
@@ -822,6 +825,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     if ((findNavController().currentDestination?.id == R.id.patternDescriptionFragment)
                         || (findNavController().currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
                     ) {
+                        PDF_DOWNLOAD_URL = ""
                         PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                         var bundle = Bundle()
                         if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
@@ -1599,25 +1603,39 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     private fun showDataFailedAlert() {
         var errorMsg: String? = null
         if (viewModel.tailornovaApiError?.contains("In progress", true) == true) {
-            errorMsg = getString(R.string.str_processing_error)
+            errorMsg = getString(R.string.dittofy_message)
+            bottomNavViewModel.showProgress.set(false)
+            bottomNavViewModel.showWSProgress.set(false)
+            if (activity != null && context != null) {
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    errorMsg ?: "",
+                    "",
+                    getString(R.string.go_back),
+                    this,
+                    Utility.AlertType.NETWORK,
+                    Utility.Iconype.FAILED
+                )
+            }
         } else {
-            errorMsg =
-                "\n" + getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            errorMsg = getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            bottomNavViewModel.showProgress.set(false)
+            bottomNavViewModel.showWSProgress.set(false)
+            if (activity != null && context != null) {
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    errorMsg ?: "",
+                    "",
+                    getString(R.string.str_ok),
+                    this,
+                    Utility.AlertType.NETWORK,
+                    Utility.Iconype.FAILED
+                )
+            }
         }
-        bottomNavViewModel.showProgress.set(false)
-        bottomNavViewModel.showWSProgress.set(false)
-        if (activity != null && context != null) {
-            Utility.getCommonAlertDialogue(
-                requireContext(),
-                "",
-                errorMsg ?: "",
-                "",
-                getString(R.string.str_ok),
-                this,
-                Utility.AlertType.NETWORK,
-                Utility.Iconype.FAILED
-            )
-        }
+
     }
 
     /**
@@ -1712,8 +1730,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                     patterns.forEach {
                         if (Utility.getPatternDownloadFolderName(
-                                viewModel.clickedTailornovaID.get()?: "",
-                                viewModel.mannequinId.get() ?: "")
+                                it.tailornovaDesignId ?: "",
+                                it.selectedMannequinId ?: "")
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
                         ) {
@@ -1763,6 +1781,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         if (it.prodName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
+                            || ((it.prodName.toString()+"yardage")
+                                .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
+                                .replace("[^A-Za-z0-9 ]".toRegex(), ""))
                         ) {
                             listOfCommonFiles.add(file)
                         }

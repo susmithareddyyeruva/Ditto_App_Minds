@@ -29,6 +29,8 @@ internal fun Patterns.toDomain(): PatternsData {
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        otherWorkspaceItemOfflines = this.otherWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList()
     )
 }
@@ -84,7 +86,8 @@ internal fun PatternPieces.toDomain(): com.ditto.workspace.domain.model.PatternP
         splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         isMirrorOption = this.mirrorOption,
-        isCompleted = this.isCompleted
+        isCompleted = this.isCompleted,
+        contrast = this.contrast
     )
 
 }
@@ -143,6 +146,8 @@ internal fun PatternsData.toDomain(): Patterns {
         liningWorkspaceItemOfflines = this.liningWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines?.map { it.toDomain() }
+            ?.toMutableList(),
+        otherWorkspaceItemOfflines = this.otherWorkspaceItemOfflines?.map { it.toDomain() }
             ?.toMutableList()
     )
 }
@@ -151,7 +156,8 @@ fun NumberOfCompletedPiecesOffline.toDomainn(): NumberOfPieces {
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -200,7 +206,8 @@ internal fun com.ditto.workspace.domain.model.PatternPieces.toDomain(): PatternP
         splicedImages = this.splicedImages?.map { it.toDomain() },
         cutOnFold = this.cutOnFold,
         mirrorOption = this.isMirrorOption,
-        isCompleted = this.isCompleted
+        isCompleted = this.isCompleted,
+        contrast = this.contrast
     )
 
 }

@@ -229,4 +229,14 @@ class Converters {
         return Gson().toJson(yardageDetails)
     }
 
+    @TypeConverter
+    fun stringToHeroImageUrls(string: String?): HeroImageUrls? {
+        return Gson().fromJson(string, HeroImageUrls::class.java)
+    }
+
+    @TypeConverter
+    fun heroImageUrlsToString(heroImageUrls: HeroImageUrls?): String {
+        return Gson().toJson(heroImageUrls)
+    }
+
 }

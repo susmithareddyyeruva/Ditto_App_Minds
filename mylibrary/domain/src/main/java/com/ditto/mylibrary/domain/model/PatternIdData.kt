@@ -33,13 +33,19 @@ data class PatternIdData(
     var yardageDetails : List<String>? = emptyList(),
     var notionDetails : String?="",
     var lastDateOfModification: String?,
-    var selectedViewCupStyle: String?
+    var selectedViewCupStyle: String?,
+    var yardageImageUrl: String?,
+    var yardagePdfUrl: String?,
+    val mainheroImageUrl: String?,
+    val sizeChartUrl: String?,
+    val heroImageUrls: List<String> = emptyList()
 )
 
 data class NumberOfPiecesData(
     val garment: Int?,
     val `interface`: Int?,
-    val lining: Int?
+    val lining: Int?,
+    val other: Int?
 )
 data class MannequinData(
     val mannequinId: String? = "",
@@ -63,7 +69,8 @@ data class PatternPieceData(
     val spliceScreenQuantity: String? = "",
     val splicedImages: List<SplicedImageData>? = emptyList(),
     val tabCategory: String? = "",
-    val view: String? = ""
+    val view: String? = "",
+    val contrast: String? = ""
 )
 
 data class SelvageData(

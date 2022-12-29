@@ -10,6 +10,7 @@ data class OfflinePatternData(
     var garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
     var liningWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
     var interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
+    var otherWorkspaceItemOfflines: MutableList<WorkspaceItemOfflineDomain> = ArrayList(),
     var id: String,
     var patternName: String?,
     var description: String?,
@@ -79,7 +80,8 @@ data class PatternPieceDataDomain(
     val spliceScreenQuantity: String? = "",
     val splicedImages: List<SplicedImageDomain>?= emptyList(),
     val tabCategory: String? = "",
-    val view: String? = ""
+    val view: String? = "",
+    val contrast: String? = ""
 )
 
 data class SplicedImageDomain(

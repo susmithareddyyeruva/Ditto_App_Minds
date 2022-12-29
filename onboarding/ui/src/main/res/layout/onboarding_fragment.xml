@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
-        android:background="@color/white">
+        android:background="@color/scissor_grey_light">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/onboarding_appBar"
             android:layout_width="match_parent"
@@ -32,14 +32,14 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
+                android:background="@color/scissor_grey_light"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@null"
                 app:navigationIcon="@drawable/ic_back_button"
                 app:theme="@style/ToolBarStyle"
-                app:titleTextColor="@color/black">
+                app:titleTextColor="@color/needle_grey">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
                         android:text="@string/tutorial_header"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/size_21sp"
                        />
 
@@ -96,7 +96,7 @@
             android:text="@{viewModel.onBoardingTitle}"
             android:textSize="@dimen/size_34sp"
             android:visibility="@{ viewModel.isFromHomeObservable() ? View.INVISIBLE : View.VISIBLE}"
-            android:textColor="@color/black"
+            android:textColor="@color/needle_grey"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/title_margin"
             app:layout_constraintTop_toBottomOf="@+id/guideline_heading" />
@@ -123,7 +123,7 @@
             android:text="@{viewModel.onBoardingSubTitle}"
             android:visibility="@{ viewModel.isFromHomeObservable() ? View.GONE : View.VISIBLE}"
             android:textSize="@dimen/size_16px"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/title_margin"
             app:layout_constraintTop_toBottomOf="@+id/txt_heading"
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.onClickSkipAndContinue()}"
                 android:text="@string/skip_contin"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_18sp"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:textAppearance="@style/skip_contin"/>

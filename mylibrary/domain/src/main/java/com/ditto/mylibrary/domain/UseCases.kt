@@ -35,7 +35,8 @@ interface MyLibraryUseCase {
         mannequin: List<MannequinDataDomain>?,
         patternType:String?,
         lastDateOfModification: String?,
-        selectedViewCupStyle: String?
+        selectedViewCupStyle: String?,
+        yardagePdfUrl: String?
     ): Single<Any>
     fun getThirdPartyPatternData(productId: String) : Single<Result<ThirdPartyDomain>>
 }

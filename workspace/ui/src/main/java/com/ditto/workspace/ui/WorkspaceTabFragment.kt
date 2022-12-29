@@ -743,6 +743,91 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }else if(viewModel.tabCategory == getString(R.string.interfacing)){
                 viewModel.showReferenceLayout.set(false)
             }
+
+            //setup others tab
+            if (viewModel.data.value?.selvages?.filter {
+                    it.tabCategory.equals(
+                        getString(R.string.other),
+                        true
+                    ) && (it.fabricLength.equals("20") || it.fabricLength.equals("45")) //changed to 20, 45
+                }
+                    ?.isNotEmpty() == true &&
+                viewModel.tabCategory == getString(R.string.other)
+            ) {
+                viewModel.showReferenceLayout.set(true)
+                binding.txtSize45.text = getString(R.string._20)
+                binding.txtSize60.text = getString(R.string._45text)
+                val other =
+                    viewModel.data.value?.selvages?.filter {
+                        it.tabCategory.equals(
+                            getString(
+                                R.string.other
+                            ), true
+                        ) && (it.fabricLength.equals("20") || it.fabricLength.equals("45")) //changed to 20, 45
+                    }
+
+                if (other?.filter { it.fabricLength == "20" }?.size ?: 0 > 0 &&
+                    other?.filter { it.fabricLength == "45" }?.size ?: 0 > 0
+                ) {
+                    binding.txtSize45.isEnabled = true
+                    binding.txtSize60.isEnabled = true
+                    viewModel.enableSize45.set(true)
+                    viewModel.enableSize60.set(true)
+                    if (!viewModel.clickedSize45.get() && !viewModel.clickedSize60.get()) {
+                        viewModel.clickedSize45.set(true)
+                        viewModel.clickedSize60.set(false)
+                    }
+                    if (viewModel.clickedSize45.get()) {
+                        val selvage = other?.filter { it.fabricLength == "20" }?.getOrNull(0)
+                        logger.d(">>>>>>>>>>>>>>>>>>>>>>>>> ${selvage?.imagePath}")
+                        selvage?.imagePath.let {
+                            getBitmapFromSvgPngDrawable(
+                                selvage?.imageName,
+                                binding.imageSelvageHorizontal.context,
+                                binding.imageSelvageHorizontal
+                            )
+
+                        }
+                        viewModel.clickedSize45.set(true)
+                        viewModel.clickedSize60.set(false)
+                        viewModel.referenceImage.set(selvage?.imageName)
+                    }
+                    if (viewModel.clickedSize60.get()) {
+                        val selvage = other?.filter { it.fabricLength == "45" }?.getOrNull(0)
+                        selvage?.imagePath.let {
+                            getBitmapFromSvgPngDrawable(
+                                selvage?.imageName,
+                                binding.imageSelvageHorizontal.context,
+                                binding.imageSelvageHorizontal
+                            )
+
+                        }
+                        viewModel.clickedSize45.set(false)
+                        viewModel.clickedSize60.set(true)
+                        viewModel.referenceImage.set(selvage?.imageName)
+                    }
+                } else if (other?.size ?: 0 != 0) {
+                    if (other?.get(0)!!.fabricLength == "20") {
+                        binding.txtSize45.isEnabled = true
+                        viewModel.enableSize45.set(true)
+                        viewModel.clickedSize45.set(true)
+                    } else if (other[0].fabricLength == "45") {
+                        binding.txtSize60.isEnabled = true
+                        viewModel.enableSize60.set(true)
+                        viewModel.clickedSize60.set(true)
+                    }
+                    other[0].imagePath.let {
+                        getBitmapFromSvgPngDrawable(
+                            other[0].imageName,
+                            binding.imageSelvageHorizontal.context,
+                            binding.imageSelvageHorizontal
+                        )
+                    }
+                    viewModel.referenceImage.set(other[0].imageName)
+                }
+            }else if(viewModel.tabCategory == getString(R.string.other)){
+                viewModel.showReferenceLayout.set(false)
+            }
         }else{
             viewModel.showReferenceLayout.set(false)
         }
@@ -759,10 +844,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.data.value?.liningWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
             return viewModel.data.value?.liningWorkspaceItemOfflines
-        } else {
+        } else if (selectedTab == 2){
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
             return viewModel.data.value?.interfaceWorkspaceItemOfflines
+        } else {
+            viewModel.data.value?.otherWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            return viewModel.data.value?.otherWorkspaceItemOfflines
         }
     }
 
@@ -1071,6 +1160,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 } else if (viewModel.tabCategory.equals("Interfacing")) {
                     workspaceItems =
                         viewModel.getWorkspaceDimensions(viewModel.data.value?.interfaceWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
+                } else if (viewModel.tabCategory.equals("Other")) {
+                    workspaceItems =
+                        viewModel.getWorkspaceDimensions(viewModel.data.value?.otherWorkspaceItemOfflines) as MutableList<WorkspaceItems>?
                 }
                 // set id of workspace item to the oldest large value
                 viewModel.workspaceItemId.set(
@@ -1725,6 +1817,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
+        } else if (a.equals("3")) {
+            viewModel.data.value?.otherWorkspaceItemOfflines =
+                mWorkspaceEditor?.views?.toMutableList()
+            logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
         //check network
@@ -1840,6 +1936,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.`interface` ?: 0)
             viewModel.completedPieces.set(
                 viewModel.data.value?.numberOfCompletedPiece?.`interface` ?: 0
+            )
+        } else if (viewModel.tabCategory.equals("Other")) {
+            viewModel.totalPieces.set(viewModel.data.value?.totalNumberOfPieces?.other ?: 0)
+            viewModel.completedPieces.set(
+                viewModel.data.value?.numberOfCompletedPiece?.other ?: 0
             )
         }
     }

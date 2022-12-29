@@ -58,7 +58,11 @@
         <TextView
             android:id="@+id/txt_workspace_header"
             android:layout_width="@dimen/size_0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/size_0dp"
+            android:lines="2"
+            android:gravity="center_vertical"
+            android:paddingEnd="2dp"
+            android:ellipsize="end"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text="@{viewModel.tailornovaDesignName}"
             android:textColor="@android:color/black"

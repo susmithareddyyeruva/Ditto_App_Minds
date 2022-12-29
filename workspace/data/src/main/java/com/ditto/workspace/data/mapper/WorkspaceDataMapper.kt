@@ -15,6 +15,7 @@ fun CTraceWorkSpacePattern.toDomain(): WorkspaceDataAPI {
         garmetWorkspaceItems = this.garmetWorkspaceItems.map { it.toDomain() }.toMutableList(),
         liningWorkspaceItems = this.liningWorkspaceItems.map { it.toDomain() }.toMutableList(),
         interfaceWorkspaceItems = this.interfaceWorkspaceItems.map { it.toDomain() }.toMutableList(),
+        otherWorkspaceItems = this.otherWorkspaceItems.map { it.toDomain() }.toMutableList(),
     )
 
 }
@@ -23,7 +24,8 @@ fun NumberOfCompletedPiece.toDomain(): NumberOfPieces {
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -92,7 +94,9 @@ fun OfflinePatterns.toDomain(): WorkspaceDataAPI {
         liningWorkspaceItems = this.liningWorkspaceItemOfflines.map { it.toDomain() }
             .toMutableList(),
         interfaceWorkspaceItems = this.interfaceWorkspaceItemOfflines.map { it.toDomain() }
-            .toMutableList())
+            .toMutableList(),
+        otherWorkspaceItems = this.otherWorkspaceItemOfflines.map { it.toDomain() }
+        .toMutableList())
 }
 
 
@@ -100,7 +104,8 @@ fun NumberOfPieces.toDomain(): com.ditto.storage.data.model.NumberOfCompletedPie
     return com.ditto.storage.data.model.NumberOfCompletedPiecesOffline(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -108,7 +113,8 @@ fun com.ditto.storage.data.model.NumberOfCompletedPiecesOffline.toDomain(): Numb
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -183,6 +189,8 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
             .toMutableList(),
         interfaceWorkspaceItemOfflines = this.interfaceWorkspaceItemOfflines.map { it.toDomain1() }
             .toMutableList(),
+        otherWorkspaceItemOfflines = this.otherWorkspaceItemOfflines.map { it.toDomain1() }
+            .toMutableList(),
         id = this.designId,
         patternName = this.patternName,
         description = this.description,
@@ -228,7 +236,8 @@ fun PatternPieceDataDomain.toDomainn(): PatternPieceData {
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
-        tabCategory = this.tabCategory
+        tabCategory = this.tabCategory,
+        contrast = this.contrast
     )
 }
 
@@ -251,7 +260,8 @@ fun PatternPieceData.toDomainn(): PatternPieceDataDomain {
         //spliceDirection = this.spliceDirection,
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
-        tabCategory = this.tabCategory
+        tabCategory = this.tabCategory,
+        contrast = this.contrast
     )
 }
 
@@ -319,7 +329,8 @@ fun NumberOfCompletedPiecesOffline.toDomainOfflinePicecs(): NumberOfPieces {
     return NumberOfPieces(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 

@@ -1,12 +1,12 @@
 package com.ditto.mylibrary.data.mapper
 
 import com.ditto.mylibrary.domain.model.*
+import com.ditto.storage.data.model.*
 import com.ditto.storage.data.model.MannequinData
-import com.ditto.storage.data.model.OfflinePatterns
 import com.ditto.storage.data.model.PatternPieceData
 import com.ditto.storage.data.model.SelvageData
+import com.ditto.storage.data.model.SplicedImageData
 import core.appstate.AppState
-import com.ditto.storage.data.model.YardageDetails
 
 internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
     return this.map {
@@ -36,7 +36,8 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
             selectedMannequinName = it.selectedMannequinName,
             mannequin = it.mannequin?.map { it.toDomain() },
             yardageDetails = it.yardageDetails?.yardageDetails,
-            notionDetails = it.yardageDetails?.notionDetails
+            notionDetails = it.yardageDetails?.notionDetails,
+            yardagePdfUrl = it.yardagePdfUrl
         )
     }
 }
@@ -76,9 +77,11 @@ public fun PatternIdData.toDomain(
     mannequin: List<MannequinDataDomain>?,
     patternType:String?,
     lastDateOfModification: String?,
-    selectedViewCupStyle: String?
+    selectedViewCupStyle: String?,
+    yardagePdfUrl: String?
 ): OfflinePatterns {
     val mYardageDetails = YardageDetails(this.yardageDetails, this.notionDetails)
+    val mHeroImageUrls = HeroImageUrls(this.heroImageUrls)
     return OfflinePatterns(
         custId = AppState.getCustID(),
         designId = this.designId,
@@ -114,7 +117,12 @@ public fun PatternIdData.toDomain(
         mannequin = mannequin?.map { it.toDomain() },
         yardageDetails = mYardageDetails,
         lastDateOfModification = lastDateOfModification,
-        selectedViewCupStyle = selectedViewCupStyle
+        selectedViewCupStyle = selectedViewCupStyle,
+        yardageImageUrl = this.yardageImageUrl,
+        yardagePdfUrl = yardagePdfUrl,
+        sizeChartUrl = this.sizeChartUrl,
+        mainheroImageUrl = this.mainheroImageUrl,
+        heroImageUrls = mHeroImageUrls
     )
 }
 fun MannequinDataDomain.toDomain(): MannequinData {
@@ -149,7 +157,8 @@ fun PatternPieceData.toDomain(): com.ditto.mylibrary.domain.model.PatternPieceDa
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory,
-        view = this.view
+        view = this.view,
+        contrast = this.contrast
     )
 }
 
@@ -173,13 +182,14 @@ fun com.ditto.mylibrary.domain.model.PatternPieceData.toDomain(): PatternPieceDa
         spliceScreenQuantity = this.spliceScreenQuantity,
         splicedImages = this.splicedImages?.map { it.toDomain() },
         tabCategory = this.tabCategory,
-        view = this.view
+        view = this.view,
+        contrast = this.contrast
     )
 
 }
 
-fun com.ditto.storage.data.model.SplicedImageData.toDomain(): SplicedImageData {
-    return SplicedImageData(
+fun com.ditto.storage.data.model.SplicedImageData.toDomain(): com.ditto.mylibrary.domain.model.SplicedImageData {
+    return com.ditto.mylibrary.domain.model.SplicedImageData(
         column = this.column,
         designId = this.designId,
         id = this.id,
@@ -192,7 +202,7 @@ fun com.ditto.storage.data.model.SplicedImageData.toDomain(): SplicedImageData {
     )
 }
 
-fun SplicedImageData.toDomain(): com.ditto.storage.data.model.SplicedImageData {
+fun com.ditto.mylibrary.domain.model.SplicedImageData.toDomain(): com.ditto.storage.data.model.SplicedImageData {
     return com.ditto.storage.data.model.SplicedImageData(
         column = this.column,
         designId = this.designId,
@@ -235,7 +245,8 @@ fun NumberOfPiecesData.toDomain(): com.ditto.storage.data.model.NumberOfComplete
     return com.ditto.storage.data.model.NumberOfCompletedPiecesOffline(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -244,7 +255,8 @@ fun com.ditto.storage.data.model.NumberOfCompletedPiecesOffline.toDomain(): Numb
     return NumberOfPiecesData(
         garment = this.garment,
         lining = this.lining,
-        `interface` = this.`interface`
+        `interface` = this.`interface`,
+        other = this.other
     )
 }
 
@@ -279,7 +291,12 @@ internal fun OfflinePatterns.toPatternIDDomain(): PatternIdData {
         selectedMannequinName = this.selectedMannequinName,
         mannequin = this.mannequin?.map { it.toDomains() },
         lastDateOfModification = this.lastDateOfModification,
-        selectedViewCupStyle = this.selectedViewCupStyle
+        selectedViewCupStyle = this.selectedViewCupStyle,
+        yardageImageUrl = this.yardageImageUrl,
+        yardagePdfUrl = this.yardagePdfUrl,
+        mainheroImageUrl = this.mainheroImageUrl,
+        sizeChartUrl = this.sizeChartUrl,
+        heroImageUrls = this.heroImageUrls?.heroImageUrls ?: emptyList()
     )
 }
 

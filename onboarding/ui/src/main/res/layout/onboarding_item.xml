@@ -133,7 +133,7 @@
                 android:textSize="@dimen/size_18sp"
                 android:text="@{onboardingValue.title}"
                 android:fontFamily="@font/avenir_next_it_pro_bold"
-                android:textColor="@android:color/white"
+                android:textColor="@color/needle_grey"
                 app:layout_constraintBottom_toBottomOf="@+id/reference_view"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView"

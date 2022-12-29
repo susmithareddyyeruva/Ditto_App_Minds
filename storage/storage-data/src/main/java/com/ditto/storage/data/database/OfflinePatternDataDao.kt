@@ -28,7 +28,7 @@ abstract class OfflinePatternDataDao {
     @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type or custId = :custId")
     abstract fun getListOfTrialPattern(type: String, custId: String?): List<OfflinePatterns>
 
-    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab ,status = :status ,numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
+    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab ,status = :status ,numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems, otherWorkspaceItems= :otherWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
     abstract fun updateOfflinePatternData(
         custId: String?,
         tailornaovaDesignId: String?,
@@ -38,7 +38,8 @@ abstract class OfflinePatternDataDao {
         patternPieces: List<PatternPiecesOffline>?,
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItems: MutableList<WorkspaceItemOffline>,
-        interfaceWorkspaceItems: MutableList<WorkspaceItemOffline>
+        interfaceWorkspaceItems: MutableList<WorkspaceItemOffline>,
+        otherWorkspaceItems: MutableList<WorkspaceItemOffline>
     ): Int
 
     //if patternType!= trial >> delete it (keeping trial patterns only)
@@ -86,7 +87,12 @@ abstract class OfflinePatternDataDao {
                 obj.mannequin,
                 obj.yardageDetails,
                 obj.lastDateOfModification,
-                obj.selectedViewCupStyle
+                obj.selectedViewCupStyle,
+                obj.yardagePdfUrl,
+                obj.yardageImageUrl,
+                obj.mainheroImageUrl,
+                obj.sizeChartUrl,
+                obj.heroImageUrls
             )
             Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB update >>>>>>> $i")
             return i
@@ -95,7 +101,7 @@ abstract class OfflinePatternDataDao {
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin, yardageDetails= :yardageDetails, lastDateOfModification= :lastDateOfModification, selectedViewCupStyle= :selectedViewCupStyle WHERE designId= :designId")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin, yardageDetails= :yardageDetails, lastDateOfModification= :lastDateOfModification, selectedViewCupStyle= :selectedViewCupStyle, yardagePdfUrl= :yardagePdfUrl, yardageImageUrl= :yardageImageUrl, mainheroImageUrl= :mainheroImageUrl, sizeChartUrl= :sizeChartUrl, heroImageUrls= :heroImageUrls WHERE designId= :designId")
     abstract fun updateTailornovaOfflineData(
         custId: String?,
         designId: String,
@@ -126,7 +132,12 @@ abstract class OfflinePatternDataDao {
         mannequin: List<MannequinData>?,
         yardageDetails: YardageDetails?,
         lastDateOfModification: String?,
-        selectedViewCupStyle: String?
+        selectedViewCupStyle: String?,
+        yardagePdfUrl: String?,
+        yardageImageUrl: String?,
+        mainheroImageUrl: String?,
+        sizeChartUrl: String?,
+        heroImageUrls: HeroImageUrls?
         /*,
         selectedTab: String?,
         numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
@@ -138,7 +149,7 @@ abstract class OfflinePatternDataDao {
     ): Int
 
     @Query(
-        "UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedTab=:selectedTab,status=:status, numberOfCompletedPiece=:numberOfCompletedPieces, patternPieces= :patternPiecesFromApi,garmetWorkspaceItems=:garmetWorkspaceItemOfflines,liningWorkspaceItems=:liningWorkspaceItemOfflines,interfaceWorkspaceItems= :interfaceWorkspaceItemOfflines,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId "
+        "UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedTab=:selectedTab,status=:status, numberOfCompletedPiece=:numberOfCompletedPieces, patternPieces= :patternPiecesFromApi,garmetWorkspaceItems=:garmetWorkspaceItemOfflines,liningWorkspaceItems=:liningWorkspaceItemOfflines,interfaceWorkspaceItems= :interfaceWorkspaceItemOfflines, otherWorkspaceItems = :otherWorkspaceItemOfflines, selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,mannequinArray=:mannequin WHERE designId= :designId "
     )
     abstract fun updateTailornovaTrailForPatternDifferentUser(
         custId: String?,
@@ -171,6 +182,7 @@ abstract class OfflinePatternDataDao {
         garmetWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
         interfaceWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
+        otherWorkspaceItemOfflines: MutableList<WorkspaceItemOffline>,
         selectedMannequinId: String?,
         selectedMannequinName: String?,
         mannequin: List<MannequinData>?
@@ -217,6 +229,7 @@ abstract class OfflinePatternDataDao {
                         obj.garmetWorkspaceItemOfflines,
                         obj.liningWorkspaceItemOfflines,
                         obj.interfaceWorkspaceItemOfflines,
+                        obj.otherWorkspaceItemOfflines,
                         obj.selectedMannequinId,
                         obj.selectedMannequinName,
                         obj.mannequin
@@ -255,7 +268,12 @@ abstract class OfflinePatternDataDao {
                         obj.mannequin,
                         obj.yardageDetails,
                         obj.lastDateOfModification,
-                        obj.selectedViewCupStyle
+                        obj.selectedViewCupStyle,
+                        obj.yardagePdfUrl,
+                        obj.yardageImageUrl,
+                        obj.mainheroImageUrl,
+                        obj.sizeChartUrl,
+                        obj.heroImageUrls
                         /*obj.selectedTab,
                 obj.garmetWorkspaceItemOfflines,
                 obj.liningWorkspaceItemOfflines,

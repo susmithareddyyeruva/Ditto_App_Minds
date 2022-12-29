@@ -7,6 +7,7 @@ const val GITHUB_SIGNED_IN = "LOGGED IN : GITHUB"
 const val GOOGLE_SIGNED_IN = "LOGGED IN : GOOGLE"
 const val SITE_ID = "ditto"
 var PDF_DOWNLOAD_URL : String ?= "";
+var YARDAGE_PDF_DOWNLOAD_URL : String ?= "";
 //Shared Preference Keys
 const val USER_EMAIL = "USER_EMAIL"
 const val USER_PHONE = "USER_PHONE"

@@ -19,6 +19,8 @@ data class CTraceWorkSpacePattern(
     @SerializedName("liningWorkspaceItems")
     var liningWorkspaceItems: List<WorkspaceItem> = emptyList(),
     @SerializedName("interfaceWorkspaceItems")
-    var interfaceWorkspaceItems: List<WorkspaceItem> = emptyList()
+    var interfaceWorkspaceItems: List<WorkspaceItem> = emptyList(),
+    @SerializedName("otherWorkspaceItems")
+    var otherWorkspaceItems: List<WorkspaceItem> = emptyList()
 )
 

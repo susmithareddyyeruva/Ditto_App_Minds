@@ -24,5 +24,6 @@ data class ProdDomain(
     var yardageDetails : List<String>? = emptyList(),
     val notionDetails : String?="",
     var customSizeFitName : String? = "",
-    var lastModifiedSizeDate : String? = ""
+    var lastModifiedSizeDate : String? = "",
+    var yardagePdfUrl : String? = ""
 ):Serializable
