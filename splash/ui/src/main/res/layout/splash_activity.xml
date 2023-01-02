@@ -23,6 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:src="@drawable/splash_screen_ditto" />
+            android:src="@drawable/ditto_secondary_horizontal_logo_440x152" />
     </FrameLayout>
 </layout>

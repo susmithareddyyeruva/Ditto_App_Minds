@@ -24,7 +24,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@color/scissor_grey_light">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
@@ -37,13 +37,13 @@
                 android:id="@+id/toolbar_patterndesc"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/headerbar"
+                android:background="@color/scissor_grey_light"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@null"
                 app:theme="@style/ToolBarStyle"
-                app:titleTextColor="@color/black">
+                app:titleTextColor="@color/needle_grey">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
                         android:text="@string/pattern_details"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/size_21sp" />
                 </LinearLayout>
 
@@ -176,6 +176,7 @@
                 android:layout_marginTop="@dimen/size_16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
+                android:background="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
                 app:layout_constraintEnd_toEndOf="@+id/image_vertical"
                 app:layout_constraintStart_toStartOf="@+id/start_guideline"
@@ -229,7 +230,7 @@
                 android:paddingStart="@dimen/padding_15"
                 android:paddingEnd="25dp"
                 android:text="@{viewModel.mannequinName}"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
@@ -247,7 +248,7 @@
                 android:lines="1"
                 android:paddingVertical="2dp"
                 android:text="@{viewModel.patternName}"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/pattern_name"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
@@ -268,7 +269,7 @@
                 android:gravity="end|center_vertical"
                 android:lines="1"
                 android:text="@{HtmlCompat.fromHtml(String.format(@string/size_text,viewModel.prodSize),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_14sp"
                 android:ellipsize="end"
                 android:paddingEnd="@dimen/padding_status_title"
@@ -305,7 +306,7 @@
                     android:lines="1"
                     tools:text="Panelled Mini Skirt"
                     android:text="@{viewModel.tailornovaDesignpatternName}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp" />
 
                 <TextView
@@ -319,7 +320,7 @@
                     android:visibility="@{viewModel.isLastDateAvailable()}"
                     tools:text="Modified : Dec 07,2022 at 04:08 am"
                     android:text="@{HtmlCompat.fromHtml(String.format(@string/modified_text,viewModel.modificationDate),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -373,7 +374,7 @@
                     android:ellipsize="end"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="11dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp"
                     tools:text="A"
                     android:text="@{viewModel.selectedViewOrCupStyle}"
@@ -430,7 +431,7 @@
                     android:ellipsize="end"
                     android:paddingHorizontal="13dp"
                     android:paddingVertical="11dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp"
                     tools:text="XXL"
                     android:text="@{viewModel.selectedSize}"
@@ -470,7 +471,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:lineSpacingMultiplier="1.25"
                     android:text="@{HtmlCompat.fromHtml(viewModel.patternDescription,HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_16sp"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum pellentesque eget sapien volutpat mollis. Odio ac sit purus tempor lacus consequat, cursus a. Mattis hendrerit nisl, eleifend vitae tempor. Faucibus pellentesque malesuada proin nulla orci enim ornare. Gravida euismod viverra potenti id." />
             </androidx.core.widget.NestedScrollView>
@@ -500,7 +501,7 @@
                     android:text="@string/yardage_notions"
                     android:paddingVertical="3dp"
                     android:paddingHorizontal="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14px"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -520,7 +521,7 @@
                     android:visibility="@{(!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.GONE}"
                     android:onClick="@{() -> viewModel.onClickInstructions()}"
                     android:text="INSTRUCTIONS"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14px"
                     android:paddingVertical="3dp"
                     android:paddingHorizontal="12dp"
@@ -543,7 +544,7 @@
                     android:paddingRight="@dimen/margin20"
                     android:paddingVertical="4dp"
                     android:text="@{viewModel.resumeOrSubscription}"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp"
                     android:visibility="@{viewModel.showResumButton &amp;&amp; (!viewModel.isSubscriptionExpired) ? View.VISIBLE:View.INVISIBLE}"
                     app:layout_constraintHorizontal_bias="0"
@@ -568,7 +569,7 @@
                     android:paddingRight="@dimen/margin20"
                     android:paddingVertical="4dp"
                     android:text="@{viewModel.resumeOrSubscription}"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp"
                     android:textStyle="bold"
                     android:visibility="@{viewModel.showWorkspaceOrRenewSubscriptionButton &amp;&amp; (!viewModel.isSubscriptionExpired) ?View.VISIBLE:View.INVISIBLE}"

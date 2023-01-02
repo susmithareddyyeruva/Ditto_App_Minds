@@ -16,7 +16,7 @@
         android:hint="Summer Cloth"
         android:paddingHorizontal="@dimen/spinner_padding_content"
         android:paddingVertical="@dimen/padding_smallx"
-        android:textColor="@color/black"
+        android:textColor="@color/needle_grey"
         android:textSize="@dimen/size_12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

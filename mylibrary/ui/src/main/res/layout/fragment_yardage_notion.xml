@@ -37,7 +37,7 @@
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@null"
                 app:theme="@style/ToolBarStyle"
-                app:titleTextColor="@color/black">
+                app:titleTextColor="@color/needle_grey">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_medium"
                         android:gravity="start"
                         android:text="@string/yardage_notion"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/size_21dp" />
 
                 </LinearLayout>
@@ -96,7 +96,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:lines="1"
                     android:paddingVertical="2dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/pattern_name"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
                     app:layout_constraintStart_toStartOf="@+id/start_guideline"
@@ -112,7 +112,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:lineSpacingMultiplier="1.25"
                     android:text="@{HtmlCompat.fromHtml(viewModel.yardageDescription,HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_16sp"
                     android:paddingStart="@dimen/padding_start_closebtn"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
@@ -130,7 +130,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:lines="1"
                     android:paddingVertical="2dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/pattern_name"
                     android:layout_marginTop="@dimen/padding_notion_title"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
@@ -147,7 +147,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:lineSpacingMultiplier="1.25"
                     android:text="@{HtmlCompat.fromHtml(viewModel.notionsDescription,HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_16sp"
                     android:paddingStart="@dimen/padding_start_closebtn"
                     app:layout_constraintEnd_toStartOf="@+id/end_guideline"
@@ -182,7 +182,7 @@
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:gravity="start"
                     android:text="@string/yardage_and_notion_not_available"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_16px"
                     android:visibility="@{viewModel.isShowYardageEmptyView()}"
                     app:layout_constraintBottom_toBottomOf="parent"

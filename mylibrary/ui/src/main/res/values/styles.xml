@@ -60,7 +60,7 @@
     <style name="MineCustomTabText">
         <item name="android:textSize">@dimen/tab_title_text_size</item>
         <item name="fontFamily">@font/avenir_next_lt_pro_demi</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/needle_grey</item>
         <item name="android:singleLine">true</item>
     </style>
 

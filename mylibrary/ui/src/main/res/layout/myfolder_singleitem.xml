@@ -29,6 +29,7 @@
             android:id="@+id/image_pattern"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
+            android:background="@color/white"
             android:onClick="@{() -> viewModel.onItemClickPattern(product.tailornovaDesignId,product.orderNo,product)}"
             app:layout_constraintDimensionRatio="157:121"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +58,7 @@
             android:id="@+id/linear_layout_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/White"
+            android:background="@color/scissor_grey_light"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +81,7 @@
                 android:paddingStart="@dimen/padding_small"
                 android:paddingEnd="@dimen/padding_11"
                 android:singleLine="true"
-                android:textColor="@android:color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_14sp"
                 tools:text="Vogue Patterns Misses Pants V8909" />
 

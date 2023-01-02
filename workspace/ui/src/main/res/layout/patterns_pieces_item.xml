@@ -57,7 +57,7 @@
             android:paddingEnd="@dimen/large_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:text="@string/pattern_pieces"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_piece_name"
             app:layout_constraintBottom_toTopOf="@+id/txt_piece_cut"
             app:layout_constraintEnd_toStartOf="@+id/cut_complete_lay"
