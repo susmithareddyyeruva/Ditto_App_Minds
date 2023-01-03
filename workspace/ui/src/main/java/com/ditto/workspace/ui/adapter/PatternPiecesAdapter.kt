@@ -161,7 +161,12 @@ class PatternPiecesAdapter() : RecyclerView.Adapter<PatternPiecesAdapter.Pattern
             val shadow = View.DragShadowBuilder(it)
             ViewCompat.startDragAndDrop(it, null, shadow, state, 0)
         }
-
+        if (!patternPieces[position].contrast.isNullOrEmpty()) {
+            holder.patternsPiecesBinding.patternContrast.text = patternPieces[position].contrast
+            holder.patternsPiecesBinding.patternContrast.visibility = View.VISIBLE
+        } else {
+            holder.patternsPiecesBinding.patternContrast.visibility = View.GONE
+        }
     }
 
     fun updatePositionAdapter(){
