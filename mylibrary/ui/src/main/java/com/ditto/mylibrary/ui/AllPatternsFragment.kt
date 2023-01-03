@@ -177,6 +177,7 @@ class AllPatternsFragment(
         isLastPage=false
         currentPage=1
         viewModel.patternList.value=ArrayList()
+        binding.recyclerViewPatterns.scrollToPosition(0)
     }
 
     fun fetchPatternLibrary() {
