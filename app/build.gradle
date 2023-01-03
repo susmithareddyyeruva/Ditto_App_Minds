@@ -35,28 +35,28 @@ android {
     signingConfigs {
         release {
             //Ideally these details are maintained outside source - build server and picked up by CI/CD pipeline
-            storeFile file("keystore.jks")
-            storePassword 'Demo@123'
-            keyAlias 'key0'
-            keyPassword 'Demo@123'
+            storeFile file("JoDitoMobileApplication.jks")
+            storePassword 'Ditto@123'
+            keyAlias 'Ditto'
+            keyPassword 'Ditto@123'
         }
         debug {
             //Ideally these details are maintained outside source - build server and picked up by CI/CD pipeline
-            storeFile file("keystore.jks")
-            storePassword 'Demo@123'
-            keyAlias 'key0'
-            keyPassword 'Demo@123'
+            storeFile file("JoDitoMobileApplication.jks")
+            storePassword 'Ditto@123'
+            keyAlias 'Ditto'
+            keyPassword 'Ditto@123'
         }
         qa {
             //Ideally these details are maintained outside source - build server and picked up by CI/CD pipeline
-            storeFile file("keystore.jks")
-            storePassword 'Demo@123'
-            keyAlias 'key0'
-            keyPassword 'Demo@123'
+            storeFile file("JoDitoMobileApplication.jks")
+            storePassword 'Ditto@123'
+            keyAlias 'Ditto'
+            keyPassword 'Ditto@123'
         }
     }
-//Ditto
-//Ditto@123
+//key0
+//Demo@123
     testBuildType "qa"
 
     sourceSets {
