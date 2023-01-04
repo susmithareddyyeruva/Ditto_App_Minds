@@ -273,7 +273,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
         folderList = arrayListOf(
             MyFolderData(
                 R.drawable.ic_baseline_folder_open_24,
-                "Add Folder",
+                "Create New Folder",
                 false
             ),
             MyFolderData(
