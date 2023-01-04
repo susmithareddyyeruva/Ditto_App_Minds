@@ -76,7 +76,7 @@ android {
         targetSdkVersion 33
         versionCode 1
 
-       versionName "0.39(01)"
+       versionName "0.39(03)"
     //    versionName "1.0.19"
 
         multiDexEnabled true

@@ -85,25 +85,14 @@ private val deleteClicked: OnDeleteClicked) :
             ))
         }*/
 
-        if(position == 0) {
-            holder.itemSingleMyfolderBinding.proAction.isClickable = false
-            holder.itemSingleMyfolderBinding.proAction.setImageResource(R.drawable.ic_add_folder_icon)
-            holder.itemSingleMyfolderBinding.proAction.visibility = View.VISIBLE
-        } else if(data?.isAction == true) {
-            holder.itemSingleMyfolderBinding.proAction.isClickable = true
-            holder.itemSingleMyfolderBinding.proAction.setImageResource(R.drawable.ic_outline_more_vert_24)
-            holder.itemSingleMyfolderBinding.proAction.visibility = View.VISIBLE
-            holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
-                //  data?.isAction = !(data?.isAction ?: false)
-                clickedPostion = position
-                data?.clicked = clickedPostion == position
-                notifyDataSetChanged()
-                holder.itemSingleMyfolderBinding.rootView.isClickable =false
-                holder.itemSingleMyfolderBinding.rootView.isFocusable =false
-            }
-        } else {
-            holder.itemSingleMyfolderBinding.proAction.isClickable = false
-            holder.itemSingleMyfolderBinding.proAction.visibility = View.GONE
+        holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
+            //  data?.isAction = !(data?.isAction ?: false)
+
+            clickedPostion = position
+            data?.clicked = clickedPostion == position
+            notifyDataSetChanged()
+            holder.itemSingleMyfolderBinding.rootView.isClickable =false
+            holder.itemSingleMyfolderBinding.rootView.isFocusable =false
         }
 
 
