@@ -268,7 +268,7 @@ class AllPatternsViewModel @Inject constructor(
     ) {
         logger.d("DIALOG   :handleFetchResultFolders")
         folderMainList = arrayListOf<MyFolderList>(
-            MyFolderList("New folder")
+            MyFolderList("Create New folder")
         )
         clickedProduct = product
         when (folderResult) {
