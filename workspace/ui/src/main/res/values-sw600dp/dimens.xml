@@ -55,4 +55,7 @@
     <dimen name="coachMarkEndPopupWidth">216dp</dimen>
     <dimen name="coachMarkEndPopupHeight">62dp</dimen>
     <dimen name="coachmark_popup_text">21sp</dimen>
+    <dimen name="contrast_dimen_8">8dp</dimen>
+    <dimen name="contrast_dimen_3">3dp</dimen>
+    <dimen name="contrast_margin_top">8dp</dimen>
 </resources>

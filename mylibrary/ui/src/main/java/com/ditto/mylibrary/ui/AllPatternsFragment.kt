@@ -80,7 +80,7 @@ class AllPatternsFragment(
         AndroidInjection.inject(requireActivity())
 
         logger.d("All Patterns onActivityCreated")
-        initializeAdapter()
+       // initializeAdapter()
 
         binding.imageClearFilter.setOnClickListener {
             cleaFilterData()
@@ -312,6 +312,7 @@ class AllPatternsFragment(
             logger.d("OnSyncClick : AllPatternsFragment")
         }
         is AllPatternsViewModel.Event.OnAllPatternResultSuccess -> {
+            if(currentPage <=1) initializeAdapter()
             baseViewModel.totalCount = viewModel.totalPatternCount
             setPatternCount.onSetCount(
                 getString(

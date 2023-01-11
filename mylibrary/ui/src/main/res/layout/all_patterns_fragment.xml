@@ -16,7 +16,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/scissor_grey_light">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/topbar1"
@@ -144,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_medium"
                 android:text="@string/no_pattern"
-                android:textColor="@color/black"
+                android:textColor="@color/needle_grey"
                 android:textSize="@dimen/txt_clear_filter"
                 android:visibility="@{viewModel.isLoading == false  &amp;&amp; viewModel.totalPatternCount==0 ? View.VISIBLE:View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"

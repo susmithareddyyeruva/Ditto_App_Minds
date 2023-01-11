@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -34,6 +35,27 @@
             app:layout_constraintVertical_bias="0"
             app:layout_constraintWidth_percent=".35" />
 
+        <TextView
+            android:id="@+id/patternContrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/contrast_margin_top"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:gravity="center|start"
+            android:layout_marginStart="10dp"
+            android:paddingStart="@dimen/contrast_dimen_8"
+            android:paddingTop="@dimen/contrast_dimen_3"
+            android:paddingEnd="@dimen/contrast_dimen_8"
+            android:paddingBottom="@dimen/contrast_dimen_3"
+            android:singleLine="true"
+            android:background="@color/safety_pin_yellow"
+            android:text=""
+            tools:text="contrast"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_piece_name"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView" />
+
         <ImageView
             android:id="@+id/image_arrow"
             android:layout_width="@dimen/dimen_0"
@@ -57,7 +79,7 @@
             android:paddingEnd="@dimen/large_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:text="@string/pattern_pieces"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_piece_name"
             app:layout_constraintBottom_toTopOf="@+id/txt_piece_cut"
             app:layout_constraintEnd_toStartOf="@+id/cut_complete_lay"

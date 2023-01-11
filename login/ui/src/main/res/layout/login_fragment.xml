@@ -171,7 +171,7 @@
                             android:paddingTop="@dimen/text_view_we_got_padding_top"
                             android:paddingBottom="@dimen/text_view_we_got_padding_bottom"
                             android:text="@string/login_app_title"
-                            android:textColor="@color/White"
+                            android:textColor="@color/needle_grey"
                             android:textSize="@dimen/textview_we_got_this"
                             app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline"
                             app:layout_constraintEnd_toEndOf="@+id/horizontal_guideline"
@@ -200,7 +200,7 @@
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
                         android:gravity="center_horizontal"
                         android:text="@string/Welcome"
-                        android:textColor="@color/black"
+                        android:textColor="@color/needle_grey"
                         android:layout_alignParentTop="true"
                         android:layout_marginTop="@dimen/welcome_margin_top"
                         android:textSize="@dimen/textview_welcome" />
@@ -274,7 +274,7 @@
                             android:onClick="@{()-> viewModel.forgotPasswordRedirection()}"
                             android:selectAllOnFocus="false"
                             android:text="@string/forgot_password"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/safety_pin_yellow"
                             android:textSize="@dimen/text_size_forgot_psw" />
 
                         <Button
@@ -310,7 +310,7 @@
                                 android:linksClickable="true"
                                 android:selectAllOnFocus="false"
                                 android:text="@string/dont_have_account"
-                                android:textColor="@color/black"
+                                android:textColor="@color/needle_grey"
                                 android:textSize="@dimen/text_size_forgot_psw" />
 
                             <TextView
@@ -326,7 +326,7 @@
                                 android:onClick="@{()-> viewModel.signUpRedirection()}"
                                 android:selectAllOnFocus="false"
                                 android:text="@string/sign_up"
-                                android:textColor="@color/black"
+                                android:textColor="@color/needle_grey"
                                 android:textSize="@dimen/text_size_forgot_psw" />
 
 
@@ -356,7 +356,7 @@
                             android:onClick="@{()-> viewModel.guestLogin()}"
                             android:selectAllOnFocus="false"
                             android:text="@string/guest_preview"
-                            android:textColor="@color/black"
+                            android:textColor="@color/needle_grey"
                             android:textSize="@dimen/text_size_forgot_psw" />
 
 
@@ -394,7 +394,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:text="@={viewModel.versionName}"
-                        android:textColor="@color/black"
+                        android:textColor="@color/needle_grey"
                         android:textSize="@dimen/size_14px" />
 
                 </RelativeLayout>

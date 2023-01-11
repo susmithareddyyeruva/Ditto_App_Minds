@@ -17,7 +17,7 @@
         android:id="@+id/folderdetailRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/White">
+        android:background="@color/scissor_grey_light">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/topbar1"

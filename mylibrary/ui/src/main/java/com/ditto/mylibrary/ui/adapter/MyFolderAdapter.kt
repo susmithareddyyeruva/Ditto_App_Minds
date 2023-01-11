@@ -57,23 +57,33 @@ private val deleteClicked: OnDeleteClicked) :
                 data?.url ?: 0
             )
         }
-        if (position == 0) {
+        holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
+            ContextCompat.getColor(
+                holder.itemSingleMyfolderBinding.imgBg.context,
+                R.color.white
+            )
+        )
+
+        /*if (position == 0) {
             holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemSingleMyfolderBinding.imgBg.context,
-                    R.color.add_folder_color
+                    R.color.white
                 )
             )
         } else if (position == 1) {
             holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemSingleMyfolderBinding.imgBg.context,
-                    R.color.owned_color
+                    R.color.white
                 )
             )
         }else{
-            holder.itemSingleMyfolderBinding.imgBg.setBackgroundResource(R.drawable.ic_placeholder)
-        }
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(ContextCompat.getColor(
+                holder.itemSingleMyfolderBinding.imgBg.context,
+                R.color.white
+            ))
+        }*/
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
             //  data?.isAction = !(data?.isAction ?: false)
@@ -84,6 +94,8 @@ private val deleteClicked: OnDeleteClicked) :
             holder.itemSingleMyfolderBinding.rootView.isClickable =false
             holder.itemSingleMyfolderBinding.rootView.isFocusable =false
         }
+
+
         holder.itemSingleMyfolderBinding.renameText.setOnClickListener {
 
             Log.d("Testing", ">>>>>>   Myfolder Rename ")

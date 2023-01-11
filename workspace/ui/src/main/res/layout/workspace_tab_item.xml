@@ -75,7 +75,7 @@
             android:gravity="center"
             android:onClick="@{() -> viewModel.clickPatternReference(true)}"
             android:text="@string/pattern_pieces"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_reference_layout"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
             app:layout_constraintEnd_toStartOf="@+id/txt_reeferance_layout"
@@ -94,7 +94,7 @@
             android:visibility="@{viewModel.showReferenceLayout}"
             android:onClick="@{() -> viewModel.clickPatternReference(false)}"
             android:text="@string/reference_layout"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_reference_layout"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +123,7 @@
             android:onClick="@{() -> viewModel.clickReset()}"
             android:padding="@dimen/medium_padding"
             android:text="@string/reset"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_size_select_layout"
             app:layout_constraintEnd_toStartOf="@+id/text_complete_pieces"
             app:layout_constraintTop_toBottomOf="@+id/top_border" />
@@ -136,7 +136,7 @@
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_it_pro_bold"
             android:text="@{HtmlCompat.fromHtml(String.format(@string/seek_text,viewModel.completedPieces, viewModel.totalPieces),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_seek_complete"
             app:layout_constraintBottom_toBottomOf="@+id/txt_reset"
             app:layout_constraintEnd_toEndOf="parent"
@@ -162,7 +162,6 @@
             android:id="@+id/txt_select_layout"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/large_padding"
             android:layout_marginStart="@dimen/large_padding"
             android:layout_marginTop="@dimen/large_padding"
             android:layout_marginBottom="@dimen/large_padding"
@@ -186,7 +185,7 @@
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:text="?"
             android:onClick="@{() -> viewModel.selectLayoutClick()}"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textColor="@color/default_text_color"
             android:textSize="@dimen/text_size_select_layout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -263,7 +262,7 @@
             android:text="@string/_60"
             android:textColor="@{viewModel.enableSize60 ?(viewModel.clickedSize60?@android:color/white:@android:color/black):@color/default_splice }"
             android:textSize="@dimen/text_60"
-            app:layout_constraintEnd_toEndOf="@+id/txt_select_layout"
+            app:layout_constraintEnd_toEndOf="@+id/select_layout_info"
             app:layout_constraintTop_toBottomOf="@+id/txt_select_layout" />
 
         <ImageView
@@ -286,7 +285,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{!viewModel.clickedPattenPieces}"
-            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout,txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
+            app:constraint_referenced_ids="txt_tap_to_enlarge,txt_select_layout, select_layout_info, txt_size_splice,txt_size_45,txt_size_60,image_selvage_horizontal" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_pattern_pieces"
@@ -345,7 +344,7 @@
             android:minHeight="25dp"
             android:onClick="@{() -> viewModel.clickSaveAndExit()}"
             android:text="@string/exit"
-            android:textColor="@android:color/black"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/send_to_projector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

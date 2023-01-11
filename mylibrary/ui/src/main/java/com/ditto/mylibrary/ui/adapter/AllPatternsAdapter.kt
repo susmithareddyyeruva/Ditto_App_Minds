@@ -86,7 +86,7 @@ class AllPatternsAdapter : RecyclerView.Adapter<AllPatternsAdapter.PatternHolder
         holder.patternsItemBinding.textviewPatternType.setBackgroundColor(
             (ContextCompat.getColor(
                 holder.patternsItemBinding.textviewPatternType.context,
-                R.color.text_new
+                R.color.safety_pin_yellow
             ))
         )
         if (patterns[position].patternType?.toUpperCase().equals("TRIAL")) {

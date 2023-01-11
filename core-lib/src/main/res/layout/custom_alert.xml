@@ -100,7 +100,7 @@
             android:id="@+id/common_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="start"
             android:text="This app needs Bluetooth connectivity"
             android:layout_below="@+id/common_title"
             android:lineSpacingMultiplier="1.25"
