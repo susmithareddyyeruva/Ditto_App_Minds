@@ -113,7 +113,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$play_services_location"
 
     implementation project(path: ':connectivity-ui')
-    implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':FabricTraceTransform')
     implementation project(path: ':menuitems-ui')
 
 }

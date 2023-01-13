@@ -63,7 +63,7 @@ dependencies {
     implementation project(path: ':storage-domain')
     implementation project(path: ':login-domain')
     implementation project(path: ':login-data')
-    implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':FabricTraceTransform')
 
 
 }

@@ -54,7 +54,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             authorizationToken = EncodeDecodeUtil.encodeBase64(input)
         }else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())

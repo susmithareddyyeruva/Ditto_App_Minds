@@ -7,6 +7,9 @@
     tools:ignore="UnusedNavigation">
     <include app:graph="@navigation/calibration_nav_graph" />
     <include app:graph="@navigation/nav_graph_workspace" />
+    <include app:graph="@navigation/nav_graph_account_info" />
+    <include app:graph="@navigation/nav_graph_mainfaq" />
+
     <fragment
         android:id="@+id/myLibraryFragment"
         android:name="com.ditto.mylibrary.ui.MyLibraryFragment"
@@ -110,7 +113,7 @@
 
         <action
             android:id="@+id/action_pattern_description_to_accountInfoFragment"
-            app:destination="@id/accountInfoFragment" />
+            app:destination="@id/nav_graph_account_info" />
 
         <action
             android:id="@+id/action_pattern_description_to_nav_graph_sotwareUpdate"
@@ -134,38 +137,6 @@
         android:name="com.ditto.menuitems_ui.customercare.fragment.CustomerCareFragment"
         android:label="Customer Support"
         tools:layout="@layout/customer_care_fragment" />
-
-    <fragment
-        android:id="@+id/accountInfoFragment"
-        android:name="com.ditto.menuitems_ui.accountinfo.fragment.AccountInfoFragment"
-        android:label="Account Info"
-        tools:layout="@layout/fragment_account_info" >
-
-    <action
-        android:id="@+id/action_account_info_to_login"
-        app:destination="@id/nav_graph_id_login"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:launchSingleTop="true"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_graph_mainfaq"
-        android:name="com.ditto.menuitems_ui.faq.ui.FaqGlossaryMainFragment"
-        android:label="@string/str_menu_faq"
-        tools:layout="@layout/faq_glossary_mainfragment" >
-        <action
-            android:id="@+id/action_destination_faq_to_nav_graph_id_video"
-            app:destination="@id/nav_graph_id_video"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
 
     <fragment
         android:id="@+id/aboutAppFragment"

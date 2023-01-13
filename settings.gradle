@@ -1,5 +1,5 @@
 include ':home-data'
-include ':dittoProjectorApp', ':FabricTraceTransform-debug'
+include ':dittoProjectorApp', ':FabricTraceTransform'
 include ':app'
 include ':nav-graph'
 include ':core-lib'

@@ -105,7 +105,7 @@ dependencies {
     implementation 'com.jsibbold:zoomage:1.3.1'
     implementation project(path: ':connectivity-ui')
     implementation project(path: ':calibration-ui')
-    implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':FabricTraceTransform')
     implementation project(path: ':videoplayer')
 
 }
