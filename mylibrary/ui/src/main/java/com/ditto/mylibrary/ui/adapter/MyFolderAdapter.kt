@@ -68,7 +68,7 @@ private val deleteClicked: OnDeleteClicked) :
             holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemSingleMyfolderBinding.imgBg.context,
-                    R.color.add_folder_color
+                    R.color.white
                 )
             )
         } else if (position == 1) {
@@ -79,10 +79,7 @@ private val deleteClicked: OnDeleteClicked) :
                 )
             )
         }else{
-            holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(ContextCompat.getColor(
-                holder.itemSingleMyfolderBinding.imgBg.context,
-                R.color.white
-            ))
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundResource(R.drawable.ic_placeholder)
         }
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More

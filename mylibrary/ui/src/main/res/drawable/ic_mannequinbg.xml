@@ -16,11 +16,11 @@
     <path
         android:pathData="M9,7.5h3v32h-3z"
         android:strokeWidth="1"
-        android:fillColor="#a4211f"
+        android:fillColor="@color/needle_grey"
         android:strokeColor="#00000000"/>
     <path
         android:pathData="M9.5,8h2v31h-2z"
         android:strokeWidth="1"
         android:fillColor="#00000000"
-        android:strokeColor="#a4211f"/>
+        android:strokeColor="@color/needle_grey"/>
 </vector>

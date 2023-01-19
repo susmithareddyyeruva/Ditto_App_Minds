@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -36,8 +37,9 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
         holder.tvAnsw.text = htmlAsSpanned
         holder.linheader.setOnClickListener { onItemClicked(item) }
         if (item?.isExpanded!!) {
-            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
-            holder.relparent.elevation = 15f
+         //   holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.drop_shadow)
+            holder.faqRootLayout.setCardBackgroundColor(ContextCompat.getColor(mContext,R.color.white))
+            holder.faqRootLayout.cardElevation = 15f
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_up)
             if (!item?.webUrl.isNullOrEmpty()) {
@@ -61,7 +63,9 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
                 watchVideoClickListener.onVideoClick(item?.ques ?: "",item?.videoUrl ?: "")
             }
         } else {
-            holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
+          //  holder.relparent.background = ContextCompat.getDrawable(mContext,R.drawable.border_layout)
+            holder.faqRootLayout.setCardBackgroundColor(ContextCompat.getColor(mContext,R.color.search_bg))
+            holder.faqRootLayout.cardElevation = 8f
             holder.tvAnsw.visibility = View.GONE
             holder.ivArrow.setImageResource(R.drawable.ic_dropdown_down)
             holder.watch.visibility = View.GONE
@@ -91,5 +95,6 @@ class VideosAdapter (context: Context, data: List<VideosDomain>?,
         var relparent: RelativeLayout = itemView.findViewById(R.id.parentlay)
         var watch: RelativeLayout = itemView.findViewById(R.id.relWatch)
         var visit: RelativeLayout = itemView.findViewById(R.id.relVisit)
+        var faqRootLayout: CardView = itemView.findViewById(R.id.faqRootLayout)
     }
 }
