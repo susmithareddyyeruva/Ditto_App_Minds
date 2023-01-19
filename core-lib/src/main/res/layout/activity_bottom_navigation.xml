@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/TransparentActionbarStyle"
-                android:visibility="@{toolbarViewModel.isShowActionBar &amp;&amp; bottomNavViewModel.isShownCoachMark}">
+                android:visibility="@{toolbarViewModel.isShowActionBar }">
                 <!--android:theme="@style/ActionbarStyle"-->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -65,7 +65,7 @@
                 android:layout_gravity="end"
                 android:gravity="end"
                 android:theme="@style/TransparentActionbarStyle"
-                android:visibility="@{toolbarViewModel.isShowTransparentActionBar() &amp;&amp; bottomNavViewModel.isShownCoachMark}">
+                android:visibility="@{toolbarViewModel.isShowTransparentActionBar() }">
 
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
