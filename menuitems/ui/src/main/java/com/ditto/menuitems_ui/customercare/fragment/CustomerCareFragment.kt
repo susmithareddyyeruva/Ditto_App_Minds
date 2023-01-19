@@ -108,19 +108,19 @@ class CustomerCareFragment : BaseFragment() {
         val spannable = SpannableString(text)
         spannable.setSpan(
             ForegroundColorSpan(requireContext().getColor(R.color.sign_in_blue)),
-            6, 31,
+            6, 28,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
         spannable.setSpan(
             UnderlineSpan(),
-            6, 31,
+            6, 28,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
         // TDP-35 : added font family for email id
         val font = context?.let { ResourcesCompat.getFont(it, R.font.avenir_next_lt_pro_demi) }
-        spannable.setSpan(font?.getStyle()?.let { StyleSpan(it) }, 6, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(font?.getStyle()?.let { StyleSpan(it) }, 6, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         binding.emailtext.text = spannable
     }

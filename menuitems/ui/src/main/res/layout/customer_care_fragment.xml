@@ -188,6 +188,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/needle_grey"
                 android:textSize="@dimen/str_email__phone_text"
+                android:paddingEnd="4dp"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:onClick="@{() -> viewModel.emailClicked()}"
                 app:layout_constraintEnd_toEndOf="parent"
