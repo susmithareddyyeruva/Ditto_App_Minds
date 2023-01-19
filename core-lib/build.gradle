@@ -15,8 +15,8 @@ android {
         targetSdkVersion 33
         versionCode 1
 
-   //     versionName "0.39(03)"
-        versionName "1.0.20"
+        versionName "0.40(03)"
+//        versionName "1.0.20"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -34,7 +34,7 @@ android {
             buildConfigField "String", 'SERVER', '"dev"'
             buildConfigField "String", 'BASEURL', '"https://development.dittopatterns.com/"'
             buildConfigField "String", 'DITTO_URL', '"https://development.dittopatterns.com/"'
-            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/"'
+            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/ditto"'
             buildConfigField "String", 'COMMON_ENDURL', '"s/ditto/dw/shop/v19_1/"'
             buildConfigField "String", 'WORKSPACE_ENDURL', '"s/-/dw/data/v19_1/"'
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
@@ -53,7 +53,7 @@ android {
             buildConfigField "String", 'SERVER', '"dev"'
             buildConfigField "String", 'BASEURL', '"https://development.dittopatterns.com/"'
             buildConfigField "String", 'DITTO_URL', '"https://development.dittopatterns.com/"'
-            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/"'
+            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/ditto"'
             buildConfigField "String", 'COMMON_ENDURL', '"s/ditto/dw/shop/v19_1/"'
             buildConfigField "String", 'WORKSPACE_ENDURL', '"s/-/dw/data/v19_1/"'
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
@@ -73,7 +73,7 @@ android {
             buildConfigField "String", 'SERVER', '"staging"'
             buildConfigField "String", 'BASEURL', '"https://dev11-na03-joann.demandware.net/"'
             buildConfigField "String", 'DITTO_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Home-Show/"'
-            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/"'
+            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/ditto"'
             buildConfigField "String", 'COMMON_ENDURL', '"s/ditto/dw/shop/v19_1/"'
             buildConfigField "String", 'WORKSPACE_ENDURL', '"s/-/dw/data/v19_1/"'
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
@@ -91,7 +91,7 @@ android {
             // dev
             buildConfigField "String", 'SERVER', '"dev"'
             buildConfigField "String", 'BASEURL', '"http://localhost:8080/"'
-            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/"'
+            buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/ditto"'
             buildConfigField "String", 'COMMON_ENDURL', '"s/ditto/dw/shop/v19_1/"'
             buildConfigField "String", 'WORKSPACE_ENDURL', '"s/-/dw/data/v19_1/"'
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
