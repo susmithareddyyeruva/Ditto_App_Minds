@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
-        android:background="@android:color/white">
+        android:background="@color/scissor_grey_light">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
@@ -27,7 +27,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
+                android:background="@color/scissor_grey_light"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
