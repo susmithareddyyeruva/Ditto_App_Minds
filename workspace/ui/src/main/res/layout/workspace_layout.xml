@@ -31,7 +31,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".11" />
 
-        <Space
+        <android.widget.Space
             android:id="@+id/workspce_spacer"
             android:layout_width="@dimen/small_padding_x"
             android:layout_height="@dimen/dimen_0"
