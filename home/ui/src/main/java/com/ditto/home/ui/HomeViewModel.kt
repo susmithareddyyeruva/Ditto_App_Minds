@@ -90,11 +90,10 @@ class HomeViewModel @Inject constructor(
     fun onItemClick(id: Int) {
         when (id) {
             0 -> {
-                uiEvents.post(Event.OnClickTutorial)
-
+                uiEvents.post(Event.OnClickMyPatterns)
             }
             1 -> {
-                uiEvents.post(Event.OnClickMyPatterns)
+                uiEvents.post(Event.OnClickTutorial)
 
             }
             2 -> {
@@ -120,18 +119,18 @@ class HomeViewModel @Inject constructor(
     fun setHomeItems() {
         homeItem.clear()
         val images = intArrayOf(
-            R.drawable.ic_home_tutorial, R.drawable.ic_home_pattern_library,
-            R.drawable.ic_home_ditto, R.drawable.ic_home_joann
+            R.drawable.my_patterns_tile, R.drawable.tutorials_tile, R.drawable.more_patterns_tile,
+            R.drawable.joann_tile
         )
 
         val title = intArrayOf(
-            R.string.beam_setup_and_calibration, R.string.pattern_library_count,
+            R.string.pattern_library_count,  R.string.beam_setup_and_calibration,
             R.string.more_patterns_available_at, R.string.shop_fabric_supplies
         )
 
         val description = intArrayOf(
-            R.string.view_tutorial,
-            R.string.all_your_patterns_in_one_place,
+            R.string.my_patterns_title_count,
+            R.string.tutorials_title_text,
             R.string.ditto_patterns_site,
             R.string.joann_site
         )

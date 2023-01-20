@@ -16,7 +16,7 @@
         android:id="@+id/cc_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/scissor_grey_light"
+        android:background="@color/screen_bg_color"
         tools:context=".subscription_info.fragment.SubscriptionInfoFragment">
 
         <androidx.constraintlayout.widget.Guideline

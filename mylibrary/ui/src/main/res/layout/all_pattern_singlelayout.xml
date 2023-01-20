@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/margin_card_top"
         android:layout_marginEnd="@dimen/margin_card_end"
         android:elevation="@dimen/elevation_card"
-        app:cardBackgroundColor="@color/scissor_grey_light">
+        app:cardBackgroundColor="@color/screen_bg_color">
 
 
         <ImageView
