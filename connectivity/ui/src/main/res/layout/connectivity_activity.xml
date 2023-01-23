@@ -174,10 +174,10 @@
                                 android:layout_height="match_parent"
                                 android:layout_alignParentLeft="true"
                                 android:background="@android:color/white"
+                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:gravity="center"
                                 android:paddingLeft="@dimen/x_large_padding"
                                 android:paddingTop="@dimen/medium_padding"
-                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:text="@string/select_projector"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/size_16px"
@@ -188,8 +188,8 @@
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginTop="@dimen/x_large_padding"
                                 android:layout_centerInParent="true"
+                                android:layout_marginTop="@dimen/x_large_padding"
                                 android:layout_marginRight="@dimen/x_large_padding"
                                 android:background="@android:color/transparent"
                                 android:onClick="@{() ->viewmodel.onClickProjRefresh()}"
@@ -201,10 +201,10 @@
                             android:id="@+id/deviceList_proj"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:paddingLeft="@dimen/x_large_padding"
                             android:background="@android:color/white"
                             android:divider="@android:color/transparent"
                             android:nestedScrollingEnabled="true"
+                            android:paddingLeft="@dimen/x_large_padding"
                             app:layout_constraintHeight_default="percent"
                             app:layout_constraintHeight_percent=".70"
                             app:layout_constraintTop_toBottomOf="@+id/toplistbar_proj"
@@ -217,8 +217,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/size_0dp"
                             android:background="@android:color/white"
-                            android:orientation="horizontal"
                             android:gravity="right"
+                            android:orientation="horizontal"
                             app:layout_constraintHeight_default="percent"
                             app:layout_constraintHeight_percent=".15"
                             app:layout_constraintTop_toBottomOf="@+id/bottomlistbar_proj">
@@ -228,8 +228,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/white"
-                                android:gravity="center"
                                 android:fontFamily="@font/avenir_next_lt_pro_demi"
+                                android:gravity="center"
                                 android:onClick="@{() ->viewmodel.onClickSkip()}"
                                 android:paddingLeft="20dp"
                                 android:paddingRight="20dp"
@@ -245,8 +245,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_toRightOf="@+id/skip_proj"
                                 android:background="@android:color/white"
-                                android:gravity="center"
                                 android:fontFamily="@font/avenir_next_lt_pro_demi"
+                                android:gravity="center"
                                 android:onClick="@{() ->viewmodel.onClickProjscanViaBle()}"
                                 android:paddingLeft="20dp"
                                 android:paddingRight="20dp"
@@ -260,34 +260,47 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/animationView"
-                        android:layout_width="@dimen/progress_width"
-                        android:layout_height="@dimen/progress_heigth"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@android:color/transparent"
-                        android:layout_centerInParent="true"
+                        android:clickable="true"
                         android:visibility="@{viewmodel.isProgressBar()}"
-                        app:lottie_autoPlay="true"
-                        app:lottie_loop="true"
-                        app:lottie_colorFilter="@color/sign_in_blue"
-                        app:lottie_rawRes="@raw/ditto_loader" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animationView"
+                            android:layout_width="@dimen/progress_width"
+                            android:layout_height="@dimen/progress_heigth"
+                            android:layout_centerInParent="true"
+                            android:background="@android:color/transparent"
+                            android:visibility="@{viewmodel.isProgressBar()}"
+                            app:lottie_autoPlay="true"
+                            app:lottie_colorFilter="@color/sign_in_blue"
+                            app:lottie_loop="true"
+                            app:lottie_rawRes="@raw/ditto_loader" />
+
+
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/noservice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:gravity="center"
                         android:layout_centerInParent="true"
+                        android:background="@android:color/white"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="@string/no_projector"
-                        android:visibility="@{viewmodel.isNoServiceFound()}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/size_12px"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="@{viewmodel.isNoServiceFound()}" />
 
 
                 </RelativeLayout>
@@ -352,10 +365,10 @@
                                 android:layout_height="match_parent"
                                 android:layout_alignParentLeft="true"
                                 android:background="@android:color/white"
+                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:gravity="center"
                                 android:paddingLeft="@dimen/x_large_padding"
                                 android:paddingTop="@dimen/medium_padding"
-                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:text="@string/select_bluetooth_device"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/size_16px"
@@ -366,8 +379,8 @@
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginTop="@dimen/x_large_padding"
                                 android:layout_centerInParent="true"
+                                android:layout_marginTop="@dimen/x_large_padding"
                                 android:layout_marginRight="@dimen/x_large_padding"
                                 android:background="@android:color/transparent"
                                 android:onClick="@{() ->viewmodel.onClickRefresh()}"
@@ -379,10 +392,10 @@
                             android:id="@+id/deviceList"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:paddingLeft="@dimen/x_large_padding"
                             android:background="@android:color/white"
                             android:divider="@android:color/transparent"
                             android:nestedScrollingEnabled="true"
+                            android:paddingLeft="@dimen/x_large_padding"
                             app:layout_constraintHeight_default="percent"
                             app:layout_constraintHeight_percent=".60"
                             app:layout_constraintTop_toBottomOf="@+id/toplistbar"
@@ -395,8 +408,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/size_0dp"
                             android:background="@android:color/white"
-                            android:orientation="horizontal"
                             android:gravity="end"
+                            android:orientation="horizontal"
                             app:layout_constraintHeight_default="percent"
                             app:layout_constraintHeight_percent=".15"
                             app:layout_constraintTop_toBottomOf="@+id/bottomlistbar">
@@ -405,12 +418,12 @@
                                 android:id="@+id/skip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:paddingRight="@dimen/x_large_padding"
                                 android:background="@android:color/white"
+                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:onClick="@{() ->viewmodel.onClickSkip()}"
+                                android:paddingRight="@dimen/x_large_padding"
                                 android:text="@string/skips"
                                 android:textAllCaps="true"
-                                android:fontFamily="@font/avenir_next_lt_pro_demi"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/size_14px"
                                 android:textStyle="bold" />
@@ -420,32 +433,44 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:layout_width="@dimen/progress_width"
-                        android:layout_height="@dimen/progress_heigth"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@android:color/transparent"
-                        android:layout_centerInParent="true"
-                        app:lottie_autoPlay="true"
-                        app:lottie_loop="true"
-                        app:lottie_colorFilter="@color/sign_in_blue"
+                        android:clickable="true"
                         android:visibility="@{viewmodel.isProgressBar()}"
-                        app:lottie_rawRes="@raw/ditto_loader" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="@dimen/progress_width"
+                            android:layout_height="@dimen/progress_heigth"
+                            android:layout_centerInParent="true"
+                            android:background="@android:color/transparent"
+                            android:visibility="@{viewmodel.isProgressBar()}"
+                            app:lottie_autoPlay="true"
+                            app:lottie_colorFilter="@color/sign_in_blue"
+                            app:lottie_loop="true"
+                            app:lottie_rawRes="@raw/ditto_loader" />
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/nobleservice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:gravity="center"
                         android:layout_centerInParent="true"
+                        android:background="@android:color/white"
                         android:fontFamily="@font/avenir_next_lt_pro_demi"
+                        android:gravity="center"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="@string/no_projector"
-                        android:visibility="@{viewmodel.isNoBleFound()}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/size_12px"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="@{viewmodel.isNoBleFound()}" />
 
                 </RelativeLayout>
 
@@ -468,11 +493,11 @@
                 <com.airbnb.lottie.LottieAnimationView
                     android:layout_width="@dimen/progress_width"
                     android:layout_height="@dimen/progress_heigth"
-                    android:background="@android:color/transparent"
                     android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
                     app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
                     app:lottie_colorFilter="@color/sign_in_blue"
+                    app:lottie_loop="true"
                     app:lottie_rawRes="@raw/ditto_loader" />
 
             </RelativeLayout>
@@ -526,9 +551,9 @@
                             android:layout_height="match_parent"
                             android:layout_alignParentLeft="true"
                             android:background="@android:color/white"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:gravity="center"
                             android:paddingLeft="20dp"
-                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:text="@string/wifi_connect"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/size_14sp"
@@ -546,64 +571,66 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:paddingLeft="@dimen/text_heading"
-                            android:paddingRight="20sp"
+                            android:layout_height="wrap_content"
                             android:background="@android:color/white"
                             android:orientation="vertical"
-                            android:layout_height="wrap_content">
+                            android:paddingLeft="@dimen/text_heading"
+                            android:paddingRight="20sp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:background="@android:color/white">
+                                android:background="@android:color/white"
+                                android:orientation="vertical">
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start"
-                                    android:textSize="@dimen/size_15sp"
                                     android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/avenir_next_lt_pro_regular"
                                     android:background="@android:color/white"
-                                    android:text="@string/network_name" />
+                                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                                    android:text="@string/network_name"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/size_15sp" />
+
                                 <EditText
                                     android:id="@+id/wifiname"
                                     android:layout_width="match_parent"
                                     android:layout_height="30dp"
-                                    android:paddingLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:cursorVisible="true"
-                                    android:singleLine="true"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
-                                    android:textCursorDrawable="@drawable/cursor"
                                     android:layout_gravity="center"
-                                    android:textSize="@dimen/size_14px"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginRight="5dp"
                                     android:layout_marginBottom="10dp"
+                                    android:background="@drawable/edit_text_border"
+                                    android:cursorVisible="true"
                                     android:imeOptions="flagNoExtractUi"
+                                    android:paddingLeft="5dp"
+                                    android:singleLine="true"
                                     android:textColor="@color/error_text_code"
-                                    android:background="@drawable/edit_text_border" />
-
+                                    android:textCursorDrawable="@drawable/cursor"
+                                    android:textSize="@dimen/size_14px" />
 
 
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:orientation="vertical"
                                 android:layout_height="wrap_content"
-                                android:background="@android:color/white">
+                                android:background="@android:color/white"
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="@dimen/size_15sp"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/avenir_next_lt_pro_regular"
                                     android:layout_gravity="start"
+                                    android:layout_marginLeft="5dp"
                                     android:background="@android:color/white"
-                                    android:text="Enter Wifi password" />
+                                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                                    android:text="Enter Wifi password"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/size_15sp" />
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
@@ -611,24 +638,24 @@
                                     app:passwordToggleEnabled="true">
 
 
-                                <EditText
-                                    android:id="@+id/wifipwd"
-                                    android:singleLine="true"
-                                    android:layout_width="match_parent"
-                                    android:textColor="@color/error_text_code"
-                                    android:layout_height="30dp"
-                                    android:cursorVisible="true"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
-                                    android:textCursorDrawable="@drawable/cursor"
-                                    android:imeOptions="flagNoExtractUi"
-                                    android:layout_marginBottom="10dp"
-                                    android:inputType="textPassword"
-                                    android:textSize="@dimen/size_14px"
-                                    android:paddingLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/edit_text_border" />
+                                    <EditText
+                                        android:id="@+id/wifipwd"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginRight="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="@drawable/edit_text_border"
+                                        android:cursorVisible="true"
+                                        android:imeOptions="flagNoExtractUi"
+                                        android:inputType="textPassword"
+                                        android:paddingLeft="5dp"
+                                        android:singleLine="true"
+                                        android:textColor="@color/error_text_code"
+                                        android:textCursorDrawable="@drawable/cursor"
+                                        android:textSize="@dimen/size_14px" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -655,11 +682,11 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:background="@android:color/white"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
                             android:onClick="@{() ->viewmodel.onClickConnect()}"
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
-                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:text="@string/connect_projector_to_wifi"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/size_12px"
@@ -671,12 +698,12 @@
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@+id/connectCredentials"
                             android:background="@android:color/white"
+                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:gravity="center"
                             android:onClick="@{() ->viewmodel.onClickSkipCredentials()}"
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
                             android:text="CANCEL"
-                            android:fontFamily="@font/avenir_next_lt_pro_demi"
                             android:textAllCaps="true"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/size_12px"
@@ -739,17 +766,17 @@
                         android:id="@+id/unsucess"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_0dp"
-                        android:gravity="center|bottom"
                         android:background="@android:color/white"
+                        android:gravity="center|bottom"
                         app:layout_constraintHeight_default="percent"
                         app:layout_constraintHeight_percent=".40"
                         tools:ignore="MissingConstraints">
 
-                      <ImageView
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:background="@android:color/transparent"
-                          android:src="@{viewmodel.isServiceError()  ? @drawable/ic_failed : @drawable/ic_success  }" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:src="@{viewmodel.isServiceError()  ? @drawable/ic_failed : @drawable/ic_success  }" />
                     </RelativeLayout>
 
 
@@ -757,8 +784,8 @@
                         android:id="@+id/messagelay"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:gravity="center"
                         android:background="@android:color/white"
+                        android:gravity="center"
                         app:layout_constraintHeight_default="percent"
                         app:layout_constraintHeight_percent=".30"
                         app:layout_constraintTop_toBottomOf="@+id/unsucess"
@@ -768,10 +795,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/white"
+                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:paddingLeft="20dp"
                             android:text="@{viewmodel.alerMessage}"
                             android:textColor="@color/black"
-                            android:fontFamily="@font/avenir_next_lt_pro_regular"
                             android:textSize="@dimen/size_16px"
                             tools:ignore="MissingConstraints,NotSibling" />
 
@@ -781,51 +808,51 @@
                         android:id="@+id/bottom_view"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_0dp"
-                        android:weightSum="3"
                         android:background="@android:color/white"
                         android:orientation="horizontal"
+                        android:weightSum="3"
                         app:layout_constraintHeight_default="percent"
                         app:layout_constraintHeight_percent=".30"
                         app:layout_constraintTop_toBottomOf="@+id/messagelay">
 
 
-                        <Space
+                        <android.widget.Space
                             android:layout_width="@dimen/dimen_0"
                             android:layout_height="wrap_content"
-                            android:visibility="invisible"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
 
                         <TextView
                             android:id="@+id/cancelUnsucess"
                             android:layout_width="0dp"
-                            android:layout_weight="1.2"
                             android:layout_height="match_parent"
                             android:layout_toLeftOf="@+id/retry"
+                            android:layout_weight="1.2"
                             android:background="@android:color/white"
-                            android:gravity="end|center"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
-                            android:visibility="@{viewmodel.isServiceError() ? View.VISIBLE : View.INVISIBLE}"
+                            android:gravity="end|center"
                             android:onClick="@{() ->viewmodel.onClickCancelError()}"
-                            android:text="@string/cancel"
                             android:paddingTop="@dimen/medium_padding"
+                            android:text="@string/cancel"
                             android:textAllCaps="true"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/size_14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="@{viewmodel.isServiceError() ? View.VISIBLE : View.INVISIBLE}" />
 
 
                         <TextView
                             android:id="@+id/retry"
                             android:layout_width="0dp"
-                            android:layout_weight=".8"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
+                            android:layout_weight=".8"
                             android:background="@android:color/white"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/medium_padding"
                             android:fontFamily="@font/avenir_next_lt_pro_demi"
+                            android:gravity="center"
                             android:onClick="@{() ->viewmodel.onClickRetry()}"
                             android:paddingLeft="20dp"
+                            android:paddingTop="@dimen/medium_padding"
                             android:paddingRight="20dp"
                             android:text="@{viewmodel.isServiceError() ? @string/retry : @string/str_ok}"
                             android:textColor="@color/colorPrimaryDark"

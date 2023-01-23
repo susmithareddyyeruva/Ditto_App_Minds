@@ -249,6 +249,7 @@
                 android:text="@{viewModel.patternName}"
                 android:textColor="@color/needle_grey"
                 android:textSize="@dimen/pattern_name"
+                app:layout_constraintHorizontal_bias=".75"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintStart_toStartOf="@id/middle_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subscription"
@@ -258,7 +259,7 @@
 
             <TextView
                 android:id="@+id/purchased_pattern"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dimen_0"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_lt_pro_regular"
                 android:paddingLeft="2dp"
@@ -266,13 +267,14 @@
                 tools:text="Size : Customized shacket"
                 android:paddingBottom="4dp"
                 android:gravity="end|center_vertical"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 android:lines="1"
                 android:text="@{HtmlCompat.fromHtml(String.format(@string/size_text,viewModel.prodSize),HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS)}"
                 android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_14sp"
                 android:ellipsize="end"
+                app:layout_constraintHorizontal_bias=".25"
                 android:paddingEnd="@dimen/padding_status_title"
-                app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintBottom_toTopOf="@id/status_layout"
                 app:layout_constraintEnd_toEndOf="@+id/end_guideline"
                 app:layout_constraintStart_toEndOf="@id/content_header"
@@ -584,5 +586,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-   </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

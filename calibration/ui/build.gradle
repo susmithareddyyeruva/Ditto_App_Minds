@@ -104,7 +104,7 @@ dependencies {
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(path: ':logger')
-    implementation project(path: ':FabricTraceTransform-debug')
+    implementation project(path: ':FabricTraceTransform')
 
     /**
      * CAMERA DEPENDENCIES

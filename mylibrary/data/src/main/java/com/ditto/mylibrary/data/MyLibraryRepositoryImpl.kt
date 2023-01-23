@@ -58,7 +58,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
 
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             authorizationToken = EncodeDecodeUtil.encodeBase64(input)
         } else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
@@ -124,7 +124,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
 
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             authorizationToken = EncodeDecodeUtil.encodeBase64(input)
         } else {
             val key = EncodeDecodeUtil.decodeBase64(AppState.getKey())
@@ -321,7 +321,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationKey = AppState.getKey()
 
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             authorizationKey = EncodeDecodeUtil.encodeBase64(input)
             Log.d("base64", "encoded: $authorizationKey ")
         } else {
@@ -392,7 +392,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationKey = AppState.getKey()
 
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             authorizationKey = EncodeDecodeUtil.encodeBase64(input)
             Log.d("base64", "encoded: $authorizationKey ")
         } else {
@@ -468,7 +468,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
         }
         val input = "$EN_USERNAME:$EN_CPCODE"
         var authorizationToken: String? = ""
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             authorizationToken = EncodeDecodeUtil.encodeBase64(input)
 
         } else {

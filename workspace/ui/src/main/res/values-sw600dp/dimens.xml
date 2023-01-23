@@ -4,6 +4,7 @@
     <dimen name="medium_padding_pattern_piece">30dp</dimen>
     <dimen name="tab_workspace">22sp</dimen>
     <dimen name="text_piece_name">18sp</dimen>
+    <dimen name="contrast_piece_size">13sp</dimen>
     <dimen name="text_piece_cut">16sp</dimen>
     <dimen name="text_reference_layout">18sp</dimen>
     <dimen name="text_size_select_layout">18sp</dimen>
