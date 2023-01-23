@@ -272,17 +272,17 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
     private fun handleFolderFetchResult(folderResult: Result<FoldersResultDomain>?) {
         folderList = arrayListOf(
             MyFolderData(
-                R.drawable.ic_baseline_folder_open_24,
+                R.drawable.ic_newfolder,
                 "Create New Folder",
                 false
             ),
             MyFolderData(
-                R.drawable.ic_baseline_folder_24,
+                R.drawable.ic_owned,
                 "Owned",
                 false
             ),
             MyFolderData(
-                R.drawable.ic_baseline_folder_24,
+                null,
                 "Favorites",
                 false
             )
@@ -292,7 +292,7 @@ class MyFolderViewModel @Inject constructor(private val myLibraryUseCase: MyLibr
                 folderResult.data.responseStatus.forEach {
                     folderList.add(
                         MyFolderData(
-                            url = R.drawable.ic_baseline_folder_24,
+                            url = null,
                             title = it,
                             isAction = true
                         )

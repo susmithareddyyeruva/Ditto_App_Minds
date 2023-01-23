@@ -1,6 +1,7 @@
 package com.ditto.menuitems_ui.aboutapp.fragment
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -69,6 +70,7 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
+        binding.aboutwebview.setBackgroundColor(Color.TRANSPARENT)
         if (Utility.getWifistatus(requireContext())){
             bottomNavViewModel.showProgress.set(true)
             viewModel.fetchUserData()

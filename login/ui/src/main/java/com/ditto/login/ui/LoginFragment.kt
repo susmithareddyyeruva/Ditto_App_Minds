@@ -161,7 +161,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 logger.d("LandingDetails  videoUrl : ${viewModel.videoUrl}")
 
                 if (findNavController().currentDestination?.id == R.id.destination_login) {
-                    val bundle = bundleOf(
+                    //removing opening video & navigate to home screen directly
+                    /*val bundle = bundleOf(
                         "UserId" to 0,
                            "videoPath" to viewModel.videoUrl,
                         "title" to "Ditto application overview",
@@ -173,7 +174,25 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                         )
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-                    startActivityForResult(intent, 200)
+                    startActivityForResult(intent, 200)*/
+
+                    getUserDetails(false)
+
+                    val bundle = bundleOf("UserId" to 0)
+                    if (findNavController().currentDestination?.id == R.id.destination_login) {
+                        if (AppState.getIsLogged()) {
+                            getUserDetails(false)
+                        } else {
+                            getUserDetails(true)
+                        }
+
+                        findNavController().navigate(
+                            R.id.action_loginFragment_to_HomeFragment,
+                            bundle
+                        )
+                    } else {
+                        //
+                    }
 
                     //  findNavController().navigate(R.id.action_loginFragment_to_OnboardingFragment, bundle)
                 } else {
@@ -184,9 +203,9 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             is LoginViewModel.Event.OnGuestPreviewClicked -> {
 
                 //redirectToHomeScreen()
-
+                //removing opening video & navigate to home screen directly
                 // if (NetworkUtility.isNetworkAvailable(requireContext())){
-                     if (findNavController().currentDestination?.id == R.id.destination_login) {
+                     /*if (findNavController().currentDestination?.id == R.id.destination_login) {
                          getUserDetails(true)
                          val bundle = bundleOf(
                              "UserId" to 0,
@@ -203,7 +222,26 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                          // findNavController().navigate(R.id.action_loginFragment_to_VideoFragment, bundle)
                      } else {
 
-                     }
+                     }*/
+
+                getUserDetails(false)
+
+                val bundle = bundleOf("UserId" to 0)
+                if (findNavController().currentDestination?.id == R.id.destination_login) {
+                    if (AppState.getIsLogged()) {
+                        getUserDetails(false)
+                    } else {
+                        getUserDetails(true)
+                    }
+
+                    findNavController().navigate(
+                        R.id.action_loginFragment_to_HomeFragment,
+                        bundle
+                    )
+                } else {
+                    //do nothing
+                }
+
                 /*} else {
                     bottomNavViewModel.showProgress.set(false)
                     viewModel.errorString.set(getString(R.string.no_internet_available))

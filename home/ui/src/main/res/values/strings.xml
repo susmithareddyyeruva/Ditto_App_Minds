@@ -20,5 +20,6 @@
     <string name="pattern_library">Pattern Library</string>
     <string name="all_your_patterns_in_one_place"><u>Browse My Library</u></string>
 
-
+    <string name="my_patterns_title_count">Browse %1$d Patterns in Your Library</string>
+    <string name="tutorials_title_text">Learn More</string>
 </resources>

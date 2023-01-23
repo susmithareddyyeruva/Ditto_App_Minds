@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -36,6 +37,7 @@
                 android:contentDescription="@string/home_image"
                 android:scaleType="centerCrop"
                 android:tag="image_tag"
+                android:src="@drawable/more_patterns_tile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="300:212"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -44,105 +46,28 @@
 
 
             <TextView
-                android:id="@+id/text_pattern_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_text"
-                android:fontFamily="@font/avenir_next_it_pro_bold"
-                android:gravity="center_horizontal"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_pattern_header"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias=".65" />
-            <!--            android:text="@{viewModel.title}"-->
-
-            <!--            android:text="@{viewModel.description}"-->
-            <TextView
-                android:id="@+id/text_pattern_desc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_text"
-                android:layout_marginEnd="@dimen/margin_text"
-                android:fontFamily="@font/avenir_next_lt_pro_regular"
-                android:gravity="center_horizontal"
-                android:maxLines="2"
-                android:text="@{homeData.description}"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_pattern_desc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_pattern_header" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/image_view_desc"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/ic_home_desc_bg"
-                android:contentDescription="@string/home_image"
-                android:elevation="@dimen/large_elevation"
-                android:tag="image_tag"
-                app:cardCornerRadius="@dimen/medium_padding"
-                app:cardElevation="@dimen/large_elevation"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintHeight_percent=".35"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias=".80"
-                app:layout_constraintWidth_percent=".80" />
-
-            <TextView
-                android:id="@+id/text_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:elevation="@dimen/text_over_large_elevation"
-                android:fontFamily="@font/avenir_next_lt_pro_regular"
-                android:gravity="center_horizontal"
-                android:maxLines="2"
-                android:textColor="@color/needle_grey"
+                android:id="@+id/tile_description"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="@dimen/dimen_0"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_list_desc"
-                app:layout_constraintBottom_toTopOf="@+id/text_desc"
-                app:layout_constraintEnd_toEndOf="@+id/image_view_desc"
-                app:layout_constraintStart_toStartOf="@+id/image_view_desc"
-                app:layout_constraintTop_toTopOf="@+id/image_view_desc"
-                app:layout_constraintVertical_bias=".45"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintWidth_percent=".70" />
-
-            <TextView
-                android:id="@+id/text_desc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_text"
-                android:layout_marginEnd="@dimen/margin_text"
-                android:elevation="@dimen/text_over_large_elevation"
+                android:gravity="start"
                 android:fontFamily="@font/avenir_next_lt_pro_demi"
-                android:gravity="center_horizontal"
-                android:paddingStart="@dimen/small_padding"
-                android:paddingEnd="@dimen/small_padding"
-                android:text="@{homeData.description}"
-                android:textColor="@color/safety_pin_yellow"
-                android:textSize="@dimen/text_list_desc"
-                app:layout_constraintBottom_toBottomOf="@+id/image_view_desc"
-                app:layout_constraintEnd_toEndOf="@+id/image_view_desc"
-                app:layout_constraintStart_toStartOf="@+id/image_view_desc"
-                app:layout_constraintTop_toBottomOf="@+id/text_header" />
+                tools:text="Browse #5 Patterns in Your Library"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHeight_percent="0.08"
+                app:layout_constraintVertical_bias="0.88" />
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_pattern"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_start_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="text_pattern_header,text_pattern_desc" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_non_pattern"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="text_header,text_desc,image_view_desc" />
+                app:layout_constraintGuide_percent=".094"
+                android:orientation="vertical"/>
+            
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/margin_card_top"
         android:layout_marginEnd="@dimen/margin_card_end"
         android:elevation="@dimen/elevation_card"
-        app:cardBackgroundColor="@color/scissor_grey_light">
+        app:cardBackgroundColor="@color/screen_bg_color">
 
 
         <ImageView
@@ -50,7 +50,7 @@
             android:paddingBottom="@dimen/dimen_5"
             android:singleLine="true"
             android:text=""
-            android:textColor="@android:color/white"
+            android:textColor="@color/needle_grey"
             android:textSize="@dimen/txt_size_new"
             app:layout_constraintStart_toStartOf="@id/image_pattern"
             app:layout_constraintTop_toTopOf="@id/image_pattern" />

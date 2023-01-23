@@ -100,7 +100,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         toolbarViewModel.isShowTransparentActionBar.set(true)
         (activity as BottomNavigationActivity).setToolbar()
         setHomeAdapter()
-        if (!AppState.isShownCoachMark()) {
+        /*if (!AppState.isShownCoachMark()) {
             bottomNavViewModel.isShownCoachMark.set(AppState.isShownCoachMark())
             bottomNavViewModel.coachmarkFlowFinished.observe(viewLifecycleOwner, {
                 if (it) {
@@ -109,7 +109,8 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
             })
         } else {
             loadHomeFragment()
-        }
+        }*/
+        loadHomeFragment()
     }
 
     private fun loadHomeFragment() {

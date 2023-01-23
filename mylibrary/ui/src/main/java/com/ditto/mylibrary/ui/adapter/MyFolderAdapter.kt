@@ -57,14 +57,14 @@ private val deleteClicked: OnDeleteClicked) :
                 data?.url ?: 0
             )
         }
-        holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
+        /*holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
             ContextCompat.getColor(
                 holder.itemSingleMyfolderBinding.imgBg.context,
                 R.color.white
             )
-        )
+        )*/
 
-        /*if (position == 0) {
+        if (position == 0) {
             holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemSingleMyfolderBinding.imgBg.context,
@@ -75,15 +75,12 @@ private val deleteClicked: OnDeleteClicked) :
             holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemSingleMyfolderBinding.imgBg.context,
-                    R.color.white
+                    R.color.owned_color
                 )
             )
         }else{
-            holder.itemSingleMyfolderBinding.imgBg.setBackgroundColor(ContextCompat.getColor(
-                holder.itemSingleMyfolderBinding.imgBg.context,
-                R.color.white
-            ))
-        }*/
+            holder.itemSingleMyfolderBinding.imgBg.setBackgroundResource(R.drawable.ic_placeholder)
+        }
 
         holder.itemSingleMyfolderBinding.proAction.setOnClickListener {  //More
             //  data?.isAction = !(data?.isAction ?: false)

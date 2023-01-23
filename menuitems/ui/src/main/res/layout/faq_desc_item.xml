@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/faqRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/content_start"
     android:layout_marginRight="@dimen/padding_common_start"
     android:layout_marginBottom="@dimen/item_bottom_margin"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="3dp">
 
     <RelativeLayout
         android:id="@+id/parentlay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_layout">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/header"
@@ -142,4 +145,4 @@
     </RelativeLayout>
 
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -18,7 +18,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@color/screen_bg_color">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/yardage_appBar"
@@ -31,7 +31,7 @@
                 android:id="@+id/toolbar_yardage"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/headerbar"
+                android:background="@color/screen_bg_color"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:background="@color/white">
+                android:background="@color/screen_bg_color">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/start_guideline"
@@ -156,7 +156,7 @@
 
                 <com.github.barteksc.pdfviewer.PDFView
                     android:id="@+id/pdfView"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:visibility="@{viewModel.isYardagePDFAvailable()}"
                     app:layout_constraintBottom_toBottomOf="parent"
