@@ -65,41 +65,44 @@
             app:layout_constraintTop_toBottomOf="@+id/top_border"
             app:viewModel="@{viewModel}" />
 
-        <TextView
-            android:id="@+id/txt_pattern_pieces"
+        <LinearLayout
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_selected:@drawable/pattern_button_unselected}"
-            android:elevation="@dimen/elevation_small"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.clickPatternReference(true)}"
-            android:text="@string/pattern_pieces"
-            android:textColor="@color/needle_grey"
-            android:textSize="@dimen/text_reference_layout"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
-            app:layout_constraintEnd_toStartOf="@+id/txt_reeferance_layout"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt_reeferance_layout"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
-            android:elevation="@dimen/elevation_small"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:gravity="center"
-            android:visibility="@{viewModel.showReferenceLayout}"
-            android:onClick="@{() -> viewModel.clickPatternReference(false)}"
-            android:text="@string/reference_layout"
-            android:textColor="@color/needle_grey"
-            android:textSize="@dimen/text_reference_layout"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_pattern_pieces"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/txt_pattern_pieces"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_selected:@drawable/pattern_button_unselected}"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.clickPatternReference(true)}"
+                android:text="@string/pattern_pieces"
+                android:textColor="@color/needle_grey"
+                android:textSize="@dimen/text_reference_layout" />
+
+            <TextView
+                android:id="@+id/txt_reeferance_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="center"
+                android:visibility="@{viewModel.showReferenceLayout}"
+                android:onClick="@{() -> viewModel.clickPatternReference(false)}"
+                android:text="@string/reference_layout"
+                android:textColor="@color/needle_grey"
+                android:textSize="@dimen/text_reference_layout" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="@dimen/dimen_0"
