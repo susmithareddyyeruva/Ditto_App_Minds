@@ -100,7 +100,7 @@
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="textView_Description" />
 
-            <Space
+            <android.widget.Space
                 android:id="@+id/margin_spacer"
                 android:layout_width="@dimen/list_left_margin"
                 android:layout_height="@dimen/dimen_0"

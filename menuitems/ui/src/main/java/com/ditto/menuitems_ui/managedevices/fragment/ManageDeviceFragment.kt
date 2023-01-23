@@ -361,6 +361,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
                 Utility.Iconype.FAILED
             )
         } else {
+            baseViewModel.isCalibrated.set(false)
             viewModel.connectToProjector(
                 receivedServiceList!![viewModel.clickedPosition.get()].nsdSericeHostAddress,
                 receivedServiceList!![viewModel.clickedPosition.get()].nsdServicePort,
