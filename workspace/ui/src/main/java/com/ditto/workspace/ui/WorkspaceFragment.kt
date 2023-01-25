@@ -417,8 +417,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 )
             }
         }
-        clearWorkspace()
-        binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
+       /* clearWorkspace()
+        binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()*/
     }
 
     override fun onNegativeButtonClicked(alertType: core.ui.common.Utility.AlertType) {
@@ -439,7 +439,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                     updateData()
                     viewModel.selectedTab.set(view?.tag as Int)
                     binding.tabLayoutWorkspace.getTabAt(viewModel.selectedTab.get())?.select()
-                    //switchTab()
+                    switchTab()
                     return true
                 }
                 return false
