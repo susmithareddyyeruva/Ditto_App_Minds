@@ -26,6 +26,7 @@
         android:fontFamily="@font/avenir_next_lt_pro_regular"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/alert_message_Text"
+        android:maxLines="8"
         android:gravity="center"
         tools:text="Calibration failed. Error: room too bright"
         android:paddingLeft="@dimen/large_paddingxx"
