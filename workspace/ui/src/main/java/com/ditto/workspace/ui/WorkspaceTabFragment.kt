@@ -1602,7 +1602,6 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
                             enableClear(false)
-                            viewModel.clickPatternReference(false)
                             viewModel.workspaceItemId.set(
                                 viewModel.workspaceItemId.get() + 1
                             )
@@ -2058,6 +2057,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         }
         viewModel.referenceImage.set(spliceImages?.mapImageName)
+        viewModel.clickPatternReference(false)
     }
 
     private fun showSpliceArrows(row: Int?, column: Int?) {
@@ -2755,6 +2755,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun resetWorkspaceUI() {
         setConnectButton()
+        if(viewModel.isSpliceBottomVisible.get() || viewModel.isSpliceRightVisible.get() || viewModel.isSpliceLeftVisible.get() || viewModel.isSpliceTopVisible.get()) {
+            viewModel.clickPatternReference(false)
+            viewModel.clickSplice()
+        }
     }
 
     private fun setConnectButton() {
