@@ -180,22 +180,19 @@
             app:layout_constraintEnd_toStartOf="@+id/select_layout_info"
             app:layout_constraintTop_toBottomOf="@+id/top_border" />
 
-        <TextView
+        <ImageView
             android:id="@+id/select_layout_info"
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_0"
             android:layout_marginEnd="@dimen/large_padding"
-            android:paddingStart="@dimen/medium_padding"
-            android:paddingBottom="@dimen/large_padding"
-            android:paddingTop="@dimen/large_padding"
+            android:paddingStart="@dimen/elevation_pieces_reference"
             android:visibility="visible"
             android:elevation="@dimen/elevation_pieces_reference"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:text="?"
+            android:src="@drawable/question_mark"
             android:onClick="@{() -> viewModel.selectLayoutClick()}"
-            android:textColor="@color/default_text_color"
-            android:textSize="@dimen/text_size_select_layout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent=".03"
+            app:layout_constraintHeight_percent=".03"
             app:layout_constraintTop_toTopOf="@+id/txt_select_layout"
             app:layout_constraintBottom_toBottomOf="@+id/txt_select_layout" />
 
