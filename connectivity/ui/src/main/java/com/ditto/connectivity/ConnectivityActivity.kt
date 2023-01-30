@@ -55,7 +55,8 @@ import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
 
-class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomCallbackDialogListener,
+class ConnectivityActivity : AppCompatActivity(),
+    core.ui.common.Utility.CustomCallbackDialogListener,
     Utility.CallbackDialogListener {
     private var currentApiVersion = 0
     private var mLeDeviceListAdapter: LeDeviceListAdapter? = null
@@ -72,7 +73,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var networkType: String = ""
     private var mBluetoothAdapter: BluetoothAdapter? = null
     private val GPS_REQUEST = 1001
-    lateinit var mClickedService  : Nsdservicedata
+    lateinit var mClickedService: Nsdservicedata
     val serviceList = ArrayList<Nsdservicedata>()
     val serviceFoundList = ArrayList<NsdServiceInfo>()
     private var mBluetoothLeService: BluetoothLeService? = null
@@ -89,8 +90,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
     private var bleConnectionWaitingJob: Job? = null
     private var serviceConnectionWaitingJob: Job? = null
     private var isBinded = false
-    lateinit var screenName : String
-    lateinit var screenMode : String
+    lateinit var screenName: String
+    lateinit var screenMode: String
     var isPreciseLocationRequested: Boolean = false
 
     @SuppressLint("NewApi")
@@ -104,22 +105,25 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         handleClicks()
         checkForGPS()
     }
-    private fun checkForGPS(){
+
+    private fun checkForGPS() {
         turnGPSOn(object :
             OnGPSListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
-                if(isGPSEnable) {
+                if (isGPSEnable) {
                     initWIFIService()
                 }
             }
         })
     }
-    private fun decideScreen(){
-        screenName= intent.getStringExtra("ScreenName").toString()
-        screenMode= intent.getStringExtra("ScreenMode").toString()
-        showLayouts(false,false,false,false,true,"")
+
+    private fun decideScreen() {
+        screenName = intent.getStringExtra("ScreenName").toString()
+        screenMode = intent.getStringExtra("ScreenMode").toString()
+        showLayouts(false, false, false, false, true, "")
     }
-    private fun handleClicks(){
+
+    private fun handleClicks() {
 
         deviceList!!.setOnItemClickListener { _, _, position, _ ->
             if (mScanning) {
@@ -132,14 +136,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             val gattServiceIntent = Intent(this, BluetoothLeService::class.java)
             GlobalScope.launch {
                 delay(2000)
-                isBinded = bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
+                isBinded =
+                    bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
             }
             startBleWaiting()
-            showLayouts(false,false,false,false,true,"")
+            showLayouts(false, false, false, false, true, "")
         }
         deviceList_proj!!.setOnItemClickListener { _, _, position, _ ->
 
-            showLayouts(false,false,false,false,true,"")
+            showLayouts(false, false, false, false, true, "")
             viewModel.isServiceFoundAfterWifi.set(false)
             mClickedService = mServiceListAdapter!!.getDevice(position)!!
             isServiceFound = true
@@ -151,19 +156,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         }
 
     }
+
     private fun initNSD() {
         nsdManager = getSystemService(Context.NSD_SERVICE) as NsdManager?
     }
-    private fun initBle(){
+
+    private fun initBle() {
         val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         mBluetoothAdapter = bluetoothManager.adapter
     }
-    inner class MyResolveListener:NsdManager.ResolveListener {
-        override fun onResolveFailed(serviceInfo:NsdServiceInfo, errorCode:Int) {
+
+    inner class MyResolveListener : NsdManager.ResolveListener {
+        override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             Log.d(ConnectivityUtils.TAG, "Resolve failed ${serviceInfo.serviceName}")
         }
 
-        override fun onServiceResolved(serviceInfo:NsdServiceInfo) {
+        override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
             Log.d(ConnectivityUtils.TAG, "Resolve Succeeded. ${serviceInfo.serviceName}")
             mService = serviceInfo
             val nsdData = Nsdservicedata(
@@ -172,7 +180,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 mService?.port!!.toInt(),
                 false
             )
-            if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE){
+            if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE) {
                 stopDiscovery()
                 connectServiceAfterWifi(nsdData)
             } else {
@@ -181,6 +189,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
         }
     }
+
     private fun discoverServices() {
         stopDiscovery()
         serviceFoundList.clear()
@@ -192,31 +201,33 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         )
         startResolverTimer()
     }
-    private fun startResolverTimer(){
+
+    private fun startResolverTimer() {
         GlobalScope.launch {
             delay(3000)
             stopDiscovery()
-           for(item in serviceFoundList){
-               nsdManager?.resolveService(item, MyResolveListener())
-               Thread.sleep(100)
-           }
+            for (item in serviceFoundList) {
+                nsdManager?.resolveService(item, MyResolveListener())
+                Thread.sleep(100)
+            }
         }
     }
+
     private fun initializeDiscoveryListener() {
         discoveryListener = object : NsdManager.DiscoveryListener {
 
             override fun onDiscoveryStarted(regType: String) {
-                Log.d(ConnectivityUtils.TAG, "Service discovery started " +regType)
+                Log.d(ConnectivityUtils.TAG, "Service discovery started " + regType)
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
-                Log.d(ConnectivityUtils.TAG, "Service discovery Found " +service.serviceName)
-                if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE){
-                    if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi){
+                Log.d(ConnectivityUtils.TAG, "Service discovery Found " + service.serviceName)
+                if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE) {
+                    if (service.serviceName == ConnectivityUtils.nsdSericeNameAfterWifi) {
                         serviceFoundList.add(service)
                     }
                 } else {
-                    if (service.serviceName.startsWith("DITTO")){ //todo
+                    if (service.serviceName.startsWith("DITTO")) { //todo
                         serviceFoundList.add(service)
                     }
                 }
@@ -244,13 +255,14 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
         }
     }
+
     private fun stopDiscovery() {
         Log.d(ConnectivityUtils.TAG, "NSD - stopDiscovery()")
         if (discoveryListener != null) {
             try {
                 nsdManager?.stopServiceDiscovery(discoveryListener)
             } finally {
-                Log.d("discoveryListener","in final block")
+                Log.d("discoveryListener", "in final block")
             }
             discoveryListener = null
         }
@@ -263,12 +275,14 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         discoverServices()
         startServiceTimer()
     }
+
     private fun searchWifiNSDservice() {
         Log.d(ConnectivityUtils.TAG, "searchNSDservice()")
         serviceList.clear()
         NetworkUtility.isServiceConnected = false
         discoverServices()
     }
+
     private fun searchNSDserviceFromPopup() {
         Log.d(ConnectivityUtils.TAG, "searchNSDserviceFromPopup()")
         serviceList.clear()
@@ -279,7 +293,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         viewModel.isNoServiceFound.set(false)
         viewModel.isProgressBar.set(true)
     }
-    private fun nsdServiceAutoConnect(services : Nsdservicedata){
+
+    private fun nsdServiceAutoConnect(services: Nsdservicedata) {
         isServiceFound = true
         NetworkUtility.isServiceConnected = isServiceFound
         NetworkUtility.nsdSericeHostName = services!!.nsdSericeHostAddress
@@ -288,15 +303,16 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         mClickedService = services
         checkSocketConnection()
     }
+
     private fun startServiceTimer() {
 
         serviceConnectionWaitingJob = GlobalScope.launch {
             delay(SERVICE_SCAN_PERIOD)
             viewModel.isProgressBar.set(false)
             stopDiscovery()
-            if (screenName == SCREEN_MANAGE_DEVICE){
+            if (screenName == SCREEN_MANAGE_DEVICE) {
                 searchServieList = serviceList
-                if (viewModel.isServiceFoundAfterWifi.get()){
+                if (viewModel.isServiceFoundAfterWifi.get()) {
                     returnFromActivity(SEARCH_COMPLETE_AFTER_WIFI)
                 } else {
                     returnFromActivity(SEARCH_COMPLETE)
@@ -307,13 +323,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
         }
     }
+
     /* Search completed after successfully sharing the wifi ceredentials*/
-    private fun connectServiceAfterWifi(mServiceData : Nsdservicedata) {
+    private fun connectServiceAfterWifi(mServiceData: Nsdservicedata) {
         viewModel.isServiceFoundAfterWifi.set(false)
         nsdServiceAutoConnect(mServiceData)
     }
+
     private fun connectService() {
-        mPreviousServiceAvailable = false ;
+        mPreviousServiceAvailable = false;
         if (serviceList.isEmpty()) {   /* Showing BLE list if no serivce is found  */
             startBLESearch()
         } else {
@@ -328,22 +346,26 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             if (!mPreviousServiceAvailable) { /* Check whether the last connected service found or not */
                 mPreviousServiceAvailable = false
                 populateServiceList()
-                showLayouts(true, false, false, false, false,"")
+                showLayouts(true, false, false, false, false, "")
             }
         }
     }
-    private fun populateServiceList(){
+
+    private fun populateServiceList() {
+        serviceList.sortBy { list -> list.nsdServiceName }
         mServiceListAdapter = ServiceListAdapter(serviceList)
         runOnUiThread {
             deviceList_proj.adapter = mServiceListAdapter
         }
     }
-    private fun checkSocketConnection(){
+
+    private fun checkSocketConnection() {
         GlobalScope.launch {
             delay(2000)
             startSocketConnection()
         }
     }
+
     private suspend fun startSocketConnection() {
 
         withContext(Dispatchers.IO) {
@@ -358,24 +380,26 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     viewModel.isWifiError.set(false)
                     GlobalScope.launch {
                         delay(200)
-                        Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected") }
-                    showLayouts(false, false, false, true, false,"Successfully connected!")
+                        Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected")
+                    }
+                    showLayouts(false, false, false, true, false, "Successfully connected!")
 
                 } else {
                     viewModel.isServiceError.set(true)
-                    showLayouts(false, false, false, true, false,"Projector Connection failed")
+                    showLayouts(false, false, false, true, false, "Projector Connection failed")
                 }
             } catch (e: ConnectException) {
                 viewModel.isServiceError.set(true)
                 showLayouts(false, false, false, true, false, PROJ_CONNECTION_FAILED)
             } catch (e: Exception) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,PROJ_CONNECTION_FAILED)
+                showLayouts(false, false, false, true, false, PROJ_CONNECTION_FAILED)
             } finally {
                 soc?.close()
             }
         }
     }
+
     private val mServiceConnection = object : ServiceConnection {
 
         @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -396,6 +420,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             isBinded = false
         }
     }
+
     private fun returnFromActivity(result: String) {
         val intent = Intent()
         var resultString: String? = result
@@ -410,25 +435,28 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         Log.d(ConnectivityUtils.TAG, "WIFI Discovery stopped")
         startBLESearch()
     }
+
     //BLE and its Connection
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun startBLESearch() {
-        if(isBinded) {
+        if (isBinded) {
             unbindService(mServiceConnection)
         }
         mLeDeviceListAdapter = LeDeviceListAdapter()
         runOnUiThread {
             deviceList!!.adapter = mLeDeviceListAdapter
-            showLayouts(false, true, false, false, false,"")
+            showLayouts(false, true, false, false, false, "")
 
         }
         scanLeDevice(true)
     }
-    private fun checkBleList(){
-         if (mLeDeviceListAdapter!!.count == 0){
-             viewModel.isNoBleFound.set(true)
-         }
+
+    private fun checkBleList() {
+        if (mLeDeviceListAdapter!!.count == 0) {
+            viewModel.isNoBleFound.set(true)
+        }
     }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun scanLeDevice(enable: Boolean) {
         viewModel.isNoBleFound.set(false)
@@ -453,23 +481,25 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             }
         }
     }
-    private fun enableRefreshButton(refreshButton: Boolean){
-        if(refreshButton){
+
+    private fun enableRefreshButton(refreshButton: Boolean) {
+        if (refreshButton) {
             refresh.isClickable = true
             refresh.alpha = 1.0f
             viewModel.isProgressBar.set(false)
-        }else{
+        } else {
             refresh.isClickable = false
             refresh.alpha = 0.5f
             viewModel.isProgressBar.set(true)
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     fun initWIFIService() {
         if (allPermissionsGranted()) {
-            if (screenMode == MODE_SERVICE){
+            if (screenMode == MODE_SERVICE) {
                 searchNSDservice()
-            } else if (screenMode == MODE_BLE){
+            } else if (screenMode == MODE_BLE) {
                 startBLESearch()
             } else {
                 searchNSDservice()
@@ -481,12 +511,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             )
         }
     }    // Device scan callback.
+
     private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, _, _ ->
         runOnUiThread {
             mLeDeviceListAdapter!!.addDevice(device)
+            mLeDeviceListAdapter!!.sortDevice()
             mLeDeviceListAdapter!!.notifyDataSetChanged()
         }
     }
+
     private inner class LeDeviceListAdapter() : BaseAdapter() {
         private val mLeDevices: ArrayList<BluetoothDevice>
         private val mInflator: LayoutInflater
@@ -507,6 +540,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
         fun getDevice(position: Int): BluetoothDevice? {
             return mLeDevices[position]
+        }
+
+        fun sortDevice(){
+            mLeDevices?.sortBy { list -> list.name}
         }
 
         fun clear() {
@@ -552,7 +589,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             return view!!
         }
     }
-    private inner class ServiceListAdapter(services : ArrayList<Nsdservicedata>) : BaseAdapter() {
+
+    private inner class ServiceListAdapter(services: ArrayList<Nsdservicedata>) : BaseAdapter() {
         var mServiceList: ArrayList<Nsdservicedata> = services
         private val mInflator: LayoutInflater = layoutInflater
 
@@ -601,17 +639,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             return view!!
         }
     }
+
     private fun Activity.hideKeyboard() {
         hideKeyboard(currentFocus ?: View(this))
     }
+
     @SuppressLint("ServiceCast")
     private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     internal class ViewHolder {
         var deviceName: TextView? = null
     }
+
     companion object {
 
         const val REQUEST_CODE_PERMISSIONS = 10
@@ -651,8 +694,10 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             intentFilter.addAction(BluetoothLeService.ACTION_GATT_WIFI_FAILURE)
             return intentFilter
         }
-        const val PROJ_CONNECTION_FAILED="Projector Connection failed"
+
+        const val PROJ_CONNECTION_FAILED = "Projector Connection failed"
     }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     override fun onResume() {
         super.onResume()
@@ -664,15 +709,18 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
+
     override fun onPause() {
         super.onPause()
         Log.d(ConnectivityUtils.TAG, "Activity goes to OnPause ")
         unregisterReceiver(mGattUpdateReceiver)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d(ConnectivityUtils.TAG, "Activity goes to OnDestroy ")
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun getGattServices(gattServices: List<BluetoothGattService>?) {
         Log.d(ConnectivityUtils.TAG, "Activity-getGattServices()")
@@ -691,44 +739,45 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         }
 
     }
+
     private val mGattUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             if (BluetoothLeService.ACTION_GATT_CONNECTED == action) {
                 viewModel.isBLEConnected = true
-                showLayouts(false, false, false, false, true,"")
+                showLayouts(false, false, false, false, true, "")
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED == action) {
                 viewModel.isBLEConnected = false
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Bluetooth Connection failed!")
+                showLayouts(false, false, false, true, false, "Bluetooth Connection failed!")
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED == action) {
 
                 if (mBluetoothLeService?.supportedGattServices == null) {
                     viewModel.isServiceError.set(true)
-                    showLayouts(false, false, false, true, false,"Projector Connection failed!")
+                    showLayouts(false, false, false, true, false, "Projector Connection failed!")
                     stopWaiting()
                 } else {
-                    showLayouts(false, false, false, false, true,"")
+                    showLayouts(false, false, false, false, true, "")
                     getGattServices(mBluetoothLeService!!.supportedGattServices)
                 }
             } else if (BluetoothLeService.ACTION_GATT_HANDSHAKE_SUCCESS == action) {
                 //--------------------------------------OPEN NETWORK CHANGES-------------------------------//
-               /* if(!networkType.contains("WEP") && !networkType.contains("WPA")
-                    && !networkType.contains("WPA2")) {
-                    Log.d(ConnectivityUtils.TAG, "Send network SSID")
-                    val ssidpwd = "$connSSID,,$networkType"
-                    mBluetoothLeService?.connectWIFI(ssidpwd)!!
-                    startWifiWaiting()
-                } else {*/
-                showLayouts(false, false, true, false, false,"")
+                /* if(!networkType.contains("WEP") && !networkType.contains("WPA")
+                     && !networkType.contains("WPA2")) {
+                     Log.d(ConnectivityUtils.TAG, "Send network SSID")
+                     val ssidpwd = "$connSSID,,$networkType"
+                     mBluetoothLeService?.connectWIFI(ssidpwd)!!
+                     startWifiWaiting()
+                 } else {*/
+                showLayouts(false, false, true, false, false, "")
                 stopWaiting()
-               // }
+                // }
             } else if (BluetoothLeService.ACTION_GATT_SERVER_SUCCESS == action) {
-                showLayouts(false, false, false, false, true,"")
+                showLayouts(false, false, false, false, true, "")
                 viewModel.isServiceFoundAfterWifi.set(true)
-                if (screenName == SCREEN_MANAGE_DEVICE){
+                if (screenName == SCREEN_MANAGE_DEVICE) {
                     searchNSDservice()
                 } else {
                     searchWifiNSDservice()
@@ -736,74 +785,79 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_SERVER_FAILURE == action) {
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"Projector Connection failed!")
+                showLayouts(false, false, false, true, false, "Projector Connection failed!")
                 stopWaiting()
             } else if (BluetoothLeService.ACTION_GATT_WIFI_FAILURE == action) {
                 viewModel.isWifiError.set(true)
                 viewModel.isServiceError.set(true)
-                showLayouts(false, false, false, true, false,"WiFi Connection failed")
+                showLayouts(false, false, false, true, false, "WiFi Connection failed")
                 stopWaiting()
             } else {
-                Log.d("BroadcastReceiver","Action Gatt server undefined")
+                Log.d("BroadcastReceiver", "Action Gatt server undefined")
             }
         }
     }
-//----------------------------Connection Timeout. Need to Check............................//
-    private fun startWifiWaiting(){
+
+    //----------------------------Connection Timeout. Need to Check............................//
+    private fun startWifiWaiting() {
         wifiConnectionWaitingJob = GlobalScope.launch {
             delay(25000)
             viewModel.isWifiError.set(true)
             viewModel.isServiceError.set(true)
-            showLayouts(false, false, false, true, false,"WiFi Connection failed")
+            showLayouts(false, false, false, true, false, "WiFi Connection failed")
         }
     }
-    private fun startBleWaiting(){
+
+    private fun startBleWaiting() {
         bleConnectionWaitingJob = GlobalScope.launch {
             delay(25000)
-            viewModel.isBLEConnected  = false
+            viewModel.isBLEConnected = false
             viewModel.isServiceError.set(true)
-            showLayouts(false, false, false, true, false,"Bluetooth Handshake failed")
+            showLayouts(false, false, false, true, false, "Bluetooth Handshake failed")
         }
     }
-    private fun stopWaiting(){
+
+    private fun stopWaiting() {
         wifiConnectionWaitingJob?.cancel()
         bleConnectionWaitingJob?.cancel()
     }
-//----------------------------Connection Timeout. Need to Check............................//
+
+    //----------------------------Connection Timeout. Need to Check............................//
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun setUIEvents() {
-    val binding: ConnectivityActivityBinding =
-        DataBindingUtil.setContentView(
-            this,
-            R.layout.connectivity_activity
-        )
-    binding.lifecycleOwner = this
-    binding.viewmodel = viewModel
-    setupKeyboardListener(binding.root)
-    viewModel.setThreadPolicy()
-    if (Build.VERSION.SDK_INT < 16) {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-    } else {
-        val decorView = window.decorView
-        val uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
-        decorView.systemUiVisibility = uiOptions
-        val actionBar: ActionBar? = actionBar
-        if (actionBar != null) {
-            actionBar.hide()
+        val binding: ConnectivityActivityBinding =
+            DataBindingUtil.setContentView(
+                this,
+                R.layout.connectivity_activity
+            )
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
+        setupKeyboardListener(binding.root)
+        viewModel.setThreadPolicy()
+        if (Build.VERSION.SDK_INT < 16) {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        } else {
+            val decorView = window.decorView
+            val uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
+            decorView.systemUiVisibility = uiOptions
+            val actionBar: ActionBar? = actionBar
+            if (actionBar != null) {
+                actionBar.hide()
+            }
         }
+        getWIFIname()
+        wifiname.setText(connSSID)
+        mHandler = Handler()
+        viewModel.disposable += viewModel.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                handleEvent(it)
+            }
     }
-    getWIFIname()
-    wifiname.setText(connSSID)
-    mHandler = Handler()
-    viewModel.disposable += viewModel.events
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe {
-            handleEvent(it)
-        }
-    }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun handleEvent(event: ConnectivityViewModel.Event): Unit =
         when (event) {
@@ -838,14 +892,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 Log.d(ConnectivityUtils.TAG, "connect clicked in wifi credentials view")
                 hideKeyboard()
                 if (wifiname.text.toString() != null) {
-                     var encryptedcred: String = ""
+                    var encryptedcred: String = ""
                     val encryptedssid: String? = ConnectivityUtils.encrypt(wifiname.text.toString())
                     val encryptedpwd: String? = ConnectivityUtils.encrypt(wifipwd.text.toString())
                     val encryptedAuth: String? = ConnectivityUtils.encrypt("ANDROID")
-                    if (!encryptedssid.equals("") && !encryptedpwd.equals("")){
+                    if (!encryptedssid.equals("") && !encryptedpwd.equals("")) {
                         encryptedcred = "$encryptedssid,$encryptedpwd,$encryptedAuth"
                     } else {
-                        encryptedcred = wifiname.text.toString() + "," + wifipwd.text.toString()+ ","+"ANDROID"
+                        encryptedcred =
+                            wifiname.text.toString() + "," + wifipwd.text.toString() + "," + "ANDROID"
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         viewModel.isWifiError.set(false)
@@ -853,20 +908,20 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         mBluetoothLeService?.connectWIFI(encryptedcred)!!
                         startWifiWaiting()
                     } else {
-                       // TODO("VERSION.SDK_INT < LOLLIPOP")
+                        // TODO("VERSION.SDK_INT < LOLLIPOP")
                     }
-                    showLayouts(false, false, false, false, true,"")
+                    showLayouts(false, false, false, false, true, "")
                 } else {
-                    Log.d("error","instruction error")
+                    Log.d("error", "instruction error")
                 }
                 Unit
             }
             is ConnectivityViewModel.Event.OnRetryClicked -> {
                 if (viewModel.isServiceError.get()) {
-                    if (viewModel.isWifiError.get()){
-                        showLayouts(false, false, true, false, false,"")
+                    if (viewModel.isWifiError.get()) {
+                        showLayouts(false, false, true, false, false, "")
                     } else {
-                        showLayouts(false, false, false, false, true,"")
+                        showLayouts(false, false, false, false, true, "")
                         searchNSDservice()
                     }
 
@@ -895,20 +950,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
                 connSSID = wifiInfo.ssid.replace("\"", "")
             }
-            val wifi: WifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val wifi: WifiManager =
+                applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
             val networkList: List<ScanResult> = wifi.scanResults
             if (networkList != null) {
                 for (network in networkList) {
                     if (connSSID.equals(network.SSID)) {
-            networkType = network.capabilities
+                        networkType = network.capabilities
                     }
                 }
             }
 
         } catch (e: Exception) {
-            Log.d("exception","wifi")
+            Log.d("exception", "wifi")
         }
     }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         this?.let { it1 ->
             ContextCompat.checkSelfPermission(
@@ -916,9 +973,11 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             )
         } == PackageManager.PERMISSION_GRANTED
     }
+
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+        requestCode: Int, permissions: Array<String>,
+        grantResults:
+        IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -950,7 +1009,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
 
-                    if(!isPreciseLocationRequested) {
+                    if (!isPreciseLocationRequested) {
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -972,7 +1031,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     }
                 }
                 //show alert dialog if bluetooth permissions denied
-                else if(!checkBluetoothPermissionsProvided())  {
+                else if (!checkBluetoothPermissionsProvided()) {
                     Utility.getAlertDialogue(
                         this,
                         getString(R.string.permissions_required),
@@ -984,14 +1043,15 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                     )
                 }
                 //show alert dialog if location permissions denied
-                else if(ContextCompat.checkSelfPermission(
+                else if (ContextCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                     || ContextCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED)  {
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     Utility.getAlertDialogue(
                         this,
                         getString(R.string.permissions_required),
@@ -1001,8 +1061,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                         this,
                         Utility.AlertType.PERMISSION_DENIED
                     )
-                }
-                else {
+                } else {
                     Log.d(ConnectivityUtils.TAG, "Permission Denied by the user")
                     Utility.getAlertDialogue(
                         this,
@@ -1025,6 +1084,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             )
         } == PackageManager.PERMISSION_GRANTED
     }
+
     fun turnGPSOn(onGpsListener: OnGPSListener?) {
 
         var locationManager: LocationManager? = null
@@ -1094,9 +1154,11 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 }
         }
     }
+
     interface OnGPSListener {
         fun gpsStatus(isGPSEnable: Boolean)
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -1107,9 +1169,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 wifiname.setText(connSSID)
                 initWIFIService()
             }
-        }else{
+        } else {
             Log.d(ConnectivityUtils.TAG, "User Disabled GPS")
-            showLayouts(false, false, false, false, false,"")
+            showLayouts(false, false, false, false, false, "")
             viewModel.isLocationEnabled.set(false)
             finish()
         }
@@ -1126,7 +1188,8 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
             var bottomParams: ConstraintLayout.LayoutParams? = null
             bottomParams = bottomGuideline?.getLayoutParams() as ConstraintLayout.LayoutParams
 
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
             val decorView = window.decorView
             val uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
             decorView.systemUiVisibility = uiOptions
@@ -1135,21 +1198,22 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
                 actionBar.hide()
             }
 
-            if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height/2)) { // if more than 100 pixels, its probably a keyboard...
-                if(isTablet(this)){
-                    topParams.guidePercent=0.0f
+            if (Math.abs(view.rootView.height - (r.bottom - r.top)) > (view.rootView.height / 2)) { // if more than 100 pixels, its probably a keyboard...
+                if (isTablet(this)) {
+                    topParams.guidePercent = 0.0f
                     //bottomParams.guidePercent=0.45f
-                }else{
-                    topParams.guidePercent=-0.12f
+                } else {
+                    topParams.guidePercent = -0.12f
                 }
             } else {
-                topParams.guidePercent=0.15f
+                topParams.guidePercent = 0.15f
             }
 
             topGuideline.setLayoutParams(topParams)
 
         }
     }
+
     private fun isTablet(context: Context): Boolean {
         val xlarge = context.getResources()
             .getConfiguration().screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === 4
@@ -1160,9 +1224,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
     override fun onCustomPositiveButtonClicked(
         iconype: core.ui.common.Utility.Iconype,
-        alertType: core.ui.common.Utility.AlertType
+        alertType: core.ui.common.Utility.AlertType,
     ) {
-        if (iconype == core.ui.common.Utility.Iconype.SUCCESS){
+        if (iconype == core.ui.common.Utility.Iconype.SUCCESS) {
             returnFromActivity("success")
         } else {
             searchNSDservice()
@@ -1171,11 +1235,19 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
     override fun onCustomNegativeButtonClicked(
         iconype: core.ui.common.Utility.Iconype,
-        alertType: core.ui.common.Utility.AlertType
+        alertType: core.ui.common.Utility.AlertType,
     ) {
 
     }
-    private fun showLayouts(isShowServiceListLayout : Boolean, isShowBleListLayout : Boolean, isShowWifiCredLayout : Boolean,isShowErrorLayout : Boolean ,isShowLootie : Boolean, alertMessage : String ){
+
+    private fun showLayouts(
+        isShowServiceListLayout: Boolean,
+        isShowBleListLayout: Boolean,
+        isShowWifiCredLayout: Boolean,
+        isShowErrorLayout: Boolean,
+        isShowLootie: Boolean,
+        alertMessage: String,
+    ) {
         viewModel.isProjectorLayout.set(isShowLootie)
         viewModel.isWifiCredLayout.set(isShowWifiCredLayout)
         viewModel.isErrorLayout.set(isShowErrorLayout)
@@ -1184,9 +1256,9 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
         viewModel.alerMessage.set(alertMessage)
     }
 
-    private fun fullScreenCall(){
+    private fun fullScreenCall() {
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)
-        val behavior =  WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        val behavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
         val type = WindowInsetsCompat.Type.systemBars()
         insetsController.systemBarsBehavior = behavior
         insetsController.hide(type)
@@ -1194,7 +1266,7 @@ class ConnectivityActivity : AppCompatActivity(), core.ui.common.Utility.CustomC
 
     override fun onPositiveButtonClicked(alertType: Utility.AlertType) {
         //navigate to app settings
-        if(alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
+        if (alertType.equals(Utility.AlertType.PERMISSION_DENIED)) {
             Utility.navigateToAppSettings(this)
             finish()
         }
