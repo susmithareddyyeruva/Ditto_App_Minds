@@ -146,6 +146,7 @@ class MyFolderDetailFragment : BaseFragment(), Utility.CustomCallbackDialogListe
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        (parentFragment as MyLibraryFragment?)?.hideSearchLayout()
     }
 
     fun callSearchResult(terms: String) {
