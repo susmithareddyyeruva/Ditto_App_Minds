@@ -60,7 +60,7 @@
                 app:layout_constraintVertical_bias=".6"
                 app:layout_constraintHeight_percent=".58"
                 app:layout_constraintWidth_percent=".6"
-                tools:src="@drawable/my_folder_icon">
+                tools:src="@drawable/folder_yellow_icon">
 
             </ImageView>
 
