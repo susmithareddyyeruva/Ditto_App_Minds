@@ -187,7 +187,7 @@
                     android:layout_marginStart="3dp"
                     android:paddingStart="@dimen/padding_small_3"
                     android:text="@{data.title}"
-                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
                     android:singleLine="true"
                     android:textColor="@color/needle_grey"
                     android:textSize="@dimen/size_14sp"
