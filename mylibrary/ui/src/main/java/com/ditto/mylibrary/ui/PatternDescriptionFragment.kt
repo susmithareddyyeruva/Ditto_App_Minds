@@ -1134,13 +1134,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                     withContext(Dispatchers.Main) {
                         showProgress(false)
-                        baseViewModel.activeSocketConnection.set(true)
+                        baseViewModel?.activeSocketConnection?.set(true)
                         enterWorkspace()
                     }
                 } else {
                     withContext(Dispatchers.Main) {
                         showProgress(false)
-                        baseViewModel.activeSocketConnection.set(false)
+                        baseViewModel?.activeSocketConnection?.set(false)
                         enterWorkspace()
                     }
                 }
