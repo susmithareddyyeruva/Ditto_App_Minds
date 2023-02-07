@@ -50,7 +50,7 @@ class ViewModelDelegate<out T : ViewModel> constructor(
     }
 
     private fun Fragment.requireParentActivity(): FragmentActivity {
-        val activity: FragmentActivity? = this.activity
+        val activity: FragmentActivity? = this.requireActivity()
         return activity ?: throw IllegalStateException(
             "${this.javaClass.simpleName} is not attached to activity but " +
                     "$ACTIVITY scope has been requested"
