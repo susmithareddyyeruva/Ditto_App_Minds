@@ -76,6 +76,7 @@ class ManageDeviceFragment : BaseFragment(), Utility.CustomCallbackDialogListene
     }
 
     private fun setAdapter() {
+        receivedServiceList?.sortBy { list -> list.nsdServiceName}
         val adapter = ManageDeviceAdapter(requireContext(), receivedServiceList!!, viewModel)
         binding.rvManageDevice.adapter = adapter
     }

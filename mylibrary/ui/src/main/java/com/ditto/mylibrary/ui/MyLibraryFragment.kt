@@ -524,10 +524,7 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             }
             MyLibraryViewModel.Event.OnCancelClick -> {
-                viewModel.isSearchEnabled.set(false)
-                requireActivity().window
-                    .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-                binding.editSearch.text?.clear()
+                hideSearchLayout()
                 //  allPatternsFragment.cleaFilterData()
                 val tabPosition = binding.tabLayout.selectedTabPosition
                 if (tabPosition == 0) {
@@ -551,6 +548,13 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
             }
         }
+
+    internal fun hideSearchLayout() {
+        viewModel.isSearchEnabled.set(false)
+        requireActivity().window
+            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        binding.editSearch.text?.clear()
+    }
 
     override fun onSetCount(title: String) {
         viewModel.myLibraryTitle.set(title)

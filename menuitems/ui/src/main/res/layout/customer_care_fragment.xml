@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:background="@drawable/icon_email"
+                android:background="@drawable/email_icon"
                 app:layout_constraintStart_toStartOf="@+id/imagestart"
                 app:layout_constraintTop_toBottomOf="@+id/imagetop" />
 
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:background="@drawable/icon_phone"
+                android:background="@drawable/phone_icon"
                 app:layout_constraintStart_toStartOf="@+id/phn_imagestart"
                 app:layout_constraintTop_toBottomOf="@+id/phn_imagetop" />
 

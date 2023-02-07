@@ -67,41 +67,44 @@
             app:layout_constraintTop_toBottomOf="@+id/top_border"
             app:viewModel="@{viewModel}" />
 
-        <TextView
-            android:id="@+id/txt_pattern_pieces"
+        <LinearLayout
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
-            android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_selected:@drawable/pattern_button_unselected}"
-            android:elevation="@dimen/elevation_pieces_reference"
-            android:fontFamily="@font/avenir_next_lt_pro_demi"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.clickPatternReference(true)}"
-            android:text="@string/pattern_pieces"
-            android:textColor="@color/needle_grey"
-            android:textSize="@dimen/text_reference_layout"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
-            app:layout_constraintEnd_toStartOf="@+id/txt_reeferance_layout"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt_reeferance_layout"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_0"
-            android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
-            android:elevation="@dimen/elevation_pieces_reference"
-            android:visibility="@{viewModel.showReferenceLayout}"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.clickPatternReference(false)}"
-            android:text="@string/reference_layout"
-            android:textColor="@color/needle_grey"
-            android:textSize="@dimen/text_reference_layout"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_top"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_pattern_pieces"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/txt_pattern_pieces"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_selected:@drawable/pattern_button_unselected}"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.clickPatternReference(true)}"
+                android:text="@string/pattern_pieces"
+                android:textColor="@color/needle_grey"
+                android:textSize="@dimen/text_reference_layout" />
+
+            <TextView
+                android:id="@+id/txt_reeferance_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="@{viewModel.clickedPattenPieces?@drawable/pattern_button_unselected:@drawable/pattern_button_selected}"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:gravity="center"
+                android:visibility="@{viewModel.showReferenceLayout}"
+                android:onClick="@{() -> viewModel.clickPatternReference(false)}"
+                android:text="@string/reference_layout"
+                android:textColor="@color/needle_grey"
+                android:textSize="@dimen/text_reference_layout" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="@dimen/dimen_0"
@@ -177,22 +180,20 @@
             app:layout_constraintEnd_toStartOf="@+id/select_layout_info"
             app:layout_constraintTop_toBottomOf="@+id/top_border" />
 
-        <TextView
+        <ImageView
             android:id="@+id/select_layout_info"
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_0"
             android:layout_marginEnd="@dimen/large_padding"
-            android:paddingStart="@dimen/medium_padding"
-            android:paddingBottom="@dimen/large_padding"
-            android:paddingTop="@dimen/large_padding"
             android:visibility="visible"
             android:elevation="@dimen/elevation_pieces_reference"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:text="?"
+            android:src="@drawable/question_mark_icon_yellow"
             android:onClick="@{() -> viewModel.selectLayoutClick()}"
-            android:textColor="@color/default_text_color"
-            android:textSize="@dimen/text_size_select_layout"
             app:layout_constraintEnd_toEndOf="parent"
+            android:paddingBottom="@dimen/info_image_padding"
+            android:paddingTop="@dimen/info_image_padding"
+            app:layout_constraintDimensionRatio=".71"
+            app:layout_constraintWidth_percent=".033"
             app:layout_constraintTop_toTopOf="@+id/txt_select_layout"
             app:layout_constraintBottom_toBottomOf="@+id/txt_select_layout" />
 

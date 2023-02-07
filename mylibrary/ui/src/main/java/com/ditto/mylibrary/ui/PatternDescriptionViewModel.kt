@@ -126,7 +126,7 @@ class PatternDescriptionViewModel @Inject constructor(
             }
             is FilterError -> {
                 thirdpartyApiError = error.message
-                uiEvents.post(Event.OnThridPartyFetchError)
+                if(!thirdpartyApiError.isNullOrEmpty()) uiEvents.post(Event.OnThridPartyFetchError)
             }
             else -> {
                 uiEvents.post(Event.OnDataloadFailed)

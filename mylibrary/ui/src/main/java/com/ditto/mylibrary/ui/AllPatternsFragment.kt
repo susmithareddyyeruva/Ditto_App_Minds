@@ -99,6 +99,7 @@ class AllPatternsFragment(
         currentPage = 1
         isLastPage = false
         viewModel.fetchOnPatternData(viewModel.createJson(currentPage, value = ""))
+        (parentFragment as MyLibraryFragment?)?.hideSearchLayout()
     }
 
 

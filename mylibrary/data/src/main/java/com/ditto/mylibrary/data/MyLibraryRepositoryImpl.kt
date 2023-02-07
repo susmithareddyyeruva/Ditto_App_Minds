@@ -554,7 +554,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toDomain())
             else
-                Result.withError(FilterError(""))
+                Result.withError(FilterError(ERROR_FETCH))
         }
     }
 
@@ -590,7 +590,7 @@ class MyLibraryRepositoryImpl @Inject constructor(
             if (offlinePatternData != null)
                 Result.withValue(offlinePatternData.toPatternIDDomain())
             else
-                Result.withError(FilterError(""))
+                Result.withError(FilterError(ERROR_FETCH))
         }
     }
 
