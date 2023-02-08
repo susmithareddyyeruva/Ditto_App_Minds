@@ -417,7 +417,7 @@ class ConnectivityActivity : AppCompatActivity(),
         override fun onServiceDisconnected(componentName: ComponentName) {
             Log.d(ConnectivityUtils.TAG, "BluetoothLeService-onServiceDisconnected")
             mBluetoothLeService = null
-
+            isBinded = false
         }
     }
 
@@ -441,6 +441,8 @@ class ConnectivityActivity : AppCompatActivity(),
     private fun startBLESearch() {
         if (isBinded) {
             unbindService(mServiceConnection)
+            // below lines are added to fix intermittent crash while opting for connectivity
+            mBluetoothLeService = null
             isBinded = false
         }
         mLeDeviceListAdapter = LeDeviceListAdapter()
