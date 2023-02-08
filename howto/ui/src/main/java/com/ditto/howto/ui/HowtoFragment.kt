@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.howto_fragment.*
@@ -35,7 +36,7 @@ import javax.inject.Inject
  * Created by Sesha on  15/08/2020.
  * Fragment class for loading  How To Screen
  */
-class HowtoFragment : BaseFragment() {
+class HowtoFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -121,22 +122,46 @@ class HowtoFragment : BaseFragment() {
                     var title =
                         viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
 
-                    val bundle = bundleOf(
-                        "videoPath" to viewModel.videoUrl,
-                        "title" to title,
-                        "from" to "tutorial"
-                    )
+                    if(viewModel.videoUrl.isNotEmpty()) {
+                        val bundle = bundleOf(
+                            "videoPath" to viewModel.videoUrl,
+                            "title" to title,
+                            "from" to "tutorial"
+                        )
 
-                    /*    findNavController().navigate(
-                            com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
-                            bundle
-                        )*/
+                        /*    findNavController().navigate(
+                                com.example.home_ui.R.id.action_destination_howto_to_nav_graph_id_video,
+                                bundle
+                            )*/
 
-                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
+                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                    } else {
+                        Utility.getCommonAlertDialogue(
+                            requireContext(),
+                            "",
+                            getString(core.lib.R.string.no_video_available),
+                            "",
+                            getString(core.lib.R.string.str_ok),
+                            this,
+                            Utility.AlertType.NETWORK,
+                            Utility.Iconype.FAILED
+                        )
+                    }
+
 
                 } else {
+                    Utility.getCommonAlertDialogue(
+                        requireContext(),
+                        "",
+                        getString(core.lib.R.string.no_video_available),
+                        "",
+                        getString(core.lib.R.string.str_ok),
+                        this,
+                        Utility.AlertType.NETWORK,
+                        Utility.Iconype.FAILED
+                    )
                 }
             }
             else -> {
@@ -259,5 +284,17 @@ class HowtoFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.isWatchVideoClicked.set(false)
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType,
+    ) {
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType,
+    ) {
     }
 }

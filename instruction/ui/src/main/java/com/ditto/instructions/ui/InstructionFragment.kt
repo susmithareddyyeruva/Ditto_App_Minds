@@ -53,7 +53,7 @@ import javax.inject.Inject
 class InstructionFragment constructor(
     val position: Int = 0,
     val isFromHome: Boolean = false,
-) : BaseFragment(), Utility.CallbackDialogListener {
+) : BaseFragment(), Utility.CallbackDialogListener, Utility.CustomCallbackDialogListener {
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -340,7 +340,20 @@ class InstructionFragment constructor(
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
             }
-            displayFullScreenVideo(filePath,"tutorial")
+            if(filePath?.isNotEmpty() == true) {
+                displayFullScreenVideo(filePath,"tutorial")
+            } else {
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    getString(core.lib.R.string.no_video_available),
+                    "",
+                    getString(core.lib.R.string.str_ok),
+                    this,
+                    Utility.AlertType.NETWORK,
+                    Utility.Iconype.FAILED
+                )
+            }
         }
     }
 
@@ -771,6 +784,19 @@ class InstructionFragment constructor(
         } else {
             arrayOf(Manifest.permission.BLUETOOTH)
         }
+    }
+
+    override fun onCustomPositiveButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType,
+    ) {
+
+    }
+
+    override fun onCustomNegativeButtonClicked(
+        iconype: Utility.Iconype,
+        alertType: Utility.AlertType,
+    ) {
     }
 
 }

@@ -183,16 +183,29 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                 )
 
                 if (viewModel.clickedId.get() == ONBOARDING.VIDEODEMO.id) {
-                    val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),
-                        "title" to "ditto tour",
-                        "from" to "tutorial")
-                    /*findNavController().navigate(
-                        R.id.action_destination_onboarding_to_nav_graph_id_video,
-                        bundle
-                    )*/
-                    val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
+                    if (viewModel.getDemoVideoUrl().isNotEmpty()){
+                        val bundle = bundleOf("videoPath" to viewModel.getDemoVideoUrl(),
+                            "title" to "ditto tour",
+                            "from" to "tutorial")
+                        /*findNavController().navigate(
+                            R.id.action_destination_onboarding_to_nav_graph_id_video,
+                            bundle
+                        )*/
+                        val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                    } else {
+                        Utility.getCommonAlertDialogue(
+                            requireContext(),
+                            "",
+                            getString(core.lib.R.string.no_video_available),
+                            "",
+                            getString(core.lib.R.string.str_ok),
+                            this,
+                            Utility.AlertType.NETWORK,
+                            Utility.Iconype.FAILED
+                        )
+                    }
                 }
                 else if (viewModel.clickedId.get() == ONBOARDING.FAQANDGLOSSARY.id) {
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {

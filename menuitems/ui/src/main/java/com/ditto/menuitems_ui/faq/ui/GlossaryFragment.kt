@@ -18,6 +18,7 @@ import com.ditto.menuitems_ui.faq.ui.adapters.GlossaryAdapter
 import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import javax.inject.Inject
 
 class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
@@ -45,22 +46,50 @@ class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
         super.onActivityCreated(savedInstanceState)
         val glossaryAdapter = context?.let {
             GlossaryAdapter(
-                it,list,object :WatchVideoClickListener{
+                it,list,object :WatchVideoClickListener, Utility.CustomCallbackDialogListener {
                     override fun onVideoClick(path: String) {
                         logger.d("path== " + path,)
-                        if (findNavController().currentDestination?.id == R.id.nav_graph_mainfaq ||
-                            findNavController().currentDestination?.id == R.id.destination_faq_glossary ){
-                            val bundle =
-                                bundleOf(
-                                    "videoPath" to path,
-                                    "title" to "Glossary",
-                                    "from" to "tutorial"
-                                )
+                        if (path.isNotEmpty()) {
+                            if (findNavController().currentDestination?.id == R.id.nav_graph_mainfaq ||
+                                findNavController().currentDestination?.id == R.id.destination_faq_glossary ){
+                                val bundle =
+                                    bundleOf(
+                                        "videoPath" to path,
+                                        "title" to "Glossary",
+                                        "from" to "tutorial"
+                                    )
 
-                            val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
-                            intent.putExtras(bundle)
-                            startActivity(intent)
+                                val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            }
+                        } else {
+                            Utility.getCommonAlertDialogue(
+                                requireContext(),
+                                "",
+                                getString(core.lib.R.string.no_video_available),
+                                "",
+                                getString(core.lib.R.string.str_ok),
+                                this,
+                                Utility.AlertType.NETWORK,
+                                Utility.Iconype.FAILED
+                            )
                         }
+
+                    }
+
+                    override fun onCustomPositiveButtonClicked(
+                        iconype: Utility.Iconype,
+                        alertType: Utility.AlertType,
+                    ) {
+
+                    }
+
+                    override fun onCustomNegativeButtonClicked(
+                        iconype: Utility.Iconype,
+                        alertType: Utility.AlertType,
+                    ) {
+
                     }
 
                 },object :VisitSiteListener{

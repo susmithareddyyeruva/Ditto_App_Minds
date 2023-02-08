@@ -19,6 +19,7 @@ import com.ditto.menuitems_ui.faq.ui.adapters.FAQAdapter
 import com.ditto.videoplayer.CustomPlayerControlActivity
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
+import core.ui.common.Utility
 import javax.inject.Inject
 
 
@@ -50,22 +51,49 @@ class FAQFragment(var fAQ: List<FAQDomain>) : BaseFragment() {
         val faqadapter = context?.let {
             FAQAdapter(
                 it,
-                fAQ, object : WatchVideoClickListener {
+                fAQ, object : WatchVideoClickListener, Utility.CustomCallbackDialogListener {
                     override fun onVideoClick(path: String) {
                         logger.d("path== " + path,)
-                        if (findNavController().currentDestination?.id == R.id.nav_graph_mainfaq ||
-                            findNavController().currentDestination?.id == R.id.destination_faq_glossary ){
-                            val bundle =
-                                bundleOf(
-                                    "videoPath" to path,
-                                    "title" to "FAQ",
-                                    "from" to "tutorial"
-                                )
+                        if (path.isNotEmpty()) {
+                            if (findNavController().currentDestination?.id == R.id.nav_graph_mainfaq ||
+                                findNavController().currentDestination?.id == R.id.destination_faq_glossary ){
+                                val bundle =
+                                    bundleOf(
+                                        "videoPath" to path,
+                                        "title" to "FAQ",
+                                        "from" to "tutorial"
+                                    )
 
-                            val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
-                            intent.putExtras(bundle)
-                            startActivity(intent)
+                                val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            }
+                        } else {
+                            Utility.getCommonAlertDialogue(
+                                requireContext(),
+                                "",
+                                getString(core.lib.R.string.no_video_available),
+                                "",
+                                getString(core.lib.R.string.str_ok),
+                                this,
+                                Utility.AlertType.NETWORK,
+                                Utility.Iconype.FAILED
+                            )
                         }
+
+                    }
+
+                    override fun onCustomPositiveButtonClicked(
+                        iconype: Utility.Iconype,
+                        alertType: Utility.AlertType,
+                    ) {
+
+                    }
+
+                    override fun onCustomNegativeButtonClicked(
+                        iconype: Utility.Iconype,
+                        alertType: Utility.AlertType,
+                    ) {
                     }
                 }, object : VisitSiteListener {
                     override fun onVisitClick(url: String) {
