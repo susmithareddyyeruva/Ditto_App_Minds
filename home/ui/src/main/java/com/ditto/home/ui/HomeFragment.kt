@@ -410,7 +410,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
         alertType: Utility.AlertType
     ) {
         if (versionResult?.response?.versionUpdate == true) {
-            val packageName = context?.packageName
+            val packageName = "com.jodito.ditto"
             try {
                 startActivity(
                     Intent(

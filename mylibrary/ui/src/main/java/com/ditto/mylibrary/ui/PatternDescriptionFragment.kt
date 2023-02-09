@@ -1539,7 +1539,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.versionUpdate == true) {
-                    val packageName = "com.joann.ditto"
+                    val packageName = "com.jodito.ditto"
                     try {
                         startActivity(
                             Intent(
