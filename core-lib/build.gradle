@@ -31,18 +31,18 @@ android {
             buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
-            buildConfigField "String", 'SERVER', '"dev"'
-            buildConfigField "String", 'BASEURL', '"https://development.dittopatterns.com/"'
-            buildConfigField "String", 'DITTO_URL', '"https://development.dittopatterns.com/"'
+            buildConfigField "String", 'SERVER', '"production"'
+            buildConfigField "String", 'BASEURL', '"https://www.dittopatterns.com/"'
+            buildConfigField "String", 'DITTO_URL', '"https://www.dittopatterns.com/"'
             buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/ditto"'
             buildConfigField "String", 'COMMON_ENDURL', '"s/ditto/dw/shop/v19_1/"'
             buildConfigField "String", 'WORKSPACE_ENDURL', '"s/-/dw/data/v19_1/"'
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
             buildConfigField "String", "TAILORNOVA_ENDURL", '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
-            buildConfigField "String", 'CLIENT_ID', '"59eb4dd9-026d-4bac-adb5-2e5848d91263"'
-            buildConfigField "String", 'SIGN_UP_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
-            buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
-            buildConfigField "String", 'SUBSCRIPTION_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
+            buildConfigField "String", 'CLIENT_ID', '"7734380a-c2b8-471d-b813-377aee89e4ec"'
+            buildConfigField "String", 'SIGN_UP_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
+            buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
+            buildConfigField "String", 'SUBSCRIPTION_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
         }
         debug {
             debuggable true
