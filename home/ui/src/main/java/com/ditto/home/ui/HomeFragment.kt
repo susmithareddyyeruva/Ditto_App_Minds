@@ -415,7 +415,7 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("market://details?id=$packageName")
+                        Uri.parse(versionResult?.response?.confirmLink ?: "market://details?id=$packageName")
                     )
                 )
             } catch (e: ActivityNotFoundException) {

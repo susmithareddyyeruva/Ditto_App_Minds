@@ -18,14 +18,14 @@ import core.binding.BindableAdapter
 class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolder>(),
     BindableAdapter<List<OnboardingData>> {
 
-    private val images = intArrayOf(R.drawable.onboard_beam,R.drawable.onboard_calib,R.drawable.onboard_howto,R.drawable.onboarding_demo_video)
+//    private val images = intArrayOf(R.drawable.onboard_beam,R.drawable.onboard_calib,R.drawable.onboard_howto,R.drawable.onboarding_demo_video)
 
     lateinit var viewModel: OnboardingViewModel
     private var onBoarding: List<OnboardingData> = emptyList()
     var mutableList : MutableList<OnboardingData> = mutableListOf()
 
     override fun setListData(items: List<OnboardingData>) {
-        val i1 = OnboardingData(4,"FAQs & Glossary","See FAQs, tips & words to know","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
+        val i1 = OnboardingData(4,"FAQs & Glossary","See FAQs, tips & words to know","https://www.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2a81a8a0/mobileTraceImages/Tutorial_Tile_FAQs.jpg")
 //        val i2 = OnboardingData(5,"Take a Tour","Watch the demo video","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
        // items.toMutableList().add(i)
         onBoarding = items
@@ -47,18 +47,23 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
         holder.rowonboardingBinding.onboardingValue = mutableList[position]
         holder.rowonboardingBinding.viewModel = viewModel
         //holder.rowonboardingBinding.imageView.setBackgroundResource(images[position])
-        if (position == 4) {
-            holder.rowonboardingBinding.imagePlay.visibility = View.VISIBLE
-            Glide.with(holder.rowonboardingBinding.cardView.context)
-                .load(R.drawable.onboarding_demo_video)
-                .placeholder(R.drawable.ic_placeholder)
-                .into(holder.rowonboardingBinding.imageView)
-        } else {
-            Glide.with(holder.rowonboardingBinding.cardView.context)
-                .load(mutableList[position].image)
-                .placeholder(R.drawable.ic_placeholder)
-                .into(holder.rowonboardingBinding.imageView)
+        when (mutableList[position].id) {
+            5 -> {
+                //Workspace
+                holder.rowonboardingBinding.imagePlay.visibility = View.VISIBLE
+                Glide.with(holder.rowonboardingBinding.cardView.context)
+                    .load(R.drawable.onboarding_demo_video)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(holder.rowonboardingBinding.imageView)
+            }
+            else -> {
+                Glide.with(holder.rowonboardingBinding.cardView.context)
+                    .load(mutableList[position].image)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(holder.rowonboardingBinding.imageView)
+            }
         }
+
     }
 
     inner class OnBoardingHolder(val rowonboardingBinding: OnboardingItemBinding,viewType: Int) :

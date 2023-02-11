@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.joann.ditto",
+  "applicationId": "com.jodito.ditto",
   "variantName": "release",
   "elements": [
     {
@@ -14,7 +14,7 @@
       "versionCode": 1,
       "versionName": "1",
       "enabled": true,
-      "outputFile": "ditto_0_41(01).apk"
+      "outputFile": "ditto_0_0_1.apk"
     }
   ]
 }

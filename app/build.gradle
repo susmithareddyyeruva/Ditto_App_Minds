@@ -76,8 +76,8 @@ android {
         targetSdkVersion 33
         versionCode 1
 
-       versionName "0.42(01)"
-    //    versionName "1.0.22"
+//       versionName "0.42(01)"
+        versionName "0.0.1"
 
         multiDexEnabled true
 
@@ -89,7 +89,7 @@ android {
     buildTypes {
         release {
             debuggable false
-            manifestPlaceholders = [appName: "Ditto Patterns"]
+            manifestPlaceholders = [appName: "Ditto Patterns",deeplink: "www.dittopatterns.com"]
 //            minifyEnabled true
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -98,7 +98,7 @@ android {
         }
         debug {
             applicationIdSuffix ".qa"
-            manifestPlaceholders = [appName: "QA Ditto Patterns"]
+            manifestPlaceholders = [appName: "QA Ditto Patterns",deeplink: "development.dittopatterns.com"]
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
@@ -108,7 +108,7 @@ android {
         }
         staging {
             applicationIdSuffix ".qa"
-            manifestPlaceholders = [appName: "Dev11 Ditto Patterns"]
+            manifestPlaceholders = [appName: "Dev11 Ditto Patterns",deeplink: "development.dittopatterns.com"]
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
@@ -118,7 +118,7 @@ android {
         }
         qa {
             applicationIdSuffix ".qa"
-            manifestPlaceholders = [appName: "qa Ditto Patterns"]
+            manifestPlaceholders = [appName: "qa Ditto Patterns",deeplink: "development.dittopatterns.com"]
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
@@ -226,8 +226,8 @@ dependencies {
     /**
      * Microsoft app center
      */
-    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+//    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+//    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     /**
      * Firebase
