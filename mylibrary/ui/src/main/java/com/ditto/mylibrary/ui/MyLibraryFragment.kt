@@ -647,6 +647,6 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

@@ -1240,7 +1240,7 @@ class ConnectivityActivity : AppCompatActivity(),
         iconype: core.ui.common.Utility.Iconype,
         alertType: core.ui.common.Utility.AlertType,
     ) {
-
+        // TODO("Not yet implemented")
     }
 
     private fun showLayouts(
