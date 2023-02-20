@@ -1134,13 +1134,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
                     withContext(Dispatchers.Main) {
                         showProgress(false)
-                        baseViewModel.activeSocketConnection.set(true)
+                        baseViewModel?.activeSocketConnection?.set(true)
                         enterWorkspace()
                     }
                 } else {
                     withContext(Dispatchers.Main) {
                         showProgress(false)
-                        baseViewModel.activeSocketConnection.set(false)
+                        baseViewModel?.activeSocketConnection?.set(false)
                         enterWorkspace()
                     }
                 }
@@ -1539,12 +1539,12 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             Utility.AlertType.SOFTWARE_UPDATE -> {
                 if (versionResult?.response?.versionUpdate == true) {
-                    val packageName = "com.joann.ditto"
+                    val packageName = "com.jodito.ditto"
                     try {
                         startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=$packageName")
+                                Uri.parse(versionResult?.response?.confirmLink ?: "market://details?id=$packageName")
                             )
                         )
                     } catch (e: ActivityNotFoundException) {

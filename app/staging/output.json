@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.joann.ditto",
+  "applicationId": "com.jodito.ditto.qa",
   "variantName": "staging",
   "elements": [
     {
@@ -14,7 +14,7 @@
       "versionCode": 1,
       "versionName": "1",
       "enabled": true,
-      "outputFile": "ditto_dev11_0_39(01).apk"
+      "outputFile": "ditto_dev11_1_0_0.apk"
     }
   ]
 }

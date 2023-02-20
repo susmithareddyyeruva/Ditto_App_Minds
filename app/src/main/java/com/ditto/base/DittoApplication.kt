@@ -6,9 +6,6 @@ import android.content.pm.PackageManager
 import com.ditto.BuildConfig
 import com.ditto.base.core.di.DaggerAppComponent
 //import com.facebook.stetho.Stetho
-import com.microsoft.appcenter.AppCenter
-import com.microsoft.appcenter.analytics.Analytics
-import com.microsoft.appcenter.crashes.Crashes
 import core.appstate.AppState
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -32,10 +29,10 @@ class DittoApplication : DaggerApplication() {
         type chrome://inspect and select device and sql under resources*/
 //        Stetho.initializeWithDefaults(this)
 
-        AppCenter.start(
-            this, BuildConfig.APP_CENTER_KEY ,
-            Analytics::class.java, Crashes::class.java
-        )
+//        AppCenter.start(
+//            this, BuildConfig.APP_CENTER_KEY ,
+//            Analytics::class.java, Crashes::class.java
+//        )
         AppState.init(this)
         setAppVersion()
     }

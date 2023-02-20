@@ -15,8 +15,8 @@ android {
         targetSdkVersion 33
         versionCode 1
 
- //       versionName "0.41(02)"
-        versionName "1.0.22"
+//        versionName "0.42(01)"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -28,21 +28,22 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             /*  buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://www.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
-            buildConfigField "String", 'SERVER', '"dev"'
-            buildConfigField "String", 'BASEURL', '"https://development.dittopatterns.com/"'
-            buildConfigField "String", 'DITTO_URL', '"https://development.dittopatterns.com/"'
+            buildConfigField "String", 'SERVER', '"production"'
+            buildConfigField "String", 'BASEURL', '"https://www.dittopatterns.com/"'
+            buildConfigField "String", 'DITTO_URL', '"https://www.dittopatterns.com/"'
             buildConfigField "String", 'JOANN_URL', '"https://www.joann.com/ditto"'
             buildConfigField "String", 'COMMON_ENDURL', '"s/ditto/dw/shop/v19_1/"'
             buildConfigField "String", 'WORKSPACE_ENDURL', '"s/-/dw/data/v19_1/"'
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
             buildConfigField "String", "TAILORNOVA_ENDURL", '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
-            buildConfigField "String", 'CLIENT_ID', '"59eb4dd9-026d-4bac-adb5-2e5848d91263"'
-            buildConfigField "String", 'SIGN_UP_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
-            buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
-            buildConfigField "String", 'SUBSCRIPTION_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
+            buildConfigField "String", 'CLIENT_ID', '"7734380a-c2b8-471d-b813-377aee89e4ec"'
+            buildConfigField "String", 'TRACKING_ID', '"6NrlCNXMkXruFBuU3OwPM9BgNI1s7ZbO"'
+            buildConfigField "String", 'SIGN_UP_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
+            buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
+            buildConfigField "String", 'SUBSCRIPTION_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
         }
         debug {
             debuggable true
@@ -59,6 +60,7 @@ android {
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
             buildConfigField "String", 'TAILORNOVA_ENDURL', '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"59eb4dd9-026d-4bac-adb5-2e5848d91263"'
+            buildConfigField "String", 'TRACKING_ID', '"ZGl0dG9hbmRyb2lk"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
            buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
@@ -79,6 +81,7 @@ android {
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
             buildConfigField "String", 'TAILORNOVA_ENDURL', '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
+            buildConfigField "String", 'TRACKING_ID', '"ZGl0dG9hbmRyb2lk"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- STAGING
             buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- STAGING
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- STAGING
@@ -97,6 +100,7 @@ android {
             buildConfigField "String", 'MYLIBRARY_ENDURL', '"on/demandware.store/Sites-ditto-Site/default/"'
             buildConfigField "String", 'TAILORNOVA_ENDURL', '"http://localhost:8080/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"59eb4dd9-026d-4bac-adb5-2e5848d91263"'
+            buildConfigField "String", 'TRACKING_ID', '"ZGl0dG9hbmRyb2lk"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
             buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV

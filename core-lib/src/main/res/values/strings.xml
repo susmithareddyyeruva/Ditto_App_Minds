@@ -58,4 +58,5 @@
     <string name="camera_permissions_denied">Please provide Camera permission from settings to use this feature.</string>
     <string name="go_back">GO BACK</string>
     <string name="dittofy_message">Hang tight. Ditto is still working on your pattern, but it should be ready soon. Sorry for the delay, please try again in a little bit.</string>
+    <string name="no_video_available">No Video Available</string>
 </resources>

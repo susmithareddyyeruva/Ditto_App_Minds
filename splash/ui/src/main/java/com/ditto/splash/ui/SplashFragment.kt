@@ -164,7 +164,7 @@ class SplashFragment : BaseFragment(),Utility.CustomCallbackDialogListener {
     ) {
         val packageName = context?.packageName
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(versionResult?.response?.confirmLink ?:"market://details?id=$packageName")))
         } catch (e: ActivityNotFoundException) {
             startActivity(
                 Intent(

@@ -71,13 +71,13 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.joann.ditto"
+        applicationId "com.jodito.ditto"
         minSdkVersion 23
         targetSdkVersion 33
         versionCode 1
 
-   //    versionName "0.41(02)"
-        versionName "1.0.22"
+//       versionName "0.42(01)"
+        versionName "1.0.0"
 
         multiDexEnabled true
 
@@ -89,6 +89,7 @@ android {
     buildTypes {
         release {
             debuggable false
+            manifestPlaceholders = [appName: "Ditto Patterns",deeplink: "www.dittopatterns.com"]
 //            minifyEnabled true
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -96,6 +97,8 @@ android {
             signingConfig signingConfigs.release
         }
         debug {
+            applicationIdSuffix ".qa"
+            manifestPlaceholders = [appName: "QA Ditto Patterns",deeplink: "development.dittopatterns.com"]
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
@@ -104,6 +107,8 @@ android {
             buildConfigField "String", "APP_CENTER_KEY", "\"965a12cd-7f40-45ed-88de-6432d3d40155\""  // -- QA
         }
         staging {
+            applicationIdSuffix ".qa"
+            manifestPlaceholders = [appName: "Dev11 Ditto Patterns",deeplink: "development.dittopatterns.com"]
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
@@ -112,6 +117,8 @@ android {
             buildConfigField "String", "APP_CENTER_KEY", "\"965a12cd-7f40-45ed-88de-6432d3d40155\""  // -- QA
         }
         qa {
+            applicationIdSuffix ".qa"
+            manifestPlaceholders = [appName: "qa Ditto Patterns",deeplink: "development.dittopatterns.com"]
             // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
             debuggable true
             ext.alwaysUpdateBuildId = false
@@ -219,8 +226,8 @@ dependencies {
     /**
      * Microsoft app center
      */
-    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+//    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+//    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     /**
      * Firebase

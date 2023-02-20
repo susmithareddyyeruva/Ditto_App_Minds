@@ -186,6 +186,6 @@ class AboutAppFragment : BaseFragment(),Utility.CustomCallbackDialogListener  {
         iconype: Utility.Iconype,
         alertType: Utility.AlertType
     ) {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

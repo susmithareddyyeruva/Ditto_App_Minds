@@ -441,6 +441,9 @@ class ConnectivityActivity : AppCompatActivity(),
     private fun startBLESearch() {
         if (isBinded) {
             unbindService(mServiceConnection)
+            // below lines are added to fix intermittent crash while opting for connectivity
+            mBluetoothLeService = null
+            isBinded = false
         }
         mLeDeviceListAdapter = LeDeviceListAdapter()
         runOnUiThread {
@@ -1237,7 +1240,7 @@ class ConnectivityActivity : AppCompatActivity(),
         iconype: core.ui.common.Utility.Iconype,
         alertType: core.ui.common.Utility.AlertType,
     ) {
-
+        // TODO("Not yet implemented")
     }
 
     private fun showLayouts(

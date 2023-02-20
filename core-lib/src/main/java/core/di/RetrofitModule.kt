@@ -5,7 +5,6 @@ import android.util.Log
 import core.MOCK_API_CERT
 import core.TAILORNOVA_API_KEY
 import core.TAILORNOVA_API_KEY_VALUE
-import core.TRACKING_ID
 import core.appstate.AppState
 import core.data.model.TokenResult
 import core.di.scope.*
@@ -285,7 +284,7 @@ class HmacSignatureInterceptor : Interceptor {
             $params
             """.trimIndent()
         //Log.d("generateSignature", stringToHash);
-        val trackingId: String = TRACKING_ID
+        val trackingId: String = BuildConfig.TRACKING_ID
         var sha256Hmac: Mac? = null
         try {
             sha256Hmac = Mac.getInstance("HmacSHA256")

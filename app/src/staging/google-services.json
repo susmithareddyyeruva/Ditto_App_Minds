@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "145471676463",
+    "project_id": "ditto-patterns-qa",
+    "storage_bucket": "ditto-patterns-qa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145471676463:android:c112e917b35cbb98c9e6da",
+        "android_client_info": {
+          "package_name": "com.jodito.ditto.qa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145471676463-9m0p2t336tglqk0kfiv4k07o28hm1ucq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jodito.ditto.qa",
+            "certificate_hash": "d46e78d1a3218aa8b8bddc1d1b78afde5aff5256"
+          }
+        },
+        {
+          "client_id": "145471676463-lpmckkqp53phbjonf8ac8agki4p2hgf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8BIET_fQU95o8Dlntaonbu-WAhVUcD5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145471676463-lpmckkqp53phbjonf8ac8agki4p2hgf9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "145471676463-3t4p0lnmtho7ukfg0kpjamt0r9oqdok1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jodito.ditto-qa"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
