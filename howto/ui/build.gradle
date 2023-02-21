@@ -86,6 +86,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 //    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
+    implementation "com.github.barteksc:android-pdf-viewer:$pdf_reader"
+
     implementation project(path: ':core-lib')
     implementation project(path: ':non-core-lib')
     implementation project(path: ':howto-domain')

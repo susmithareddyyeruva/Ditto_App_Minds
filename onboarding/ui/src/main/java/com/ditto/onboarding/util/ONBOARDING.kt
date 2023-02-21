@@ -2,8 +2,9 @@ package com.ditto.onboarding.util
 
 enum class ONBOARDING(val id: Int) {
     BEAMSETUP(1),
-    CALIBERATION(2),
-    HOWTO(3),
-    FAQANDGLOSSARY(4),
-    VIDEODEMO(5)
+    CONNECTIVITY(2),
+    CALIBERATION(3),
+    HOWTO(4),
+    FAQANDGLOSSARY(5),
+    VIDEODEMO(6)
 }

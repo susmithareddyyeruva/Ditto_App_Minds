@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/text_content_header"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -97,7 +97,26 @@
                     android:textSize="@dimen/content_header_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineTop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.2" />
+
+                <ImageView
+                    android:id="@+id/pdfIcon"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_baseline_picture_as_pdf_24"
+                    app:layout_constraintHeight_percent=".3"
+                    app:layout_constraintBottom_toTopOf="@id/text_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:onClick="@{() -> viewModel.onDownloadPdfClick()}"
+                    app:layout_constraintTop_toTopOf="@id/guidelineTop" />
 
                 <TextView
                     android:id="@+id/text_content"
@@ -113,10 +132,13 @@
                     android:scrollbars="vertical"
                     android:textColor="@color/needle_grey"
                     android:textSize="@dimen/content_text_size"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:text="Download PDF Instructions"
                     app:layout_constraintBottom_toTopOf="@+id/linear_last_beam_step"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_content_header" />
+                    app:layout_constraintTop_toBottomOf="@+id/pdfIcon" />
 
                 <View
                     android:id="@+id/scroll_view_border"

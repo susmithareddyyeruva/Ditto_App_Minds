@@ -76,10 +76,10 @@
             android:scaleType="fitCenter"
             app:layout_constraintVertical_bias="0"
             android:src="@drawable/ic_workspace_layout"
-            app:layout_constraintBottom_toBottomOf="@id/text_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guide_content_end"
             app:layout_constraintStart_toStartOf="@+id/guide_content_start"
-            app:layout_constraintTop_toTopOf="@+id/text_header"
+            app:layout_constraintTop_toTopOf="@+id/guide_image_top"
             />
         <!--android:onClick="@{()->viewModel.onItemClick(instructionvalues.videopath1,instructionvalues.title1)}"-->
 
@@ -96,7 +96,40 @@
             app:layout_constraintHeight_percent=".3"
             app:layout_constraintStart_toStartOf="@+id/image_step"
             app:layout_constraintTop_toTopOf="@+id/image_step" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelinePdfTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".25" />
+
+        <ImageView
+            android:id="@+id/pdfIcon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_baseline_picture_as_pdf_24"
+            app:layout_constraintHeight_percent=".3"
+            app:layout_constraintBottom_toTopOf="@id/pdfText"
+            app:layout_constraintEnd_toEndOf="@id/guide_image_end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guidelinePdfTop" />
+
         <TextView
+            android:id="@+id/pdfText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/small_padding"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:gravity="center_vertical|top"
+            android:text="Download Instructions Pdf"
+            android:textColor="@color/needle_grey"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintEnd_toEndOf="@id/guide_image_end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pdfIcon"/>
+
+        <!--<TextView
             android:id="@+id/text_header"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="wrap_content"
@@ -109,7 +142,7 @@
             android:visibility="@{position==0 ? View.GONE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@id/guide_image_end"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_image_top" />
+            app:layout_constraintTop_toBottomOf="@+id/guide_image_top" />-->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_content_start"
@@ -118,33 +151,33 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent=".20" />
 
-        <TextView
-            android:id="@+id/text_content"
-            android:layout_width="@dimen/size_0dp"
-            android:layout_height="@dimen/size_0dp"
-            android:fadeScrollbars="false"
-            android:paddingEnd="@dimen/margin_text"
-            android:layout_marginStart="@dimen/tutorial_content_start"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            android:textColor="@color/needle_grey"
-            android:textSize="@dimen/content_text_size"
-            android:fontFamily="@font/avenir_next_lt_pro_regular"
-            android:lineSpacingMultiplier="1.25"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guide_image_end"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_header" />
+        <!-- <TextView
+             android:id="@+id/text_content"
+             android:layout_width="@dimen/size_0dp"
+             android:layout_height="@dimen/size_0dp"
+             android:fadeScrollbars="false"
+             android:paddingEnd="@dimen/margin_text"
+             android:layout_marginStart="@dimen/tutorial_content_start"
+             android:scrollbarStyle="outsideOverlay"
+             android:scrollbars="vertical"
+             android:textColor="@color/needle_grey"
+             android:textSize="@dimen/content_text_size"
+             android:fontFamily="@font/avenir_next_lt_pro_regular"
+             android:lineSpacingMultiplier="1.25"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="@id/guide_image_end"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/text_header" />
 
-        <View
-            android:id="@+id/scroll_view_border"
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:background="@color/instruction_content_text"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/text_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_content" />
+         <View
+             android:id="@+id/scroll_view_border"
+             android:layout_width="0dp"
+             android:layout_height="0.5dp"
+             android:background="@color/instruction_content_text"
+             android:visibility="gone"
+             app:layout_constraintEnd_toEndOf="@+id/text_content"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/text_content" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

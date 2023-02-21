@@ -156,12 +156,16 @@ class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() 
             is HowtoViewModel.Event.OnItemClick -> {
                 Log.d("event12", "OnVideoPlay")
             }
+            is HowtoViewModel.Event.OnDownloadPdfClicked -> {
+                Log.d("event12", "OnDownloadPdfClicked")
+            }
             HowtoViewModel.Event.OnSkipTutorial -> {
                 Log.d("event","OnSkipTutorial")
             }
             HowtoViewModel.Event.OnSpinchAndZoom -> {
                 Log.d("event","OnSpinchAndZoom")
             }
+
         }
 
     override fun onResume() {

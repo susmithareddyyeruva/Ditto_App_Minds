@@ -48,8 +48,8 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
         val inflater = LayoutInflater.from(parent.context)
         val binding = InstructionCalibrationAdapterBinding.inflate(inflater, parent, false)
         binding.viewModel = viewModel
-        binding.textContentHeader.text = instructiondata[position].title
-        binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        /*binding.textContentHeader.text = instructiondata[position].title
+        binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)*/
         if (!instructiondata.get(position).imagePath.equals("")) {
             /*val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
@@ -65,7 +65,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
             })
         }
 
-        val observer: ViewTreeObserver = binding.scrollViewContent.viewTreeObserver
+        /*val observer: ViewTreeObserver = binding.scrollViewContent.viewTreeObserver
         observer.addOnGlobalLayoutListener {
             val viewHeight: Int = binding.scrollViewContent.measuredHeight
             val contentHeight: Int = binding.scrollViewContent.getChildAt(0).height
@@ -74,7 +74,7 @@ class InstructionCalibrationAdapter() : PagerAdapter(), BindableAdapter<List<Ins
             } else {
                 binding.scrollViewBorder.visibility = View.GONE
             }
-        }
+        }*/
 
         parent.addView(binding.root)
         return binding.root

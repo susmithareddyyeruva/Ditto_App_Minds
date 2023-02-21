@@ -95,9 +95,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent=".15" />
+                    app:layout_constraintGuide_percent=".35" />
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:id="@+id/linear_Content_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -157,16 +157,42 @@
 
                     </androidx.core.widget.NestedScrollView>
 
-                </LinearLayout>
+                </LinearLayout>-->
+
+                <ImageView
+                    android:id="@+id/pdfIcon"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_baseline_picture_as_pdf_24"
+                    app:layout_constraintHeight_percent=".3"
+                    app:layout_constraintBottom_toTopOf="@id/pdfText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:onClick="@{() -> viewModel.onDownloadPdfClick()}"
+                    app:layout_constraintTop_toTopOf="@id/guideline_header_top" />
+
+                <TextView
+                    android:id="@+id/pdfText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/small_padding"
+                    android:fontFamily="@font/avenir_next_lt_pro_regular"
+                    android:gravity="center_vertical|top"
+                    android:text="Download Instructions Pdf"
+                    android:textColor="@color/needle_grey"
+                    android:textSize="@dimen/content_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pdfIcon"/>
 
                 <View
                     android:id="@+id/scroll_view_border"
                     android:layout_width="0dp"
                     android:layout_height="0.5dp"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@+id/linear_content"
+                    app:layout_constraintEnd_toEndOf="@+id/pdfText"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/linear_content"
+                    app:layout_constraintTop_toBottomOf="@id/pdfText"
                     tools:visibility="visible" />
                 <!--                android:background="@color/instruction_content_text"-->
 
@@ -197,7 +223,7 @@
                     app:layout_constraintHeight_percent=".103"
                     app:layout_constraintHorizontal_bias=".0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_content"
+                    app:layout_constraintTop_toBottomOf="@+id/pdfText"
                     app:layout_constraintVertical_bias="0"
                     app:layout_constraintWidth_default="percent"
                     app:layout_constraintWidth_percent=".40" />

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tutorial_instructions_nav_graph"
+    app:startDestination="@id/tutorialPdfFragment">
+
+    <fragment android:id="@+id/tutorialPdfFragment"
+        android:name="com.ditto.instructions.ui.TutorialPdfFragment"
+        android:label="@string/tutorial_instructions"/>
+
+</navigation>

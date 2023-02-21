@@ -15,5 +15,7 @@ data class Instruction(
     @SerializedName("title")
     val title: String?,
     @SerializedName("videoPath")
-    val videoPath: String?
+    val videoPath: String?,
+    @SerializedName("tutorialPdfUrl")
+    var tutorialPdfUrl: String = ""
 )

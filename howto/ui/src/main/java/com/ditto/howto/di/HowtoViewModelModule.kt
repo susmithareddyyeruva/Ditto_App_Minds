@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.ditto.howto.ui.HowtoFragment
 import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto.fragment.TabContentFragment
+import com.ditto.howto.ui.HowtoInstructionsFragment
+import com.ditto.howto.ui.HowtoInstructionsViewModel
 import core.ui.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -21,6 +23,11 @@ interface HowtoViewModelModule {
     @ViewModelKey(HowtoViewModel::class)
     fun bindHowtoViewModel(viewModel: HowtoViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(HowtoInstructionsViewModel::class)
+    fun bindHowtoInstructionsViewModel(viewModel: HowtoInstructionsViewModel): ViewModel
+
 }
 
 @Module
@@ -30,5 +37,8 @@ interface HowtoFragmentModule{
 
     @ContributesAndroidInjector(modules = [HowtoViewModelModule::class])
     fun tabcontentfragment() : TabContentFragment
+
+    @ContributesAndroidInjector(modules = [HowtoViewModelModule::class])
+    fun howtoInstructionsFragment() : HowtoInstructionsFragment
 
 }

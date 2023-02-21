@@ -155,7 +155,7 @@ class InstructionFragment constructor(
      * [Function] Setting values in adapter class
      */
     private fun setInstructionadapter() {
-        if (viewModel.instructionID.get() == 2) {
+        if (viewModel.instructionID.get() == 2 || viewModel.instructionID.get() == 3) {
             val adapter =
                 InstructionCalibrationAdapter()
             binding.instructionViewPager.adapter = adapter
@@ -228,7 +228,69 @@ class InstructionFragment constructor(
                 false
             )
             is InstructionViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
+
+            is InstructionViewModel.Event.OnDownloadPdfClicked -> {
+                onDownloadPdfClicked()
+            }
         }
+
+    private fun onDownloadPdfClicked() {
+        var sampleUrl =
+            "https://s3-us-east-2.amazonaws.com/splicing-app/Prod20220609/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379_instruction.pdf"
+        val filePath = if (viewModel.instructionID.get() == 1) {
+            viewModel.data.value?.instructions?.get(position)?.instructions?.get(
+                binding.instructionViewPager.currentItem
+            )?.tutorialPdfUrl
+        } else {
+            viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.tutorialPdfUrl
+        }
+
+        if (!filePath.isNullOrEmpty()) {
+            if (findNavController().currentDestination?.id == R.id.destination_instruction
+            ) {
+                var title = if (position == 0) {
+                    "Beam Setup"
+                } else {
+                    "Beam Takedown"
+                }
+                var bundle = Bundle()
+                bundle =
+                    bundleOf(
+                        "InstructionPdfUrl" to filePath,
+                        "InstructionPdfTitle" to title
+                    )
+                findNavController().navigate(
+                    R.id.action_instructionFragment_to_tutorialPdfFragment,
+                    bundle
+                )
+
+            } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
+                val title = viewModel.data.value?.title
+                var bundle = Bundle()
+                bundle =
+                    bundleOf(
+                        "InstructionPdfUrl" to filePath,
+                        "InstructionPdfTitle" to title
+                    )
+                findNavController().navigate(
+                    R.id.action_instructionFragment_to_tutorialPdfFragment,
+                    bundle
+                )
+            }
+        } else {
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                getString(core.lib.R.string.no_pdf_available),
+                "",
+                getString(core.lib.R.string.str_ok),
+                this,
+                Utility.AlertType.NETWORK,
+                Utility.Iconype.FAILED
+            )
+        }
+
+    }
 
     /**
      * [Function] Skip Tutorial text clicked
@@ -460,10 +522,14 @@ class InstructionFragment constructor(
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             } else {
-                viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
                 toolbar.setNavigationIcon(R.drawable.ic_back_button)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                if (viewModel.instructionID.get() == 3)
+                    viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
+                else {
+                    viewModel.toolbarTitle.set(getString(R.string.connectivity_header))
+                }
             }
         } else {
             bottomNavViewModel.visibility.set(false)

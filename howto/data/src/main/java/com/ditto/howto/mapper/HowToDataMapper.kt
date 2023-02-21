@@ -16,6 +16,7 @@ internal fun OnBoarding.toDomain(): HowToData {
         description1 = this.description,
         imagePath1 = this.imagepath,
         videopath1 = this.videoPath,
+        tutorialPdfUrl1 = this.tutorialPdfUrl,
         instructions1 = this.instructions.map { it.toDomain() }
     )
 }

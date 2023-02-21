@@ -26,6 +26,9 @@ data class OnBoarding(
     @ColumnInfo(name = "videoPath")
     @SerializedName("videoPath")
     var videoPath: String = "",
+    @ColumnInfo(name = "tutorialPdfUrl")
+    @SerializedName("tutorialPdfUrl")
+    var tutorialPdfUrl: String = "",
     @ColumnInfo(name = "instructions")
     @SerializedName("instructions")
     var instructions: List<Instructions> = emptyList()
