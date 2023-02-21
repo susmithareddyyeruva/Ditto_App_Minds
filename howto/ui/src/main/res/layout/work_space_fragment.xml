@@ -106,28 +106,28 @@
 
         <ImageView
             android:id="@+id/pdfIcon"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_baseline_picture_as_pdf_24"
-            app:layout_constraintHeight_percent=".3"
-            app:layout_constraintBottom_toTopOf="@id/pdfText"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_0"
+            android:src="@drawable/pdf_download_icon"
+            app:layout_constraintWidth_percent=".17"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guide_image_end"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/guidelinePdfTop" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/pdfText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/small_padding"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:gravity="center_vertical|top"
-            android:text="Download Instructions Pdf"
+            android:text="@string/download_pdf_instructions"
             android:textColor="@color/needle_grey"
-            android:textSize="@dimen/content_text_size"
+            android:textSize="@dimen/content_header_text_size"
             app:layout_constraintEnd_toEndOf="@id/guide_image_end"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pdfIcon"/>
+            app:layout_constraintTop_toBottomOf="@+id/pdfIcon"/>-->
 
         <!--<TextView
             android:id="@+id/text_header"

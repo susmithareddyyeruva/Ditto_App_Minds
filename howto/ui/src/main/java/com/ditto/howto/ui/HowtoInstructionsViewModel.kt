@@ -25,7 +25,6 @@ class HowtoInstructionsViewModel @Inject constructor(
     val utility: Utility,
 ) : BaseViewModel() {
     val patternpdfuri: ObservableField<String> = ObservableField("")
-    var pdfInputstream : InputStream? = null
     var toolbarTitle: ObservableField<String> = ObservableField("")
 
     @Inject
@@ -78,35 +77,25 @@ class HowtoInstructionsViewModel @Inject constructor(
 
     private fun convertInputStreamToFile(
         inputStream: InputStream,
-        filename: String
+        filename: String,
     ): File? {
         var result: File? = null
         var dittofolder: File? = null
         dittofolder = if (Build.VERSION.SDK_INT >= 30) {
             File(
                 context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                    .toString() + "/" + "Instructions"
+                    .toString() + "/" + "Tutorial"
             )
         } else {
             File(
-                Environment.getExternalStorageDirectory().toString() + "/" + "Instructions"
+                Environment.getExternalStorageDirectory().toString() + "/" + "Tutorial"
             )
         }
-
-        // uncomment following line to save file in internal app memory
-        //dittofolder = contextWrapper.getDir("DittoPattern", Context.MODE_PRIVATE)
-
-        /*
-        code for creating folder with pattern name
-        val file = File(dittofolder, "/${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "")+".pdf"}")
-        file.mkdirs()*/
 
         if (!dittofolder.exists()) {
             dittofolder.mkdir()
         }
 
-//        val filename =
-//            "${patternFolderName.toString().replace("[^A-Za-z0-9 ]".toRegex(), "") + ".pdf"}"
         val filename =
             "${filename.toString()}.pdf"
         result = File(dittofolder, filename)
@@ -131,48 +120,24 @@ class HowtoInstructionsViewModel @Inject constructor(
         val directory = if (Build.VERSION.SDK_INT >= 30) {
             File(
                 context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                    .toString() + "/" + "Instructions"
+                    .toString() + "/" + "Tutorial"
             )
         } else {
             File(
-                Environment.getExternalStorageDirectory().toString() + "/" + "Instructions"
+                Environment.getExternalStorageDirectory().toString() + "/" + "Tutorial"
             )
         }
-
         val pdfFile = File(directory, "${filename.toString()}.pdf")
-
         var path: Uri? = null
         if (pdfFile.exists()) {
             path = Uri.fromFile(pdfFile)
         } else {
             path = null
         }
-
         return path
     }
 
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun loadPDF(url: String) {
-        try {
-            withContext(Dispatchers.IO) {
-                val inputStream: InputStream
-                val url: URL = URL(url)
-                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-                conn.requestMethod = "GET"
-                conn.connect()
-                if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = BufferedInputStream(conn.inputStream)
-                    if (inputStream != null)
-                        pdfInputstream = inputStream
-                    onFinished()
-                }
-            }
-        } catch (e: Exception) {
-            logger.d("PatternDescriptionViMol, ${e.message}")
-        }
     }
 }

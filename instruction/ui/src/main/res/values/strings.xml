@@ -23,5 +23,6 @@
     <string name="cancel">CANCEL</string>
     <string name="tutorial_instructions">Tutorial Instructions</string>
     <string name="connectivity_header">Connectivity</string>
+    <string name="download_pdf_instructions">Download PDF Instructions</string>
 
 </resources>

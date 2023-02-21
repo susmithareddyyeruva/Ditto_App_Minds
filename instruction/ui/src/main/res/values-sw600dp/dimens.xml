@@ -15,4 +15,5 @@
     <dimen name="size_skip_button_width">12.98dp</dimen>
     <dimen name="size_skip_button_height">12.91dp</dimen>
     <dimen name="start_margin_skip_icon">23dp</dimen>
+    <dimen name="pdf_icon_padding">12dp</dimen>
 </resources>

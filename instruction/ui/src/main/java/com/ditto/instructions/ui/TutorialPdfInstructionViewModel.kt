@@ -26,7 +26,6 @@ class TutorialPdfInstructionViewModel @Inject constructor(
     val utility: Utility,
 ) : BaseViewModel() {
     val patternpdfuri: ObservableField<String> = ObservableField("")
-    var pdfInputstream : InputStream? = null
     var toolbarTitle: ObservableField<String> = ObservableField("")
 
     @Inject
@@ -86,11 +85,11 @@ class TutorialPdfInstructionViewModel @Inject constructor(
         dittofolder = if (Build.VERSION.SDK_INT >= 30) {
             File(
                 context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                    .toString() + "/" + "Instructions"
+                    .toString() + "/" + "Tutorial"
             )
         } else {
             File(
-                Environment.getExternalStorageDirectory().toString() + "/" + "Instructions"
+                Environment.getExternalStorageDirectory().toString() + "/" + "Tutorial"
             )
         }
 
@@ -121,16 +120,14 @@ class TutorialPdfInstructionViewModel @Inject constructor(
         val directory = if (Build.VERSION.SDK_INT >= 30) {
             File(
                 context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                    .toString() + "/" + "Instructions"
+                    .toString() + "/" + "Tutorial"
             )
         } else {
             File(
-                Environment.getExternalStorageDirectory().toString() + "/" + "Instructions"
+                Environment.getExternalStorageDirectory().toString() + "/" + "Tutorial"
             )
         }
-
         val pdfFile = File(directory, "${filename.toString()}.pdf")
-
         var path: Uri? = null
         if (pdfFile.exists()) {
             path = Uri.fromFile(pdfFile)
@@ -143,26 +140,5 @@ class TutorialPdfInstructionViewModel @Inject constructor(
 
     fun onFinished() {
         uiEvents.post(Event.OnDownloadComplete)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun loadPDF(url: String) {
-        try {
-            withContext(Dispatchers.IO) {
-                val inputStream: InputStream
-                val url: URL = URL(url)
-                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-                conn.requestMethod = "GET"
-                conn.connect()
-                if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = BufferedInputStream(conn.inputStream)
-                    if (inputStream != null)
-                        pdfInputstream = inputStream
-                    onFinished()
-                }
-            }
-        } catch (e: Exception) {
-            logger.d("PatternDescriptionViMol, ${e.message}")
-        }
     }
 }

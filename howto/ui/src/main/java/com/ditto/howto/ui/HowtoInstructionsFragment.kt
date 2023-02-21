@@ -25,22 +25,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.InputStream
 import javax.inject.Inject
 
-class HowtoInstructionsFragment: BaseFragment(), Utility.CustomCallbackDialogListener {
+class HowtoInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
     private val viewModel: HowtoInstructionsViewModel by ViewModelDelegate()
     lateinit var binding: FragmentHowtoInstructionsBinding
     var downloadFileName: String? = null
+    var pdfUrl = ""
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
     val logger: Logger by lazy {
         loggerFactory.create(HowtoInstructionsFragment::class.java.simpleName)
     }
-
-    var sampleUrl =
-        "https://s3-us-east-2.amazonaws.com/splicing-app/Prod20220609/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379_instruction.pdf"
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -74,7 +71,7 @@ class HowtoInstructionsFragment: BaseFragment(), Utility.CustomCallbackDialogLis
         super.onActivityCreated(savedInstanceState)
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        sampleUrl = arguments?.getString("InstructionPdfUrl").toString()
+        pdfUrl = arguments?.getString("InstructionPdfUrl").toString()
         viewModel.toolbarTitle.set(arguments?.getString("InstructionPdfTitle").toString())
         viewModel.toolbarTitle.get()
             ?.let { (activity as BottomNavigationActivity).setToolbarTitle(it) }
@@ -105,7 +102,6 @@ class HowtoInstructionsFragment: BaseFragment(), Utility.CustomCallbackDialogLis
                 REQUEST_CODE_PERMISSIONS
             )
         }
-        //checkavailablefile()
     }
 
     private fun setUIEvents() {
@@ -118,23 +114,17 @@ class HowtoInstructionsFragment: BaseFragment(), Utility.CustomCallbackDialogLis
 
     private fun handleEvent(event: HowtoInstructionsViewModel.Event) =
         when (event) {
-            HowtoInstructionsViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(viewModel.patternpdfuri.get()))
+            HowtoInstructionsViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
+                viewModel.patternpdfuri.get()))
             else -> logger.d("Error, Invaid Event")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
-        if (!sampleUrl.isNullOrEmpty()) {
-           /* try {
-
-                pdfdownload()
-
-            } catch (e: Exception) {
-                logger.d("EXCEPTION,${e.localizedMessage}")
-            }*/
+        if (!pdfUrl.isNullOrEmpty()) {
             try {
                 downloadFileName =
-                    sampleUrl?.substring(sampleUrl!!.lastIndexOf('/'), sampleUrl!!.length)
+                    pdfUrl?.substring(pdfUrl!!.lastIndexOf('/'), pdfUrl!!.length)
                 val availableUri = downloadFileName?.let {
                     viewModel.isFileAvailable(it)
                 }
@@ -152,14 +142,10 @@ class HowtoInstructionsFragment: BaseFragment(), Utility.CustomCallbackDialogLis
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun pdfdownload() {
-
         if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
-                //load from url
-               // viewModel.loadPDF(sampleUrl)
-                //download and load pdf
-                downloadFileName?.let { viewModel.downloadPDF(sampleUrl, it) }
+                downloadFileName?.let { viewModel.downloadPDF(pdfUrl, it) }
             }
         } else {
             showNetworkError()
@@ -181,18 +167,6 @@ class HowtoInstructionsFragment: BaseFragment(), Utility.CustomCallbackDialogLis
             }
             .load()
     }
-
-    private fun showPdfFromInputStream(inputStream: InputStream) {
-        binding.pdfView.fromStream(inputStream)
-            .defaultPage(0) // set the default page to open
-            .scrollHandle(DefaultScrollHandle(requireContext()))
-            .onError { showRedownload() }
-            .onPageError { page, _ -> showRedownload() }
-            .load()
-
-        bottomNavViewModel.showProgress.set(false)
-    }
-
 
     /**
      * [Function] Function to check permissions for opening camera

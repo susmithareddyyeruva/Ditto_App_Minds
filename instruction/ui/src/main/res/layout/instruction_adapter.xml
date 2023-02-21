@@ -108,34 +108,28 @@
 
                 <ImageView
                     android:id="@+id/pdfIcon"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:src="@drawable/ic_baseline_picture_as_pdf_24"
-                    app:layout_constraintHeight_percent=".3"
-                    app:layout_constraintBottom_toTopOf="@id/text_content"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="@dimen/dimen_0"
+                    android:src="@drawable/pdf_download_icon"
+                    app:layout_constraintWidth_percent=".37"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:onClick="@{() -> viewModel.onDownloadPdfClick()}"
-                    app:layout_constraintTop_toTopOf="@id/guidelineTop" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/text_content"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/instruction_margin"
-                    android:layout_marginBottom="@dimen/margin_text"
-                    android:fadeScrollbars="false"
+                    android:paddingTop="@dimen/pdf_icon_padding"
                     android:fontFamily="@font/avenir_next_lt_pro_regular"
-                    android:lineSpacingMultiplier="1.25"
-                    android:paddingEnd="@dimen/margin_text"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:scrollbars="vertical"
                     android:textColor="@color/needle_grey"
-                    android:textSize="@dimen/content_text_size"
+                    android:textSize="@dimen/content_header_text_size"
                     android:gravity="center_horizontal"
                     android:textAlignment="center"
-                    android:text="Download PDF Instructions"
-                    app:layout_constraintBottom_toTopOf="@+id/linear_last_beam_step"
+                    android:text="@string/download_pdf_instructions"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pdfIcon" />
@@ -148,7 +142,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/text_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_content"
-                    tools:visibility="visible" />
+                    tools:visibility="visible" />-->
                 <!--                android:background="@color/instruction_content_text"-->
 
                 <androidx.constraintlayout.widget.Guideline
@@ -180,7 +174,7 @@
                     app:layout_constraintHeight_percent=".103"
                     app:layout_constraintHorizontal_bias=".0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_content"
+                    app:layout_constraintTop_toBottomOf="@+id/pdfIcon"
                     app:layout_constraintVertical_bias="0"
                     app:layout_constraintWidth_default="percent"
                     app:layout_constraintWidth_percent=".40" />

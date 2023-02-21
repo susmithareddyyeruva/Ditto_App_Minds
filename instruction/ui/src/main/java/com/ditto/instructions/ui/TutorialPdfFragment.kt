@@ -12,14 +12,11 @@ import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
 import com.ditto.instructions.ui.databinding.FragmentTutorialPdfBinding
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.workspace.ui.R
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import core.PDF_DOWNLOAD_URL
-//import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import core.ui.BaseFragment
 import core.ui.BottomNavigationActivity
 import core.ui.ViewModelDelegate
@@ -28,7 +25,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.InputStream
 import javax.inject.Inject
 
 class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
@@ -36,6 +32,7 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
     lateinit var binding: FragmentTutorialPdfBinding
     var downloadFileName: String? = null
+    var pdfUrl = ""
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -43,8 +40,6 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
         loggerFactory.create(TutorialPdfFragment::class.java.simpleName)
     }
 
-    var sampleUrl =
-        "https://s3-us-east-2.amazonaws.com/splicing-app/Prod20220609/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379_instruction.pdf"
 
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
@@ -78,7 +73,7 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
         super.onActivityCreated(savedInstanceState)
         toolbarViewModel.isShowActionBar.set(false)
         bottomNavViewModel.visibility.set(false)
-        sampleUrl = arguments?.getString("InstructionPdfUrl").toString()
+        pdfUrl = arguments?.getString("InstructionPdfUrl").toString()
         viewModel.toolbarTitle.set(arguments?.getString("InstructionPdfTitle").toString())
         viewModel.toolbarTitle.get()
             ?.let { (activity as BottomNavigationActivity).setToolbarTitle(it) }
@@ -109,7 +104,6 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
                 REQUEST_CODE_PERMISSIONS
             )
         }
-        //checkavailablefile()
     }
 
     private fun setUIEvents() {
@@ -122,26 +116,17 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
     private fun handleEvent(event: TutorialPdfInstructionViewModel.Event) =
         when (event) {
-            TutorialPdfInstructionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(viewModel.patternpdfuri.get()))
-            /*viewModel.pdfInputstream?.let {
-                showPdfFromInputStream(it)
-            }*/
+            TutorialPdfInstructionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
+                viewModel.patternpdfuri.get()))
             else -> logger.d("Error, Invaid Event")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
-        if (!sampleUrl.isNullOrEmpty()) {
-            /*try {
-
-                    pdfdownload()
-
-            } catch (e: Exception) {
-                logger.d("EXCEPTION,${e.localizedMessage}")
-            }*/
+        if (!pdfUrl.isNullOrEmpty()) {
             try {
                 downloadFileName =
-                    sampleUrl?.substring(sampleUrl!!.lastIndexOf('/'), sampleUrl!!.length)
+                    pdfUrl?.substring(pdfUrl!!.lastIndexOf('/'), pdfUrl!!.length)
                 val availableUri = downloadFileName?.let {
                     viewModel.isFileAvailable(it)
                 }
@@ -159,12 +144,11 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun pdfdownload() {
-
         if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
-                   // viewModel.loadPDF(sampleUrl)
-                downloadFileName?.let { viewModel.downloadPDF(sampleUrl, it) }
+                // viewModel.loadPDF(sampleUrl)
+                downloadFileName?.let { viewModel.downloadPDF(pdfUrl, it) }
             }
         } else {
             showNetworkError()
@@ -186,18 +170,6 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
             }
             .load()
     }
-
-    private fun showPdfFromInputStream(inputStream: InputStream) {
-        binding.pdfView.fromStream(inputStream)
-            .defaultPage(0) // set the default page to open
-            .scrollHandle(DefaultScrollHandle(requireContext()))
-            .onError { showRedownload() }
-            .onPageError { page, _ -> showRedownload() }
-            .load()
-
-        bottomNavViewModel.showProgress.set(false)
-    }
-
 
     /**
      * [Function] Function to check permissions for opening camera

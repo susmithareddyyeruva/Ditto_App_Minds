@@ -70,7 +70,7 @@ class InstructionFragment constructor(
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         if (!::binding.isInitialized) {
             binding = InstructionFragmentBinding.inflate(
@@ -119,7 +119,7 @@ class InstructionFragment constructor(
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int
+                positionOffsetPixels: Int,
             ) {
                 logger.d("onPageScrolled, state scrolled")
             }
@@ -235,8 +235,6 @@ class InstructionFragment constructor(
         }
 
     private fun onDownloadPdfClicked() {
-        var sampleUrl =
-            "https://s3-us-east-2.amazonaws.com/splicing-app/Prod20220609/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379/2909dd87f3a144ad8f540c2ba573dcd8_d619216ef2f34496ba01cff7898e2379_instruction.pdf"
         val filePath = if (viewModel.instructionID.get() == 1) {
             viewModel.data.value?.instructions?.get(position)?.instructions?.get(
                 binding.instructionViewPager.currentItem
@@ -246,9 +244,8 @@ class InstructionFragment constructor(
         }
 
         if (!filePath.isNullOrEmpty()) {
-            if (findNavController().currentDestination?.id == R.id.destination_instruction
-            ) {
-                var title = if (position == 0) {
+            if (findNavController().currentDestination?.id == R.id.destination_instruction) {
+                val title = if (position == 0) {
                     "Beam Setup"
                 } else {
                     "Beam Takedown"
@@ -402,8 +399,8 @@ class InstructionFragment constructor(
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
             }
-            if(filePath?.isNotEmpty() == true) {
-                displayFullScreenVideo(filePath,"tutorial")
+            if (filePath?.isNotEmpty() == true) {
+                displayFullScreenVideo(filePath, "tutorial")
             } else {
                 Utility.getCommonAlertDialogue(
                     requireContext(),
@@ -421,7 +418,7 @@ class InstructionFragment constructor(
 
     private fun displayFullScreenVideo(
         filePath: String?,
-        from: String
+        from: String,
     ) {
         if (findNavController().currentDestination?.id == R.id.destination_instruction
         ) {
@@ -439,7 +436,8 @@ class InstructionFragment constructor(
                  bundle
              )*/
         } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
-            val bundle = bundleOf("videoPath" to filePath, "title" to "Calibration", "from" to from)
+            val title = viewModel.data.value?.title
+            val bundle = bundleOf("videoPath" to filePath, "title" to title, "from" to from)
             val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
@@ -512,7 +510,7 @@ class InstructionFragment constructor(
      */
     private fun setupToolbar() {
         arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
-        if (viewModel?.isFromHome?.get() ?:false) {
+        if (viewModel?.isFromHome?.get() ?: false) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -728,7 +726,7 @@ class InstructionFragment constructor(
 
     private suspend fun sendSampleImage(
         transformedBitmap: Bitmap,
-        isNavigateToCalibration: Boolean
+        isNavigateToCalibration: Boolean,
     ) {
         logger.d("TRACE_ Projection : send Image Start" + Calendar.getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
@@ -821,7 +819,7 @@ class InstructionFragment constructor(
                     howTobuttonclick()
                 }
             }
-        }else if(requestCode == REQUEST_ENABLE_BT) {
+        } else if (requestCode == REQUEST_ENABLE_BT) {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             if (mBluetoothAdapter?.isEnabled == false) {
