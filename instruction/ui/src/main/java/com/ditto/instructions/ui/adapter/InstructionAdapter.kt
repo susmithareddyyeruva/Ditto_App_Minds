@@ -49,8 +49,8 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
         val inflater = LayoutInflater.from(parent.context)
         val binding = InstructionAdapterBinding.inflate(inflater, parent, false)
         binding.viewModel = viewModel
-        binding.textContentHeader.text = instructiondata[position].title
-        binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+     //   binding.textContentHeader.text = instructiondata[position].title
+      //  binding.textContent.text = HtmlCompat.fromHtml(instructiondata.get(position).description, HtmlCompat.FROM_HTML_MODE_LEGACY)
         if (!instructiondata.get(position).imagePath.equals("")) {
            /* val drawable: Drawable? = resID?.let { ResourcesCompat.getDrawable(res,it,null) }
             val bitmap = (drawable as BitmapDrawable).bitmap
@@ -65,7 +65,7 @@ class InstructionAdapter(val tabPosition: Int) : PagerAdapter(),
                 }
             })
         }
-        binding.textContent.setMovementMethod(ScrollingMovementMethod())
+      //  binding.textContent.setMovementMethod(ScrollingMovementMethod())
         parent.addView(binding.root)
         return binding.root
     }

@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
-            android:visibility="@{viewModel.instructionID == 2 ? View.VISIBLE : View.GONE }">
+            android:visibility="@{viewModel.instructionID == 2 || viewModel.instructionID == 3 ? View.VISIBLE : View.GONE }">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

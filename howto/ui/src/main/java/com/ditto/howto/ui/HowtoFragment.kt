@@ -114,6 +114,9 @@ class HowtoFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             is HowtoViewModel.Event.OnSpinchAndZoom -> {
                 showPinchZoomPopup(viewModel.imagePath)
             }
+            is HowtoViewModel.Event.OnDownloadPdfClicked -> {
+                downloadPdfClick()
+            }
             is HowtoViewModel.Event.OnItemClick -> {
 
                 //if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto && Common.currentSelectedTab.get() != 0) {
@@ -168,6 +171,41 @@ class HowtoFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
                 logger.d("button event, Button clicked except onSkip")
             }
         }
+
+    private fun downloadPdfClick() {
+        if (findNavController().currentDestination?.id == com.example.home_ui.R.id.destination_howto) {
+
+            val title =
+                viewModel.data.value?.instructions1?.get(Common.currentSelectedTab.get())?.title
+
+            if (viewModel.tutorialPdfUrl.isNotEmpty()) {
+                var bundle = Bundle()
+                bundle =
+                    bundleOf(
+                        "InstructionPdfUrl" to viewModel.tutorialPdfUrl,
+                        "InstructionPdfTitle" to title
+                    )
+                findNavController().navigate(
+                    R.id.action_instructionFragment_to_howToInstructionsFragment,
+                    bundle
+                )
+            } else {
+                Utility.getCommonAlertDialogue(
+                    requireContext(),
+                    "",
+                    getString(core.lib.R.string.no_pdf_available),
+                    "",
+                    getString(core.lib.R.string.str_ok),
+                    this,
+                    Utility.AlertType.NETWORK,
+                    Utility.Iconype.FAILED
+                )
+            }
+
+        } else {
+
+        }
+    }
 
     fun showPinchZoomPopup(imagePath: String?) {
         val intent = Intent(context, PinchAndZoom::class.java)

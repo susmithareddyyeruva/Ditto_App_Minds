@@ -18,6 +18,7 @@ internal fun OnBoarding.toDomain(): InstructionsData {
         description = this.description,
         imagePath = this.imagepath,
         videoPath = this.videoPath,
+        tutorialPdfUrl = this.tutorialPdfUrl,
         instructions = this.instructions.map { it.toDomain() }
     )
 
@@ -30,6 +31,7 @@ internal fun Instructions.toDomain(): InstructionModel {
         description = this.description,
         imagePath = this.imagePath,
         videoPath = this.videoPath,
+        tutorialPdfUrl = this.tutorialPdfUrl,
         instructions = this.instructions.map { it.toDomain() }
 
     )

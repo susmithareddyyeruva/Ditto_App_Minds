@@ -40,6 +40,7 @@ class HowtoViewModel @Inject constructor(
     var toolbarTitle: ObservableField<String> = ObservableField("")
     var videoUrl: String=""
     var imagePath: String=""
+    var tutorialPdfUrl: String=""
     /**
      *[Function] ViewPager Next Button Click
      */
@@ -112,6 +113,12 @@ class HowtoViewModel @Inject constructor(
         imagePath = imagePathm
         uiEvents.post(Event.OnSpinchAndZoom)
     }
+
+    fun onDownloadPdfClick(tutorialPdfUrl1: String) {
+        tutorialPdfUrl = tutorialPdfUrl1
+        uiEvents.post(Event.OnDownloadPdfClicked)
+    }
+
     /**
      * Events for this view model
      */
@@ -126,6 +133,8 @@ class HowtoViewModel @Inject constructor(
         object OnShowProgress : Event()
         object OnItemClick : Event()
         object OnSpinchAndZoom : Event()
+        object OnDownloadPdfClicked : Event()
+
     }
 
 }

@@ -25,7 +25,7 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
     var mutableList : MutableList<OnboardingData> = mutableListOf()
 
     override fun setListData(items: List<OnboardingData>) {
-        val i1 = OnboardingData(4,"FAQs & Glossary","See FAQs, tips & words to know","https://www.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2a81a8a0/mobileTraceImages/Tutorial_Tile_FAQs.jpg")
+        val i1 = OnboardingData(5,"FAQs & Glossary","See FAQs, tips & words to know","https://www.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2a81a8a0/mobileTraceImages/Tutorial_Tile_FAQs.jpg")
 //        val i2 = OnboardingData(5,"Take a Tour","Watch the demo video","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
        // items.toMutableList().add(i)
         onBoarding = items
@@ -48,7 +48,7 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
         holder.rowonboardingBinding.viewModel = viewModel
         //holder.rowonboardingBinding.imageView.setBackgroundResource(images[position])
         when (mutableList[position].id) {
-            5 -> {
+            6 -> {
                 //Workspace
                 holder.rowonboardingBinding.imagePlay.visibility = View.VISIBLE
                 Glide.with(holder.rowonboardingBinding.cardView.context)
