@@ -74,7 +74,7 @@ android {
         applicationId "com.jodito.ditto"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 1
+        versionCode 4
 
 //       versionName "0.42(01)"
         versionName "1.0.0"
