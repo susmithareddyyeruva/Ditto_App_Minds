@@ -51,6 +51,8 @@ data class WSProUpdateResult(
     val cSpliceMultiplePieceReminder: Boolean,
     @SerializedName("c_cuttingReminder")
     val cCuttingReminder: Boolean,
+    @SerializedName("c_saveCalibrationPhotos")
+    val cSaveCalibrationPhotos: Boolean,
     @SerializedName("c_interestArt")
     val cInterestArt: Boolean,
     @SerializedName("c_interestBridalSpecialOccasionProjects")

@@ -277,7 +277,7 @@
                 app:layout_constraintTop_toBottomOf="@id/linear4" />
 
             <LinearLayout
-                android:id="@+id/linear5"
+                android:id="@+id/linear"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -297,7 +297,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/avenir_next_lt_pro_demi"
                     android:gravity="center_vertical"
-                    android:text="Click to zoom notification"
+                    android:text="@string/click_to_zoom_notification"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_14sp" />
 
@@ -313,6 +313,60 @@
                     app:track="@drawable/custom_track" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/light_grey"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@+id/linear4" />
+
+            <LinearLayout
+                android:id="@+id/linear6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingTop="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp"
+                android:visibility="visible"
+                android:weightSum="2"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start_text"
+                app:layout_constraintTop_toBottomOf="@+id/linear4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/avenir_next_lt_pro_demi"
+                    android:gravity="center_vertical"
+                    android:text="@string/save_calibration_image"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14sp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_calibration_image"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="@{viewmodel.isSaveCalibrationPhotos()}"
+                    android:gravity="end"
+                    android:thumb="@drawable/custom_thumb"
+                    app:showText="false"
+                    app:track="@drawable/custom_track" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/light_grey"
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@+id/linear6" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

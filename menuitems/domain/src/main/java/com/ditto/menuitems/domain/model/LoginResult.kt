@@ -51,5 +51,7 @@ data class LoginResult(
     @SerializedName("c_spliceMultiplePieceReminder")
     val cSpliceMultiplePieceReminder: Boolean,
     @SerializedName("c_spliceReminder")
-    val cSpliceReminder: Boolean
+    val cSpliceReminder: Boolean,
+    @SerializedName("c_saveCalibrationPhotos")
+    val cSaveCalibrationPhotos: Boolean
 )

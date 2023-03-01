@@ -56,14 +56,16 @@ class WorkspaceProRepositoryImpl @Inject constructor(
         cMirrorReminder: Boolean,
         cCuttingReminder: Boolean,
         cSpliceReminder: Boolean,
-        cSpliceMultiplePieceReminder: Boolean
+        cSpliceMultiplePieceReminder: Boolean,
+        cSaveCalibrationPhotos: Boolean
     ): Single<Any> {
         return Single.fromCallable {
             dbDataDao.updateWSSettingUser(
                 cMirrorReminder,
                 cCuttingReminder,
                 cSpliceReminder,
-                cSpliceMultiplePieceReminder
+                cSpliceMultiplePieceReminder,
+                cSaveCalibrationPhotos
             )
         }
     }
@@ -80,7 +82,8 @@ class WorkspaceProRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 dbDataDao.updateWSSettingUser(
                     data.c_mirrorReminder, data.c_cuttingReminder,
-                    data.c_spliceReminder, data.c_spliceMultiplePieceReminder
+                    data.c_spliceReminder, data.c_spliceMultiplePieceReminder,
+                    data.c_saveCalibrationPhotos
                 )
                 Log.d("WorkspaceProRepositoryImpl", "doOnSuccess >>>> ${it.toString()}")
             }.map {

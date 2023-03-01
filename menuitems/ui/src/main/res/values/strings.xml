@@ -46,6 +46,8 @@
     <string name="cut_number_reminder">Cut Number Reminder</string>
     <string name="splicing_notification">Splicing Notification</string>
     <string name="multidirectional_splicing_notification">Multidirectional Splicing Notification</string>
+    <string name="click_to_zoom_notification">Click to zoom notification</string>
+    <string name="save_calibration_image">Save Calibration Image</string>
     <string name="guest_my_folder_message">Guest User does not have this functionality.</string>
     <string name="delete_msg">Are you sure you want to delete the account ?</string>
     <string name="str_dele_account_info">Deleting your account permanently disables access to the Ditto Patterns website and mobile app. Are you sure you want to delete?</string>

@@ -86,6 +86,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     lateinit var finalbitmap: Bitmap
     private var imageAnalyzer: ImageAnalysis? = null
     var isFromHome: Boolean = false
+    var isSaveCalibrationPhotos: Boolean = false
     lateinit var backpressCall: OnBackPressedCallback
     private var isBackPressed: Boolean = true
     private var alertImageConfirmation: AlertDialog? = null
@@ -115,6 +116,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         super.onActivityCreated(savedInstanceState)
         setToolbar()
         arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
+        arguments?.getBoolean("isSaveCalibrationPhotos")?.let { isSaveCalibrationPhotos = (it) }
         outputDirectory = Utility.getOutputDirectory(requireContext())
         cameraExecutor = Executors.newSingleThreadExecutor()
         if (allPermissionsGranted()) {
@@ -334,7 +336,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         logger.d("TRACE_ Projection : performCalibration  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
         viewModel.disposable += Observable.fromCallable {
-            performCalibration(imageArray.toTypedArray(), context?.applicationContext)
+            performCalibration(imageArray.toTypedArray(), context?.applicationContext,isSaveCalibrationPhotos)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

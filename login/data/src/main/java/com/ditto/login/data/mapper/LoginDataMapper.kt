@@ -26,6 +26,7 @@ fun User.toUserDomain(): LoginUser {
         cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
         cSpliceReminder = this.cSpliceReminder,
         cCuttingReminder = this.cCuttingReminder,
+        cSaveCalibrationPhotos = this.cSaveCalibrationPhotos,
         cInitialisationVector = this.cInitialisationVector,
         cVectorKey = this.cVectorKey,
         cSubscriptionValid = this.cSubscriptionValid,
@@ -57,6 +58,7 @@ fun LoginUser.toDomain(): User {
         cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
         cSpliceReminder = this.cSpliceReminder,
         cCuttingReminder = this.cCuttingReminder,
+        cSaveCalibrationPhotos = this.cSaveCalibrationPhotos,
         cInitialisationVector = this.cInitialisationVector,
         cVectorKey = this.cVectorKey,
 
@@ -104,6 +106,7 @@ fun LoginResult.toUserDomain(): LoginResultDomain {
         cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
         cSpliceReminder = this.cSpliceReminder,
         cCuttingReminder = this.cCuttingReminder,
+        cSaveCalibrationPhotos = this.cSaveCalibrationPhotos,
         cInterestArt = this.cInterestArt,
         cInterestBridalSpecialOccasionProjects = this.cInterestBridalSpecialOccasionProjects,
         cInterestClassroomCraftsDecor = this.cInterestClassroomCraftsDecor,
