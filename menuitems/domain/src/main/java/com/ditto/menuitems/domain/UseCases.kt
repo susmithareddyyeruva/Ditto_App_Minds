@@ -10,5 +10,5 @@ import non_core.lib.Result
 interface GetWorkspaceProData{
     fun postSwitchData(data: WSSettingsInputData): Single<Result<WSProSettingDomain>>
     fun getUserDetails():Single<Result<LoginUser>>
-    fun updateWSProSetting(id:Int,cMirrorReminder:Boolean,cCuttingReminder:Boolean,cSpliceReminder:Boolean,cSpliceMultiplePieceReminder:Boolean):Single<Any>
+    fun updateWSProSetting(id:Int,cMirrorReminder:Boolean,cCuttingReminder:Boolean,cSpliceReminder:Boolean,cSpliceMultiplePieceReminder:Boolean,cSaveCalibrationPhotos:Boolean):Single<Any>
 }

@@ -2554,13 +2554,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToCalibration() {
+        var isSaveCalibrationPhotos = viewModel.userData.value?.cSaveCalibrationPhotos ?: false
         // Moving to calibration fragment
         findNavController().navigate(
             R.id.action_workspace_to_calibration,
             bundleOf(
                 "PatternId" to viewModel.patternId.get(),
                 "isFromPatternDescription" to true,
-                "isRecalibrate" to true
+                "isRecalibrate" to true,
+                "isSaveCalibrationPhotos" to isSaveCalibrationPhotos
             )
         )
     }

@@ -28,6 +28,7 @@ data class LoginUser(
     val cSpliceMultiplePieceReminder: Boolean? = true,
     val cSpliceReminder: Boolean? = true,
     val cCuttingReminder: Boolean? = true,
+    val cSaveCalibrationPhotos: Boolean? = false,
     val cInitialisationVector: String? = "",
     val cVectorKey: String? = "",
 

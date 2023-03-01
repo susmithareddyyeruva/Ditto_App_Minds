@@ -26,8 +26,9 @@ class GetWorkspaceProImpl @Inject constructor(
         cMirrorReminder: Boolean,
         cCuttingReminder: Boolean,
         cSpliceReminder: Boolean,
-        cSpliceMultiplePieceReminder: Boolean
+        cSpliceMultiplePieceReminder: Boolean,
+        cSaveCalibrationPhotos: Boolean
     ): Single<Any> {
-        return workspaceProRepository.updateWSProSetting(id, cMirrorReminder, cCuttingReminder, cSpliceReminder, cSpliceMultiplePieceReminder)
+        return workspaceProRepository.updateWSProSetting(id, cMirrorReminder, cCuttingReminder, cSpliceReminder, cSpliceMultiplePieceReminder,cSaveCalibrationPhotos)
     }
 }

@@ -29,6 +29,7 @@ fun WSProUpdateResult.toDomain(): WSProSettingDomain {
         cSpliceCutCompleteReminder = this.cSpliceCutCompleteReminder,
         cSpliceMultiplePieceReminder = this.cSpliceMultiplePieceReminder,
         cCuttingReminder = this.cCuttingReminder,
+        cSaveCalibrationPhotos = this.cSaveCalibrationPhotos,
         cInterestArt = this.cInterestArt,
         cInterestBridalSpecialOccasionProjects = this.cInterestBridalSpecialOccasionProjects,
         cInterestClassroomCraftsDecor = this.cInterestClassroomCraftsDecor,

@@ -118,6 +118,15 @@ class WSProSettingsFragment : BaseFragment(), Utility.CustomCallbackDialogListen
             }
             //viewModel.postBooleanDataForSettings()
         }
+        switch_calibration_image.setOnCheckedChangeListener { _, isChecked ->
+
+            if (!viewModel.isFromErrorPopUp.get()) {
+                viewModel.setSaveCalibrationImage(isChecked)
+            }else{
+                viewModel.isFromErrorPopUp.set(false)
+            }
+            //viewModel.postBooleanDataForSettings()
+        }
 
     }
 
