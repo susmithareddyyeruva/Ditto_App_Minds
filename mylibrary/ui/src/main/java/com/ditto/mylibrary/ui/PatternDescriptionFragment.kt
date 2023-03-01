@@ -366,7 +366,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             arrayOf(Manifest.permission.BLUETOOTH)
         }
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 131
-        private val REQUIRED_PERMISSIONS_DOWNLOAD = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+        private val REQUIRED_PERMISSIONS_DOWNLOAD = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             arrayOf(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE

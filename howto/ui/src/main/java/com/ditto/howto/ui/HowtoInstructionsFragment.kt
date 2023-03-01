@@ -59,7 +59,7 @@ class HowtoInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogLi
      */
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 20
-        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             arrayOf(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
