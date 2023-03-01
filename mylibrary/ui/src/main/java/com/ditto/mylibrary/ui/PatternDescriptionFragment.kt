@@ -366,11 +366,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             arrayOf(Manifest.permission.BLUETOOTH)
         }
         private const val REQUEST_CODE_PERMISSIONS_DOWNLOAD = 131
-        private val REQUIRED_PERMISSIONS_DOWNLOAD = emptyArray<String>()
-//            arrayOf(
-////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                Manifest.permission.READ_EXTERNAL_STORAGE
-//            )
+        private val REQUIRED_PERMISSIONS_DOWNLOAD = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        } else {
+            emptyArray<String>()
+        }
     }
 
     private fun dowloadPermissonGranted() = REQUIRED_PERMISSIONS_DOWNLOAD.all {
@@ -1722,7 +1725,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (directory.exists()) {
             val folders = directory.listFiles()
             val listOfCommonFiles: ArrayList<File> = ArrayList(emptyList())
-            if (patterns != null) {
+            if (patterns != null && !folders.isNullOrEmpty()) {
                 for (file in folders) {
                     var fileName = file.name
                     if (fileName.contains(".pdf")) {
@@ -1740,13 +1743,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 }
 
+            } else {
+                logger.d("folder is null")
             }
 
-            val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete.size}")
-            for (file in filesToDelete) {
-                val d = deleteDirectory(file)
-                logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
+            val filesToDelete = folders?.toSet()?.minus(listOfCommonFiles.toSet())
+            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete?.size}")
+            if (filesToDelete != null && filesToDelete.isNotEmpty()) {
+                for (file in filesToDelete) {
+                    val d = deleteDirectory(file)
+                    logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
+                }
             }
         }
         deletePDF(patterns)
@@ -1771,7 +1778,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (directory.exists()) {
             val folders = directory.listFiles()
             val listOfCommonFiles: ArrayList<File> = ArrayList(emptyList())
-            if (patterns != null) {
+            if (patterns != null && !folders.isNullOrEmpty()) {
                 for (file in folders) {
                     var fileName = file.name
                     if (fileName.contains(".pdf")) {
@@ -1790,13 +1797,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     }
                 }
 
+            } else {
+                logger.d("folder is null")
             }
 
-            val filesToDelete = folders.toSet().minus(listOfCommonFiles.toSet())
-            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete.size}")
-            for (file in filesToDelete) {
-                val d = deleteDirectory(file)
-                logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
+            val filesToDelete = folders?.toSet()?.minus(listOfCommonFiles.toSet())
+            logger.d("deleteFolderFun12, File to delete  >> Name: ${filesToDelete?.size}")
+            if (filesToDelete != null && filesToDelete.isNotEmpty()) {
+                for (file in filesToDelete) {
+                    val d = deleteDirectory(file)
+                    logger.d("deleteFolderFun, RESULT: ${file.name} >>> $d")
+                }
             }
         }
         checkSocketConnectionBeforeWorkspace()

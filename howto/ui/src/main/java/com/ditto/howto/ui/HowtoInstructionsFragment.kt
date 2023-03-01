@@ -1,5 +1,6 @@
 package com.ditto.howto.ui
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -58,11 +59,14 @@ class HowtoInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogLi
      */
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 20
-        private val REQUIRED_PERMISSIONS = emptyArray<String>()
-//            arrayOf(
-////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                Manifest.permission.READ_EXTERNAL_STORAGE
-//            )
+        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        } else {
+            emptyArray<String>()
+        }
 
     }
 
@@ -241,7 +245,14 @@ class HowtoInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialogLi
     ) {
         when (alertType) {
             Utility.AlertType.PDF -> {
-                pdfdownload()
+                if (allPermissionsGranted()) {
+                    pdfdownload()
+                }else{
+                    requestPermissions(
+                        REQUIRED_PERMISSIONS,
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                }
             }
             else -> {}
         }
