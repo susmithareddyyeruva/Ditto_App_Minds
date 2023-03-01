@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import core.lib.BuildConfig
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -75,7 +76,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         // Initializing YouTube player view
          youTubePlayerView =
             findViewById<View>(R.id.video_view) as YouTubePlayerView
-        youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
+        youTubePlayerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
         //Add play button to explicitly play video in YouTubePlayerView
         /*    mPlayButtonLayout = findViewById(R.id.video_control)*/
         findViewById<View>(R.id.play_video).setOnClickListener(this)
@@ -241,7 +242,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             } catch (e: IllegalStateException) {
                 //mPlayer// check how to initialize
                 if(!::youTubePlayerView.isInitialized) {
-                    youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
+                    youTubePlayerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
                 }
             }
         }
@@ -255,7 +256,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             } catch (e: IllegalStateException) {
                 //mPlayer// check how to initialize
                 if(!::youTubePlayerView.isInitialized) {
-                    youTubePlayerView.initialize(getString(R.string.youtube_api_key), this)
+                    youTubePlayerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
                 }
             }
         }
