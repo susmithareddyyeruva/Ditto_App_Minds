@@ -9,5 +9,6 @@ data class InstructionsData(
     var description: String = "",
     var imagePath: String = "",
     var videoPath: String = "",
+    var tutorialPdfUrl: String = "",
     var instructions: List<InstructionModel> = emptyList()
 )

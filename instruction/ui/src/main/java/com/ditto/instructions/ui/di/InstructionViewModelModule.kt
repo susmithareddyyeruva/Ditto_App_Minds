@@ -5,13 +5,11 @@ package com.ditto.instructions.ui.di
  * Dagger module to provide InstructionViewModel functionality.
  */
 import androidx.lifecycle.ViewModel
+import com.ditto.instructions.ui.*
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import com.ditto.instructions.ui.BeamSetupFragment
-import com.ditto.instructions.ui.InstructionFragment
-import com.ditto.instructions.ui.InstructionViewModel
 import core.ui.ViewModelKey
 
 /**
@@ -24,6 +22,11 @@ interface InstructionViewModelModule {
     @ViewModelKey(InstructionViewModel::class)
     fun bindInstructionViewModel(viewModel: InstructionViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(TutorialPdfInstructionViewModel::class)
+    fun bindTutorialInstructionViewModel(viewModel: TutorialPdfInstructionViewModel): ViewModel
+
 
 }
 
@@ -33,5 +36,6 @@ interface InstructionFragmentModule {
     fun instructionfragment(): InstructionFragment
     @ContributesAndroidInjector(modules = [InstructionViewModelModule::class])
     fun beamsetupfragment(): BeamSetupFragment
-
+    @ContributesAndroidInjector(modules = [InstructionViewModelModule::class])
+    fun tutorialPdfFragment(): TutorialPdfFragment
 }

@@ -52,6 +52,7 @@ fun List<Onboarding>.toStorage(): List<OnBoarding> {
             description = it.description ?: "",
             imagepath = it.imagePath ?: "",
             videoPath = it.videoPath ?: "",
+            tutorialPdfUrl = it.tutorialPdfUrl ?: "",
             instructions = it.instructions?.toStorageModel()?: emptyList()
         )
     }
@@ -65,6 +66,7 @@ fun List<Instruction>.toStorageModel(): List<Instructions> {
             description = it.description ?: "",
             imagePath = it.imagePath ?: "",
             videoPath = it.videoPath ?: "",
+            tutorialPdfUrl = it.tutorialPdfUrl ?: "",
             instructions = it.instructionsOnboarding?.toStorage()?: emptyList()
         )
     }

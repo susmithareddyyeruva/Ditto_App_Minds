@@ -17,5 +17,7 @@
     <dimen name="size_skip_button_height">9.94dp</dimen>
     <dimen name="end_margin_calib_btn">14dp</dimen>
     <dimen name="start_margin_skip_icon">5dp</dimen>
+    <dimen name="pdf_icon_padding">8dp</dimen>
+
 
 </resources>

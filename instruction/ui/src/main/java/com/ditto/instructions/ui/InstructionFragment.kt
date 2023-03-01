@@ -70,7 +70,7 @@ class InstructionFragment constructor(
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         if (!::binding.isInitialized) {
             binding = InstructionFragmentBinding.inflate(
@@ -119,7 +119,7 @@ class InstructionFragment constructor(
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int
+                positionOffsetPixels: Int,
             ) {
                 logger.d("onPageScrolled, state scrolled")
             }
@@ -155,7 +155,7 @@ class InstructionFragment constructor(
      * [Function] Setting values in adapter class
      */
     private fun setInstructionadapter() {
-        if (viewModel.instructionID.get() == 2) {
+        if (viewModel.instructionID.get() == 2 || viewModel.instructionID.get() == 3) {
             val adapter =
                 InstructionCalibrationAdapter()
             binding.instructionViewPager.adapter = adapter
@@ -228,7 +228,66 @@ class InstructionFragment constructor(
                 false
             )
             is InstructionViewModel.Event.OnShowProgress -> bottomNavViewModel.showProgress.set(true)
+
+            is InstructionViewModel.Event.OnDownloadPdfClicked -> {
+                onDownloadPdfClicked()
+            }
         }
+
+    private fun onDownloadPdfClicked() {
+        val filePath = if (viewModel.instructionID.get() == 1) {
+            viewModel.data.value?.instructions?.get(position)?.instructions?.get(
+                binding.instructionViewPager.currentItem
+            )?.tutorialPdfUrl
+        } else {
+            viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.tutorialPdfUrl
+        }
+
+        if (!filePath.isNullOrEmpty()) {
+            if (findNavController().currentDestination?.id == R.id.destination_instruction) {
+                val title = if (position == 0) {
+                    "Beam Setup"
+                } else {
+                    "Beam Takedown"
+                }
+                var bundle = Bundle()
+                bundle =
+                    bundleOf(
+                        "InstructionPdfUrl" to filePath,
+                        "InstructionPdfTitle" to title
+                    )
+                findNavController().navigate(
+                    R.id.action_instructionFragment_to_tutorialPdfFragment,
+                    bundle
+                )
+
+            } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
+                val title = viewModel.data.value?.title
+                var bundle = Bundle()
+                bundle =
+                    bundleOf(
+                        "InstructionPdfUrl" to filePath,
+                        "InstructionPdfTitle" to title
+                    )
+                findNavController().navigate(
+                    R.id.action_instructionFragment_to_tutorialPdfFragment,
+                    bundle
+                )
+            }
+        } else {
+            Utility.getCommonAlertDialogue(
+                requireContext(),
+                "",
+                getString(core.lib.R.string.no_pdf_available),
+                "",
+                getString(core.lib.R.string.str_ok),
+                this,
+                Utility.AlertType.NETWORK,
+                Utility.Iconype.FAILED
+            )
+        }
+
+    }
 
     /**
      * [Function] Skip Tutorial text clicked
@@ -340,8 +399,8 @@ class InstructionFragment constructor(
             } else {
                 viewModel.data.value?.instructions?.get(binding.instructionViewPager.currentItem)?.title // calibration
             }
-            if(filePath?.isNotEmpty() == true) {
-                displayFullScreenVideo(filePath,"tutorial")
+            if (filePath?.isNotEmpty() == true) {
+                displayFullScreenVideo(filePath, "tutorial")
             } else {
                 Utility.getCommonAlertDialogue(
                     requireContext(),
@@ -359,7 +418,7 @@ class InstructionFragment constructor(
 
     private fun displayFullScreenVideo(
         filePath: String?,
-        from: String
+        from: String,
     ) {
         if (findNavController().currentDestination?.id == R.id.destination_instruction
         ) {
@@ -377,7 +436,8 @@ class InstructionFragment constructor(
                  bundle
              )*/
         } else if (findNavController().currentDestination?.id == R.id.destination_instruction_calibration_fragment) {
-            val bundle = bundleOf("videoPath" to filePath, "title" to "Calibration", "from" to from)
+            val title = viewModel.data.value?.title
+            val bundle = bundleOf("videoPath" to filePath, "title" to title, "from" to from)
             val intent = Intent(requireContext(), CustomPlayerControlActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
@@ -450,7 +510,7 @@ class InstructionFragment constructor(
      */
     private fun setupToolbar() {
         arguments?.getBoolean("isFromHome")?.let { viewModel?.isFromHome?.set(it) }
-        if (viewModel?.isFromHome?.get() ?:false) {
+        if (viewModel?.isFromHome?.get() ?: false) {
             bottomNavViewModel.visibility.set(false)
             toolbarViewModel.isShowActionBar.set(false)
             toolbarViewModel.isShowTransparentActionBar.set(false)
@@ -460,10 +520,14 @@ class InstructionFragment constructor(
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             } else {
-                viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
                 toolbar.setNavigationIcon(R.drawable.ic_back_button)
                 (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
                 (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                if (viewModel.instructionID.get() == 3)
+                    viewModel.toolbarTitle.set(getString(R.string.Calibrationheader))
+                else {
+                    viewModel.toolbarTitle.set(getString(R.string.connectivity_header))
+                }
             }
         } else {
             bottomNavViewModel.visibility.set(false)
@@ -662,7 +726,7 @@ class InstructionFragment constructor(
 
     private suspend fun sendSampleImage(
         transformedBitmap: Bitmap,
-        isNavigateToCalibration: Boolean
+        isNavigateToCalibration: Boolean,
     ) {
         logger.d("TRACE_ Projection : send Image Start" + Calendar.getInstance().timeInMillis)
         withContext(Dispatchers.IO) {
@@ -755,7 +819,7 @@ class InstructionFragment constructor(
                     howTobuttonclick()
                 }
             }
-        }else if(requestCode == REQUEST_ENABLE_BT) {
+        } else if (requestCode == REQUEST_ENABLE_BT) {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             if (mBluetoothAdapter?.isEnabled == false) {

@@ -1,11 +1,9 @@
 package com.ditto.howto.adapter
 
 import android.content.Context
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.ditto.howto.model.HowToData
@@ -13,7 +11,6 @@ import com.ditto.howto.ui.HowtoViewModel
 import com.ditto.howto_ui.R
 import com.ditto.howto_ui.databinding.WorkSpaceFragmentBinding
 import core.binding.BindableAdapter
-import core.ui.common.DoubleClickListener
 
 /**
  * Created by Sesha on  15/08/2020.
@@ -66,6 +63,10 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
             bindingWS.imageStep.setOnClickListener {
                 viewModel.onItemClick(tabdata[position].videopath1)
             }
+
+            bindingWS.pdfIcon.setOnClickListener {
+                viewModel.onDownloadPdfClick(tabdata[position].tutorialPdfUrl1)
+            }
             /*if (pos == 0) {
                 bindingWS.imageStep.setOnClickListener(object : DoubleClickListener() {
                     override fun onDoubleClick(v: View) {
@@ -78,11 +79,11 @@ class TabContentAdapter(private val mContext: Context) : PagerAdapter(),
                 }
             }*/
         }
-        bindingWS.textContent.text = HtmlCompat.fromHtml(
+        /*bindingWS.textContent.text = HtmlCompat.fromHtml(
             tabdata.get(position).description1,
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
-        bindingWS.textContent.setMovementMethod(ScrollingMovementMethod())
+        bindingWS.textContent.setMovementMethod(ScrollingMovementMethod())*/
         parent.addView(bindingWS.root)
         return bindingWS.root
     }

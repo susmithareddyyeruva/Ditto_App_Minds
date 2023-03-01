@@ -10,5 +10,6 @@ data class HowToData(
     var description1: String = "",
     var imagePath1: String = "",
     var videopath1: String = "",
+    var tutorialPdfUrl1: String = "",
     var instructions1: List<HowToModel> = emptyList()
 )

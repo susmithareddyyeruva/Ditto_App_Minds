@@ -119,6 +119,10 @@ class InstructionViewModel @Inject constructor(
         uiEvents.post(Event.OnPlayVideoClicked)
     }
 
+    fun onDownloadPdfClick() {
+        uiEvents.post(Event.OnDownloadPdfClicked)
+    }
+
     /**
      * [Function] Calibration Button Clicked
      */
@@ -160,6 +164,8 @@ class InstructionViewModel @Inject constructor(
          * Event emitted by [events] when watch video clicked
          */
         object OnPlayVideoClicked : Event()
+
+        object OnDownloadPdfClicked : Event()
 
         /**
          * Event emitted by [events] when Error occurs
