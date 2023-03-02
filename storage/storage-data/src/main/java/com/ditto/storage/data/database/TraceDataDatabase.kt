@@ -42,8 +42,8 @@ abstract class TraceDataDatabase : RoomDatabase() {
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE onboard_data ADD COLUMN tutorialPdfUrl TEXT NOT NULL")
-                database.execSQL("ALTER TABLE user_data ADD COLUMN c_saveCalibrationPhotos INTEGER")
+                database.execSQL("ALTER TABLE onboard_data ADD COLUMN tutorialPdfUrl TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE user_data ADD COLUMN c_saveCalibrationPhotos INTEGER DEFAULT 0")
             }
         }
 
