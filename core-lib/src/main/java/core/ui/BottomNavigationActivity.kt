@@ -527,8 +527,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     override fun onPause() {
-        super.onPause()
         binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        super.onPause()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

@@ -73,7 +73,7 @@ class WSProSettingsFragment : BaseFragment(), Utility.CustomCallbackDialogListen
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
         Utility.getCommonAlertDialogue(
-            requireContext(),
+            context,
             "",
             errorMessage,
             "",
