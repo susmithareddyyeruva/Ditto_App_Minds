@@ -4,17 +4,17 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.joann.ditto",
+  "applicationId": "com.jodito.ditto.qa",
   "variantName": "debug",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 1,
-      "versionName": "1",
+      "versionCode": 4,
+      "versionName": "4",
       "enabled": true,
-      "outputFile": "ditto_dev11_0_39(01).apk"
+      "outputFile": "ditto_1_0_0.apk"
     }
   ]
 }

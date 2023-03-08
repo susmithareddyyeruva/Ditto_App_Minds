@@ -142,11 +142,11 @@
         android:name="com.ditto.workspace.ui.PatternInstructionsFragment"
         android:label="Pattern Instructions" />
 
-    <!--<fragment
+    <fragment
         android:id="@+id/patternDescriptionFragment"
         android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
         android:label="PatternDescriptionFragment">
-    </fragment>-->
+    </fragment>
 
     <fragment
         android:id="@+id/subscriptionInfoFragment"
