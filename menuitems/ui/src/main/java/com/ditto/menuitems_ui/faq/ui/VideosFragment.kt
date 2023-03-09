@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
-import com.ditto.menuitems.domain.model.faq.FAQDomain
 import com.ditto.menuitems.domain.model.faq.VideosDomain
 import com.ditto.menuitems_ui.R
 import com.ditto.menuitems_ui.databinding.VideosFragmentBinding
@@ -23,7 +22,7 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import javax.inject.Inject
 
-class VideosFragment() :BaseFragment(){
+class VideosFragment :BaseFragment(){
     var list: List<VideosDomain> = emptyList()
     private val viewModel: VideosViewModel by ViewModelDelegate()
     lateinit var binding: VideosFragmentBinding

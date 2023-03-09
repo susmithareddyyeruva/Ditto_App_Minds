@@ -20,9 +20,8 @@ import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import javax.inject.Inject
-import javax.microedition.khronos.opengles.GL
 
-class GlossaryFragment() :BaseFragment(){
+class GlossaryFragment :BaseFragment(){
     var list: List<GlossaryDomain> = emptyList()
     private val viewModel: GlossaryViewModel by ViewModelDelegate()
     lateinit var binding: GlossaryFragmentBinding

@@ -23,7 +23,7 @@ import core.ui.common.Utility
 import javax.inject.Inject
 
 
-class FAQFragment() : BaseFragment() {
+class FAQFragment : BaseFragment() {
     var fAQ: List<FAQDomain> = emptyList()
     @Inject
     lateinit var loggerFactory: LoggerFactory
