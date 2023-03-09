@@ -7,4 +7,4 @@ data class GlossaryDomain(
     var videoUrl: String,
     var webUrl: String,
     var isExpanded: Boolean? = false
-)
+) : java.io.Serializable

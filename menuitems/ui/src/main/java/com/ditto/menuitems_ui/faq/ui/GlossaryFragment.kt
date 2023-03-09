@@ -20,8 +20,10 @@ import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import javax.inject.Inject
+import javax.microedition.khronos.opengles.GL
 
-class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
+class GlossaryFragment() :BaseFragment(){
+    var list: List<GlossaryDomain> = emptyList()
     private val viewModel: GlossaryViewModel by ViewModelDelegate()
     lateinit var binding: GlossaryFragmentBinding
     @Inject
@@ -44,6 +46,16 @@ class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        with (requireArguments()) {
+            val glossaryList = getSerializable(GLOSSARY_LIST) as List<GlossaryDomain>
+            list = if (glossaryList != null) {
+                glossaryList
+            } else {
+                emptyList()
+            }
+        }
+
         val glossaryAdapter = context?.let {
             GlossaryAdapter(
                 it,list,object :WatchVideoClickListener, Utility.CustomCallbackDialogListener {
@@ -110,6 +122,16 @@ class GlossaryFragment(var list: List<GlossaryDomain>) :BaseFragment(){
 
 
 
+    }
+
+    companion object {
+        private const val GLOSSARY_LIST = "GLOSSARY_LIST"
+
+        fun newInstance(glossaryDomains: List<GlossaryDomain>) = GlossaryFragment().apply {
+            arguments = bundleOf(
+                GLOSSARY_LIST to glossaryDomains as java.io.Serializable,
+            )
+        }
     }
 
 }
