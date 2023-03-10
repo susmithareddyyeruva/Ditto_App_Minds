@@ -22,7 +22,8 @@ import core.ui.ViewModelDelegate
 import core.ui.common.Utility
 import javax.inject.Inject
 
-class VideosFragment(var list: List<VideosDomain>) :BaseFragment(){
+class VideosFragment :BaseFragment(){
+    var list: List<VideosDomain> = emptyList()
     private val viewModel: VideosViewModel by ViewModelDelegate()
     lateinit var binding: VideosFragmentBinding
     @Inject
@@ -45,6 +46,15 @@ class VideosFragment(var list: List<VideosDomain>) :BaseFragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        with(requireArguments()) {
+            val videoList = getSerializable(VIDEO_LIST) as List<VideosDomain>
+            list = if (videoList != null) {
+                videoList
+            } else {
+                emptyList()
+            }
+        }
+
         val videosAdapter = context?.let {
             VideosAdapter(
                 it,list,object :WatchVideoItemClickListener, Utility.CustomCallbackDialogListener {
@@ -111,4 +121,13 @@ class VideosFragment(var list: List<VideosDomain>) :BaseFragment(){
 
     }
 
+    companion object {
+        private const val VIDEO_LIST = "VIDEO_LIST"
+
+        fun newInstance(videoList: List<VideosDomain>) = VideosFragment().apply {
+            arguments = bundleOf(
+                VIDEO_LIST to videoList as java.io.Serializable,
+            )
+        }
+    }
 }

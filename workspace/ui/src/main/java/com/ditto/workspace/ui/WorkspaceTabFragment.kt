@@ -2250,12 +2250,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else {
             arrayOf(Manifest.permission.BLUETOOTH)
         }
-        private val REQUIRED_PERMISSIONS_DOWNLOAD = emptyArray<String>()
-//            arrayOf(
-////                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                Manifest.permission.READ_EXTERNAL_STORAGE
-//            )
-
+        private val REQUIRED_PERMISSIONS_DOWNLOAD = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        } else {
+            emptyArray<String>()
+        }
 
     }
 
@@ -2554,13 +2556,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     }
 
     private fun navigateToCalibration() {
+        var isSaveCalibrationPhotos = viewModel.userData.value?.cSaveCalibrationPhotos ?: false
         // Moving to calibration fragment
         findNavController().navigate(
             R.id.action_workspace_to_calibration,
             bundleOf(
                 "PatternId" to viewModel.patternId.get(),
                 "isFromPatternDescription" to true,
-                "isRecalibrate" to true
+                "isRecalibrate" to true,
+                "isSaveCalibrationPhotos" to isSaveCalibrationPhotos
             )
         )
     }

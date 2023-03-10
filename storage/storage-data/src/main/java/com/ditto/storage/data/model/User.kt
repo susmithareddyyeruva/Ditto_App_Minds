@@ -44,6 +44,9 @@ data class User(
     @ColumnInfo(name = "c_cuttingReminder")
     @SerializedName("c_cuttingReminder")
     val cCuttingReminder: Boolean?,
+    @ColumnInfo(name = "c_saveCalibrationPhotos")
+    @SerializedName("c_saveCalibrationPhotos")
+    val cSaveCalibrationPhotos: Boolean?,
     @ColumnInfo(name = "c_InitialisationVector")
     @SerializedName("c_InitialisationVector")
     var cInitialisationVector: String?,

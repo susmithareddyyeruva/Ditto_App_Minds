@@ -23,7 +23,8 @@ import core.ui.common.Utility
 import javax.inject.Inject
 
 
-class FAQFragment(var fAQ: List<FAQDomain>) : BaseFragment() {
+class FAQFragment : BaseFragment() {
+    var fAQ: List<FAQDomain> = emptyList()
     @Inject
     lateinit var loggerFactory: LoggerFactory
     private val viewModel: FQAfragmentViewModel by ViewModelDelegate()
@@ -48,6 +49,14 @@ class FAQFragment(var fAQ: List<FAQDomain>) : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        with(requireArguments()) {
+            val faqList = getSerializable(FAQ_LIST) as List<FAQDomain>
+            fAQ = if (faqList != null) {
+                faqList
+            } else {
+                emptyList()
+            }
+        }
         val faqadapter = context?.let {
             FAQAdapter(
                 it,
@@ -108,5 +117,15 @@ class FAQFragment(var fAQ: List<FAQDomain>) : BaseFragment() {
         }
         binding.recyclerParent.adapter = faqadapter
         binding.recyclerParent.layoutManager = LinearLayoutManager(context)
+    }
+
+    companion object {
+        private const val FAQ_LIST = "FAQ_LIST"
+
+        fun newInstance(faq: List<FAQDomain>) = FAQFragment().apply {
+            arguments = bundleOf(
+                FAQ_LIST to faq as java.io.Serializable,
+            )
+        }
     }
 }

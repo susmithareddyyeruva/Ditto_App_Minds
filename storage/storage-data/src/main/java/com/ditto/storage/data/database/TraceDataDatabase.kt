@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ditto.storage.data.model.OfflinePatterns
 import com.ditto.storage.data.model.OnBoarding
 import com.ditto.storage.data.model.Patterns
@@ -25,7 +27,7 @@ import java.util.concurrent.Executors
 /**
  * The Room database for this app
  */
-@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatterns::class], version = 1, exportSchema = false)
+@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatterns::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TraceDataDatabase : RoomDatabase() {
 
@@ -37,6 +39,13 @@ abstract class TraceDataDatabase : RoomDatabase() {
     companion object {
         val TAG = TraceDataDatabase::class.java.simpleName
         private const val DATABASE_NAME = "trace_db"
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE onboard_data ADD COLUMN tutorialPdfUrl TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE user_data ADD COLUMN c_saveCalibrationPhotos INTEGER DEFAULT 0")
+            }
+        }
 
         // For Singleton instantiation
         @Volatile
@@ -54,10 +63,10 @@ abstract class TraceDataDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): TraceDataDatabase {
-            return Room.databaseBuilder(
-                context, TraceDataDatabase::class.java,
-                DATABASE_NAME
-            ).build()
+            return Room.databaseBuilder(context, TraceDataDatabase::class.java, DATABASE_NAME)
+                .addMigrations(MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
+                .build()
         }
 
         /*fun preLoadOnboardingData(context: Context) {

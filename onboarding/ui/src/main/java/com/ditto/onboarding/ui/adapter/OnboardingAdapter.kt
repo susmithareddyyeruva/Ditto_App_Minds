@@ -25,13 +25,13 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
     var mutableList : MutableList<OnboardingData> = mutableListOf()
 
     override fun setListData(items: List<OnboardingData>) {
-        val i1 = OnboardingData(5,"FAQs & Glossary","See FAQs, tips & words to know","https://www.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2a81a8a0/mobileTraceImages/Tutorial_Tile_FAQs.jpg")
-//        val i2 = OnboardingData(5,"Take a Tour","Watch the demo video","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
-       // items.toMutableList().add(i)
+//        val i1 = OnboardingData(5,"FAQs & Glossary","See FAQs, tips & words to know","https://www.dittopatterns.com/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dw2a81a8a0/mobileTraceImages/Tutorial_Tile_FAQs.jpg")
+////        val i2 = OnboardingData(5,"Take a Tour","Watch the demo video","https://dev02-na03-joann.demandware.net/on/demandware.static/-/Library-Sites-LibrarydittoShared/default/dwb47dc213/mobileTraceImages/onboard_howto.jpg")
+//       // items.toMutableList().add(i)
         onBoarding = items
         mutableList = items.toMutableList()
-        mutableList!!.add(i1)
-//        mutableList!!.add(i2)
+//        mutableList!!.add(i1)
+////        mutableList!!.add(i2)
         notifyDataSetChanged()
     }
 

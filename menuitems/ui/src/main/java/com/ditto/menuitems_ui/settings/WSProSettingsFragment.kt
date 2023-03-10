@@ -73,7 +73,7 @@ class WSProSettingsFragment : BaseFragment(), Utility.CustomCallbackDialogListen
     private fun showAlert() {
         val errorMessage = viewModel.errorString.get() ?: ""
         Utility.getCommonAlertDialogue(
-            requireContext(),
+            context,
             "",
             errorMessage,
             "",
@@ -113,6 +113,15 @@ class WSProSettingsFragment : BaseFragment(), Utility.CustomCallbackDialogListen
 
             if (!viewModel.isFromErrorPopUp.get()) {
                 viewModel.setCutNumberSplicing(isChecked)
+            }else{
+                viewModel.isFromErrorPopUp.set(false)
+            }
+            //viewModel.postBooleanDataForSettings()
+        }
+        switch_calibration_image.setOnCheckedChangeListener { _, isChecked ->
+
+            if (!viewModel.isFromErrorPopUp.get()) {
+                viewModel.setSaveCalibrationImage(isChecked)
             }else{
                 viewModel.isFromErrorPopUp.set(false)
             }

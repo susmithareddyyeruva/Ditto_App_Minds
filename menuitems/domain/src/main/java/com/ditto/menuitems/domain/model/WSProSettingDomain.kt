@@ -25,6 +25,7 @@ class WSProSettingDomain (
     val cSpliceCutCompleteReminder: Boolean,
     val cSpliceMultiplePieceReminder: Boolean,
     val cCuttingReminder: Boolean,
+    val cSaveCalibrationPhotos: Boolean,
     val cInterestArt: Boolean,
     val cInterestBridalSpecialOccasionProjects: Boolean,
     val cInterestClassroomCraftsDecor: Boolean,

@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.hardware.display.DisplayManager
 import android.media.Image
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -86,6 +87,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
     lateinit var finalbitmap: Bitmap
     private var imageAnalyzer: ImageAnalysis? = null
     var isFromHome: Boolean = false
+    var isSaveCalibrationPhotos: Boolean = false
     lateinit var backpressCall: OnBackPressedCallback
     private var isBackPressed: Boolean = true
     private var alertImageConfirmation: AlertDialog? = null
@@ -115,6 +117,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         super.onActivityCreated(savedInstanceState)
         setToolbar()
         arguments?.getBoolean("isFromHome")?.let { isFromHome = (it) }
+        arguments?.getBoolean("isSaveCalibrationPhotos")?.let { isSaveCalibrationPhotos = (it) }
         outputDirectory = Utility.getOutputDirectory(requireContext())
         cameraExecutor = Executors.newSingleThreadExecutor()
         if (allPermissionsGranted()) {
@@ -216,11 +219,16 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
 
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS =
+        private val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             arrayOf(
                 Manifest.permission.CAMERA,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
+        } else {
+            arrayOf(
+                Manifest.permission.CAMERA,
+            )
+        }
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
@@ -334,7 +342,7 @@ class CalibrationFragment : BaseFragment(), Utility.CallbackDialogListener, Util
         logger.d("TRACE_ Projection : performCalibration  Start" + Calendar.getInstance().timeInMillis)
         showProgress(true)
         viewModel.disposable += Observable.fromCallable {
-            performCalibration(imageArray.toTypedArray(), context?.applicationContext)
+            performCalibration(imageArray.toTypedArray(), context?.applicationContext,isSaveCalibrationPhotos)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

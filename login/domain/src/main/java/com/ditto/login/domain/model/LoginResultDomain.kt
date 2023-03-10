@@ -29,6 +29,7 @@ data class LoginResultDomain(
     val cSpliceMultiplePieceReminder: Boolean,
     val cSpliceReminder: Boolean,
     val cCuttingReminder: Boolean,
+    val cSaveCalibrationPhotos: Boolean,
     val cInterestArt: Boolean,
     val cInterestBridalSpecialOccasionProjects: Boolean,
     val cInterestClassroomCraftsDecor: Boolean,

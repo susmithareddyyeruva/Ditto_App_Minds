@@ -23,26 +23,28 @@ import non_core.lib.error.NoNetworkError
 import javax.inject.Inject
 
 
-class WSProSettingViewModel @Inject constructor(private val utility: Utility,
-                                                private val context: Context,
-                                                private val getWorkspaceProData: GetWorkspaceProData,
-                                                val loggerFactory: LoggerFactory
+class WSProSettingViewModel @Inject constructor(
+    private val utility: Utility,
+    private val context: Context,
+    private val getWorkspaceProData: GetWorkspaceProData,
+    val loggerFactory: LoggerFactory,
 ) : BaseViewModel() {
     private val dbLoadError: ObservableBoolean = ObservableBoolean(false)
-     var errorString: ObservableField<String> = ObservableField("")
+    var errorString: ObservableField<String> = ObservableField("")
 
-     val isMirroringReminderChecked: ObservableBoolean = ObservableBoolean(false)
-     val isCutNumberChecked: ObservableBoolean = ObservableBoolean(false)
-     val isSplicingNotificationChecked: ObservableBoolean = ObservableBoolean(false)
-     val isSplicingWithMultiplePieceChecked: ObservableBoolean = ObservableBoolean(false)
-     val isClickToZoomNotification: ObservableBoolean = ObservableBoolean(false)
-     val isFromErrorPopUp: ObservableBoolean = ObservableBoolean(false)// used for handling error scenario
+    val isMirroringReminderChecked: ObservableBoolean = ObservableBoolean(false)
+    val isCutNumberChecked: ObservableBoolean = ObservableBoolean(false)
+    val isSplicingNotificationChecked: ObservableBoolean = ObservableBoolean(false)
+    val isSplicingWithMultiplePieceChecked: ObservableBoolean = ObservableBoolean(false)
+    val isClickToZoomNotification: ObservableBoolean = ObservableBoolean(false)
+    val isSaveCalibrationPhotos: ObservableBoolean = ObservableBoolean(false)
+    val isFromErrorPopUp: ObservableBoolean =
+        ObservableBoolean(false)// used for handling error scenario
 
     private val uiEvents = UiEvents<Event>()
     val events = uiEvents.stream()
 
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
-
 
 
     val logger: Logger by lazy {
@@ -70,41 +72,45 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
     }
 
     // need to call on switch change
-    private fun updateWSProSetting(){
+    private fun updateWSProSetting() {
         disposable += getWorkspaceProData.updateWSProSetting(
-            id = 1, cMirrorReminder =  isMirroringReminderChecked.get(),
-            cCuttingReminder =  isCutNumberChecked.get(),
-            cSpliceReminder =  isSplicingNotificationChecked.get(),
-            cSpliceMultiplePieceReminder =  isSplicingWithMultiplePieceChecked.get()
-
+            id = 1, cMirrorReminder = isMirroringReminderChecked.get(),
+            cCuttingReminder = isCutNumberChecked.get(),
+            cSpliceReminder = isSplicingNotificationChecked.get(),
+            cSpliceMultiplePieceReminder = isSplicingWithMultiplePieceChecked.get(),
+            cSaveCalibrationPhotos = isSaveCalibrationPhotos.get()
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { it }
     }
 
 
-
-    fun setMirrorReminderData(value:Boolean){
+    fun setMirrorReminderData(value: Boolean) {
         isMirroringReminderChecked.set(value)
         postBooleanDataForSettings()
     }
 
-    fun setCutNumberSplicing(value:Boolean){
+    fun setCutNumberSplicing(value: Boolean) {
         isCutNumberChecked.set(value)
         postBooleanDataForSettings()
     }
 
-    fun setSplicingNotification(value: Boolean){
+    fun setSplicingNotification(value: Boolean) {
         isSplicingNotificationChecked.set(value)
         postBooleanDataForSettings()
     }
 
-    fun setSplicingWithMultiple(value: Boolean){
+    fun setSplicingWithMultiple(value: Boolean) {
         isSplicingWithMultiplePieceChecked.set(value)
         postBooleanDataForSettings()
     }
 
-    fun postBooleanDataForSettings(){
+    fun setSaveCalibrationImage(value: Boolean) {
+        isSaveCalibrationPhotos.set(value)
+        postBooleanDataForSettings()
+    }
+
+    fun postBooleanDataForSettings() {
 
         //Making api call for settings
         uiEvents.post(Event.OnShowProgress)
@@ -114,6 +120,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
                 isCutNumberChecked.get(),
                 isSplicingNotificationChecked.get(),
                 isSplicingWithMultiplePieceChecked.get(),
+                isSaveCalibrationPhotos.get(),
                 isClickToZoomNotification.get())
         )
             .subscribeOn(Schedulers.io())
@@ -152,7 +159,7 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         }
     }
 
-    private fun onFetchComplete(){
+    private fun onFetchComplete() {
         uiEvents.post(Event.OnFetchComplete)
     }
 
@@ -161,22 +168,22 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
      * Events for this view model
      */
     sealed class Event {
-   /*     object isMirrorChecked : Event()
-        object isCutNumberChecked : Event()
-        object isSplicingNotificationChecked : Event()
-        object isSplicingMultipleChecked : Event()
-        object isZoomNotificationChecked : Event()*/
+        /*     object isMirrorChecked : Event()
+             object isCutNumberChecked : Event()
+             object isSplicingNotificationChecked : Event()
+             object isSplicingMultipleChecked : Event()
+             object isZoomNotificationChecked : Event()*/
 
         object OnShowProgress : Event()
         object OnHideProgress : Event()
         object OnFetchComplete : Event()
         object NoInternet : Event()
-        object OnResultFailed: Event()
+        object OnResultFailed : Event()
 
 
     }
 
-    private fun resetData(){
+    private fun resetData() {
         setToggleButtonValue()
         onFetchComplete()
     }
@@ -186,5 +193,6 @@ class WSProSettingViewModel @Inject constructor(private val utility: Utility,
         isCutNumberChecked.set(userData.value?.cCuttingReminder!!)
         isSplicingNotificationChecked.set(userData.value?.cSpliceReminder!!)
         isSplicingWithMultiplePieceChecked.set(userData.value?.cSpliceMultiplePieceReminder!!)
+        isSaveCalibrationPhotos.set(userData.value?.cSaveCalibrationPhotos!!)
     }
 }
