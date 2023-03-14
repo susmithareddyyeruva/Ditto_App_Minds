@@ -21,7 +21,10 @@ import kotlinx.android.synthetic.main.tabcontent_fragment.*
 import javax.inject.Inject
 
 //to show the content inside the tabs
-class TabContentFragment (val vm: HowtoViewModel, var pos: Int): BaseFragment() {
+class TabContentFragment: BaseFragment() {
+
+    lateinit var vm: HowtoViewModel
+    var pos: Int = 0
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
