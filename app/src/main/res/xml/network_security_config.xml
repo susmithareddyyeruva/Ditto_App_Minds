@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
+    <!--cleartextTrafficPermitted should be false by default to avoid http or unsecured traffic coming to app-->
+
+   <!-- <domain-config cleartextTrafficPermitted="true"> commenting this as tailornova api uses https/ secured connection
         <domain includeSubdomains="true">ditto-splicing.tailornova.com</domain>
-    </domain-config>
+    </domain-config>-->
+
+    <!--Uncomment this for UI testing
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">localhost</domain>
-    </domain-config>
-    <base-config>
+    </domain-config>-->
+
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
             <certificates src="system"/>
-            <certificates src="user"/>
         </trust-anchors>
     </base-config>
 </network-security-config>

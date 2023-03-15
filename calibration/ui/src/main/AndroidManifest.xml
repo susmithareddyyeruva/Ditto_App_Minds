@@ -9,7 +9,7 @@
     <application>
          <activity android:name="com.ditto.calibration.ui.SuccessPopup"
             android:theme="@style/popuptheme"
-             android:usesCleartextTraffic="true"
+             android:usesCleartextTraffic="false"
             android:screenOrientation="sensorLandscape"/>
 
     </application>

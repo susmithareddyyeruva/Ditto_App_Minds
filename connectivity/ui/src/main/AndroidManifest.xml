@@ -36,7 +36,7 @@
         <activity
             android:name="com.ditto.connectivity.ConnectivityActivity"
             android:launchMode="singleInstance"
-            android:usesCleartextTraffic="true"
+            android:usesCleartextTraffic="false"
             android:windowSoftInputMode="adjustPan|stateHidden|adjustResize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/AppTheme_Transparent" />
