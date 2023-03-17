@@ -142,8 +142,8 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (count > 1)
-                    binding.edittextPassword.setText("")
+                /*if (count > 1)
+                    binding.edittextPassword.setText("")*/
             }
 
         })
