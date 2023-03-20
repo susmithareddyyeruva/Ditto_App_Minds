@@ -240,6 +240,7 @@
                             app:error="@{viewModel.isEmailValidated ?null : `Invalid Email`}" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/passwordTextLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/edittext_password_margintop"

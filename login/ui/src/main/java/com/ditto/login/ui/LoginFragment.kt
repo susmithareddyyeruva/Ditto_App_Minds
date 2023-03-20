@@ -144,6 +144,9 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 /*if (count > 1)
                     binding.edittextPassword.setText("")*/
+
+               // binding.passwordTextLayout.isPasswordVisibilityToggleEnabled = true
+                binding.passwordTextLayout.isEndIconVisible = true
             }
 
         })
@@ -152,6 +155,10 @@ class LoginFragment : BaseFragment(), Utility.CustomCallbackDialogListener {
 
     private fun handleEvent(event: LoginViewModel.Event) =
         when (event) {
+            is LoginViewModel.Event.HidePasswordEyeToggleIcon -> {
+              //  binding.passwordTextLayout.isPasswordVisibilityToggleEnabled = viewModel.isPasswordValidated.get()
+                binding.passwordTextLayout.isEndIconVisible = viewModel.isPasswordValidated.get()
+            }
 
             is LoginViewModel.Event.OnLoginClicked -> {
                 //redirectToHomeScreen()
