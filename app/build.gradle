@@ -72,7 +72,7 @@ android {
 
     defaultConfig {
         applicationId "com.jodito.ditto"
-        minSdkVersion 23
+        minSdkVersion 28
         targetSdkVersion 33
         versionCode 6
 
