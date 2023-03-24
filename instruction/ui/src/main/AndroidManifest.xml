@@ -11,7 +11,7 @@
 
         <activity android:name="com.ditto.instructions.ui.PopUpWindow"
             android:theme="@style/AppTheme1"
-            android:usesCleartextTraffic="true"
+            android:usesCleartextTraffic="false"
             android:screenOrientation="sensorLandscape"/>
     </application>
 

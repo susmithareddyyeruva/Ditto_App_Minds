@@ -3,7 +3,7 @@
     <application>
         <activity android:name="com.ditto.howto.ui.PopUpWindow"
             android:theme="@style/AppTheme_PopupVideo"
-            android:usesCleartextTraffic="true"
+            android:usesCleartextTraffic="false"
             android:screenOrientation="sensorLandscape"/>
     </application>
 </manifest>
