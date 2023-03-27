@@ -239,26 +239,36 @@
                             android:textSize="@dimen/size_16px"
                             app:error="@{viewModel.isEmailValidated ?null : `Invalid Email`}" />
 
-                        <EditText
-                            android:id="@+id/edittext_password"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/passwordTextLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_heightn"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/edittext_password_margintop"
-                            android:background="@drawable/edittext_border_white"
-                            android:cursorVisible="true"
-                            android:fontFamily="@font/avenir_next_lt_pro_regular"
-                            android:hint="@string/Password"
-                            android:imeOptions="actionDone|flagNoExtractUi"
-                            android:inputType="textPassword"
-                            android:longClickable="false"
-                            android:paddingLeft="@dimen/edittext_email_padding_left"
-                            android:paddingRight="@dimen/edittext_email_padding_left"
-                            android:singleLine="true"
-                            android:text="@={viewModel.password}"
-                            android:textColorHint="@color/texthint"
-                            android:textCursorDrawable="@drawable/cursor"
-                            android:textSize="@dimen/size_16px"
-                            app:error="@{viewModel.isPasswordValidated ?null : `Invalid Password`}" />
+                            app:passwordToggleEnabled="true"
+                            app:hintEnabled="false"
+                            app:hintAnimationEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edittext_password"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_heightn"
+                                android:background="@drawable/edittext_border_white"
+                                android:cursorVisible="true"
+                                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                                android:hint="@string/Password"
+                                android:imeOptions="actionDone|flagNoExtractUi"
+                                android:inputType="textPassword"
+                                android:longClickable="false"
+                                android:paddingLeft="@dimen/edittext_email_padding_left"
+                                android:paddingRight="@dimen/edittext_email_padding_left"
+                                android:singleLine="true"
+                                android:text="@={viewModel.password}"
+                                android:textColorHint="@color/texthint"
+                                android:textCursorDrawable="@drawable/cursor"
+                                android:textSize="@dimen/size_16px"
+                                app:error="@{viewModel.isPasswordValidated ?null : `Invalid Password`}"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
                             android:id="@+id/text_forgot_password"
