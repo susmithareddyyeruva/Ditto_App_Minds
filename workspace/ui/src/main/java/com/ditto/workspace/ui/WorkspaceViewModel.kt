@@ -717,6 +717,10 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.OnClickClear)
     }
 
+    fun onNotesClick() {
+        uiEvents.post(Event.OnNotesClick)
+    }
+
     fun clickSaveAndExit() {
         uiEvents.post(Event.OnClickSaveAndExit)
     }
@@ -793,6 +797,7 @@ class WorkspaceViewModel @Inject constructor(
         object SelectLayoutInfo : Event()
         object OnDataUpdated : Event()
         object OnClickInch : Event()
+        object OnNotesClick : Event()
         object OnClickSelectAll : Event()
         object OnClickDeSelectAll : Event()
         object EnableMirror : Event()

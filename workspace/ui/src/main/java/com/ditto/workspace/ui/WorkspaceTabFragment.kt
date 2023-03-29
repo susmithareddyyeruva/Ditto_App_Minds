@@ -958,6 +958,13 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
+            is WorkspaceViewModel.Event.OnNotesClick -> {
+               com.ditto.workspace.ui.util.Utility.getNotesDialog(requireContext(), "Cancel", "Save", object : com.ditto.workspace.ui.util.Utility.CustomCallbackDialogListener {
+                   override fun onCustomPositiveButtonClicked() {}
+
+                   override fun onCustomNegativeButtonClicked() {}
+               })
+            }
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
                 binding.recyclerViewPieces.smoothScrollBy(-200, 0)
             }

@@ -116,6 +116,22 @@
             app:layout_constraintTop_toBottomOf="@+id/guideline_top" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notes"
+            android:drawableLeft="@drawable/edit_note_11"
+            android:elevation="@dimen/elevation_pieces_reference"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:onClick="@{() -> viewModel.onNotesClick()}"
+            android:layout_marginStart="@dimen/small_padding"
+            android:padding="@dimen/medium_padding"
+            android:textColor="@color/needle_grey"
+            android:textSize="@dimen/text_size_select_layout"
+            app:layout_constraintStart_toStartOf="@+id/guideline_workspace_divider"
+            app:layout_constraintTop_toBottomOf="@+id/top_border"
+            />
+
+        <TextView
             android:id="@+id/txt_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
