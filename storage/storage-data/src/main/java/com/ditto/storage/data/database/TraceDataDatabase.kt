@@ -27,7 +27,7 @@ import java.util.concurrent.Executors
 /**
  * The Room database for this app
  */
-@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatterns::class], version = 2, exportSchema = false)
+@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatterns::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TraceDataDatabase : RoomDatabase() {
 
@@ -44,6 +44,12 @@ abstract class TraceDataDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE onboard_data ADD COLUMN tutorialPdfUrl TEXT NOT NULL DEFAULT ''")
                 database.execSQL("ALTER TABLE user_data ADD COLUMN c_saveCalibrationPhotos INTEGER DEFAULT 0")
+            }
+        }
+
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE offline_pattern_data ADD COLUMN notes TEXT DEFAULT ''")
             }
         }
 
@@ -64,7 +70,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): TraceDataDatabase {
             return Room.databaseBuilder(context, TraceDataDatabase::class.java, DATABASE_NAME)
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2,MIGRATION_2_3)
                 .fallbackToDestructiveMigration()
                 .build()
         }
