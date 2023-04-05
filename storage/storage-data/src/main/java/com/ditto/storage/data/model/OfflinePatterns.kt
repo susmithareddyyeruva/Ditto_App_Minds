@@ -197,5 +197,9 @@ data class OfflinePatterns(
 
     @ColumnInfo(name = "heroImageUrls")
     @SerializedName("heroImageUrls")
-    var heroImageUrls : HeroImageUrls?
+    var heroImageUrls : HeroImageUrls?,
+
+    @ColumnInfo(name = "notes")
+    @SerializedName("notes")
+    var notes: String? = "",
 )

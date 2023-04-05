@@ -959,9 +959,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
             is WorkspaceViewModel.Event.OnNotesClick -> {
-               com.ditto.workspace.ui.util.Utility.getNotesDialog(requireContext(), "Cancel", "Save", object : com.ditto.workspace.ui.util.Utility.CustomCallbackDialogListener {
-                   override fun onCustomPositiveButtonClicked() {}
-
+                val note: String = viewModel.notes.ifEmpty { viewModel.data.value?.notes ?: "" }
+               com.ditto.workspace.ui.util.Utility.getNotesDialog(requireContext(),
+                   note, object : com.ditto.workspace.ui.util.Utility.CustomCallbackDialogListener {
+                   override fun onCustomPositiveButtonClicked(updatedNotes: String) {
+                       viewModel.notes = updatedNotes
+                   }
                    override fun onCustomNegativeButtonClicked() {}
                })
             }

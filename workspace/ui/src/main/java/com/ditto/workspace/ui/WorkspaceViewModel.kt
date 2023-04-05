@@ -48,6 +48,7 @@ class WorkspaceViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var patternDownloadFolderName: String = ""
+    var notes: String = ""
     var allPatterns: MutableLiveData<List<PatternsData>> = MutableLiveData()
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
@@ -156,6 +157,7 @@ class WorkspaceViewModel @Inject constructor(
         otherWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         workspaceDataAPI: WorkspaceDataAPI,
         status: String?,
+        notes: String?,
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
@@ -166,7 +168,8 @@ class WorkspaceViewModel @Inject constructor(
             garmetWorkspaceItems,
             liningWorkspaceItems,
             interfaceWorkspaceItems,
-            otherWorkspaceItems
+            otherWorkspaceItems,
+            notes
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -291,6 +294,7 @@ class WorkspaceViewModel @Inject constructor(
         when (fetchWorkspaceResult) {
             is Result.OnSuccess -> {
                 data.value = combineTailornovaAndSFCCDetails(tailornovaResult, fetchWorkspaceResult)
+                notes = data.value?.notes ?: ""
                 activeInternetConnection.set(true)
                 uiEvents.post(Event.HideProgressLoader)
                 setWorkspaceView()
@@ -300,6 +304,7 @@ class WorkspaceViewModel @Inject constructor(
                 handleError(fetchWorkspaceResult.error)
                 Log.d("handleFetchResultAPI", "Failed")
                 data.value = combineTailornovaAndSFCCDetails(tailornovaResult)
+                notes = data.value?.notes ?: ""
                 setWorkspaceView()
                 uiEvents.post(Event.HideProgressLoader)
             }
@@ -317,6 +322,7 @@ class WorkspaceViewModel @Inject constructor(
                     )
                 } else {
                     data.value = combineTailornovaAndSFCCDetails(result)
+                    notes = data.value?.notes ?: ""
                     setWorkspaceView()
                     uiEvents.post(Event.HideProgressLoader)
                 }
@@ -581,7 +587,7 @@ class WorkspaceViewModel @Inject constructor(
                 }
             }
         }
-
+        data.value?.notes = notes
         var cTraceWorkSpacePatternInputData =
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
         var status = ""
@@ -605,7 +611,8 @@ class WorkspaceViewModel @Inject constructor(
             cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
             cTraceWorkSpacePatternInputData.otherWorkspaceItems,
             cTraceWorkSpacePatternInputData,
-            status
+            status,
+            notes
         )
 
     }

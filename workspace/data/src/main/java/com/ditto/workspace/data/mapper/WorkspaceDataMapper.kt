@@ -16,6 +16,7 @@ fun CTraceWorkSpacePattern.toDomain(): WorkspaceDataAPI {
         liningWorkspaceItems = this.liningWorkspaceItems.map { it.toDomain() }.toMutableList(),
         interfaceWorkspaceItems = this.interfaceWorkspaceItems.map { it.toDomain() }.toMutableList(),
         otherWorkspaceItems = this.otherWorkspaceItems.map { it.toDomain() }.toMutableList(),
+        notes = this.notes
     )
 
 }
@@ -214,8 +215,8 @@ fun OfflinePatterns.toDomainn(): OfflinePatternData {
         suitableFor = this.suitableFor,
         occasion = this.occasion,
         selectedMannequinId = this.selectedMannequinId,
-        selectedMannequinName = this.selectedMannequinName
-
+        selectedMannequinName = this.selectedMannequinName,
+        notes = this.notes
     )
 }
 
