@@ -475,6 +475,7 @@ class WorkspaceViewModel @Inject constructor(
         if (selectAllText.get().equals("Select All")) {
             uiEvents.post(Event.OnClickSelectAll)
             uiEvents.post(Event.DisableMirror)
+            uiEvents.post(Event.DisableRotation)
             uiEvents.post(Event.EnableClear)
         } else {
             uiEvents.post(Event.OnClickDeSelectAll)
@@ -684,6 +685,13 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleInsertDataResult(it, true) }
     }
 */
+    fun checkRotation() {
+        if (workspacedata?.splice == true) {
+            uiEvents.post(Event.DisableRotation)
+        } else {
+            uiEvents.post(Event.EnableRotation)
+        }
+    }
 
     fun checkMirroring() {
         if (workspacedata?.mirrorOption == true) {
@@ -727,6 +735,14 @@ class WorkspaceViewModel @Inject constructor(
 
     fun onClickTutorial() {
         uiEvents.post(Event.OnClickTutorial)
+    }
+
+    fun onRotateClockwise() {
+        uiEvents.post(Event.OnRotateClockwise)
+    }
+
+    fun onRotateAntiClockwise() {
+        uiEvents.post(Event.OnRotateAntiClockwise)
     }
 
     fun onClickSpliceRight() {
@@ -786,6 +802,8 @@ class WorkspaceViewModel @Inject constructor(
          */
         object OnClickPatternInstructions : Event()
         object OnClickTutorial : Event()
+        object OnRotateClockwise : Event()
+        object OnRotateAntiClockwise : Event()
         object OnResetClicked : Event()
         object OnClickPatternOrReference : Event()
 
@@ -797,6 +815,8 @@ class WorkspaceViewModel @Inject constructor(
         object OnClickDeSelectAll : Event()
         object EnableMirror : Event()
         object DisableMirror : Event()
+        object DisableRotation : Event()
+        object EnableRotation : Event()
         object DisableClear : Event()
         object EnableClear : Event()
         object DisableSelectAll : Event()

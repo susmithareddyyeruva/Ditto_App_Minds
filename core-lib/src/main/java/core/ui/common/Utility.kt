@@ -311,6 +311,26 @@ class Utility @Inject constructor(
             return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
         }
 
+        /*
+        Round to nearest angle while rotating
+        */
+        fun round(num: Float, multipleOf: Int): Double {
+            return Math.floor((num + multipleOf / 2) / multipleOf.toDouble()) * multipleOf
+        }
+
+        /*
+        Adjusting angles to get the correcct rotation angle
+        */
+        fun adjustAngle(degrees: Float): Float {
+            var degrees = degrees
+            if (degrees > 180.0F) {
+                degrees -= 360.0F
+            } else if (degrees < -180.0F) {
+                degrees += 360.0F
+            }
+            return degrees
+        }
+
         fun getRotation(
             bitmap: Bitmap,
             mirrorVertical: Boolean,
