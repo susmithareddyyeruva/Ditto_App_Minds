@@ -110,9 +110,12 @@ class Utility {
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     //This sets a textview to the current length
+                    var text = s.toString().replace("\n","")
+                    var charCount = text.length
+
                     textCounter.text =
                         String.format(context.resources.getString(R.string.note_char_limit),
-                            s.length.toString())
+                            charCount.toString())
                 }
 
                 override fun afterTextChanged(s: Editable?) {}
