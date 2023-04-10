@@ -11,4 +11,5 @@ interface DraggableListener {
     fun onDragCompleted()
     fun onOverlapped(showToast: Boolean)
     fun onProjectWorkspace()
+    fun onRotationOutOfWorkspace()
 }
