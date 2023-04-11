@@ -996,6 +996,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
+            is WorkspaceViewModel.Event.OnNotesClick -> {
+                val note: String =  viewModel.data.value?.notes ?: ""
+               com.ditto.workspace.ui.util.Utility.getNotesDialog(requireContext(),
+                   note, object : com.ditto.workspace.ui.util.Utility.CustomCallbackDialogListener {
+                   override fun onCustomPositiveButtonClicked(updatedNotes: String) {
+                       //viewModel.notes = updatedNotes
+                       viewModel.data.value?.notes = updatedNotes
+                   }
+                   override fun onCustomNegativeButtonClicked() {}
+               })
+            }
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
                 binding.recyclerViewPieces.smoothScrollBy(-200, 0)
             }

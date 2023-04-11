@@ -21,7 +21,8 @@ interface WorkspaceRepository {
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?
+        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        notes: String?
     ): Single<Int>
     fun deleteAndInsert(id:String, patternsData: PatternsData): Single<Any>
     fun getUserData(): Single<Result<LoginUser>>

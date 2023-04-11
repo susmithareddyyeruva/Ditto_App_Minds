@@ -68,7 +68,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
         garmetWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         liningWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>?,
-        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?
+        otherWorkspaceItems: MutableList<WorkspaceItemDomain>?,
+        notes: String?
     ): Single<Int> {
         return Single.fromCallable {
             offlinePatternDataDao.updateOfflinePatternData(AppState.getCustID(),
@@ -80,7 +81,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
                 garmetWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 liningWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
                 interfaceWorkspaceItems?.map { it.toDomain() } as MutableList<WorkspaceItemOffline>,
-                otherWorkspaceItems?.map { it.toDomain()} as MutableList<WorkspaceItemOffline>)
+                otherWorkspaceItems?.map { it.toDomain()} as MutableList<WorkspaceItemOffline>,
+                notes)
         }
     }
 

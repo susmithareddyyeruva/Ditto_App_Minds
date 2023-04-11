@@ -63,5 +63,14 @@
     <dimen name="contrast_dimen_3">3dp</dimen>
     <dimen name="contrast_margin_top">5dp</dimen>
     <dimen name="info_image_padding">11dp</dimen>
+    <dimen name="note_alert_width">500dp</dimen>
+    <dimen name="note_alert_height">350dp</dimen>
+    <dimen name="minheight">240dp</dimen>
+    <dimen name="minwidth">400dp</dimen>
+    <dimen name="border">1dip</dimen>
+    <dimen name="note_layout_padding">8dp</dimen>
+    <dimen name="note_btn_padding">15dp</dimen>
+    <dimen name="note_btn_margin">8dp</dimen>
+    <dimen name="note_text_size">16sp</dimen>
     <dimen name="rotate_padding">10dp</dimen>
 </resources>

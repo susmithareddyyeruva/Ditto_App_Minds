@@ -22,4 +22,5 @@
     <color name="svg_icon_yellow">#FCE200</color>
     <color name="screen_bg_color">#F4F2F1</color>
     <color name="needle_grey">#1D1F2A</color>
+    <color name="note_border">#9A9A9A</color>
 </resources>

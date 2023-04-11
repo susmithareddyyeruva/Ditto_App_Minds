@@ -100,4 +100,5 @@
     <string name="tutorial_for_workspace">Tutorial for workspace</string>
     <string name="turn_on_permissions">App will not work properly without this permission. Please turn on the permission from settings</string>
     <string name="provide_location_permission_message">Please provide precise location permission to get bluetooth scan results from settings</string>
+    <string name="note_char_limit">%1$s / 500</string>
 </resources>
