@@ -33,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/padding_end"
         android:baselineAlignBottom="true"
-        android:src="@drawable/ic_right_arrow"
+        android:src="@drawable/filter_right_arrow"
         android:visibility="visible"
         android:layout_marginStart="@dimen/padding_9"
         app:layout_constraintHorizontal_bias="1"

@@ -7,7 +7,7 @@
         android:label="${appName}"
         android:roundIcon="@mipmap/ditto_app_icon_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/AppTheme">
     </application>

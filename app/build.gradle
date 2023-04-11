@@ -67,12 +67,12 @@ android {
 
     packagingOptions {
         pickFirst "META-INF/INDEX.LIST"
-        pickFirst "META-INF/io.netty.versions.properties"
+     //   pickFirst "META-INF/io.netty.versions.properties"
     }
 
     defaultConfig {
         applicationId "com.jodito.ditto"
-        minSdkVersion 23
+        minSdkVersion 28
         targetSdkVersion 33
         versionCode 6
 
