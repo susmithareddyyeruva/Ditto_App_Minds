@@ -32,4 +32,13 @@
 
     </style>
 
+    <style name="AlwaysEnableScrollBar" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/needle_grey</item>
+        <item name="android:scrollbarThumbVertical">@color/needle_grey</item>
+        <item name="android:dividerHeight">1px</item>
+        <item name="android:verticalScrollbarPosition">left</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:scrollbarSize">3dp</item>
+    </style>
+
 </resources>
