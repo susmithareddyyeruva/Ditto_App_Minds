@@ -21,6 +21,8 @@ data class CTraceWorkSpacePattern(
     @SerializedName("interfaceWorkspaceItems")
     var interfaceWorkspaceItems: List<WorkspaceItem> = emptyList(),
     @SerializedName("otherWorkspaceItems")
-    var otherWorkspaceItems: List<WorkspaceItem> = emptyList()
+    var otherWorkspaceItems: List<WorkspaceItem> = emptyList(),
+    @SerializedName("notes")
+    val notes: String? = ""
 )
 

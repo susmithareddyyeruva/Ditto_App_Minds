@@ -19,11 +19,10 @@ import com.ditto.workspace.domain.model.DragData
 import com.ditto.workspace.domain.model.WorkspaceItems
 import com.ditto.workspace.ui.R
 import com.ditto.workspace.ui.util.ViewType.IMAGE
+import core.ui.common.Utility.Companion.adjustAngle
 import java.lang.ref.WeakReference
 import java.util.*
-import kotlin.math.ceil
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.*
 
 class WorkspaceEditor private constructor(builder: Builder) {
     private val mLayoutInflater: LayoutInflater
@@ -170,6 +169,10 @@ class WorkspaceEditor private constructor(builder: Builder) {
 
                 override fun onOverlapped(showToast: Boolean) {
                     dragListener.onOverlapped(showToast)
+                }
+
+                override fun onRotationOutOfWorkspace() {
+                    dragListener.onRotationOutOfWorkspace()
                 }
 
                 override fun onProjectWorkspace() {
@@ -567,6 +570,136 @@ class WorkspaceEditor private constructor(builder: Builder) {
         addedViewsModel.find { it.id == imageView?.tag }?.transformD= if(addedViewsModel.find { it.id == imageView?.tag }?.isMirrorV == true) "-1.0" else "1.0"
 
         imageView?.let { mOnWorkspaceImageDragListener?.onDragCompleted() }
+    }
+
+    /**
+     * Rotate a view Clockwise
+     */
+    fun rotateClockwise() {
+        var originalRotation = (imageView?.parent as View).rotation
+        var originalX = (imageView?.parent as View).x
+        var originalY = (imageView?.parent as View).y
+        (imageView?.parent as View).pivotX = (imageView?.parent as View).width.toFloat()/2
+        (imageView?.parent as View).pivotY = (imageView?.parent as View).height.toFloat()/2
+        (imageView?.parent as View).rotation = adjustAngle(core.ui.common.Utility.round((imageView?.parent as View).rotation + 45F,45).toFloat())
+
+        // Check within boundaries on rotation
+        checkRotateOutOfWorkspace(originalRotation,originalX,originalY)
+
+        // Check if it overlaps on mirroring
+        if (Utility.isOverlappingEnabled.get() && checkOverlappingCondition(
+                CollisionUtil.getViewBitmap((imageView?.parent as View))
+                    .get(),
+                (imageView?.parent as View),
+                (imageView?.parent as View).x.toInt(),
+                (imageView?.parent as View).y.toInt()
+            )
+        ) {
+            (imageView?.parent as View).rotation = originalRotation
+            (imageView?.parent as View).x = originalX
+            (imageView?.parent as View).y = originalY
+            mOnWorkspaceImageDragListener?.onOverlapped(true)
+            return
+        }
+        (addedViews.find { it.tag == imageView?.tag }) to (imageView?.parent as View)
+        addedViewsModel.find { it.id == imageView?.tag }?.xcoordinate =
+            (imageView?.parent as View).x ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.ycoordinate =
+            (imageView?.parent as View).y ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.rotationAngle =
+            (imageView?.parent as View).rotation ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.pivotX =
+            (imageView?.parent as View).pivotX ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.pivotY =
+            (imageView?.parent as View).pivotY ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.transformD= if(addedViewsModel.find { it.id == imageView?.tag }?.isMirrorV == true) "-1.0" else "1.0"
+
+        imageView?.let { mOnWorkspaceImageDragListener?.onDragCompleted() }
+    }
+
+    /**
+     * Rotate a view Anti- Clockwise
+     */
+    fun rotateAntiClockwise() {
+        var originalRotation = (imageView?.parent as View).rotation
+        var originalX = (imageView?.parent as View).x
+        var originalY = (imageView?.parent as View).y
+        (imageView?.parent as View).pivotX = (imageView?.parent as View).width.toFloat()/2
+        (imageView?.parent as View).pivotY = (imageView?.parent as View).height.toFloat()/2
+        (imageView?.parent as View).rotation = adjustAngle(core.ui.common.Utility.round((imageView?.parent as View).rotation - 45F,45).toFloat())
+
+        // Check within boundaries on rotation
+        checkRotateOutOfWorkspace(originalRotation,originalX,originalY)
+
+        // Check if it overlaps on mirroring
+        if (Utility.isOverlappingEnabled.get() && checkOverlappingCondition(
+                CollisionUtil.getViewBitmap((imageView?.parent as View))
+                    .get(),
+                (imageView?.parent as View),
+                (imageView?.parent as View).x.toInt(),
+                (imageView?.parent as View).y.toInt()
+            )
+        ) {
+            (imageView?.parent as View).rotation = originalRotation
+            (imageView?.parent as View).x = originalX
+            (imageView?.parent as View).y = originalY
+            mOnWorkspaceImageDragListener?.onOverlapped(true)
+            return
+        }
+        (addedViews.find { it.tag == imageView?.tag }) to (imageView?.parent as View)
+        addedViewsModel.find { it.id == imageView?.tag }?.xcoordinate =
+            (imageView?.parent as View).x ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.ycoordinate =
+            (imageView?.parent as View).y ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.rotationAngle =
+            (imageView?.parent as View).rotation ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.pivotX =
+            (imageView?.parent as View).pivotX ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.pivotY =
+            (imageView?.parent as View).pivotY ?: 0F
+        addedViewsModel.find { it.id == imageView?.tag }?.transformD= if(addedViewsModel.find { it.id == imageView?.tag }?.isMirrorV == true) "-1.0" else "1.0"
+
+        imageView?.let { mOnWorkspaceImageDragListener?.onDragCompleted() }
+    }
+
+    /**
+     * Check if Piece is outside Workspace while rotation
+     */
+    private fun checkRotateOutOfWorkspace(originalRotation: Float, originalX: Float, originalY: Float) {
+        val viewParent = (imageView?.parent as View).parent as View
+        val viewWidthMiddle = ((imageView?.parent as View).width.toFloat() / 2)
+        val viewHeightMiddle = ((imageView?.parent as View).height.toFloat() / 2)
+        val parentHeight = (viewParent.height).toFloat()
+        val parentWidth = (viewParent.width).toFloat()
+        val xMax = (parentWidth - (imageView?.parent as View).width.toFloat())
+        val yMax = (parentHeight - (imageView?.parent as View).height.toFloat())
+        var xMaxPoint =
+            (viewWidthMiddle * Math.abs(cos(Math.toRadians((imageView?.parent as View).rotation.toDouble()))) + viewHeightMiddle * Math.abs(
+                sin(
+                    Math.toRadians((imageView?.parent as View).rotation.toDouble())
+                )
+            )).toFloat()
+        var yMaxPoint =
+            (viewHeightMiddle * Math.abs(cos(Math.toRadians((imageView?.parent as View).rotation.toDouble()))) + viewWidthMiddle * Math.abs(
+                sin(
+                    Math.toRadians((imageView?.parent as View).rotation.toDouble())
+                )
+            )).toFloat()
+        var xDiff = (viewWidthMiddle - xMaxPoint)
+        var yDiff = (viewHeightMiddle - yMaxPoint)
+
+        if (((imageView?.parent as View).x < 0F - xDiff ||
+                    (imageView?.parent as View).x > xMax.toFloat() + xDiff ||
+                    (imageView?.parent as View).y < 0F - yDiff ||
+                    (imageView?.parent as View).y > yMax.toFloat() + yDiff)
+        ) {
+            Utility.onDrag.set(false)
+            (imageView?.parent as View).rotation = originalRotation
+            (imageView?.parent as View).x = originalX
+            (imageView?.parent as View).y = originalY
+            mOnWorkspaceImageDragListener?.onRotationOutOfWorkspace()
+            Log.d("TAG", "Rotation Outside Workspace : ")
+        }
     }
 
     fun removePattern(workspacedata: WorkspaceItems?, isSingleDelete: Boolean) {

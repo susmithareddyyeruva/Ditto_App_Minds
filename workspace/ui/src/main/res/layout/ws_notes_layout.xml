@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="top"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/note_layout_padding"
+        android:paddingStart="@dimen/note_layout_padding"
+        android:paddingEnd="@dimen/note_layout_padding">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:text="Quick Notes"
+            android:textColor="@color/needle_grey"
+            android:textSize="@dimen/note_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/noteLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:background="@drawable/note_border"
+            android:orientation="vertical"
+            android:padding="@dimen/small_padding"
+            android:weightSum="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent=".8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+
+            <EditText
+                android:id="@+id/note"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/minheight"
+                android:layout_marginBottom="@dimen/small_padding"
+                android:background="@android:color/transparent"
+                android:cursorVisible="true"
+                android:gravity="start|top"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:hint="Enter your notes"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="textMultiLine"
+                android:lineSpacingExtra="@dimen/small_padding"
+                android:maxLength="500"
+                android:minHeight="@dimen/minheight"
+                android:maxHeight="@dimen/minwidth"
+                android:padding="@dimen/small_padding"
+                android:scrollbars="vertical"
+                android:layout_weight=".95"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="@dimen/text_seek_complete"
+                tools:text="It says I need to type at least ten characters, so here's this. Y'know what? I'm gonna type one hundred characters instead. Actually, I'm going to type five hundred characters. I'm definitely not going to type anywhere near one thousand characters, because that'd be ridiculous. Even if I wanted to type one thousand characters, I have to go to bed now anyway, so I simply don't have the time. I mean, I could just type a bunch of random letters or hold down one key, but that would be no fun at all."
+                />
+
+            <TextView
+                android:id="@+id/textCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight=".06"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                android:text="0 / 500"
+                android:textColor="@color/note_border"
+                android:textSize="@dimen/text_move_to_drag"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/note" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/okayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Ok"
+            android:textAllCaps="false"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:textSize="@dimen/note_text_size"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginVertical="@dimen/note_btn_margin"
+            android:paddingHorizontal="@dimen/note_btn_padding"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/needle_grey"
+            app:layout_constraintDimensionRatio="80:35"
+            app:layout_constraintTop_toBottomOf="@id/noteLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Close"
+            android:textAllCaps="false"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:textSize="@dimen/note_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/needle_grey"
+            android:gravity="center"
+            android:layout_marginVertical="@dimen/note_btn_margin"
+            android:paddingHorizontal="@dimen/note_btn_padding"
+            app:layout_constraintDimensionRatio="70:30"
+            app:layout_constraintTop_toBottomOf="@id/noteLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/okayBtn"/>
+
+        <TextView
+            android:id="@+id/clearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Clear All"
+            android:textAllCaps="false"
+            android:fontFamily="@font/avenir_next_lt_pro_demi"
+            android:textSize="@dimen/note_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/needle_grey"
+            android:gravity="center"
+            android:layout_marginVertical="@dimen/note_btn_margin"
+            android:paddingHorizontal="@dimen/note_btn_padding"
+            app:layout_constraintDimensionRatio="70:30"
+            app:layout_constraintTop_toBottomOf="@id/noteLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/close"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

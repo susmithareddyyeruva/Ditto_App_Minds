@@ -48,6 +48,7 @@ class WorkspaceViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var patternDownloadFolderName: String = ""
+   // var notes: String = ""
     var allPatterns: MutableLiveData<List<PatternsData>> = MutableLiveData()
     var data: MutableLiveData<PatternsData> = MutableLiveData()
     var userData: MutableLiveData<LoginUser> = MutableLiveData()
@@ -156,6 +157,7 @@ class WorkspaceViewModel @Inject constructor(
         otherWorkspaceItems: MutableList<WorkspaceItemDomain>?,
         workspaceDataAPI: WorkspaceDataAPI,
         status: String?,
+        notes: String?,
     ) {
         disposable += getWorkspaceData.updateOfflineStorageData(
             tailornaovaDesignId,
@@ -166,7 +168,8 @@ class WorkspaceViewModel @Inject constructor(
             garmetWorkspaceItems,
             liningWorkspaceItems,
             interfaceWorkspaceItems,
-            otherWorkspaceItems
+            otherWorkspaceItems,
+            notes
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -291,6 +294,7 @@ class WorkspaceViewModel @Inject constructor(
         when (fetchWorkspaceResult) {
             is Result.OnSuccess -> {
                 data.value = combineTailornovaAndSFCCDetails(tailornovaResult, fetchWorkspaceResult)
+               // notes = data.value?.notes ?: ""
                 activeInternetConnection.set(true)
                 uiEvents.post(Event.HideProgressLoader)
                 setWorkspaceView()
@@ -300,6 +304,7 @@ class WorkspaceViewModel @Inject constructor(
                 handleError(fetchWorkspaceResult.error)
                 Log.d("handleFetchResultAPI", "Failed")
                 data.value = combineTailornovaAndSFCCDetails(tailornovaResult)
+               // notes = data.value?.notes ?: ""
                 setWorkspaceView()
                 uiEvents.post(Event.HideProgressLoader)
             }
@@ -317,6 +322,7 @@ class WorkspaceViewModel @Inject constructor(
                     )
                 } else {
                     data.value = combineTailornovaAndSFCCDetails(result)
+                   // notes = data.value?.notes ?: ""
                     setWorkspaceView()
                     uiEvents.post(Event.HideProgressLoader)
                 }
@@ -475,6 +481,7 @@ class WorkspaceViewModel @Inject constructor(
         if (selectAllText.get().equals("Select All")) {
             uiEvents.post(Event.OnClickSelectAll)
             uiEvents.post(Event.DisableMirror)
+            uiEvents.post(Event.DisableRotation)
             uiEvents.post(Event.EnableClear)
         } else {
             uiEvents.post(Event.OnClickDeSelectAll)
@@ -581,7 +588,7 @@ class WorkspaceViewModel @Inject constructor(
                 }
             }
         }
-
+        //data.value?.notes = notes
         var cTraceWorkSpacePatternInputData =
             getWorkspaceInputDataToAPI(setWorkspaceDimensions(data.value))
         var status = ""
@@ -605,7 +612,8 @@ class WorkspaceViewModel @Inject constructor(
             cTraceWorkSpacePatternInputData.interfaceWorkspaceItems,
             cTraceWorkSpacePatternInputData.otherWorkspaceItems,
             cTraceWorkSpacePatternInputData,
-            status
+            status,
+            data.value?.notes
         )
 
     }
@@ -684,6 +692,13 @@ class WorkspaceViewModel @Inject constructor(
             .subscribeBy { handleInsertDataResult(it, true) }
     }
 */
+    fun checkRotation() {
+        if (workspacedata?.splice == true) {
+            uiEvents.post(Event.DisableRotation)
+        } else {
+            uiEvents.post(Event.EnableRotation)
+        }
+    }
 
     fun checkMirroring() {
         if (workspacedata?.mirrorOption == true) {
@@ -717,6 +732,10 @@ class WorkspaceViewModel @Inject constructor(
         uiEvents.post(Event.OnClickClear)
     }
 
+    fun onNotesClick() {
+        uiEvents.post(Event.OnNotesClick)
+    }
+
     fun clickSaveAndExit() {
         uiEvents.post(Event.OnClickSaveAndExit)
     }
@@ -727,6 +746,14 @@ class WorkspaceViewModel @Inject constructor(
 
     fun onClickTutorial() {
         uiEvents.post(Event.OnClickTutorial)
+    }
+
+    fun onRotateClockwise() {
+        uiEvents.post(Event.OnRotateClockwise)
+    }
+
+    fun onRotateAntiClockwise() {
+        uiEvents.post(Event.OnRotateAntiClockwise)
     }
 
     fun onClickSpliceRight() {
@@ -786,6 +813,8 @@ class WorkspaceViewModel @Inject constructor(
          */
         object OnClickPatternInstructions : Event()
         object OnClickTutorial : Event()
+        object OnRotateClockwise : Event()
+        object OnRotateAntiClockwise : Event()
         object OnResetClicked : Event()
         object OnClickPatternOrReference : Event()
 
@@ -793,10 +822,13 @@ class WorkspaceViewModel @Inject constructor(
         object SelectLayoutInfo : Event()
         object OnDataUpdated : Event()
         object OnClickInch : Event()
+        object OnNotesClick : Event()
         object OnClickSelectAll : Event()
         object OnClickDeSelectAll : Event()
         object EnableMirror : Event()
         object DisableMirror : Event()
+        object DisableRotation : Event()
+        object EnableRotation : Event()
         object DisableClear : Event()
         object EnableClear : Event()
         object DisableSelectAll : Event()

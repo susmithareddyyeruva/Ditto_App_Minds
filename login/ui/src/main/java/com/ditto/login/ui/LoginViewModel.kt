@@ -60,6 +60,7 @@ class LoginViewModel @Inject constructor(
             logger.d("username invalid")
         } else if (password.get().isNullOrEmpty()) {
             isPasswordValidated.set(false)
+            uiEvents.post(Event.HidePasswordEyeToggleIcon)
             logger.d("password invalid")
         } else {
             isEmailValidated.set(true)
@@ -263,6 +264,7 @@ class LoginViewModel @Inject constructor(
         object OnShowProgress : Event()
         object OnHideProgress : Event()
         object OnLandingSuccess : Event()
+        object HidePasswordEyeToggleIcon : Event()
     }
 
     fun getLandingScreenDetails() {

@@ -34,6 +34,8 @@
     <dimen name="margin_v_small">5dp</dimen>
     <dimen name="left_button_width">65dp</dimen>
     <dimen name="margin_text">10dp</dimen>
+    <dimen name="spinner_width">186dp</dimen>
+    <dimen name="spinner_height">43dp</dimen>
     <dimen name="margin_workspace">15dp</dimen>
     <dimen name="margin_workspace_layout">0dp</dimen>
     <dimen name="line_size">1dp</dimen>
@@ -61,4 +63,14 @@
     <dimen name="contrast_dimen_3">3dp</dimen>
     <dimen name="contrast_margin_top">5dp</dimen>
     <dimen name="info_image_padding">11dp</dimen>
+    <dimen name="note_alert_width">500dp</dimen>
+    <dimen name="note_alert_height">350dp</dimen>
+    <dimen name="minheight">240dp</dimen>
+    <dimen name="minwidth">400dp</dimen>
+    <dimen name="border">1dip</dimen>
+    <dimen name="note_layout_padding">8dp</dimen>
+    <dimen name="note_btn_padding">15dp</dimen>
+    <dimen name="note_btn_margin">8dp</dimen>
+    <dimen name="note_text_size">16sp</dimen>
+    <dimen name="rotate_padding">10dp</dimen>
 </resources>

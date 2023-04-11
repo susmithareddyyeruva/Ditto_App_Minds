@@ -11,5 +11,6 @@ data class WorkspaceDataAPI (
     var garmetWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var liningWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
     var interfaceWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
-    var otherWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList()
+    var otherWorkspaceItems: MutableList<WorkspaceItemDomain>? = ArrayList(),
+    var notes:String? = ""
 )

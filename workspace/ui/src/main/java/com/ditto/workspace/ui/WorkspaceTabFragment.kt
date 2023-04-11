@@ -20,6 +20,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.view.animation.*
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -32,6 +33,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.size
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,9 +49,11 @@ import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.videoplayer.CustomPlayerControlActivity
 import com.ditto.workspace.domain.model.*
+import com.ditto.workspace.ui.adapter.CustomRotationSpinnerAdapter
 import com.ditto.workspace.ui.adapter.PatternPiecesAdapter
 import com.ditto.workspace.ui.databinding.WorkspaceTabItemBinding
 import com.ditto.workspace.ui.util.*
+import com.google.android.material.snackbar.Snackbar
 import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
@@ -68,6 +72,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.workspace_layout.*
+import kotlinx.android.synthetic.main.workspace_layout.view.*
 import kotlinx.android.synthetic.main.workspace_tab_item.*
 import kotlinx.coroutines.*
 import java.io.*
@@ -96,7 +101,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private var mWorkspaceEditor: WorkspaceEditor? = null
     lateinit var binding: WorkspaceTabItemBinding
     private var matchedPattern: PatternsData? = null
-    private var alertCamera:AlertDialog? = null
+    private var alertCamera: AlertDialog? = null
     private var isCompleted: Boolean? = null
     private lateinit var alert: AlertDialog
     private lateinit var outputDirectory: File
@@ -105,7 +110,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     override fun onCreateView(
         @NonNull inflater: LayoutInflater,
         @Nullable container: ViewGroup?,
-        @Nullable savedInstanceState: Bundle?
+        @Nullable savedInstanceState: Bundle?,
     ): View? {
         if (!::binding.isInitialized) {
             binding = WorkspaceTabItemBinding.inflate(
@@ -128,7 +133,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         if (AppState.getIsLogged()) {
             viewModel.fetchWorkspaceSettingData()
-        }else{
+        } else {
             // for displaying long press text in WS for guest user first time
             hideShowLongPressText(com.ditto.workspace.ui.util.Utility.isLongPressTextVisible.get())
         }
@@ -139,6 +144,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             setPatternPiecesAdapter()
             setUIEvents()
             enableMirror(false)
+            enableRotation(false)
             if (mWorkspaceEditor?.views?.any() ?: true) {
                 enableSelectAll(false)
                 enableClear(false)
@@ -146,6 +152,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         }
         setConnectButton()
         setupWorkspace()
+        setupRotationSpinner()
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.recyclerViewPieces.setOnDragListener(this)
@@ -198,6 +205,36 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             .subscribe {
                 handleEvent(it)
             }
+    }
+
+    private fun setupRotationSpinner() {
+        // set size spinner
+        logger.d("rotation : Start : ")
+        val rotationOptions = listOf("Clockwise", "Anti-Clockwise", "Rotate")
+        val sizeAdapter =
+            CustomRotationSpinnerAdapter(requireContext(), rotationOptions)
+        rotationSpinner?.adapter = sizeAdapter
+        rotationSpinner?.setSelection(2)
+        rotationSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                logger.d("rotation : onNothingSelected : ")
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                if (position == 0) {
+                    viewModel.onRotateClockwise()
+                } else if (position == 1) {
+                    viewModel.onRotateAntiClockwise()
+                } else if (position == 2) {
+                    logger.d("rotation : position : " + position)
+                }
+            }
+        }
     }
 
     private fun setupWorkspace() {
@@ -358,7 +395,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun handleResult(
         result: Pair<TransformErrorCode, Bitmap>,
-        isProjectingSample: Boolean
+        isProjectingSample: Boolean,
     ) {
         logger.d("quick check Transform - ${result.second.width} * ${result.second.height}")
         //alert.dismiss()
@@ -391,7 +428,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private suspend fun projectWorkspaceImage(
         bitmap: Bitmap,
         isQuickCheck: Boolean,
-        isProjectingSample: Boolean
+        isProjectingSample: Boolean,
     ) {
         withContext(Dispatchers.IO) {
             logger.d("TRACE_ Projection :projectWorkspaceImage Start " + Calendar.getInstance().timeInMillis)
@@ -473,7 +510,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             showSpliceReference(splicePiece)
             return
         }
-        if(viewModel.data.value?.selvages?.isEmpty() == false){
+        if (viewModel.data.value?.selvages?.isEmpty() == false) {
             if (viewModel.data.value?.selvages?.filter {
                     it.tabCategory.equals(
                         getString(R.string.garments),
@@ -554,7 +591,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(garments[0].imageName)
                 }
-            }else if(viewModel.tabCategory == getString(R.string.garments)){
+            } else if (viewModel.tabCategory == getString(R.string.garments)) {
                 viewModel.showReferenceLayout.set(false)
             }
 
@@ -656,7 +693,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(lining[0].imageName)
                 }
-            }else if(viewModel.tabCategory == getString(R.string.lining)){
+            } else if (viewModel.tabCategory == getString(R.string.lining)) {
                 viewModel.showReferenceLayout.set(false)
             }
 
@@ -740,7 +777,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(interfacing[0].imageName)
                 }
-            }else if(viewModel.tabCategory == getString(R.string.interfacing)){
+            } else if (viewModel.tabCategory == getString(R.string.interfacing)) {
                 viewModel.showReferenceLayout.set(false)
             }
 
@@ -825,10 +862,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     }
                     viewModel.referenceImage.set(other[0].imageName)
                 }
-            }else if(viewModel.tabCategory == getString(R.string.other)){
+            } else if (viewModel.tabCategory == getString(R.string.other)) {
                 viewModel.showReferenceLayout.set(false)
             }
-        }else{
+        } else {
             viewModel.showReferenceLayout.set(false)
         }
 
@@ -844,7 +881,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             viewModel.data.value?.liningWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
             return viewModel.data.value?.liningWorkspaceItemOfflines
-        } else if (selectedTab == 2){
+        } else if (selectedTab == 2) {
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
                 mWorkspaceEditor?.views?.toMutableList()
             return viewModel.data.value?.interfaceWorkspaceItemOfflines
@@ -873,6 +910,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 //        binding.includeWorkspacearea?.layoutSelectAllMask?.visibility = View.GONE
         viewModel.selectAllText.set(getString(R.string.select_all))
         enableMirror(false)
+        enableRotation(false)
         enableSelectAll(false)
         enableClear(false)
         mWorkspaceEditor?.clearAllViews()
@@ -899,7 +937,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             override fun onScrolled(
                 recyclerView: RecyclerView,
                 dx: Int,
-                dy: Int
+                dy: Int,
             ) {
                 super.onScrolled(recyclerView, dx, dy)
                 viewModel.isFirstItemVisible.set(false)
@@ -958,6 +996,17 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     private fun handleEvent(event: WorkspaceViewModel.Event) =
         when (event) {
+            is WorkspaceViewModel.Event.OnNotesClick -> {
+                val note: String =  viewModel.data.value?.notes ?: ""
+               com.ditto.workspace.ui.util.Utility.getNotesDialog(requireContext(),
+                   note, object : com.ditto.workspace.ui.util.Utility.CustomCallbackDialogListener {
+                   override fun onCustomPositiveButtonClicked(updatedNotes: String) {
+                       //viewModel.notes = updatedNotes
+                       viewModel.data.value?.notes = updatedNotes
+                   }
+                   override fun onCustomNegativeButtonClicked() {}
+               })
+            }
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
                 binding.recyclerViewPieces.smoothScrollBy(-200, 0)
             }
@@ -984,6 +1033,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.OnClickMirrorHorizontal -> {
                 mWorkspaceEditor?.flipHorizontal()
+            }
+            is WorkspaceViewModel.Event.OnRotateClockwise -> {
+                mWorkspaceEditor?.rotateClockwise()
+            }
+            is WorkspaceViewModel.Event.OnRotateAntiClockwise -> {
+                mWorkspaceEditor?.rotateAntiClockwise()
             }
             is WorkspaceViewModel.Event.CalculateScrollButtonVisibility -> {
                 showWorkspaceCoachMark()
@@ -1035,6 +1090,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             is WorkspaceViewModel.Event.EnableMirror -> {
                 enableMirror(true)
+            }
+            is WorkspaceViewModel.Event.DisableRotation -> {
+                enableRotation(false)
+            }
+            is WorkspaceViewModel.Event.EnableRotation -> {
+                enableRotation(true)
             }
             is WorkspaceViewModel.Event.OnClickSpliceRight -> {
                 mWorkspaceEditor?.clearAllViews()
@@ -1224,6 +1285,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             viewModel.workspacedata = mWorkspaceEditor?.views?.get(0)
                             enableClear(false)
                             enableMirror(false)
+                            enableRotation(false)
                             enableSelectAll(true)
                         } else {
                             viewModel.workspacedata = null
@@ -1546,6 +1608,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             }
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
+                            enableRotation(false)
                             viewModel.workspaceItemId.set(
                                 viewModel.workspaceItemId.get() + 1
                             )
@@ -1601,6 +1664,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                             }
                             mWorkspaceEditor?.clearAllSelection()
                             enableMirror(false)
+                            enableRotation(false)
                             enableClear(false)
                             viewModel.workspaceItemId.set(
                                 viewModel.workspaceItemId.get() + 1
@@ -1627,6 +1691,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         enableSelectAll(true)
         enableClear(true)
         viewModel.workspacedata = workspaceItem
+        viewModel.checkRotation()
         viewModel.checkMirroring()
     }
 
@@ -1639,6 +1704,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         viewModel.workspacedata = workspaceItem
         // to fix mirroring issue during multi touch
         if (workspaceItem?.id != id) {
+            viewModel.checkRotation()
             viewModel.checkMirroring()
         }
         logger.d("onpositionchange")
@@ -1664,6 +1730,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     override fun onProjectWorkspace() {
         Log.d("DraggableListener", "onProjectWorkspace")
+    }
+
+    override fun onRotationOutOfWorkspace() {
+        rotationSpinner?.setSelection(2)
+        Utility.showSnackBar(
+            getString(R.string.outside_workspace_piece_alert),
+            binding?.topBorder?.parent as View,
+            Snackbar.LENGTH_LONG
+        )
     }
 
     override fun onDragOut(view: View, workspaceItem: WorkspaceItems?) {
@@ -1898,6 +1973,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.includeWorkspacearea?.txtMirrorH?.isEnabled = status
     }
 
+    private fun enableRotation(status: Boolean) {
+        binding.includeWorkspacearea?.rotationSpinner?.setSelection(2)
+        binding.includeWorkspacearea?.rotationSpinner?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.rotationSpinnerLayout?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.rotationSpinner?.isEnabled = status
+        binding.includeWorkspacearea?.rotationSpinner?.isClickable = status
+        binding.includeWorkspacearea?.rotationSpinnerLayout?.isClickable = !status
+    }
+
     private fun enableClear(status: Boolean) {
         binding.includeWorkspacearea?.txtClear?.alpha = if (status) 1F else 0.5F
         binding.includeWorkspacearea?.txtClear?.isEnabled = status
@@ -1959,7 +2043,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         showProjection: Boolean,
         isDraggedPiece: Boolean,
         workspaceItem: WorkspaceItems?,
-        isSpliceArrowClicked: Boolean
+        isSpliceArrowClicked: Boolean,
     ) {
         hideShowLongPressText(false)
         viewModel.spliced_pices_visibility.set(false)
@@ -2109,7 +2193,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun isSpliceDirectionAvailable(
         row: Int,
         column: Int,
-        spliceImageList: List<SpliceImages>?
+        spliceImageList: List<SpliceImages>?,
     ): Boolean {
         val isSplicePossible = spliceImageList?.filter {
             it.row == row && it.column == column
@@ -2120,7 +2204,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun getSplicePiece(
         row: Int,
         column: Int,
-        spliceImageList: List<SpliceImages>?
+        spliceImageList: List<SpliceImages>?,
     ): SpliceImages? {
         val spliceImage = spliceImageList?.filter {
             it.row == row && it.column == column
@@ -2250,14 +2334,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         } else {
             arrayOf(Manifest.permission.BLUETOOTH)
         }
-        private val REQUIRED_PERMISSIONS_DOWNLOAD = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            arrayOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        } else {
-            emptyArray<String>()
-        }
+        private val REQUIRED_PERMISSIONS_DOWNLOAD =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            } else {
+                emptyArray<String>()
+            }
 
     }
 
@@ -2326,8 +2411,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
      */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+        requestCode: Int, permissions: Array<String>,
+        grantResults:
+        IntArray,
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
             if (dowloadPermissonGranted()) {
@@ -2449,7 +2535,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setCancelable(false)
-        if(alertCamera == null){
+        if (alertCamera == null) {
             alertCamera = dialogBuilder.create()
         }
         alertCamera?.setView(layout)
@@ -2599,14 +2685,14 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 viewModel.isWorkspaceSocketConnection.set(baseViewModel.activeSocketConnection.get())
                 logger.d("")
             }
-        }else if(requestCode == REQUEST_ENABLE_BT){
+        } else if (requestCode == REQUEST_ENABLE_BT) {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             if (mBluetoothAdapter?.isEnabled == false) {
                 logger.d("Later clicked")
                 baseViewModel.activeSocketConnection.set(false)
                 viewModel.isBleLaterClicked.set(true)
-            }else{
+            } else {
                 if (!Utility.getWifistatus(requireContext())) {
                     showWifiDialogue()
                 } else {
@@ -2632,7 +2718,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         when (alertType) {
             Utility.AlertType.BLE -> {
@@ -2716,7 +2802,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         when (alertType) {
             Utility.AlertType.BLE -> {
@@ -2759,10 +2845,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun resetWorkspaceUI() {
         setConnectButton()
-        if(viewModel.isSpliceBottomVisible.get() || viewModel.isSpliceRightVisible.get() || viewModel.isSpliceLeftVisible.get() || viewModel.isSpliceTopVisible.get()) {
+        if (viewModel.isSpliceBottomVisible.get() || viewModel.isSpliceRightVisible.get() || viewModel.isSpliceLeftVisible.get() || viewModel.isSpliceTopVisible.get()) {
             viewModel.clickPatternReference(false)
             viewModel.clickSplice()
         }
+        // Resetting dropdown to rotate on switching tabls
+        rotationSpinner?.setSelection(2)
     }
 
     private fun setConnectButton() {
@@ -2813,14 +2901,15 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun getBitmapFromSvgPngDrawable(
         imageName: String?,
         context: Context,
-        imageView: ImageView
+        imageView: ImageView,
     ) {
 
         var availableUri: Uri? = null
         //if(!(NetworkUtility.isNetworkAvailable(requireContext()))){
         availableUri =
             Utility.isImageFileAvailable(imageName, viewModel.patternDownloadFolderName, context)
-        Log.d("imageUri123", " ${viewModel.patternDownloadFolderName} availableUri: $availableUri >>>> ")
+        Log.d("imageUri123",
+            " ${viewModel.patternDownloadFolderName} availableUri: $availableUri >>>> ")
         //}
 
         if (imageName?.endsWith(".svg", true)!!) {

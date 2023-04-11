@@ -33,7 +33,8 @@ data class OfflinePatternData(
     var customization: Boolean? = false,
     var dressType: String? = "",
     var suitableFor: String? = "",
-    var occasion: String? = ""
+    var occasion: String? = "",
+    var notes: String? = ""
 )
 
 

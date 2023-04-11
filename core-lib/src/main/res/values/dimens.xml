@@ -54,6 +54,7 @@
     <string name="coackmark_skip_button_ratio">80:34</string>
     <dimen name="coachmark_skip_padding">10dp</dimen>
     <dimen name="coachmark_skip_margin">20dp</dimen>
+    <dimen name="spinner_dropdown_height">40dp</dimen>
 
 
 </resources>

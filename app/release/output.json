@@ -11,10 +11,10 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 1,
-      "versionName": "1",
+      "versionCode": 6,
+      "versionName": "6",
       "enabled": true,
-      "outputFile": "ditto_1_0_0.apk"
+      "outputFile": "ditto_1_0_1.apk"
     }
   ]
 }

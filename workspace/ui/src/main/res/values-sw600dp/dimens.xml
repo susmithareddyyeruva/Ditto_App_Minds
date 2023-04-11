@@ -10,6 +10,8 @@
     <dimen name="text_size_select_layout">18sp</dimen>
     <dimen name="text_save_and_exit">18sp</dimen>
     <dimen name="text_instruction">22sp</dimen>
+    <dimen name="spinner_width">225dp</dimen>
+    <dimen name="spinner_height">55dp</dimen>
     <dimen name="text_recalibrate">18sp</dimen>
     <dimen name="text_size_cloth">16sp</dimen>
     <dimen name="dimen_cut_checkbox">25dp</dimen>
@@ -60,4 +62,14 @@
     <dimen name="contrast_dimen_3">3dp</dimen>
     <dimen name="contrast_margin_top">8dp</dimen>
     <dimen name="info_image_padding">13dp</dimen>
+    <dimen name="note_alert_width">950dp</dimen>
+    <dimen name="note_alert_height">430dp</dimen>
+    <dimen name="minheight">450dp</dimen>
+    <dimen name="minwidth">800dp</dimen>
+    <dimen name="border">1.5dip</dimen>
+    <dimen name="note_layout_padding">12dp</dimen>
+    <dimen name="note_btn_padding">20dp</dimen>
+    <dimen name="note_btn_margin">14dp</dimen>
+    <dimen name="note_text_size">24sp</dimen>
+    <dimen name="rotate_padding">10dp</dimen>
 </resources>

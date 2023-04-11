@@ -1,16 +1,21 @@
 package com.ditto.workspace.ui.util
 
+import android.app.ActionBar.LayoutParams
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.view.Gravity
-import android.view.View
-import android.view.WindowManager
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.TextView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import com.ditto.workspace.domain.model.DragData
+import com.ditto.workspace.ui.R
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -76,6 +81,91 @@ class Utility {
             inputMethodManager.hideSoftInputFromWindow(mView?.windowToken, 0)
         }
 
+
+        fun getNotesDialog(
+            context: Context,
+            notes: String,
+            callback: CustomCallbackDialogListener,
+        ) {
+            Log.d("Testing", ">>>>>>  getNotesDialog ")
+            val dpi: Float = context.resources.displayMetrics.density
+            val mDialogView =
+                LayoutInflater.from(context).inflate(R.layout.ws_notes_layout, null)
+            val edittext = mDialogView.findViewById(R.id.note) as EditText
+            val textCounter = mDialogView.findViewById(R.id.textCount) as TextView
+            val okay = mDialogView.findViewById(R.id.okayBtn) as TextView
+            val clear = mDialogView.findViewById(R.id.clearAll) as TextView
+            val close = mDialogView.findViewById(R.id.close) as TextView
+
+            edittext.setSelection(edittext.text.length)
+            edittext.setSelection(edittext.length())
+            val mTextEditorWatcher: TextWatcher = object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    //This sets a textview to the current length
+                    var text = s.toString().replace("\n","")
+                    var charCount = text.length
+
+                    textCounter.text =
+                        String.format(context.resources.getString(R.string.note_char_limit),
+                            charCount.toString())
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            }
+
+            edittext.addTextChangedListener(mTextEditorWatcher)
+            if (!notes.isNullOrEmpty()) {
+                edittext.setText(notes)
+            } else {
+                edittext.setText("")
+            }
+
+            val dialogBuilder = AlertDialog.Builder(context)
+            dialogBuilder.setView(mDialogView)
+
+            dialogBuilder
+                .setCancelable(false)
+            /*.setPositiveButton(positiveButton) { dialog, id ->
+                edittext.removeTextChangedListener(mTextEditorWatcher)
+            }
+            .setNegativeButton(negativeButton) { dialog, id ->
+
+            }*/
+            val alert = dialogBuilder.create()
+            alert.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            alert.window?.setBackgroundDrawableResource(R.drawable.note_dialog_bg)
+
+            clear.setOnClickListener {
+                edittext.setText("")
+
+            }
+            okay.setOnClickListener {
+                callback.onCustomPositiveButtonClicked(edittext.text.toString())
+                edittext.removeTextChangedListener(mTextEditorWatcher)
+                alert.dismiss()
+            }
+
+            close.setOnClickListener {
+                edittext.removeTextChangedListener(mTextEditorWatcher)
+                alert.dismiss()
+            }
+
+            alert.show()
+
+            val w = context.resources.getDimension(R.dimen.note_alert_width).toInt()
+            val h = context.resources.getDimension(R.dimen.note_alert_height).toInt()
+            alert?.window?.setLayout(w, LayoutParams.WRAP_CONTENT)
+
+        }
+
     }
 
     interface CallbackDialogListener {
@@ -83,4 +173,8 @@ class Utility {
         fun onExitButtonClicked()
     }
 
+    interface CustomCallbackDialogListener {
+        fun onCustomPositiveButtonClicked(notes: String)
+        fun onCustomNegativeButtonClicked()
+    }
 }

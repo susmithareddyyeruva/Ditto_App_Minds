@@ -28,7 +28,7 @@ abstract class OfflinePatternDataDao {
     @Query("SELECT * FROM offline_pattern_data WHERE patternType = :type or custId = :custId")
     abstract fun getListOfTrialPattern(type: String, custId: String?): List<OfflinePatterns>
 
-    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab ,status = :status ,numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems, otherWorkspaceItems= :otherWorkspaceItems WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
+    @Query("UPDATE offline_pattern_data SET selectedTab = :selectedTab ,status = :status ,numberOfCompletedPiece = :numberOfCompletedPiece , patternPieces = :patternPieces , garmetWorkspaceItems = :garmetWorkspaceItems , liningWorkspaceItems = :liningWorkspaceItems ,interfaceWorkspaceItems = :interfaceWorkspaceItems, otherWorkspaceItems= :otherWorkspaceItems, notes= :notes WHERE tailornaovaDesignId = :tailornaovaDesignId and custId = :custId")
     abstract fun updateOfflinePatternData(
         custId: String?,
         tailornaovaDesignId: String?,
@@ -39,7 +39,8 @@ abstract class OfflinePatternDataDao {
         garmetWorkspaceItems: MutableList<WorkspaceItemOffline>,
         liningWorkspaceItems: MutableList<WorkspaceItemOffline>,
         interfaceWorkspaceItems: MutableList<WorkspaceItemOffline>,
-        otherWorkspaceItems: MutableList<WorkspaceItemOffline>
+        otherWorkspaceItems: MutableList<WorkspaceItemOffline>,
+        notes: String?
     ): Int
 
     //if patternType!= trial >> delete it (keeping trial patterns only)
