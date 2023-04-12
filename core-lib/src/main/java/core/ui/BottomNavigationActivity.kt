@@ -67,14 +67,18 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var expandableListAdapter: ExpandableMenuListAdapter
     lateinit var navViewHeaderBinding: NavDrawerHeaderBinding
     private lateinit var versionDisposable: Disposable
+    private lateinit var bottomNavViewModel: BottomNavViewModel
+    private lateinit var toolbarViewModel: ToolbarViewModel
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
+        bottomNavViewModel = ViewModelProvider(this).get(BottomNavViewModel::class.java)
+        toolbarViewModel = ViewModelProvider(this).get(ToolbarViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_navigation)
-        binding.bottomNavViewModel = ViewModelProvider(this).get(BottomNavViewModel::class.java)
-        binding.toolbarViewModel = ViewModelProvider(this).get(ToolbarViewModel::class.java)
+        binding.bottomNavViewModel = bottomNavViewModel
+        binding.toolbarViewModel = toolbarViewModel
         setSupportActionBar(binding.toolbar)
         setUpNavigation()
         setUpNavigationDrawer()

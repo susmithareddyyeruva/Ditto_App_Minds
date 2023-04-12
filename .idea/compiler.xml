@@ -80,6 +80,45 @@
       <module name="ditto-android.workspace-data" target="11" />
       <module name="ditto-android.workspace-domain" target="11" />
       <module name="ditto-android.workspace-ui" target="11" />
+      <module name="Ditto-AndroidApp.app" target="11" />
+      <module name="Ditto-AndroidApp.calibration-data" target="11" />
+      <module name="Ditto-AndroidApp.calibration-domain" target="11" />
+      <module name="Ditto-AndroidApp.calibration-ui" target="11" />
+      <module name="Ditto-AndroidApp.connectivity-ui" target="11" />
+      <module name="Ditto-AndroidApp.core-lib" target="11" />
+      <module name="Ditto-AndroidApp.dittoProjectorApp" target="11" />
+      <module name="Ditto-AndroidApp.home-data" target="11" />
+      <module name="Ditto-AndroidApp.home-domain" target="11" />
+      <module name="Ditto-AndroidApp.home-ui" target="11" />
+      <module name="Ditto-AndroidApp.howto-data" target="11" />
+      <module name="Ditto-AndroidApp.howto-domain" target="11" />
+      <module name="Ditto-AndroidApp.howto-ui" target="11" />
+      <module name="Ditto-AndroidApp.instructions-data" target="11" />
+      <module name="Ditto-AndroidApp.instructions-domain" target="11" />
+      <module name="Ditto-AndroidApp.instructions-ui" target="11" />
+      <module name="Ditto-AndroidApp.logger" target="11" />
+      <module name="Ditto-AndroidApp.login-data" target="11" />
+      <module name="Ditto-AndroidApp.login-domain" target="11" />
+      <module name="Ditto-AndroidApp.login-ui" target="11" />
+      <module name="Ditto-AndroidApp.menuitems-data" target="11" />
+      <module name="Ditto-AndroidApp.menuitems-domain" target="11" />
+      <module name="Ditto-AndroidApp.menuitems-ui" target="11" />
+      <module name="Ditto-AndroidApp.mylibrary-data" target="11" />
+      <module name="Ditto-AndroidApp.mylibrary-domain" target="11" />
+      <module name="Ditto-AndroidApp.mylibrary-ui" target="11" />
+      <module name="Ditto-AndroidApp.nav-graph" target="11" />
+      <module name="Ditto-AndroidApp.onboarding-data" target="11" />
+      <module name="Ditto-AndroidApp.onboarding-domain" target="11" />
+      <module name="Ditto-AndroidApp.onboarding-ui" target="11" />
+      <module name="Ditto-AndroidApp.splash-data" target="11" />
+      <module name="Ditto-AndroidApp.splash-domain" target="11" />
+      <module name="Ditto-AndroidApp.splash-ui" target="11" />
+      <module name="Ditto-AndroidApp.storage-data" target="11" />
+      <module name="Ditto-AndroidApp.tutorial-ui" target="11" />
+      <module name="Ditto-AndroidApp.videoplayer" target="11" />
+      <module name="Ditto-AndroidApp.workspace-data" target="11" />
+      <module name="Ditto-AndroidApp.workspace-domain" target="11" />
+      <module name="Ditto-AndroidApp.workspace-ui" target="11" />
       <module name="non-core-lib" target="1.7" />
       <module name="storage-domain" target="1.7" />
     </bytecodeTargetLevel>
