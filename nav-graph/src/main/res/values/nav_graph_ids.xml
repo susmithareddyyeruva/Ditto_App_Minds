@@ -87,6 +87,8 @@
     <item name="nav_graph_id_folderdetail" type="id" />
     <item name="myfolderFragment" type="id" />
     <item name="action_account_info_to_login" type="id" />
+    <item name="action_homeFragment_to_shareYourCraft" type="id" />
+    <item name="action_pattern_description_to_shareYourCraft" type="id" />
 
 
 </resources>

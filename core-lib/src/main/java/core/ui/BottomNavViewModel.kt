@@ -148,6 +148,15 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
         headerList.add(menuModel)
 
         menuModel = MenuModel(
+            "Share Your Craft",
+            "ic_menu_faq",
+            null
+        )
+        if (AppState.getIsLogged()) {
+            headerList.add(menuModel)
+        }
+
+        menuModel = MenuModel(
             "Customer Service",
             "ic_menu_support",
             null

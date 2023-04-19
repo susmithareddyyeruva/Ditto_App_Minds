@@ -52,4 +52,8 @@
     <string name="delete_msg">Are you sure you want to delete the account ?</string>
     <string name="str_dele_account_info">Deleting your account permanently disables access to the Ditto Patterns website and mobile app. Are you sure you want to delete?</string>
     <string name="subscription_desc">Your subscription will get expired in 200 days. Please renew the subscription to continue working on it.</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="open_gallery">Photo Gallery</string>
+    <string name="share_image">Share</string>
+    <string name="share_image_msg">Flaunt your creations! Share it on social media.</string>
 </resources>

@@ -695,7 +695,19 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 )
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
-        } else {
+        } else if (selectedmenu.equals(this.getString(R.string.share_your_craft))) {
+            if (navController.currentDestination?.label?.equals("Home")!! ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                navController.navigate(
+                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_shareYourCraft
+                    else R.id.action_pattern_description_to_shareYourCraft
+                )
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
+        }
+        else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
     }
