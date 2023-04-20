@@ -120,14 +120,14 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         childModel = MenuModel(
             "Account Info",
-            "ic_menu_privacy",
+            "account_info_icon",
             null
         )
         if (AppState.getIsLogged()) {
             childModelsList.add(childModel)
         }
 
-        childModel = MenuModel("Subscription Info", "ic_menu_privacy", null)
+        childModel = MenuModel("Subscription Info", "subscription_info_icon", null)
         if (AppState.getIsLogged()) {
             childModelsList.add(childModel)
         }
@@ -149,7 +149,7 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
 
         menuModel = MenuModel(
             "Share Your Craft",
-            "ic_menu_faq",
+            "share_icon",
             null
         )
         if (AppState.getIsLogged()) {

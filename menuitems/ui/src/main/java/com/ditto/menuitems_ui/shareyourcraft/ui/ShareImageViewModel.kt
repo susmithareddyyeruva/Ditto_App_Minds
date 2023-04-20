@@ -10,6 +10,8 @@ class ShareImageViewModel @Inject constructor() : BaseViewModel() {
     val events = uiEvents.stream()
     val isShareButtonVisible: ObservableBoolean = ObservableBoolean(false)
     val isCameraVisible: ObservableBoolean = ObservableBoolean(false)
+    val isShareClickable: ObservableBoolean = ObservableBoolean(true)
+    val isPhotosClickable: ObservableBoolean = ObservableBoolean(true)
 
     sealed class Event {
         object OnPhotoGalleryClicked : Event()
@@ -23,10 +25,12 @@ class ShareImageViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun onPhotoGalleryClick() {
+        isPhotosClickable.set(false)
         uiEvents.post(Event.OnPhotoGalleryClicked)
     }
 
     fun onShareImageClick() {
+        isShareClickable.set(false)
         uiEvents.post(Event.OnShareImageClicked)
     }
 

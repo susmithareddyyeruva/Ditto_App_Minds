@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,11 @@ class ShareImageFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as BottomNavigationActivity).hideDrawerLayout()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setuptoolbar()
@@ -81,7 +87,11 @@ class ShareImageFragment : BaseFragment() {
             if (viewModel.isCameraVisible.get()) {
                 viewModel.isCameraVisible.set(false)
                 toolbarViewModel.isShowActionBar.set(true)
-                if (::imgUri.isInitialized) viewModel.isShareButtonVisible.set(true)
+                if (::imgUri.isInitialized) {
+                    viewModel.isShareButtonVisible.set(true)
+                    viewModel.isShareClickable.set(true)
+                    viewModel.isPhotosClickable.set(true)
+                }
             } else {
                 isEnabled = false
                 findNavController().popBackStack()
@@ -89,6 +99,7 @@ class ShareImageFragment : BaseFragment() {
             }
         }
     }
+
 
     private fun handleEvent(event: ShareImageViewModel.Event) {
         when (event) {
@@ -129,7 +140,21 @@ class ShareImageFragment : BaseFragment() {
             imgUri = Uri.parse(data?.data.toString())
             binding.imageToShare.setImageURI(imgUri)
             viewModel.isShareButtonVisible.set(true)
+            viewModel.isShareClickable.set(true)
+            viewModel.isPhotosClickable.set(true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("ShareImageFragment-onREsume", viewModel.isShareClickable.get().toString() + " " + viewModel.isPhotosClickable.get().toString())
+        viewModel.isPhotosClickable.set(true)
+         viewModel.isShareClickable.set(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ShareImageFragment", viewModel.isShareClickable.get().toString() + " " + viewModel.isPhotosClickable.get().toString())
     }
 
     private fun startCamera() {
