@@ -156,6 +156,7 @@ class Utility {
 
             close.setOnClickListener {
                 edittext.removeTextChangedListener(mTextEditorWatcher)
+                callback.onCustomNegativeButtonClicked()
                 alert.dismiss()
             }
 

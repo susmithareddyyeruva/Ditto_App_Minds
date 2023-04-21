@@ -123,6 +123,7 @@
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
             android:onClick="@{() -> viewModel.onNotesClick()}"
+            android:enabled="@{viewModel.isAddNotesEnabled()}"
             android:layout_marginStart="@dimen/small_padding"
             android:padding="@dimen/medium_padding"
             android:textColor="@color/needle_grey"

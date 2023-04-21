@@ -1018,8 +1018,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                    override fun onCustomPositiveButtonClicked(updatedNotes: String) {
                        //viewModel.notes = updatedNotes
                        viewModel.data.value?.notes = updatedNotes
+                       viewModel.isAddNotesEnabled.set(true)
                    }
-                   override fun onCustomNegativeButtonClicked() {}
+                   override fun onCustomNegativeButtonClicked() {
+                       viewModel.isAddNotesEnabled.set(true)
+                   }
                })
             }
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
@@ -2809,6 +2812,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.DOWNLOADFAILED -> {
                 showSaveAndExitPopup()
+            }
+            Utility.AlertType.SELECT_LAYOUT -> {
+                viewModel.isInfoIconEnabled.set(true)
             }
             else -> {}
         }
