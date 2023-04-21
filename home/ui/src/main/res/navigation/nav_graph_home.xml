@@ -9,6 +9,7 @@
     <include app:graph="@navigation/nav_graph_account_info" />
     <include app:graph="@navigation/nav_graph_mainfaq" />
     <include app:graph="@navigation/nav_graph_mylibrary" />
+    <include app:graph="@navigation/nav_graph_share_craft" />
 
     <fragment
         android:id="@+id/homeFragment"
@@ -71,6 +72,10 @@
         <action
             android:id="@+id/action_homeFragment_to_aboutAppFragment"
             app:destination="@id/aboutAppFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_shareYourCraft"
+            app:destination="@id/nav_graph_share_craft" />
 
         <action
             android:id="@+id/action_homeFragment_to_wssettings_fragment"

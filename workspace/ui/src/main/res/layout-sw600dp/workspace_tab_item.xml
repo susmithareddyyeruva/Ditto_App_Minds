@@ -121,6 +121,8 @@
             android:id="@+id/addNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/notes_icon"
+            android:drawablePadding="@dimen/medium_padding"
             android:text="Add Note"
             android:elevation="@dimen/elevation_pieces_reference"
             android:fontFamily="@font/avenir_next_lt_pro_regular"
