@@ -210,30 +210,44 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     private fun setupRotationSpinner() {
         // set size spinner
         logger.d("rotation : Start : ")
-        val rotationOptions = listOf("Clockwise", "Anti-Clockwise", "Rotate")
-        val sizeAdapter =
-            CustomRotationSpinnerAdapter(requireContext(), rotationOptions)
-        rotationSpinner?.adapter = sizeAdapter
-        rotationSpinner?.setSelection(2)
-        rotationSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                logger.d("rotation : onNothingSelected : ")
+        if (rotationSpinner?.adapter != null) {
+            logger.d("rotation : rotationSpinner?.adapter!=null ")
+            GlobalScope.launch {
+                fixAdapterIssueOnResume()
             }
+        }else{
+            val rotationOptions = listOf("Clockwise", "Anti-Clockwise", "Rotate")
+            val sizeAdapter =
+                CustomRotationSpinnerAdapter(requireContext(), rotationOptions)
+            rotationSpinner?.adapter = sizeAdapter
+            rotationSpinner?.setSelection(2)
+            rotationSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    logger.d("rotation : onNothingSelected : ")
+                }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long,
-            ) {
-                if (position == 0) {
-                    viewModel.onRotateClockwise()
-                } else if (position == 1) {
-                    viewModel.onRotateAntiClockwise()
-                } else if (position == 2) {
-                    logger.d("rotation : position : " + position)
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    if (position == 0) {
+                        viewModel.onRotateClockwise()
+                    } else if (position == 1) {
+                        viewModel.onRotateAntiClockwise()
+                    } else if (position == 2) {
+                        logger.d("rotation : position : " + position)
+                    }
                 }
             }
+        }
+    }
+
+    private suspend fun fixAdapterIssueOnResume(){
+        delay(300)
+        withContext(Dispatchers.Main){
+            rotationSpinner?.setSelection(2)
         }
     }
 
@@ -998,6 +1012,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         when (event) {
             is WorkspaceViewModel.Event.OnNotesClick -> {
                 val note: String =  viewModel.data.value?.notes ?: ""
+                Log.d("note", note.length.toString())
                com.ditto.workspace.ui.util.Utility.getNotesDialog(requireContext(),
                    note, object : com.ditto.workspace.ui.util.Utility.CustomCallbackDialogListener {
                    override fun onCustomPositiveButtonClicked(updatedNotes: String) {
