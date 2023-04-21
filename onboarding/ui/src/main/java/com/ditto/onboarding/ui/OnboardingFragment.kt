@@ -24,6 +24,7 @@ import com.ditto.onboarding.ui.adapter.OnboardingAdapter
 import com.ditto.onboarding.ui.databinding.OnboardingFragmentBinding
 import com.ditto.onboarding.util.ONBOARDING
 import com.ditto.videoplayer.CustomPlayerControlActivity
+import core.lib.BuildConfig
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.Utility
@@ -211,9 +212,11 @@ class OnboardingFragment : BaseFragment(), Utility.CustomCallbackDialogListener 
                     if (findNavController().currentDestination?.id == R.id.destination_onboarding) {
                         findNavController().navigate(R.id.action_onboardingFragment_to_FaqAndGlossary)
                     }
-                }
+                }else if (viewModel.clickedId.get() == ONBOARDING.MORETUTORIALONLINE.id) {// clicked onBoarding item that except How to
 
-                else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
+                    Utility.redirectToExternalBrowser(context, BuildConfig.TUTORIAL_URL)
+
+                }else if (viewModel.clickedId.get() != ONBOARDING.HOWTO.id) {// clicked onBoarding item that except How to
 
                     navigateInstructionOrCaliberation(bundle)
 

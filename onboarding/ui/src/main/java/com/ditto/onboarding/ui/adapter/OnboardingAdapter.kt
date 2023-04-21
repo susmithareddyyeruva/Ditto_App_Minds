@@ -48,7 +48,7 @@ class OnboardingAdapter : RecyclerView.Adapter<OnboardingAdapter.OnBoardingHolde
         holder.rowonboardingBinding.viewModel = viewModel
         //holder.rowonboardingBinding.imageView.setBackgroundResource(images[position])
         when (mutableList[position].id) {
-            6 -> {
+            7 -> {
                 //Workspace
                 holder.rowonboardingBinding.imagePlay.visibility = View.VISIBLE
                 Glide.with(holder.rowonboardingBinding.cardView.context)
