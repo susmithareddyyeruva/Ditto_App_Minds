@@ -5,6 +5,7 @@
         <item>Interfacing</item>
     </string-array>
 
+    <string name="main">Main</string>
     <string name="garments">Garment</string>
     <string name="lining">Lining</string>
     <string name="interfacing">Interfacing</string>

@@ -162,7 +162,8 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
             fragmentOther = WorkspaceTabFragment()
             fragmentOther.setArguments(othersBundle)
 
-            workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
+//            workspacAdapter.addFragment(fragmentGarment, getString(R.string.garments))//Garment
+            workspacAdapter.addFragment(fragmentGarment, getString(R.string.main))//Changing Garments name to main
             workspacAdapter.addFragment(fragmentLining, getString(R.string.lining))//Lining
             workspacAdapter.addFragment(fragmentInterface, getString(R.string.interfacing))//Interfacing
             workspacAdapter.addFragment(fragmentOther, getString(R.string.other))//Other
