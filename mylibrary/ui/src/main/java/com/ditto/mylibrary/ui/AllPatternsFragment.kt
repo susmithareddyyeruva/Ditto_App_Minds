@@ -35,13 +35,20 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment(
-    private val setPatternCount: SetPatternCount,
-    private val filterIconSetListener: FilterIconSetListener
-) : BaseFragment(),
+class AllPatternsFragment : BaseFragment(),
     Utility.CustomCallbackDialogListener,
     com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
 
+    private lateinit var setPatternCount: SetPatternCount
+    private lateinit var filterIconSetListener: FilterIconSetListener
+
+    fun setSetPatternCount(mSetPatternCount: SetPatternCount) {
+        this.setPatternCount = mSetPatternCount
+    }
+
+    fun setFilterIconSetListener(mFilterIconSetListener: FilterIconSetListener) {
+        this.filterIconSetListener = mFilterIconSetListener
+    }
 
     @Inject
     lateinit var loggerFactory: LoggerFactory

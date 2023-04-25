@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ditto.logger.Logger
 import com.ditto.logger.LoggerFactory
 import com.ditto.mylibrary.domain.model.FilterItems
+import com.ditto.mylibrary.ui.AllPatternsFragment.SetPatternCount
 import com.ditto.mylibrary.ui.adapter.FilterDetailsAdapter
 import com.ditto.mylibrary.ui.adapter.FilterRvAdapter
 import com.ditto.mylibrary.ui.adapter.MyLibraryAdapter
@@ -40,7 +41,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
+class MyLibraryFragment : BaseFragment(), SetPatternCount,
     AllPatternsFragment.FilterIconSetListener, Utility.CustomCallbackDialogListener {
 
     @Inject
@@ -51,9 +52,30 @@ class MyLibraryFragment : BaseFragment(), AllPatternsFragment.SetPatternCount,
 
     private val viewModel: MyLibraryViewModel by ViewModelDelegate()
     lateinit var binding: MyLibraryFragmentBinding
-    private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment(this, this)
+
+    private val setPatternCount = object: AllPatternsFragment.SetPatternCount {
+        override fun onSetCount(title: String) {
+            viewModel.myLibraryTitle.set(title)
+        }
+    }
+
+    private val filterIconSetListener = object: AllPatternsFragment.FilterIconSetListener {
+        override fun onFilterApplied(isApplied: Boolean) {
+            if (isApplied) {
+                binding.viewDot.setImageResource(R.drawable.ic_tabfilter)
+            } else
+                binding.viewDot.setImageResource(R.drawable.ic_filter_default)
+        }
+    }
+
+    private var allPatternsFragment: AllPatternsFragment = AllPatternsFragment().apply {
+        setSetPatternCount(setPatternCount)
+        setFilterIconSetListener(filterIconSetListener)
+    }
     private var myFolderDetailFragment: MyFolderDetailFragment = MyFolderDetailFragment()
-    private var myFolderFragment: MyFolderFragment = MyFolderFragment(myFolderDetailFragment)
+    private var myFolderFragment: MyFolderFragment = MyFolderFragment().apply{
+        setMyFolderDetailFragmentObj(myFolderDetailFragment)
+    }
     var isFolderDetailsClicked = false
 
     override fun onCreateView(

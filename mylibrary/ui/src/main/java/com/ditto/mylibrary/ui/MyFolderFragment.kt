@@ -24,10 +24,16 @@ import kotlinx.android.synthetic.main.create_folder.*
 import kotlinx.android.synthetic.main.layout_rename.*
 import javax.inject.Inject
 
-class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragment) : BaseFragment(),
+class MyFolderFragment : BaseFragment(),
     core.ui.common.Utility.CustomCallbackDialogListener,
     Utility.CallbackCreateFolderDialogListener, MyFolderAdapter.OnRenameListener,
     MyFolderAdapter.OnDeleteClicked {
+
+    private lateinit var myFolderDetailFragmentObj: MyFolderDetailFragment
+
+    fun setMyFolderDetailFragmentObj(myFolderDetailFragment: MyFolderDetailFragment) {
+        myFolderDetailFragmentObj = myFolderDetailFragment
+    }
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -163,11 +169,11 @@ class MyFolderFragment(private val myFolderDetailFragment: MyFolderDetailFragmen
                 logger.d("Myfolder OnNavigtaionToFolderDetail")
                 val args = Bundle()
                 args?.putString("TITTLE", viewModel?.clickedFolderName)
-                myFolderDetailFragment?.arguments = args
+                myFolderDetailFragmentObj?.arguments = args
                 parentFragmentManager
                     ?.beginTransaction()
                     ?.addToBackStack(null)
-                    ?.replace(R.id.detail_nav_fragment, myFolderDetailFragment, "DETAIL")
+                    ?.replace(R.id.detail_nav_fragment, myFolderDetailFragmentObj, "DETAIL")
                     ?.commit()
 
 

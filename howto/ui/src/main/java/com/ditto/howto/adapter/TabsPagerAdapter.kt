@@ -33,7 +33,10 @@ class TabsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm,
     }
 
     override fun getItem(position: Int): Fragment {
-        return TabContentFragment(vm1, position)
+        return TabContentFragment().apply {
+            vm = vm1
+            pos = position
+        }
     }
 
     override fun getCount(): Int {
