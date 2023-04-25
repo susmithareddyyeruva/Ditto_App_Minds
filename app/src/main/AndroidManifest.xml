@@ -6,6 +6,8 @@
     <application
         android:name="com.ditto.base.DittoApplication"
         android:icon="@mipmap/ditto_app_icon"
+        android:hasFragileUserData="false"
+        android:taskAffinity=""
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:largeHeap="true"
