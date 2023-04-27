@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,18 +89,28 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
         bottomNavViewModel.visibility.set(false)
         (activity as BottomNavigationActivity).setToolbarIcon()
         toolbarViewModel.isShowActionMenu.set(false)
-
+        Log.d("TAG","onActivityCreated")
         setUIEvents()
         loadPdf()
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.disposable.clear()
+        Log.d("TAG","onStop")
+       // viewModel.disposable.dispose()
     }
+
+    override fun onDestroyView() {
+        Log.d("TAG","onDestroyView")
+        viewModel.disposable.clear()
+       // viewModel.disposable.dispose()
+        super.onDestroyView()
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadPdf() {
+        Log.d("TAG","loadPdf")
         if (allPermissionsGranted()) {
             checkavailablefile()
         } else {
@@ -109,6 +120,17 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
             )
         }
     }
+
+    /*override fun onResume() {
+        super.onResume()
+        Log.d("TAG","onResume")
+        if(viewModel.disposable.size().equals(0)) {
+            setUIEvents()
+            loadPdf()
+        } else {
+            loadPdf()
+        }
+    }*/
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
@@ -120,14 +142,18 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
     private fun handleEvent(event: TutorialPdfInstructionViewModel.Event) =
         when (event) {
-            TutorialPdfInstructionViewModel.Event.OnDownloadComplete -> showPdfFromUri(Uri.parse(
-                viewModel.patternpdfuri.get()))
+            TutorialPdfInstructionViewModel.Event.OnDownloadComplete -> {
+                Log.d("TAG","OnDownloadComplete")
+                showPdfFromUri(Uri.parse(
+                    viewModel.patternpdfuri.get()))
+            }
             else -> logger.d("Error, Invaid Event")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkavailablefile() {
         if (!pdfUrl.isNullOrEmpty()) {
+            Log.d("TAG","checkavailablefile")
             try {
                 downloadFileName =
                     pdfUrl?.substring(pdfUrl!!.lastIndexOf('/'), pdfUrl!!.length)
@@ -135,8 +161,10 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
                     viewModel.isFileAvailable(it)
                 }
                 if (availableUri != null) {
+                    Log.d("TAG","availableUri")
                     showPdfFromUri(availableUri)
                 } else {
+                    Log.d("TAG","Not-availableUri")
                     pdfdownload()
                 }
             } catch (e: Exception) {
@@ -148,6 +176,7 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun pdfdownload() {
+        Log.d("TAG","pdfdownload")
         if (core.network.NetworkUtility.isNetworkAvailable(requireContext())) {
             bottomNavViewModel.showProgress.set(true)
             GlobalScope.launch {
@@ -161,15 +190,18 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
 
 
     private fun showPdfFromUri(pdfName: Uri) {
+        Log.d("TAG","showPdfFromUri")
         bottomNavViewModel.showProgress.set(false)
         if (context == null) return
         binding.pdfView.fromUri(pdfName)
             .defaultPage(0) // set the default page to open
             .scrollHandle(DefaultScrollHandle(context))
             .onError {
+                Log.d("TAG","onError")
                 showRedownload()
             }
             .onPageError { page, _ ->
+                Log.d("TAG","onPageError")
                 showRedownload()
             }
             .load()
@@ -216,7 +248,7 @@ class TutorialPdfFragment : BaseFragment(), Utility.CustomCallbackDialogListener
     }
 
     private fun showRedownload() {
-
+        Log.d("TAG","showRedownload")
         Utility.getCommonAlertDialogue(
             requireContext(),
             "",
