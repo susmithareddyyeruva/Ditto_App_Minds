@@ -51,7 +51,7 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer.azurewebsites.net/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer-qa.azurewebsites.net/ditto/"'
 //          buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
@@ -75,7 +75,7 @@ android {
             debuggable true
             minifyEnabled false
             /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer.azurewebsites.net/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer-qa.azurewebsites.net/ditto/"'
 //          buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev11
