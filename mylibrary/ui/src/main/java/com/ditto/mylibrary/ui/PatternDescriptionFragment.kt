@@ -124,7 +124,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         //baseViewModel.activeSocketConnection.set(false)
-
+        setUIEvents()
 
         if (arguments?.getString("ISFROM").equals("DEEPLINK")) {
             (activity as BottomNavigationActivity).setEmaildesc()
@@ -136,9 +136,30 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ?.let { viewModel.clickedOrderNumber.set(it) }
             arguments?.getString("mannequinId").toString()
                 ?.let { viewModel.mannequinId.set(it) }
-            bottomNavViewModel.showProgress.set(true)
+            arguments?.getString("brand").toString()
+                ?.let { viewModel.brand.set(it) }
+            arguments?.getString("productId").toString()
+                ?.let { viewModel.productIdFromDeepLink.set(it) }
+            logger.d("brand- ${viewModel.brand.get()}")
+
+            if (viewModel.clickedProduct == null) {
+                viewModel.clickedProduct = ProdDomain().apply {
+                    iD = viewModel.productIdFromDeepLink.get()
+                    prodBrand =  viewModel.brand.get()
+                }
+            }
+
             if (NetworkUtility.isNetworkAvailable(context)) {
-                viewModel.fetchPattern()
+                if(!viewModel.brand.get().isNullOrEmpty() && viewModel.brand.get().equals("Ditto",true)) {
+                    //fetch tailornova data
+                    bottomNavViewModel.showProgress.set(true)
+
+                    viewModel.fetchPattern()
+                    viewModel.fetchThirdPartyData()
+                } else {
+                    //fetch 3p data
+                    viewModel.setPatternUiBasedOnPatternType()
+                }
             } else {
                 viewModel.fetchOfflinePatternDetails()
             }
@@ -156,7 +177,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setPatternImage()
             }
 
-            setUIEvents()
+
             outputDirectory = Utility.getOutputDirectory(requireContext())
 
             if (viewModel.clickedProduct != null) {
@@ -423,23 +444,40 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         if (viewModel.isFromDeepLinking.get()) {
-            viewModel.patternName.set(viewModel.data.value?.patternName)
-            viewModel.patternDescription.set(viewModel.data.value?.description)
-            viewModel.prodSize.set(viewModel.data.value?.size)
-            Glide.with(requireContext())
-                .load(viewModel.data.value?.patternDescriptionImageUrl)
-                .placeholder(R.drawable.ic_placeholder)
-                .into(binding.imagePatternDesc)
-            // need to check for type
-            setVisibilityForViews(
-                "WORKSPACE",
-                false,
-                false,
-                false,
-                false,
-                false,
-                true
-            )
+            if(!viewModel.brand.get().isNullOrEmpty() && viewModel.brand.get().equals("Ditto")) {
+                viewModel.patternName.set(viewModel.data.value?.patternName)
+                viewModel.patternDescription.set(viewModel.data.value?.description)
+                viewModel.prodSize.set(viewModel.data.value?.size)
+                Glide.with(requireContext())
+                    .load(viewModel.data.value?.patternDescriptionImageUrl)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(binding.imagePatternDesc)
+                // need to check for type
+                setVisibilityForViews(
+                    "WORKSPACE",
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+            } else {
+               // setPatternImage()
+                Glide.with(requireContext())
+                    .load(viewModel.productImgUrlFromDeepLink.get())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(binding.imagePatternDesc)
+                setVisibilityForViews(
+                    "WORKSPACE",
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true
+                )
+            }
         } else {
             setData()
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {//new post
@@ -941,9 +979,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             PatternDescriptionViewModel.Event.OnThirdPartyDataFetchSuccess -> {
                 Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
-                setSizeSpinnerData()
-                binding.variationSpinner.setSelection(0, true)
-                binding.sizeSpinner.setSelection(0, true)
+                if(!viewModel.clickedProduct?.prodBrand.equals("Ditto")) {
+                    setSizeSpinnerData()
+                    binding.variationSpinner.setSelection(0, true)
+                    binding.sizeSpinner.setSelection(0, true)
+
+                    if(viewModel.isFromDeepLinking.get()) {
+                        setUpUiBasedOnLoggedIn()
+                    }
+                }
+
                 bottomNavViewModel.showProgress.set(false)
             }
             PatternDescriptionViewModel.Event.OnThirdPartyDataFetchResume -> {

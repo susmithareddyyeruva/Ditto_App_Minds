@@ -60,6 +60,9 @@ class PatternDescriptionViewModel @Inject constructor(
     //    val clickedTailornovaID: ObservableField<String> = ObservableField("30644ba1e7aa41cfa9b17b857739968a")
     val clickedTailornovaID: ObservableField<String> = ObservableField("")
     val mannequinId: ObservableField<String> = ObservableField("")
+    val brand: ObservableField<String> = ObservableField("")
+    val productIdFromDeepLink: ObservableField<String> = ObservableField("")
+    val productImgUrlFromDeepLink: ObservableField<String> = ObservableField("")
     val mannequinName: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
@@ -282,10 +285,32 @@ class PatternDescriptionViewModel @Inject constructor(
     private fun handleThirdPartyFetchResult(result: Result<ThirdPartyDomain>?) {
         when(result) {
             is Result.OnSuccess -> {
-                val variations = result.data.variationDomain ?: emptyList()
-                patternVariationList.clear()
-                patternVariationList.add(VariationDomain(emptyList(),"Select View / Cup Size",""))
-                patternVariationList.addAll(variations)
+                if(isFromDeepLinking.get()) {
+                    if(result.data.brand.equals("Ditto")) {
+                        clickedProduct?.yardagePdfUrl = result.data.yardagePdfUrl
+                        clickedProduct?.yardageDetails = result.data.yardageDetails
+                        clickedProduct?.notionDetails = result.data.notionsDetails
+                        clickedProduct?.image = result.data.image
+                    } else {
+                        val variations = result.data.variationDomain ?: emptyList()
+                        patternVariationList.clear()
+                        patternVariationList.add(VariationDomain(emptyList(),"Select View / Cup Size",""))
+                        patternVariationList.addAll(variations)
+                        patternDescription.set(result.data.description)
+                        patternName.set(result.data.name)
+                        tailornovaDesignpatternName.set(result.data.name)
+                        productImgUrlFromDeepLink.set(result.data.image)
+                        clickedProduct?.yardagePdfUrl = result.data.yardagePdfUrl
+                        clickedProduct?.yardageDetails = result.data.yardageDetails
+                        clickedProduct?.notionDetails = result.data.notionsDetails
+                        clickedProduct?.image = result.data.image
+                    }
+                } else {
+                    val variations = result.data.variationDomain ?: emptyList()
+                    patternVariationList.clear()
+                    patternVariationList.add(VariationDomain(emptyList(),"Select View / Cup Size",""))
+                    patternVariationList.addAll(variations)
+                }
                 uiEvents.post(Event.OnThirdPartyDataFetchSuccess)
             }
             is Result.OnError -> {

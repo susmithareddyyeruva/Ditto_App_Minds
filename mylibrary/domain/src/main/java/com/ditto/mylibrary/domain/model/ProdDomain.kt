@@ -3,9 +3,9 @@ package com.ditto.mylibrary.domain.model
 import java.io.Serializable
 
 data class ProdDomain(
-    val iD: String? = "",
-    val image: String? = "",
-    val prodName: String? = "",
+    var iD: String? = "",
+    var image: String? = "",
+    var prodName: String? = "",
     val description: String? = "",
     val creationDate: String? = "",
     val patternType: String? = "",
@@ -22,7 +22,7 @@ data class ProdDomain(
     val orderNo: String? = "",
     val prodSize: String? = "",
     val prodGender: String? = "",
-    val prodBrand: String? = "",
+    var prodBrand: String? = "",
     var isFavourite: Boolean? = false,
     var purchasedSizeId:String?="",
     var selectedMannequinId: String? = "",
