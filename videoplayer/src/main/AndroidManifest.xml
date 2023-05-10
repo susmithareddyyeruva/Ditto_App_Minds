@@ -7,7 +7,7 @@
             android:name="com.ditto.videoplayer.CustomPlayerControlActivity"
             android:screenOrientation="sensorLandscape"
             android:taskAffinity=""
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleTop"/>
     </application>
     <queries>
         <intent>

@@ -35,7 +35,7 @@
     <application>
         <activity
             android:name="com.ditto.connectivity.ConnectivityActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:usesCleartextTraffic="false"
             android:windowSoftInputMode="adjustPan|stateHidden|adjustResize"
             android:screenOrientation="sensorLandscape"
