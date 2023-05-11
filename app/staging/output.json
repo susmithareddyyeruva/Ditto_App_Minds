@@ -5,7 +5,7 @@
     "kind": "Directory"
   },
   "applicationId": "com.jodito.ditto.qa",
-  "variantName": "debug",
+  "variantName": "staging",
   "elements": [
     {
       "type": "SINGLE",
@@ -14,7 +14,7 @@
       "versionCode": 6,
       "versionName": "6",
       "enabled": true,
-      "outputFile": "ditto_1_47(01).apk"
+      "outputFile": "ditto_dev11_1_0_26.apk"
     }
   ]
 }

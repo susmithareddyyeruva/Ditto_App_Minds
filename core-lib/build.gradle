@@ -15,8 +15,8 @@ android {
         targetSdkVersion 33
         versionCode 6
 
-        versionName "0.46(02)"
-  //      versionName "1.0.25"
+        versionName "1.47(01)"
+//        versionName "1.0.27"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -28,7 +28,8 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             /*  buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://www.handmadewithjoann.com/ditto/"'
+//            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer.azurewebsites.net/ditto/"'
+          buildConfigField "String", 'TOKEN_BASEURL', '"https://www.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
             buildConfigField "String", 'SERVER', '"production"'
@@ -50,7 +51,8 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer-qa.azurewebsites.net/ditto/"'
+//          buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
             buildConfigField "String", 'SERVER', '"dev"'
@@ -73,7 +75,8 @@ android {
             debuggable true
             minifyEnabled false
             /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer-qa.azurewebsites.net/ditto/"'
+//          buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev11
             buildConfigField "String", 'SERVER', '"staging"'
