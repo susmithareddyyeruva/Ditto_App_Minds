@@ -4,8 +4,8 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.jodito.ditto.qa",
-  "variantName": "debug",
+  "applicationId": "com.jodito.ditto",
+  "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
@@ -14,7 +14,7 @@
       "versionCode": 6,
       "versionName": "6",
       "enabled": true,
-      "outputFile": "ditto_1_47(01).apk"
+      "outputFile": "ditto_1_0_1.apk"
     }
   ]
 }

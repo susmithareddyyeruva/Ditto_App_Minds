@@ -139,6 +139,7 @@ class TutorialPdfInstructionViewModel @Inject constructor(
     }
 
     fun onFinished() {
+        Log.d("TAG","onFinished")
         uiEvents.post(Event.OnDownloadComplete)
     }
 }
