@@ -199,6 +199,8 @@ class PatternDescriptionViewModel @Inject constructor(
                 // insert to DB
                 if ((NetworkUtility.isNetworkAvailable(context))) {
                     if (isFromDeepLinking.get()) {
+                        data.value?.notionDetails = clickedProduct?.notionDetails
+                        data.value?.yardageDetails = clickedProduct?.yardageDetails
                         insertTailornovaDetailsToDB(
                             data.value!!,
                             clickedOrderNumber.get(),
@@ -210,8 +212,8 @@ class PatternDescriptionViewModel @Inject constructor(
                             clickedProduct?.mannequin ?: emptyList(),
                             "Purchased",
                             "",
-                            "",
-                            ""
+                            selectedViewOrCupStyle.get(),
+                            clickedProduct?.yardagePdfUrl
                         )
                     } else {
                         data.value?.notionDetails = clickedProduct?.notionDetails
@@ -291,6 +293,8 @@ class PatternDescriptionViewModel @Inject constructor(
                         clickedProduct?.yardageDetails = result.data.yardageDetails
                         clickedProduct?.notionDetails = result.data.notionsDetails
                         clickedProduct?.image = result.data.image
+                        clickedProduct?.prodName = data.value?.patternName
+                        // prodSize.set(data.value?.size)
                     } else {
                         val variations = result.data.variationDomain ?: emptyList()
                         patternVariationList.clear()
@@ -304,6 +308,7 @@ class PatternDescriptionViewModel @Inject constructor(
                         clickedProduct?.yardageDetails = result.data.yardageDetails
                         clickedProduct?.notionDetails = result.data.notionsDetails
                         clickedProduct?.image = result.data.image
+                        clickedProduct?.prodName = result.data.name
                     }
                 } else {
                     val variations = result.data.variationDomain ?: emptyList()

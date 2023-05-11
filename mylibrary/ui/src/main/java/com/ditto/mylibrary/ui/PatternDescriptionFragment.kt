@@ -153,7 +153,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 if(!viewModel.brand.get().isNullOrEmpty() && viewModel.brand.get().equals("Ditto",true)) {
                     //fetch tailornova data
                     bottomNavViewModel.showProgress.set(true)
-
+                    viewModel.isDittoPattern.set(true)
                     viewModel.fetchPattern()
                     viewModel.fetchThirdPartyData()
                 } else {
@@ -447,6 +447,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             if(!viewModel.brand.get().isNullOrEmpty() && viewModel.brand.get().equals("Ditto")) {
                 viewModel.patternName.set(viewModel.data.value?.patternName)
                 viewModel.patternDescription.set(viewModel.data.value?.description)
+                if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+                    viewModel.tailornovaDesignpatternName.set(viewModel.data.value?.patternName)
+                } else {
+                    viewModel.tailornovaDesignpatternName.set(viewModel.clickedProduct?.tailornovaDesignName)
+                }
                 viewModel.prodSize.set(viewModel.data.value?.size)
                 Glide.with(requireContext())
                     .load(viewModel.data.value?.patternDescriptionImageUrl)
@@ -463,11 +468,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     true
                 )
             } else {
-               // setPatternImage()
-                Glide.with(requireContext())
+                setPatternImage()
+               /* Glide.with(requireContext())
                     .load(viewModel.productImgUrlFromDeepLink.get())
                     .placeholder(R.drawable.ic_placeholder)
-                    .into(binding.imagePatternDesc)
+                    .into(binding.imagePatternDesc)*/
                 setVisibilityForViews(
                     "WORKSPACE",
                     false,
@@ -1339,7 +1344,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
-        hashMap[viewModel.patternName.get()?:"Pattern Name"] = viewModel.clickedProduct?.image ?: ""
+        hashMap[viewModel.patternName.get()?:"Pattern Name"] = if(!viewModel.clickedProduct?.image.isNullOrEmpty()) {
+            viewModel.clickedProduct?.image.toString()
+        } else {
+            viewModel.data.value?.thumbnailImageUrl.toString()
+        }
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }

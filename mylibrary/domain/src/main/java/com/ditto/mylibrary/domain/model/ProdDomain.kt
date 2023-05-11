@@ -20,7 +20,7 @@ data class ProdDomain(
     val tailornovaDesignId: String? = "",
     val tailornovaDesignName: String? = "",
     val orderNo: String? = "",
-    val prodSize: String? = "",
+    var prodSize: String? = "",
     val prodGender: String? = "",
     var prodBrand: String? = "",
     var isFavourite: Boolean? = false,
