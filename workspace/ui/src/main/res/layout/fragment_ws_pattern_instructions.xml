@@ -13,7 +13,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@color/screen_bg_color">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/instruction_appBar"
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:id="@+id/toolbar_instrctions"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/headerbar"
+                android:background="@color/screen_bg_color"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
@@ -55,7 +55,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/screen_bg_color">
 
             <com.github.barteksc.pdfviewer.PDFView
                 android:id="@+id/pdfView"

@@ -97,6 +97,11 @@ class YardageNotionFragment : BaseFragment(), Utility.CustomCallbackDialogListen
 
     override fun onStop() {
         super.onStop()
+       // viewModel.disposable.clear()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         viewModel.disposable.clear()
     }
 

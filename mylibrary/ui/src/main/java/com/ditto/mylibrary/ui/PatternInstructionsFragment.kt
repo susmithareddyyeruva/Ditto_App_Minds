@@ -95,6 +95,11 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
 
     override fun onStop() {
         super.onStop()
+       // viewModel.disposable.clear()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         viewModel.disposable.clear()
     }
 
