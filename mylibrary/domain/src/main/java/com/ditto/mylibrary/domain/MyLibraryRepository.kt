@@ -34,7 +34,8 @@ interface MyLibraryRepository {
         patternType:String?,
         lastDateOfModification: String?,
         selectedViewCupStyle: String?,
-        yardagePdfUrl: String?
+        yardagePdfUrl: String?,
+        productId: String?
     ): Single<Any>
     //fun addProject(id : Int): Single<Any>
     fun getPatternData(get:Int): Single<Result<MyLibraryData>>

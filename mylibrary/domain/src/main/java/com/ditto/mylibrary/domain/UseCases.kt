@@ -36,8 +36,9 @@ interface MyLibraryUseCase {
         patternType:String?,
         lastDateOfModification: String?,
         selectedViewCupStyle: String?,
-        yardagePdfUrl: String?
+        yardagePdfUrl: String?,
+        productId: String?
     ): Single<Any>
-    fun getThirdPartyPatternData(productId: String) : Single<Result<ThirdPartyDomain>>
+    fun getThirdPartyPatternData(productId: String, orderId: String) : Single<Result<ThirdPartyDomain>>
 }
 

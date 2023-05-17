@@ -10,6 +10,9 @@ data class ThirdPartyDomain(
     val yardageDetails: List<String>? = emptyList(),
     val yardageImageUrl: String?,
     val yardagePdfUrl: String?,
+    val tailornovaDesignName: String?,
+    val customSizeFitName: String?,
+    val lastModifiedSizeDate: String?
 )
 
 data class VariationDomain(

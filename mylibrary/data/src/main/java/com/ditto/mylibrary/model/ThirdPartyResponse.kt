@@ -41,7 +41,13 @@ data class BrandVariantData(
     @SerializedName("yardageImageUrl")
     val yardageImageUrl: String?,
     @SerializedName("yardagePdfUrl")
-    val yardagePdfUrl: String?
+    val yardagePdfUrl: String?,
+    @SerializedName("tailornovaDesignName")
+    val tailornovaDesignName: String?,
+    @SerializedName("customSizeFitName")
+    val customSizeFitName: String?,
+    @SerializedName("lastModifiedSizeDate")
+    val lastModifiedSizeDate: String?
 )
 
 data class Variation(

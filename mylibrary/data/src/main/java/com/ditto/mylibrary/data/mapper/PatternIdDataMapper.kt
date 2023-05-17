@@ -11,7 +11,7 @@ import core.appstate.AppState
 internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
     return this.map {
         ProdDomain(
-            iD = it.designId,
+            iD = it.productId,
             image = it.thumbnailImageName,
             prodName = it.patternName,
             description = it.description,
@@ -44,7 +44,7 @@ internal fun List<OfflinePatterns>.toDomain(): List<ProdDomain> {
 
 internal fun OfflinePatterns.toDomain(): ProdDomain {
     return ProdDomain(
-        iD = this.designId,
+        iD = this.productId,
         image = this.thumbnailImageUrl,
         prodName = this.patternName,
         description = this.description,
@@ -78,7 +78,8 @@ public fun PatternIdData.toDomain(
     patternType:String?,
     lastDateOfModification: String?,
     selectedViewCupStyle: String?,
-    yardagePdfUrl: String?
+    yardagePdfUrl: String?,
+    productId: String?
 ): OfflinePatterns {
     val mYardageDetails = YardageDetails(this.yardageDetails, this.notionDetails)
     val mHeroImageUrls = HeroImageUrls(this.heroImageUrls)
@@ -122,7 +123,8 @@ public fun PatternIdData.toDomain(
         yardagePdfUrl = yardagePdfUrl,
         sizeChartUrl = this.sizeChartUrl,
         mainheroImageUrl = this.mainheroImageUrl,
-        heroImageUrls = mHeroImageUrls
+        heroImageUrls = mHeroImageUrls,
+        productId = productId
     )
 }
 fun MannequinDataDomain.toDomain(): MannequinData {
