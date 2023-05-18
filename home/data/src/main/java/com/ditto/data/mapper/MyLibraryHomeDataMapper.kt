@@ -285,7 +285,7 @@ public fun List<PatternIdData>.toDomainn(): List<OfflinePatterns> {
 internal fun List<OfflinePatterns>.offlinetoDomain(): List<com.ditto.mylibrary.domain.model.ProdDomain> {
     return this.map {
         ProdDomain(
-            iD = it.designId,
+            iD = it.productId,
             image = it.thumbnailImageName,
             prodName = it.patternName,
             description = it.description,

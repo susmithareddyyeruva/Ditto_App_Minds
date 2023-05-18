@@ -155,7 +155,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     bottomNavViewModel.showProgress.set(true)
                     viewModel.isDittoPattern.set(true)
                     viewModel.fetchPattern()
-                    viewModel.fetchThirdPartyData()
+                   // viewModel.fetchThirdPartyData()
                 } else {
                     //fetch 3p data
                     viewModel.setPatternUiBasedOnPatternType()
@@ -171,6 +171,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ?.let { viewModel.clickedTailornovaID.set(it) }
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
+                arguments?.getBoolean("isFromOfflinePatterns")
+                    ?.let { viewModel.isFromOfflinePatterns.set(it) }
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
                 logger.d("12345, received is ${viewModel.clickedProduct.toString()}")
             } else {
@@ -444,45 +446,17 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         if (viewModel.isFromDeepLinking.get()) {
-            if(!viewModel.brand.get().isNullOrEmpty() && viewModel.brand.get().equals("Ditto")) {
-                viewModel.patternName.set(viewModel.data.value?.patternName)
-                viewModel.patternDescription.set(viewModel.data.value?.description)
-                if (viewModel.clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
-                    viewModel.tailornovaDesignpatternName.set(viewModel.data.value?.patternName)
-                } else {
-                    viewModel.tailornovaDesignpatternName.set(viewModel.clickedProduct?.tailornovaDesignName)
-                }
-                viewModel.prodSize.set(viewModel.data.value?.size)
-                Glide.with(requireContext())
-                    .load(viewModel.data.value?.patternDescriptionImageUrl)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .into(binding.imagePatternDesc)
-                // need to check for type
-                setVisibilityForViews(
-                    "WORKSPACE",
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    true
-                )
-            } else {
-                setPatternImage()
-               /* Glide.with(requireContext())
-                    .load(viewModel.productImgUrlFromDeepLink.get())
-                    .placeholder(R.drawable.ic_placeholder)
-                    .into(binding.imagePatternDesc)*/
-                setVisibilityForViews(
-                    "WORKSPACE",
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    true
-                )
-            }
+            setPatternImage()
+            setVisibilityForViews(
+                "WORKSPACE",
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+            )
+
         } else {
             setData()
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {//new post
@@ -989,9 +963,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     binding.variationSpinner.setSelection(0, true)
                     binding.sizeSpinner.setSelection(0, true)
 
-                    if(viewModel.isFromDeepLinking.get()) {
-                        setUpUiBasedOnLoggedIn()
-                    }
+                }
+                if(viewModel.isFromDeepLinking.get()) {
+                    setUpUiBasedOnLoggedIn()
                 }
 
                 bottomNavViewModel.showProgress.set(false)
@@ -1001,6 +975,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setSizeSpinnerData()
                 binding.variationSpinner.setSelection(viewModel.selectedViewCupPosition.get()?:0, true)
                 binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
+                if(viewModel.isFromDeepLinking.get()) {
+                    setUpUiBasedOnLoggedIn()
+                }
                 bottomNavViewModel.showProgress.set(false)
             }
             else -> {}
@@ -1111,16 +1088,41 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (NetworkUtility.isNetworkAvailable(context)) {
             //downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
+        val folderName = Utility.getPatternDownloadFolderName(
+            viewModel.clickedTailornovaID.get() ?: "",
+            getPatternMannequinId()
+        )
+
+        val imagePath =
+            if ((NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase().equals("TRIAL"))
+                && viewModel.isFromOfflinePatterns.get() == false // isFromOfflinePatterns determines whether we came from offline all patterns screen to online pattern details screen
+            ) {
+                viewModel.clickedProduct?.image
+            } else {
+                viewModel.patternName.get()
+            }
+
         setImageFromSvgPngDrawable(
-            Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
-                viewModel.mannequinId.get() ?: ""),
-            if (NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase()
-                    .equals("TRIAL")
-            ) viewModel.clickedProduct?.image else viewModel.patternName.get(),
+            folderName,
+            imagePath,
             binding.imagePatternDesc.context,
             binding.imagePatternDesc
         )
     }
+
+    private fun getPatternMannequinId() =
+        // using clickedProduct!!.selectedMannequinId when coming from offline all patterns screen to online pattern description screen. this is only for 3p patterns
+        // isFromOfflinePatterns determines whether we came from offline all patterns screen to online pattern details screen i.e user is offline till all patterns screen then
+        // turns on internet and navigates to pattern description screen
+        if (!viewModel.clickedProduct?.prodBrand.equals("Ditto") && viewModel.isFromOfflinePatterns.get() == true) {
+
+            viewModel.clickedProduct!!.selectedMannequinId ?: ""
+        }
+        // use viewModel.mannequinId.get() for completely offline/online flow for both 3p and ditto flow
+        else {
+            viewModel.mannequinId.get() ?: ""
+        }
+
 
     private fun downloadImage(imageUrl: String?, patternName: String?) {
         runBlocking {
@@ -1337,13 +1339,21 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
     }
 
+    private fun isValueNonNullOrNonEmpty(stringValue: String?): Boolean {
+        return !stringValue.isNullOrEmpty()
+    }
+
     //download the pattern pieces
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-        hashMap[if(viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString() else viewModel.data.value?.thumbnailImageName.toString()] =
-            viewModel.data.value?.thumbnailImageUrl.toString()
-        hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
-            viewModel.data.value?.thumbnailImageUrl.toString()
+        if(isValueNonNullOrNonEmpty(viewModel.data.value?.thumbnailImageName) && isValueNonNullOrNonEmpty(viewModel.data.value?.thumbnailImageUrl)) {
+            hashMap[if (viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString()
+            else viewModel.data.value?.thumbnailImageName.toString()] =
+                viewModel.data.value?.thumbnailImageUrl.toString()
+            hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
+                viewModel.data.value?.thumbnailImageUrl.toString()
+        }
+
         hashMap[viewModel.patternName.get()?:"Pattern Name"] = if(!viewModel.clickedProduct?.image.isNullOrEmpty()) {
             viewModel.clickedProduct?.image.toString()
         } else {
@@ -1921,7 +1931,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }*/ else {
             Glide
                 .with(context)
-                .load(if (NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
+                .load(if (NetworkUtility.isNetworkAvailable(context) && (availableUri == null)) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)

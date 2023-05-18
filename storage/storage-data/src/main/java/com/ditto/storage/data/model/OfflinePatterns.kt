@@ -202,4 +202,8 @@ data class OfflinePatterns(
     @ColumnInfo(name = "notes")
     @SerializedName("notes")
     var notes: String? = "",
+
+    @ColumnInfo(name = "productId")
+    @SerializedName("productId")
+    var productId: String? = "",
 )

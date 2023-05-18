@@ -282,6 +282,7 @@ class AllPatternsFragment : BaseFragment(),
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),//empty here
                     "product" to viewModel.clickedProduct,
+                    "isFromOfflinePatterns" to (parentFragment as MyLibraryFragment?)?.binding?.tabLayout?.getTabAt(0)?.text.toString().equals(getString(R.string.offline_patterns)),
                     "ISFROM" to "ALLPATTERN"
                 )
                 findNavController().navigate(

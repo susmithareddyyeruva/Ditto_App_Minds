@@ -20,6 +20,9 @@ fun ThirdPartyResponse.toDomain() : ThirdPartyDomain {
         yardageDetails = this.product?.brandVariantData?.yardageDetails,
         yardageImageUrl = this.product?.brandVariantData?.yardageImageUrl,
         yardagePdfUrl = this.product?.brandVariantData?.yardagePdfUrl,
+        tailornovaDesignName = this.product?.brandVariantData?.tailornovaDesignName,
+        customSizeFitName = this.product?.brandVariantData?.customSizeFitName,
+        lastModifiedSizeDate = this.product?.brandVariantData?.lastModifiedSizeDate
     )
 }
 

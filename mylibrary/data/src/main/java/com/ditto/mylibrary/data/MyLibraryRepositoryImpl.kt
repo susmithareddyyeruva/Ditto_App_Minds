@@ -606,7 +606,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
         patternType: String?,
         lastDateOfModification: String?,
         selectedViewCupStyle: String?,
-        yardagePdfUrl: String? // yardagePdfUrl from mylibrary api
+        yardagePdfUrl: String?, // yardagePdfUrl from mylibrary api
+        productId: String?
     ): Single<Any> {
         return Single.fromCallable {
             val i = offlinePatternDataDao.upsert(
@@ -621,7 +622,8 @@ class MyLibraryRepositoryImpl @Inject constructor(
                     patternType,
                     lastDateOfModification,
                     selectedViewCupStyle,
-                    yardagePdfUrl
+                    yardagePdfUrl,
+                    productId
                 )
             )
 

@@ -27,7 +27,7 @@ import java.util.concurrent.Executors
 /**
  * The Room database for this app
  */
-@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatterns::class], version = 3, exportSchema = false)
+@Database(entities = [OnBoarding::class, User::class, Patterns::class, OfflinePatterns::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TraceDataDatabase : RoomDatabase() {
 
@@ -53,6 +53,12 @@ abstract class TraceDataDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE offline_pattern_data ADD COLUMN productId TEXT DEFAULT ''")
+            }
+        }
+
         // For Singleton instantiation
         @Volatile
         private var instance: TraceDataDatabase? = null
@@ -70,7 +76,7 @@ abstract class TraceDataDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): TraceDataDatabase {
             return Room.databaseBuilder(context, TraceDataDatabase::class.java, DATABASE_NAME)
-                .addMigrations(MIGRATION_1_2,MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2,MIGRATION_2_3,MIGRATION_3_4)
                 .fallbackToDestructiveMigration()
                 .build()
         }

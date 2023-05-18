@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -18,7 +17,6 @@ import com.ditto.mylibrary.data.error.TailornovaAPIError
 import com.ditto.mylibrary.data.mapper.toDomain12
 import com.ditto.mylibrary.domain.MyLibraryUseCase
 import com.ditto.mylibrary.domain.model.*
-import core.PDF_DOWNLOAD_URL
 import core.YARDAGE_PDF_DOWNLOAD_URL
 import core.appstate.AppState
 import core.event.UiEvents
@@ -62,11 +60,11 @@ class PatternDescriptionViewModel @Inject constructor(
     val mannequinId: ObservableField<String> = ObservableField("")
     val brand: ObservableField<String> = ObservableField("")
     val productIdFromDeepLink: ObservableField<String> = ObservableField("")
-    val productImgUrlFromDeepLink: ObservableField<String> = ObservableField("")
     val mannequinName: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")//todo
     var data: MutableLiveData<PatternIdData> = MutableLiveData()
     val patternName: ObservableField<String> = ObservableField("")
+    val isFromOfflinePatterns: ObservableField<Boolean> = ObservableField(false) // to check if we came from offline all pattern screen to online pattern details screen
     var yardageDetails: List<String> = emptyList()
     val expiredPausedStatus: ObservableField<String> =
         ObservableField("Your subscription has EXPIRED. Please contact Customer Service to reactivate your subscription")
@@ -201,6 +199,8 @@ class PatternDescriptionViewModel @Inject constructor(
                     if (isFromDeepLinking.get()) {
                         data.value?.notionDetails = clickedProduct?.notionDetails
                         data.value?.yardageDetails = clickedProduct?.yardageDetails
+                        data.value?.patternName = clickedProduct?.prodName
+                        data.value?.description = clickedProduct?.description
                         insertTailornovaDetailsToDB(
                             data.value!!,
                             clickedOrderNumber.get(),
@@ -211,9 +211,10 @@ class PatternDescriptionViewModel @Inject constructor(
                             mannequinName.get(),
                             clickedProduct?.mannequin ?: emptyList(),
                             "Purchased",
-                            "",
+                            modificationDate.get(),
                             selectedViewOrCupStyle.get(),
-                            clickedProduct?.yardagePdfUrl
+                            clickedProduct?.yardagePdfUrl,
+                            clickedProduct?.iD
                         )
                     } else {
                         data.value?.notionDetails = clickedProduct?.notionDetails
@@ -230,7 +231,8 @@ class PatternDescriptionViewModel @Inject constructor(
                             clickedProduct?.patternType,
                             modificationDate.get(),
                             selectedViewOrCupStyle.get(),
-                            clickedProduct?.yardagePdfUrl
+                            clickedProduct?.yardagePdfUrl,
+                            clickedProduct?.iD
                         )
                     }
                 } else {
@@ -253,8 +255,18 @@ class PatternDescriptionViewModel @Inject constructor(
                 if (!isFromDeepLinking.get()) {
                     data.value?.patternName = clickedProduct?.prodName
                     data.value?.description = clickedProduct?.description
+
+                    uiEvents.post(Event.OnDataUpdated)
+                } else {
+                    // is from deeplinking flow
+                    if(clickedProduct?.prodBrand.equals("Ditto")) {
+                        fetchThirdPartyData()
+                    } else {
+                        //3p patterns
+                        uiEvents.post(Event.OnDataUpdated)
+                    }
                 }
-                uiEvents.post(Event.OnDataUpdated)
+
                 /*insertTailornovaDetailsToDB(
                     data.value!!,
                     clickedOrderNumber.get(),
@@ -275,7 +287,7 @@ class PatternDescriptionViewModel @Inject constructor(
     }
 
     fun fetchThirdPartyData() {
-        disposable += getPattern.getThirdPartyPatternData(clickedProduct?.iD ?: "")
+        disposable += getPattern.getThirdPartyPatternData(clickedProduct?.iD ?: "", clickedOrderNumber.get() ?: "")
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -293,22 +305,27 @@ class PatternDescriptionViewModel @Inject constructor(
                         clickedProduct?.yardageDetails = result.data.yardageDetails
                         clickedProduct?.notionDetails = result.data.notionsDetails
                         clickedProduct?.image = result.data.image
-                        clickedProduct?.prodName = data.value?.patternName
-                        // prodSize.set(data.value?.size)
+                        clickedProduct?.prodName = result.data.name
+                        clickedProduct?.description = result.data.description
+                        clickedProduct?.prodSize = result.data.variationDomain?.get(0)?.sizeDomain?.get(0)?.size
+                        clickedProduct?.customSizeFitName = result.data.customSizeFitName
+                        clickedProduct?.lastModifiedSizeDate = result.data.lastModifiedSizeDate
+                        clickedProduct?.tailornovaDesignName = result.data.tailornovaDesignName
+                        setPatternUiData()
                     } else {
                         val variations = result.data.variationDomain ?: emptyList()
                         patternVariationList.clear()
                         patternVariationList.add(VariationDomain(emptyList(),"Select View / Cup Size",""))
                         patternVariationList.addAll(variations)
-                        patternDescription.set(result.data.description)
-                        patternName.set(result.data.name)
-                        tailornovaDesignpatternName.set(result.data.name)
-                        productImgUrlFromDeepLink.set(result.data.image)
+
                         clickedProduct?.yardagePdfUrl = result.data.yardagePdfUrl
                         clickedProduct?.yardageDetails = result.data.yardageDetails
                         clickedProduct?.notionDetails = result.data.notionsDetails
                         clickedProduct?.image = result.data.image
                         clickedProduct?.prodName = result.data.name
+                        clickedProduct?.description = result.data.description
+                        clickedProduct?.tailornovaDesignName = result.data.tailornovaDesignName
+                        setPatternUiData()
                     }
                 } else {
                     val variations = result.data.variationDomain ?: emptyList()
@@ -325,6 +342,26 @@ class PatternDescriptionViewModel @Inject constructor(
         }
     }
 
+    private fun setPatternUiData() {
+        prodSize.set(
+            if (!clickedProduct?.customSizeFitName.isNullOrEmpty()) clickedProduct?.customSizeFitName
+            else clickedProduct?.prodSize ?: ""
+        )
+        patternName.set(clickedProduct?.prodName)
+        patternDescription.set(clickedProduct?.description)
+        if (clickedProduct?.tailornovaDesignName.isNullOrEmpty()) {
+            tailornovaDesignpatternName.set(clickedProduct?.prodName)
+        } else {
+            tailornovaDesignpatternName.set(clickedProduct?.tailornovaDesignName)
+        }
+        if(!clickedProduct?.lastModifiedSizeDate.isNullOrEmpty()) {
+            modificationDate.set(clickedProduct?.lastModifiedSizeDate)
+            isLastDateAvailable.set(true)
+        } else {
+            isLastDateAvailable.set(false)
+        }
+    }
+
     private fun insertTailornovaDetailsToDB(
         patternIdData: PatternIdData,
         orderNo: String?,
@@ -337,7 +374,8 @@ class PatternDescriptionViewModel @Inject constructor(
         patternType: String?,
         lastDateOfModification: String?,
         selectedViewCupStyle: String?,
-        yardagePdfUrl: String?
+        yardagePdfUrl: String?,
+        productId: String?
     ) {
         disposable += getPattern.insertTailornovaDetails(
             patternIdData,
@@ -351,7 +389,8 @@ class PatternDescriptionViewModel @Inject constructor(
             patternType,
             lastDateOfModification,
             selectedViewCupStyle,
-            yardagePdfUrl
+            yardagePdfUrl,
+            productId
         )
             .whileSubscribed { it }
             .subscribeOn(Schedulers.io())
