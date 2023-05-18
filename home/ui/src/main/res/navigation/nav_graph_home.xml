@@ -10,6 +10,7 @@
     <include app:graph="@navigation/nav_graph_mainfaq" />
     <include app:graph="@navigation/nav_graph_mylibrary" />
     <include app:graph="@navigation/nav_graph_share_craft" />
+    <include app:graph="@navigation/nav_graph_pattern_description" />
 
     <fragment
         android:id="@+id/homeFragment"
@@ -24,7 +25,7 @@
              app:popUpToInclusive="true" />-->
         <action
             android:id="@+id/action_deeplink_to_patternDescriptionFragment"
-            app:destination="@id/patternDescriptionFragment"
+            app:destination="@id/nav_graph_pattern_description"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/main_nav_graph"
             app:popUpToInclusive="true" />
@@ -142,16 +143,36 @@
         android:id="@+id/softwareupdate"
         android:name="com.ditto.menuitems_ui.softwareupdate.SoftwareUpdateFragment"
         android:label="SoftwareUpdateFragment" />
-    <fragment
+    <!--<fragment
         android:id="@+id/patternInstructionsFragment"
         android:name="com.ditto.workspace.ui.PatternInstructionsFragment"
-        android:label="Pattern Instructions" />
+        android:label="Pattern Instructions" />-->
 
-    <fragment
+    <!--<fragment
         android:id="@+id/patternDescriptionFragment"
         android:name="com.ditto.mylibrary.ui.PatternDescriptionFragment"
         android:label="PatternDescriptionFragment">
-    </fragment>
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
+            app:destination="@id/patternInstructionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_patternDescriptionFragment_to_yardage_notion_Fragment"
+            app:destination="@id/yardageNotionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>-->
+
+   <!-- <fragment
+        android:id="@+id/yardageNotionFragment"
+        android:name="com.ditto.mylibrary.ui.YardageNotionFragment"
+        android:label="Yardage and Notion" />-->
 
     <fragment
         android:id="@+id/subscriptionInfoFragment"

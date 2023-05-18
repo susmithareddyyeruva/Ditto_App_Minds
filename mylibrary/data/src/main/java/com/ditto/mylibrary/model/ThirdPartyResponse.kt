@@ -24,6 +24,30 @@ data class Product(
 data class BrandVariantData(
     @SerializedName("variation")
     val variation: List<Variation>?,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("brand")
+    val brand: String?,
+    @SerializedName("details")
+    val details: String?,
+    @SerializedName("description")
+    val description: String?,
+    @SerializedName("image")
+    val image: String?,
+    @SerializedName("notionsDetails")
+    val notionsDetails: String?,
+    @SerializedName("yardageDetails")
+    val yardageDetails: List<String>? = emptyList(),
+    @SerializedName("yardageImageUrl")
+    val yardageImageUrl: String?,
+    @SerializedName("yardagePdfUrl")
+    val yardagePdfUrl: String?,
+    @SerializedName("tailornovaDesignName")
+    val tailornovaDesignName: String?,
+    @SerializedName("customSizeFitName")
+    val customSizeFitName: String?,
+    @SerializedName("lastModifiedSizeDate")
+    val lastModifiedSizeDate: String?
 )
 
 data class Variation(

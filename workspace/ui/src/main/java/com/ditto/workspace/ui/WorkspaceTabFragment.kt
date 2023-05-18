@@ -991,8 +991,10 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
 
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-        hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
-            viewModel.data.value?.thumbnailImagePath.toString()
+        if(!viewModel.data.value?.thumbnailImageName.isNullOrEmpty() && !viewModel.data.value?.thumbnailImagePath.isNullOrEmpty()) {
+            hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
+                viewModel.data.value?.thumbnailImagePath.toString()
+        }
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imagePath.toString()
         }
@@ -1018,8 +1020,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                    override fun onCustomPositiveButtonClicked(updatedNotes: String) {
                        //viewModel.notes = updatedNotes
                        viewModel.data.value?.notes = updatedNotes
+                       viewModel.isAddNotesEnabled.set(true)
                    }
-                   override fun onCustomNegativeButtonClicked() {}
+                   override fun onCustomNegativeButtonClicked() {
+                       viewModel.isAddNotesEnabled.set(true)
+                   }
                })
             }
             is WorkspaceViewModel.Event.OnClickScrollLeft -> {
@@ -2809,6 +2814,9 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
             Utility.AlertType.DOWNLOADFAILED -> {
                 showSaveAndExitPopup()
+            }
+            Utility.AlertType.SELECT_LAYOUT -> {
+                viewModel.isInfoIconEnabled.set(true)
             }
             else -> {}
         }

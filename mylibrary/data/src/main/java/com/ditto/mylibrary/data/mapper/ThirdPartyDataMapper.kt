@@ -11,7 +11,18 @@ fun ThirdPartyResponse.toDomain() : ThirdPartyDomain {
     return ThirdPartyDomain(
         variationDomain = this.product?.brandVariantData?.variation?.map {
             it.toDomain()
-        }
+        },
+        name = this.product?.brandVariantData?.name ,
+        brand = this.product?.brandVariantData?.brand,
+        description = this.product?.brandVariantData?.description ,
+        image = this.product?.brandVariantData?.image ,
+        notionsDetails = this.product?.brandVariantData?.notionsDetails,
+        yardageDetails = this.product?.brandVariantData?.yardageDetails,
+        yardageImageUrl = this.product?.brandVariantData?.yardageImageUrl,
+        yardagePdfUrl = this.product?.brandVariantData?.yardagePdfUrl,
+        tailornovaDesignName = this.product?.brandVariantData?.tailornovaDesignName,
+        customSizeFitName = this.product?.brandVariantData?.customSizeFitName,
+        lastModifiedSizeDate = this.product?.brandVariantData?.lastModifiedSizeDate
     )
 }
 

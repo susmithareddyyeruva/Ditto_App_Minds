@@ -103,6 +103,8 @@ class WorkspaceViewModel @Inject constructor(
     val isBleLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWifiLaterClicked: ObservableBoolean = ObservableBoolean(false)
     val isWorkspaceShownCoachMark: ObservableBoolean = ObservableBoolean(false)
+    val isAddNotesEnabled: ObservableBoolean = ObservableBoolean(true) //prevent multiple taps leading to multiple dialogs being displayed
+    val isInfoIconEnabled: ObservableBoolean = ObservableBoolean(true) //prevent multiple taps leading to multiple dialogs being displayed
     val patternUri: ObservableField<String> = ObservableField("")
     val temp = ArrayList<String>()
     val imagesToDownload = hashMapOf<String, String>()
@@ -474,7 +476,10 @@ class WorkspaceViewModel @Inject constructor(
 
     fun selectLayoutClick()
     {
-        uiEvents.post(Event.SelectLayoutInfo)
+        if(isInfoIconEnabled.get()) {
+            isInfoIconEnabled.set(false)
+            uiEvents.post(Event.SelectLayoutInfo)
+        }
     }
 
     fun clickSelectAll() {
@@ -733,6 +738,7 @@ class WorkspaceViewModel @Inject constructor(
     }
 
     fun onNotesClick() {
+        isAddNotesEnabled.set(false)
         uiEvents.post(Event.OnNotesClick)
     }
 

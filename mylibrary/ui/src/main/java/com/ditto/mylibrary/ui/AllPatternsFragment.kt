@@ -35,13 +35,20 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class AllPatternsFragment(
-    private val setPatternCount: SetPatternCount,
-    private val filterIconSetListener: FilterIconSetListener
-) : BaseFragment(),
+class AllPatternsFragment : BaseFragment(),
     Utility.CustomCallbackDialogListener,
     com.ditto.mylibrary.ui.util.Utility.CallbackCreateFolderDialogListener {
 
+    private lateinit var setPatternCount: SetPatternCount
+    private lateinit var filterIconSetListener: FilterIconSetListener
+
+    fun setSetPatternCount(mSetPatternCount: SetPatternCount) {
+        this.setPatternCount = mSetPatternCount
+    }
+
+    fun setFilterIconSetListener(mFilterIconSetListener: FilterIconSetListener) {
+        this.filterIconSetListener = mFilterIconSetListener
+    }
 
     @Inject
     lateinit var loggerFactory: LoggerFactory
@@ -275,6 +282,7 @@ class AllPatternsFragment(
                     "clickedTailornovaID" to viewModel.clickedTailornovaID.get(),
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),//empty here
                     "product" to viewModel.clickedProduct,
+                    "isFromOfflinePatterns" to (parentFragment as MyLibraryFragment?)?.binding?.tabLayout?.getTabAt(0)?.text.toString().equals(getString(R.string.offline_patterns)),
                     "ISFROM" to "ALLPATTERN"
                 )
                 findNavController().navigate(

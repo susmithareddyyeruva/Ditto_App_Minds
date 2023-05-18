@@ -124,7 +124,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_patterndesc.setNavigationIcon(R.drawable.ic_back_button)
         //baseViewModel.activeSocketConnection.set(false)
-
+        setUIEvents()
 
         if (arguments?.getString("ISFROM").equals("DEEPLINK")) {
             (activity as BottomNavigationActivity).setEmaildesc()
@@ -136,9 +136,30 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 ?.let { viewModel.clickedOrderNumber.set(it) }
             arguments?.getString("mannequinId").toString()
                 ?.let { viewModel.mannequinId.set(it) }
-            bottomNavViewModel.showProgress.set(true)
+            arguments?.getString("brand").toString()
+                ?.let { viewModel.brand.set(it) }
+            arguments?.getString("productId").toString()
+                ?.let { viewModel.productIdFromDeepLink.set(it) }
+            logger.d("brand- ${viewModel.brand.get()}")
+
+            if (viewModel.clickedProduct == null) {
+                viewModel.clickedProduct = ProdDomain().apply {
+                    iD = viewModel.productIdFromDeepLink.get()
+                    prodBrand =  viewModel.brand.get()
+                }
+            }
+
             if (NetworkUtility.isNetworkAvailable(context)) {
-                viewModel.fetchPattern()
+                if(!viewModel.brand.get().isNullOrEmpty() && viewModel.brand.get().equals("Ditto",true)) {
+                    //fetch tailornova data
+                    bottomNavViewModel.showProgress.set(true)
+                    viewModel.isDittoPattern.set(true)
+                    viewModel.fetchPattern()
+                   // viewModel.fetchThirdPartyData()
+                } else {
+                    //fetch 3p data
+                    viewModel.setPatternUiBasedOnPatternType()
+                }
             } else {
                 viewModel.fetchOfflinePatternDetails()
             }
@@ -150,13 +171,15 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     ?.let { viewModel.clickedTailornovaID.set(it) }
                 arguments?.getString("clickedOrderNumber").toString()
                     ?.let { viewModel.clickedOrderNumber.set(it) }
+                arguments?.getBoolean("isFromOfflinePatterns")
+                    ?.let { viewModel.isFromOfflinePatterns.set(it) }
                 viewModel.clickedProduct = arguments?.get("product") as ProdDomain?
                 logger.d("12345, received is ${viewModel.clickedProduct.toString()}")
             } else {
                 setPatternImage()
             }
 
-            setUIEvents()
+
             outputDirectory = Utility.getOutputDirectory(requireContext())
 
             if (viewModel.clickedProduct != null) {
@@ -423,14 +446,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun setUIForLoggedInUser() {
         if (viewModel.isFromDeepLinking.get()) {
-            viewModel.patternName.set(viewModel.data.value?.patternName)
-            viewModel.patternDescription.set(viewModel.data.value?.description)
-            viewModel.prodSize.set(viewModel.data.value?.size)
-            Glide.with(requireContext())
-                .load(viewModel.data.value?.patternDescriptionImageUrl)
-                .placeholder(R.drawable.ic_placeholder)
-                .into(binding.imagePatternDesc)
-            // need to check for type
+            setPatternImage()
             setVisibilityForViews(
                 "WORKSPACE",
                 false,
@@ -440,6 +456,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 false,
                 true
             )
+
         } else {
             setData()
             if (viewModel.clickedProduct?.status.equals("Expired", true)) {//new post
@@ -941,9 +958,16 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
             PatternDescriptionViewModel.Event.OnThirdPartyDataFetchSuccess -> {
                 Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
-                setSizeSpinnerData()
-                binding.variationSpinner.setSelection(0, true)
-                binding.sizeSpinner.setSelection(0, true)
+                if(!viewModel.clickedProduct?.prodBrand.equals("Ditto")) {
+                    setSizeSpinnerData()
+                    binding.variationSpinner.setSelection(0, true)
+                    binding.sizeSpinner.setSelection(0, true)
+
+                }
+                if(viewModel.isFromDeepLinking.get()) {
+                    setUpUiBasedOnLoggedIn()
+                }
+
                 bottomNavViewModel.showProgress.set(false)
             }
             PatternDescriptionViewModel.Event.OnThirdPartyDataFetchResume -> {
@@ -951,6 +975,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 setSizeSpinnerData()
                 binding.variationSpinner.setSelection(viewModel.selectedViewCupPosition.get()?:0, true)
                 binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
+                if(viewModel.isFromDeepLinking.get()) {
+                    setUpUiBasedOnLoggedIn()
+                }
                 bottomNavViewModel.showProgress.set(false)
             }
             else -> {}
@@ -1061,16 +1088,41 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         if (NetworkUtility.isNetworkAvailable(context)) {
             //downloadImage(viewModel.clickedProduct?.image, viewModel.patternName.get())
         }
+        val folderName = Utility.getPatternDownloadFolderName(
+            viewModel.clickedTailornovaID.get() ?: "",
+            getPatternMannequinId()
+        )
+
+        val imagePath =
+            if ((NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase().equals("TRIAL"))
+                && viewModel.isFromOfflinePatterns.get() == false // isFromOfflinePatterns determines whether we came from offline all patterns screen to online pattern details screen
+            ) {
+                viewModel.clickedProduct?.image
+            } else {
+                viewModel.patternName.get()
+            }
+
         setImageFromSvgPngDrawable(
-            Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
-                viewModel.mannequinId.get() ?: ""),
-            if (NetworkUtility.isNetworkAvailable(context) || viewModel.clickedProduct?.patternType?.toUpperCase()
-                    .equals("TRIAL")
-            ) viewModel.clickedProduct?.image else viewModel.patternName.get(),
+            folderName,
+            imagePath,
             binding.imagePatternDesc.context,
             binding.imagePatternDesc
         )
     }
+
+    private fun getPatternMannequinId() =
+        // using clickedProduct!!.selectedMannequinId when coming from offline all patterns screen to online pattern description screen. this is only for 3p patterns
+        // isFromOfflinePatterns determines whether we came from offline all patterns screen to online pattern details screen i.e user is offline till all patterns screen then
+        // turns on internet and navigates to pattern description screen
+        if (!viewModel.clickedProduct?.prodBrand.equals("Ditto") && viewModel.isFromOfflinePatterns.get() == true) {
+
+            viewModel.clickedProduct!!.selectedMannequinId ?: ""
+        }
+        // use viewModel.mannequinId.get() for completely offline/online flow for both 3p and ditto flow
+        else {
+            viewModel.mannequinId.get() ?: ""
+        }
+
 
     private fun downloadImage(imageUrl: String?, patternName: String?) {
         runBlocking {
@@ -1287,14 +1339,26 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }
     }
 
+    private fun isValueNonNullOrNonEmpty(stringValue: String?): Boolean {
+        return !stringValue.isNullOrEmpty()
+    }
+
     //download the pattern pieces
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-        hashMap[if(viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString() else viewModel.data.value?.thumbnailImageName.toString()] =
+        if(isValueNonNullOrNonEmpty(viewModel.data.value?.thumbnailImageName) && isValueNonNullOrNonEmpty(viewModel.data.value?.thumbnailImageUrl)) {
+            hashMap[if (viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString()
+            else viewModel.data.value?.thumbnailImageName.toString()] =
+                viewModel.data.value?.thumbnailImageUrl.toString()
+            hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
+                viewModel.data.value?.thumbnailImageUrl.toString()
+        }
+
+        hashMap[viewModel.patternName.get()?:"Pattern Name"] = if(!viewModel.clickedProduct?.image.isNullOrEmpty()) {
+            viewModel.clickedProduct?.image.toString()
+        } else {
             viewModel.data.value?.thumbnailImageUrl.toString()
-        hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
-            viewModel.data.value?.thumbnailImageUrl.toString()
-        hashMap[viewModel.patternName.get()?:"Pattern Name"] = viewModel.clickedProduct?.image ?: ""
+        }
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }
@@ -1867,7 +1931,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         }*/ else {
             Glide
                 .with(context)
-                .load(if (NetworkUtility.isNetworkAvailable(context)) imagePath else availableUri)
+                .load(if (NetworkUtility.isNetworkAvailable(context) && (availableUri == null)) imagePath else availableUri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(com.ditto.workspace.ui.R.drawable.ic_placeholder)

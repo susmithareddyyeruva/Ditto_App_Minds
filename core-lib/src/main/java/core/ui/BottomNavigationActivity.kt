@@ -173,19 +173,24 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                                 val userId = appLinkData?.getQueryParameter("userId")
                                 if (userId.equals(AppState.getCustNO())) {
                                     val designId = appLinkData?.getQueryParameter("designId")
+                                    val productId = appLinkData?.getQueryParameter("pid")
                                     val orderId = appLinkData?.getQueryParameter("orderID")
                                     val mannequinId = appLinkData?.getQueryParameter("mannequinId")
+                                    val brand = appLinkData?.getQueryParameter("brand")
                                     Log.d("DEEPLINK", " USER ID=$userId")
                                     Log.d("DEEPLINK", " DESIGN ID=$designId")
                                     Log.d("DEEPLINK", " MANNEQUIN ID=$mannequinId")
                                     Log.d("DEEPLINK", " ORDER ID=$orderId")
+                                    Log.d("DEEPLINK", " brand=$brand")
 
                                     if (navController.currentDestination?.id == R.id.destination_splash) {
                                         val bundle = bundleOf(
                                             "DEEPLINK" to "DETAIL",
                                             "clickedID" to designId,
                                             "clickedOrderNumber" to orderId,
-                                            "mannequinId" to mannequinId
+                                            "mannequinId" to mannequinId,
+                                            "brand" to brand,
+                                            "productId" to productId
                                         )
                                         Log.d("PATTERN ID", "$designId")
                                         navController.navigate(

@@ -15,8 +15,8 @@ android {
         targetSdkVersion 33
         versionCode 6
 
-//        versionName "0.46(02)"
-        versionName "1.0.1"
+//        versionName "1.47(01)"
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -28,7 +28,8 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             /*  buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://www.handmadewithjoann.com/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer.azurewebsites.net/ditto/"'
+//          buildConfigField "String", 'TOKEN_BASEURL', '"https://www.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
             buildConfigField "String", 'SERVER', '"production"'
@@ -42,7 +43,8 @@ android {
             buildConfigField "String", "TAILORNOVA_ENDURL", '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"7734380a-c2b8-471d-b813-377aee89e4ec"'
             buildConfigField "String", 'TRACKING_ID', '"6NrlCNXMkXruFBuU3OwPM9BgNI1s7ZbO"'
-            buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+//          buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+            buildConfigField "String", 'YOUTUBE_API_KEY_BASE64', '"QUl6YVN5RHVoZUs1RF9HZk5TRjdfSnFaejR4OVFEMjVqY2hHbHdR"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
             buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://www.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
@@ -50,7 +52,8 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer-qa.azurewebsites.net/ditto/"'
+//          buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev
             buildConfigField "String", 'SERVER', '"dev"'
@@ -64,16 +67,18 @@ android {
             buildConfigField "String", 'TAILORNOVA_ENDURL', '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"59eb4dd9-026d-4bac-adb5-2e5848d91263"'
             buildConfigField "String", 'TRACKING_ID', '"ZGl0dG9hbmRyb2lk"'
-            buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+//          buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+            buildConfigField "String", 'YOUTUBE_API_KEY_BASE64', '"QUl6YVN5RHVoZUs1RF9HZk5TRjdfSnFaejR4OVFEMjVqY2hHbHdR"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
-           buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
+            buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV
         }
         staging {
             debuggable true
             minifyEnabled false
             /* buildConfigField "String", "BASEURL", "\"https://dev02-na03-joann.demandware.net/s/JoAnn/dw/shop/v19_1/\""*/
-            buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
+            buildConfigField "String", 'TOKEN_BASEURL', '"https://ditto-middle-layer-qa.azurewebsites.net/ditto/"'
+//          buildConfigField "String", 'TOKEN_BASEURL', '"https://staging.handmadewithjoann.com/ditto/"'
             buildConfigField "String", 'TOKEN_ENDURL', '"dw/oauth2/access_token"'
             // dev11
             buildConfigField "String", 'SERVER', '"staging"'
@@ -87,7 +92,8 @@ android {
             buildConfigField "String", 'TAILORNOVA_ENDURL', '"https://ditto-splicing.tailornova.com/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
             buildConfigField "String", 'TRACKING_ID', '"ZGl0dG9hbmRyb2lk"'
-            buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+//          buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+            buildConfigField "String", 'YOUTUBE_API_KEY_BASE64', '"QUl6YVN5RHVoZUs1RF9HZk5TRjdfSnFaejR4OVFEMjVqY2hHbHdR"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- STAGING
             buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- STAGING
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://dev11-na03-joann.demandware.net/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- STAGING
@@ -108,7 +114,8 @@ android {
             buildConfigField "String", 'TAILORNOVA_ENDURL', '"http://localhost:8080/api/v1/patterns/"'
             buildConfigField "String", 'CLIENT_ID', '"59eb4dd9-026d-4bac-adb5-2e5848d91263"'
             buildConfigField "String", 'TRACKING_ID', '"ZGl0dG9hbmRyb2lk"'
-            buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+//          buildConfigField "String", 'YOUTUBE_API_KEY', '"AIzaSyDuheK5D_GfNSF7_JqZz4x9QD25jchGlwQ"'
+            buildConfigField "String", 'YOUTUBE_API_KEY_BASE64', '"QUl6YVN5RHVoZUs1RF9HZk5TRjdfSnFaejR4OVFEMjVqY2hHbHdR"'
             buildConfigField "String", 'SIGN_UP_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Login-Show"' //--- DEV
             buildConfigField "String", 'FORGOT_PASSWORD_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Account-PasswordReset"' //--- DEV
             buildConfigField "String", 'SUBSCRIPTION_URL', '"https://development.dittopatterns.com/on/demandware.store/Sites-ditto-Site/default/Recurly-GetSubscriptionPlan"' //--- DEV

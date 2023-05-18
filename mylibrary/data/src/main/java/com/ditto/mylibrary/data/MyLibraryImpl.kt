@@ -17,8 +17,8 @@ class MyLibraryImpl @Inject constructor(
         return myLibraryRepository.getMyLibraryData(filterRequestData)
     }
 
-    override fun getThirdPartyPatternData(productId: String): Single<Result<ThirdPartyDomain>> {
-        val requestData = ThirdPartyDataRequest (productId)
+    override fun getThirdPartyPatternData(productId: String, orderId: String): Single<Result<ThirdPartyDomain>> {
+        val requestData = ThirdPartyDataRequest (productId, orderId)
         return myLibraryRepository.getThirdPartyPatternData(requestData)
     }
 
@@ -87,9 +87,10 @@ class MyLibraryImpl @Inject constructor(
         patternType:String?,
         lastDateOfModification: String?,
         selectedViewCupStyle: String?,
-        yardagePdfUrl: String?
+        yardagePdfUrl: String?,
+        productId: String?
     ): Single<Any> {
-        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin,patternType,lastDateOfModification, selectedViewCupStyle, yardagePdfUrl)
+        return myLibraryRepository.insertTailornovaDetails(patternIdData,orderNumber,tailornovaDesignName,prodSize,status,mannequinId,mannequinName,mannequin,patternType,lastDateOfModification, selectedViewCupStyle, yardagePdfUrl, productId)
     }
 
     override fun invokeFolderList(createJson: MyLibraryFilterRequestData): Single<Result<AllPatternsDomain>> {

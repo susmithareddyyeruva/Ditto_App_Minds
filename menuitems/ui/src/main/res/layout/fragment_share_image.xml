@@ -87,7 +87,7 @@
                 android:gravity="start"
                 android:paddingHorizontal="@dimen/large_padding"
                 android:paddingVertical="@dimen/small_padding"
-                android:text="#DittoPatterns"
+                android:text="#dittopatterns"
                 android:textColor="@color/needle_grey"
                 android:textSize="@dimen/size_16sp"
                 android:textStyle="italic"

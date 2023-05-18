@@ -155,11 +155,16 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
                         val designId = arguments?.getString("clickedID")
                         val orderNumber = arguments?.getString("clickedOrderNumber")
                         val mannequinId = arguments?.getString("mannequinId")
+                        val productId = arguments?.getString("productId")
+                        val brand = arguments?.getString("brand")
                         logger.d("HOME PATTERN ID =$designId")
+                        logger.d(" brand=$brand")
                         val bundle = bundleOf(
                             "clickedTailornovaID" to designId,
                             "clickedOrderNumber" to orderNumber,
                             "mannequinId" to mannequinId,
+                            "brand" to brand,
+                            "productId" to productId,
                             "ISFROM" to "DEEPLINK"
                         )
                         this.arguments?.clear();

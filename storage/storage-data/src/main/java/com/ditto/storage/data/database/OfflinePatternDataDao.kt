@@ -93,7 +93,8 @@ abstract class OfflinePatternDataDao {
                 obj.yardageImageUrl,
                 obj.mainheroImageUrl,
                 obj.sizeChartUrl,
-                obj.heroImageUrls
+                obj.heroImageUrls,
+                obj.productId
             )
             Log.d("offlinePatternDataDao", "insertTailornovaDetailsToDB update >>>>>>> $i")
             return i
@@ -102,7 +103,7 @@ abstract class OfflinePatternDataDao {
         }
     }
 
-    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin, yardageDetails= :yardageDetails, lastDateOfModification= :lastDateOfModification, selectedViewCupStyle= :selectedViewCupStyle, yardagePdfUrl= :yardagePdfUrl, yardageImageUrl= :yardageImageUrl, mainheroImageUrl= :mainheroImageUrl, sizeChartUrl= :sizeChartUrl, heroImageUrls= :heroImageUrls WHERE designId= :designId")
+    @Query("UPDATE offline_pattern_data SET custId= :custId,patternName= :patternName, description= :description, patternType= :patternType, totalNumberOfPieces= :numberOfPieces, orderModificationDate= :orderModificationDate, orderCreationDate= :orderCreationDate,instructionFileName= :instructionFileName,instructionUrl= :instructionUrl,thumbnailImageUrl= :thumbnailImageUrl,thumbnailImageName= :thumbnailImageName,thumbnailEnlargedImageName= :thumbnailEnlargedImageName,patternDescriptionImageUrl= :patternDescriptionImageUrl,customization=:customization,brand=:brand,size=:size,gender=:gender,dressType=:dressType,suitableFor=:suitableFor,occasion=:occasion,selvages=:selvages,patternPiecesTailornova=:patternPiecesFromTailornova,selectedMannequinId=:selectedMannequinId,selectedMannequinName=:selectedMannequinName,status= :status,mannequinArray=:mannequin, yardageDetails= :yardageDetails, lastDateOfModification= :lastDateOfModification, selectedViewCupStyle= :selectedViewCupStyle, yardagePdfUrl= :yardagePdfUrl, yardageImageUrl= :yardageImageUrl, mainheroImageUrl= :mainheroImageUrl, sizeChartUrl= :sizeChartUrl, heroImageUrls= :heroImageUrls, productId= :productId WHERE designId= :designId")
     abstract fun updateTailornovaOfflineData(
         custId: String?,
         designId: String,
@@ -138,7 +139,8 @@ abstract class OfflinePatternDataDao {
         yardageImageUrl: String?,
         mainheroImageUrl: String?,
         sizeChartUrl: String?,
-        heroImageUrls: HeroImageUrls?
+        heroImageUrls: HeroImageUrls?,
+        productId:String?
         /*,
         selectedTab: String?,
         numberOfCompletedPieces: NumberOfCompletedPiecesOffline?,
@@ -274,7 +276,8 @@ abstract class OfflinePatternDataDao {
                         obj.yardageImageUrl,
                         obj.mainheroImageUrl,
                         obj.sizeChartUrl,
-                        obj.heroImageUrls
+                        obj.heroImageUrls,
+                        obj.productId
                         /*obj.selectedTab,
                 obj.garmetWorkspaceItemOfflines,
                 obj.liningWorkspaceItemOfflines,
