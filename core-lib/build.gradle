@@ -16,7 +16,7 @@ android {
         versionCode 6
 
 //        versionName "1.47(01)"
-        versionName "1.1.0"
+        versionName "1.0.28"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'

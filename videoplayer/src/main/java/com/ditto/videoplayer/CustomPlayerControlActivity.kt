@@ -105,9 +105,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             } else {
                 findViewById<TextView>(R.id.skipButton).visibility = View.VISIBLE
                 findViewById<ImageView>(R.id.close).visibility = View.GONE
-
                 //VIDEO_ID=getYoutubeVideoId("https://youtu.be/IanggPhf7EY")?:""  //For Testing purpose private video URL
-
             }
         }
     }
