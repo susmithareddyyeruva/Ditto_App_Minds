@@ -20,6 +20,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.*
 import com.google.android.youtube.player.YouTubePlayerView
+import core.di.EncodeDecodeUtil
 import core.network.NetworkUtility
 import core.ui.common.Utility
 import kotlinx.android.synthetic.main.custom_layout.*
@@ -76,7 +77,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
         // Initializing YouTube player view
          youTubePlayerView =
             findViewById<View>(R.id.video_view) as YouTubePlayerView
-        youTubePlayerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
+        youTubePlayerView.initialize(EncodeDecodeUtil.decodeBase64(BuildConfig.YOUTUBE_API_KEY_BASE64), this)
         //Add play button to explicitly play video in YouTubePlayerView
         /*    mPlayButtonLayout = findViewById(R.id.video_control)*/
         findViewById<View>(R.id.play_video).setOnClickListener(this)
@@ -242,7 +243,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             } catch (e: IllegalStateException) {
                 //mPlayer// check how to initialize
                 if(!::youTubePlayerView.isInitialized) {
-                    youTubePlayerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
+                    youTubePlayerView.initialize(EncodeDecodeUtil.decodeBase64(BuildConfig.YOUTUBE_API_KEY_BASE64), this)
                 }
             }
         }
@@ -256,7 +257,7 @@ class CustomPlayerControlActivity : YouTubeBaseActivity(),
             } catch (e: IllegalStateException) {
                 //mPlayer// check how to initialize
                 if(!::youTubePlayerView.isInitialized) {
-                    youTubePlayerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
+                    youTubePlayerView.initialize(EncodeDecodeUtil.decodeBase64(BuildConfig.YOUTUBE_API_KEY_BASE64), this)
                 }
             }
         }
