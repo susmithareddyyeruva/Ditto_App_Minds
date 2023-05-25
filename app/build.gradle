@@ -74,10 +74,10 @@ android {
         applicationId "com.jodito.ditto"
         minSdkVersion 28
         targetSdkVersion 33
-        versionCode 6
+        versionCode 7
 
 //        versionName "1.47(01)"
-        versionName "1.0.28"
+        versionName "1.1.0"
 
         multiDexEnabled true
 
