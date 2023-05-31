@@ -31,6 +31,13 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".11" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/button_width_guidelines_calibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".89" />
+
         <android.widget.Space
             android:id="@+id/workspce_spacer"
             android:layout_width="@dimen/small_padding_x"
@@ -273,7 +280,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_mirror_v" />
 
-
         <TextView
             android:id="@+id/txt_clear"
             android:layout_width="0dp"
@@ -352,6 +358,69 @@
             app:layout_constraintBottom_toTopOf="@+id/txt_tutorial"
             app:layout_constraintStart_toStartOf="@+id/txt_tutorial" />
 
+
+        <TextView
+            android:id="@+id/txt_rotate"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_v_small"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:gravity="center"
+            android:paddingStart="@dimen/margin_v_small"
+            android:paddingTop="@dimen/margin_v_small"
+            android:paddingEnd="@dimen/margin_v_small"
+            android:text="Rotate : "
+            android:textColor="@color/needle_grey"
+            android:textSize="@dimen/text_select_all"
+            app:layout_constraintBottom_toTopOf="@+id/txt_rotate_left"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
+
+        <TextView
+            android:id="@+id/txt_rotate_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_rounded_left_bg"
+            android:drawableLeft="@drawable/ic_reset"
+            android:drawablePadding="@dimen/small_padding"
+            android:elevation="@dimen/elevation_card"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:onClick="@{() -> viewModel.onRotateAntiClockwise()}"
+            android:paddingStart="@dimen/medium_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:text="- 45"
+            android:textColor="@color/needle_grey"
+            android:textSize="@dimen/text_instruction"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
+
+        <TextView
+            android:id="@+id/txt_rotate_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_rounded_right_bg"
+            android:drawableLeft="@drawable/ic_reset"
+            android:drawablePadding="@dimen/small_padding"
+            android:elevation="@dimen/elevation_card"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:onClick="@{() -> viewModel.onRotateClockwise()}"
+            android:paddingStart="@dimen/medium_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:text="+ 45"
+            android:textColor="@color/needle_grey"
+            android:textSize="@dimen/text_instruction"
+            app:flow_horizontalBias="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_rotate_left"
+            app:layout_constraintTop_toBottomOf="@+id/layout_workspace"/>
+
+
         <TextView
             android:id="@+id/txt_tutorial"
             android:layout_width="wrap_content"
@@ -370,7 +439,7 @@
             android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_instruction"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/layout_workspace"
+            app:layout_constraintEnd_toStartOf="@+id/txt_instructions"
             app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
 
         <TextView
@@ -391,11 +460,12 @@
             android:textColor="@color/needle_grey"
             android:textSize="@dimen/text_instruction"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_tutorial"
+            app:layout_constraintEnd_toEndOf="@+id/layout_workspace"
             app:layout_constraintTop_toBottomOf="@+id/layout_workspace" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rotationSpinnerLayout"
+            android:visibility="gone"
             android:layout_width="@dimen/dimen_0"
             android:layout_height="@dimen/dimen_0"
             android:elevation="@dimen/elevation_card"

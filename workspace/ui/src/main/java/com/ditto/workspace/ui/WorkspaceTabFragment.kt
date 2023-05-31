@@ -2000,6 +2000,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.includeWorkspacearea?.rotationSpinner?.isEnabled = status
         binding.includeWorkspacearea?.rotationSpinner?.isClickable = status
         binding.includeWorkspacearea?.rotationSpinnerLayout?.isClickable = !status
+
+        binding.includeWorkspacearea?.txtRotateLeft?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateLeft?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateLeft?.isEnabled = status
+        binding.includeWorkspacearea?.txtRotateLeft?.isEnabled = status
+
+        binding.includeWorkspacearea?.txtRotateRight?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateRight?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateRight?.isEnabled = status
+        binding.includeWorkspacearea?.txtRotateRight?.isEnabled = status
     }
 
     private fun enableClear(status: Boolean) {
