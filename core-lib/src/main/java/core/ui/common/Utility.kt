@@ -80,7 +80,8 @@ class Utility @Inject constructor(
         SOFTWARE_UPDATE,
         GUEST_MYFOLDER,
         PERMISSION_DENIED,
-        SELECT_LAYOUT
+        SELECT_LAYOUT,
+        WS_BACK_NAVIGATION
     }
 
     enum class Iconype {

@@ -102,4 +102,6 @@
     <string name="turn_on_permissions">App will not work properly without this permission. Please turn on the permission from settings</string>
     <string name="provide_location_permission_message">Please provide precise location permission to get bluetooth scan results from settings</string>
     <string name="note_char_limit">%1$s / 500</string>
+    <string name="pattern_details">Pattern Details</string>
+    <string name="back_navigation">Choose \'Pattern Details\' to modify the pattern size and return to Pattern Details screen.</string>
 </resources>

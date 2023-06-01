@@ -26,7 +26,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/patternDescriptionFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_patternDescriptionFragment_to_pattern_instructions_Fragment"
             app:destination="@id/patternInstructionsFragment"

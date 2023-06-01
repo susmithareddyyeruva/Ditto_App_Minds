@@ -1315,6 +1315,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
                     "tailornovaDesignName" to viewModel.patternName.get(),
+                    "patternBrand" to viewModel.clickedProduct?.prodBrand,
                     "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                         viewModel.mannequinId.get() ?: "")
                 )
@@ -1326,6 +1327,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
                     "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
+                    "patternBrand" to viewModel.clickedProduct?.prodBrand,
                     "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
                         viewModel.mannequinId.get() ?: "")
                 )
