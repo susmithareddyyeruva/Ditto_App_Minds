@@ -89,6 +89,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
         patternDownloadFolderName = arguments?.getString("PatternFolderName")
+        patternFolderName = patternDownloadFolderName // change instruction file name as patterns designId+mannequinId
         loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }

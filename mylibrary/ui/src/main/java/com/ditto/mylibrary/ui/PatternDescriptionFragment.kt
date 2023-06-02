@@ -1849,7 +1849,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         fileName = getNameWithoutExtension(fileName)
                     }
                     patterns.forEach {
-                        if (it.prodName.toString()
+                        if (Utility.getPatternDownloadFolderName(
+                                it.tailornovaDesignId ?: "",
+                                it.selectedMannequinId ?: "")
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
                             || ((it.prodName.toString()+"yardage")

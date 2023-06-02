@@ -71,6 +71,7 @@ class PatternInstructionsFragment : BaseFragment(),Utility.CustomCallbackDialogL
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
         patternDownloadFolderName = arguments?.getString("PatternFolderName")
+        patternFolderName = patternDownloadFolderName
         loadPdf()
     }
 
