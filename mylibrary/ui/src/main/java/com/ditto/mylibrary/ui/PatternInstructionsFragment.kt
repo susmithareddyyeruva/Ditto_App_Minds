@@ -38,6 +38,7 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
     var downloadFileName: String? = null
     var patternFolderName: String? = null
     var patternDownloadFolderName: String? = null
+    var patternBrand: String? = null
     @Inject
     lateinit var loggerFactory: LoggerFactory
     val logger: Logger by lazy {
@@ -89,7 +90,10 @@ class PatternInstructionsFragment : BaseFragment(), Utility.CustomCallbackDialog
         setUIEvents()
         patternFolderName = arguments?.getString("PatternName")
         patternDownloadFolderName = arguments?.getString("PatternFolderName")
-        patternFolderName = patternDownloadFolderName // change instruction file name as patterns designId+mannequinId
+        patternBrand = arguments?.getString("patternBrand")
+        if (!patternBrand.isNullOrEmpty() && patternBrand.equals("Ditto")) {
+            patternFolderName = patternDownloadFolderName // change instruction file name for ditto patterns as pattern's designId+mannequinId
+        }
         loadPdf()
         //showPdfFromAssets(arguments?.getString("PatternName") + ".pdf")
     }

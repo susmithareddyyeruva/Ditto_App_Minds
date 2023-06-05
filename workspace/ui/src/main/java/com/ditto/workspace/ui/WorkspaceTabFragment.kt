@@ -1206,7 +1206,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
                         bundleOf("PatternName" to viewModel.patternName.get(),
-                            "PatternFolderName" to viewModel.patternDownloadFolderName)
+                            "PatternFolderName" to viewModel.patternDownloadFolderName,
+                        "patternBrand" to viewModel.patternBrand.get())
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
