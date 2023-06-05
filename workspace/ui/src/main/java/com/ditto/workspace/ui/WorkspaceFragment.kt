@@ -39,7 +39,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         loggerFactory.create(WorkspaceFragment::class.java.simpleName)
     }
 
-    private val viewModel: WorkspaceViewModel by ViewModelDelegate()
+    val viewModel: WorkspaceViewModel by ViewModelDelegate()
     lateinit var binding: FragmentWorkspaceBinding
     lateinit var fragmentGarment: WorkspaceTabFragment
     lateinit var fragmentLining: WorkspaceTabFragment
@@ -60,6 +60,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 arguments?.getString("clickedOrderNumber")
                     ?.let { viewModel.clickedOrderNumber.set(it) }
                 arguments?.getString("PatternName")?.let { viewModel.patternName.set(it) }
+                arguments?.getString("patternBrand")?.let { viewModel.patternBrand.set(it) }
                 arguments?.getString("tailornovaDesignName")?.let { viewModel.tailornovaDesignName.set(it) }
                 Log.d("imageUri12345", "PatternName: ${viewModel.patternName.get()}")
                 arguments?.getString("mannequinId")?.let { viewModel.mannequinId.set(it) }
@@ -122,6 +123,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.garments),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
+                PATTERN_BRAND to viewModel.patternBrand.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get(),
                 MANNEQUINID to viewModel.mannequinId.get(),
                 PATTERN_FOLDER to viewModel.patternDownloadFolderName
@@ -133,6 +135,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.lining),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
+                PATTERN_BRAND to viewModel.patternBrand.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get(),
                 MANNEQUINID to viewModel.mannequinId.get(),
                 PATTERN_FOLDER to viewModel.patternDownloadFolderName
@@ -144,6 +147,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.interfacing),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
+                PATTERN_BRAND to viewModel.patternBrand.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get(),
                 MANNEQUINID to viewModel.mannequinId.get(),
                 PATTERN_FOLDER to viewModel.patternDownloadFolderName
@@ -155,6 +159,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
                 PATTERN_CATEGORY to getString(R.string.other),
                 PATTERN_ID to viewModel.patternId.get(),
                 PATTERN_NAME to viewModel.patternName.get(),
+                PATTERN_BRAND to viewModel.patternBrand.get(),
                 ORDER_NO to viewModel.clickedOrderNumber.get(),
                 MANNEQUINID to viewModel.mannequinId.get(),
                 PATTERN_FOLDER to viewModel.patternDownloadFolderName
@@ -459,6 +464,7 @@ class WorkspaceFragment : BaseFragment(), core.ui.common.Utility.CallbackDialogL
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_ID = "PatternId"
         private const val PATTERN_NAME = "PatternName"
+        private const val PATTERN_BRAND = "patternBrand"
         private const val ORDER_NO = "clickedOrderNumber"
         private const val MANNEQUINID = "mannequinId"
         private const val PATTERN_FOLDER = "patternDownloadFolderName"
