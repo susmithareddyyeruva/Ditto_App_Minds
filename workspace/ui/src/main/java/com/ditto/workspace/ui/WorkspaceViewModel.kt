@@ -56,6 +56,7 @@ class WorkspaceViewModel @Inject constructor(
     var patternId: ObservableField<String> = ObservableField("")
     var clickedOrderNumber: ObservableField<String> = ObservableField("")
     var patternName: ObservableField<String> = ObservableField("")
+    var patternBrand: ObservableField<String> = ObservableField("")
     var tailornovaDesignName: ObservableField<String> = ObservableField("")
     var mannequinId: ObservableField<String> = ObservableField("")
     var totalPieces: ObservableInt = ObservableInt(0)

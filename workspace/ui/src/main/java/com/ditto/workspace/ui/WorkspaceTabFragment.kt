@@ -33,7 +33,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.size
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,6 +57,7 @@ import com.joann.fabrictracetransform.transform.TransformErrorCode
 import com.joann.fabrictracetransform.transform.performTransform
 import core.PDF_DOWNLOAD_URL
 import core.appstate.AppState
+import core.network.NetworkUtility
 import core.ui.BaseFragment
 import core.ui.ViewModelDelegate
 import core.ui.common.DoubleClickListener
@@ -92,6 +92,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
     lateinit var loggerFactory: LoggerFactory
     lateinit var backpressCall: OnBackPressedCallback
     private var adapter: PatternPiecesAdapter? = null
+    private var isBackToPatternDetails = false
 
     val logger: Logger by lazy {
         loggerFactory.create(WorkspaceTabFragment::class.java.simpleName)
@@ -128,6 +129,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         arguments?.getString(ORDER_NO)?.let { viewModel.clickedOrderNumber.set(it) }
         arguments?.getString(PATTERN_CATEGORY)?.let { viewModel.tabCategory = (it) }
         arguments?.getString(PATTERN_NAME)?.let { viewModel.patternName.set(it) }
+        arguments?.getString(PATTERN_BRAND)?.let { viewModel.patternBrand.set(it) }
         arguments?.getString(MANNEQUIN_ID)?.let { viewModel.mannequinId.set(it) }
         arguments?.getString(PATTERN_FOLDER)?.let { viewModel.patternDownloadFolderName = it }
 
@@ -171,7 +173,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                         activity?.onBackPressed()
                         baseViewModel.isSaveExitButtonClicked.set(false)
                     } else {
-                        downloadPatternPieces()
+                        if(!viewModel.patternBrand.get().equals("Ditto") && NetworkUtility.isNetworkAvailable(context) ) showBackOrExitPopup() else downloadPatternPieces()
                     }
                 }
             }
@@ -1034,7 +1036,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 binding.recyclerViewPieces.smoothScrollBy(200, 0)
             }
             is WorkspaceViewModel.Event.OnClickSaveAndExit -> {
-                downloadPatternPieces()
+                if(!viewModel.patternBrand.get().equals("Ditto") && NetworkUtility.isNetworkAvailable(context)) showBackOrExitPopup() else downloadPatternPieces()
             }
             is WorkspaceViewModel.Event.OnClickSelectAll -> {
                 if (mWorkspaceEditor?.views?.any() ?: false) {
@@ -1204,7 +1206,8 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                     PDF_DOWNLOAD_URL = viewModel.data.value?.instructionUrl
                     val bundle =
                         bundleOf("PatternName" to viewModel.patternName.get(),
-                            "PatternFolderName" to viewModel.patternDownloadFolderName)
+                            "PatternFolderName" to viewModel.patternDownloadFolderName,
+                        "patternBrand" to viewModel.patternBrand.get())
                     findNavController().navigate(
                         R.id.action_workspaceFragment_to_pattern_instructions_Fragment,
                         bundle
@@ -1407,6 +1410,18 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 startActivityForResult(intent, REQUEST_ACTIVITY_RESULT_WORKSPACE_TUTORIAL)
             }
         }
+
+    private fun showBackOrExitPopup() {
+        Utility.getAlertDialogue(
+            requireContext(),
+            "",
+            getString(R.string.back_navigation),
+            getString(R.string.pattern_details),
+            getString(R.string.exit),
+            this,
+            Utility.AlertType.WS_BACK_NAVIGATION
+        )
+    }
 
     private fun showWorkspaceCoachMark() {
         viewModel.isWorkspaceShownCoachMark.set(AppState.isShownWorkspaceCoachMark())
@@ -1838,6 +1853,12 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
                 }
                 startActivity(intent)
             }
+            Utility.AlertType.WS_BACK_NAVIGATION -> {
+                logger.d("onPositiveButtonClicked")
+                isBackToPatternDetails = false
+                backpressCall.isEnabled = false
+                downloadPatternPieces()
+            }
             else -> {
                 Log.d("WorkspaceTabFragment", "onPositiveButtonClicked")
             }
@@ -1884,6 +1905,11 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             Utility.AlertType.CUT_COMPLETE -> {
                 viewModel.isCompleteButtonClickable = true
             }
+            Utility.AlertType.WS_BACK_NAVIGATION -> {
+                logger.d("onNegativeButtonClicked")
+                isBackToPatternDetails = true
+                downloadPatternPieces()
+            }
             else -> {
                 Log.d("WorkspaceTabFragment", "onNegativeButtonClicked")
             }
@@ -1901,19 +1927,19 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         val a = com.ditto.workspace.ui.util.Utility.fragmentTabs.get().toString()
         if (a.equals("0")) {
             viewModel.data.value?.garmetWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
+                (parentFragment as WorkspaceFragment).fragmentGarment.mWorkspaceEditor?.views?.toMutableList()
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         } else if (a.equals("1")) {
             viewModel.data.value?.liningWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
+                (parentFragment as WorkspaceFragment).fragmentLining.mWorkspaceEditor?.views?.toMutableList()
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         } else if (a.equals("2")) {
             viewModel.data.value?.interfaceWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
+                (parentFragment as WorkspaceFragment).fragmentInterface.mWorkspaceEditor?.views?.toMutableList()
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         } else if (a.equals("3")) {
             viewModel.data.value?.otherWorkspaceItemOfflines =
-                mWorkspaceEditor?.views?.toMutableList()
+                (parentFragment as WorkspaceFragment).fragmentOther.mWorkspaceEditor?.views?.toMutableList()
             logger.d(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $a")
         }
         this.isCompleted = isCompleted
@@ -1965,18 +1991,32 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
             }
         }
         baseViewModel.isSaveExitButtonClicked.set(true)
+
+        if(isBackToPatternDetails && (findNavController().isOnBackStack(R.id.patternDescriptionFragment))) {
+            logger.d("moveToLibrary- back nav")
+            isBackToPatternDetails = false
+            viewModel.disposable.clear()
+            (parentFragment as WorkspaceFragment).viewModel.disposable.clear()
+            baseViewModel.isSaveExitButtonClicked.set(false)
+            findNavController().popBackStack()
+        }
         /**
          * condition is added for Deeplinking scenario
          */
-        if ((findNavController().isOnBackStack(R.id.patternDescriptionFragment)) || (findNavController().isOnBackStack(
+        else if ((findNavController().isOnBackStack(R.id.patternDescriptionFragment)) || (findNavController().isOnBackStack(
                 R.id.nav_graph_mylibrary
             ))
         ) {
+            logger.d("moveToLibrary- exit")
             findNavController().popBackStack(R.id.patternDescriptionFragment, false)
             findNavController().popBackStack(R.id.nav_graph_mylibrary, false)
             findNavController().navigate(R.id.nav_graph_id_home)
+            activity?.onBackPressed()
+        } else  {
+            logger.d("moveToLibrary- else")
+            activity?.onBackPressed()
         }
-        activity?.onBackPressed()
+
     }
 
     fun NavController.isOnBackStack(@IdRes id: Int): Boolean = try {
@@ -2000,6 +2040,16 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         binding.includeWorkspacearea?.rotationSpinner?.isEnabled = status
         binding.includeWorkspacearea?.rotationSpinner?.isClickable = status
         binding.includeWorkspacearea?.rotationSpinnerLayout?.isClickable = !status
+
+        binding.includeWorkspacearea?.txtRotateLeft?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateLeft?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateLeft?.isEnabled = status
+        binding.includeWorkspacearea?.txtRotateLeft?.isEnabled = status
+
+        binding.includeWorkspacearea?.txtRotateRight?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateRight?.alpha = if (status) 1F else 0.5F
+        binding.includeWorkspacearea?.txtRotateRight?.isEnabled = status
+        binding.includeWorkspacearea?.txtRotateRight?.isEnabled = status
     }
 
     private fun enableClear(status: Boolean) {
@@ -2332,6 +2382,7 @@ class WorkspaceTabFragment : BaseFragment(), View.OnDragListener, DraggableListe
         private const val PATTERN_CATEGORY = "PatternCategory"
         private const val PATTERN_NAME = "PatternName"
         private const val PATTERN_ID = "PatternId"
+        private const val PATTERN_BRAND = "patternBrand"
         private const val ORDER_NO = "clickedOrderNumber"
         private const val MANNEQUIN_ID = "mannequinId"
         private const val PATTERN_FOLDER = "patternDownloadFolderName"

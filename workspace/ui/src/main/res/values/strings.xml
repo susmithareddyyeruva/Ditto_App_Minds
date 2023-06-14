@@ -73,7 +73,7 @@
     <string name="exit">Exit</string>
     <string name="no_item_in_workspace">No item in Workspace currently</string>
     <string name="overlaping_piece_alert">Please avoid overlapping Pattern Pieces!!</string>
-    <string name="outside_workspace_piece_alert">Rotation is not possible as piece is going outside border, either move the piece or use single finger to rotate.</string>
+    <string name="outside_workspace_piece_alert">Rotation is not possible as piece is going outside border, either move the piece or use two fingers to rotate.</string>
     <string name="camera_alert">Confirm setup and make sure red lighted rectangle is still within the white cutting mat border</string>
     <string name="camera_alert_calibration">Confirm setup and make sure the red lighted rectangle shines <u>ON</u> the white border of the cutting mat (NOT inside or outside)</string>
     <string name="socketfailed">Projector Connection failed. Try again!!</string>
@@ -102,4 +102,6 @@
     <string name="turn_on_permissions">App will not work properly without this permission. Please turn on the permission from settings</string>
     <string name="provide_location_permission_message">Please provide precise location permission to get bluetooth scan results from settings</string>
     <string name="note_char_limit">%1$s / 500</string>
+    <string name="pattern_details">Pattern Details</string>
+    <string name="back_navigation">Choose \'Pattern Details\' to modify the pattern size and return to Pattern Details screen.</string>
 </resources>
