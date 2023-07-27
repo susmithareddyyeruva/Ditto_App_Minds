@@ -697,6 +697,7 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                     if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_aboutAppFragment
                     else R.id.action_pattern_description_to_aboutAppFragment
                 )
+
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
         }//Added by vineetha for switch language popup
