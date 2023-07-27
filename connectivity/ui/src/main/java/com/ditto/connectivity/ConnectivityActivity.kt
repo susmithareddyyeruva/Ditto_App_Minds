@@ -440,6 +440,7 @@ class ConnectivityActivity : AppCompatActivity(),
                 finish()
             }
             Log.d(ConnectivityUtils.TAG, "BluetoothLeService-Connect to device address")
+
             mBluetoothLeService!!.connect(mDeviceAddress)
            /* mBluetoothLeService!!.connect(Build.VERSION.SDK_INT.toString())
             Log.d("macaddress", "rrr" + mBluetoothLeService!!.connect(Build.VERSION.SDK_INT.toString()))*/
