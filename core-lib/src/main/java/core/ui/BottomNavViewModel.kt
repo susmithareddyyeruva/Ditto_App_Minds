@@ -153,6 +153,19 @@ class BottomNavViewModel @Inject constructor() : BaseViewModel() {
             null
         )
         headerList.add(menuModel)
+        //Added by vineetha for switch language popup
+        menuModel = MenuModel(
+            "Switch language",
+            "ic_menu_support",
+            null
+        )//Added by vineetha for update projector popup
+        headerList.add(menuModel)
+        menuModel = MenuModel(
+            "Update projector",
+            "ic_menu_settings",
+            null
+        )
+        headerList.add(menuModel)
 
         if (isGuestBase?.get() != false) {
             menuModel = MenuModel(

@@ -133,8 +133,8 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
              *
              * Popping all back stack and set start destination
              */
-            navController.popBackStack( R.id.nav_graph,true)
-            navController.navigate( R.id.destination_splash)
+            navController.popBackStack(R.id.nav_graph, true)
+            navController.navigate(R.id.destination_splash)
             appLinkData?.lastPathSegment?.also { segmentId ->
                 Log.d("DEEPLINK", segmentId)
                 when {
@@ -594,6 +594,10 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
 
                 true
+            }//Added by vineetha for update projector popup
+            R.id.nav_graph_update_projector -> {
+
+                true
             }
             R.id.nav_graph_support -> {
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
@@ -695,6 +699,30 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
                 )
                 binding.drawerLayout.closeDrawer(Gravity.RIGHT)
             }
+        }//Added by vineetha for switch language popup
+        else if (selectedmenu.equals("Switch language")) {
+            if (navController.currentDestination?.label?.equals("Home")!! ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                navController.navigate(
+                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.homeFragment
+                    else R.id.homeFragment)
+                 AppState.setIsFromNav(true)
+
+            }
+        } //Added by vineetha for update projector popup
+        else if (selectedmenu.equals("Update projector")) {
+            if (navController.currentDestination?.label?.equals("Home")!! ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragment) ||
+                (navController.currentDestination?.id == R.id.patternDescriptionFragmentFromHome)
+            ) {
+                navController.navigate(
+                    if (navController.currentDestination?.label?.equals("Home")!!) R.id.action_homeFragment_to_updateProjectorFragment
+                    else R.id.action_pattern_description_to_updateProjectorFragment
+                )
+                binding.drawerLayout.closeDrawer(Gravity.RIGHT)
+            }
         } else {
             Toast.makeText(this, selectedmenu, Toast.LENGTH_LONG).show()
         }
@@ -715,14 +743,14 @@ class BottomNavigationActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         //TODO("Not yet implemented")
     }
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         // TODO("Not yet implemented")
     }

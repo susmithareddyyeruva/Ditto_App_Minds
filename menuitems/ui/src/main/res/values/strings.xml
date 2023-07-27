@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="str_head">Choose one of the methods to contact us.</string>
     <string name="str_email">EMAIL</string>
     <string name="str_email_small">Email</string>
@@ -38,6 +38,8 @@
     <string name="renew_subscription">Renew Subscription</string>
     <string name="str_no_caps">NO</string>
     <string name="str_connecitivity_title">Connectivity</string>
+    <!--Added by vineetha for switch language popup-->
+    <string name="switchlanguage_title" tools:ignore="ExtraTranslation">Switch Language</string>
     <string name="str_ble_message">This app needs Bluetooth connectivity</string>
     <string name="str_later">LATER</string>
     <string name="str_wifi_message">This app needs WiFi connectivity</string>
@@ -52,4 +54,6 @@
     <string name="delete_msg">Are you sure you want to delete the account ?</string>
     <string name="str_dele_account_info">Deleting your account permanently disables access to the Ditto Patterns website and mobile app. Are you sure you want to delete?</string>
     <string name="subscription_desc">Your subscription will get expired in 200 days. Please renew the subscription to continue working on it.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -134,6 +134,7 @@ class LoginViewModel @Inject constructor(
                     subscriptionEndDate = result.data.cSubscriptionPlanEndDate ?: ""
                     c_subscriptionStatus = result.data.cSubscriptionStatus ?: ""
                     AppState.setIsLogged(true)
+                    AppState.setIsFirstLogin(true)
                     /**
                      * Storing the subscription information into DB
                      */

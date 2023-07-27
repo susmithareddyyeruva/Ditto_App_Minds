@@ -2,7 +2,9 @@ package com.ditto.home.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -12,6 +14,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
@@ -28,6 +31,8 @@ import com.example.home_ui.databinding.HomeFragmentBinding
 import core.ERROR_FETCH
 import core.appstate.AppState
 import core.data.model.SoftwareUpdateResult
+import core.language.LanguageConstant
+import core.language.LanguageUtils
 import core.lib.BuildConfig
 import core.network.NetworkUtility
 import core.ui.BaseFragment
@@ -111,6 +116,71 @@ class HomeFragment : BaseFragment(), Utility.CustomCallbackDialogListener,
             loadHomeFragment()
         }*/
         loadHomeFragment()
+
+        //Added by vineetha for switch language popup
+        if (AppState.getIsFirstLogin() || AppState.getIsFromNav()) {
+            showAlertDialogueForSwitchLanguage(
+                requireContext(),
+                getString(R.string.switch_language),
+                "French/Français",
+                "English/Anglaise",
+                this,
+                Utility.AlertType.SWITCH_LANGUAGE)
+            AppState.setIsFirstLogin(false)
+            AppState.setIsFromNav(false)
+        }
+
+    }
+
+    //Added by vineetha for switch language popup
+    @SuppressLint("ResourceType")
+    fun showAlertDialogueForSwitchLanguage(
+        context: Context?,
+        alertmessage: String,
+        negativeButton: String,
+        positiveButton: String,
+        callbackDialogListener: Utility.CallbackDialogListener,
+        alertType: Utility.AlertType,
+    ) {
+        if (context != null) {
+            val mDialogView =
+                LayoutInflater.from(context).inflate(core.lib.R.layout.switch_language, null)
+            val dialogBuilder = AlertDialog.Builder(context)
+            dialogBuilder.setView(mDialogView)
+            val alert = dialogBuilder.create()
+            alert.setCancelable(false)
+            alert.show()
+            alert.window?.setBackgroundDrawable(null)
+            val message = mDialogView.findViewById(core.lib.R.id.message) as TextView
+            message.text = alertmessage
+            val negative = mDialogView.findViewById(core.lib.R.id.chk_french) as TextView
+            negative.text = negativeButton.toString()
+
+            val positive = mDialogView.findViewById(core.lib.R.id.chk_english) as TextView
+            positive.text = positiveButton.toString()
+            negative.setOnClickListener {
+                LanguageUtils.setLanguage(context, 2)
+                init_language()
+                alert.dismiss()
+                callbackDialogListener.onNegativeButtonClicked(alertType)
+            }
+            positive.setOnClickListener {
+                LanguageUtils.setLanguage(context, 1)
+                init_language()
+                alert.dismiss()
+                callbackDialogListener.onPositiveButtonClicked(alertType)
+            }
+        }
+    }
+
+    private fun init_language() {
+
+        binding.apply {
+            textViewHeader.text =
+                context?.let { LanguageUtils.getLanguageString(it, LanguageConstant.welcomeBack) }
+        }
+
+
     }
 
     private fun loadHomeFragment() {

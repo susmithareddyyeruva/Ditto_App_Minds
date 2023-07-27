@@ -21,6 +21,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -54,6 +55,11 @@ import kotlinx.coroutines.*
 import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
+import android.bluetooth.BluetoothAdapter
+
+
+
+
 
 class ConnectivityActivity : AppCompatActivity(),
     core.ui.common.Utility.CustomCallbackDialogListener,
@@ -132,6 +138,12 @@ class ConnectivityActivity : AppCompatActivity(),
             }
             val device = mLeDeviceListAdapter!!.getDevice(position)
             mDeviceAddress = device!!.address
+            Log.d("macaddress", "rrr" + mDeviceAddress)
+            /*mBluetoothAdapter.getRemoteDevice(Build.VERSION.SDK_INT)
+            Log.d("1234", "serialos" + mBluetoothAdapter.getRemoteDevice(Build.VERSION.SDK_INT))*/
+            val osVersion: Int = device.getBluetoothClass().getMajorDeviceClass()
+            Log.d("4567", "serialos" + osVersion)
+            Log.d("78911", "serialos" + device.bluetoothClass.deviceClass)
             mDeviceName = device.name
             val gattServiceIntent = Intent(this, BluetoothLeService::class.java)
             GlobalScope.launch {
@@ -142,6 +154,17 @@ class ConnectivityActivity : AppCompatActivity(),
             startBleWaiting()
             showLayouts(false, false, false, false, true, "")
         }
+        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        val pairedDevices: Set<BluetoothDevice> = bluetoothAdapter.getBondedDevices()
+        for (device in pairedDevices) {
+            val deviceName = device.name
+            val deviceHardwareAddress = device.address // MAC address
+
+            // Get the connected device's OS version
+            val osVersion = device.bluetoothClass.majorDeviceClass
+            // You can use this osVersion value as per your requirement
+        }
+
         deviceList_proj!!.setOnItemClickListener { _, _, position, _ ->
 
             showLayouts(false, false, false, false, true, "")
@@ -154,7 +177,10 @@ class ConnectivityActivity : AppCompatActivity(),
             serviceConnectionWaitingJob?.cancel()
             checkSocketConnection()
         }
+        val androidID =
+            Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID)
 
+        Log.d("taniii", "sss" + Build.VERSION.SDK_INT)
     }
 
     private fun initNSD() {
@@ -178,7 +204,9 @@ class ConnectivityActivity : AppCompatActivity(),
                 mService!!.serviceName,
                 mService?.host?.hostAddress.toString(),
                 mService?.port!!.toInt(),
-                false
+                false,
+                mDeviceAddress.toString(),"1.0"
+
             )
             if (viewModel.isServiceFoundAfterWifi.get() && screenName != SCREEN_MANAGE_DEVICE) {
                 stopDiscovery()
@@ -367,7 +395,7 @@ class ConnectivityActivity : AppCompatActivity(),
     }
 
     private suspend fun startSocketConnection() {
-
+        Log.d("coneeee", "sss" )
         withContext(Dispatchers.IO) {
             val host = InetAddress.getByName(mClickedService.nsdSericeHostAddress)
             var soc: Socket? = null
@@ -382,6 +410,7 @@ class ConnectivityActivity : AppCompatActivity(),
                         delay(200)
                         Utility.sendDittoImage(this@ConnectivityActivity, "setup_pattern_connected")
                     }
+
                     showLayouts(false, false, false, true, false, "Successfully connected!")
 
                 } else {
@@ -412,6 +441,8 @@ class ConnectivityActivity : AppCompatActivity(),
             }
             Log.d(ConnectivityUtils.TAG, "BluetoothLeService-Connect to device address")
             mBluetoothLeService!!.connect(mDeviceAddress)
+           /* mBluetoothLeService!!.connect(Build.VERSION.SDK_INT.toString())
+            Log.d("macaddress", "rrr" + mBluetoothLeService!!.connect(Build.VERSION.SDK_INT.toString()))*/
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
@@ -545,8 +576,8 @@ class ConnectivityActivity : AppCompatActivity(),
             return mLeDevices[position]
         }
 
-        fun sortDevice(){
-            mLeDevices?.sortBy { list -> list.name}
+        fun sortDevice() {
+            mLeDevices?.sortBy { list -> list.name }
         }
 
         fun clear() {
@@ -729,6 +760,7 @@ class ConnectivityActivity : AppCompatActivity(),
         Log.d(ConnectivityUtils.TAG, "Activity-getGattServices()")
         if (gattServices != null) {
             for (gattService in gattServices) {
+                Log.d("devv","kkkk"+ConnectivityUtils.SERVICE_UUID)
                 if (gattService.uuid == ConnectivityUtils.SERVICE_UUID) {
                     mGattCharacteristics?.addAll(gattService.characteristics)
                     GlobalScope.launch {

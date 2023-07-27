@@ -582,6 +582,15 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="WORKSPACE"/>
 
+                <TextView
+                    android:id="@+id/subscriptionstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your subscription has CANCELLED. Please contact Customer Service to reactivate your subscription. "
+                    android:visibility="gone"
+                    tools:ignore="MissingConstraints"
+                    android:textColor="@color/app_red"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

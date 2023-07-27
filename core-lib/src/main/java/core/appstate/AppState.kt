@@ -9,6 +9,8 @@ object AppState {
     private const val IS_SHOWN_COACH_MARK = "shownCoachMark"
     private const val IS_SHOWN_WORKSPACE_COACH_MARK = "shownWorkspaceCoachMark"
     private const val KEY_IS_LOGGED = "logged"
+    private const val KEY_IS_FIRST_TIME_LOGIN = "firstlogin"
+    private const val KEY_IS_FROM_NAV = "navgation"
     private const val KEY_TOKEN = "token"
     private const val KEY_COUNT = "count"
     private const val KEY_TOKEN_EXPIRY = "token_expiry_time"
@@ -36,6 +38,24 @@ object AppState {
 
     fun setIsLogged(guest: Boolean) {
         pref?.saveBoolean(KEY_IS_LOGGED, guest)
+    }
+
+    fun getIsFirstLogin(): Boolean {
+        val isGuest = pref?.getBoolean(KEY_IS_FIRST_TIME_LOGIN)
+        return isGuest ?: false
+    }
+
+    fun setIsFirstLogin(guest: Boolean) {
+        pref?.saveBoolean(KEY_IS_FIRST_TIME_LOGIN, guest)
+    }
+
+    fun getIsFromNav(): Boolean {
+        val isFromNav = pref?.getBoolean(KEY_IS_FROM_NAV)
+        return isFromNav ?: false
+    }
+
+    fun setIsFromNav(fromnav: Boolean) {
+        pref?.saveBoolean(KEY_IS_FROM_NAV, fromnav)
     }
 
     fun isShownCoachMark(): Boolean {

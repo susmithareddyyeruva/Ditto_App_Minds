@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/padding_bottom"
+    android:layout_height="@dimen/item_container_height_manage">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLineStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.02">
+
+            </androidx.constraintlayout.widget.Guideline>
+
+            <ImageView
+                android:id="@+id/imageVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_video"
+                app:layout_constraintBottom_toBottomOf="@+id/textProjectorName"
+                app:layout_constraintRight_toLeftOf="@+id/textProjectorName"
+                app:layout_constraintStart_toStartOf="@+id/guideLineStart"
+                app:layout_constraintTop_toTopOf="@+id/textProjectorName">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textProjectorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:paddingLeft="@dimen/drawable_padding"
+                android:text="Projector 1"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/available_projector_text_size"
+                app:layout_constraintBottom_toTopOf="@+id/textStatus"
+                app:layout_constraintStart_toEndOf="@+id/imageVideo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/textStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textProjectorName"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:paddingLeft="@dimen/drawable_padding"
+                android:text="Connected"
+                android:textColor="@color/sign_in_blue"
+                android:textSize="@dimen/available_projector_text_size"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textProjectorName"
+                app:layout_constraintTop_toBottomOf="@+id/textProjectorName">
+
+            </TextView>
+
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="140dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/item_single_bottom_margin"
+                android:layout_marginEnd="110dp"
+                android:layout_marginBottom="@dimen/item_single_bottom_margin"
+                android:fontFamily="@font/avenir_next_lt_pro_demi"
+                android:gravity="center"
+                android:background="@drawable/bg_disconnect"
+                android:minWidth="@dimen/button_width"
+                android:paddingLeft="5dp"
+                android:paddingRight="@dimen/button_padding_start"
+                android:text="@string/disconnect"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/button_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </Button>
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintStart_toEndOf="@+id/btnConnect"
+                android:background="@drawable/update"
+                android:layout_marginTop="@dimen/item_single_bottom_margin"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="60dp"
+                android:layout_marginBottom="@dimen/item_single_bottom_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btnInfo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintStart_toEndOf="@+id/btnUpdate"
+                android:background="@drawable/info"
+                android:layout_marginTop="@dimen/item_single_bottom_margin"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="@dimen/item_single_bottom_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

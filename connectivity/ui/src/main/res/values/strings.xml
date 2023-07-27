@@ -5,6 +5,14 @@
     <string name="later">Later</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">YES</string>
+
+    <!--Added by vineetha for update projector popup-->
+    <string name="updateprojector_msg">A new version of projector is available, would you like to upgrade ? New features : Fixed the connection issues , updated the projection features </string>
+    <string name="firmwarevesion">Firmware Version</string>
+    <string name="serialno">Serial Number</string>
+    <string name="macaddress">MAC Address</string>
+    <string name="updaterojector_update_msg">Do you want to update projector</string>
     <string name="skips">Skip</string>
     <string name="ditto_connect">Ditto projector is not connected</string>
     <string name="bluetooth_wifi">Check your Bluetooth and WiFi Connectivity.</string>

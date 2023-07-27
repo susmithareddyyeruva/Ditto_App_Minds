@@ -18,6 +18,12 @@
     <string name="back">Back</string>
     <string name="processing">Processing….</string>
     <string name="calibration_success">Calibration success!</string>
+    <!--Added by vineetha for update projector popup and switch language-->
+    <string name="switch_language">Choose Language</string>
+    <string name="update">Update Projector</string>
+    <string name="updateprojector_msg">A new version of projector is available, would you like to upgrade ? New features : Fixed the connection issues , updated the projection features </string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
     <string name="calibration_failure">Calibration failed. Error:  %1$s</string>
     <string name="turn_on_permission">App will not work properly without this permission. Please turn on the permission from settings</string>
     <string name="image_confirmation_alert">Confirm all four corners of cutting mat are visible in the image</string>

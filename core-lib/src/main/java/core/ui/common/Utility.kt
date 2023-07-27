@@ -49,6 +49,9 @@ import kotlin.math.PI
 /**
  * Helper Utility class
  */
+/*Added by vineetha for update projector popup
+*/
+
 class Utility @Inject constructor(
     private val tokenViewModel: TokenViewModel,
     private val versionViewModel: VersionViewModel
@@ -80,7 +83,9 @@ class Utility @Inject constructor(
         SOFTWARE_UPDATE,
         GUEST_MYFOLDER,
         PERMISSION_DENIED,
-        SELECT_LAYOUT
+        SELECT_LAYOUT,
+        SWITCH_LANGUAGE,
+        UPDATE_PROJECTOR
     }
 
     enum class Iconype {

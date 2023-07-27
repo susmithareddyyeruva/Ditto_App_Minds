@@ -509,8 +509,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
         )
         //viewModel.patternStatus.set(viewModel.data.value?.status)
         viewModel.patternStatus.set("FROM SFCC") // SET THE STATUS  which needs to be passed while clicking on particular pattern
+        if (viewModel.clickedProduct?.status.equals("OWNED")) {
+            text_yardage.visibility = View.GONE
+            text_instructions.visibility = View.GONE
+            text_watchvideo2.visibility = View.GONE
+            subscriptionstatus.visibility = View.VISIBLE
+        }
     }
-
 
     private fun setUIEvents() {
         viewModel.disposable += viewModel.events
@@ -789,14 +794,14 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                                         "notionDetails" to viewModel.clickedProduct?.notionDetails
                                     )
 
-                            }
-                            findNavController().navigate(
-                                R.id.action_patternDescriptionFragment_to_yardage_notion_Fragment,
-                                bundle
-                            )
                         }
-                    } else
-                        Unit
+                        findNavController().navigate(
+                            R.id.action_patternDescriptionFragment_to_yardage_notion_Fragment,
+                            bundle
+                        )
+                    }
+                } else
+                    Unit
 
             }
             is PatternDescriptionViewModel.Event.OnInstructionsButtonClicked -> {
@@ -810,8 +815,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     /**
                      * Restricting user to enter into Instructions without selecting any customization if Network is Connected
                      */
-                    if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get().isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
-                        && !viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0) {
+                    if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get()
+                            .isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
+                        && !viewModel.selectedViewOrCupStyle.get()
+                            .isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0
+                    ) {
                         showAlert(
                             getString(R.string.please_select_size),
                             Utility.AlertType.DEFAULT
@@ -835,7 +843,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(
+                                        viewModel.clickedTailornovaID.get() ?: "",
                                         viewModel.mannequinId.get() ?: ""),
                                     "tailornovaDesignName" to viewModel.clickedProduct?.prodName
                                 )
@@ -843,7 +852,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                             bundle =
                                 bundleOf(
                                     "PatternName" to viewModel.clickedProduct?.prodName,
-                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                                    "PatternFolderName" to Utility.getPatternDownloadFolderName(
+                                        viewModel.clickedTailornovaID.get() ?: "",
                                         viewModel.mannequinId.get() ?: ""),
                                     "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName
                                 )
@@ -904,7 +914,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
             PatternDescriptionViewModel.Event.OnShowMannequinData -> {
                 if (viewModel.mannequinName.get()?.isNotEmpty() == true) {
-                   // binding.textMannequinName.visibility = View.VISIBLE
+                    // binding.textMannequinName.visibility = View.VISIBLE
                     viewModel.isShowSpinner.set(false)
                 } else {
 
@@ -919,8 +929,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             }
 
             PatternDescriptionViewModel.Event.OnMannequinNameEmpty -> {
-                if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get().isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
-                    && !viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0) {
+                if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get()
+                        .isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
+                    && !viewModel.selectedViewOrCupStyle.get()
+                        .isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0
+                ) {
                     showAlert(
                         getString(R.string.please_select_size),
                         Utility.AlertType.DEFAULT
@@ -949,8 +962,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             PatternDescriptionViewModel.Event.OnThirdPartyDataFetchResume -> {
                 Log.d("OnThirdPartyDataFetchSuccess", "OnThirdPartyDataFetchSuccess")
                 setSizeSpinnerData()
-                binding.variationSpinner.setSelection(viewModel.selectedViewCupPosition.get()?:0, true)
-                binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get()?:0, true)
+                binding.variationSpinner.setSelection(viewModel.selectedViewCupPosition.get() ?: 0,
+                    true)
+                binding.sizeSpinner.setSelection(viewModel.selectedSizePosition.get() ?: 0, true)
                 bottomNavViewModel.showProgress.set(false)
             }
             else -> {}
@@ -1030,8 +1044,11 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 /**
                  * Restricting user to enter into workspace without selecting any customization if Network is Connected
                  */
-                if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get().isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
-                    && !viewModel.selectedViewOrCupStyle.get().isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0) {
+                if (!viewModel.isDittoPattern.get() && (viewModel.selectedSize.get()
+                        .isNullOrEmpty() || viewModel.selectedSizePosition.get() == 0)
+                    && !viewModel.selectedViewOrCupStyle.get()
+                        .isNullOrEmpty() && viewModel.selectedViewCupPosition.get() != 0
+                ) {
                     showAlert(
                         getString(R.string.please_select_size),
                         Utility.AlertType.DEFAULT
@@ -1079,7 +1096,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     viewModel.downloadEachPatternPiece(
                         imageUrl = it,
                         filename = fileName,
-                        patternFolderName = Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                        patternFolderName = Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get()
+                            ?: "",
                             viewModel.mannequinId.get() ?: "")
                     )
                 }
@@ -1088,7 +1106,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     override fun onActivityResult(
-        requestCode: Int, resultCode: Int, data: Intent?
+        requestCode: Int, resultCode: Int, data: Intent?,
     ) {
         super.onActivityResult(requestCode, resultCode, data)
         logger.d("On Activity Result")
@@ -1104,13 +1122,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             } else if (data?.data.toString().equals("skip")) {
                 enterWorkspace()
             }
-        }else if(requestCode == REQUEST_ENABLE_BT){
+        } else if (requestCode == REQUEST_ENABLE_BT) {
             val mBluetoothAdapter =
                 BluetoothAdapter.getDefaultAdapter()
             if (mBluetoothAdapter?.isEnabled == false) {
                 logger.d("Later clicked")
                 enterWorkspace()
-            }else{
+            } else {
                 if (!Utility.getWifistatus(requireContext())) {
                     showWifiDialogue()
                 } else {
@@ -1263,7 +1281,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
                     "tailornovaDesignName" to viewModel.patternName.get(),
-                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get()
+                        ?: "",
                         viewModel.mannequinId.get() ?: "")
                 )
         } else {
@@ -1274,7 +1293,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                     "clickedOrderNumber" to viewModel.clickedOrderNumber.get(),
                     "mannequinId" to viewModel.mannequinId.get(),
                     "tailornovaDesignName" to viewModel.clickedProduct?.tailornovaDesignName,
-                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get() ?: "",
+                    "patternDownloadFolderName" to Utility.getPatternDownloadFolderName(viewModel.clickedTailornovaID.get()
+                        ?: "",
                         viewModel.mannequinId.get() ?: "")
                 )
         }
@@ -1290,11 +1310,13 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     //download the pattern pieces
     fun getPatternPieceListTailornova(): HashMap<String, String> {
         var hashMap: HashMap<String, String> = HashMap<String, String>()
-        hashMap[if(viewModel.isFromDeepLinking.get()) viewModel.patternName.get().toString() else viewModel.data.value?.thumbnailImageName.toString()] =
+        hashMap[if (viewModel.isFromDeepLinking.get()) viewModel.patternName.get()
+            .toString() else viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
         hashMap[viewModel.data.value?.thumbnailImageName.toString()] =
             viewModel.data.value?.thumbnailImageUrl.toString()
-        hashMap[viewModel.patternName.get()?:"Pattern Name"] = viewModel.clickedProduct?.image ?: ""
+        hashMap[viewModel.patternName.get() ?: "Pattern Name"] =
+            viewModel.clickedProduct?.image ?: ""
         for (patternItem in viewModel.data.value?.selvages ?: emptyList()) {
             hashMap[patternItem.imageName.toString()] = patternItem.imageUrl ?: ""
         }
@@ -1339,7 +1361,10 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
             Utility.AlertType.QUICK_CHECK -> {
                 // to clear out workspace projection
                 if (baseViewModel.activeSocketConnection.get()) {
-                    GlobalScope.launch { Utility.sendDittoImage(requireActivity(), "ditto_project") }
+                    GlobalScope.launch {
+                        Utility.sendDittoImage(requireActivity(),
+                            "ditto_project")
+                    }
                 }
                 enterWorkspace()
             }
@@ -1438,7 +1463,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     override fun onNegativeButtonClicked(
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         when {
             alertType == Utility.AlertType.BLE -> {
@@ -1462,7 +1487,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
     }
 
     override fun onNeutralButtonClicked(
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         // to clear out workspace projection
         if (baseViewModel.activeSocketConnection.get()) {
@@ -1490,7 +1515,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     override fun onCustomPositiveButtonClicked(
         iconype: Utility.Iconype,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         when (alertType) {
             Utility.AlertType.BLE -> {
@@ -1547,7 +1572,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse(versionResult?.response?.confirmLink ?: "market://details?id=$packageName")
+                                Uri.parse(versionResult?.response?.confirmLink
+                                    ?: "market://details?id=$packageName")
                             )
                         )
                     } catch (e: ActivityNotFoundException) {
@@ -1566,7 +1592,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     override fun onCustomNegativeButtonClicked(
         iconype: Utility.Iconype,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         when {
             alertType == Utility.AlertType.BLE -> {
@@ -1622,7 +1648,8 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                 )
             }
         } else {
-            errorMsg = getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
+            errorMsg =
+                getString(R.string.str_internal_server_error) + "\n\n" + viewModel.tailornovaApiError
             bottomNavViewModel.showProgress.set(false)
             bottomNavViewModel.showWSProgress.set(false)
             if (activity != null && context != null) {
@@ -1646,8 +1673,9 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
      */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+        requestCode: Int, permissions: Array<String>,
+        grantResults:
+        IntArray,
     ) {
         if (dowloadPermissonGranted() && requestCode == REQUEST_CODE_PERMISSIONS_DOWNLOAD) {
             logger.d("onReqPermissionsResult, permission granted")
@@ -1697,7 +1725,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
 
     private fun showAlert(
         versionerrorReceived: String,
-        alertType: Utility.AlertType
+        alertType: Utility.AlertType,
     ) {
         Utility.getCommonAlertDialogue(
             requireContext(),
@@ -1788,7 +1816,7 @@ class PatternDescriptionFragment : BaseFragment(), Utility.CallbackDialogListene
                         if (it.prodName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "")
-                            || ((it.prodName.toString()+"yardage")
+                            || ((it.prodName.toString() + "yardage")
                                 .replace("[^A-Za-z0-9 ]".toRegex(), "") == fileName.toString()
                                 .replace("[^A-Za-z0-9 ]".toRegex(), ""))
                         ) {

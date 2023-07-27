@@ -185,4 +185,7 @@ dependencies {
     implementation project(':non-core-lib')
     implementation project(':nav-graph')
     implementation project(path: ':storage-domain')
+
+    //Added by vineetha for switch language popup
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

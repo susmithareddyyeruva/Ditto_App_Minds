@@ -29,7 +29,11 @@
             android:id="@+id/nav_graph_software_updates"
             android:icon="@drawable/ic_menu_update"
             android:title="@string/str_menu_softwareupdate" />
-
+        <!--Added by vineetha for update projector popup-->
+        <item
+            android:id="@+id/nav_graph_update_projector"
+            android:icon="@drawable/ic_menu_update"
+            android:title="@string/str_menu_updateprojector" />
     </group>
     <group
         android:id="@+id/nav_g2"

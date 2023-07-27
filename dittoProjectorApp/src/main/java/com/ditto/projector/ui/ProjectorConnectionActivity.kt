@@ -1,5 +1,6 @@
 package com.ditto.projector.ui
 
+import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseData
@@ -56,6 +57,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
     private var wifiReceiver: WifiConnectionListener? = null
     var deviceid : String = ""
 
+    @SuppressLint("MissingPermission", "NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityProjectorConnectionBinding>(
@@ -73,9 +75,18 @@ class ProjectorConnectionActivity : AppCompatActivity(),
         img_receivedimage.setImageResource(R.drawable.setup_pattern_waiting)
         startBLE()
         initapp()
-//        deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+        deviceid= Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
         deviceid = BluetoothAdapter.getDefaultAdapter().name
         title_proj.text = "Ditto Projector " + "( ID : " + deviceid + " )"
+
+
+        val androidID =
+            Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID)
+
+        Log.d("bbbb", "sss" + Build.VERSION.SDK_INT)
+        Log.d("projectorrrr", "sss" )
+
+
     }
 
     /**
@@ -144,7 +155,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
             override fun onConnectionStateChange(
                 device: BluetoothDevice,
                 status: Int,
-                newState: Int
+                newState: Int,
             ) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     viewModel.mConnectedBLEdevice = device
@@ -170,7 +181,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 preparedWrite: Boolean,
                 responseNeeded: Boolean,
                 offset: Int,
-                value: ByteArray
+                value: ByteArray,
             ) {
                 viewModel.samplestring.set("BLE request received")
                 viewModel.isAfterBleConnection.set(true)
@@ -234,7 +245,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 device: BluetoothDevice?,
                 requestId: Int,
                 offset: Int,
-                descriptor: BluetoothGattDescriptor?
+                descriptor: BluetoothGattDescriptor?,
             ) {
                 super.onDescriptorReadRequest(device, requestId, offset, descriptor)
 
@@ -247,7 +258,7 @@ class ProjectorConnectionActivity : AppCompatActivity(),
                 preparedWrite: Boolean,
                 responseNeeded: Boolean,
                 offset: Int,
-                value: ByteArray?
+                value: ByteArray?,
             ) {
                 super.onDescriptorWriteRequest(
                     device,

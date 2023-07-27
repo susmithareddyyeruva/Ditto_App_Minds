@@ -65,7 +65,8 @@
     <string name="complete_piece">Did you complete %1$d piece(s)?</string> <!--//cut number reminder done-->
     <string name="click_spliced_second_pieces">First select arrow to view remainder of spliced piece.</string> <!--// splice notification-->
     <string name="no">No</string>
-    <string name="yes">Yes</string>
+    <!--Added by vineetha for update projector popup-->
+    <string name="yes">YES</string>
     <string name="save_and_exit_dialog_title">Name this project</string>
     <string name="save_and_exit_dialog_message">Type your project name.</string>
     <string name="save">Save</string>
